@@ -4,11 +4,11 @@ Status: implemented
 
 [English](2026-07-30-credential-boundaries-and-atomic-registration.md) | 中文
 
-> 范围：加固[请求级 LLM（大语言模型）配置边界](2026-07-29-request-level-llm-config-credentials.zh.md)——存下来的凭据落在哪里、谁能读到它，一次请求所用的事实如何保持在同一代，以及一组路由如何在不留空窗的前提下更换。本 note 与 [settings 写路径 note](2026-07-30-settings-write-path-integrity.zh.md) 配套：它把那篇 note 的提供方修复套用到 `credentials-local`，并把其中的写锁提升进 `dsh-atomic-write`。
+> 范围：加固[请求级 LLM（大语言模型）配置边界](2026-07-29-request-level-llm-config-credentials.zh.md)——存下来的凭据落在哪里、谁能读到它，一次请求所用的事实如何保持在同一代，以及一组路由如何在不留空窗的前提下更换。本 note 与 [settings 写路径 note](2026-07-30-settings-write-path-integrity.zh.md) 配套：它把那篇 note 的提供方修复套用到 `credentials-local`，并把其中的写锁提升进 `alego-atomic-write`。
 
 ## 问题
 
-凭据路径越过它自己划下的边界发生了泄漏。已交付的各个面在 Cordis 启动之前就把 `$DSH_HOME/.env` 提升进了 `process.env`，于是下一次运行时，`credentials-local` 会把它自己存下的每个键都判成来自环境的只读启动覆盖：`describe()` 报告 `source: 'env'` 且 `writable: false`，`set`/`unset` 以被遮蔽为由拒绝，从 web 页面或 TUI 存入的密钥既无法轮换也无法删除，而适配器还在继续使用启动时捕获的那个值。
+凭据路径越过它自己划下的边界发生了泄漏。已交付的各个面在 Cordis 启动之前就把 `$ALEGO_HOME/.env` 提升进了 `process.env`，于是下一次运行时，`credentials-local` 会把它自己存下的每个键都判成来自环境的只读启动覆盖：`describe()` 报告 `source: 'env'` 且 `writable: false`，`set`/`unset` 以被遮蔽为由拒绝，从 web 页面或 TUI 存入的密钥既无法轮换也无法删除，而适配器还在继续使用启动时捕获的那个值。
 
 存储自身的写路径重演了 settings 写路径 note 在 settings-file 修掉的那些缺陷（两条相互独立的链、从陈旧缓存渲染整份文件），还叠加了编辑器自己的缺陷：另一个键的带引号多行值内部的一条物理行会被读成赋值，CRLF 行尾会退化成 LF，多行条目报告 `writable: true` 而 `set` 总是抛错，`credentials/reference-updated` 又在提交之后裸发，于是一个出错的观察者就能让一次已经落盘的写入看起来失败。
 
@@ -18,7 +18,7 @@ Status: implemented
 
 ## 决策
 
-**凭据文档只归凭据提供方所有。**没有任何一个面会把它加载进 `process.env`。当时该文档是 `$DSH_HOME/.env`；[凭据文档拆分](2026-08-04-credentials-yaml-and-user-environment-layer.zh.md)后来把它移到 `$DSH_HOME/.credentials.yaml`，因此如今被加载的正是那条旧路径——作为用户的普通环境层，其中不含任何提供方管理的密钥。真正的启动环境，以及调用目录中由 bin 加载的 `.env`，仍然是那一层只读的环境来源，因此不挂载该提供方的组合，解析密钥的方式与从前完全一致，而存下的密钥跨重启仍然来源于文件、仍然可写——这一点由 loader 组合中的一次真实重启来证明，而不是靠对 `describe()` 的单元断言。
+**凭据文档只归凭据提供方所有。**没有任何一个面会把它加载进 `process.env`。当时该文档是 `$ALEGO_HOME/.env`；[凭据文档拆分](2026-08-04-credentials-yaml-and-user-environment-layer.zh.md)后来把它移到 `$ALEGO_HOME/.credentials.yaml`，因此如今被加载的正是那条旧路径——作为用户的普通环境层，其中不含任何提供方管理的密钥。真正的启动环境，以及调用目录中由 bin 加载的 `.env`，仍然是那一层只读的环境来源，因此不挂载该提供方的组合，解析密钥的方式与从前完全一致，而存下的密钥跨重启仍然来源于文件、仍然可写——这一点由 loader 组合中的一次真实重启来证明，而不是靠对 `describe()` 的单元断言。
 
 **存下的凭据对模型没有边界，而 README 就是这么写的。**`0700` 目录下的 `0600` 挡得住其他 OS 用户；模型的 bash 与文件系统工具正是以同一用户身份运行，而已交付的默认配置不提供任何约束。harness 真正守住的边界更窄，文档也严格按这一范围表述：没有任何一个面会把该文档提升进 `process.env`，模型也从不会拿到它的解析后路径，因此要拿到这个值，需要刻意去读一条并未交给它的路径。OS 钥匙串（keychain）提供方——一个模型的进程根本读不到的存储——被记录为真正的答案，而不是靠一个残缺的方案去暗示它。
 
@@ -30,8 +30,8 @@ Status: implemented
 
 ## 曾考虑的替代方案
 
-- **用沙箱点名拒读 `$DSH_HOME/.env`**——已按 `readDenyPaths` 策略字段实现过（末尾一条 SBPL `deny file-read* file-write*`、一条 `/dev/null` 的 bwrap bind），又被它自己的证据推翻。bwrap 必须在自己 profile 已经置为只读的目录树内部创建该 bind 的挂载点，因此只要父目录不存在，它就会拒绝整次约束——那是每一台还没有存过凭据的主机，包括全新安装；Landlock 无法从它自己对 `/` 的读取授权中减去任何东西，于是每一次受限调用都会为一个它其实从未藏起的文件报 `partial`。一项在生效之处破坏约束、在不生效之处误报的保护，比一条写明的「没有保护」更糟。至于拒掉整个 harness home，早先另有理由被否：它同时覆盖 `sessions/`，而 `DSH_SESSION_JSONL` 是一项成文的、模型可见的能力。
-- **把 `DSH_HOME` 从模型的 bash 环境中移除**——作为纵深防御考虑过，最终按「有真实代价的表演」不予采纳：默认 home 是 agent（智能体）能自行重建的成文约定，而这个变量正是正当工具链定位 harness 状态的途径。这里并不存在一条需要它来补强的边界，藏起指针只会让这种缺失更难被看见。
+- **用沙箱点名拒读 `$ALEGO_HOME/.env`**——已按 `readDenyPaths` 策略字段实现过（末尾一条 SBPL `deny file-read* file-write*`、一条 `/dev/null` 的 bwrap bind），又被它自己的证据推翻。bwrap 必须在自己 profile 已经置为只读的目录树内部创建该 bind 的挂载点，因此只要父目录不存在，它就会拒绝整次约束——那是每一台还没有存过凭据的主机，包括全新安装；Landlock 无法从它自己对 `/` 的读取授权中减去任何东西，于是每一次受限调用都会为一个它其实从未藏起的文件报 `partial`。一项在生效之处破坏约束、在不生效之处误报的保护，比一条写明的「没有保护」更糟。至于拒掉整个 harness home，早先另有理由被否：它同时覆盖 `sessions/`，而 `ALEGO_SESSION_JSONL` 是一项成文的、模型可见的能力。
+- **把 `ALEGO_HOME` 从模型的 bash 环境中移除**——作为纵深防御考虑过，最终按「有真实代价的表演」不予采纳：默认 home 是 agent（智能体）能自行重建的成文约定，而这个变量正是正当工具链定位 harness 状态的途径。这里并不存在一条需要它来补强的边界，藏起指针只会让这种缺失更难被看见。
 - **现在就交付 OS 钥匙串提供方**——只有这个设计能让模型的进程真正读不到机密，而它是一个带三种平台后端的兄弟包。把它与其余这些修复放在一起评估体量，会拖慢其他每一项；它被记录为那个延后的答案，而不是一个「也许」。
 - **做成 `replaceRegistration(previous, next)` 服务方法**——不予采纳：它要求调用方自行携带上一个句柄，也允许它传入一个不匹配的句柄。把 `replace` 挂在注册句柄上，让归属关系变成结构性的：只有持有路由的那一项注册才能替换它们。
 

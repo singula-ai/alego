@@ -2,12 +2,12 @@
  * The one-shot app's command-line provider: it parses the task positional and
  * `--help`, then publishes {@link HEADLESS_STARTUP_SERVICE}. The runner is an
  * ordinary consumer whose lazy config waits for that service.
- * @module @deepseek-ai/dsh-headless/startup
+ * @module @alego/headless/startup
  */
 
 import { Command } from 'commander'
-import type { Context } from '@deepseek-ai/cordis'
-import { parseCmdline } from '@deepseek-ai/dsh-cmdline'
+import type { Context } from '@alego/cordis'
+import { parseCmdline } from '@alego/cmdline'
 
 /** Stable Cordis plugin name. */
 export const name = 'headless-startup'
@@ -30,13 +30,13 @@ export interface HeadlessStartupValues {
  */
 function headlessCommand(): Command {
   return new Command()
-    .name('dsh --profile headless')
+    .name('alego --profile headless')
     .description('Answer one task, print the final assistant message, and exit.')
     .helpOption('-h, --help', 'show this help')
     .argument('[task...]', 'the task text; multiple words are joined by spaces')
     .addHelpText('after', `
 Examples:
-  dsh --profile headless "run the tests"     answer one task and exit
+  alego --profile headless "run the tests"     answer one task and exit
 `)
 }
 
@@ -50,7 +50,7 @@ export function apply(ctx: Context): void {
   const program = headlessCommand()
   program.action(() => {
     const task = program.args.join(' ')
-    if (task.trim() === '') program.error('error: a task is required, for example: dsh --profile headless "run the tests"')
+    if (task.trim() === '') program.error('error: a task is required, for example: alego --profile headless "run the tests"')
     ctx.provide(HEADLESS_STARTUP_SERVICE, { task } satisfies HeadlessStartupValues)
   })
   parseCmdline(ctx, program)

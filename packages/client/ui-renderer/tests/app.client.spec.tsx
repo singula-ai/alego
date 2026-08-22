@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
-import { Context } from '@deepseek-ai/cordis'
-import { SlotTestRuntime } from '@deepseek-ai/dsh-client-test-runtime'
-import type { SessionId } from '@deepseek-ai/dsh-client-runtime/client'
+import { Context } from '@alego/cordis'
+import { SlotTestRuntime } from '@alego/client-test-runtime'
+import type { SessionId } from '@alego/client-runtime/client'
 import { buildRenderApp } from '../src/client/app.tsx'
 
 let runtime: SlotTestRuntime | undefined
@@ -34,7 +34,7 @@ describe('buildRenderApp', () => {
   })
 
   it('projects the selected durable session title', async () => {
-    vi.stubEnv('DSH_CLIENT_TITLE', 'Product')
+    vi.stubEnv('ALEGO_CLIENT_TITLE', 'Product')
     document.title = 'stale title'
     const b = await bench()
     render(<>{b.renderApp()}</>)
@@ -48,7 +48,7 @@ describe('buildRenderApp', () => {
   })
 
   it('falls back when the selected id has no list row', async () => {
-    vi.stubEnv('DSH_CLIENT_TITLE', 'Product')
+    vi.stubEnv('ALEGO_CLIENT_TITLE', 'Product')
     document.title = 'stale title'
     const b = await bench()
     await b.runtime.sessions.add({ id: 's1', summary: { title: 'First' } })

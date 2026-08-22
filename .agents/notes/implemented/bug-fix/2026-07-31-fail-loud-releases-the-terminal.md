@@ -6,10 +6,10 @@ English | [中文](2026-07-31-fail-loud-releases-the-terminal.zh.md)
 
 ## Problem
 
-A `dsh` launch whose config failed validation printed its diagnostic and returned the user to a broken shell. Typing was invisible, and the next command was mangled by stray text:
+A `alego` launch whose config failed validation printed its diagnostic and returned the user to a broken shell. Typing was invisible, and the next command was mangled by stray text:
 
 ```
-dsh: fatal load failure: ValidationError: invalid config:
+alego: fatal load failure: ValidationError: invalid config:
   - $.providers expected object but got [object Object] (at providers)
 $ 1;2;4cecho hello
 zsh: command not found: 4cecho
@@ -30,7 +30,7 @@ The `/exit` path was never affected, because it disposes the tree and reaches th
 - The release is bounded by `FAIL_LOUD_RELEASE_TIMEOUT_MS` (2s) and its rejection is swallowed. A wedged or failing disposer delays the fatal exit; it never cancels it. That timer stays **referenced**: an `unref()`ed one lets Node reach an empty event loop and exit 0 on the very failure being reported, because an `unhandledRejection` listener suppresses the default fatal exit.
 - Omitting `release` keeps the previous behavior exactly, so the ACP, JSON-RPC, and demo bins are unchanged.
 
-`dsh`'s TUI launcher passes a release that disposes the root context, which runs the TUI's existing `shutdown()` and hands the terminal back.
+`alego`'s TUI launcher passes a release that disposes the root context, which runs the TUI's existing `shutdown()` and hands the terminal back.
 
 The launcher captures the root context in `boot()`'s `prepare` hook rather than from its return value. The rejection arrives while `boot()` is still in flight, so `app.current` assigned after the `await` would still be `undefined` at exactly the moment the hook needs it. `prepare` runs after the Loader installs and before any config-tree entry mounts, which covers the whole window in which an entry can reject.
 
@@ -46,7 +46,7 @@ The launcher captures the root context in `boot()`'s `prepare` hook rather than 
 
 ## Consequences
 
-A failed boot now costs one tree disposal (bounded at 2s) before exit, and the exit code stays 1. In exchange, a misconfigured `dsh` returns a usable shell instead of one needing `stty sane` or `reset`.
+A failed boot now costs one tree disposal (bounded at 2s) before exit, and the exit code stays 1. In exchange, a misconfigured `alego` returns a usable shell instead of one needing `stty sane` or `reset`.
 
 The guarantee belongs to whichever bin owns the terminal: a surface that grabs terminal state and does not pass `release` reintroduces this defect. `installFailLoud` cannot detect that on its own, since it has no view of what a mounted plugin did to the process.
 
@@ -54,6 +54,6 @@ The guarantee belongs to whichever bin owns the terminal: a surface that grabs t
 
 `packages/boot/app-boot/tests/app-boot.spec.ts` covers the release contract: the hook is awaited before the exit commits, a rejecting hook still exits 1, a never-settling hook exits after `FAIL_LOUD_RELEASE_TIMEOUT_MS`, and a burst of rejections reports only the first while the release still completes.
 
-Those fake-process tests cannot observe the two failure modes that matter most — process exit code with a real event loop, and terminal state after exit — so the regression lives in `apps/cli/tests/tui-keyless-smoke.e2e.ts`. It boots the shipped tree in a real PTY over `fixtures/tui-invalid-provider.cordis.yml` (a list-shaped `providers`, the mistake users actually make), expects exit 1, and asserts the captured bytes contain both the labelled boot rejection (`dsh: plugin tree failed to load:`) and `ESC[?2004l`. The same case pins the boot path end to end: it caught the [HMR initial-scan boot deadlock](2026-08-03-hmr-initial-scan-boot-deadlock.md) that silently exited 13 with the terminal stranded.
+Those fake-process tests cannot observe the two failure modes that matter most — process exit code with a real event loop, and terminal state after exit — so the regression lives in `apps/cli/tests/tui-keyless-smoke.e2e.ts`. It boots the shipped tree in a real PTY over `fixtures/tui-invalid-provider.cordis.yml` (a list-shaped `providers`, the mistake users actually make), expects exit 1, and asserts the captured bytes contain both the labelled boot rejection (`alego: plugin tree failed to load:`) and `ESC[?2004l`. The same case pins the boot path end to end: it caught the [HMR initial-scan boot deadlock](2026-08-03-hmr-initial-scan-boot-deadlock.md) that silently exited 13 with the terminal stranded.
 
 The `/exit` path keeps its existing assertion that the same reset appears on a clean exit.

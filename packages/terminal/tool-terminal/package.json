@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-tool-terminal",
+  "name": "@alego/tool-terminal",
   "description": "Six model-facing persistent PTY tools with owner isolation and generic background-job integration",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/singula-ai/alego.git",
     "directory": "packages/terminal/tool-terminal"
   },
   "type": "module",
@@ -32,37 +32,37 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@deepseek-ai/schemastery": "workspace:^"
+    "@alego/schemastery": "workspace:^"
   },
   "peerDependencies": {
-    "@deepseek-ai/dsh-agent": "workspace:^",
-    "@deepseek-ai/dsh-invariants": "workspace:^",
-    "@deepseek-ai/dsh-llm": "workspace:^",
-    "@deepseek-ai/dsh-terminal": "workspace:^",
-    "@deepseek-ai/dsh-output-retention": "workspace:^",
-    "@deepseek-ai/dsh-system-prompt": "workspace:^",
-    "@deepseek-ai/dsh-jobs": "workspace:^",
-    "@deepseek-ai/dsh-tools": "workspace:^",
-    "@deepseek-ai/cordis": "workspace:^"
+    "@alego/agent": "workspace:^",
+    "@alego/invariants": "workspace:^",
+    "@alego/llm": "workspace:^",
+    "@alego/terminal": "workspace:^",
+    "@alego/output-retention": "workspace:^",
+    "@alego/system-prompt": "workspace:^",
+    "@alego/jobs": "workspace:^",
+    "@alego/tools": "workspace:^",
+    "@alego/cordis": "workspace:^"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis-plugin-include": "workspace:^",
-    "@deepseek-ai/cordis-plugin-loader": "workspace:^",
-    "@deepseek-ai/dsh-agent": "workspace:^",
-    "@deepseek-ai/dsh-invariants": "workspace:^",
-    "@deepseek-ai/dsh-llm": "workspace:^",
-    "@deepseek-ai/dsh-terminal": "workspace:^",
-    "@deepseek-ai/dsh-terminal-bash": "workspace:^",
-    "@deepseek-ai/dsh-output-retention": "workspace:^",
-    "@deepseek-ai/dsh-sandbox": "workspace:^",
-    "@deepseek-ai/dsh-sandbox-policy": "workspace:^",
-    "@deepseek-ai/dsh-session": "workspace:^",
-    "@deepseek-ai/dsh-subprocess-local": "workspace:^",
-    "@deepseek-ai/dsh-system-prompt": "workspace:^",
-    "@deepseek-ai/dsh-jobs": "workspace:^",
-    "@deepseek-ai/dsh-jobs-local": "workspace:^",
-    "@deepseek-ai/dsh-tool-jobs": "workspace:^",
-    "@deepseek-ai/dsh-tools": "workspace:^",
-    "@deepseek-ai/cordis": "workspace:^"
+    "@alego/cordis-plugin-include": "workspace:^",
+    "@alego/cordis-plugin-loader": "workspace:^",
+    "@alego/agent": "workspace:^",
+    "@alego/invariants": "workspace:^",
+    "@alego/llm": "workspace:^",
+    "@alego/terminal": "workspace:^",
+    "@alego/terminal-bash": "workspace:^",
+    "@alego/output-retention": "workspace:^",
+    "@alego/sandbox": "workspace:^",
+    "@alego/sandbox-policy": "workspace:^",
+    "@alego/session": "workspace:^",
+    "@alego/subprocess-local": "workspace:^",
+    "@alego/system-prompt": "workspace:^",
+    "@alego/jobs": "workspace:^",
+    "@alego/jobs-local": "workspace:^",
+    "@alego/tool-jobs": "workspace:^",
+    "@alego/tools": "workspace:^",
+    "@alego/cordis": "workspace:^"
   }
 }

@@ -19,7 +19,7 @@
 # A service row here MUST sit inside a group carrying an `isolate` realm.
 # Without one it publishes into the root realm, where it is process-global
 # rather than per-session and the second session mounting this preset collides
-# with the first; `dsh-agent-presets` rejects that at mount. `true` means an
+# with the first; `alego-agent-presets` rejects that at mount. `true` means an
 # entry-local realm — one private instance per mounted session, which is the
 # default this deployment wants. A shared label would instead pool one instance
 # across every session naming it.
@@ -29,31 +29,31 @@
 # The preset's own persona, shadowing the deployment default for this agent.
 # `{{model}}` and `{{cwd}}` resolve from the agent's own route and workspace.
 - id: persona
-  name: '@deepseek-ai/dsh-persona'
+  name: '@alego/persona'
   config:
     text: >-
       You are a coding agent powered by the {{model}} model. Your working directory is {{cwd}}.
 
 - id: agent-instructions
-  name: '@deepseek-ai/dsh-agent-instructions'
+  name: '@alego/agent-instructions'
   config:
     maxBytes: 65536
 
 # ── shell ───────────────────────────────────────────────────────────────────
 
 # `shell-env` stays in the HOST composition: `apps/cli/src/web.ts` injects it to
-# publish `DSH_WEB_URL`/`DSH_WEB_MODE`, and a host row that injects a service is
+# publish `ALEGO_WEB_URL`/`ALEGO_WEB_MODE`, and a host row that injects a service is
 # the criterion for host-plane ownership — injection resolves before any session
 # exists, so there is no agent to key by. Behind a preset realm those variables
 # never reached the model's shell at all. Both shell tools consume the host
 # registry from here; their executors (`bash-sandbox`/`pwsh-sandbox`) are
 # host-plane too.
 - id: tool-bash
-  name: '@deepseek-ai/dsh-tool-bash'
+  name: '@alego/tool-bash'
   disabled: !!js process.platform === 'win32'
 
 - id: tool-pwsh
-  name: '@deepseek-ai/dsh-tool-pwsh'
+  name: '@alego/tool-pwsh'
   disabled: !!js process.platform !== 'win32'
 
 # ── filesystem ──────────────────────────────────────────────────────────────
@@ -61,10 +61,10 @@
 # Both register into the host `tools` registry and provide nothing, so
 # they need no realm. The `fs` service and its policy stay in the host.
 - id: tool-fs
-  name: '@deepseek-ai/dsh-tool-fs'
+  name: '@alego/tool-fs'
 
 - id: tool-fs-search
-  name: '@deepseek-ai/dsh-tool-fs-search'
+  name: '@alego/tool-fs-search'
   config:
     sampleOverCapGlobResults: false
 
@@ -78,7 +78,7 @@
 # owning agent anyway, so one host instance serves every session. What a preset
 # chooses is whether its agent can collect and stop background work at all.
 - id: tool-jobs
-  name: '@deepseek-ai/dsh-tool-jobs'
+  name: '@alego/tool-jobs'
 
 # ── skills ──────────────────────────────────────────────────────────────────
 
@@ -88,10 +88,10 @@
 # `tool-skill` gives them the catalog and loader; the merged catalog also
 # carries whatever the deployment registered globally (repository plugins).
 - id: skill-filesystem
-  name: '@deepseek-ai/dsh-skill-filesystem'
+  name: '@alego/skill-filesystem'
 
 - id: tool-skill
-  name: '@deepseek-ai/dsh-tool-skill'
+  name: '@alego/tool-skill'
 
 # ── goals ───────────────────────────────────────────────────────────────────
 
@@ -102,7 +102,7 @@
 # registry is keyed by session anyway, so one host instance serves every
 # session. What a preset chooses is whether its agent can call the goal tool.
 - id: tool-goal
-  name: '@deepseek-ai/dsh-tool-goal'
+  name: '@alego/tool-goal'
 
 # ── plan mode ───────────────────────────────────────────────────────────────
 
@@ -115,7 +115,7 @@
     planMode: true
   config:
     - id: plan-mode
-      name: '@deepseek-ai/dsh-plan-mode'
+      name: '@alego/plan-mode'
       config:
         section: |
               You are in plan mode. Stay in plan mode until exit_plan_mode succeeds or the user switches the session mode. Imperative language to implement changes means plan the implementation, not execute it. A user's conversational agreement — including an answer confirming something you asked — approves nothing and does not end plan mode; fold the confirmed decision into the plan and submit it through exit_plan_mode.
@@ -149,13 +149,13 @@
     toolResultPruner: true
   config:
     - id: compaction-basic
-      name: '@deepseek-ai/dsh-compaction-basic'
+      name: '@alego/compaction-basic'
 
     - id: command-compact
-      name: '@deepseek-ai/dsh-command-compact'
+      name: '@alego/command-compact'
 
     - id: tool-result-pruner
-      name: '@deepseek-ai/dsh-compaction-tool-result-pruner'
+      name: '@alego/compaction-tool-result-pruner'
       config:
         thresholdChars: 8192
         headChars: 4096
@@ -179,31 +179,31 @@
     workflowEngine: true
   config:
     - id: tool-subagent-control
-      name: '@deepseek-ai/dsh-tool-subagent-control'
+      name: '@alego/tool-subagent-control'
 
     - id: tool-subagent-list-agents
-      name: '@deepseek-ai/dsh-tool-subagent-control/list-agents'
+      name: '@alego/tool-subagent-control/list-agents'
 
     - id: tool-subagent
-      name: '@deepseek-ai/dsh-tool-subagent'
+      name: '@alego/tool-subagent'
       config:
         provider: spawn
         toolName: subagent
         backgroundMode: continuable
 
     - id: tool-subagent-fork
-      name: '@deepseek-ai/dsh-tool-subagent'
+      name: '@alego/tool-subagent'
       config:
         provider: fork
         toolName: subagent_fork
         backgroundMode: continuable
 
-    # Production dsh does not install these optional providers. Install the
+    # Production alego does not install these optional providers. Install the
     # matching Bundle in this Profile and restart the Host, then copy this
     # preset and remove `disabled` from the matching tool row. Host availability
     # alone grants no tool.
     - id: tool-subagent-codex
-      name: '@deepseek-ai/dsh-tool-subagent'
+      name: '@alego/tool-subagent'
       disabled: true
       config:
         provider: codex
@@ -212,7 +212,7 @@
         maxDepth: provider-managed
 
     - id: tool-subagent-claude-code
-      name: '@deepseek-ai/dsh-tool-subagent'
+      name: '@alego/tool-subagent'
       disabled: true
       config:
         provider: claude-code
@@ -221,15 +221,15 @@
         maxDepth: provider-managed
 
     - id: workflow-worker-thread
-      name: '@deepseek-ai/dsh-workflow-worker-thread'
+      name: '@alego/workflow-worker-thread'
       config:
         provider: spawn
 
     - id: tool-workflow
-      name: '@deepseek-ai/dsh-tool-workflow'
+      name: '@alego/tool-workflow'
 
     - id: tool-ralph
-      name: '@deepseek-ai/dsh-tool-ralph'
+      name: '@alego/tool-ralph'
       config:
         subagentProvider: spawn
         maxRounds: 64
@@ -237,17 +237,17 @@
 # ── remaining model-facing rows ─────────────────────────────────────────────
 
 - id: tool-ask-user
-  name: '@deepseek-ai/dsh-tool-ask-user'
+  name: '@alego/tool-ask-user'
 
 - id: tool-todo
-  name: '@deepseek-ai/dsh-tool-todo'
+  name: '@alego/tool-todo'
   config:
     allowParallelInProgress: true
 
 # The `web` service and its search provider stay in the host composition; only
 # the model-facing tool is per-session.
 - id: tool-web
-  name: '@deepseek-ai/dsh-tool-web'
+  name: '@alego/tool-web'
   config:
     fetch: false
     searchTimeoutMs: 60000
@@ -258,6 +258,6 @@
 # rather than assuming it: a deployment that composes no TypeScript runtime
 # fails this preset at mount, naming this id, instead of at the first request.
 - id: tool-presentation
-  name: '@deepseek-ai/dsh-agent-tool-presentation'
+  name: '@alego/agent-tool-presentation'
   config:
     mode: code

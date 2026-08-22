@@ -12,11 +12,11 @@ Status: implemented
 
 ## 决策
 
-模型投影与人类投影是分开的，而事件属于哪一种由事件自身的标记决定。`dsh-session` 在浏览器安全的 `surface` 模块中导出按两种 `SurfaceOp` 变体划分的谓词 `isAppendSurfaceEvent(event)` 与 `isReplacementSurfaceEvent(event)`。追加来源的事件是 transcript 的持久来源，替换副本仅供模型使用。凡是必须准确发送模型所见内容的部分——`deriveMessages`、token 记账、压缩后端、工具配对、注入上下文的存活判断、跨会话引用投影——都继续读取 `session.surface`。
+模型投影与人类投影是分开的，而事件属于哪一种由事件自身的标记决定。`alego-session` 在浏览器安全的 `surface` 模块中导出按两种 `SurfaceOp` 变体划分的谓词 `isAppendSurfaceEvent(event)` 与 `isReplacementSurfaceEvent(event)`。追加来源的事件是 transcript 的持久来源，替换副本仅供模型使用。凡是必须准确发送模型所见内容的部分——`deriveMessages`、token 记账、压缩后端、工具配对、注入上下文的存活判断、跨会话引用投影——都继续读取 `session.surface`。
 
 终端从追加来源的 surface 事件回放 transcript，并通过 `transcriptToolCallIds` 让被遮蔽步骤的工具卡片保持配对：该函数读取追加来源的 `assistant/message`，而不是 surface 成员关系。已落地的压缩会在其自身日志位置贡献一行暗色 `… earlier context was compacted …`：这行标记报告模型从何处起不再看到那段历史，而不是把它抹掉。带框的检查点载荷从不渲染，且两条路径都按同一个标记对 surface 事件分类，因此实时到达的压缩与恢复后回放同一份日志会产生相同的 transcript。只有回放会重新推导 `tool/call` 的配对关系：调用事件自身不携带标记，其归属继承自公布它的 `assistant/message`，而实时监听器必然刚刚渲染过后者。
 
-检查点通过压缩 seam 自身的约定来识别——`isCompactCheckpointSource`，即 `CompactionEngine` 要求替换用户消息携带的、与后端无关的标记——因此终端依赖的是已声明的词汇，而不是替换的形态。`dsh-session-reference` 已经在用该谓词投影另一个会话的日志；这里只是另一个读者提出同样的问题。其他替换保持静默：被裁剪的 `tool/result` 与重新生成的 `assistant/message` 只是为模型重写一个节点，并不在对话中标出边界。
+检查点通过压缩 seam 自身的约定来识别——`isCompactCheckpointSource`，即 `CompactionEngine` 要求替换用户消息携带的、与后端无关的标记——因此终端依赖的是已声明的词汇，而不是替换的形态。`alego-session-reference` 已经在用该谓词投影另一个会话的日志；这里只是另一个读者提出同样的问题。其他替换保持静默：被裁剪的 `tool/result` 与重新生成的 `assistant/message` 只是为模型重写一个节点，并不在对话中标出边界。
 
 `session.history` 只把追加来源的消息计入 `maxMessages`。每一页仍是一段连续的原始事件区间，因此压缩的 `compaction/summary` 事件会与引用它的替换留在同一页。
 
@@ -46,7 +46,7 @@ Status: implemented
 
 `rebuildTranscript` 现在会为整份日志中的每个追加来源事件物化一个组件，并在挂载时、终端配色方案变化时以及每次切换推理（reasoning）时运行。压缩此前正好为压缩所服务的那些长会话限制了这项工作量，因此这份开销现在随会话长度增长，而不再随 surface 增长。这正是本次修复要做的取舍——保留历史才是目的——但窗口化或复用策略属于第一个真正测到重建变慢的人，而不属于日后某个疑惑工作量为何增长的性能分析者。
 
-`dsh-tui` 为一个纯谓词新增了对 `dsh-compaction` seam 的依赖，与 `dsh-session-reference` 现有用法一致。终端在运行时仍然不需要任何压缩后端。
+`alego-tui` 为一个纯谓词新增了对 `alego-compaction` seam 的依赖，与 `alego-session-reference` 现有用法一致。终端在运行时仍然不需要任何压缩后端。
 
 两项行为随其测试一起改变。表层替换的终端测试此前钉住的是抹除（「隐藏被遮蔽的工具调用」），现在钉住的是保留加恰好一行标记，其中被裁剪的结果副本、重新生成的 assistant 消息以及来自其他插件的替换都不渲染任何内容。压缩快照场景此前声称钉住压缩，却写入了 `agent-instructions` 来源；现在它写入真实的检查点来源，并重新录制三份 fixture（测试前置数据），以显示被保留的提示、完整的工具卡片和那行标记。
 

@@ -14,7 +14,7 @@ Python 与 TypeScript SDK 可以选择提供方和模型，却无法限制对话
 
 每个由 SDK 创建的根 Agent 都通过 `AgentOptions.maxTokens` 获得该上限。agent loop（智能体循环）将它放入初始 `LlmCallConfig`；最终调用准备会保留显式值，或填入确切模型的适配器默认值，再将生效上限记录到请求 header，并从该持久化 header 重建每次分派的对话请求。因此，省略 SDK 选项时会应用所选适配器或提供方路由的默认值。
 
-进程内 subagent 继承父级的提供方、模型和输出上限。显式的 `SubagentStartRequest.agentOptions.maxTokens`（包括通过 `dsh-tool-subagent` 配置的值）会覆盖该子级及其后代的继承值。进程外提供方自行持有其独立运行时的配置；因此 `subagent-dsh-sdk` 公开独立的可选 `maxTokens`，并通过该子运行时自己的 SDK 握手传入。
+进程内 subagent 继承父级的提供方、模型和输出上限。显式的 `SubagentStartRequest.agentOptions.maxTokens`（包括通过 `alego-tool-subagent` 配置的值）会覆盖该子级及其后代的继承值。进程外提供方自行持有其独立运行时的配置；因此 `subagent-alego-sdk` 公开独立的可选 `maxTokens`，并通过该子运行时自己的 SDK 握手传入。
 
 压缩、会话标题生成、网页搜索和其他辅助调用继续使用各自持有的独立输出上限。`maxTokensAsSuccess` 仍然只负责结果映射，不会设置或改变上限。
 

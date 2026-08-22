@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { execa } from 'execa'
 import { describe, expect, it, vi } from 'vitest'
-import { resolveExampleLaunch } from '@deepseek-ai/dsh-loader-smoke'
+import { resolveExampleLaunch } from '@alego/loader-smoke'
 import { createProcessInspector } from '../src/process-inspector.ts'
 import type { ProcessIdentity, ProcessInspector } from '../src/process-inspector.ts'
 import { taskkillProcessTree } from '../src/spawn.ts'
@@ -87,7 +87,7 @@ function cleanupTree(state: TreeState | undefined, identities: ProcessIdentity[]
 }
 
 async function runScenario(kind: ManagedKind, trigger: ExitTrigger) {
-  const root = await mkdtemp(join(tmpdir(), `dsh-subprocess-host-exit-${kind}-${trigger}-`))
+  const root = await mkdtemp(join(tmpdir(), `alego-subprocess-host-exit-${kind}-${trigger}-`))
   const launch = resolveExampleLaunch({
     srcBin: hostScript,
     mode: 'src',

@@ -6,7 +6,7 @@ English | [中文](2026-07-26-builtin-timer-promises-for-hand-rolled-sleeps.zh.m
 
 ## Problem
 
-Three packages hand-roll promise-wrapped timers that the `node:timers/promises` builtin already provides, while other packages (`dsh-llm-mock-server` `pause()`, `dsh-lsp-stdio`, `dsh-acp-snapshot`) already use the builtin — so the hand-rolled copies are also a consistency gap:
+Three packages hand-roll promise-wrapped timers that the `node:timers/promises` builtin already provides, while other packages (`alego-llm-mock-server` `pause()`, `alego-lsp-stdio`, `alego-acp-snapshot`) already use the builtin — so the hand-rolled copies are also a consistency gap:
 
 - `packages/llm/llm-retry/src/index.ts` `cancellableDelay()` (~14 lines): `new Promise` + `setTimeout` + manual abort-listener add/remove, resolving `true` on elapse and `false` on abort, consumed once for the backoff wait.
 - `packages/workflow/workflow-worker-thread/src/host.ts` `sleep()` (~7 lines): promise-wrapped unref'd `setTimeout` used as the dispose-grace bound.

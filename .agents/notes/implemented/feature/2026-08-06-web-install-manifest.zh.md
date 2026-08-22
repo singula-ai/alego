@@ -10,17 +10,17 @@ Web 构建产物已有文档标题和 favicon，却没有可供浏览器发现�
 
 ## 决策
 
-Web 入口链接 `/manifest.webmanifest`，Vite 会将其从 `apps/web/public/` 复制到生产构建产物。manifest 将产品命名为 `DeepSeek Harness`，为安装后的浏览器界面提供简称 `DSH`，并把 `id`、`start_url` 和 `scope` 固定为 `/`。它请求 `display: "fullscreen"`，使支持这一模式的浏览器能够把可用显示区域交给安装后的编辑器式界面，同时不改变普通标签页；浏览器可以应用用户覆盖设置，或回退到其他显示模式。其图标条目复用 `/favicon.svg`，将它作为尺寸为 `any`、用途为 `any` 的 SVG。
+Web 入口链接 `/manifest.webmanifest`，Vite 会将其从 `apps/web/public/` 复制到生产构建产物。manifest 将产品命名为 `Alego`，为安装后的浏览器界面提供简称 `ALEGO`，并把 `id`、`start_url` 和 `scope` 固定为 `/`。它请求 `display: "fullscreen"`，使支持这一模式的浏览器能够把可用显示区域交给安装后的编辑器式界面，同时不改变普通标签页；浏览器可以应用用户覆盖设置，或回退到其他显示模式。其图标条目复用 `/favicon.svg`，将它作为尺寸为 `any`、用途为 `any` 的 SVG。
 
-这一选择沿用了 code-server 的全屏方案，但没有照搬其 `window-controls-overlay` 显示覆盖项。DSH 没有自定义标题栏，也没有围绕原生窗口控件安排布局，因此使用这类覆盖项会在未落实所需安全布局的情况下取代全屏模式。
+这一选择沿用了 code-server 的全屏方案，但没有照搬其 `window-controls-overlay` 显示覆盖项。ALEGO 没有自定义标题栏，也没有围绕原生窗口控件安排布局，因此使用这类覆盖项会在未落实所需安全布局的情况下取代全屏模式。
 
 manifest 有意不包含 `lang`、`theme_color` 或 `background_color`。产品界面支持双语，并不由 manifest 中的单一语言定义；任一静态颜色值都可能与应用解析后的一套调色板不一致。因此，主题元数据仍放在安装 manifest 之外。
 
-该功能不添加 service worker、缓存策略或离线回退。manifest 只提供安装元数据；是否具备安装资格、是否提供安装入口仍由浏览器策略决定。实际交付的 [`dsh-host-frontend-static`](../../../../packages/host/frontend-static/README.zh.md) 回退将 `.webmanifest` 识别为 `application/manifest+json`，因此同一资产经实际交付的 HTTP 组合提供时同样有效，而不只在 Vite 输出目录中有效。
+该功能不添加 service worker、缓存策略或离线回退。manifest 只提供安装元数据；是否具备安装资格、是否提供安装入口仍由浏览器策略决定。实际交付的 [`alego-host-frontend-static`](../../../../packages/host/frontend-static/README.zh.md) 回退将 `.webmanifest` 识别为 `application/manifest+json`，因此同一资产经实际交付的 HTTP 组合提供时同样有效，而不只在 Vite 输出目录中有效。
 
 ## 验证
 
-Web 构建产物测试解析输出的 manifest，并固定完整的元数据对象，包括面向用户显示的名称、简称、图标、根路径身份、启动边界和显示模式，同时验证生产构建的 `index.html` 仍保留该链接。`dsh-host-frontend-static` 的真实 Loader 组合测试提供一个 `.webmanifest` fixture（测试前置数据），并固定其 `application/manifest+json` 媒体类型。
+Web 构建产物测试解析输出的 manifest，并固定完整的元数据对象，包括面向用户显示的名称、简称、图标、根路径身份、启动边界和显示模式，同时验证生产构建的 `index.html` 仍保留该链接。`alego-host-frontend-static` 的真实 Loader 组合测试提供一个 `.webmanifest` fixture（测试前置数据），并固定其 `application/manifest+json` 媒体类型。
 
 ## 曾考虑的替代方案
 

@@ -9,13 +9,13 @@ Archived: 2026-07-26
 
 ## 问题
 
-readline UI 曾是一个完整的包（`packages/support/` 下的 `@deepseek-ai/dsh-ui-stdio`），其唯一的运行时导入方是应用包 `@deepseek-ai/dsh-stdio-demo`。示例通过加载应用来使用 readline UI，从不自行组合该辅助模块；仓库中所有其他引用都是因为包边界存在而存在的机械性或描述性表面：manifest（元数据清单）与 tsconfig 条目、生成的 module-graph 行、依赖图与 README 行，以及命名该包的文档注释。ui 组 README 记录了 support 放置的理由（"主要为示例和覆盖率门禁而存在，`ui/` 保留给作为产品交付的界面"），这留下了一个持续的张力：一个已交付的产品应用依赖一个被明确标注为非产品表面的 support 包。
+readline UI 曾是一个完整的包（`packages/support/` 下的 `@alego/ui-stdio`），其唯一的运行时导入方是应用包 `@alego/stdio-demo`。示例通过加载应用来使用 readline UI，从不自行组合该辅助模块；仓库中所有其他引用都是因为包边界存在而存在的机械性或描述性表面：manifest（元数据清单）与 tsconfig 条目、生成的 module-graph 行、依赖图与 README 行，以及命名该包的文档注释。ui 组 README 记录了 support 放置的理由（"主要为示例和覆盖率门禁而存在，`ui/` 保留给作为产品交付的界面"），这留下了一个持续的张力：一个已交付的产品应用依赖一个被明确标注为非产品表面的 support 包。
 
 这条边界换来的是：包元数据、workspace 与 tsconfig 引用、module-graph 行、README 条目，以及 publint 表面——服务于一个并不可独立替换的辅助模块：stdio 应用的前门集群始终包含 readline UI，且没有其他消费方能有意义地使用它。
 
 ## 决策
 
-当时，该辅助函数移入 `@deepseek-ai/dsh-stdio`，成为终端通道插件。`createStdioChat`、其 `StdioRuntime` 测试 seam 和单元测试随之一同迁移，使 EOF 处理、渲染、释放以及管道/TTY 行为继续受逐文件覆盖率门禁约束，而不会劫持进程全局量。该模块保留应用挂载所消费的具名 `name`/`inject`/`Config`/`apply` 导出形状；当时的 Echo 和 REPL Loader 冒烟证明组合树，插件形状套件则固定显式 `unwrapExports` 行为。上方取代本文的移除记录负责当前包和示例状态。
+当时，该辅助函数移入 `@alego/stdio`，成为终端通道插件。`createStdioChat`、其 `StdioRuntime` 测试 seam 和单元测试随之一同迁移，使 EOF 处理、渲染、释放以及管道/TTY 行为继续受逐文件覆盖率门禁约束，而不会劫持进程全局量。该模块保留应用挂载所消费的具名 `name`/`inject`/`Config`/`apply` 导出形状；当时的 Echo 和 REPL Loader 冒烟证明组合树，插件形状套件则固定显式 `unwrapExports` 行为。上方取代本文的移除记录负责当前包和示例状态。
 
 早期的支持辅助包已移除：其清单、tsconfig 引用、模块图行和 README 行均已消失，其余文档改为描述包内模块。
 

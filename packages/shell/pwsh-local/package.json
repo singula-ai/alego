@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-pwsh-local",
-  "description": "Local PowerShell implementation of the DeepSeek Harness bash executor seam",
+  "name": "@alego/pwsh-local",
+  "description": "Local PowerShell implementation of the Alego bash executor seam",
   "version": "0.1.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/singula-ai/alego.git",
     "directory": "packages/shell/pwsh-local"
   },
   "type": "module",
@@ -32,23 +32,23 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/dsh-shell": "workspace:^",
-    "@deepseek-ai/dsh-invariants": "workspace:^",
-    "@deepseek-ai/dsh-subprocess": "workspace:^",
-    "@deepseek-ai/dsh-timeout": "workspace:^",
-    "@deepseek-ai/cordis": "workspace:^",
-    "@deepseek-ai/dsh-settings": "workspace:^"
+    "@alego/shell": "workspace:^",
+    "@alego/invariants": "workspace:^",
+    "@alego/subprocess": "workspace:^",
+    "@alego/timeout": "workspace:^",
+    "@alego/cordis": "workspace:^",
+    "@alego/settings": "workspace:^"
   },
   "dependencies": {
-    "@deepseek-ai/schemastery": "workspace:^"
+    "@alego/schemastery": "workspace:^"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-shell": "workspace:^",
-    "@deepseek-ai/dsh-invariants": "workspace:^",
-    "@deepseek-ai/dsh-subprocess": "workspace:^",
-    "@deepseek-ai/dsh-subprocess-local": "workspace:^",
-    "@deepseek-ai/dsh-timeout": "workspace:^",
-    "@deepseek-ai/cordis": "workspace:^",
-    "@deepseek-ai/dsh-settings": "workspace:^"
+    "@alego/shell": "workspace:^",
+    "@alego/invariants": "workspace:^",
+    "@alego/subprocess": "workspace:^",
+    "@alego/subprocess-local": "workspace:^",
+    "@alego/timeout": "workspace:^",
+    "@alego/cordis": "workspace:^",
+    "@alego/settings": "workspace:^"
   }
 }

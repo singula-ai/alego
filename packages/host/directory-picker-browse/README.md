@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-host-directory-picker-browse
+# @alego/host-directory-picker-browse
 
 English | [中文](README.zh.md)
 

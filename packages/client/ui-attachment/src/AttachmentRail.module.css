@@ -17,8 +17,8 @@
   /* The rail scrolls on the composer's elevated input surface: bind the l2
      pair (ui-theme styles/scrollbar.css rebinding contract) so anything that
      does draw a thumb here matches the surface. */
-  --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
-  --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
+  --alego-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
+  --alego-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
 }
 
 .rail::-webkit-scrollbar {

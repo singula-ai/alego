@@ -41,12 +41,12 @@ Status: proposed
 
 ### 回溯工具
 
-新增包 `@deepseek-ai/dsh-tool-recall`，它只是 `dsh-session` 与 `dsh-compaction` 词汇之上的消费方，注册两个面向模型的工具：
+新增包 `@alego/tool-recall`，它只是 `alego-session` 与 `alego-compaction` 词汇之上的消费方，注册两个面向模型的工具：
 
 - `history_read(checkpoint, offset?)`：把日志中任意检查点（包括已被取代的检查点）遮蔽的区段渲染为 `User:`／`Assistant:`／`Tool result:` transcript（文本记录），并按配置预算分页，提供续传游标。
 - `history_search(query, checkpoint?, limit?)`：对每个被遮蔽区段进行不区分大小写的字面量扫描；返回带检查点 id 的片段与覆盖元数据（`scanned`／`matched`／`truncated`）。零匹配提示会说明扫描按字面量执行，并建议对可能的检查点直接使用 `history_read`。
 
-两个工具都读取 `exec.agent.session.events`（沿用 tool-todo 访问模式；拒绝非 agent（智能体）调用方），只渲染表面类型的消息事件，并返回普通 `tool/result`：回溯字节会进入上下文尾部并记录到日志，因此无需特殊处理即可满足可重建性。系统不增加新存储或伴随索引：会话日志存储内容，`compaction/summary.shadowedRange` 和 `shadowedSeqs` 指明每个检查点替换了什么，这些工具读取两者。工具 schema 与该包唯一的系统提示词章节都是静态字符串；检查点 id 只会通过页脚抵达模型。transcript 渲染器从 `compaction-basic` 移入 `dsh-session`，供摘要器与工具共享。
+两个工具都读取 `exec.agent.session.events`（沿用 tool-todo 访问模式；拒绝非 agent（智能体）调用方），只渲染表面类型的消息事件，并返回普通 `tool/result`：回溯字节会进入上下文尾部并记录到日志，因此无需特殊处理即可满足可重建性。系统不增加新存储或伴随索引：会话日志存储内容，`compaction/summary.shadowedRange` 和 `shadowedSeqs` 指明每个检查点替换了什么，这些工具读取两者。工具 schema 与该包唯一的系统提示词章节都是静态字符串；检查点 id 只会通过页脚抵达模型。transcript 渲染器从 `compaction-basic` 移入 `alego-session`，供摘要器与工具共享。
 
 ### 缓存与成本
 
@@ -54,7 +54,7 @@ Status: proposed
 
 ### 打包方式
 
-该设计以新的后端 `dsh-compact-recallable` 交付，挂在现有 `ctx.compaction` seam 上，并在已交付的示例配置中默认启用。`compaction-basic` 保留为参考实现和该 seam 的设计对照，与成对 LLM 适配器的模式一致。seam JSDoc 中「最多一个自动生成的检查点，始终位于头部」这一条会放宽，改为说明两个后端各自的行为。
+该设计以新的后端 `alego-compact-recallable` 交付，挂在现有 `ctx.compaction` seam 上，并在已交付的示例配置中默认启用。`compaction-basic` 保留为参考实现和该 seam 的设计对照，与成对 LLM 适配器的模式一致。seam JSDoc 中「最多一个自动生成的检查点，始终位于头部」这一条会放宽，改为说明两个后端各自的行为。
 
 ### 与进行中工作的关系
 
@@ -97,7 +97,7 @@ Status: proposed
 - 每个检查点的表面文本都以确定性页脚结束；页脚通过回放逐字节往返；状态检查点的 `shadowedRange` 记录其更宽的输入范围。
 - 在全部摘要就绪且保护逻辑通过同类核算前，不提交任何内容；保护失败不会提交任何内容，也不会让轮次失败；提交中途被终止后，下一次 pre-step 会恢复处理，从日志读取合并基线，并无条件提交状态区域以完成本轮；旧版头部检查点会被视为状态类。
 - `history_read` 在预算内渲染任意已记录检查点的区段，并提供可用游标；`history_search` 覆盖每个被遮蔽区段，返回带检查点 id 的片段与覆盖元数据，测试尤其要能找到只存在于被已取代状态检查点遮蔽区段中的内容，这是锁定尾随切片可达性的回归用例；两个工具都会拒绝非 agent 调用方，并对从未存在的 id 或遗留 `compaction/start` 返回类型化错误；回溯内容作为普通 `tool/result` 出现；请求重建不变量会在同时包含压缩与回溯的会话上通过；一项无密钥快照场景端到端覆盖先压缩再回溯；工具 schema 与提示词章节在各轮之间逐字节相同。
-- 在长时间跨度 bench 套件中：任务成功率在预算相同的条件下不低于 `compaction-basic`；交接保真探针（在一轮后重新陈述 K 项已知决策和约束）的得分不降低；每次运行都通过 dsh bench 报告流水线汇报回溯使用频率和命中有效性，并同时报告存根目录注意力度量与缓存命中遥测。
+- 在长时间跨度 bench 套件中：任务成功率在预算相同的条件下不低于 `compaction-basic`；交接保真探针（在一轮后重新陈述 K 项已知决策和约束）的得分不降低；每次运行都通过 alego bench 报告流水线汇报回溯使用频率和命中有效性，并同时报告存根目录注意力度量与缓存命中遥测。
 - seam JSDoc、压缩能力 seam Agent Note、`architecture.md`，以及生成的工具、配置、持久化与模块图目录都在同一改动中更新；全部预算位于配置中；新源码目录具备逐文件 100% 覆盖率与 HMR（热模块替换）dispose（资源释放）测试。
 
 ## 风险

@@ -8,13 +8,13 @@ Status: implemented
 
 ## 问题
 
-用户可编辑配置没有归属：`dsh web` 经静态白名单读 cwd 锚定的 profile json 且无写路径，TUI 读 `$DSH_HOME/config.yaml` 裸 loader patch，两者都在启动时冻结。个人设置页（web GUI）需要一个跨 surface 的用户层，带 schema 校验、写路径与热传导——同类产品（Codex、Claude Code、Kimi、OpenCode、Pi）也全部收敛于「用户偏好与扩展组合分离」。Loader 的 reactive 配置更新承载不了这件事：`fiber.update` 原地替换 entry config，构造期读过配置的插件毫无感知，也没有任何回调通知它。
+用户可编辑配置没有归属：`alego web` 经静态白名单读 cwd 锚定的 profile json 且无写路径，TUI 读 `$ALEGO_HOME/config.yaml` 裸 loader patch，两者都在启动时冻结。个人设置页（web GUI）需要一个跨 surface 的用户层，带 schema 校验、写路径与热传导——同类产品（Codex、Claude Code、Kimi、OpenCode、Pi）也全部收敛于「用户偏好与扩展组合分离」。Loader 的 reactive 配置更新承载不了这件事：`fiber.update` 原地替换 entry config，构造期读过配置的插件毫无感知，也没有任何回调通知它。
 
 ## 决策
 
 **两个面，一条判定。** `cordis.yml`（+ Include patches）仍是组合面：有哪些插件、接线、部署配置，归 orchestrator 所有并随产品升级。settings namespace 只承载用户可编辑子集；判定是「个人配置页应该能改它吗？」值可同时存在于两个面而不歧义，因为分层就是约定：schema 默认值，然后注册方的组合 `base`（其 entry 配置子集），最后用户文档分节。
 
-**镜像 `session-persistence/` 的三包边界。** `dsh-settings` 拥有抽象 `SettingsProvider` 服务：namespace 注册表、分层解析、schema 校验、按 namespace 深相等变更检测，以及 `settings/updated` 提交事件。提供方只实现 `writable`/`load()`/`persist(ns, section)`，并通过受保护的 `publish(doc)` 推入外部观察到的文档——因此热更新语义对所有提供方一致，网络配置中心后端（nacos 类，可能只读）只是一个平级包的距离。`dsh-settings-file` 是文件提供方：由 `resolveSpec` 定位的 YAML/JSON（默认路径显式设为 `<DSH_HOME>/settings.yaml`）、chokidar 监听、在跨进程写锁下以 `0600` tmp+rename 原子提交的读改写持久化、对被写 namespace 的叶子级 diff 修补（未触碰节点的注释得以保留）、按内容相等抑制自写（[write-path integrity note](2026-07-30-settings-write-path-integrity.zh.md)）。
+**镜像 `session-persistence/` 的三包边界。** `alego-settings` 拥有抽象 `SettingsProvider` 服务：namespace 注册表、分层解析、schema 校验、按 namespace 深相等变更检测，以及 `settings/updated` 提交事件。提供方只实现 `writable`/`load()`/`persist(ns, section)`，并通过受保护的 `publish(doc)` 推入外部观察到的文档——因此热更新语义对所有提供方一致，网络配置中心后端（nacos 类，可能只读）只是一个平级包的距离。`alego-settings-file` 是文件提供方：由 `resolveSpec` 定位的 YAML/JSON（默认路径显式设为 `<ALEGO_HOME>/settings.yaml`）、chokidar 监听、在跨进程写锁下以 `0600` tmp+rename 原子提交的读改写持久化、对被写 namespace 的叶子级 diff 修补（未触碰节点的注释得以保留）、按内容相等抑制自写（[write-path integrity note](2026-07-30-settings-write-path-integrity.zh.md)）。
 
 **注册是调用方 fiber 上的 effect。** `register()` 经服务代理调用，`this.ctx` 即注册方上下文，注册挂在 `ctx.effect` 上：对注册方执行 dispose（资源释放）时，即移除 namespace 及其观察者（经 HMR（热模块替换）资源释放测试证明），而用户的分节继续留在存储中等待下一任 owner。
 

@@ -8,7 +8,7 @@ import { chmodSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, relative, resolve } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { SessionId } from '@deepseek-ai/dsh-session'
+import { SessionId } from '@alego/session'
 import {
   assertPositiveFinite,
   assertUsableCwd,
@@ -40,7 +40,7 @@ describe('child cwd resolution', () => {
   it('accepts an absolute enterable directory and rejects relative or missing paths', () => {
     expect(assertUsableCwd('p', 'config cwd', tmpdir())).toBe(tmpdir())
     expect(() => assertUsableCwd('p', 'config cwd', 'relative/path')).toThrow('must be an absolute path')
-    expect(() => assertUsableCwd('p', 'config cwd', join(tmpdir(), 'dsh-no-such-dir-xyz'))).toThrow('not an accessible directory')
+    expect(() => assertUsableCwd('p', 'config cwd', join(tmpdir(), 'alego-no-such-dir-xyz'))).toThrow('not an accessible directory')
   })
 
   it('rejects an existing path that is a file, not a directory', () => {

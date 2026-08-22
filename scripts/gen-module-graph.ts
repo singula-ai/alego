@@ -81,7 +81,7 @@ function render(pkgs: Pkg[]): string {
     '',
     '# Module dependency graph',
     '',
-    'Inter-package dependencies among the `@deepseek-ai/dsh-*` harness packages, derived from each package\'s `peerDependencies` (the canonical runtime-dependency signal) and grouped by the `packages/<group>/<pkg>` hierarchy. An edge `a --> b` means package `a` depends on package `b`. Names have the `@deepseek-ai/dsh-` prefix stripped.',
+    'Inter-package dependencies among the `@alego/*` harness packages, derived from each package\'s `peerDependencies` (the canonical runtime-dependency signal) and grouped by the `packages/<group>/<pkg>` hierarchy. An edge `a --> b` means package `a` depends on package `b`. Names have the `@alego/` prefix stripped.',
     '',
     '```mermaid',
     'flowchart TD',

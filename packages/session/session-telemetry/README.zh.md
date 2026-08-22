@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-session-telemetry
+# @alego/session-telemetry
 
 [English](README.md) | 中文
 

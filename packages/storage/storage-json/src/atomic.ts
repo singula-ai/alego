@@ -8,7 +8,7 @@
  * backend's link()+unlink() no-clobber protocol, a unit file has exactly one
  * writer per process and last-write-wins is correct. After the rename the
  * parent directory is fsynced on POSIX so the new entry is crash-durable.
- * @module @deepseek-ai/dsh-storage-json/src/atomic
+ * @module @alego/storage-json/src/atomic
  */
 
 import { open, rename, rm } from 'node:fs/promises'

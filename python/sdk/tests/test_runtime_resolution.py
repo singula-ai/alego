@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import deepseek_harness_runtime as runtime
+import alego_runtime as runtime
 import pytest
 
-from deepseek_harness_runtime import (
+from alego_runtime import (
     RUNTIME_MODE_ENV_VAR,
     bundled_default_config_path,
     bundled_package_dir,
@@ -19,9 +19,9 @@ def test_default_config_is_shipped_with_the_package() -> None:
     path = bundled_default_config_path()
     assert path == bundled_package_dir() / "runtime" / "cordis.yml"
     config = path.read_text()
-    assert "@deepseek-ai/dsh-agent-spine-demo" in config
-    assert "@deepseek-ai/dsh-session-persistence-jsonl" in config
-    assert "@deepseek-ai/dsh-session-checkpoint-policy" in config
+    assert "@alego/agent-spine-demo" in config
+    assert "@alego/session-persistence-jsonl" in config
+    assert "@alego/session-checkpoint-policy" in config
 
 
 def test_unknown_explicit_mode_fails_loud() -> None:
@@ -49,10 +49,10 @@ def test_runtime_requires_spawn_helper_only_on_macos(
 ) -> None:
     runtime_dir = tmp_path / "runtime"
     runtime_dir.mkdir()
-    linux = runtime_dir / "dsh-jsonrpc-agent-pkg-linux-x64"
+    linux = runtime_dir / "alego-jsonrpc-agent-pkg-linux-x64"
     linux.touch()
     Path(f"{linux}-rg").touch()
-    macos = runtime_dir / "dsh-jsonrpc-agent-pkg-macos-arm64"
+    macos = runtime_dir / "alego-jsonrpc-agent-pkg-macos-arm64"
     macos.touch()
     Path(f"{macos}-rg").touch()
     monkeypatch.setattr(runtime, "bundled_package_dir", lambda: tmp_path)
@@ -69,7 +69,7 @@ def test_runtime_requires_ripgrep_sidecar(
 ) -> None:
     runtime_dir = tmp_path / "runtime"
     runtime_dir.mkdir()
-    (runtime_dir / "dsh-jsonrpc-agent-pkg-linux-x64").touch()
+    (runtime_dir / "alego-jsonrpc-agent-pkg-linux-x64").touch()
     monkeypatch.setattr(runtime, "bundled_package_dir", lambda: tmp_path)
     monkeypatch.setattr(runtime, "_current_platform_tag", lambda: "linux-x64")
 

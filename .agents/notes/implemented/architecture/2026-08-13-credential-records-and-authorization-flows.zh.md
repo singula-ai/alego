@@ -16,13 +16,13 @@ harness 的凭据平面只能表达一种机密：藏在某个环境变量名之
 
 三个 seam，各自拥有一个问题；所有 pi-ai 概念都藏在 `llm-pi-ai` 内部的适配器背后。
 
-**`dsh-credentials` 长出第二个键空间。** `CredentialRef` 回答*这个环境变量名背后是什么*；`CredentialKey` 回答*这个插件为这个 id 持有什么凭据*。记录联合体是 `{ kind: 'api-key', key?, env? } | { kind: 'grant', payload }`——api-key 那半是结构化的，因为 seam 能描述它；grant 那半是不透明的，因为拥有 token 格式的库应当继续拥有它。对 payload 的唯一约束是它能原样通过一次 JSON 往返，读写两个方向都会校验。
+**`alego-credentials` 长出第二个键空间。** `CredentialRef` 回答*这个环境变量名背后是什么*；`CredentialKey` 回答*这个插件为这个 id 持有什么凭据*。记录联合体是 `{ kind: 'api-key', key?, env? } | { kind: 'grant', payload }`——api-key 那半是结构化的，因为 seam 能描述它；grant 那半是不透明的，因为拥有 token 格式的库应当继续拥有它。对 payload 的唯一约束是它能原样通过一次 JSON 往返，读写两个方向都会校验。
 
 键的形式是 `<scope>/<id>`，其中 scope 是**拥有该记录的插件的注册名**，不是提供方名。用户知道的是 `openai-codex`；究竟哪个 adapter 家族为记录里的字节负责，恰恰是裸提供方名会丢掉的信息。服务同一个提供方名的两个插件会互相读到对方的 payload，已卸载插件留下的记录也无法与仍在使用的区分开。`/` 同时让两种文法互斥，两个键空间因此不可能相撞。这以"同一个 provider 路由只由一个 adapter 注册"为前提，而 LLM 注册表本就强制了这一点。
 
 记录不分层。授权 grant 没有任何"环境"可供读取，因此记录是否存在就是全部事实，管辖引用的空值规则在此不适用：一条既无 key 也无 env 的 `api-key` 记录，陈述的是其拥有者确认了环境认证可用，这属于已配置。
 
-**`dsh-authorization` 拥有对话，从不拥有协议。** 知道如何取得自己那份凭据的插件，以该 flow 写入的 `CredentialKey` 注册。seam 对每个键同时只跑一次尝试，路由一套中立的 notice/prompt 词汇，然后结算。第二种授权协议以另一个 flow 的形式到来，而不是另一个 seam；能渲染一个 flow 的界面就能渲染全部 flow。
+**`alego-authorization` 拥有对话，从不拥有协议。** 知道如何取得自己那份凭据的插件，以该 flow 写入的 `CredentialKey` 注册。seam 对每个键同时只跑一次尝试，路由一套中立的 notice/prompt 词汇，然后结算。第二种授权协议以另一个 flow 的形式到来，而不是另一个 seam；能渲染一个 flow 的界面就能渲染全部 flow。
 
 两个选择承担了主要分量：
 
@@ -63,6 +63,6 @@ seam 的边缘与写入路径同一纪律。prompt 被拒是结果而非故障�
 
 seam 自己的套件钉住它拥有的生命周期：单飞的拒绝与释放、flow 启动前与进行中的撤销、一个忽略自身信号的 flow、提交核实，以及包含"调用方看到的是抛出错误"那种 `failed` 情形的结算事件。invariant companion 钉住"已结算的键就是空闲的键"，因为被卡住的键否则不可见。
 
-`llm-pi-ai` 针对一份真实的 `$DSH_HOME` 文档覆盖三处翻译——逐字段的 api-key 凭据、连 refresh 半边一起原样保存的 OAuth 凭据、按 scope 跳过的他插件记录，以及没有凭据服务时的写入拒绝——外加每一个 `AuthEvent` 与 `AuthPrompt` 成员的重述；`Models.login()` 在集合边界处被 mock，因为真实登录会打开浏览器。两个真实组合测试分别在挂载与不挂载授权 seam 的情况下启动插件。
+`llm-pi-ai` 针对一份真实的 `$ALEGO_HOME` 文档覆盖三处翻译——逐字段的 api-key 凭据、连 refresh 半边一起原样保存的 OAuth 凭据、按 scope 跳过的他插件记录，以及没有凭据服务时的写入拒绝——外加每一个 `AuthEvent` 与 `AuthPrompt` 成员的重述；`Models.login()` 在集合边界处被 mock，因为真实登录会打开浏览器。两个真实组合测试分别在挂载与不挂载授权 seam 的情况下启动插件。
 
 `models-settings` 与 `onboarding-usable-provider` 两条 web e2e golden 恰好收回了被扣留时失去的那一行 `openai-codex` 选项——这是本次改动今天在装配后的应用上造成的全部差异，因为 Models 页还没有可录制的登录控件。

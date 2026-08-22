@@ -18,7 +18,7 @@ Web composer 的一次提交是一个信封——草稿文本、已附加图片�
 
 **通用标识，图片专用载荷。**浏览器草稿与持久化引用已经使用 `DraftAttachmentId` 和 `AttachmentId`；命令 RPC 传输的是编码字节，而非图片标识。图片仍是唯一已经定义准入规则和模型块语义的非文本附件，因此 wire 保持 `EncodedImageAttachment[]`，声明保持 `input.images`。
 
-**执行器强制。**`CommandRuntime.execute(agent, line, images, signal)` 携带本次提交的 base64 图片（来自 `@deepseek-ai/dsh-attachment/types` 的 `EncodedImageAttachment`）。强制执行声明的是执行器而非 composer：把图片发给未声明的命令、附件存储缺失、批量超限，都会在处理器运行前以记录在案的 `command/done` 错误结算。准入经由 attachment 包的 `admitEncodedImages`——共享 wire 入口，强制执行规范 base64 并把批量准入（限额、校验、有序提交）委托给 `AttachmentStore.saveImages`——使两个 wire 端点（prompt RPC 与命令执行器）共享同一序列，被拒绝的批量不会发布任何持久化对象。通过准入的批量以冻结的有序 `ImageBlock` 数组挂在 `invocation.attachments` 上交给处理器。
+**执行器强制。**`CommandRuntime.execute(agent, line, images, signal)` 携带本次提交的 base64 图片（来自 `@alego/attachment/types` 的 `EncodedImageAttachment`）。强制执行声明的是执行器而非 composer：把图片发给未声明的命令、附件存储缺失、批量超限，都会在处理器运行前以记录在案的 `command/done` 错误结算。准入经由 attachment 包的 `admitEncodedImages`——共享 wire 入口，强制执行规范 base64 并把批量准入（限额、校验、有序提交）委托给 `AttachmentStore.saveImages`——使两个 wire 端点（prompt RPC 与命令执行器）共享同一序列，被拒绝的批量不会发布任何持久化对象。通过准入的批量以冻结的有序 `ImageBlock` 数组挂在 `invocation.attachments` 上交给处理器。
 
 **模型可见性由生产方负责。**注册表自身绝不调度这些图片。`/goal` 在 create 或 edit 成功后通过 `agent.followup` 提交一条用户消息——图片块加固定文本 `Reference images for the goal objective.`——后续 Goal Round 从普通会话历史读取图片，goal 领域不存储附件状态。`/plan <message>` 把图片并入其 steer 的文本消息；不带参数的 `/plan` 则 steer 一条只含图片的用户消息，因为图片可能包含全部任务内容。不会发送模型输入的控制形式（`/goal pause`、`/plan off`）会直接返回错误，composer 的图片原地保留。plan 投影会把 `command/run` 视为候选选择，并在配对的 `command/done` 报错时丢弃它，因此被拒绝的带图 `/plan off` 不会留下待退出状态。
 
@@ -40,7 +40,7 @@ Web composer 的一次提交是一个信封——草稿文本、已附加图片�
 ## Consequences
 
 - 任何命令路径都不可能消费提交的文本而滞留图片：契约强制整信封消费或可见拒绝，对现有与未来命令一体适用。
-- commands 包新增对 `dsh-attachment` 与 `dsh-llm` 的依赖，`commands/execute` 携带必填的 `images` wire 参数——每个调用方都显式陈述其信封。
+- commands 包新增对 `alego-attachment` 与 `alego-llm` 的依赖，`commands/execute` 携带必填的 `images` wire 参数——每个调用方都显式陈述其信封。
 - `/goal` 与 `/plan` 获得参考图输入，代价是一条额外的已记录用户消息（goal）与 steer 消息中的图片块（plan），其中不带参数的 `/plan` 会产生只含图片的消息；所有这些输入的计费都与常规图片提示词相同。
 - 菜单点选的弹窗流程不查询信封：附有图片时从菜单点选弹窗命令，图片会可见地留在附件栏，而不是拒绝该交互。回车提交是被强制执行的信封边界。
 - 「被拒绝的批量不发布任何持久化对象」只覆盖准入前的三种结算（声明、存储缺失、批量超限）。handler 级语法拒绝（如 `/goal pause` 带图）与准入后取消发生在批量已提交之后，会留下没有会话事件引用的内容寻址对象——在 sha256 去重与附件存储延后的引用感知 GC 下无害，但并非「未写入任何对象」。

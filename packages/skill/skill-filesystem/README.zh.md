@@ -1,10 +1,10 @@
-# @deepseek-ai/dsh-skill-filesystem
+# @alego/skill-filesystem
 
 [English](README.md) | 中文
 
 `ctx.skills` 注册表的本地文件系统提供方。
 
-该包实现一个 skill（技能）来源。它扫描本地项目、自定义和用户 skill 根目录，解析 `SKILL.md` 或平铺 Markdown skill 文件，并将提供方注册到 `ctx.skills`。注册表仍位于 `@deepseek-ai/dsh-skill`；持久化会话目录和面向模型的 loader 工具仍位于 `@deepseek-ai/dsh-tool-skill`。
+该包实现一个 skill（技能）来源。它扫描本地项目、自定义和用户 skill 根目录，解析 `SKILL.md` 或平铺 Markdown skill 文件，并将提供方注册到 `ctx.skills`。注册表仍位于 `@alego/skill`；持久化会话目录和面向模型的 loader 工具仍位于 `@alego/tool-skill`。
 
 ## 插件
 
@@ -16,8 +16,8 @@
 |---|---|---|
 | `providerName` | `filesystem` | 在 `ctx.skills` 上注册该提供方时使用的唯一名称。 |
 | `includeDefaultRoots` | `true` | 在 `customSkillDirs` 周围包含项目根和用户根；设为 false 时仅使用隔离的自定义根。 |
-| `dshHome` | `$DSH_HOME` 或 `~/.dsh` | 由 [`@deepseek-ai/dsh-home-paths`](../../util/home-paths/README.zh.md) 解析的 DeepSeek Harness 配置根目录；扫描该目录下的 `skills`。 |
-| `agentsHome` | `$DSH_AGENTS_HOME` 或 `~/.agents` | 为兼容 skill 扫描的共享 agent（智能体）配置根目录。 |
+| `alegoHome` | `$ALEGO_HOME` 或 `~/.alego` | 由 [`@alego/home-paths`](../../util/home-paths/README.zh.md) 解析的 Alego 配置根目录；扫描该目录下的 `skills`。 |
+| `agentsHome` | `$ALEGO_AGENTS_HOME` 或 `~/.agents` | 为兼容 skill 扫描的共享 agent（智能体）配置根目录。 |
 | `customSkillDirs` | `[]` | 在项目根目录之后、用户根目录之前扫描的其他本地 skill 根目录。 |
 | `watch` | `true` | 监视宿主本地根，并在目录成员或 frontmatter 可能发生变化时使本地提供方失效。 |
 | `watchUsePolling` | `false` | 对现有 skill 根使用 Chokidar 轮询，而不是原生事件。 |
@@ -32,13 +32,13 @@
 
 | Rank | 来源 | 路径 |
 |---|---|---|
-| 100 | `project-dsh` | `<projectRoot>/.dsh/skills` |
+| 100 | `project-alego` | `<projectRoot>/.alego/skills` |
 | 200 | `project-agents` | `<projectRoot>/.agents/skills` |
 | 300 | `custom` | `Config.customSkillDirs` |
-| 400 | `user-dsh` | `<dshHome>/skills` |
+| 400 | `user-alego` | `<alegoHome>/skills` |
 | 500 | `user-agents` | `<agentsHome>/skills` |
 
-项目根目录是包含 `.git` 的最近祖先目录；如果不存在，则使用当前 cwd。用户 DSH 根目录会跳过其 `.system` 子目录，因此归系统所有的目录不会被当作普通用户 skill。`includeDefaultRoots: false` 会省略项目根、用户根以及 `$DSH_BUNDLED_SKILL_DIR` 环境默认值，同时保留显式配置的自定义根与 bundled 根，因此可以挂载多个只看到自身根的唯一命名隔离提供方。该提供方提供项目和用户 skill；其他提供方可提供内置系统 skill。
+项目根目录是包含 `.git` 的最近祖先目录；如果不存在，则使用当前 cwd。用户 ALEGO 根目录会跳过其 `.system` 子目录，因此归系统所有的目录不会被当作普通用户 skill。`includeDefaultRoots: false` 会省略项目根、用户根以及 `$ALEGO_BUNDLED_SKILL_DIR` 环境默认值，同时保留显式配置的自定义根与 bundled 根，因此可以挂载多个只看到自身根的唯一命名隔离提供方。该提供方提供项目和用户 skill；其他提供方可提供内置系统 skill。
 
 当 `ctx.fs` 可用时，发现通过 `ctx.fs.listDir` 列出根，通过 `ctx.fs.readText` 读取 skill 文件，并通过文件系统服务探测 `.git`。完整 skill 加载会将查找中止信号转发给文件系统元数据和内容读取。如果没有文件系统服务，提供方回退到可中止的 Node 文件系统 I/O，使最小本地上下文仍能加载 skill。已确认缺失的路径属于有效空状态；遇到格式错误或非文本条目时，提供方会发出警告并跳过；意外的发现或读取失败会使注册表快照不完整，系统不会因此用看似发生删除的结果替换上一份可用模型目录。
 
@@ -60,7 +60,7 @@ skill 可以是单层目录 bundle（`<name>/SKILL.md`），也可以是平铺 M
 
 ## 模型体验
 
-通过 `dsh-tool-skill` 间接影响模型。它将该提供方的可调用名称和有长度上限的描述渲染到初始目录或替换目录中，并将所选的当前指令正文与资源基底指引渲染到保留的工具历史中；路径、提供方 rank 和已禁用 skill 仍被隐藏。
+通过 `alego-tool-skill` 间接影响模型。它将该提供方的可调用名称和有长度上限的描述渲染到初始目录或替换目录中，并将所选的当前指令正文与资源基底指引渲染到保留的工具历史中；路径、提供方 rank 和已禁用 skill 仍被隐藏。
 
 #### KV Cache 影响
 

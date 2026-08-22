@@ -4,8 +4,8 @@
 
 | Platform package | GitHub runner (builder of record) | Notes |
 |---|---|---|
-| `@deepseek-ai/node-addon-landlock-run-linux-x64` | `ubuntu-24.04` | static musl — glibc and musl distros alike |
-| `@deepseek-ai/node-addon-landlock-run-linux-arm64` | `ubuntu-24.04-arm` | static musl — glibc and musl distros alike |
+| `@alego/node-addon-landlock-run-linux-x64` | `ubuntu-24.04` | static musl — glibc and musl distros alike |
+| `@alego/node-addon-landlock-run-linux-arm64` | `ubuntu-24.04-arm` | static musl — glibc and musl distros alike |
 
 Enforcement additionally requires a kernel with Landlock enabled (5.13+). The negotiated ABI level decides the probe verdict: every access this build knows governed → `full`; an older ABI governing a subset → `partial` (still confined for everything it supports); Landlock absent or disabled → `unusable`, and the launcher refuses to run commands at all. The probe — not the kernel version — is the authority: a kernel built without Landlock, or with the LSM disabled, probes `unusable` regardless of its version.
 

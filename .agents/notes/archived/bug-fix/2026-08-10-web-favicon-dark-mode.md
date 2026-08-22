@@ -13,7 +13,7 @@ English | [中文](2026-08-10-web-favicon-dark-mode.zh.md)
 
 The favicon stays one file and adapts through the browser's own color-scheme signal: `favicon.svg` embeds `@media (prefers-color-scheme: dark) { path { fill: #fff } }`, switching the mark to white under a dark scheme while the light scheme keeps black. `index.html` and `manifest.webmanifest` also declare a 32×32 PNG fallback (`favicon-32x32.png`, DeepSeek brand blue `#4D6BFE`) that Safari versions before 26 render and that stays visible on both light and dark tab strips, extending the [web-install-manifest decision](../feature/2026-08-06-web-install-manifest.md).
 
-The theme signal is the OS/browser scheme, not the GUI's in-app `dsh.theme` toggle: the favicon lives in browser chrome, whose background follows the browser scheme, so `prefers-color-scheme` is the correct semantic and needs no JavaScript. Known browser quirks — Chromium may not repaint the tab icon until reload after a scheme switch, and Safari versions before 26 ignore the SVG variant — are accepted and the PNG fallback covers the older-Safari case.
+The theme signal is the OS/browser scheme, not the GUI's in-app `alego.theme` toggle: the favicon lives in browser chrome, whose background follows the browser scheme, so `prefers-color-scheme` is the correct semantic and needs no JavaScript. Known browser quirks — Chromium may not repaint the tab icon until reload after a scheme switch, and Safari versions before 26 ignore the SVG variant — are accepted and the PNG fallback covers the older-Safari case.
 
 ## Alternatives considered
 

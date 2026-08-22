@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-tool-subagent",
+  "name": "@alego/tool-subagent",
   "description": "Model-facing subagent delegation tool over the ctx.subagents seam",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/singula-ai/alego.git",
     "directory": "packages/subagent/tool-subagent"
   },
   "type": "module",
@@ -32,33 +32,33 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/dsh-agent": "workspace:^",
-    "@deepseek-ai/dsh-invariants": "workspace:^",
-    "@deepseek-ai/dsh-llm": "workspace:^",
-    "@deepseek-ai/dsh-subagent": "workspace:^",
-    "@deepseek-ai/dsh-system-prompt": "workspace:^",
-    "@deepseek-ai/dsh-jobs": "workspace:^",
-    "@deepseek-ai/dsh-tools": "workspace:^",
-    "@deepseek-ai/cordis": "workspace:^"
+    "@alego/agent": "workspace:^",
+    "@alego/invariants": "workspace:^",
+    "@alego/llm": "workspace:^",
+    "@alego/subagent": "workspace:^",
+    "@alego/system-prompt": "workspace:^",
+    "@alego/jobs": "workspace:^",
+    "@alego/tools": "workspace:^",
+    "@alego/cordis": "workspace:^"
   },
   "dependencies": {
-    "@deepseek-ai/schemastery": "workspace:^"
+    "@alego/schemastery": "workspace:^"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis-plugin-loader": "workspace:^",
-    "@deepseek-ai/dsh-agent": "workspace:^",
-    "@deepseek-ai/dsh-invariants": "workspace:^",
-    "@deepseek-ai/dsh-llm": "workspace:^",
-    "@deepseek-ai/dsh-session": "workspace:^",
-    "@deepseek-ai/dsh-session-persistence": "workspace:^",
-    "@deepseek-ai/dsh-session-persistence-jsonl": "workspace:^",
-    "@deepseek-ai/dsh-subagent": "workspace:^",
-    "@deepseek-ai/dsh-subagent-spawn-in-process": "workspace:^",
-    "@deepseek-ai/dsh-system-prompt": "workspace:^",
-    "@deepseek-ai/dsh-jobs": "workspace:^",
-    "@deepseek-ai/dsh-jobs-local": "workspace:^",
-    "@deepseek-ai/dsh-tool-jobs": "workspace:^",
-    "@deepseek-ai/dsh-tools": "workspace:^",
-    "@deepseek-ai/cordis": "workspace:^"
+    "@alego/cordis-plugin-loader": "workspace:^",
+    "@alego/agent": "workspace:^",
+    "@alego/invariants": "workspace:^",
+    "@alego/llm": "workspace:^",
+    "@alego/session": "workspace:^",
+    "@alego/session-persistence": "workspace:^",
+    "@alego/session-persistence-jsonl": "workspace:^",
+    "@alego/subagent": "workspace:^",
+    "@alego/subagent-spawn-in-process": "workspace:^",
+    "@alego/system-prompt": "workspace:^",
+    "@alego/jobs": "workspace:^",
+    "@alego/jobs-local": "workspace:^",
+    "@alego/tool-jobs": "workspace:^",
+    "@alego/tools": "workspace:^",
+    "@alego/cordis": "workspace:^"
   }
 }

@@ -41,12 +41,12 @@ An inflation guard bounds the whole pass: if the post-compaction size is not str
 
 ### The recall tools
 
-A new package `@deepseek-ai/dsh-tool-recall` (consumer-only, over the `dsh-session` and `dsh-compaction` vocabularies) registers two model-facing tools:
+A new package `@alego/tool-recall` (consumer-only, over the `alego-session` and `alego-compaction` vocabularies) registers two model-facing tools:
 
 - `history_read(checkpoint, offset?)` — renders the shadowed span of any checkpoint in the log, including superseded ones, as `User:`/`Assistant:`/`Tool result:` transcript, paginated by a configured budget with a continuation cursor.
 - `history_search(query, checkpoint?, limit?)` — case-insensitive literal scan over every shadowed span; returns snippets with checkpoint ids and coverage metadata (`scanned`/`matched`/`truncated`). The zero-match hint notes the scan is literal and points at direct `history_read` of a plausible checkpoint.
 
-Both read `exec.agent.session.events` (the tool-todo access pattern; non-agent callers rejected), render only surface-type message events, and return ordinary `tool/result`s — recalled bytes land at the context tail, logged, so reconstructability holds with no special casing. There is no new storage and no sidecar index: the session log stores the content, `compaction/summary.shadowedRange` and `shadowedSeqs` identify what each checkpoint replaced, and the tools read both. The tool schemas and the package's one system-prompt section are static strings; checkpoint ids reach the model only through footers. The transcript renderer moves from `compaction-basic` into `dsh-session`, shared by summarizer and tools.
+Both read `exec.agent.session.events` (the tool-todo access pattern; non-agent callers rejected), render only surface-type message events, and return ordinary `tool/result`s — recalled bytes land at the context tail, logged, so reconstructability holds with no special casing. There is no new storage and no sidecar index: the session log stores the content, `compaction/summary.shadowedRange` and `shadowedSeqs` identify what each checkpoint replaced, and the tools read both. The tool schemas and the package's one system-prompt section are static strings; checkpoint ids reach the model only through footers. The transcript renderer moves from `compaction-basic` into `alego-session`, shared by summarizer and tools.
 
 ### Cache and cost
 
@@ -54,7 +54,7 @@ The request prefix after a pass is `[system][stubs…][state][tail]`. Frozen stu
 
 ### Packaging
 
-The design ships as a new backend `dsh-compact-recallable` on the existing `ctx.compaction` seam, enabled by default in the shipped example configs; `compaction-basic` remains as the reference implementation and the seam's design twin, in the pattern of the paired LLM adapters. The seam JSDoc's "at most one auto-generated checkpoint, always at the head" clause is relaxed to name both backend behaviors.
+The design ships as a new backend `alego-compact-recallable` on the existing `ctx.compaction` seam, enabled by default in the shipped example configs; `compaction-basic` remains as the reference implementation and the seam's design twin, in the pattern of the paired LLM adapters. The seam JSDoc's "at most one auto-generated checkpoint, always at the head" clause is relaxed to name both backend behaviors.
 
 ### Relation to in-flight work
 
@@ -97,7 +97,7 @@ Deferred until observation calls for them:
 - Every checkpoint's surface text ends with the deterministic footer; footers round-trip through replay byte-identically; the state checkpoint's `shadowedRange` records its wider input range.
 - Nothing commits before all summaries exist and the guard passes on like-for-like accounting; a guard failure commits nothing and does not fail the turn; a mid-commit kill resumed at the next pre-step completes the pass with the state region committed unconditionally, merge base read from the log; a legacy head checkpoint is adopted as state-class.
 - `history_read` renders any logged checkpoint's span under budget with a working cursor; `history_search` covers every shadowed span with checkpoint-id snippets and coverage metadata, asserted in particular by finding content that exists only in a span shadowed by a superseded state checkpoint — the regression pin for trailing-slice reachability; both reject non-agent callers and never-existing ids or orphaned `compaction/start` with typed errors; recalled content appears as ordinary `tool/result`s; request-reconstruction invariants pass over sessions with compaction plus recall; one keyless snapshot scenario covers compact-then-recall end to end; tool schemas and the prompt section are byte-identical across passes.
-- On the long-horizon bench suite: task success does not regress against `compaction-basic` at equal budgets; a handoff-fidelity probe (restate K known decisions and constraints after a pass) scores no worse; recall usage frequency and hit usefulness are reported per run via the dsh bench report pipeline, alongside the stub-directory attention measurement and cache-hit telemetry.
+- On the long-horizon bench suite: task success does not regress against `compaction-basic` at equal budgets; a handoff-fidelity probe (restate K known decisions and constraints after a pass) scores no worse; recall usage frequency and hit usefulness are reported per run via the alego bench report pipeline, alongside the stub-directory attention measurement and cache-hit telemetry.
 - Seam JSDoc, the compaction capability-seam Agent Note, `architecture.md`, and the generated tool, config, persistence, and module-graph catalogs update in the same change; all budgets live in config; new source directories hold per-file 100% coverage with HMR disposal tests.
 
 ## Risks

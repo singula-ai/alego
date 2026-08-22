@@ -1,4 +1,4 @@
-# dsh-output-retention
+# alego-output-retention
 
 English | [中文](README.zh.md)
 
@@ -14,11 +14,11 @@ It is a **library, not a service or plugin**: no `ctx`, registers nothing, emits
 import {
   ItemRetainer, TextRetainer,
   describeOmitted, formatRetentionNotice,
-} from '@deepseek-ai/dsh-output-retention'
+} from '@alego/output-retention'
 import type {
   Omitted, PushDecision, RetainedItems, RetainedText,
   ItemRetentionStrategy, TextRetentionStrategy, RetentionNotice,
-} from '@deepseek-ai/dsh-output-retention'
+} from '@alego/output-retention'
 ```
 
 | Export | Role |
@@ -35,7 +35,7 @@ import type {
 The two retainers are separate names, not one generic collector, because they differ in **resource model**.
 
 - **`ItemRetainer` bounds ordered logical units.** A search tool can collect a full result set for spill-file recovery while retaining only the first `maxItems` for the model-facing preview. The omission count is exact because the caller keeps feeding every observed item.
-- **`TextRetainer` bounds byte-oriented text.** `head`, `tail`, and `headTail` preserve UTF-8 boundaries at `finish()`; `headTail` is the shape `dsh-spill-policy` uses to build a bounded preview around a spill-file notice.
+- **`TextRetainer` bounds byte-oriented text.** `head`, `tail`, and `headTail` preserve UTF-8 boundaries at `finish()`; `headTail` is the shape `alego-spill-policy` uses to build a bounded preview around a spill-file notice.
 
 ## `truncated` is a budget fact, never "incomplete"
 

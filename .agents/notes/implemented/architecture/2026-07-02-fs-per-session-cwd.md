@@ -6,7 +6,7 @@ English | [中文](2026-07-02-fs-per-session-cwd.zh.md)
 
 ## Problem
 
-The ACP bridge gives every session its own workspace: `session/new` records the automation client's project directory as `SessionHeader.cwd`, and `dsh-tool-bash` defaults each bash call's `workdir` to the calling agent's `session.header.cwd` (see [the ACP package](../../../../packages/acp/acp) and `resolveWorkdir` in `dsh-tool-bash`). So a bash command in session A runs in A's project, and in session B runs in B's — one server process, N workspaces.
+The ACP bridge gives every session its own workspace: `session/new` records the automation client's project directory as `SessionHeader.cwd`, and `alego-tool-bash` defaults each bash call's `workdir` to the calling agent's `session.header.cwd` (see [the ACP package](../../../../packages/acp/acp) and `resolveWorkdir` in `alego-tool-bash`). So a bash command in session A runs in A's project, and in session B runs in B's — one server process, N workspaces.
 
 Filesystem resolution used one plugin-load cwd while bash used the session project directory. Relative paths therefore disagreed whenever the automation client's project differed from the server launch directory; snapshots hid the bug by making those paths identical.
 
@@ -16,17 +16,17 @@ An ordinary symlink cwd exposes the same distinction when the requested relative
 
 ## Decision
 
-Thread the caller's session cwd into path resolution, exactly as `dsh-tool-bash` already does for `workdir`. When either the cwd or the requested path contains a parent segment, resolve the cwd to its native filesystem identity before any lexical join; ordinary cwd spellings stay stable for display when no traversal makes their identity observable. Reuse the resolved sandbox-policy root for mutations and sandboxed bash calls so one call has one workspace identity. The **caller** (the tool) supplies the cwd; the provider does not read a session or agent.
+Thread the caller's session cwd into path resolution, exactly as `alego-tool-bash` already does for `workdir`. When either the cwd or the requested path contains a parent segment, resolve the cwd to its native filesystem identity before any lexical join; ordinary cwd spellings stay stable for display when no traversal makes their identity observable. Reuse the resolved sandbox-policy root for mutations and sandboxed bash calls so one call has one workspace identity. The **caller** (the tool) supplies the cwd; the provider does not read a session or agent.
 
 - `FileSystem.resolve` accepts `resolve(path: string, opts?: { cwd?: string; signal?: AbortSignal }): Promise<FsTarget>`. `opts.cwd` is the base a RELATIVE `path` resolves against; an absolute `path` ignores it; omitting `opts.cwd` uses the backend's own default. `opts.signal` cancels resolution when the backend performs I/O. The options object keeps both caller-owned resolution controls together without positional growth.
-- `dsh-fs-local.resolve` uses `resolveLocalTarget(opts?.cwd ?? this.config.cwd, path)`. `config.cwd` stays the default for a caller that supplies no session cwd.
-- `dsh-tool-fs`'s `read`/`write`/`edit` derive the session cwd through a shared `sessionCwd(exec, requestedPath)` helper (`exec.agent?.session.header.cwd`, mirroring bash's `resolveWorkdir`) and pass it to `resolve`. The helper uses native realpath semantics when a parent segment in either value could cross a symlink while retaining ordinary spellings otherwise; a sandboxed mutation reuses the complete policy's `workspaceRoot`; a non-agent / headerless caller yields `undefined`, so the backend applies its default.
+- `alego-fs-local.resolve` uses `resolveLocalTarget(opts?.cwd ?? this.config.cwd, path)`. `config.cwd` stays the default for a caller that supplies no session cwd.
+- `alego-tool-fs`'s `read`/`write`/`edit` derive the session cwd through a shared `sessionCwd(exec, requestedPath)` helper (`exec.agent?.session.header.cwd`, mirroring bash's `resolveWorkdir`) and pass it to `resolve`. The helper uses native realpath semantics when a parent segment in either value could cross a symlink while retaining ordinary spellings otherwise; a sandboxed mutation reuses the complete policy's `workspaceRoot`; a non-agent / headerless caller yields `undefined`, so the backend applies its default.
 
 ## Alternatives considered
 
 ### Why the caller supplies the cwd (not the provider)
 
-The provider contract must not depend on `dsh-agent` / `dsh-session` — it is a text-storage backend that a sandboxed or remote implementation also satisfies, and those have no notion of an "agent session". The tool already receives the `ToolExecution` (`exec`), which carries the agent, so the tool is the right place to project `exec → cwd` and hand the provider a plain string. This is the "explicit > implicit at package boundaries" convention: the base directory arrives as an explicit argument the provider acts on, not smuggled in by having the provider reach into a session it should not know about. It also matches `dsh-tool-bash` one-to-one, so the two model-facing file surfaces resolve paths identically.
+The provider contract must not depend on `alego-agent` / `alego-session` — it is a text-storage backend that a sandboxed or remote implementation also satisfies, and those have no notion of an "agent session". The tool already receives the `ToolExecution` (`exec`), which carries the agent, so the tool is the right place to project `exec → cwd` and hand the provider a plain string. This is the "explicit > implicit at package boundaries" convention: the base directory arrives as an explicit argument the provider acts on, not smuggled in by having the provider reach into a session it should not know about. It also matches `alego-tool-bash` one-to-one, so the two model-facing file surfaces resolve paths identically.
 
 The default lives in ONE place — the provider's `config.cwd`. `sessionCwd` returns `undefined` rather than `process.cwd()` when there is no session, so the tool never manufactures a base the provider would otherwise choose.
 

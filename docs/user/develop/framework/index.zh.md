@@ -80,7 +80,7 @@ export function apply(ctx: Context) {
 当你需要提前终止一个插件实例：
 
 ```ts
-import type { Context } from '@deepseek-ai/cordis'
+import type { Context } from '@alego/cordis'
 
 declare const ctx: Context
 declare function myPlugin(ctx: Context): void
@@ -98,7 +98,7 @@ await fiber.dispose()
 
 ## HMR（热模块替换）
 
-通过 `cordis.yml` 加载 `@deepseek-ai/cordis-plugin-hmr` 后，修改插件源文件会触发：
+通过 `cordis.yml` 加载 `@alego/cordis-plugin-hmr` 后，修改插件源文件会触发：
 
 1. 卸载旧插件（清理所有注册）
 2. 重新加载新代码

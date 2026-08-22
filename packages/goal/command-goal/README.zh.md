@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-command-goal
+# @alego/command-goal
 
 [English](README.md) | 中文
 
@@ -19,7 +19,7 @@
 
 该命令声明了 `input.images`，因此 composer 图片附件可以随调用一起提交。附件只随目标本身：create 或 edit 成功时，生产方提交一条用户 followup 消息，内容为已准入的图片块加固定文本 `Reference images for the goal objective.`，后续 Goal Round 从普通会话历史中读取它们，goal 领域不存储附件状态。其他任何子命令、以及被拒绝的 create 或 edit，都直接返回错误且不提交任何消息，分发方 composer 保留图片。
 
-可预期的领域拒绝会变成稳定的直接命令错误，不公开带品牌类型的 id 或 revision。意外实现失败仍会 reject 分发，使适配器能将其报告为命令失败。通用命令文本和输出仍属于实时 UI 状态；`dsh-goal` 通过自有的持久 `goal/change` 事件记录每项已接受变更。
+可预期的领域拒绝会变成稳定的直接命令错误，不公开带品牌类型的 id 或 revision。意外实现失败仍会 reject 分发，使适配器能将其报告为命令失败。通用命令文本和输出仍属于实时 UI 状态；`alego-goal` 通过自有的持久 `goal/change` 事件记录每项已接受变更。
 
 ## 组合
 
@@ -27,14 +27,14 @@
 
 ```yaml
 - id: commands
-  name: '@deepseek-ai/dsh-commands'
+  name: '@alego/commands'
 - id: goal
-  name: '@deepseek-ai/dsh-goal'
+  name: '@alego/goal'
 - id: command-goal
-  name: '@deepseek-ai/dsh-command-goal'
+  name: '@alego/command-goal'
 ```
 
-随附 `dsh` 基础配置启用持久 goal 栈和此命令；Web 客户端提供其交互适配器。ACP（Agent Client Protocol）自动化应用启用领域与模型工具，但不挂载命令适配器；`goals: false` 会移除该栈。无 UI 的 `agent-spine-demo` 必须显式配置 `goals: {}`，避免无头单次调用方在不知情时从一个物理轮次变为包含多个 Round 的操作。
+随附 `alego` 基础配置启用持久 goal 栈和此命令；Web 客户端提供其交互适配器。ACP（Agent Client Protocol）自动化应用启用领域与模型工具，但不挂载命令适配器；`goals: false` 会移除该栈。无 UI 的 `agent-spine-demo` 必须显式配置 `goals: {}`，避免无头单次调用方在不知情时从一个物理轮次变为包含多个 Round 的操作。
 
 ## 模型体验
 

@@ -10,7 +10,7 @@ The repository had grown faster than some names. Several package names described
 
 These names are not harmless. A name tells a contributor where a responsibility starts and stops. `Store` suggests data access. `Registry` suggests registrations and lookup. `Runtime` suggests live execution and lifecycle. When one word is used for all three, callers cannot tell which object owns policy, work, or state without reading the implementation.
 
-The repository also used `SDK` in two meanings. The supported Python and TypeScript clients use the JSON-RPC SDK protocol. The project as a whole is DeepSeek Harness, not an SDK project. The removed SDK project toolchain made the broad meaning obsolete, but prose and names preserved parts of it.
+The repository also used `SDK` in two meanings. The supported Python and TypeScript clients use the JSON-RPC SDK protocol. The project as a whole is Alego, not an SDK project. The removed SDK project toolchain made the broad meaning obsolete, but prose and names preserved parts of it.
 
 The last pre-release window made repository-wide renames cheap. Keeping weak names would have turned accidental vocabulary into a compatibility contract.
 
@@ -24,7 +24,7 @@ No family exposes two public vocabularies.
 
 ### Use `SDK` for one thing
 
-`SDK` means the JSON-RPC-based client/server protocol used by the supported Python and TypeScript SDKs. The repository keeps `@deepseek-ai/dsh-sdk-client`, `@deepseek-ai/dsh-sdk-protocol`, and the wire identity `deepseek-harness-sdk-runtime`; the JSON-RPC server belongs to the same family. DeepSeek Harness itself is not an SDK, and the removed project generator, launcher, helper, and launcher telemetry packages stay absent.
+`SDK` means the JSON-RPC-based client/server protocol used by the supported Python and TypeScript SDKs. The repository keeps `@alego/sdk-client`, `@alego/sdk-protocol`, and the wire identity `alego-sdk-runtime`; the JSON-RPC server belongs to the same family. Alego itself is not an SDK, and the removed project generator, launcher, helper, and launcher telemetry packages stay absent.
 
 This decision partially supersedes three active decisions. It replaces the retained `bash/`, `pty/`, and `self-modification/` group names and both deferred package targets in the [package-regrouping decision](2026-07-29-package-regrouping.md). It replaces only the repository-wide SDK claim in the [SDK project toolchain removal](../simplification/2026-08-11-remove-sdk-project-toolchain.md), which remains the owner of the deletion and the surviving runtime SDK. It replaces only the package-name rationale in the [tool-call timeout policy](2026-07-07-tool-call-timeout-policy.md); the timeout mechanism and its `guard/timeout-policy/` home remain unchanged.
 
@@ -72,7 +72,7 @@ Do not invent a `process sandbox` concept. The current `sandbox` family already 
 
 Use title case for initialisms inside PascalCase identifiers: `Ui`, `Llm`, `JsonRpc`, and `ApiProxy`. Use the conventional uppercase form in prose and package names where applicable: UI, LLM, JSON-RPC, and API. `Typert` is the exact product spelling in identifiers and prose; do not write `TypeRT`, `TypeRt`, or `Typert` with another internal split.
 
-Do not remove an intentional vendor qualifier to avoid repetition. `dsh-subagent-dsh-sdk` names the DeepSeek Harness SDK provider and avoids confusion with another SDK. Its private class becomes `SdkSubagentProvider` because the class also needs to say what it provides.
+Do not remove an intentional vendor qualifier to avoid repetition. `alego-subagent-alego-sdk` names the Alego SDK provider and avoids confusion with another SDK. Its private class becomes `SdkSubagentProvider` because the class also needs to say what it provides.
 
 ### Put the rule in project documentation
 
@@ -86,26 +86,26 @@ The tables record public and repository-wide renames. The `Current` column holds
 
 | Former | Current | Reason |
 |---|---|---|
-| `@deepseek-ai/dsh-jsonrpc` | `@deepseek-ai/dsh-sdk-jsonrpc-server` | It is the server half of the SDK protocol. `jsonrpc` alone names an encoding; `sdk-jsonrpc-server` gives the family, mechanism, and role. |
+| `@alego/jsonrpc` | `@alego/sdk-jsonrpc-server` | It is the server half of the SDK protocol. `jsonrpc` alone names an encoding; `sdk-jsonrpc-server` gives the family, mechanism, and role. |
 | `HarnessSdkServer` | `HarnessSdkJsonRpcServer` | The class is one JSON-RPC server implementation, not every possible SDK server. |
 
-Keep `@deepseek-ai/dsh-sdk-client`, `@deepseek-ai/dsh-sdk-protocol`, and `deepseek-harness-sdk-runtime`. Exclude `@deepseek-ai/create-sdk`, `@deepseek-ai/dsh-scripts`, `@deepseek-ai/dsh-helper`, and `@deepseek-ai/dsh-telemetry`; the separate removal decision deletes them and their support graph.
+Keep `@alego/sdk-client`, `@alego/sdk-protocol`, and `alego-sdk-runtime`. Exclude `@alego/create-sdk`, `@alego/scripts`, `@alego/helper`, and `@alego/telemetry`; the separate removal decision deletes them and their support graph.
 
 ### Shell and terminal
 
 | Former | Current | Reason |
 |---|---|---|
 | `packages/bash/` | `packages/shell/` | The group contains the dialect-neutral executor seam, Bash and PowerShell implementations, environment support, and shell tools. |
-| `@deepseek-ai/dsh-bash`, `ctx.bash` | `@deepseek-ai/dsh-shell`, `ctx.shell` | PowerShell already implements this seam. The capability is shell execution, not Bash. |
+| `@alego/bash`, `ctx.bash` | `@alego/shell`, `ctx.shell` | PowerShell already implements this seam. The capability is shell execution, not Bash. |
 | Dialect-neutral `BashExecutor`, `BashExecRequest`, `BashExecSpec`, `BashProcess`, `BashRunResult`, `BashSandboxInfo`, `BashProcessRead`, and `BashProcessStatus` names | Corresponding `Shell*` names | These types cross both Bash and PowerShell implementations. Leaf types that describe Bash syntax or behavior keep `Bash`. |
 | `BASH_SETTINGS_NAMESPACE`, settings namespace `bash` | `SHELL_SETTINGS_NAMESPACE`, settings namespace `shell` | Both shell providers register this capability-owned settings section. The constant and durable namespace must use the capability name. |
-| `@deepseek-ai/dsh-bash-env`, `ctx.bashEnv`, `BashEnvRegistry` | `@deepseek-ai/dsh-shell-env`, `ctx.shellEnv`, `ShellEnvRegistry` | The environment registry is shared by Bash and PowerShell tools. |
+| `@alego/bash-env`, `ctx.bashEnv`, `BashEnvRegistry` | `@alego/shell-env`, `ctx.shellEnv`, `ShellEnvRegistry` | The environment registry is shared by Bash and PowerShell tools. |
 | `docs/subsystems/bash.md` | `docs/subsystems/shell.md` | The subsystem page documents the dialect-neutral capability. |
 | `packages/pty/` | `packages/terminal/` | The package family owns persistent terminal sessions. Raw PTY allocation remains in the subprocess layer. |
-| `@deepseek-ai/dsh-pty`, `ctx.pty`, `PtyService` | `@deepseek-ai/dsh-terminal`, `ctx.terminals`, `TerminalSessionService` | Callers manage multiple named terminal sessions. They do not allocate raw PTYs through this service. |
+| `@alego/pty`, `ctx.pty`, `PtyService` | `@alego/terminal`, `ctx.terminals`, `TerminalSessionService` | Callers manage multiple named terminal sessions. They do not allocate raw PTYs through this service. |
 | Public high-level `Pty*` session and backend names | `Terminal*` names | The public abstraction is a terminal session. Keep low-level `SubprocessTerminal*` names because they already name the substrate. |
-| `@deepseek-ai/dsh-pty-local`, `LocalPtyBackend` | `@deepseek-ai/dsh-terminal-bash`, `BashTerminalBackend` | The provider depends on Bash prompt and shell behavior. `local` hides the actual dialect. |
-| `@deepseek-ai/dsh-tool-pty` | `@deepseek-ai/dsh-tool-terminal` | The model-facing tools are already `terminal_*`; the package should use the same product noun. |
+| `@alego/pty-local`, `LocalPtyBackend` | `@alego/terminal-bash`, `BashTerminalBackend` | The provider depends on Bash prompt and shell behavior. `local` hides the actual dialect. |
+| `@alego/tool-pty` | `@alego/tool-terminal` | The model-facing tools are already `terminal_*`; the package should use the same product noun. |
 | `tool-bash-persistent` in the former PTY family | `shell/tool-bash-persistent/` | The tool is a Bash tool and belongs with shell tools. Keep its npm name: `persistent` distinguishes it from one-shot `bash`, while `bash-terminal` would blur the product tool with the terminal-session family. |
 | `docs/subsystems/pty.md` | `docs/subsystems/terminal.md` | The page documents terminal sessions, not raw PTY allocation. |
 
@@ -115,15 +115,15 @@ Keep the Bash- and PowerShell-specific leaf packages, plugin ids, types, and too
 
 | Former | Current | Reason |
 |---|---|---|
-| `@deepseek-ai/dsh-lsp-local` | `@deepseek-ai/dsh-lsp-stdio` | The provider speaks LSP over stdio through replaceable filesystem and subprocess services. It is not necessarily local. |
+| `@alego/lsp-local` | `@alego/lsp-stdio` | The provider speaks LSP over stdio through replaceable filesystem and subprocess services. It is not necessarily local. |
 | `packages/tasks/` | `packages/jobs/` | The family owns detached tool jobs. `jobs` is short and avoids collision with user task or todo concepts. |
-| `@deepseek-ai/dsh-tasks`, `ctx.tasks`, `TaskService` | `@deepseek-ai/dsh-jobs`, `ctx.jobs`, `JobRegistry` | The service registers, owns, observes, waits for, and cancels multiple background jobs. It is a registry, not a general task service. |
+| `@alego/tasks`, `ctx.tasks`, `TaskService` | `@alego/jobs`, `ctx.jobs`, `JobRegistry` | The service registers, owns, observes, waits for, and cancels multiple background jobs. It is a registry, not a general task service. |
 | Public `TaskId`, `TaskKindMap`, `TaskStart`, `TaskHooks`, `TaskOutcome`, `TaskSnapshot`, `TaskRead`, and `TaskDoneListener` names | Corresponding `Job*` names | These types belong to the renamed job domain. `JobId` is shorter and clearer than `BackgroundTaskId` or `BgTaskId`. |
-| `@deepseek-ai/dsh-tasks-local`, `LocalTaskService` | `@deepseek-ai/dsh-jobs-local`, `LocalJobRegistry` | This is the process-local provider of the job registry. Here `local` is meaningful because the jobs and callbacks live in one process. |
-| `@deepseek-ai/dsh-tool-tasks` | `@deepseek-ai/dsh-tool-jobs` | The consumer controls the job registry and should use the same domain noun. |
+| `@alego/tasks-local`, `LocalTaskService` | `@alego/jobs-local`, `LocalJobRegistry` | This is the process-local provider of the job registry. Here `local` is meaningful because the jobs and callbacks live in one process. |
+| `@alego/tool-tasks` | `@alego/tool-jobs` | The consumer controls the job registry and should use the same domain noun. |
 | `ToolTasks`, `toolTasks`, `ToolTasksConfigSchema`, `PublicTaskSnapshot`, `publicTask`, `validateTaskId` | Corresponding `*Jobs`, `*Job*`, and `validateJobId` names | Imports, forwarded config, public tool values, and helpers are part of the same job domain. Keeping `Task` after the package rename would create a second vocabulary for one feature. |
 | `task_output`, `task_list`, `task_kill` | `job_output`, `job_list`, `job_kill` | These model tools act on jobs, not user tasks. `run_in_background` returns a `JobId`. |
-| `@deepseek-ai/dsh-client-ui-task`, `client/ui-task/` | `@deepseek-ai/dsh-client-ui-jobs`, `client/ui-jobs/` | The client package presents the background-job collection. It is not one user task. |
+| `@alego/client-ui-task`, `client/ui-task/` | `@alego/client-ui-jobs`, `client/ui-jobs/` | The client package presents the background-job collection. It is not one user task. |
 | `TaskView`, wire frame `session/tasks`, `tasksBySession` | `JobView`, wire frame `session/jobs`, `jobsBySession` | The browser contract and its mirror expose the same job domain as the registry and tools. |
 | `docs/subsystems/tasks.md` | `docs/subsystems/jobs.md` | The subsystem page must use the public job vocabulary. |
 
@@ -133,15 +133,15 @@ Keep the base LSP package, `ctx.lsp`, LSP protocol types, and the LSP tool. The 
 
 | Former | Current | Reason |
 |---|---|---|
-| `@deepseek-ai/dsh-client-ui-slash`, `ui-slash/` | `@deepseek-ai/dsh-client-ui-input-trigger`, `ui-input-trigger/` | The client handles `/`, `@`, keyboard arbitration, candidate menus, and programmatic launch. It is not only slash commands. |
+| `@alego/client-ui-slash`, `ui-slash/` | `@alego/client-ui-input-trigger`, `ui-input-trigger/` | The client handles `/`, `@`, keyboard arbitration, candidate menus, and programmatic launch. It is not only slash commands. |
 | `ctx.slash`, `SlashService`, `SlashController`, `SlashSource` | `ctx.inputTriggers`, `InputTriggerService`, `InputTriggerController`, `InputTriggerSource` | The names cover every supported trigger and keep the existing service, controller, and source roles. Coupled locale and public type names follow `InputTrigger`. |
-| `@deepseek-ai/dsh-agent-tool-mode`, plugin `tool-mode` | `@deepseek-ai/dsh-agent-tool-presentation`, plugin `tool-presentation` | The plugin changes how tools are presented to the model. It does not change execution behavior. Keep local `Config.mode` and `ToolPresentationMode`. |
+| `@alego/agent-tool-mode`, plugin `tool-mode` | `@alego/agent-tool-presentation`, plugin `tool-presentation` | The plugin changes how tools are presented to the model. It does not change execution behavior. Keep local `Config.mode` and `ToolPresentationMode`. |
 | `packages/interaction/permission/` | `packages/interaction/permission-presets/` | The package owns named combinations of sandbox and approval settings, not permission enforcement. |
-| `@deepseek-ai/dsh-permission`, `ctx.permission`, `PermissionService` | `@deepseek-ai/dsh-permission-presets`, `ctx.permissionPresets`, `PermissionPresetService` | The service selects and persists presets. Sandbox and approval services enforce the result. |
-| `@deepseek-ai/dsh-client-ui-permission` | `@deepseek-ai/dsh-client-ui-permission-presets` | The UI edits and selects permission presets. |
+| `@alego/permission`, `ctx.permission`, `PermissionService` | `@alego/permission-presets`, `ctx.permissionPresets`, `PermissionPresetService` | The service selects and persists presets. Sandbox and approval services enforce the result. |
+| `@alego/client-ui-permission` | `@alego/client-ui-permission-presets` | The UI edits and selects permission presets. |
 | `docs/subsystems/permission.md` | `docs/subsystems/permission-presets.md` | The page documents preset selection, not permission enforcement. |
-| `@deepseek-ai/dsh-user-interaction`, `user-interaction/` | `@deepseek-ai/dsh-user-questions`, `user-questions/` | The seam supports question batches and answers only. Approval, commands, and directory picking are separate interaction seams. |
-| `ctx.userInteraction`, `UserInteractionService`, `UserInteractionProvider`, `UserInteractionError` | `ctx.userQuestions`, `UserQuestionService`, `UserQuestionProvider`, `UserQuestionError` | These names state the one supported interaction form. Keep `AskUserQuestion*`, the `ask_user_question` tool, and `@deepseek-ai/dsh-tool-ask-user`. |
+| `@alego/user-interaction`, `user-interaction/` | `@alego/user-questions`, `user-questions/` | The seam supports question batches and answers only. Approval, commands, and directory picking are separate interaction seams. |
+| `ctx.userInteraction`, `UserInteractionService`, `UserInteractionProvider`, `UserInteractionError` | `ctx.userQuestions`, `UserQuestionService`, `UserQuestionProvider`, `UserQuestionError` | These names state the one supported interaction form. Keep `AskUserQuestion*`, the `ask_user_question` tool, and `@alego/tool-ask-user`. |
 | `docs/subsystems/user-interaction.md` | `docs/subsystems/user-questions.md` | The page documents questions and answers only. |
 
 Keep `/permission`, the `permissions` projection, the `permission` settings namespace, and `permission/preset`; they are accurate product or durable vocabulary. Keep the full `PermissionPresetSettingsController` name. Dropping `Preset` would remove the word that limits its authority. Removal of the `both` tool-presentation mode remains deferred to a separate proposal; this rename does not remove behavior.
@@ -150,7 +150,7 @@ Keep `/permission`, the `permissions` projection, the `permission` settings name
 
 | Former | Current | Reason |
 |---|---|---|
-| `packages/typert/type-meta/`, `@deepseek-ai/dsh-type-meta` | `typert/protocol/`, `@deepseek-ai/dsh-typert-protocol` | The package owns the Typert Remote protocol, decorators, bindings, codecs, lookups, and context contracts. It is not generic type metadata. |
+| `packages/typert/type-meta/`, `@alego/type-meta` | `typert/protocol/`, `@alego/typert-protocol` | The package owns the Typert Remote protocol, decorators, bindings, codecs, lookups, and context contracts. It is not generic type metadata. |
 | `GatewayService` in the protocol package | `TypertRemoteService` | The base class marks a same-process service for Remote export. It is not the API gateway. |
 | `bindTypeRTGateway`, `typertGateway` binding | `bindTypertRemote`, `typertRemote` | These bindings expose Typert Remote services, not the concrete API gateway service. |
 | Public `TypeRT*` and camel-case `typeRT*` identifiers | `Typert*` and `typert*` | `Typert` is the one canonical product spelling. |
@@ -158,41 +158,41 @@ Keep `/permission`, the `permissions` projection, the `permission` settings name
 | `ToolRegistry` | `ToolRuntime` | The class owns presentation, approval and guard policy, dispatch, cancellation, validation, finalization, and observation. Registration is only one internal part. |
 | `ToolRegistryScheduler`, `TOOL_REGISTRY_SCHEDULER` | `ToolRuntimeScheduler`, `TOOL_RUNTIME_SCHEDULER` | The scheduler controls runtime dispatch, not registration. |
 
-Keep `@deepseek-ai/dsh-tools` and `ctx.tools`. Keep `@deepseek-ai/dsh-api-gateway`, its `gateway/` folder, `ctx.typertGateway`, and `TypertGatewayService`; that service is a real API gateway. Its internal `TypeRT*` identifiers still follow the `Typert*` spelling rule.
+Keep `@alego/tools` and `ctx.tools`. Keep `@alego/api-gateway`, its `gateway/` folder, `ctx.typertGateway`, and `TypertGatewayService`; that service is a real API gateway. Its internal `TypeRT*` identifiers still follow the `Typert*` spelling rule.
 
 ### Workspace instructions, telemetry, identity, and launch environment
 
 | Former | Current | Reason |
 |---|---|---|
-| Host `ctx.workspace` | Host `ctx.workspaceRegistry` | `WorkspaceRegistry` owns multiple workspaces, but Client `ctx.workspaces` already has an incompatible type. Both declarations merge into the same Cordis `Context` interface at compile time even though their runtime contexts are separate. The role suffix states the host service and avoids that collision. Keep `@deepseek-ai/dsh-workspace`, `WorkspaceRegistry`, `Workspace`, and `workspace.*` wire names. |
-| `@deepseek-ai/dsh-workspace-context`, `context/workspace-context/` | `@deepseek-ai/dsh-agent-instructions`, `context/agent-instructions/` | The package loads hierarchical `AGENTS.md` and `CLAUDE.md` files for the agent. It is not general workspace context. |
+| Host `ctx.workspace` | Host `ctx.workspaceRegistry` | `WorkspaceRegistry` owns multiple workspaces, but Client `ctx.workspaces` already has an incompatible type. Both declarations merge into the same Cordis `Context` interface at compile time even though their runtime contexts are separate. The role suffix states the host service and avoids that collision. Keep `@alego/workspace`, `WorkspaceRegistry`, `Workspace`, and `workspace.*` wire names. |
+| `@alego/workspace-context`, `context/workspace-context/` | `@alego/agent-instructions`, `context/agent-instructions/` | The package loads hierarchical `AGENTS.md` and `CLAUDE.md` files for the agent. It is not general workspace context. |
 | Plugin and durable source names `workspace-context` and `workspace-instructions` | `agent-instructions` | The recorded source is a specific class of agent instructions. `AgentInstruction*` replaces public `WorkspaceInstruction*` names. This term does not include system, developer, or user messages. |
 | `ctx.telemetry`, abstract `Telemetry` | `ctx.sessionTelemetry`, `SessionTelemetryBackend` | The service captures session-ledger telemetry and hands it to a reporting backend. It is not a repository-wide metrics or tracing service. |
 | `TelemetryBackend` | `SessionTelemetrySink` | This lower layer receives emitted records. `Sink` distinguishes it from the coordinating backend service. |
 | `TelemetryCoordinator`, `TelemetryRecord`, `TelemetrySeverity`, `TelemetrySharingStatus`, and `TelemetryCapture` | Corresponding `SessionTelemetry*` names | These public types belong only to session telemetry. |
 | `telemetry/record` | `session-telemetry/record` | The event name must state its owning domain. |
-| `TelemetryOtel`, `TelemetryMode`, plugin `telemetry-otel` | `OpenTelemetrySessionBackend`, `SessionTelemetryMode`, plugin `session-telemetry-otel` | The provider name states both the OpenTelemetry mechanism and session scope. Keep the package names `dsh-session-telemetry` and `dsh-session-telemetry-otel`. |
+| `TelemetryOtel`, `TelemetryMode`, plugin `telemetry-otel` | `OpenTelemetrySessionBackend`, `SessionTelemetryMode`, plugin `session-telemetry-otel` | The provider name states both the OpenTelemetry mechanism and session scope. Keep the package names `alego-session-telemetry` and `alego-session-telemetry-otel`. |
 | `docs/subsystems/telemetry.md` | `docs/subsystems/session-telemetry.md` | The page documents session telemetry, not repository-wide observability. |
-| `session/user-id/`, `@deepseek-ai/dsh-user-id` | `identity/anonymous-user-id/`, `@deepseek-ai/dsh-anonymous-user-id` | The value is a random correlation id shared by telemetry, feedback, and DeepSeek requests. It is neither a Session concern nor an authenticated user identity. |
+| `session/user-id/`, `@alego/user-id` | `identity/anonymous-user-id/`, `@alego/anonymous-user-id` | The value is a random correlation id shared by telemetry, feedback, and DeepSeek requests. It is neither a Session concern nor an authenticated user identity. |
 | `USER_ID_FILE_NAME`, `.userid`, feedback label `User` | `ANONYMOUS_USER_ID_FILE_NAME`, `.anonymous-user-id`, feedback label `Anonymous user` | The file and UI must not imply account identity. Keep the existing `AnonymousUserId` functions and the standard OTel attribute `user.id`. |
-| `util/environment/`, `@deepseek-ai/dsh-environment` | `util/launch-environment/`, `@deepseek-ai/dsh-launch-environment` | The package captures one immutable layered snapshot at launch. It is not a general environment API. |
-| Public `Environment*`, `createEnvironmentSnapshot`, `environmentOf`, `DSH_ENVIRONMENT_KEY` | `LaunchEnvironment*`, `createLaunchEnvironmentSnapshot`, `launchEnvironmentOf`, `DSH_LAUNCH_ENVIRONMENT_KEY` | The names state the snapshot's lifetime and purpose. |
+| `util/environment/`, `@alego/environment` | `util/launch-environment/`, `@alego/launch-environment` | The package captures one immutable layered snapshot at launch. It is not a general environment API. |
+| Public `Environment*`, `createEnvironmentSnapshot`, `environmentOf`, `ALEGO_ENVIRONMENT_KEY` | `LaunchEnvironment*`, `createLaunchEnvironmentSnapshot`, `launchEnvironmentOf`, `ALEGO_LAUNCH_ENVIRONMENT_KEY` | The names state the snapshot's lifetime and purpose. |
 | `ctx.launcherEnvironment` | `ctx.launchEnvironment` | The value describes the application launch, not only a launcher component. Keep source labels `process`, `project-env`, and `user-env`. |
 
 ### Schedule, workflow, goals, and compaction
 
 | Former | Current | Reason |
 |---|---|---|
-| `@deepseek-ai/dsh-tool-schedule`, `schedule/tool-schedule/`, plugin `tool-schedule` | `@deepseek-ai/dsh-schedule`, `schedule/schedule/`, plugin `schedule` | The package owns the durable Schedule domain, persistence barriers, management tools, timers, follow-ups, and runtime lifecycle. `tool-` describes only one part. |
+| `@alego/tool-schedule`, `schedule/tool-schedule/`, plugin `tool-schedule` | `@alego/schedule`, `schedule/schedule/`, plugin `schedule` | The package owns the durable Schedule domain, persistence barriers, management tools, timers, follow-ups, and runtime lifecycle. `tool-` describes only one part. |
 | `ScheduleOwner` | `ScheduleRuntime` | The per-agent object runs live timers, durable projection, dispatch, idle waits, and disposal. `Owner` does not state that execution role. Coupled private `owner*` names follow `runtime*`. |
-| `WorkflowService`, `ctx.workflows` | `WorkflowEngine`, `ctx.workflowEngine` | One engine parses and executes workflow programs. The plural key wrongly suggests a registry. Keep `@deepseek-ai/dsh-workflow` and workflow events and tools. |
-| `@deepseek-ai/dsh-workflow-workerthread`, `WorkerWorkflowEngine` | `@deepseek-ai/dsh-workflow-worker-thread`, `WorkerThreadWorkflowEngine` | `worker thread` is the precise Node mechanism and the repository spelling uses the full words. |
-| `@deepseek-ai/dsh-goal-session`, `goal/goal-session/` | `@deepseek-ai/dsh-goal-round-driver`, `goal/goal-round-driver/` | The plugin drives same-session Goal Rounds. It neither stores goals nor defines sessions. Keep `GoalService`, goal source, events, and contracts. |
+| `WorkflowService`, `ctx.workflows` | `WorkflowEngine`, `ctx.workflowEngine` | One engine parses and executes workflow programs. The plural key wrongly suggests a registry. Keep `@alego/workflow` and workflow events and tools. |
+| `@alego/workflow-workerthread`, `WorkerWorkflowEngine` | `@alego/workflow-worker-thread`, `WorkerThreadWorkflowEngine` | `worker thread` is the precise Node mechanism and the repository spelling uses the full words. |
+| `@alego/goal-session`, `goal/goal-session/` | `@alego/goal-round-driver`, `goal/goal-round-driver/` | The plugin drives same-session Goal Rounds. It neither stores goals nor defines sessions. Keep `GoalService`, goal source, events, and contracts. |
 | `packages/compact/` | `packages/compaction/` | The group is a noun-domain family. `compact` remains the user command verb. |
-| `@deepseek-ai/dsh-compact`, `ctx.compact`, `CompactService` | `@deepseek-ai/dsh-compaction`, `ctx.compaction`, `CompactionEngine` | The object runs the compaction algorithm and lifecycle. It is an engine, not a generic service. |
+| `@alego/compact`, `ctx.compact`, `CompactService` | `@alego/compaction`, `ctx.compaction`, `CompactionEngine` | The object runs the compaction algorithm and lifecycle. It is an engine, not a generic service. |
 | `compact/*` events and public domain prefixes | `compaction/*` | Events and domain types use the noun. Keep verb-shaped operations such as `compactNow`, `compactRegion`, and `compactIfNeeded`. |
-| `@deepseek-ai/dsh-compact-basic`, `BasicCompactService`, public `BasicCompact*` | `@deepseek-ai/dsh-compaction-basic`, `BasicCompactionEngine`, corresponding `BasicCompaction*` | `basic` is plain but honest. `compaction-llm` adds no information because LLM use is already part of the current implementation family. |
-| `@deepseek-ai/dsh-compact-tool-result-prune`, `ToolResultPruneService`, `ctx.toolResultPrune` | `@deepseek-ai/dsh-compaction-tool-result-pruner`, `ToolResultPruner`, `ctx.toolResultPruner` | The plugin is an actor that prunes tool results. The noun `pruner` names that role. |
+| `@alego/compact-basic`, `BasicCompactService`, public `BasicCompact*` | `@alego/compaction-basic`, `BasicCompactionEngine`, corresponding `BasicCompaction*` | `basic` is plain but honest. `compaction-llm` adds no information because LLM use is already part of the current implementation family. |
+| `@alego/compact-tool-result-prune`, `ToolResultPruneService`, `ctx.toolResultPrune` | `@alego/compaction-tool-result-pruner`, `ToolResultPruner`, `ctx.toolResultPruner` | The plugin is an actor that prunes tool results. The noun `pruner` names that role. |
 
 Keep `/compact`, the command package, and the separate compaction definition and provider packages. Merging those packages remains rejected. The rename changes vocabulary, not that package boundary.
 
@@ -201,14 +201,14 @@ Keep `/compact`, the command package, and the separate compaction definition and
 | Former | Current | Reason |
 |---|---|---|
 | Abstract `Settings` | `SettingsProvider` | The class supplies settings through a replaceable capability. Keep the package, key, and events. |
-| `@deepseek-ai/dsh-settings-local`, `SettingsLocal` | `@deepseek-ai/dsh-settings-file`, `FileSettingsProvider` | The implementation is file-backed through the filesystem seam. `file` states the mechanism; `local` does not. |
+| `@alego/settings-local`, `SettingsLocal` | `@alego/settings-file`, `FileSettingsProvider` | The implementation is file-backed through the filesystem seam. `file` states the mechanism; `local` does not. |
 | Abstract `Credentials` | `CredentialProvider` | The class resolves credential references. Keep package names, keys, and events. |
 | `CredentialsLocal` | `LocalCredentialProvider` | This provider reads the host process and `.env` state, so local execution is part of its contract. |
 | `ClientModuleHostService`, `ctx.clientModuleHost` | `ClientModuleRegistry`, `ctx.clientModules` | The service owns multiple registered client modules. Keep the package and the browser `ClientModuleLoader`. |
 | `AgentDefaultModelService` | `AgentDefaultModelConfig` | The object stores one default model selection. It does not run a service or general registry. Keep its package, key, settings namespace, and type. |
 | `SessionReferenceService`, `ctx.sessionReferences` | `SessionReferenceResolver`, `ctx.sessionReferenceResolver` | It resolves one session reference from a URI or input. It does not own a reference collection. |
 | `SessionQueryService`, `SessionQuerySqlite` | `SessionQueryEngine`, `SqliteSessionQueryEngine` | The classes execute a query model and its SQLite implementation. Keep package names, key, and tool. |
-| `@deepseek-ai/dsh-session-export`, `session-export/`, Loader id `session-export`, `ctx.sessionExport` | `@deepseek-ai/dsh-session-log-export`, `session-log-export/`, Loader id `session-log-download`, `ctx.sessionLogDownload` | The npm package names the Session-log export because npm rejects `download` in package names. The Loader id and browser API retain `download` because they describe the browser side effect. |
+| `@alego/session-export`, `session-export/`, Loader id `session-export`, `ctx.sessionExport` | `@alego/session-log-export`, `session-log-export/`, Loader id `session-log-download`, `ctx.sessionLogDownload` | The npm package names the Session-log export because npm rejects `download` in package names. The Loader id and browser API retain `download` because they describe the browser side effect. |
 | `SessionExportDownloadController`, other `SessionExport*` browser types, `useSessionExport`, `SessionExportHeader` | `SessionLogDownloadController`, corresponding `SessionLogDownload*` types, `useSessionLogDownload`, `SessionLogDownloadHeaderAction` | The controller owns preflight, duplicate-request collapse, modal state, and browser save. `ExportDownload` repeats the action, and the component contributes one Header action rather than the Header. |
 | `CommandService` in the host command package | `CommandRuntime` | The object registers and executes host commands across live calls. Keep its package, key, types, and events. |
 | `TokenMeterService` | `TokenMeter` | The object measures token use. `Service` adds no scope. |
@@ -218,13 +218,13 @@ Keep `/compact`, the command package, and the separate compaction definition and
 
 | Former | Current | Reason |
 |---|---|---|
-| `HttpServerService`, `ctx.httpServer` | `WebServer`, `ctx.webServer` | The server owns HTTP routes and WebSocket upgrade routes. `Web` leaves room for both; `Http` is too narrow here. Keep `packages/host/webserver`, `@deepseek-ai/dsh-host-webserver`, `WebRoute`, and `WebUpgradeRoute`. |
+| `HttpServerService`, `ctx.httpServer` | `WebServer`, `ctx.webServer` | The server owns HTTP routes and WebSocket upgrade routes. `Web` leaves room for both; `Http` is too narrow here. Keep `packages/host/webserver`, `@alego/host-webserver`, `WebRoute`, and `WebUpgradeRoute`. |
 | Documentation subsystem label `http-server` | `web-server` | The subsystem must use the same scope as the service. |
 | `SessionPersistenceJsonl` | `JsonlSessionPersistence` | Put the implementation qualifier first and keep the capability role intact. |
 | `SessionPersistenceSqlite` | `SqliteSessionPersistence` | Use the same provider naming order as JSONL. |
-| `@deepseek-ai/dsh-session-title-first-message-llm`, cadence `first-message` | `@deepseek-ai/dsh-session-title-first-prompt-llm`, cadence `first-prompt` | The trigger is the first user prompt, not any message in the session log. |
-| `@deepseek-ai/dsh-session-title-all-messages-llm`, cadence `all-user-messages` | `@deepseek-ai/dsh-session-title-all-prompts-llm`, cadence `all-prompts` | The backend refreshes from user prompts. `all messages` wrongly includes assistant and tool events. |
-| `@deepseek-ai/dsh-code-runtime-worker`, `WorkerCodeRuntime` | `@deepseek-ai/dsh-code-runtime-worker-thread`, `WorkerThreadCodeRuntime` | The implementation uses a Node worker thread. `worker` alone is too broad. |
+| `@alego/session-title-first-message-llm`, cadence `first-message` | `@alego/session-title-first-prompt-llm`, cadence `first-prompt` | The trigger is the first user prompt, not any message in the session log. |
+| `@alego/session-title-all-messages-llm`, cadence `all-user-messages` | `@alego/session-title-all-prompts-llm`, cadence `all-prompts` | The backend refreshes from user prompts. `all messages` wrongly includes assistant and tool events. |
+| `@alego/code-runtime-worker`, `WorkerCodeRuntime` | `@alego/code-runtime-worker-thread`, `WorkerThreadCodeRuntime` | The implementation uses a Node worker thread. `worker` alone is too broad. |
 | `SubprocessService` | `SubprocessRuntime` | The service owns live child-process execution and lifecycle. Keep its package and key. |
 | `LocalSubprocessService` | `LocalSubprocessRuntime` | The provider runs same-host processes and process trees. |
 | `E2BSubprocessService` | `E2BSubprocessRuntime` | The provider runs subprocesses in the E2B runtime. |
@@ -235,32 +235,32 @@ Keep the complete session projection family and `SessionProjection*` vocabulary.
 
 | Former | Current | Reason |
 |---|---|---|
-| `@deepseek-ai/dsh-fs-policy` | `@deepseek-ai/dsh-fs-observation-policy` | The package defines which filesystem observations authorize later effects. It is not the complete filesystem or sandbox policy. |
+| `@alego/fs-policy` | `@alego/fs-observation-policy` | The package defines which filesystem observations authorize later effects. It is not the complete filesystem or sandbox policy. |
 | `FsPolicyExec` | `FsObservationActor` | The value names the actor whose observations and effects the policy relates. It does not execute the policy itself. |
 | `SkillService` | `SkillRegistry` | The service registers providers and resolves skills from their catalogs. |
-| `@deepseek-ai/dsh-skill-local`, `LocalSkillProvider`, provider id `local` | `@deepseek-ai/dsh-skill-filesystem`, `FileSystemSkillProvider`, provider id `filesystem` | The provider discovers skill files through `ctx.fs`, which can be local or remote. The mechanism is filesystem access, not locality. |
+| `@alego/skill-local`, `LocalSkillProvider`, provider id `local` | `@alego/skill-filesystem`, `FileSystemSkillProvider`, provider id `filesystem` | The provider discovers skill files through `ctx.fs`, which can be local or remote. The mechanism is filesystem access, not locality. |
 | `SubagentService` | `SubagentRuntime` | The service selects providers and owns live spawn, resume, follow-up, cancellation, and settlement behavior. |
-| `@deepseek-ai/dsh-subagent-spawn`, `SpawnProvider` | `@deepseek-ai/dsh-subagent-spawn-in-process`, `SpawnInProcessProvider` | This provider starts a child agent in the current process. The configured provider id remains `spawn`. |
-| `@deepseek-ai/dsh-subagent-fork`, `ForkProvider` | `@deepseek-ai/dsh-subagent-fork-in-process`, `ForkInProcessProvider` | This provider forks an agent in the current process. The configured provider id remains `fork`. |
-| `@deepseek-ai/dsh-subagent-inprocess`, `subagent-inprocess/` | `@deepseek-ai/dsh-subagent-in-process-driver`, `subagent-in-process-driver/` | The package contains common in-process driving logic, not a third provider. |
-| Private `SdkProvider` in `dsh-subagent-dsh-sdk` | `SdkSubagentProvider` | The repeated package qualifier is intentional, and the class must say that it provides subagents through the SDK. |
+| `@alego/subagent-spawn`, `SpawnProvider` | `@alego/subagent-spawn-in-process`, `SpawnInProcessProvider` | This provider starts a child agent in the current process. The configured provider id remains `spawn`. |
+| `@alego/subagent-fork`, `ForkProvider` | `@alego/subagent-fork-in-process`, `ForkInProcessProvider` | This provider forks an agent in the current process. The configured provider id remains `fork`. |
+| `@alego/subagent-inprocess`, `subagent-inprocess/` | `@alego/subagent-in-process-driver`, `subagent-in-process-driver/` | The package contains common in-process driving logic, not a third provider. |
+| Private `SdkProvider` in `alego-subagent-alego-sdk` | `SdkSubagentProvider` | The repeated package qualifier is intentional, and the class must say that it provides subagents through the SDK. |
 | `WebService`, `WebServiceConfig` | `WebRuntime`, `WebRuntimeConfig` | The object selects providers and runs live search and fetch operations. Keep the package, key, provider packages, and model tool. |
-| `@deepseek-ai/dsh-web-fetch-local`, `LocalFetchProvider`, `LocalFetchLimits`, provider id `local-http` | `@deepseek-ai/dsh-web-fetch-http`, `HttpFetchProvider`, `HttpFetchLimits`, provider id `http` | This provider performs direct HTTP fetches. `local` says where code happens to run, not which mechanism it provides. |
+| `@alego/web-fetch-local`, `LocalFetchProvider`, `LocalFetchLimits`, provider id `local-http` | `@alego/web-fetch-http`, `HttpFetchProvider`, `HttpFetchLimits`, provider id `http` | This provider performs direct HTTP fetches. `local` says where code happens to run, not which mechanism it provides. |
 
-Keep `@deepseek-ai/dsh-subagent-dsh-sdk`, its provider id `dsh-sdk`, external ACP, Codex, and Claude Code provider families, the subagent tool package names, the main filesystem package and backends, filesystem tools and events, and the skill badge and tool packages.
+Keep `@alego/subagent-alego-sdk`, its provider id `alego-sdk`, external ACP, Codex, and Claude Code provider families, the subagent tool package names, the main filesystem package and backends, filesystem tools and events, and the skill badge and tool packages.
 
 ### Hooks, guards, plan mode, extensions, and diagnostics
 
 | Former | Current | Reason |
 |---|---|---|
-| `@deepseek-ai/dsh-hooks-claude`, `ClaudeHookConfig`, `parseClaudeConfig`, dialect `claude` | `@deepseek-ai/dsh-hooks-claude-code`, `ClaudeCodeHookConfig`, `parseClaudeCodeConfig`, dialect `claude-code` | The hook bridge targets Claude Code, not every Anthropic or Claude product. |
-| `@deepseek-ai/dsh-repeat-tool-guard`, plugin/source `repeat-tool-guard` | `@deepseek-ai/dsh-repeat-tool-reminder`, plugin/source `repeat-tool-reminder` | The plugin adds a model reminder. It does not block or enforce a guard decision. |
-| `@deepseek-ai/dsh-timeout-policy` | `@deepseek-ai/dsh-tool-call-timeout-policy` | The full `tool-call` qualifier names what the policy limits without calling the plugin a model-facing tool. Keep its `guard/timeout-policy/` directory and plugin id `timeout-policy`; the `packages/*/tool-*` catalog convention still applies only to packages that register tools. |
+| `@alego/hooks-claude`, `ClaudeHookConfig`, `parseClaudeConfig`, dialect `claude` | `@alego/hooks-claude-code`, `ClaudeCodeHookConfig`, `parseClaudeCodeConfig`, dialect `claude-code` | The hook bridge targets Claude Code, not every Anthropic or Claude product. |
+| `@alego/repeat-tool-guard`, plugin/source `repeat-tool-guard` | `@alego/repeat-tool-reminder`, plugin/source `repeat-tool-reminder` | The plugin adds a model reminder. It does not block or enforce a guard decision. |
+| `@alego/timeout-policy` | `@alego/tool-call-timeout-policy` | The full `tool-call` qualifier names what the policy limits without calling the plugin a model-facing tool. Keep its `guard/timeout-policy/` directory and plugin id `timeout-policy`; the `packages/*/tool-*` catalog convention still applies only to packages that register tools. |
 | `PlanModeService` | `PlanModeController` | The object controls transitions into and out of plan mode. It is not a general execution runtime. |
 | `packages/self-modification/` | `packages/extensions/` | The group contains repository plugin inspection and mounting tools. `extensions` states the stable package role without asserting that the agent modifies itself. Keep the package names `tool-cordis` and repository-plugin names. |
 | `packages/support/` | `packages/test-support/` | The group is test-only infrastructure. Its path must say so. |
 | `invariants/` in the former support family | `runtime-diagnostics/invariants/` | Invariants can run in production diagnostics even though shipped presets omit them. They are not test support. |
-| `InvariantService` | `InvariantRegistry` | The object owns registered invariant checks. Keep `@deepseek-ai/dsh-invariants` and `ctx.invariants`. |
+| `InvariantService` | `InvariantRegistry` | The object owns registered invariant checks. Keep `@alego/invariants` and `ctx.invariants`. |
 | `packages/client/test-runtime/` | `packages/test-support/client-runtime/` | The package is client test infrastructure. Keep its npm name if it already states that contract. |
 
 Keep MCP, Todo, and the Plan Mode package, key, events, and tool names. This decision renames the controller class, not the product feature.
@@ -269,15 +269,15 @@ Keep MCP, Todo, and the Plan Mode package, key, events, and tool names. This dec
 
 | Former | Current | Reason |
 |---|---|---|
-| `util/paths/`, `@deepseek-ai/dsh-paths` | `util/home-paths/`, `@deepseek-ai/dsh-home-paths` | The helpers resolve paths under the Harness home. They are not a general path library. Keep the individual function names when they already state the returned path. |
-| `util/retention/`, `@deepseek-ai/dsh-retention` | `util/output-retention/`, `@deepseek-ai/dsh-output-retention` | The policy retains command and tool output. It is not a general data-retention framework. |
-| `E2BSandboxService` | `E2BRuntime` | The class creates, reuses, and disposes the E2B execution environment used by filesystem and subprocess adapters. It is broader than one sandbox handle and narrower than a generic owner. Keep `@deepseek-ai/dsh-e2b`, `ctx.e2b`, and the `e2b/` group. |
-| `@deepseek-ai/dsh-frontend-static` | `@deepseek-ai/dsh-host-frontend-static` | The package is the Host plugin that serves the frontend assets. The prefix distinguishes it from frontend application code. |
+| `util/paths/`, `@alego/paths` | `util/home-paths/`, `@alego/home-paths` | The helpers resolve paths under the Harness home. They are not a general path library. Keep the individual function names when they already state the returned path. |
+| `util/retention/`, `@alego/retention` | `util/output-retention/`, `@alego/output-retention` | The policy retains command and tool output. It is not a general data-retention framework. |
+| `E2BSandboxService` | `E2BRuntime` | The class creates, reuses, and disposes the E2B execution environment used by filesystem and subprocess adapters. It is broader than one sandbox handle and narrower than a generic owner. Keep `@alego/e2b`, `ctx.e2b`, and the `e2b/` group. |
+| `@alego/frontend-static` | `@alego/host-frontend-static` | The package is the Host plugin that serves the frontend assets. The prefix distinguishes it from frontend application code. |
 | `PluginInventoryService` | `PluginInventoryGateway` | The class is a Remote-only adapter from the live Loader tree to the `pluginInventory/list` RPC. It owns no same-process service, cache, history, or mutation path. `Gateway` states the role that exists. |
-| `@deepseek-ai/dsh-jsonrpc-demo` | `@deepseek-ai/dsh-sdk-jsonrpc-demo` | The example demonstrates the runtime SDK over JSON-RPC. It belongs to the one SDK meaning. |
-| `@deepseek-ai/dsh-frontend` | `@deepseek-ai/dsh-web-frontend` | The application is the web frontend. Keep its physical `apps/web/` folder. |
+| `@alego/jsonrpc-demo` | `@alego/sdk-jsonrpc-demo` | The example demonstrates the runtime SDK over JSON-RPC. It belongs to the one SDK meaning. |
+| `@alego/frontend` | `@alego/web-frontend` | The application is the web frontend. Keep its physical `apps/web/` folder. |
 
-Keep atomic-write, brand, native-command, timeout utility, directory-picker, `dsh-base`, `dsh-web-app`, app boot, CLI names, and the `headless` package, bundle, and example identity. `headless` is the intended product essence and may later support more than one-shot execution.
+Keep atomic-write, brand, native-command, timeout utility, directory-picker, `alego-base`, `alego-web-app`, app boot, CLI names, and the `headless` package, bundle, and example identity. `headless` is the intended product essence and may later support more than one-shot execution.
 
 ### Client runtime and UI
 
@@ -290,21 +290,21 @@ Keep atomic-write, brand, native-command, timeout utility, directory-picker, `ds
 | `LocaleService` | `LocaleRuntime` | The object coordinates locale definitions, selection, persistence, and change publication. |
 | `ThemeService` | `ThemeRuntime` | The object coordinates themes, preference resolution, system sensing, and change publication. |
 | `LayoutService` | `LayoutController` | The object controls the current UI layout state. |
-| `@deepseek-ai/dsh-client-ui-model` | `@deepseek-ai/dsh-client-ui-model-selection` | The package controls the model selection for a session. The singular `model` name is too broad. |
+| `@alego/client-ui-model` | `@alego/client-ui-model-selection` | The package controls the model selection for a session. The singular `model` name is too broad. |
 | `ModelService`, `ctx.models` | `ModelDirectoryResolver`, `ctx.modelDirectories` | Its only public operation, `directoryFor(sessionId)`, resolves and retains one directory per live session. It has no registration API, so `Registry` would be false. Each `ModelDirectory` remains the consumer-facing catalog of selectable models. |
 | `SettingsScopeService` | `SettingsScopeBinder` | Its sole operation binds one namespace specification to the caller's transport and lifecycle and returns a `SettingsScopeController`. Keep `ctx.settingsScope`; it names the singular binding capability, not a collection of scopes. |
-| `@deepseek-ai/dsh-client-ui-models` | `@deepseek-ai/dsh-client-ui-settings-models` | This package owns the Models settings panel. Keep `ModelsSettingsStore`; it holds one settings view model with data operations and subscriptions and is a real store. |
-| `@deepseek-ai/dsh-client-ui-plugin-config`, `client/ui-plugin-config/` | `@deepseek-ai/dsh-client-ui-settings-plugins`, `client/ui-settings-plugins/` | This package owns the Plugins settings section, not a general plugin-configuration system. The target joins the `ui-settings-*` family and uses the section's plural product name. |
+| `@alego/client-ui-models` | `@alego/client-ui-settings-models` | This package owns the Models settings panel. Keep `ModelsSettingsStore`; it holds one settings view model with data operations and subscriptions and is a real store. |
+| `@alego/client-ui-plugin-config`, `client/ui-plugin-config/` | `@alego/client-ui-settings-plugins`, `client/ui-settings-plugins/` | This package owns the Plugins settings section, not a general plugin-configuration system. The target joins the `ui-settings-*` family and uses the section's plural product name. |
 | `PluginConfigSection`, `PluginConfigSectionProps`, `PluginConfigSectionInjected`, `PluginSettingsTabRow`, `PluginConfigKey`, `settings.pluginConfig` | `PluginsSettingsSection`, `PluginsSettingsSectionProps`, `PluginsSettingsSectionInjected`, `PluginsSettingsTabEntry`, `PluginsSettingsLocaleKey`, `settings.plugins` | The section owns the Plugins settings presentation and tab ledger. The metadata value is one slot entry, not a rendered row. Each card still edits one plugin's configuration. |
-| `@deepseek-ai/dsh-client-ui-plugins`, `client/ui-plugins/`, Loader id `ui-plugins`, `client-ui-plugins-invariant` | `@deepseek-ai/dsh-client-ui-settings-plugin-inventory`, `client/ui-settings-plugin-inventory/`, Loader id `ui-settings-plugin-inventory`, `client-ui-settings-plugin-inventory-invariant` | This later package owns the read-only Plugin Inventory tab in the Plugins settings section. `ui-plugins` is too broad and does not distinguish the inventory from editable plugin settings. |
+| `@alego/client-ui-plugins`, `client/ui-plugins/`, Loader id `ui-plugins`, `client-ui-plugins-invariant` | `@alego/client-ui-settings-plugin-inventory`, `client/ui-settings-plugin-inventory/`, Loader id `ui-settings-plugin-inventory`, `client-ui-settings-plugin-inventory-invariant` | This later package owns the read-only Plugin Inventory tab in the Plugins settings section. `ui-plugins` is too broad and does not distinguish the inventory from editable plugin settings. |
 | `PluginSettingsSection`, `PluginSettingsSectionProps`, `PluginSettingsSectionInjected`, `PluginsKey`, `settings.plugins` in the former `ui-plugins` package | `PluginInventorySettingsTab`, `PluginInventorySettingsTabProps`, `PluginInventorySettingsTabInjected`, `PluginInventoryLocaleKey`, `settings.pluginInventory` | The component is now a tab contribution, not a settings section. The other names state the inventory subject and avoid colliding with `PluginsSettingsSection` and its `settings.plugins` locale namespace. Keep the shared `settings.plugins.tab` slot name; both tabs contribute to the Plugins section through that slot. |
-| `@deepseek-ai/dsh-client-ui-feedback`, `client/ui-feedback/`, Loader id `ui-feedback`, `client-ui-feedback-invariant` | `@deepseek-ai/dsh-client-ui-message-feedback`, `client/ui-message-feedback/`, Loader id `ui-message-feedback`, `client-ui-message-feedback-invariant` | This package presents ratings and notes for assistant messages through the `messageFeedback` Remote. The old name also appears to cover command feedback and any later feedback UI. It does not. |
+| `@alego/client-ui-feedback`, `client/ui-feedback/`, Loader id `ui-feedback`, `client-ui-feedback-invariant` | `@alego/client-ui-message-feedback`, `client/ui-message-feedback/`, Loader id `ui-message-feedback`, `client-ui-message-feedback-invariant` | This package presents ratings and notes for assistant messages through the `messageFeedback` Remote. The old name also appears to cover command feedback and any later feedback UI. It does not. |
 | `FeedbackController`, `FeedbackStatus`, `FeedbackView`, `FeedbackActionResult`, `FeedbackInjected`, `FeedbackActionProps`, `FeedbackActions`, `FeedbackKey` in the former `ui-feedback` package | `MessageFeedbackController`, `MessageFeedbackStatus`, `MessageFeedbackView`, `MessageFeedbackActionResult`, `MessageFeedbackInjected`, `MessageFeedbackActionProps`, `MessageFeedbackActions`, `MessageFeedbackKey` | These are exported Client names. The `Message` qualifier prevents them from claiming every feedback domain. Keep `Controller`: the object accepts rating and note actions and coordinates one Session's load, mutation, conflict, reconnect, and disposal state. |
 | `agent-loop-store.ts`, `bash-store.ts`, `web-search-store.ts` | `agent-loop-card-controller.ts`, `bash-card-controller.ts`, `web-search-card-controller.ts` | Each module exports a card controller. A private `SnapshotStore` field does not make the module a store. |
 | `card-store.ts` | `card-form.ts` | The module owns the staged form, field conversion, and form actions. The snapshot stores it returns are presentation adapters, not the module's main role. |
-| `@deepseek-ai/dsh-client-ui-question` | `@deepseek-ai/dsh-client-ui-user-questions` | The UI presents the user-question seam, not an arbitrary question domain. |
-| `@deepseek-ai/dsh-client-ui-command`, `ui-command/` | `@deepseek-ai/dsh-client-ui-commands`, `ui-commands/` | The package presents and runs a collection of commands. |
-| `@deepseek-ai/dsh-client-ui-directory-picker`, `client/ui-directory-picker/`, Loader id `ui-directory-picker`, `client-ui-directory-picker-invariant` | `@deepseek-ai/dsh-client-ui-directory-picker-browse`, `client/ui-directory-picker-browse/`, Loader id `ui-directory-picker-browse`, `client-ui-directory-picker-browse-invariant` | The Client packages now contain separate `browse` and `native` directory-picker presentations. The unqualified package is the browse implementation, not their shared definition. The target matches the Host backend family and changes no boundary. |
+| `@alego/client-ui-question` | `@alego/client-ui-user-questions` | The UI presents the user-question seam, not an arbitrary question domain. |
+| `@alego/client-ui-command`, `ui-command/` | `@alego/client-ui-commands`, `ui-commands/` | The package presents and runs a collection of commands. |
+| `@alego/client-ui-directory-picker`, `client/ui-directory-picker/`, Loader id `ui-directory-picker`, `client-ui-directory-picker-invariant` | `@alego/client-ui-directory-picker-browse`, `client/ui-directory-picker-browse/`, Loader id `ui-directory-picker-browse`, `client-ui-directory-picker-browse-invariant` | The Client packages now contain separate `browse` and `native` directory-picker presentations. The unqualified package is the browse implementation, not their shared definition. The target matches the Host backend family and changes no boundary. |
 | Client `ctx.command`, `CommandService`, `CommandServiceContract` | `ctx.commandUi`, `CommandUiRuntime`, `CommandUiContract` | The host already owns `ctx.commands`. The client service is the UI runtime for command discovery and execution. Existing `CommandUiSpec` fixes the `Ui` casing. |
 | `ConversationService` | `ConversationController` | The object controls the active conversation state and user actions. |
 | `InputService` | `SessionInputResolver` | The interface resolves the input facade for one session scope. It is neither a global input registry nor an execution service. Keep `InputHub` as the concrete hub and `ctx.conversation.input` as the published face. |
@@ -316,25 +316,25 @@ Use `Ui`, not `UI`, inside PascalCase identifiers. Keep the remaining client pac
 The following debated names stay unchanged because the current scope is accurate or a rename would create a false concept:
 
 - Keep the complete sandbox family and `ctx.sandbox`. Do not introduce `processSandbox`.
-- Keep `@deepseek-ai/dsh-api-gateway`, `ctx.typertGateway`, and `TypertGatewayService`.
+- Keep `@alego/api-gateway`, `ctx.typertGateway`, and `TypertGatewayService`.
 - Keep session projection names. A projection is not only a reducer function.
-- Keep `@deepseek-ai/dsh-session-stats`, `sessionStats`, and `SessionStatsProjection`. They accurately name whole-session statistics and the maintained read model that carries them.
+- Keep `@alego/session-stats`, `sessionStats`, and `SessionStatsProjection`. They accurately name whole-session statistics and the maintained read model that carries them.
 - Keep `GoalService`; it owns the goal state machine, authority, compare-and-set behavior, events, and remote operations. It is not just a store.
 - Keep `SessionTitleService`; its role is a domain service shared by title providers.
 - Keep `PermissionPresetSettingsController` even though it is long. Every word limits the role.
 - Keep `ModelsSettingsStore`; its main contract is one settings data model with store operations.
 - Keep `InputHub`; it is the concrete hub that backs `SessionInputResolver`.
-- Keep `dsh-subagent-dsh-sdk` and provider id `dsh-sdk`; the repeated qualifier prevents ambiguity.
+- Keep `alego-subagent-alego-sdk` and provider id `alego-sdk`; the repeated qualifier prevents ambiguity.
 - Keep `headless`; the product identity is accurate even if the runtime later supports more than one-shot use.
 - Keep deprecated Host `ApiProxy` and client connection names until the API replacement removes them.
 - Keep `Web` for the Host server and the provider-neutral web capability. Use `HTTP` only for the direct fetch provider.
 - Keep `E2B`, not `E2B sandbox`, as the package and context name.
 - Keep MCP, Todo, app boot, base bundle, web-app bundle, and CLI names. Keep the directory-picker capability and Host backend names; only the unqualified Client `browse` presentation is renamed.
-- Keep `@deepseek-ai/dsh-client-ui-directory-picker-native`; its suffix names the native-chooser presentation beside the renamed `-browse` variant. Keep `SURFACE_PACKAGES`; within the directory-picker auto selector it is the package map for the Client presentation half, contrasted with `BACKEND_PACKAGES`.
-- Keep `@deepseek-ai/dsh-host-plugin-inventory`, `ctx.pluginInventory`, the `pluginInventory/list` Remote, and the `PluginInventory*` payload types. They accurately name the Host-owned read-only inventory; only the adapter class and the overly broad Client presentation names change.
+- Keep `@alego/client-ui-directory-picker-native`; its suffix names the native-chooser presentation beside the renamed `-browse` variant. Keep `SURFACE_PACKAGES`; within the directory-picker auto selector it is the package map for the Client presentation half, contrasted with `BACKEND_PACKAGES`.
+- Keep `@alego/host-plugin-inventory`, `ctx.pluginInventory`, the `pluginInventory/list` Remote, and the `PluginInventory*` payload types. They accurately name the Host-owned read-only inventory; only the adapter class and the overly broad Client presentation names change.
 - Keep `ConfigurablePluginsTab`. It is the tab that renders plugins with editable configuration; it does not own the complete Plugins settings section.
 - Keep the shared `settings.plugins.tab` slot. It belongs to the Plugins settings section. The inventory package changes its own locale namespace to `settings.pluginInventory`; it does not create a separate tab slot.
-- Keep the `@deepseek-ai/dsh-message-feedback` capability, `messageFeedback` Remote, assistant-action entry id `feedback`, hook key `feedback`, and locale namespace `feedback`. Their surrounding interfaces already limit them to message feedback or to the local assistant-message slot. Only the broad Client package and exported UI names change.
+- Keep the `@alego/message-feedback` capability, `messageFeedback` Remote, assistant-action entry id `feedback`, hook key `feedback`, and locale namespace `feedback`. Their surrounding interfaces already limit them to message feedback or to the local assistant-message slot. Only the broad Client package and exported UI names change.
 - Keep `RemoteFailure`, `RemoteResult`, and `SessionRemotes`. The first two are Typert carrier-result values, while the last is the set of Remote namespaces used by the Client Session cluster. None is a store, controller, registry, or runtime.
 - Keep the `/export` human command, `/api/session.export` Host route, `DownloadsApi`, and its `sessionLog` operation. The command names the user action, the Host route exports the archive, and the API groups direct HTTP downloads. The renamed Client controller owns the separate browser-download step.
 - Keep `.client` and `.host` in test filenames. They identify the compiler face each test enters and do not claim a product role.
@@ -355,7 +355,7 @@ The following debated names stay unchanged because the current scope is accurate
 
 **Use broad names for possible future features.** Rejected. Name the stable current role. A future boundary change can rename the object again before release or use a new proposal after release. Vague names charge every current reader for an unbuilt future.
 
-**Rename `dsh-compact-basic` to `dsh-compaction-llm`.** Rejected. `LLM` adds no distinction in the current backend family. `basic` is less ambitious and does not claim an algorithm that does not exist.
+**Rename `alego-compact-basic` to `alego-compaction-llm`.** Rejected. `LLM` adds no distinction in the current backend family. `basic` is less ambitious and does not claim an algorithm that does not exist.
 
 **Rename session projections to reducers.** Rejected. Reduction is how a projection is built. The package also owns the read-model value, cache, and lookup contract.
 
@@ -371,7 +371,7 @@ The following debated names stay unchanged because the current scope is accurate
 - Runtime behavior, package boundaries, defaults, policy, durable semantics, and model behavior remain equivalent except where an identifier is itself visible.
 - Package directories, npm names, imports, manifests, TypeScript references and paths, Cordis config, plugin ids, service keys, events, tools, RPC names, persisted names named by the ledger, fixtures, snapshots, examples, generated catalogs, and current prose use the current vocabulary.
 - Current implemented Agent Notes carry the factual name and path changes. The package-regrouping note records the group inventory and package targets, the SDK removal note reserves `SDK` for the runtime protocol, and the timeout-policy note records the package-name rationale.
-- The paired package-creation guide contains the role-word contract, `packages/AGENTS.md` links to it, the terminology table records the chosen words and `Typert` spelling, and root project prose calls the product DeepSeek Harness rather than DeepSeek Harness SDK.
+- The paired package-creation guide contains the role-word contract, `packages/AGENTS.md` links to it, the terminology table records the chosen words and `Typert` spelling, and root project prose calls the product Alego rather than Alego SDK.
 - The removed SDK project toolchain stays absent.
 - `pnpm run check:ci` covers source-plane typecheck, build, package hygiene, generated-reference checks, affected snapshots, translation pairing, `doc-sync`, and lint. Release-shaped Python runtime smokes and required CI cover packaged-runtime and platform paths.
 

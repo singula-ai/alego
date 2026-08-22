@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-DeepSeek Harness 构建于 Cordis 框架之上。本仓库启动时，Cordis core 处于 4.0.0-rc.6（一个候选发布版本）；harness 依赖框架内部实现（fiber 生命周期、dispose（资源释放）、waterfall（瀑布式事件）分发），其确切行为直接关系到 agent loop（智能体循环）的正确性保证。
+Alego 构建于 Cordis 框架之上。本仓库启动时，Cordis core 处于 4.0.0-rc.6（一个候选发布版本）；harness 依赖框架内部实现（fiber 生命周期、dispose（资源释放）、waterfall（瀑布式事件）分发），其确切行为直接关系到 agent loop（智能体循环）的正确性保证。
 
 ## 决策
 

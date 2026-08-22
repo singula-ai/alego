@@ -7,7 +7,7 @@ Archived: 2026-07-26
 
 ## 问题
 
-钩子 bridge——[`dsh-hooks-claude`](../../../../packages/hooks/hooks-claude)（7 个 Claude Code 钩子点）和 [`dsh-hooks-codex`](../../../../packages/hooks/hooks-codex)（5 个 Codex 点）——把外部钩子命令映射到 harness 拦截 seam。它们有深入的单元与覆盖率规格覆盖（每个决策分支、每种 payload dialect，针对 mock seam 驱动），外加一个受密钥门控的 e2e（`hooks.e2e.ts`，实时 `PreToolUse` 阻止）。但完整 transcript（文本记录）快照层——会启动真实 `acp-agent` 子进程、无需密钥重放已记录会话，并将规范化 ACP（Agent Client Protocol）stdout + 重新持久化日志与已提交预期输出进行 diff 的那张网——只覆盖了一个钩子：Claude `UserPromptSubmit` 阻止（`hook-cc-promptsubmit-block`）。
+钩子 bridge——[`alego-hooks-claude`](../../../../packages/hooks/hooks-claude)（7 个 Claude Code 钩子点）和 [`alego-hooks-codex`](../../../../packages/hooks/hooks-codex)（5 个 Codex 点）——把外部钩子命令映射到 harness 拦截 seam。它们有深入的单元与覆盖率规格覆盖（每个决策分支、每种 payload dialect，针对 mock seam 驱动），外加一个受密钥门控的 e2e（`hooks.e2e.ts`，实时 `PreToolUse` 阻止）。但完整 transcript（文本记录）快照层——会启动真实 `acp-agent` 子进程、无需密钥重放已记录会话，并将规范化 ACP（Agent Client Protocol）stdout + 重新持久化日志与已提交预期输出进行 diff 的那张网——只覆盖了一个钩子：Claude `UserPromptSubmit` 阻止（`hook-cc-promptsubmit-block`）。
 
 这正是 mock 单元测试在结构上无法替代的层级：它验证的是真实 bridge 将真实钩子进程的结果翻译到真实 seam 决策，再经由自动化线协议和持久化日志检验真实 agent loop（智能体循环）的反应。一个 bridge 翻译或 loop 结构的回归，即使让所有单元测试保持绿色，也会在除那一个钩子点之外的所有点上逃逸；而对于 Codex bridge，ACP 示例甚至没有加载它，因此没有任何 Codex 钩子能端到端触发。
 
@@ -17,7 +17,7 @@ Archived: 2026-07-26
 
 ### 1. ACP 示例同时加载两种钩子 bridge
 
-`examples/acp-agent/cordis.yml` 和 `cordis.snapshot.yml` 现在同时加载 `dsh-hooks-codex` 与 `dsh-hooks-claude`，各自指向自己的配置文件（Claude 用 `./hooks.json`，Codex 用 `./codex-hooks.json`——两种方言无法共用一个文件）。这是一个真正的产品接口变更，而非仅用于测试的接线：交付的 ACP 服务器（以及 `demo:acp` 入口）现在同时携带两种 bridge。
+`examples/acp-agent/cordis.yml` 和 `cordis.snapshot.yml` 现在同时加载 `alego-hooks-codex` 与 `alego-hooks-claude`，各自指向自己的配置文件（Claude 用 `./hooks.json`，Codex 用 `./codex-hooks.json`——两种方言无法共用一个文件）。这是一个真正的产品接口变更，而非仅用于测试的接线：交付的 ACP 服务器（以及 `demo:acp` 入口）现在同时携带两种 bridge。
 
 这是安全的，因为配置文件不存在时 bridge 是**静默无操作**的：`apply()` 捕获读取失败、通过 `ctx.logger` 记录日志、不注册任何东西——零监听器、零会话事件。`acp-agent` 应用不附带 stdout logger，因此警告不会到达 ACP JSON-RPC 通道。只需要 Claude 钩子的场景（或真实项目）只提供 `hooks.json`；Codex bridge 找不到 `codex-hooks.json` 便自动消失。这已通过实验验证：在两种 bridge 同时加载的情况下，所有既有快照（均不附带 `codex-hooks.json`）逐字节一致。
 

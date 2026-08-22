@@ -3,61 +3,61 @@ import { homedir, tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
-  DEFAULT_DSH_HOME_DISPLAY,
-  DSH_HOME_DIR_NAME,
+  DEFAULT_ALEGO_HOME_DISPLAY,
+  ALEGO_HOME_DIR_NAME,
   canonicalizeWatchPath,
-  defaultDshHome,
-  dshHomeDisplay,
-  dshHomePath,
+  defaultAlegoHome,
+  alegoHomeDisplay,
+  alegoHomePath,
   expandHomePath,
-  resolveDshHome,
-} from '@deepseek-ai/dsh-home-paths'
+  resolveAlegoHome,
+} from '@alego/home-paths'
 
 afterEach(() => {
   vi.unstubAllEnvs()
 })
 
-describe('dsh path helpers', () => {
-  it('owns the shared default DSH home directory name', () => {
-    expect(DSH_HOME_DIR_NAME).toBe('.dsh')
-    expect(DEFAULT_DSH_HOME_DISPLAY).toBe('~/.dsh')
-    expect(defaultDshHome()).toBe(join(homedir(), '.dsh'))
+describe('alego path helpers', () => {
+  it('owns the shared default ALEGO home directory name', () => {
+    expect(ALEGO_HOME_DIR_NAME).toBe('.alego')
+    expect(DEFAULT_ALEGO_HOME_DISPLAY).toBe('~/.alego')
+    expect(defaultAlegoHome()).toBe(join(homedir(), '.alego'))
   })
 
   it('expands tilde paths without changing non-tilde paths', () => {
     expect(expandHomePath('~')).toBe(homedir())
-    expect(expandHomePath('~/.dsh')).toBe(join(homedir(), '.dsh'))
-    expect(expandHomePath('~\\.dsh')).toBe(join(homedir(), '.dsh'))
-    expect(expandHomePath('/tmp/.dsh')).toBe('/tmp/.dsh')
-    expect(expandHomePath('~other/.dsh')).toBe('~other/.dsh')
+    expect(expandHomePath('~/.alego')).toBe(join(homedir(), '.alego'))
+    expect(expandHomePath('~\\.alego')).toBe(join(homedir(), '.alego'))
+    expect(expandHomePath('/tmp/.alego')).toBe('/tmp/.alego')
+    expect(expandHomePath('~other/.alego')).toBe('~other/.alego')
   })
 
-  it('resolves explicit path before DSH_HOME and the default', () => {
-    const envHome = join(homedir(), 'env-dsh')
+  it('resolves explicit path before ALEGO_HOME and the default', () => {
+    const envHome = join(homedir(), 'env-alego')
 
-    expect(resolveDshHome('/tmp/explicit-dsh', { DSH_HOME: '~/env-dsh' })).toBe(resolve('/tmp/explicit-dsh'))
-    expect(resolveDshHome(undefined, { DSH_HOME: '~/env-dsh' })).toBe(envHome)
-    expect(resolveDshHome(undefined, {})).toBe(defaultDshHome())
+    expect(resolveAlegoHome('/tmp/explicit-alego', { ALEGO_HOME: '~/env-alego' })).toBe(resolve('/tmp/explicit-alego'))
+    expect(resolveAlegoHome(undefined, { ALEGO_HOME: '~/env-alego' })).toBe(envHome)
+    expect(resolveAlegoHome(undefined, {})).toBe(defaultAlegoHome())
   })
 
-  it('treats an empty or whitespace-only DSH_HOME as unset', () => {
-    expect(resolveDshHome(undefined, { DSH_HOME: '' })).toBe(defaultDshHome())
-    expect(resolveDshHome(undefined, { DSH_HOME: '   ' })).toBe(defaultDshHome())
+  it('treats an empty or whitespace-only ALEGO_HOME as unset', () => {
+    expect(resolveAlegoHome(undefined, { ALEGO_HOME: '' })).toBe(defaultAlegoHome())
+    expect(resolveAlegoHome(undefined, { ALEGO_HOME: '   ' })).toBe(defaultAlegoHome())
   })
 
-  it('joins child segments onto the resolved DSH_HOME', () => {
-    vi.stubEnv('DSH_HOME', '~/env-dsh')
-    expect(dshHomePath()).toBe(join(homedir(), 'env-dsh'))
-    expect(dshHomePath('storages', 'cache')).toBe(join(homedir(), 'env-dsh', 'storages', 'cache'))
+  it('joins child segments onto the resolved ALEGO_HOME', () => {
+    vi.stubEnv('ALEGO_HOME', '~/env-alego')
+    expect(alegoHomePath()).toBe(join(homedir(), 'env-alego'))
+    expect(alegoHomePath('storages', 'cache')).toBe(join(homedir(), 'env-alego', 'storages', 'cache'))
   })
 
   it('labels a resolved home by whether it is the default root', () => {
-    expect(dshHomeDisplay(resolve(defaultDshHome()))).toBe('~/.dsh')
-    expect(dshHomeDisplay('/some/other/root')).toBe('$DSH_HOME')
+    expect(alegoHomeDisplay(resolve(defaultAlegoHome()))).toBe('~/.alego')
+    expect(alegoHomeDisplay('/some/other/root')).toBe('$ALEGO_HOME')
   })
 
   it('canonicalizes a watcher ancestor while preserving a missing suffix', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-watch-path-'))
+    const root = await mkdtemp(join(tmpdir(), 'alego-watch-path-'))
     const target = join(root, 'target')
     const alias = join(root, 'alias')
     try {

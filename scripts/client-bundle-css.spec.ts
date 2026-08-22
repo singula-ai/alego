@@ -14,11 +14,11 @@ interface CssPlugin {
   load?: (this: { addWatchFile(id: string): void }, id: string) => Promise<string | null>
 }
 
-function cssPlugin(name: 'dsh-css-modules-inline' | 'dsh-css-global-inline' | 'dsh-css-text-inline'): CssPlugin {
+function cssPlugin(name: 'alego-css-modules-inline' | 'alego-css-global-inline' | 'alego-css-text-inline'): CssPlugin {
   const configs = clientBundle(
-    '@deepseek-ai/dsh-client-test',
+    '@alego/client-test',
     ['lib/types/index.js', 'lib/types/invariant.js'],
-  )({ env: { DSH_BUILD_FACE: 'client' } })
+  )({ env: { ALEGO_BUILD_FACE: 'client' } })
   const client = configs.find(config => config.platform === 'browser')
   if (client === undefined) throw new Error('client config missing')
   const plugins = (client as { plugins: CssPlugin[] }).plugins
@@ -29,12 +29,12 @@ function cssPlugin(name: 'dsh-css-modules-inline' | 'dsh-css-global-inline' | 'd
 
 describe('client bundle CSS Modules', () => {
   it('registers the source stylesheet as a watch dependency', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-client-css-watch-'))
+    const root = await mkdtemp(join(tmpdir(), 'alego-client-css-watch-'))
     try {
       const stylesheet = join(root, 'Fixture.module.css')
       const importer = join(root, 'index.ts')
       await writeFile(stylesheet, '.root { color: red; }\n')
-      const plugin = cssPlugin('dsh-css-modules-inline')
+      const plugin = cssPlugin('alego-css-modules-inline')
       const virtualId = plugin.resolveId?.('./Fixture.module.css', importer)
       if (typeof virtualId !== 'string' || plugin.load === undefined) {
         throw new Error('CSS Modules plugin hooks are incomplete')
@@ -53,12 +53,12 @@ describe('client bundle CSS Modules', () => {
 
 describe('client bundle global CSS', () => {
   it('compiles a side-effect stylesheet into a watched style injector', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-client-global-css-watch-'))
+    const root = await mkdtemp(join(tmpdir(), 'alego-client-global-css-watch-'))
     try {
       const stylesheet = join(root, 'base.css')
       const importer = join(root, 'index.ts')
       await writeFile(stylesheet, 'body { color: red; }\n')
-      const plugin = cssPlugin('dsh-css-global-inline')
+      const plugin = cssPlugin('alego-css-global-inline')
       const virtualId = plugin.resolveId?.('./base.css', importer)
       if (typeof virtualId !== 'string' || plugin.load === undefined) {
         throw new Error('global CSS plugin hooks are incomplete')
@@ -76,12 +76,12 @@ describe('client bundle global CSS', () => {
   })
 
   it('compiles inline stylesheets as watched text without a module side effect', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-client-inline-css-watch-'))
+    const root = await mkdtemp(join(tmpdir(), 'alego-client-inline-css-watch-'))
     try {
       const stylesheet = join(root, 'base.css')
       const importer = join(root, 'index.ts')
       await writeFile(stylesheet, 'body { color: red; }\n')
-      const plugin = cssPlugin('dsh-css-text-inline')
+      const plugin = cssPlugin('alego-css-text-inline')
       const virtualId = plugin.resolveId?.('./base.css?inline', importer)
       if (typeof virtualId !== 'string' || plugin.load === undefined) {
         throw new Error('inline CSS plugin hooks are incomplete')

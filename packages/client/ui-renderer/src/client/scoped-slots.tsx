@@ -8,7 +8,7 @@ import {
   type ChainRenderOpts, type HostObservable, type LocaleFace, type RenderOpts,
   type SessionMaybeProvideInfo, type SessionProvideInfo, type SlotRenderer, type SlotRendererHost,
   type SlotScope, type StoredEntry, type Translate,
-} from '@deepseek-ai/dsh-client-ui-slots'
+} from '@alego/client-ui-slots'
 import {
   HostContext, SessionMaybeProvider, SessionProvider, SlotAssemblyError, maybeObservableHook,
   observableHook, projectionHook, useHost, useSessionMaybeProvideInfo,

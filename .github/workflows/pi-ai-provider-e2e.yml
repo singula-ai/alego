@@ -22,7 +22,7 @@ permissions:
 env:
   # CI runs must never report to the production telemetry endpoint baked
   # into apps/cli/cordis.yml (AppCLIEntry disables the row when set).
-  DSH_TELEMETRY_DISABLED: '1'
+  ALEGO_TELEMETRY_DISABLED: '1'
 
 jobs:
   e2e:
@@ -63,10 +63,10 @@ jobs:
         env:
           AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY_EXTERNAL }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY_EXTERNAL }}
-          DSH_PI_AI_OPENAI_MODEL: ${{ inputs.azure_openai_model }}
-          DSH_PI_AI_OPENAI_BASE_URL: https://openai-routerhub-resource.services.ai.azure.com/api/projects/openai/openai/v1
-          DSH_PI_AI_ANTHROPIC_MODEL: ${{ inputs.anthropic_model }}
-          DSH_E2E_MAX_WORKERS: 2
+          ALEGO_PI_AI_OPENAI_MODEL: ${{ inputs.azure_openai_model }}
+          ALEGO_PI_AI_OPENAI_BASE_URL: https://openai-routerhub-resource.services.ai.azure.com/api/projects/openai/openai/v1
+          ALEGO_PI_AI_ANTHROPIC_MODEL: ${{ inputs.anthropic_model }}
+          ALEGO_E2E_MAX_WORKERS: 2
         run: >-
           pnpm exec vitest run --config vitest.e2e.config.ts
           packages/llm/llm-pi-ai/tests/provider-apis.e2e.ts

@@ -16,7 +16,7 @@ The Sidebar declares the `sidebar.settings` single slot; `ui-settings` occupies 
 
 The Settings entry is the Settings row in the sidebar Foot; clicking it directly opens a 1080×700 centered overlay (black 24% mask); the close button, a mask click, and ESC all close it. There is no intermediate menu form of any kind.
 
-`@deepseek-ai/dsh-client-locale` provides `ctx.locale`; `ui-theme` provides `ctx.theme`. Both services read through a getter, write through a setter, and publish immutable snapshots via typed Cordis change events; each service persists its own preference (storing only the id, with bad values falling back to the default).
+`@alego/client-locale` provides `ctx.locale`; `ui-theme` provides `ctx.theme`. Both services read through a getter, write through a setter, and publish immutable snapshots via typed Cordis change events; each service persists its own preference (storing only the id, with bad values falling back to the default).
 
 Each feature row's apply layer subscribes to its own change event (locale to `locale/change`, ui-theme to `theme/change`) and projects the snapshot into the slot store declared when that row registered. React components only read `useStore` and write through the injected setter callbacks, never reading ctx or the services.
 

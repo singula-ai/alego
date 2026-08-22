@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-client-hmr
+# @alego/client-hmr
 
 English | [中文](README.zh.md)
 

@@ -7,7 +7,7 @@ English | [中文](2026-07-02-result-time-applied-hunk-diffs.zh.md)
 
 ## Problem
 
-The [tagged render-intent union](2026-07-02-tool-render-intent-union.md) gives `dsh-tool-fs` write/edit a `card:'diff'` at call time, derived purely from the tool's args: write ⇒ `{oldText:null, newText:content}` (the whole new file), edit ⇒ `{oldText:old_string, newText:new_string}` (the bare replaced snippet). A UI can render that as an inline diff, but it is a **context-free** diff — the bare `old_string`→`new_string` with no surrounding lines, and a `replace_all` that touched five scattered sites still renders as one snippet pair.
+The [tagged render-intent union](2026-07-02-tool-render-intent-union.md) gives `alego-tool-fs` write/edit a `card:'diff'` at call time, derived purely from the tool's args: write ⇒ `{oldText:null, newText:content}` (the whole new file), edit ⇒ `{oldText:old_string, newText:new_string}` (the bare replaced snippet). A UI can render that as an inline diff, but it is a **context-free** diff — the bare `old_string`→`new_string` with no surrounding lines, and a `replace_all` that touched five scattered sites still renders as one snippet pair.
 
 Driving `claude-agent-acp`'s own ACP bridge shows what a full editor diff looks like: after the mutation applies, it emits a SECOND `tool_call_update` whose diff is the **applied hunk with ±3 context lines** (and one hunk per changed site for `replace_all`), reconstructed from the tool's `structuredPatch`. That result-time hunk is what makes Zed show the change *in place* in the file rather than as a floating snippet. Our tools stopped at the call-time snippet; the completed result carried only the plain "updated successfully" text, no diff.
 
@@ -29,8 +29,8 @@ This remains the general shape ("a tool projects durable result presentation"), 
 
 Per the [capability-seam split](2026-06-13-capability-seams.md), the storage backend returns only **storage facts** and the model-facing tool owns **presentation**:
 
-- `dsh-fs` widens `FsEditOutcome` with `{ before: string; after: string }` and `FsWriteOutcome` with `{ before: string | null; after: string }` (`before: null` ⇒ a create, or an existing-but-undiffable binary/non-UTF-8 file). The local backend already holds both texts at write time; it returns them as raw LF-normalized text, with **no diff/UI concept** entering the seam.
-- `dsh-tool-fs` returns canonical before/after mutation facts and projects contextual hunks as `meta: { diffs: FileDiff[] }`. Successful mutations complete with a diff view: creates or unchanged overwrites fall back to an args-derived whole-file diff, while edits use applied hunks. Failed mutations carry no diff metadata and render their error normally.
+- `alego-fs` widens `FsEditOutcome` with `{ before: string; after: string }` and `FsWriteOutcome` with `{ before: string | null; after: string }` (`before: null` ⇒ a create, or an existing-but-undiffable binary/non-UTF-8 file). The local backend already holds both texts at write time; it returns them as raw LF-normalized text, with **no diff/UI concept** entering the seam.
+- `alego-tool-fs` returns canonical before/after mutation facts and projects contextual hunks as `meta: { diffs: FileDiff[] }`. Successful mutations complete with a diff view: creates or unchanged overwrites fall back to an args-derived whole-file diff, while edits use applied hunks. Failed mutations carry no diff metadata and render their error normally.
 
 ### 3. UI transports render a `diff` result view
 
@@ -38,11 +38,11 @@ Per the [capability-seam split](2026-06-13-capability-seams.md), the storage bac
 
 ## Alternatives considered
 
-**Hand-rolling or vendoring the diff algorithm.** Contextual hunks have established edge cases, so `dsh-tool-fs` uses the typed [`diff`](https://www.npmjs.com/package/diff) package and normalizes `structuredPatch` output in one module. The repository's vendoring policy applies to its framework source, not every leaf utility.
+**Hand-rolling or vendoring the diff algorithm.** Contextual hunks have established edge cases, so `alego-tool-fs` uses the typed [`diff`](https://www.npmjs.com/package/diff) package and normalizes `structuredPatch` output in one module. The repository's vendoring policy applies to its framework source, not every leaf utility.
 
 ## Consequences
 
-`tool/result` events carry a tool-private `meta` payload—part of the on-disk vocabulary, runtime-gated to JSON by `Session.append`—and any tool can project durable result presentation without another core change. The diff card reproduces on session reload and snapshot replay for free: it is read back from the log, never recomputed. The costs: an overwrite holds both the prior and new text in memory to compute a UI-only hunk (`TODO(overwrite-diff-bound)`), and `dsh-tool-fs` carries a small, well-known runtime dependency.
+`tool/result` events carry a tool-private `meta` payload—part of the on-disk vocabulary, runtime-gated to JSON by `Session.append`—and any tool can project durable result presentation without another core change. The diff card reproduces on session reload and snapshot replay for free: it is read back from the log, never recomputed. The costs: an overwrite holds both the prior and new text in memory to compute a UI-only hunk (`TODO(overwrite-diff-bound)`), and `alego-tool-fs` carries a small, well-known runtime dependency.
 
 ## Non-goals
 

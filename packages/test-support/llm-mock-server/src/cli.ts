@@ -1,6 +1,6 @@
 /**
  * Dependency-free CLI parsing for the standalone mock LLM server.
- * @module @deepseek-ai/dsh-llm-mock-server/cli
+ * @module @alego/llm-mock-server/cli
  */
 
 import { parseArgs } from 'node:util'
@@ -25,7 +25,7 @@ export interface MockLlmCliConfig {
   readonly startsUnavailable: boolean
 }
 
-/** Result of parsing `dsh-llm-mock-server` arguments. */
+/** Result of parsing `alego-llm-mock-server` arguments. */
 export type MockLlmCliParseResult =
   | { readonly kind: 'help' }
   | { readonly kind: 'run'; readonly config: MockLlmCliConfig }
@@ -34,7 +34,7 @@ const BEHAVIORS = new Set<string>(MOCK_LLM_BEHAVIORS)
 const DEFAULT_LISTEN_DELAY_MS = 750
 
 /** Command usage written for `--help` and invalid arguments. */
-export const MOCK_LLM_CLI_USAGE = `Usage: dsh-llm-mock-server [options]
+export const MOCK_LLM_CLI_USAGE = `Usage: alego-llm-mock-server [options]
 
 Required:
   --sequence <a,b,...>       Ordered behaviors; connection_refused is allowed first
@@ -66,14 +66,14 @@ Other:
 
 function numberValue(option: string, value: string): number {
   const parsed = Number(value)
-  if (!Number.isFinite(parsed)) throw new Error(`dsh-llm-mock-server: ${option} must be a finite number`)
+  if (!Number.isFinite(parsed)) throw new Error(`alego-llm-mock-server: ${option} must be a finite number`)
   return parsed
 }
 
 function boundedIntegerValue(option: string, value: string, min: number, max: number): number {
   const parsed = numberValue(option, value)
   if (!Number.isInteger(parsed) || parsed < min || parsed > max) {
-    throw new Error(`dsh-llm-mock-server: ${option} must be an integer between ${min} and ${max}`)
+    throw new Error(`alego-llm-mock-server: ${option} must be an integer between ${min} and ${max}`)
   }
   return parsed
 }
@@ -81,18 +81,18 @@ function boundedIntegerValue(option: string, value: string, min: number, max: nu
 function parseSequence(raw: string): { startsUnavailable: boolean; sequence: MockLlmBehavior[] } {
   const entries = raw.split(',').map(entry => entry.trim())
   if (entries.some(entry => entry.length === 0)) {
-    throw new Error('dsh-llm-mock-server: --sequence must contain non-empty comma-separated behaviors')
+    throw new Error('alego-llm-mock-server: --sequence must contain non-empty comma-separated behaviors')
   }
   const startsUnavailable = entries[0] === CONNECTION_REFUSED_BEHAVIOR
   if (entries.slice(1).includes(CONNECTION_REFUSED_BEHAVIOR)) {
-    throw new Error('dsh-llm-mock-server: connection_refused is allowed only as the first behavior')
+    throw new Error('alego-llm-mock-server: connection_refused is allowed only as the first behavior')
   }
   const requestEntries = startsUnavailable ? entries.slice(1) : entries
   if (requestEntries.length === 0) {
-    throw new Error('dsh-llm-mock-server: connection_refused must be followed by a request behavior')
+    throw new Error('alego-llm-mock-server: connection_refused must be followed by a request behavior')
   }
   for (const entry of requestEntries) {
-    if (!BEHAVIORS.has(entry)) throw new Error(`dsh-llm-mock-server: unknown behavior ${JSON.stringify(entry)}`)
+    if (!BEHAVIORS.has(entry)) throw new Error(`alego-llm-mock-server: unknown behavior ${JSON.stringify(entry)}`)
   }
   return { startsUnavailable, sequence: requestEntries as MockLlmBehavior[] }
 }
@@ -102,13 +102,13 @@ function parseRandomWeights(raw: string): MockLlmRandomWeights {
   for (const entry of raw.split(',')) {
     const [behavior, rawWeight, ...extra] = entry.split('=')
     if (behavior === undefined || behavior === '' || rawWeight === undefined || rawWeight === '' || extra.length > 0) {
-      throw new Error('dsh-llm-mock-server: --random-weights expects behavior=weight comma-separated entries')
+      throw new Error('alego-llm-mock-server: --random-weights expects behavior=weight comma-separated entries')
     }
     if (!BEHAVIORS.has(behavior) || behavior === 'random') {
-      throw new Error(`dsh-llm-mock-server: random weight requires a concrete behavior, got ${JSON.stringify(behavior)}`)
+      throw new Error(`alego-llm-mock-server: random weight requires a concrete behavior, got ${JSON.stringify(behavior)}`)
     }
     if (Object.hasOwn(weights, behavior)) {
-      throw new Error(`dsh-llm-mock-server: duplicate random weight for ${JSON.stringify(behavior)}`)
+      throw new Error(`alego-llm-mock-server: duplicate random weight for ${JSON.stringify(behavior)}`)
     }
     weights[behavior as ConcreteMockLlmBehavior] = numberValue('--random-weights', rawWeight)
   }
@@ -171,17 +171,17 @@ export function parseMockLlmCliArgs(argv: readonly string[]): MockLlmCliParseRes
   const toolName = values['tool-name']
   const toolArguments = values['tool-arguments']
 
-  if (values.sequence === undefined) throw new Error('dsh-llm-mock-server: --sequence is required')
+  if (values.sequence === undefined) throw new Error('alego-llm-mock-server: --sequence is required')
   const sequenceRaw = values.sequence
   const parsedSequence = parseSequence(sequenceRaw)
   if (parsedSequence.startsUnavailable && port === 0) {
-    throw new Error('dsh-llm-mock-server: connection_refused requires an explicit nonzero --port')
+    throw new Error('alego-llm-mock-server: connection_refused requires an explicit nonzero --port')
   }
   if (!parsedSequence.startsUnavailable && listenDelayMs !== undefined) {
-    throw new Error('dsh-llm-mock-server: --listen-delay-ms requires connection_refused first in --sequence')
+    throw new Error('alego-llm-mock-server: --listen-delay-ms requires connection_refused first in --sequence')
   }
   if (!parsedSequence.sequence.includes('random') && (randomSeed !== undefined || randomWeights !== undefined)) {
-    throw new Error('dsh-llm-mock-server: --seed and --random-weights require random in --sequence')
+    throw new Error('alego-llm-mock-server: --seed and --random-weights require random in --sequence')
   }
 
   return {

@@ -25,7 +25,7 @@ afterEach(() => {
 })
 
 async function scratch(): Promise<string> {
-  return mkdtemp(join(tmpdir(), 'dsh-atomic-write-'))
+  return mkdtemp(join(tmpdir(), 'alego-atomic-write-'))
 }
 
 /** Resolve once the lockfile exists, so contention is measured against a held lock. */

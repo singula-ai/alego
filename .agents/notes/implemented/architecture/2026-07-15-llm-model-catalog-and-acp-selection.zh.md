@@ -24,7 +24,7 @@ ACP 选择还必须保留提供方维度。同一个模型 ID 可能存在于多
 
 目录成员关系仅提供建议。它驱动选择器与诊断，但不会改变 `stream()` 路由，也不会拒绝原本有效的请求。提供方所有权仍然具有排他性并绑定生命周期；模型 ID 仍是请求时传给适配器的输入。
 
-`dsh-llm-pi-ai` 将已配置提供方的 `getModels(provider)` 返回的已安装条目映射为提供方无关的目录。其现有请求时目录查询仍是权威依据，未知模型仍以 `UNKNOWN_MODEL` 失败。`dsh-llm-deepseek` 接受包含展示条目的可选 `models` 配置，默认包含名为 `DeepSeek-V4-Flash` 的 `deepseek-v4-flash`、名为 `DeepSeek-V4-Pro` 的 `deepseek-v4-pro`，以及名为 `DeepSeek-V4-Flash-Vision-Exp`、支持图片输入的 `deepseek-v4-flash-vision-exp`。显式列表会替换这些默认值，空列表则关闭发现。这些条目改善已知公开或私有模型的选择体验，而所有未列出的模型 ID 仍会原样透传。
+`alego-llm-pi-ai` 将已配置提供方的 `getModels(provider)` 返回的已安装条目映射为提供方无关的目录。其现有请求时目录查询仍是权威依据，未知模型仍以 `UNKNOWN_MODEL` 失败。`alego-llm-deepseek` 接受包含展示条目的可选 `models` 配置，默认包含名为 `DeepSeek-V4-Flash` 的 `deepseek-v4-flash`、名为 `DeepSeek-V4-Pro` 的 `deepseek-v4-pro`，以及名为 `DeepSeek-V4-Flash-Vision-Exp`、支持图片输入的 `deepseek-v4-flash-vision-exp`。显式列表会替换这些默认值，空列表则关闭发现。这些条目改善已知公开或私有模型的选择体验，而所有未列出的模型 ID 仍会原样透传。
 
 ### 前端内的会话级选择
 
@@ -34,7 +34,7 @@ ACP 自动化传输层不是目录消费方。它通过部署配置为新创建�
 
 ### 提示词／请求一致性与持久化
 
-`installModelSelection`（位于 `dsh-agent`）为前端拥有的选择安装 agent 作用域的 `system-prompt/assemble` 与 `agent/request` 监听器。提示词组装在每个步骤对所选组合做一次快照，在下游提示词监听器之后覆写组装出的 `provider` 与 `model` 变量；请求监听器在下游请求监听器之后应用同一快照。因此，发生在异步组装期间的选择会从下一个步骤生效，而不会让提示词文本与路由分裂。其他调用配置字段保持不变。
+`installModelSelection`（位于 `alego-agent`）为前端拥有的选择安装 agent 作用域的 `system-prompt/assemble` 与 `agent/request` 监听器。提示词组装在每个步骤对所选组合做一次快照，在下游提示词监听器之后覆写组装出的 `provider` 与 `model` 变量；请求监听器在下游请求监听器之后应用同一快照。因此，发生在异步组装期间的选择会从下一个步骤生效，而不会让提示词文本与路由分裂。其他调用配置字段保持不变。
 
 请求头仍是持久化的真源。当某个选择真正被使用时，现有的完整 `request/header` 快照会记录它；前端先从折叠后的最后一个请求头初始化其选择，然后才回退到创建选项。从未被请求使用的选择有意只保留在内存中，因为它从未成为模型可见状态。
 

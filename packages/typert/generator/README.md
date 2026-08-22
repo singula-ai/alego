@@ -1,10 +1,10 @@
-# @deepseek-ai/dsh-typert-generator
+# @alego/typert-generator
 
 English | [中文](README.zh.md)
 
 TypeScript project analyzer and model-driven Typert generator. It converts the developer-authored source type tree into compiler-independent `FaceModel` and `TypeGraph` data before any artifact is rendered. Static analysis can consume that model without Cordis; emitters never receive TypeScript AST or checker objects.
 
-The analyzer can use independent `ts.Program` instances seeded from `tsconfig.host.json` or `tsconfig.client.json`. Direct project references establish compiler-face membership, while package subpaths establish Typert runtime-face contributions: an ordinary single-project package declaring `dsh.client` may contribute both Host and Client runtime models, and only a split project explicitly referenced through `tsconfig.host.json` or `tsconfig.client.json` is restricted to that corresponding face. `package.json#exports` establishes every cross-package public boundary, and source imports or re-exports are the only allowed cross-face edges. Types owned by NPM dependencies, including global declarations from `@types` packages, remain `external` references instead of being expanded.
+The analyzer can use independent `ts.Program` instances seeded from `tsconfig.host.json` or `tsconfig.client.json`. Direct project references establish compiler-face membership, while package subpaths establish Typert runtime-face contributions: an ordinary single-project package declaring `alego.client` may contribute both Host and Client runtime models, and only a split project explicitly referenced through `tsconfig.host.json` or `tsconfig.client.json` is restricted to that corresponding face. `package.json#exports` establishes every cross-package public boundary, and source imports or re-exports are the only allowed cross-face edges. Types owned by NPM dependencies, including global declarations from `@types` packages, remain `external` references instead of being expanded.
 
 ## Analysis Model
 

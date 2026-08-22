@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-tool-lsp
+# @alego/tool-lsp
 
 [English](README.md) | 中文
 
@@ -18,7 +18,7 @@ Namespace 插件（`name`／`inject`／`Config`／`apply`，无默认导出）�
 |---|---|---|
 | `maxLocations` | `100` | 出现省略标记前可渲染位置的最大数量。 |
 | `maxResultChars` | `16000` | 完整渲染结果的最大长度，包括截断元数据。 |
-| `timeoutMs` | `60000` | 由 `dsh-tool-call-timeout-policy` 强制执行的工具调用超时预算；覆盖完整的排队打开／查询／关闭生命周期，且模型不可配置。 |
+| `timeoutMs` | `60000` | 由 `alego-tool-call-timeout-policy` 强制执行的工具调用超时预算；覆盖完整的排队打开／查询／关闭生命周期，且模型不可配置。 |
 
 ## 模型体验
 
@@ -46,7 +46,7 @@ Use search/read for ordinary navigation. Use lsp when textual matches are ambigu
 
 #### 模型看到的内容
 
-模型会看到生成的 [`lsp` schema](../../../docs/tool-catalog.zh.md#deepseek-aidsh-tool-lsp)。
+模型会看到生成的 [`lsp` schema](../../../docs/tool-catalog.zh.md#alegotool-lsp)。
 
 #### Token 影响
 

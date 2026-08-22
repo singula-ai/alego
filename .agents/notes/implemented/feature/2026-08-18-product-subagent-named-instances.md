@@ -8,13 +8,13 @@ English | [中文](2026-08-18-product-subagent-named-instances.zh.md)
 
 A Profile can mount one Cordis plugin package in multiple rows, but the Codex and Claude Code product providers previously registered every row under one fixed product name. A second row therefore failed as a duplicate before its distinct permission mode, environment, or process-release settings could become usable. Deriving an implicit name from those settings would create a second identity rule, while choosing a provider during a tool call would let model input select deployment authority.
 
-The existing subagent registry already owns unique provider names, reversible registration, lifecycle events, and holder-owned published runs. The existing `dsh-tool-subagent` configuration already binds one provider name to one model-visible tool name. Product providers need to expose the missing Profile-owned identity without adding another registry or selection protocol.
+The existing subagent registry already owns unique provider names, reversible registration, lifecycle events, and holder-owned published runs. The existing `alego-tool-subagent` configuration already binds one provider name to one model-visible tool name. Product providers need to expose the missing Profile-owned identity without adding another registry or selection protocol.
 
 ## Decision
 
 Each product provider Config owns a non-empty `providerName`; the defaults remain `codex` and `claude-code`. The resolved name is fixed when the plugin row loads and becomes the Provider object's `name`; registration, lookup, lifecycle events, run logs, and HMR removal therefore use the same value. Each mounted row retains its own `permissionMode`, `env`, `disposeGraceMs`, and run resources.
 
-Profiles may mount multiple Codex or Claude Code rows when every row uses a distinct `providerName`. Each `dsh-tool-subagent` row continues to bind its existing `provider` field to that exact name and exposes an independently configured `toolName`. Tool calls carry no provider selector, alias, or permission input. A duplicate provider name fails through the existing `DUPLICATE_PROVIDER` path and leaves the first registration intact.
+Profiles may mount multiple Codex or Claude Code rows when every row uses a distinct `providerName`. Each `alego-tool-subagent` row continues to bind its existing `provider` field to that exact name and exposes an independently configured `toolName`. Tool calls carry no provider selector, alias, or permission input. A duplicate provider name fails through the existing `DUPLICATE_PROVIDER` path and leaves the first registration intact.
 
 Removing one provider row blocks new starts and removes only tools bound to that name. Runs already published by the removed instance remain owned by their holders and settle or dispose independently. Sibling instances remain registered and keep their own environment, native permission mode, cancellation controller, product process, and cleanup grace.
 
@@ -24,7 +24,7 @@ Removing one provider row blocks new starts and removes only tools bound to that
 | --- | --- | --- |
 | Provider instance name | Product Provider Config | One immutable registry name per mounted row, with the existing default when omitted |
 | Name uniqueness and lifecycle events | `ctx.subagents` | Duplicate registration fails; disposal removes only the matching name |
-| Model-visible tool name and binding | `dsh-tool-subagent` Config | One static tool resolves one configured provider name |
+| Model-visible tool name and binding | `alego-tool-subagent` Config | One static tool resolves one configured provider name |
 | Permission, environment, and process cleanup | One Provider instance | Concurrent runs and sibling instances do not share deployment configuration or run resources |
 
 ## Verification

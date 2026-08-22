@@ -1,12 +1,12 @@
-# @deepseek-ai/dsh-skill
+# @alego/skill
 
 [English](README.md) | 中文
 
 纯 agent skill（智能体技能）提供方注册表。
 
-该包负责 `ctx.skills` 接口。它不知道 skill 来自本地文件、嵌入式插件数据、HTTP 还是其他后端；提供方通过 `ctx.skills.registerProvider(...)` 注册这些来源。已发布的本地实现是 [`@deepseek-ai/dsh-skill-filesystem`](../skill-filesystem)。
+该包负责 `ctx.skills` 接口。它不知道 skill 来自本地文件、嵌入式插件数据、HTTP 还是其他后端；提供方通过 `ctx.skills.registerProvider(...)` 注册这些来源。已发布的本地实现是 [`@alego/skill-filesystem`](../skill-filesystem)。
 
-注册表基于 [`@deepseek-ai/dsh-scope`](../../core/scope) 采用宿主 + 按 scope 的分层结构，即工具注册表确立的形态：注册落入调用方上下文 scope 对应的层——宿主行与 repository 插件落入全局层，由 agent preset 常驻组合挂载的插件落入该 preset 的层——读取时将全局层与观察 scope 的链合并，最近层直接赢得重名，rank 只在单层内裁决重名。
+注册表基于 [`@alego/scope`](../../core/scope) 采用宿主 + 按 scope 的分层结构，即工具注册表确立的形态：注册落入调用方上下文 scope 对应的层——宿主行与 repository 插件落入全局层，由 agent preset 常驻组合挂载的插件落入该 preset 的层——读取时将全局层与观察 scope 的链合并，最近层直接赢得重名，rank 只在单层内裁决重名。
 
 ## 服务：`SkillRegistry`（ctx 键：`skills`）
 
@@ -41,7 +41,7 @@
 
 ### 共享的面向模型渲染
 
-`renderSkillContent(skill)` 把一个已加载 skill 渲染为规范的 `<skill_content>` 块（转义后的 `name` 属性、资源提示、原样正文）。它是两条加载路径的唯一真源：`dsh-tool-skill` 将其作为 `skill` 工具结果返回，并在用户显式的手势边界将其注入，因此无论加载由谁发起，模型看到的都是同一种形态。`escapeText` 随之一并导出，供要在同一标记框架中嵌入文案的消费方使用。该包还声明 `skill-invocation` 这个 `MessageSource` kind（{ name, form: 'instructions' }），用户显式注入会把它打在自己的消息上——transcript（文本记录）消费方依据这份元数据呈现该次调用，而不是重新解析正文。
+`renderSkillContent(skill)` 把一个已加载 skill 渲染为规范的 `<skill_content>` 块（转义后的 `name` 属性、资源提示、原样正文）。它是两条加载路径的唯一真源：`alego-tool-skill` 将其作为 `skill` 工具结果返回，并在用户显式的手势边界将其注入，因此无论加载由谁发起，模型看到的都是同一种形态。`escapeText` 随之一并导出，供要在同一标记框架中嵌入文案的消费方使用。该包还声明 `skill-invocation` 这个 `MessageSource` kind（{ name, form: 'instructions' }），用户显式注入会把它打在自己的消息上——transcript（文本记录）消费方依据这份元数据呈现该次调用，而不是重新解析正文。
 
 `isModelInvocable(skill)` 和 `isUserInvocable(skill)` 分别直接读取对应的正向字段。`ctx.skills.get()` 仍是受信且与策略无关的加载原语，因此每个面向用户或模型的消费方都必须先执行与自身接口匹配的判定，再暴露或加载 skill。
 
@@ -61,11 +61,11 @@
 
 ## 消费方边界
 
-注册表不渲染模型指引，也不注册面向模型的工具。[`@deepseek-ai/dsh-tool-skill`](../tool-skill) 消费 `ctx.skills` 以提供持久会话目录和 `skill` 工具，因此提供方仍与模型接口独立。
+注册表不渲染模型指引，也不注册面向模型的工具。[`@alego/tool-skill`](../tool-skill) 消费 `ctx.skills` 以提供持久会话目录和 `skill` 工具，因此提供方仍与模型接口独立。
 
 ## 模型体验
 
-通过 `dsh-tool-skill` 间接影响模型；该包将提供方摘要渲染到持久的初始目录或替换目录消息中，并将已加载指令渲染到已保留工具结果中。
+通过 `alego-tool-skill` 间接影响模型；该包将提供方摘要渲染到持久的初始目录或替换目录消息中，并将已加载指令渲染到已保留工具结果中。
 
 #### KV Cache 影响
 

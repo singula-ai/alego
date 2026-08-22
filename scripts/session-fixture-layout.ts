@@ -4,8 +4,8 @@ import { deepStrictEqual } from 'node:assert'
 import { execFileSync } from 'node:child_process'
 import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { packChunkRuns, type SessionEvent } from '@deepseek-ai/dsh-session'
-import { parseSessionLog } from '@deepseek-ai/dsh-llm-replay'
+import { packChunkRuns, type SessionEvent } from '@alego/session'
+import { parseSessionLog } from '@alego/llm-replay'
 
 /** One repository session fixture and its canonical projected representation. */
 export interface SessionFixtureLayout {

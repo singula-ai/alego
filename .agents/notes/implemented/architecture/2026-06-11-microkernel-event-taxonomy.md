@@ -17,7 +17,7 @@ Pure Cordis event taxonomy. The loop's extension points are typed events with de
 - **parallel** (awaited fan-out) where every listener must get an independent chance: the `session/flush` durability checkpoint.
 - **emit** (synchronous fire-and-forget) for notifications: inbox transitions, lifecycle, errors, and the contained immutable `tools/result` observation. Durable session events own turn and step boundaries.
 
-The event vocabulary lives in contract packages (`dsh-agent` declares the `agent/*` events); `@deepseek-ai/dsh-agent-loop` is the only concrete loop plugin and is itself swappable — nothing outside it may depend on it.
+The event vocabulary lives in contract packages (`alego-agent` declares the `agent/*` events); `@alego/agent-loop` is the only concrete loop plugin and is itself swappable — nothing outside it may depend on it.
 
 ## Alternatives considered
 

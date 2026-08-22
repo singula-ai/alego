@@ -10,9 +10,9 @@ Status: implemented
 
 ## 决策
 
-第三个同级包 **`dsh-host-directory-picker-auto`**：一个只有 node 半侧的*选择器*，不持有任何选取代码，也没有 UI。它的 `apply` 在启动时恰好采样一次宿主事实——从注入的 `httpServer` 读绑定宿主（新增的 `host` getter 与既有的 `port` 对称）、`SSH_CONNECTION`／`SSH_TTY`、平台、`DISPLAY`／`WAYLAND_DISPLAY`、以及对 Linux 选择器二进制（zenity／kdialog）的一次 `PATH` 探查——经由一个导出的纯函数判定，再用 `ctx.loader.create({name})` 把选中的双面后端挂进 Loader 的**内存根树**；该 effect 的 disposer 会移除该条目并汇入后端 fiber 的拆卸（单靠 `remove()` 只是启动拆卸），因此，只有后端完全停稳后，选择器的卸载才会完成。`native` 要求全部“有人值守且可服务”信号：回环绑定 ∧ 无 SSH 标记 ∧ native 后端能驱动的显示会话——darwin／win32 上视为存在，linux 上要求 `DISPLAY`／`WAYLAND_DISPLAY` 外加一个选择器二进制，其余平台一律不成立（native 后端恰好支持 darwin／win32／linux）。任何含糊情形都判定为处处可用的 `browse`。`apps/cli` 现在把 `-auto` 挂为它的 `directory-picker` 行；直接组合 `-native` 或 `-browse` 仍是固定交互的方式。
+第三个同级包 **`alego-host-directory-picker-auto`**：一个只有 node 半侧的*选择器*，不持有任何选取代码，也没有 UI。它的 `apply` 在启动时恰好采样一次宿主事实——从注入的 `httpServer` 读绑定宿主（新增的 `host` getter 与既有的 `port` 对称）、`SSH_CONNECTION`／`SSH_TTY`、平台、`DISPLAY`／`WAYLAND_DISPLAY`、以及对 Linux 选择器二进制（zenity／kdialog）的一次 `PATH` 探查——经由一个导出的纯函数判定，再用 `ctx.loader.create({name})` 把选中的双面后端挂进 Loader 的**内存根树**；该 effect 的 disposer 会移除该条目并汇入后端 fiber 的拆卸（单靠 `remove()` 只是启动拆卸），因此，只有后端完全停稳后，选择器的卸载才会完成。`native` 要求全部“有人值守且可服务”信号：回环绑定 ∧ 无 SSH 标记 ∧ native 后端能驱动的显示会话——darwin／win32 上视为存在，linux 上要求 `DISPLAY`／`WAYLAND_DISPLAY` 外加一个选择器二进制，其余平台一律不成立（native 后端恰好支持 darwin／win32／linux）。任何含糊情形都判定为处处可用的 `browse`。`apps/cli` 现在把 `-auto` 挂为它的 `directory-picker` 行；直接组合 `-native` 或 `-browse` 仍是固定交互的方式。
 
-条目级挂载之所以是承重机制：client 模块表（`dsh-client-modules`）基于 `internal/plugin` 对 **Loader 条目**做响应式协调，因此以真实条目挂载的后端，其 browser half 被发现的方式与配置行完全相同——seam 的“一行同时换两面”不变式在自适应下依然成立，且没有一行重复的 client 代码。开发环境的 HMR 行（`AppCLIEntry`）是该机制的先例。瞄准根树很关键：根树的 `write()` 是 no-op，因此判定出的行绝不会被持久化回 `cordis.yml`（Include 子树*会*写回）。
+条目级挂载之所以是承重机制：client 模块表（`alego-client-modules`）基于 `internal/plugin` 对 **Loader 条目**做响应式协调，因此以真实条目挂载的后端，其 browser half 被发现的方式与配置行完全相同——seam 的“一行同时换两面”不变式在自适应下依然成立，且没有一行重复的 client 代码。开发环境的 HMR 行（`AppCLIEntry`）是该机制的先例。瞄准根树很关键：根树的 `write()` 是 no-op，因此判定出的行绝不会被持久化回 `cordis.yml`（Include 子树*会*写回）。
 
 ## 曾考虑的替代方案
 

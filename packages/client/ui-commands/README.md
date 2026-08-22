@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-client-ui-commands
+# @alego/client-ui-commands
 
 English | [中文](README.zh.md)
 

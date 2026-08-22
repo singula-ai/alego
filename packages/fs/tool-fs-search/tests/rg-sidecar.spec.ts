@@ -27,7 +27,7 @@ describe('ripgrep resolution', () => {
     Reflect.defineProperty(process, 'pkg', { configurable: true, value: {} })
     existsSync.mockReturnValue(true)
     const sidecar = `${process.execPath}-rg`
-    const { resolveRgPath } = await import('@deepseek-ai/dsh-tool-fs-search')
+    const { resolveRgPath } = await import('@alego/tool-fs-search')
 
     await expect(resolveRgPath()).resolves.toBe(sidecar)
     expect(existsSync).toHaveBeenCalledWith(sidecar)
@@ -35,7 +35,7 @@ describe('ripgrep resolution', () => {
 
   it('uses the dependency binary in an ordinary Node process', async () => {
     existsSync.mockReturnValue(true)
-    const { resolveRgPath } = await import('@deepseek-ai/dsh-tool-fs-search')
+    const { resolveRgPath } = await import('@alego/tool-fs-search')
 
     await expect(resolveRgPath()).resolves.toBe(dependencyRgPath)
     expect(existsSync).not.toHaveBeenCalled()
@@ -44,7 +44,7 @@ describe('ripgrep resolution', () => {
   it('uses the dependency binary when a packaged runtime has no sidecar', async () => {
     Reflect.defineProperty(process, 'pkg', { configurable: true, value: {} })
     existsSync.mockReturnValue(false)
-    const { resolveRgPath } = await import('@deepseek-ai/dsh-tool-fs-search')
+    const { resolveRgPath } = await import('@alego/tool-fs-search')
 
     await expect(resolveRgPath()).resolves.toBe(dependencyRgPath)
     expect(existsSync).toHaveBeenCalledWith(`${process.execPath}-rg`)

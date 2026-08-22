@@ -14,16 +14,16 @@ Status: rejected — 下列每一项替换在证据上都未达到净简化门�
 
 **协议与解析：**
 
-- **以 `vscode-jsonrpc` 承担 LSP 基础协议的分帧/关联**（`lsp-stdio`）：可替换的核心只占 src 约 1,800 行中的约 255 行；该包无法表达已配置的 `maxMessageBytes` 入站大小上限（要恢复它就得重建被删掉的分帧代码），反转了取消宽限期的拆除语义（`raceAbort` 立即 reject 再拆除；vscode-jsonrpc 让 promise 保持挂起），会在真实服务器输出的 header 前 stdout 横幅上报错，而且在这个全面采用 ESM 的仓库里它是 CJS。[LSP seam 决策](../../implemented/architecture/2026-07-15-lsp-capability-seam.zh.md)把 JSON-RPC 的所有权划给 `dsh-lsp-stdio`；本次审计正是对该决策当时缺失的这项依赖权衡的明文记录。
+- **以 `vscode-jsonrpc` 承担 LSP 基础协议的分帧/关联**（`lsp-stdio`）：可替换的核心只占 src 约 1,800 行中的约 255 行；该包无法表达已配置的 `maxMessageBytes` 入站大小上限（要恢复它就得重建被删掉的分帧代码），反转了取消宽限期的拆除语义（`raceAbort` 立即 reject 再拆除；vscode-jsonrpc 让 promise 保持挂起），会在真实服务器输出的 header 前 stdout 横幅上报错，而且在这个全面采用 ESM 的仓库里它是 CJS。[LSP seam 决策](../../implemented/architecture/2026-07-15-lsp-capability-seam.zh.md)把 JSON-RPC 的所有权划给 `alego-lsp-stdio`；本次审计正是对该决策当时缺失的这项依赖权衡的明文记录。
 - **以 `vscode-languageserver-types` 承担 lsp-stdio 的协议类型子集**：约 80 行类型加约 45 行守卫，但上游守卫在两个方向上都与本仓库不一致（接受本仓库必须拒绝的 `uri: undefined`；强制要求本仓库容忍缺失的 `targetRange`），而且 initialize 结果的形状住在 `vscode-languageserver-protocol` 里，会把 `vscode-jsonrpc` 拖成运行时依赖——为 80 行严格贴合规范的代码付出约 1 MB。
-- **以 `json-rpc-2.0` 替换 `dsh-sdk-jsonrpc-server`**：可删除的关联/分发代码确实存在（约 100–130 行），但 NDJSON 协议格式（wire format）必须与手写的 Python SDK 客户端逐位一致，该包只有单一维护者，且 [GUI RPC 决策](../../implemented/architecture/2026-07-19-gui-layering-and-rpc-protocol.zh.md)已把这个包当作冻结的窄接口面对待。`vscode-jsonrpc` 更不合适（Content-Length 分帧、该协议并不具备的取消词汇）。
+- **以 `json-rpc-2.0` 替换 `alego-sdk-jsonrpc-server`**：可删除的关联/分发代码确实存在（约 100–130 行），但 NDJSON 协议格式（wire format）必须与手写的 Python SDK 客户端逐位一致，该包只有单一维护者，且 [GUI RPC 决策](../../implemented/architecture/2026-07-19-gui-layering-and-rpc-protocol.zh.md)已把这个包当作冻结的窄接口面对待。`vscode-jsonrpc` 更不合适（Content-Length 分帧、该协议并不具备的取消词汇）。
 - **以 `jsonrpcclient` 承担 Python SDK 客户端**：v4 只做消息的构造/解析——约 20 行——而真正要紧的 500 行（子进程生命周期、线程化读取器、id 关联、双向的服务端角色应答）全都保留；该库处于低维护模式。
 - **以 `eventsource-parser` 替换 apiproxy 的 `readSse`**：可删除的分帧只有约 15 行，线路两端都在仓库内，规范符合性无关紧要，而且这会给一个浏览器安全的包添加依赖。（对比[已归档的 llm-deepseek 依赖决策](../../archived/simplification/2026-07-26-eventsource-parser-for-deepseek-sse.md)：那里线路对面是真实的提供方。）
 
 **重试、定时器与异步：**
 
 - **以 `p-retry`/`exponential-backoff` 替换 `llm-retry`**：执行模型不对——该插件是一个返回决策的 waterfall（瀑布式事件）监听器，重新执行由 agent loop（智能体循环）依据持久日志负责；根本不存在可供重新调用的函数，而那恰是这些库的全部 API。提供方 `Retry-After` 覆写、依据先前失败代码计算预算、持久化的 `llm/retry` 事件、HMR（热模块替换）完全停稳式中止，全都无从覆盖。[LLM（大语言模型）请求受限恢复决策](../../implemented/architecture/2026-06-21-bounded-llm-request-recovery.zh.md)已经否决了由 SDK 持有的重试。
-- **以 `p-timeout`/`AbortSignal.timeout` 替换 `dsh-timeout`**：内置能力无法提前解除，抛出的是通用 `TimeoutError`，而不是能区分嵌套截止时限、按能力编码的 `TimeoutReason`；`idleWatchdog` 按需逐次重新装定的能力没有等价物。设计归[超时库决策](../../implemented/architecture/2026-07-06-timeout-deadline-library.zh.md)所有。
+- **以 `p-timeout`/`AbortSignal.timeout` 替换 `alego-timeout`**：内置能力无法提前解除，抛出的是通用 `TimeoutError`，而不是能区分嵌套截止时限、按能力编码的 `TimeoutReason`；`idleWatchdog` 按需逐次重新装定的能力没有等价物。设计归[超时库决策](../../implemented/architecture/2026-07-06-timeout-deadline-library.zh.md)所有。
 - **以 `p-limit`/`p-queue` 替换 agent loop 的工具调用池**：池的簿记只有约 25 行；实质部分（按模型顺序提交、组中途重新分类、排他屏障、带合成持久结果的中止排空）根本不是并发限制器的形状。
 - **以 `p-queue`/`async-mutex` 替换按 key 的 promise 链串行器**（`fs-local`、`storage-domain`）：串行器只有 8–14 行；这些包严格大于它们所能删除的代码。
 - **以 `events.once` + `AbortSignal.timeout` 替换 subagent-subprocess 的 `exitsWithin`**：`error` 先触发时 `events.once` 会 reject，而手写实现有意忽略 `error`（由 spawn 失败路径单独捕获）；这次替换恰恰会在语义本身就是拆除竞态的那段代码里改变拆除竞态行为。
@@ -69,7 +69,7 @@ Status: rejected — 下列每一项替换在证据上都未达到净简化门�
 - **以 `prebuildify`/`node-gyp-build` 承担 landlock 启动器打包**：不适用——那些工具通过 dlopen 加载 `.node` addon；这个启动器交付的是独立 exec 的静态二进制，而按平台划分的 `optionalDependencies` 恰恰*就是*二进制分发的生态惯例。
 - **以 `@landstrip/landstrip` 替换 Landlock 启动器本身**：未通过安全不变式检验——启动器是一个约 300 行、可完整评审的 C 文件，其二进制逐字节锁定到原生 CI 构建，且早已从一个 Rust 依赖迁移出来；单一维护者的 LGPL Rust 二进制集合有更大的审计面，其发布更难与已审阅源码对应。（尚未构建的 Windows 层级经单独权衡后同样被[驳回](../feature/2026-07-26-evaluate-landstrip-for-windows-sandbox-rung.zh.md)——landstrip 未经实战检验。）
 - **以 `hatch-nodejs-version` 承担 Python 发布版本号**：代码行数大致持平（一个自定义 metadata 钩子换掉那个正则），却反转了「dev 哨兵值绝不决定发布版本」这条记录在案的决策，还把一个单一维护者的构建插件放进发布供应链。
-- **YAML 归一（`js-yaml` 与 `yaml`）**：仓库同时携带两个解析器，`!!js` 标签在 js-yaml 上定义了四次（vendor 收录的 include、app-boot、apps/cli、`scripts/verify-cordis-config.ts`），在 `yaml` 上定义了两次（sdk-telemetry 的 `ScalarTag`、sdk-helper 的可保留注释的 Document 编辑）。方向是被迫的——js-yaml 无法取代 `yaml`（sdk-helper 需要 Document API）——但迁移 js-yaml 各调用点也退休不了这个库（vendor 收录的 include 锁定了它），还会让两个解析器共管一种必须完全一致的方言，违背[个人配置决策](../../implemented/feature/2026-07-20-dsh-cli-personal-config.zh.md)刻意的「仅加载副本」对等性。可删除的：约 20–25 行重复标签定义和两条 `@types/js-yaml` 条目。归一的时机是未来某次 include 同步，不是现在。
+- **YAML 归一（`js-yaml` 与 `yaml`）**：仓库同时携带两个解析器，`!!js` 标签在 js-yaml 上定义了四次（vendor 收录的 include、app-boot、apps/cli、`scripts/verify-cordis-config.ts`），在 `yaml` 上定义了两次（sdk-telemetry 的 `ScalarTag`、sdk-helper 的可保留注释的 Document 编辑）。方向是被迫的——js-yaml 无法取代 `yaml`（sdk-helper 需要 Document API）——但迁移 js-yaml 各调用点也退休不了这个库（vendor 收录的 include 锁定了它），还会让两个解析器共管一种必须完全一致的方言，违背[个人配置决策](../../implemented/feature/2026-07-20-alego-cli-personal-config.zh.md)刻意的「仅加载副本」对等性。可删除的：约 20–25 行重复标签定义和两条 `@types/js-yaml` 条目。归一的时机是未来某次 include 同步，不是现在。
 
 ## 曾考虑的替代方案
 

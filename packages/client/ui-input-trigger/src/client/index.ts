@@ -5,8 +5,8 @@
  * contract in ./contract.ts; sources register through ctx.inputTriggers alone.
  */
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
-import type {} from '@deepseek-ai/dsh-client-locale/client'
-import type { ClientContext } from '@deepseek-ai/dsh-client-runtime/client'
+import type {} from '@alego/client-locale/client'
+import type { ClientContext } from '@alego/client-runtime/client'
 import { InputTriggerService } from './service.ts'
 import type { MenuViewInjected } from './slots.ts'
 import { MenuView } from './MenuView.tsx'
@@ -27,14 +27,14 @@ export type {
 export type { DetectTrigger, ExactMatch, MenuEvent, MenuReduce, MenuState, TriggerHit } from '../core/contract.ts'
 export type { InputTriggerServiceContract } from './contract.ts'
 
-declare module '@deepseek-ai/cordis' {
+declare module '@alego/cordis' {
   interface Context {
     /** The outward face only; the concrete service stays inside this plugin. */
     inputTriggers: import('./contract.ts').InputTriggerServiceContract
   }
 }
 
-declare module '@deepseek-ai/dsh-client-ui-slots' {
+declare module '@alego/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** The candidate menu's copy: group titles keyed by source name, the pending row, and the listbox aria. */
     'slash.menu': MenuKey

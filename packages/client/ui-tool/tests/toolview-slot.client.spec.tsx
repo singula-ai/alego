@@ -11,13 +11,13 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
-import type { ISession, SessionId, ToolResultNode } from '@deepseek-ai/dsh-client-runtime/client'
-import type { PropsRenderSlots } from '@deepseek-ai/dsh-client-ui-slots'
-import { SlotTestRuntime, stubSettingsScope } from '@deepseek-ai/dsh-client-test-runtime'
-import { LocaleRuntime } from '@deepseek-ai/dsh-client-locale/client'
-import { apply as applyConversation, inject as injectConversation } from '@deepseek-ai/dsh-client-ui-conversation/client'
-import { apply as applyTool, inject as injectTool } from '@deepseek-ai/dsh-client-ui-tool/client'
-import type { ToolCallViewProps } from '@deepseek-ai/dsh-client-ui-tool/client'
+import type { ISession, SessionId, ToolResultNode } from '@alego/client-runtime/client'
+import type { PropsRenderSlots } from '@alego/client-ui-slots'
+import { SlotTestRuntime, stubSettingsScope } from '@alego/client-test-runtime'
+import { LocaleRuntime } from '@alego/client-locale/client'
+import { apply as applyConversation, inject as injectConversation } from '@alego/client-ui-conversation/client'
+import { apply as applyTool, inject as injectTool } from '@alego/client-ui-tool/client'
+import type { ToolCallViewProps } from '@alego/client-ui-tool/client'
 import { toolChatSnapshot } from './tool-details-render.client.tsx'
 
 const SID = 's1' as SessionId

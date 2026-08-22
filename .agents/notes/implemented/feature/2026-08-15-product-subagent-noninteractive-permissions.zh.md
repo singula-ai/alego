@@ -57,9 +57,9 @@ Codex 默认使用 `never`，并接受 Codex 0.147.0 公开的三种原生非交
 | Profile 权限选择 | 各产品提供方 Config | 配置阶段会拒绝无效、交互式或未知值。 |
 | 权限与沙箱语义 | Claude Code Agent SDK 或 Codex app-server | 各提供方传入一个原生模式，不镜像产品策略。 |
 | 交互决定与安全诊断 | 单次产品运行 | 并发运行分别拥有独立的模式、协议与诊断状态。 |
-| 诊断类型与字节上限 | `dsh-subagent` | 消费方收到与 assistant 输出分离的有界可选字段。 |
-| 前台与 Job 呈现 | `dsh-tool-subagent` 和通用 Job 运行时 | 调度选择不会改变底层失败事实。 |
-| 进程取消与完全停稳 | 产品提供方和 `dsh-subprocess` | 结果结算后仍执行幂等的完整进程树资源释放。 |
+| 诊断类型与字节上限 | `alego-subagent` | 消费方收到与 assistant 输出分离的有界可选字段。 |
+| 前台与 Job 呈现 | `alego-tool-subagent` 和通用 Job 运行时 | 调度选择不会改变底层失败事实。 |
+| 进程取消与完全停稳 | 产品提供方和 `alego-subprocess` | 结果结算后仍执行幂等的完整进程树资源释放。 |
 
 ## Verification
 

@@ -231,7 +231,7 @@ const DEFAULT_TIMEOUT_MS = 30_000
 type UnaryTimeoutPolicy = 'default' | 'caller-signal-only'
 
 /** URL base for in-process handler injection (fake authority, opencode precedent). */
-const INTERNAL_BASE = 'http://dsh.internal'
+const INTERNAL_BASE = 'http://alego.internal'
 
 /**
  * Abstract fetch-carrier client. Subclasses supply the transport (doFetch) and may refine the

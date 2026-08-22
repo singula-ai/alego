@@ -11,7 +11,7 @@ Cordis 插件可能因修改配置、热重载、显式资源释放或所需服�
 创建 `lifecycle.ts`，将它放在 `tmp/cordis-tutorial` 中：
 
 ```ts
-import type { Context } from '@deepseek-ai/cordis'
+import type { Context } from '@alego/cordis'
 
 export const name = 'lifecycle-demo'
 
@@ -95,4 +95,4 @@ PENDING → LOADING → ACTIVE → UNLOADING → DISPOSED
 
 下一章：[服务](03-services.zh.md)：插件如何共享功能。
 
-[![](https://img.shields.io/badge/powered_by-dsh-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/deepseek-ai/deepseek-harness)
+[![](https://img.shields.io/badge/powered_by-alego-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/singula-ai/alego)

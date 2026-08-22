@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-client-test-runtime
+# @alego/client-test-runtime
 
 English | [中文](README.zh.md)
 
@@ -8,7 +8,7 @@ The doubles implement the same outward faces features receive through ctx (`Test
 
 Local DOM snapshots: `declare(children)` registers an auto frame whose per-key `<div data-slot>` wrappers are snapshot roots; `renderSlot(key, owner)` returns the slot-local view (container, scoped Testing Library queries, in-place `update(owner)`); a registered snapshot serializer folds CSS-module class hashes (`_frame_a1b2c3` → `frame`) to keep `.snap` files structural and collapses `<svg>` internals to a `data-content` fingerprint. Suites needing a custom page frame use `root.declare(children, Frame)` instead; `mount(plugin)` runs a real fiber with fail-loud service prechecks, and `dispose()` tears down views, feature fibers, minted scopes, and persisted store state on one axis.
 
-Not part of the product plugin graph (no `dsh.client`); feature packages depend on it in `devDependencies` only.
+Not part of the product plugin graph (no `alego.client`); feature packages depend on it in `devDependencies` only.
 
 ## Model Experience
 
@@ -20,5 +20,5 @@ None; this package neither assembles nor sends a provider request.
 
 ## Known Limitations and Deferred Work
 
-- **Consumed through repository source aliases only.** Specs resolve the package through tsconfig `paths` to `src`; the built `lib/` artifact re-exports `@deepseek-ai/dsh-client-runtime/client`, whose bundle is a browser loader script with no Node ESM exports, so `lib/index.js` is not importable under plain Node. Every consumer is an in-repository Vitest suite; there is no Node-compatible runtime entry.
+- **Consumed through repository source aliases only.** Specs resolve the package through tsconfig `paths` to `src`; the built `lib/` artifact re-exports `@alego/client-runtime/client`, whose bundle is a browser loader script with no Node ESM exports, so `lib/index.js` is not importable under plain Node. Every consumer is an in-repository Vitest suite; there is no Node-compatible runtime entry.
 - **Conversation snapshots are fixture data, not replayed history.** `updateSnapshot` writes the snapshot store directly; the wire-to-snapshot computation stays covered by the runtime package's own tests and the replay e2e. A fixture can therefore express states the production projection would never produce.

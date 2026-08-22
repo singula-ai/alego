@@ -12,13 +12,13 @@ Connection refusal, a reset before the first event, clean EOF without `[DONE]`, 
 
 ## Decision
 
-`@deepseek-ai/dsh-llm-mock-server` is a private support package with an importable Node HTTP server. The repository-local `pnpm run mock:llm` source entry provides a standalone process for manual fault injection; the package exposes no installable binary. It accepts OpenAI-compatible root and `/v1` chat-completions paths, validates an optional bearer token, captures requests, and consumes one explicit behavior per accepted request. Script exhaustion fails loud; repetition requires `repeatLast`.
+`@alego/llm-mock-server` is a private support package with an importable Node HTTP server. The repository-local `pnpm run mock:llm` source entry provides a standalone process for manual fault injection; the package exposes no installable binary. It accepts OpenAI-compatible root and `/v1` chat-completions paths, validates an optional bearer token, captures requests, and consumes one explicit behavior per accepted request. Script exhaustion fails loud; repetition requires `repeatLast`.
 
 Request behaviors cover socket reset, post-header disconnect, partial disconnect, stall, valid empty completion, clean truncated streams, malformed payloads, representative HTTP failures, complete text/reasoning/tool-call responses, slow streaming, and max-token completion. A true `connection_refused` is a CLI listener-lifecycle phase because a bound request handler cannot refuse its own TCP connection.
 
 The `random` script entry performs a new weighted selection for every request. The server exposes and logs its unsigned 32-bit seed, accepts caller-supplied relative weights, and ships a success-heavy stress profile that mixes transport, protocol, provider, timeout, and semantic-empty outcomes. The profile is configurable test pressure rather than an estimate of production incident frequency; `connection_refused` remains outside the request-level pool.
 
-The server reports wire facts only and does not classify retryability. Real-composition tests route it through `dsh-llm-deepseek`, `dsh-agent-loop`, and `dsh-llm-retry`: connection refusal, hard disconnect, partial reset, idle timeout, and a valid content-less completion recover under the existing default policy; clean partial EOF remains `STREAM_CLOSED` and is not retried by default. The package does not change those policies.
+The server reports wire facts only and does not classify retryability. Real-composition tests route it through `alego-llm-deepseek`, `alego-agent-loop`, and `alego-llm-retry`: connection refusal, hard disconnect, partial reset, idle timeout, and a valid content-less completion recover under the existing default policy; clean partial EOF remains `STREAM_CLOSED` and is not retried by default. The package does not change those policies.
 
 ## Verification
 

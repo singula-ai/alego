@@ -1,11 +1,11 @@
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
+import { createUserMessage } from '@alego/llm'
 import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import type { Context } from '@deepseek-ai/cordis'
+import type { Context } from '@alego/cordis'
 import { spawnHarness, waitForIdle } from './harness.ts'
-import { SessionId } from '@deepseek-ai/dsh-session'
+import { SessionId } from '@alego/session'
 
 /** Key-gated smoke for a real parent delegating filesystem work to a real child. */
 
@@ -21,7 +21,7 @@ afterEach(async () => {
 
 describe.skipIf(!process.env.DEEPSEEK_API_KEY)('spawn backend with-key smoke', () => {
   it('a parent delegates to a child that writes a file on disk', async () => {
-    workdir = await mkdtemp(join(tmpdir(), 'dsh-subagent-spawn-e2e-'))
+    workdir = await mkdtemp(join(tmpdir(), 'alego-subagent-spawn-e2e-'))
     ctx = await spawnHarness(workdir)
     const parent = ctx.agentLoop.create(SessionId('e2e-parent'), { provider: 'deepseek-official', model: 'deepseek-v4-flash' })
 

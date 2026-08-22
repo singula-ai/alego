@@ -44,4 +44,4 @@ Archived: 2026-07-26
 
 ## Testing
 
-`packages/ui/tui/tests/tui.spec.ts` 固定：无边框横幅扫入至自然完成——无盒子角、标题与 `main-session` 详情出现——且至少有一帧扫入中途被裁剪；配置的 `welcome` 完整渲染横幅且无裁剪帧；未设置 `welcome` 的横幅无副标题；销毁会在扫入中途清掉扫入定时器。独立的配色方案用例覆盖终端报告的浅色/深色转换、相同方案下的空操作，以及写入 DSR 查询时抛出异常的终端；`applyColorScheme` 依靠 `setStatus` 重新推导编辑器边框，而不再重复那个导致逐文件覆盖率未达标的无效赋值。tui-agent 与 dsh CLI 的 PTY 冒烟测试以 `main-session-` 详情标记为启动标记并断言无盒子角。快照验证完整帧。
+`packages/ui/tui/tests/tui.spec.ts` 固定：无边框横幅扫入至自然完成——无盒子角、标题与 `main-session` 详情出现——且至少有一帧扫入中途被裁剪；配置的 `welcome` 完整渲染横幅且无裁剪帧；未设置 `welcome` 的横幅无副标题；销毁会在扫入中途清掉扫入定时器。独立的配色方案用例覆盖终端报告的浅色/深色转换、相同方案下的空操作，以及写入 DSR 查询时抛出异常的终端；`applyColorScheme` 依靠 `setStatus` 重新推导编辑器边框，而不再重复那个导致逐文件覆盖率未达标的无效赋值。tui-agent 与 alego CLI 的 PTY 冒烟测试以 `main-session-` 详情标记为启动标记并断言无盒子角。快照验证完整帧。

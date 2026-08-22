@@ -20,7 +20,7 @@ Status: implemented
 
 ### Token 计量保持模型无关
 
-`dsh-token-meter` 没有配置，也没有模型 profile。它拥有一个固定回放折叠，并返回绝对估算 token 压力，以及按位置排列的表层节点 token 估值。移除全局容量后，未加载 compaction-basic 时仍可复用计量，同时避免让回放核算变成另一套模型注册表。
+`alego-token-meter` 没有配置，也没有模型 profile。它拥有一个固定回放折叠，并返回绝对估算 token 压力，以及按位置排列的表层节点 token 估值。移除全局容量后，未加载 compaction-basic 时仍可复用计量，同时避免让回放核算变成另一套模型注册表。
 
 ### Compact-basic 解析目标规格
 

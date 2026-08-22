@@ -10,7 +10,7 @@ The public `Agent.send()` method exposed the concrete loop's routing matrix even
 
 ## Decision
 
-`Agent` exposes `followup()`, `steer()`, and `inject()` as its complete delivery contract. `ReactLoopAgent` keeps a private `send()` helper that shares routing mechanics among those methods, while `SendTarget` and `SendOptions` are no longer exported from `dsh-agent`.
+`Agent` exposes `followup()`, `steer()`, and `inject()` as its complete delivery contract. `ReactLoopAgent` keeps a private `send()` helper that shares routing mechanics among those methods, while `SendTarget` and `SendOptions` are no longer exported from `alego-agent`.
 
 The public interface cannot queue a turn without waking the driver. A follow-up always requests execution, steering requests the nearest step, and injection supplies model-facing context without requesting execution. This partially supersedes the public-surface portion of the [unified delivery decision](../architecture/2026-07-22-unified-send-and-coalesced-user-messages.md) while retaining its internal routing and unified `user/message` representation.
 

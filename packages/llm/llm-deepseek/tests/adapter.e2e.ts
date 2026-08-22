@@ -4,10 +4,10 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { randomBytes } from 'node:crypto'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import LlmRuntime, { createUserMessage, CallId, ReasoningEffortId, createMessage } from '@deepseek-ai/dsh-llm'
-import type { Message, ToolSchema } from '@deepseek-ai/dsh-llm'
-import AttachmentStore, { AttachmentId, ImageVariantId } from '@deepseek-ai/dsh-attachment'
+import { Context } from '@alego/cordis'
+import LlmRuntime, { createUserMessage, CallId, ReasoningEffortId, createMessage } from '@alego/llm'
+import type { Message, ToolSchema } from '@alego/llm'
+import AttachmentStore, { AttachmentId, ImageVariantId } from '@alego/attachment'
 import type {
   ImageAttachmentLimits,
   ImageAttachmentRef,
@@ -15,10 +15,10 @@ import type {
   RequestImageAttachment,
   SaveImageAttachment,
   StoredImageAttachment,
-} from '@deepseek-ai/dsh-attachment'
-import { LocalCredentialProvider } from '@deepseek-ai/dsh-credentials-local'
-import * as LlmDeepSeek from '@deepseek-ai/dsh-llm-deepseek'
-import type { Config } from '@deepseek-ai/dsh-llm-deepseek'
+} from '@alego/attachment'
+import { LocalCredentialProvider } from '@alego/credentials-local'
+import * as LlmDeepSeek from '@alego/llm-deepseek'
+import type { Config } from '@alego/llm-deepseek'
 import { assemble, type AssembledResult } from './assemble.ts'
 
 /**
@@ -90,8 +90,8 @@ class E2eAttachmentStore extends AttachmentStore {
 }
 
 beforeEach(async () => {
-  identityHome = await mkdtemp(join(tmpdir(), 'dsh-e2e-user-id-'))
-  vi.stubEnv('DSH_HOME', identityHome)
+  identityHome = await mkdtemp(join(tmpdir(), 'alego-e2e-user-id-'))
+  vi.stubEnv('ALEGO_HOME', identityHome)
 })
 
 async function harness(_model: string, config: Partial<Config> = {}) {
@@ -183,7 +183,7 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY)('llm-deepseek e2e (real API)', ()
   it('serves a real request with the key held only by a credentials-local document', async () => {
     const key = process.env.DEEPSEEK_API_KEY
     if (key === undefined) throw new Error('e2e ran without DEEPSEEK_API_KEY')
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-e2e-credentials-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-e2e-credentials-'))
     try {
       // JSON.stringify quotes the value: YAML is a JSON superset, so a real
       // key survives whatever characters it happens to carry.

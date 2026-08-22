@@ -59,7 +59,7 @@ function fixtureSignature(
 }
 
 function gitSupportsObjectFormat(format: 'sha256'): boolean {
-  const root = mkdtempSync(join(tmpdir(), 'dsh-git-object-format-'))
+  const root = mkdtempSync(join(tmpdir(), 'alego-git-object-format-'))
   try {
     return spawnSync('git', ['init', '--quiet', `--object-format=${format}`, root], {
       stdio: 'ignore',
@@ -73,7 +73,7 @@ const supportsSha256ObjectFormat = gitSupportsObjectFormat('sha256')
 
 describe('translation pairing snapshots', () => {
   it('stores exact uncommitted bytes for later recovery by object ID', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-translation-pairing-'))
+    const root = mkdtempSync(join(tmpdir(), 'alego-translation-pairing-'))
     try {
       execFileSync('git', ['init', '--quiet', root], {
         env: { ...process.env, GIT_DEFAULT_HASH: 'sha1' },
@@ -84,7 +84,7 @@ describe('translation pairing snapshots', () => {
 
       expect(objectId).toBe(gitBlobHash(content))
       expect(execFileSync('git', [
-        '-C', root, 'rev-parse', `refs/dsh/translation-pairing/snapshots/${objectId}`,
+        '-C', root, 'rev-parse', `refs/alego/translation-pairing/snapshots/${objectId}`,
       ], { encoding: 'utf8' }).trim()).toBe(objectId)
       execFileSync('git', ['-C', root, 'gc', '--prune=now'])
       expect(execFileSync('git', ['-C', root, 'cat-file', '-p', objectId])).toEqual(content)
@@ -94,7 +94,7 @@ describe('translation pairing snapshots', () => {
   })
 
   it('fails before a sidecar can reference an unavailable object', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-translation-pairing-'))
+    const root = mkdtempSync(join(tmpdir(), 'alego-translation-pairing-'))
     try {
       expect(() => storeGitBlob(root, Buffer.from('snapshot'))).toThrow('git hash-object -w --stdin failed')
     } finally {
@@ -113,7 +113,7 @@ describe('translation pairing snapshots', () => {
   })
 
   it('reads staged bytes independently of the working tree', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-translation-pairing-index-'))
+    const root = mkdtempSync(join(tmpdir(), 'alego-translation-pairing-index-'))
     try {
       execFileSync('git', ['init', '--quiet', root], {
         env: { ...process.env, GIT_DEFAULT_HASH: 'sha1' },
@@ -135,7 +135,7 @@ describe('translation pairing snapshots', () => {
   })
 
   it('lists exact index files without treating a directory prefix as one entry', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-translation-pairing-index-'))
+    const root = mkdtempSync(join(tmpdir(), 'alego-translation-pairing-index-'))
     try {
       execFileSync('git', ['init', '--quiet', root], {
         env: { ...process.env, GIT_DEFAULT_HASH: 'sha1' },
@@ -155,7 +155,7 @@ describe('translation pairing snapshots', () => {
   })
 
   it.skipIf(!supportsSha256ObjectFormat)('rejects an object format that pairing records cannot represent', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-translation-pairing-'))
+    const root = mkdtempSync(join(tmpdir(), 'alego-translation-pairing-'))
     try {
       execFileSync('git', ['init', '--quiet', '--object-format=sha256', root])
       expect(() => storeGitBlob(root, Buffer.from('snapshot'))).toThrow('returned unexpected object ID')
@@ -209,9 +209,9 @@ describe('translation pairing switchers', () => {
 
   it('accepts only the canonical public URL for an absolute switcher', () => {
     const targets = languageSwitcherTargets('python/sdk/README.zh.md')
-    const canonicalMarkdown = '# README\n\nEnglish | [中文](https://github.com/deepseek-ai/deepseek-harness/blob/master/python/sdk/README.zh.md)\n'
+    const canonicalMarkdown = '# README\n\nEnglish | [中文](https://github.com/singula-ai/alego/blob/master/python/sdk/README.zh.md)\n'
     const canonical = parseTranslationMarkdown(canonicalMarkdown)
-    const wrongMarkdown = '# README\n\nEnglish | [中文](https://github.com/deepseek-ai/deepseek-harness/blob/master/other/README.zh.md)\n'
+    const wrongMarkdown = '# README\n\nEnglish | [中文](https://github.com/singula-ai/alego/blob/master/other/README.zh.md)\n'
     const wrongPath = parseTranslationMarkdown(wrongMarkdown)
 
     expect(translationStructureSignature(canonical, targets, {
@@ -226,12 +226,12 @@ describe('translation pairing switchers', () => {
       isTranslationPairSource: fixturePairSource,
       markdown: wrongMarkdown,
     }).links).toEqual([
-      'https://github.com/deepseek-ai/deepseek-harness/blob/master/other/README.zh.md',
+      'https://github.com/singula-ai/alego/blob/master/other/README.zh.md',
     ])
   })
 
   it('excludes only the header switcher from the structural links', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-translation-switcher-'))
+    const root = mkdtempSync(join(tmpdir(), 'alego-translation-switcher-'))
     try {
       writeFileSync(join(root, 'guide.md'), '# Guide\n')
       writeFileSync(join(root, 'guide.zh.md'), '# 指南\n')
@@ -243,7 +243,7 @@ describe('translation pairing switchers', () => {
           repoRoot: root, sourcePath: 'guide.zh.md',
           isTranslationPairSource: fixturePairSource, markdown,
         },
-      ).links).toEqual(['dsh-translation-target:guide.md'])
+      ).links).toEqual(['alego-translation-target:guide.md'])
     } finally {
       rmSync(root, { recursive: true, force: true })
     }
@@ -307,8 +307,8 @@ describe('translation scope discovery', () => {
     'packages/example/node_modules/dependency/README.md',
     'packages/example/lib/README.md',
     'coverage/report/README.md',
-    'python/sdk-runtime/src/deepseek_harness_runtime/runtime/dsh-jsonrpc-agent-macos-arm64/README.md',
-    'python/sdk-runtime/src/deepseek_harness_runtime/runtime/node/README.md',
+    'python/sdk-runtime/src/alego_runtime/runtime/alego-jsonrpc-agent-macos-arm64/README.md',
+    'python/sdk-runtime/src/alego_runtime/runtime/node/README.md',
   ])('excludes non-source or non-README path %s', (file) => {
     expect(isTranslationScopeFile(file)).toBe(false)
   })
@@ -330,7 +330,7 @@ describe('translation structural signature', () => {
   })
 
   it('treats target-locale siblings as one semantic link target', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-translation-structure-'))
+    const root = mkdtempSync(join(tmpdir(), 'alego-translation-structure-'))
     try {
       writeFileSync(join(root, 'reference.md'), '# Reference\n')
       writeFileSync(join(root, 'reference.zh.md'), '# 参考\n')
@@ -345,7 +345,7 @@ describe('translation structural signature', () => {
   })
 
   it('includes reference-style document links but excludes image-only definitions', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-translation-structure-'))
+    const root = mkdtempSync(join(tmpdir(), 'alego-translation-structure-'))
     try {
       writeFileSync(join(root, 'reference.md'), '# Reference\n')
       writeFileSync(join(root, 'reference.zh.md'), '# 参考\n')
@@ -365,14 +365,14 @@ describe('translation structural signature', () => {
           repoRoot: root, sourcePath: 'guide.md',
           isTranslationPairSource: fixturePairSource, markdown,
         },
-      ).links).toEqual(['dsh-translation-target:reference.md'])
+      ).links).toEqual(['alego-translation-target:reference.md'])
     } finally {
       rmSync(root, { recursive: true, force: true })
     }
   })
 
   it('compares the first duplicate reference definition that CommonMark resolves', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-translation-structure-'))
+    const root = mkdtempSync(join(tmpdir(), 'alego-translation-structure-'))
     try {
       for (const name of ['reference', 'different', 'other']) {
         writeFileSync(join(root, `${name}.md`), `# ${name}\n`)
@@ -383,7 +383,7 @@ describe('translation structural signature', () => {
       const source = fixtureSignature(root, 'guide.md', sourceMarkdown, 'guide.zh.md')
       const counterpart = fixtureSignature(root, 'guide.zh.md', counterpartMarkdown, 'guide.md')
       expect(translationStructureDiff(source, counterpart)).toEqual([
-        'link target #1 diverges between the pair: "dsh-translation-target:reference.md" vs "dsh-translation-target:different.md"',
+        'link target #1 diverges between the pair: "alego-translation-target:reference.md" vs "alego-translation-target:different.md"',
       ])
     } finally {
       rmSync(root, { recursive: true, force: true })

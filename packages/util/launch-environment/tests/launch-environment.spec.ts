@@ -1,20 +1,20 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@alego/cordis'
 import {
-  createLaunchEnvironmentSnapshot, DSH_LAUNCH_ENVIRONMENT_KEY, launchEnvironmentOf,
+  createLaunchEnvironmentSnapshot, ALEGO_LAUNCH_ENVIRONMENT_KEY, launchEnvironmentOf,
 } from '../src/index.ts'
 
 const layered = createLaunchEnvironmentSnapshot([
   { source: 'process', values: { SHARED: 'from-process', ONLY_PROCESS: 'p' } },
   { source: 'project-env', path: '/work/.env', values: { SHARED: 'from-project', ONLY_PROJECT: 'j' } },
-  { source: 'user-env', path: '/home/.dsh/.env', values: { SHARED: 'from-user', ONLY_USER: 'u' } },
+  { source: 'user-env', path: '/home/.alego/.env', values: { SHARED: 'from-user', ONLY_USER: 'u' } },
 ])
 
 describe('createLaunchEnvironmentSnapshot', () => {
   it('resolves across every layer, most trusted first, and reports the winning source', () => {
     expect(layered.get('SHARED')).toEqual({ value: 'from-process', source: 'process' })
     expect(layered.get('ONLY_PROJECT')).toEqual({ value: 'j', source: 'project-env', path: '/work/.env' })
-    expect(layered.get('ONLY_USER')).toEqual({ value: 'u', source: 'user-env', path: '/home/.dsh/.env' })
+    expect(layered.get('ONLY_USER')).toEqual({ value: 'u', source: 'user-env', path: '/home/.alego/.env' })
     expect(layered.get('ABSENT')).toBeUndefined()
   })
 
@@ -53,15 +53,15 @@ describe('createLaunchEnvironmentSnapshot', () => {
 describe('launchEnvironmentOf', () => {
   it('returns the launcher snapshot when the product CLI provided one', () => {
     const ctx = new Context()
-    ctx.provide(DSH_LAUNCH_ENVIRONMENT_KEY, layered)
+    ctx.provide(ALEGO_LAUNCH_ENVIRONMENT_KEY, layered)
     expect(launchEnvironmentOf(ctx)).toBe(layered)
   })
 
   it('falls back to the inherited environment as the only layer', () => {
-    vi.stubEnv('DSH_ENV_SPEC_FALLBACK', 'ambient')
+    vi.stubEnv('ALEGO_ENV_SPEC_FALLBACK', 'ambient')
     try {
       const snapshot = launchEnvironmentOf(new Context())
-      expect(snapshot.get('DSH_ENV_SPEC_FALLBACK')).toEqual({ value: 'ambient', source: 'process' })
+      expect(snapshot.get('ALEGO_ENV_SPEC_FALLBACK')).toEqual({ value: 'ambient', source: 'process' })
     } finally {
       vi.unstubAllEnvs()
     }

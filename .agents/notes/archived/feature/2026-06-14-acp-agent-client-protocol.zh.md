@@ -15,7 +15,7 @@ harness 最初仅通过 readline 循环暴露 agent。该接口能传输文本�
 
 ## 决策
 
-`@deepseek-ai/dsh-acp` 曾是 `ui` 包组中的 UI/客户端驱动插件（现位于 `acp`）。它使用 `@agentclientprotocol/sdk` 的 `AgentSideConnection`（基于 stdin/stdout），仅编排接口服务：agent 创建/恢复工厂、会话持久化、工具注册表、用户交互，以及可选的审批/bash 能力。它不修改 agent loop，也不是能力 seam 的实现。
+`@alego/acp` 曾是 `ui` 包组中的 UI/客户端驱动插件（现位于 `acp`）。它使用 `@agentclientprotocol/sdk` 的 `AgentSideConnection`（基于 stdin/stdout），仅编排接口服务：agent 创建/恢复工厂、会话持久化、工具注册表、用户交互，以及可选的审批/bash 能力。它不修改 agent loop，也不是能力 seam 的实现。
 
 桥接层实现以下稳定的会话路径：
 
@@ -35,13 +35,13 @@ harness 最初仅通过 readline 循环暴露 agent。该接口能传输文本�
 
 生命周期所有权是显式的。桥接层为每个活跃会话持有一个 `AgentHandle`。断连和 Cordis dispose（资源释放）会取消待处理的提示词，并行 dispose 所有 handle，等待循环完全停稳与持久化刷写，然后移除记录。流通知失败被隔离，因此消失的客户端不会破坏 agent 轮次。ACP 应用组合不加载 stdout logger；一个测试守卫 stdout 仅包含帧化的 JSON-RPC。
 
-当前的协议契约见 [`dsh-acp` 包 README](../../../../packages/acp/acp/README.md)。
+当前的协议契约见 [`alego-acp` 包 README](../../../../packages/acp/acp/README.md)。
 
 ## 曾考虑的替代方案
 
 **在 `tools/execute` 监听器前置一层，对每个 ACP 所属调用都询问权限**：否决。这会将权限策略硬编码到 UI 桥接层，即使没有策略要求也会询问，且无法服务于执行开始后才产生的审批请求。共享的 user-approval seam 将机制、询问策略和 UI answerer 分离。
 
-**注入具体的 `agentLoop`**：否决。agent 的创建、恢复、空闲观察与释放是 `dsh-agent` 上的接口级所有权操作；UI 插件不需要依赖规则例外。
+**注入具体的 `agentLoop`**：否决。agent 的创建、恢复、空闲观察与释放是 `alego-agent` 上的接口级所有权操作；UI 插件不需要依赖规则例外。
 
 **通过 ACP `terminal/*` 执行 bash**：否决。这会将执行移到 harness 之外，绕过其沙箱、凭证清洗、任务所有权、cwd 解析与会话日志。终端元数据仅用于展示。
 

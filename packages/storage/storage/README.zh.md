@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-storage
+# @alego/storage
 
 [English](README.md) | 中文
 

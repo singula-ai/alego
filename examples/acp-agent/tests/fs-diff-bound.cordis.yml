@@ -5,17 +5,17 @@
 # verbatim, and the acp-agent restatement re-pins `deepseek-v4-flash` to match
 # the recorded corpus and its pinned request headers.
 - id: base
-  name: '@deepseek-ai/cordis-plugin-include'
+  name: '@alego/cordis-plugin-include'
   config:
     path: ../cordis.yml
     patches:
       - id: acp-agent
-        name: '@deepseek-ai/dsh-acp-demo'
+        name: '@alego/acp-demo'
         config:
           provider: deepseek-official
           model: deepseek-v4-flash
-          persistenceRoot: !!js process.env.DSH_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
-          persistenceCompression: !!js "process.env.DSH_SNAPSHOT === undefined ? 'zstd' : 'none'"
+          persistenceRoot: !!js process.env.ALEGO_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
+          persistenceCompression: !!js "process.env.ALEGO_SNAPSHOT === undefined ? 'zstd' : 'none'"
           workspaceContext:
             maxBytes: 65536
           persona: |
@@ -23,7 +23,7 @@
 
             Verify your work by running the code or tests. Keep answers brief and factual.
       - id: fs-sandbox
-        name: '@deepseek-ai/dsh-fs-sandbox'
+        name: '@alego/fs-sandbox'
         config:
           cwd: !!js process.cwd()
           diffBasisMaxBytes: 64

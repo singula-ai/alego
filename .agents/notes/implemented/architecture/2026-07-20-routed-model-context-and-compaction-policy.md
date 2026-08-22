@@ -20,7 +20,7 @@ The hand-rolled DeepSeek adapter accepts optional `contextWindow` on each config
 
 ### Token measurement remains model-agnostic
 
-`dsh-token-meter` has no configuration and no model profiles. It owns one fixed replay fold and returns absolute estimated token pressure plus positional surface prices. Removing global capacity keeps measurement reusable when compaction-basic is absent and prevents replay accounting from becoming another model registry.
+`alego-token-meter` has no configuration and no model profiles. It owns one fixed replay fold and returns absolute estimated token pressure plus positional surface prices. Removing global capacity keeps measurement reusable when compaction-basic is absent and prevents replay accounting from becoming another model registry.
 
 ### Compact-basic resolves a target spec
 

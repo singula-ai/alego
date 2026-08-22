@@ -12,7 +12,7 @@ Status: implemented
 
 ## 决策
 
-`@deepseek-ai/dsh-message-feedback` 拥有 `ctx.messageFeedback` 服务，并把消息反馈存为每个 Session 一条 storage-domain 伴随记录（sidecar）。该伴随记录既不是 Session 日志内容，也不是 Session 投影。它不发出 `feedback/record` 事件，也不执行遥测交接；command-feedback 与 message-feedback 约定保持独立。
+`@alego/message-feedback` 拥有 `ctx.messageFeedback` 服务，并把消息反馈存为每个 Session 一条 storage-domain 伴随记录（sidecar）。该伴随记录既不是 Session 日志内容，也不是 Session 投影。它不发出 `feedback/record` 事件，也不执行遥测交接；command-feedback 与 message-feedback 约定保持独立。
 
 每条可用记录都绑定到经检查的 Session header 身份 `{createdAt, cwd}`，而不只是其 `SessionId`。生命周期不匹配按不存在处理：`list` 返回空条目，`put` 可以用绑定当前身份的新记录替换陈旧行。因此，以不同 header 身份复用的 id 不会继承陈旧反馈。fork 拥有自己的 Session 身份，且不复制伴随记录：即使 fork 种子包含相同的 assistant 消息，反馈仍只属于人类记录它的那个 Session。
 

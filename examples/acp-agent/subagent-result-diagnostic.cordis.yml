@@ -1,7 +1,7 @@
 # Test-only product-shaped composition: mount a deterministic provider behind
 # the same one-shot tool schema as the public Codex example.
 - id: base
-  name: '@deepseek-ai/cordis-plugin-include'
+  name: '@alego/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
@@ -9,7 +9,7 @@
           - id: subagent-result-diagnostic
             name: './tests/fixtures/subagent-result-diagnostic.ts'
           - id: tool-subagent-codex
-            name: '@deepseek-ai/dsh-tool-subagent'
+            name: '@alego/tool-subagent'
             config:
               provider: snapshot-diagnostic
               toolName: subagent_codex

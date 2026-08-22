@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-host-plugin-inventory",
+  "name": "@alego/host-plugin-inventory",
   "description": "Read-only Remote projection of current Cordis Loader plugin state",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/singula-ai/alego.git",
     "directory": "packages/host/plugin-inventory"
   },
   "type": "module",
@@ -52,17 +52,17 @@
     "zod": "^4.4.3"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis-plugin-loader": "workspace:^",
-    "@deepseek-ai/dsh-brand": "workspace:^",
-    "@deepseek-ai/dsh-invariants": "workspace:^",
-    "@deepseek-ai/dsh-typert-protocol": "workspace:^",
-    "@deepseek-ai/cordis": "workspace:^"
+    "@alego/cordis-plugin-loader": "workspace:^",
+    "@alego/brand": "workspace:^",
+    "@alego/invariants": "workspace:^",
+    "@alego/typert-protocol": "workspace:^",
+    "@alego/cordis": "workspace:^"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis-plugin-loader": "workspace:^",
-    "@deepseek-ai/dsh-brand": "workspace:^",
-    "@deepseek-ai/dsh-invariants": "workspace:^",
-    "@deepseek-ai/dsh-typert-protocol": "workspace:^",
-    "@deepseek-ai/cordis": "workspace:^"
+    "@alego/cordis-plugin-loader": "workspace:^",
+    "@alego/brand": "workspace:^",
+    "@alego/invariants": "workspace:^",
+    "@alego/typert-protocol": "workspace:^",
+    "@alego/cordis": "workspace:^"
   }
 }

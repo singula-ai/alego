@@ -11,16 +11,16 @@
  * once, while the configuration key that made a route unserviceable can still be
  * named in the failure.
  *
- * @module dsh-llm-pi-ai/config
+ * @module alego-llm-pi-ai/config
  */
 
 import type { CacheRetention, ChatTemplateKwargValue, ModelThinkingLevel, Provider, ThinkingBudgets, Transport } from '@earendil-works/pi-ai'
-import z from '@deepseek-ai/schemastery'
-import { credentialRef } from '@deepseek-ai/dsh-credentials'
-import type { CredentialRef } from '@deepseek-ai/dsh-credentials'
-import { MAX_TIMER_DELAY_MS } from '@deepseek-ai/dsh-timeout'
-import { resolveRetryPolicy, RetryPolicySchema } from '@deepseek-ai/dsh-llm'
-import type { ResolvedRetryPolicy, RetryPolicyConfig } from '@deepseek-ai/dsh-llm'
+import z from '@alego/schemastery'
+import { credentialRef } from '@alego/credentials'
+import type { CredentialRef } from '@alego/credentials'
+import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+import { resolveRetryPolicy, RetryPolicySchema } from '@alego/llm'
+import type { ResolvedRetryPolicy, RetryPolicyConfig } from '@alego/llm'
 import {
   CACHE_CONTROL_FORMATS,
   CHAT_TEMPLATE_VARS,
@@ -363,7 +363,7 @@ function rejectRemovedFields(provider: string, source: PiAiProviderProfile): voi
   if ('maxRetries' in legacy || 'maxRetryDelayMs' in legacy) {
     throw new Error(
       `llm-pi-ai: provider "${provider}" sets maxRetries or maxRetryDelayMs, which were removed;`
-      + ' compose agent recovery with dsh-llm-retry',
+      + ' compose agent recovery with alego-llm-retry',
     )
   }
 }

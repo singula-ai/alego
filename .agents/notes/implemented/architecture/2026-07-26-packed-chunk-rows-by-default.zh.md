@@ -12,13 +12,13 @@ JSONL 存储 seam 可以在不改变逻辑日志的情况下减少这部分封�
 
 ## 决策
 
-`dsh-session-persistence-jsonl` 会将省略的 `packChunks` 解析为 `true`。ACP（Agent Client Protocol）演示包装层公开相同的默认值，所有省略该字段的组合都会继承打包写入。`packChunks: false` 仍是写入侧显式诊断模式，以每个事件一行的形式存储。
+`alego-session-persistence-jsonl` 会将省略的 `packChunks` 解析为 `true`。ACP（Agent Client Protocol）演示包装层公开相同的默认值，所有省略该字段的组合都会继承打包写入。`packChunks: false` 仍是写入侧显式诊断模式，以每个事件一行的形式存储。
 
 读取始终不受选项控制且与布局无关。打包、非打包和混合文件都会加载为相同且连续的 `SessionEvent[]`，因此更改默认值不需要变更会话格式版本，也不需要对磁盘数据执行运行时迁移。该选项只控制新追加的批次，绝不会选择读取器模式。
 
 ### 逻辑事件与物理行
 
-打包保留在 `dsh-session` 的存储 seam，并通过 `packChunkRuns()` 和 `decodeStorageRecord()` 实现。编码器识别精确的增量事件形态，原样保留无法识别的事件，并且只打包至少包含 3 个事件的连续段。打包行属于存储词汇，不是 `SessionEventMap` 成员：它绝不会进入 `Session.events`，也不会触发 `session/event`。
+打包保留在 `alego-session` 的存储 seam，并通过 `packChunkRuns()` 和 `decodeStorageRecord()` 实现。编码器识别精确的增量事件形态，原样保留无法识别的事件，并且只打包至少包含 3 个事件的连续段。打包行属于存储词汇，不是 `SessionEventMap` 成员：它绝不会进入 `Session.events`，也不会触发 `session/event`。
 
 JSONL 后端会打包每个持久追加批次。原始模式 `compression: 'none'` 与默认 Zstandard 帧承载相同的逻辑存储记录；为使 fixture 便于评审而选择原始模式，不会禁用打包。仓库中的回放读取器和规范化器会解码共享行格式，而不维护快照专用编解码器。
 

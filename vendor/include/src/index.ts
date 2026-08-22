@@ -1,5 +1,5 @@
-import { EntryGroup, EntryTree, isJsExpr, type EntryOptions } from '@deepseek-ai/cordis-plugin-loader'
-import { Context, Service } from '@deepseek-ai/cordis'
+import { EntryGroup, EntryTree, isJsExpr, type EntryOptions } from '@alego/cordis-plugin-loader'
+import { Context, Service } from '@alego/cordis'
 import { extname } from 'node:path'
 import { access, constants, readFile, rename, writeFile } from 'node:fs/promises'
 import { setTimeout as delay } from 'node:timers/promises'
@@ -17,7 +17,7 @@ const JsExpr = new yaml.Type('tag:yaml.org,2002:js', {
 /**
  * The entry-list YAML dialect: `!!js` scalars round-trip as expression nodes
  * the Loader evaluates at entry activation. Exported so config tooling
- * (`dsh --dump-config`) parses and prints exactly the dialect this include
+ * (`alego --dump-config`) parses and prints exactly the dialect this include
  * mounts.
  */
 export const entryListSchema = yaml.JSON_SCHEMA.extend(JsExpr)
@@ -43,7 +43,7 @@ function retryableWriteError(error: unknown): boolean {
 /**
  * Apply patch lists to an entry list — THE patch semantics of this include,
  * shared by mounting (`applyPatches`) and offline config tooling
- * (`dsh --dump-config`) so a dump can never drift from what boots. The input
+ * (`alego --dump-config`) so a dump can never drift from what boots. The input
  * is never mutated and the result is always detached from it (even with no
  * patches): patching or mounting shared entry objects would bake earlier
  * values into the cached parse, so repeated application (config hot-reloads)

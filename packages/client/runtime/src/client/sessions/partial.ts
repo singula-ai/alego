@@ -2,7 +2,7 @@
 // Folds the six StreamChunk variants into AssistantBlock[] keyed by block index;
 // block-level immutability (a delta only swaps that block's reference).
 
-import type { StreamChunk } from '@deepseek-ai/dsh-llm/types'
+import type { StreamChunk } from '@alego/llm/types'
 import type { AssistantBlock, PartialAssistant } from './conversation.ts'
 import { toAssistantBlock } from './conversation.ts'
 

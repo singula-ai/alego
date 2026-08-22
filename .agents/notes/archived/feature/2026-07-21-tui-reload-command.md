@@ -11,17 +11,17 @@ HMR's file watcher only reacts to in-place `change` events under its configured 
 
 ## Decision
 
-`dsh-tui` gains an **experimental, dev-only** `/reload` slash command: it walks `ctx.loader.entries()` and calls `refresh()` on every file-backed subtree (`Include`), i.e. the exact code path the HMR watcher's config-change branch drives, invoked manually and watcher-independent. Unchanged files are no-ops (content comparison in `Include.read`); invalid files warn and keep the running tree (the hot-reload-resilience contract); include `patches` — including the dsh CLI's personal overlay — re-apply on every re-read.
+`alego-tui` gains an **experimental, dev-only** `/reload` slash command: it walks `ctx.loader.entries()` and calls `refresh()` on every file-backed subtree (`Include`), i.e. the exact code path the HMR watcher's config-change branch drives, invoked manually and watcher-independent. Unchanged files are no-ops (content comparison in `Include.read`); invalid files warn and keep the running tree (the hot-reload-resilience contract); include `patches` — including the alego CLI's personal overlay — re-apply on every re-read.
 
 The TUI reaches the Loader **structurally** (`ctx.loader` via a local type, not `inject`): tests and embedders run the TUI without a Loader, where `/reload` degrades to a warning notice instead of failing the mount. Module-source hot reload stays watcher-owned; `/reload` refreshes configs only.
 
 ## Alternatives considered
 
-**Widening the HMR watch roots to `packages/`/`apps/`.** Rejected for now: plugin-source changes reload every dependent plugin's fiber, and the repo's dense shared packages (`dsh-session`, `dsh-llm`, `dsh-tools`) make that a teardown of the spine and the UI mid-session — a restart in disguise with partial-reload hazards. A manual config-scope command captures the safe, predictable subset.
+**Widening the HMR watch roots to `packages/`/`apps/`.** Rejected for now: plugin-source changes reload every dependent plugin's fiber, and the repo's dense shared packages (`alego-session`, `alego-llm`, `alego-tools`) make that a teardown of the spine and the UI mid-session — a restart in disguise with partial-reload hazards. A manual config-scope command captures the safe, predictable subset.
 
 **Declaring `loader` in `inject`.** Rejected: it would make the Loader a hard dependency of the TUI, breaking every Loader-less composition (unit harness, embedders) for a dev convenience.
 
-**A `cordis_reload` model-facing tool in dsh-tool-cordis.** Rejected: this is an operator action for the human at the terminal, not a capability the model should trigger; the cordis toolset's mount/unmount surface already covers the model's runtime-modification story.
+**A `cordis_reload` model-facing tool in alego-tool-cordis.** Rejected: this is an operator action for the human at the terminal, not a capability the model should trigger; the cordis toolset's mount/unmount surface already covers the model's runtime-modification story.
 
 ## Consequences
 

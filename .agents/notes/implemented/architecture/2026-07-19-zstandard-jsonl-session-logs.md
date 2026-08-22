@@ -14,7 +14,7 @@ The encoding also has to remain explicit at the deployment boundary. Snapshot fi
 
 ### Configuration and suffix ownership
 
-`dsh-session-persistence-jsonl` accepts `compression?: 'zstd' | 'none'` and explicitly resolves omission to `'zstd'`. Zstandard artifacts end in `.jsonl.zstd`; `'none'` retains the original newline-delimited UTF-8 `.jsonl` representation. `SessionLocation.kind` remains `'jsonl'`, because both encodings carry the same logical record format, and `SESSION_FORMAT_VERSION` remains `0` under the repository's pre-release reject-without-migration policy.
+`alego-session-persistence-jsonl` accepts `compression?: 'zstd' | 'none'` and explicitly resolves omission to `'zstd'`. Zstandard artifacts end in `.jsonl.zstd`; `'none'` retains the original newline-delimited UTF-8 `.jsonl` representation. `SessionLocation.kind` remains `'jsonl'`, because both encodings carry the same logical record format, and `SESSION_FORMAT_VERSION` remains `0` under the repository's pre-release reject-without-migration policy.
 
 Each persistence root belongs to one encoding. A one-time discovery preflight rejects any opposite suffix, and targeted load, live-adoption, listing, and materialization paths repeat the relevant suffix check after an initially empty preflight. The error names the incompatible artifact and directs the deployment to the matching configuration or a separate root. There is no migration, dual read, dual write, or extension-based fallback.
 

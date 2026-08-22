@@ -3,30 +3,30 @@
 # echoes its process cwd and announced session cwd, so parent-session cwd
 # inheritance is asserted keylessly end to end. `cwd` is deliberately omitted —
 # the inheritance branch under test. The child command path is machine-absolute,
-# so the driving e2e supplies it via DSH_TEST_MOCK_ACP_SERVER.
+# so the driving e2e supplies it via ALEGO_TEST_MOCK_ACP_SERVER.
 - id: mock-llm
   name: './mock-delegating-llm.ts'
 
 - id: subagent
-  name: '@deepseek-ai/dsh-subagent'
+  name: '@alego/subagent'
 
 # The out-of-process ACP backend spawns its child through the subprocess seam.
 - id: subprocess
-  name: '@deepseek-ai/dsh-subprocess-local'
+  name: '@alego/subprocess-local'
 
 - id: subagent-acp
-  name: '@deepseek-ai/dsh-subagent-acp'
+  name: '@alego/subagent-acp'
   config:
     providerName: acp
     command: !!js process.execPath
     args:
-      - !!js process.env.DSH_TEST_MOCK_ACP_SERVER
+      - !!js process.env.ALEGO_TEST_MOCK_ACP_SERVER
     permission: reject
     env:
       MOCK_ECHO_CWD: '1'
 
 - id: tool-subagent
-  name: '@deepseek-ai/dsh-tool-subagent'
+  name: '@alego/tool-subagent'
   config:
     provider: acp
     toolName: subagent
@@ -35,7 +35,7 @@
     maxDepth: 'provider-managed'
 
 - id: agent-spine
-  name: '@deepseek-ai/dsh-agent-spine-demo'
+  name: '@alego/agent-spine-demo'
   config:
     agents:
       - id: main
@@ -46,10 +46,10 @@
     workspaceContext: false
 
 - id: persistence
-  name: '@deepseek-ai/dsh-session-persistence-jsonl'
+  name: '@alego/session-persistence-jsonl'
   config:
     root: './.sessions'
     compression: 'none'
 
 - id: checkpoint-policy
-  name: '@deepseek-ai/dsh-session-checkpoint-policy'
+  name: '@alego/session-checkpoint-policy'

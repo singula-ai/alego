@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { COMPOSITION_FILE, discoverPresets, scanRoot } from '@deepseek-ai/dsh-agent-presets'
+import { COMPOSITION_FILE, discoverPresets, scanRoot } from '@alego/agent-presets'
 
 const fsHarness = vi.hoisted(() => ({
   nextReadError: undefined as NodeJS.ErrnoException | undefined,
@@ -34,7 +34,7 @@ beforeEach(() => {
 
 describe('display order', () => {
   it('puts declared order first, then everything else by id', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-order-'))
+    const root = await mkdtemp(join(tmpdir(), 'alego-order-'))
     for (const [id, order] of [['zulu', 1], ['alpha', 2]] as const) {
       await mkdir(join(root, id), { recursive: true })
       await writeFile(join(root, id, COMPOSITION_FILE), '[]\n')
@@ -53,7 +53,7 @@ describe('display order', () => {
   })
 
   it('breaks a tie between equal declared orders by id', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-order-tie-'))
+    const root = await mkdtemp(join(tmpdir(), 'alego-order-tie-'))
     for (const id of ['yankee', 'alpha']) {
       await mkdir(join(root, id), { recursive: true })
       await writeFile(join(root, id, COMPOSITION_FILE), '[]\n')
@@ -90,7 +90,7 @@ describe('preset discovery', () => {
   })
 
   it('skips a directory whose name no preset id could ever claim', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-presets-oddname-'))
+    const root = await mkdtemp(join(tmpdir(), 'alego-presets-oddname-'))
     await mkdir(join(root, '.hidden'))
     await mkdir(join(root, 'Has_Caps'))
     await mkdir(join(root, 'usable'))
@@ -125,7 +125,7 @@ describe('preset discovery', () => {
   })
 
   it('ignores a plain file sitting beside the preset directories', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-presets-'))
+    const root = await mkdtemp(join(tmpdir(), 'alego-presets-'))
     await writeFile(join(root, 'stray.yml'), '- id: x\n')
     await mkdir(join(root, 'real'))
     await writeFile(join(root, 'real', COMPOSITION_FILE), '[]\n')
@@ -136,7 +136,7 @@ describe('preset discovery', () => {
   })
 
   it('reports a root it cannot read rather than treating it as empty', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-presets-'))
+    const root = await mkdtemp(join(tmpdir(), 'alego-presets-'))
     const notADirectory = join(root, 'file-as-root')
     await writeFile(notADirectory, 'not a directory\n')
 
@@ -147,7 +147,7 @@ describe('preset discovery', () => {
   it('expands a leading tilde in a root path', async () => {
     // `~` alone resolves to the home directory, which exists but holds no
     // preset directories; the point is that it did not throw on a literal `~`.
-    const found = await scanRoot({ path: '~/.dsh-agent-presets-absent', trust: 'user' })
+    const found = await scanRoot({ path: '~/.alego-agent-presets-absent', trust: 'user' })
 
     expect(found).toEqual([])
   })
@@ -156,7 +156,7 @@ describe('preset discovery', () => {
 describe('composition health', () => {
   /** One directory under a fresh root holding `composition`, scanned. */
   async function scanned(composition: string): Promise<string | undefined> {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-presets-health-'))
+    const root = await mkdtemp(join(tmpdir(), 'alego-presets-health-'))
     await mkdir(join(root, 'probe'))
     await writeFile(join(root, 'probe', COMPOSITION_FILE), composition)
     const [preset] = await scanRoot({ path: root, trust: 'user' })
@@ -196,7 +196,7 @@ describe('composition health', () => {
   })
 
   it('reports a composition that stats but cannot be read', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-presets-unreadable-'))
+    const root = await mkdtemp(join(tmpdir(), 'alego-presets-unreadable-'))
     await mkdir(join(root, 'sealed'))
     const path = join(root, 'sealed', COMPOSITION_FILE)
     await writeFile(path, '[]\n')

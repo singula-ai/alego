@@ -2,7 +2,7 @@
 # creation (the UI Access switch equivalent), so a continuable background
 # child must inherit that override instead of the deployment default.
 - id: base
-  name: '@deepseek-ai/cordis-plugin-include'
+  name: '@alego/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:

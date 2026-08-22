@@ -11,7 +11,7 @@ Archived: 2026-07-26
 
 ## 决策
 
-`package.json` 中的 `doc-sync` 委托给既有的有界调度器——`tsx scripts/run-gates.ts doc-sync`——与各 `check:ci:*` 脚本的做法一致（[并行门禁调度](2026-07-06-parallel-pre-push-gates.md)、[当前 CI 拓扑](2026-07-22-evidence-based-larger-hosted-runners.md)）。`doc-sync` 模式恰好展开为 `docSyncLeafGates()`，使 `run-gates.ts` 里的叶子列表成为成员集合的唯一真源。本地模式把默认并发上限设为四个 worker，因为多个文档门禁各自要构建完整的 `ts.Program`；`DSH_GATE_CONCURRENCY` 仍可覆盖。
+`package.json` 中的 `doc-sync` 委托给既有的有界调度器——`tsx scripts/run-gates.ts doc-sync`——与各 `check:ci:*` 脚本的做法一致（[并行门禁调度](2026-07-06-parallel-pre-push-gates.md)、[当前 CI 拓扑](2026-07-22-evidence-based-larger-hosted-runners.md)）。`doc-sync` 模式恰好展开为 `docSyncLeafGates()`，使 `run-gates.ts` 里的叶子列表成为成员集合的唯一真源。本地模式把默认并发上限设为四个 worker，因为多个文档门禁各自要构建完整的 `ts.Program`；`ALEGO_GATE_CONCURRENCY` 仍可覆盖。
 
 `docSyncLeafGates` 包含 `verify-cordis-api`，因此相关的本地文档检查与 CI 会同其他生成文档一起把关生成的运行时 API 目录。
 

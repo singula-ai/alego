@@ -48,7 +48,7 @@ for (const manifestPath of manifests) {
   // pnpm dependency links. Junctioning node_modules elsewhere breaks pnpm's
   // relative workspace links on Windows. Copy the manifest-declared lib view
   // so a companion that imports an undeclared runtime chunk fails here.
-  const stagedPackageDir = mkdtempSync(resolve(packageDir, '.dsh-built-invariant-'))
+  const stagedPackageDir = mkdtempSync(resolve(packageDir, '.alego-built-invariant-'))
   try {
     copyFileSync(resolve(packageDir, 'package.json'), resolve(stagedPackageDir, 'package.json'))
     copyDeclaredLibFiles(packageDir, stagedPackageDir, manifest.files)

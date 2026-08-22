@@ -1,21 +1,21 @@
 import { access } from 'node:fs/promises'
 import { join, posix } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@alego/cordis'
 import { describe, expect, it } from 'vitest'
-import { Inbox } from '@deepseek-ai/dsh-agent'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import { runLoaderSmoke } from '@deepseek-ai/dsh-loader-smoke'
+import { Inbox } from '@alego/agent'
+import type { Agent } from '@alego/agent'
+import { runLoaderSmoke } from '@alego/loader-smoke'
 import {
   FileNotFoundError,
   Sandbox,
   SandboxNotFoundError,
-} from '@deepseek-ai/dsh-e2b'
-import TerminalSessionService, { TerminalSessionId } from '@deepseek-ai/dsh-terminal'
-import { BashTerminalBackend } from '@deepseek-ai/dsh-terminal-bash'
-import SandboxPolicyService from '@deepseek-ai/dsh-sandbox-policy'
-import { Session, SessionId } from '@deepseek-ai/dsh-session'
-import E2BSubprocessRuntime from '@deepseek-ai/dsh-subprocess-e2b'
+} from '@alego/e2b'
+import TerminalSessionService, { TerminalSessionId } from '@alego/terminal'
+import { BashTerminalBackend } from '@alego/terminal-bash'
+import SandboxPolicyService from '@alego/sandbox-policy'
+import { Session, SessionId } from '@alego/session'
+import E2BSubprocessRuntime from '@alego/subprocess-e2b'
 
 const fixtureRoot = fileURLToPath(new URL('../../../../examples/headless-agent/tests/fixtures/e2b/e2b/', import.meta.url))
 const binScript = join(fixtureRoot, 'bin.ts')
@@ -28,13 +28,13 @@ describe.skipIf(!process.env.E2B_API_KEY)('E2B live Loader composition', () => {
     if (apiKey === undefined) throw new Error('E2B_API_KEY disappeared before the PTY environment test')
     const sandbox = await Sandbox.create({
       apiKey,
-      envs: { NPM_TOKEN: 'sentinel-secret', DSH_STALE: 'sentinel-stale', KEEP: 'visible' },
+      envs: { NPM_TOKEN: 'sentinel-secret', ALEGO_STALE: 'sentinel-stale', KEEP: 'visible' },
       timeoutMs: 60_000,
       secure: true,
       lifecycle: { onTimeout: 'kill' },
     })
     try {
-      const profileLeakPath = '/home/user/dsh-e2b-bootstrap-profile-leak'
+      const profileLeakPath = '/home/user/alego-e2b-bootstrap-profile-leak'
       const hostileProfile = [
         'if [[ "${NPM_TOKEN-}" == "sentinel-secret" ]]; then',
         `  printf leaked > ${profileLeakPath}`,
@@ -49,7 +49,7 @@ describe.skipIf(!process.env.E2B_API_KEY)('E2B live Loader composition', () => {
       const ctx = new Context()
       ctx.provide('e2b', {
         cwd: '/home/user',
-        runtimeRoot: '/home/user/.dsh-e2b',
+        runtimeRoot: '/home/user/.alego-e2b',
         getSandbox: async () => sandbox,
       } as never)
       const sandboxPolicyFiber = await ctx.plugin(SandboxPolicyService, {
@@ -64,12 +64,12 @@ describe.skipIf(!process.env.E2B_API_KEY)('E2B live Loader composition', () => {
       await expect(sandbox.files.read(profileLeakPath)).rejects.toBeInstanceOf(FileNotFoundError)
       const environmentProbe = ctx.subprocess.spawn({
         argv: ['/bin/bash', '-c', [
-          'dsh_leak=0',
-          'for dsh_pid in "$PPID" $(ps -o pid= --ppid "$PPID"); do',
-          '  [[ "$dsh_pid" == "$$" ]] && continue',
-          '  if tr "\\0" "\\n" < "/proc/$dsh_pid/environ" 2>/dev/null | grep -Fqx "NPM_TOKEN=sentinel-secret"; then dsh_leak=1; fi',
+          'alego_leak=0',
+          'for alego_pid in "$PPID" $(ps -o pid= --ppid "$PPID"); do',
+          '  [[ "$alego_pid" == "$$" ]] && continue',
+          '  if tr "\\0" "\\n" < "/proc/$alego_pid/environ" 2>/dev/null | grep -Fqx "NPM_TOKEN=sentinel-secret"; then alego_leak=1; fi',
           'done',
-          'printf "DIRECT=<%s> LEAK=<%s>\\n" "${NPM_TOKEN-}" "$dsh_leak"',
+          'printf "DIRECT=<%s> LEAK=<%s>\\n" "${NPM_TOKEN-}" "$alego_leak"',
         ].join('\n')],
         cwd: '/home/user',
         stdio: { stdin: 'ignore', stdout: { maxBytes: 1_024 }, stderr: { maxBytes: 1_024 } },
@@ -105,10 +105,10 @@ describe.skipIf(!process.env.E2B_API_KEY)('E2B live Loader composition', () => {
       })
       const session = await backend.spawn({ sessionId: TerminalSessionId('env'), owner, type: 'shell' })
       const result = await session.startSend({
-        text: "printf 'NPM=<%s> DSH=<%s> KEEP=<%s>\\n' \"$NPM_TOKEN\" \"$DSH_STALE\" \"$KEEP\"",
+        text: "printf 'NPM=<%s> ALEGO=<%s> KEEP=<%s>\\n' \"$NPM_TOKEN\" \"$ALEGO_STALE\" \"$KEEP\"",
         submit: true,
       }).done
-      expect(result.viewport).toContain('NPM=<> DSH=<> KEEP=<visible>')
+      expect(result.viewport).toContain('NPM=<> ALEGO=<> KEEP=<visible>')
       expect(result.viewport).not.toContain('sentinel-secret')
       expect(result.viewport).not.toContain('sentinel-stale')
       await expect(sandbox.files.read(profileLeakPath)).rejects.toBeInstanceOf(FileNotFoundError)
@@ -125,7 +125,7 @@ describe.skipIf(!process.env.E2B_API_KEY)('E2B live Loader composition', () => {
   it('runs FS, Bash, PTY, and LSP in one sandbox and deletes it', async () => {
     const { stdout, stderr } = await runLoaderSmoke({
       label: 'E2B composition',
-      tempDirPrefix: 'dsh-e2b-composition-',
+      tempDirPrefix: 'alego-e2b-composition-',
       binScript,
       libBinScript: binScript,
       configPath,
@@ -166,7 +166,7 @@ describe.skipIf(!process.env.E2B_API_KEY)('E2B live Loader composition', () => {
     const terminalMotd = (output.terminal as { motd: string }).motd
     expect(terminalMotd.length).toBeGreaterThan(0)
     expect(terminalMotd).not.toContain('exec /bin/bash')
-    expect(terminalMotd).not.toContain('.dsh-e2b/terminals/')
+    expect(terminalMotd).not.toContain('.alego-e2b/terminals/')
     expect((output.terminal as { echo: { viewport: string } }).echo.viewport).toContain('PTY-你好')
     expect((output.terminal as { scrollback: string }).scrollback).toContain('PTY-你好')
     expect((output.terminal as { signal: { targetPgid: number } }).signal.targetPgid).toBeGreaterThan(0)

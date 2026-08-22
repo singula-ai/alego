@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-session-persistence-sqlite
+# @alego/session-persistence-sqlite
 
 English | [中文](README.zh.md)
 

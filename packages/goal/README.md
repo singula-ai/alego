@@ -2,7 +2,7 @@
 
 English | [中文](README.zh.md)
 
-Durable objective state for an agent session, owned independently of the model-facing tools and continuation policy that consume it. Goal state is part of the owning session log; consumers depend on `dsh-goal`, never on the concrete agent loop.
+Durable objective state for an agent session, owned independently of the model-facing tools and continuation policy that consume it. Goal state is part of the owning session log; consumers depend on `alego-goal`, never on the concrete agent loop.
 
 | Package | Role | ctx key |
 |---|---|---|

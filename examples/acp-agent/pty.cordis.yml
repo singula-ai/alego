@@ -1,15 +1,15 @@
 # Opt-in persistent PTY composition for the PTY snapshot scenario. The base
 # deployment already owns the shared sandbox provider and policy.
 - id: base
-  name: '@deepseek-ai/cordis-plugin-include'
+  name: '@alego/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - insert:
           - id: pty
-            name: '@deepseek-ai/dsh-terminal'
+            name: '@alego/terminal'
           - id: terminal-bash
-            name: '@deepseek-ai/dsh-terminal-bash'
+            name: '@alego/terminal-bash'
             config:
               pollIntervalMs: 10
               exactProbeAfterMs: 20
@@ -18,4 +18,4 @@
               timeoutMs: 2000
               disposeGraceMs: 500
           - id: tool-terminal
-            name: '@deepseek-ai/dsh-tool-terminal'
+            name: '@alego/tool-terminal'

@@ -12,7 +12,7 @@ Workspace 悬停卡片和 Tool 调用摘要会显示完整的 POSIX 家目录路
 
 `host.describe` 把宿主账户的 `home` 作为必填字段上报。Client 与 Host 一同发布，因此该字段是必填而不是可选。ApiProxy 在 describe 时用 `homedir()` 填入。
 
-`dsh-client-runtime` 中的 `abbreviateHomePath` 是仅用于展示的辅助函数。当路径是 POSIX 家目录或其后代时返回 `~` 或 `~/…`；`home` 缺失、为空或为 `/`，任一侧是 Windows 盘符或 UNC 路径，或只是前缀命中（`/Users/u` 不能收走 `/Users/u2`）时，路径保持不变。Tool 摘要先做工作区相对缩短，再调用该辅助函数，因此会话 cwd 内的路径仍然更短。`filePath`、Host 打开以及 Workspace 悬停复制仍使用作者给出的文件系统路径。
+`alego-client-runtime` 中的 `abbreviateHomePath` 是仅用于展示的辅助函数。当路径是 POSIX 家目录或其后代时返回 `~` 或 `~/…`；`home` 缺失、为空或为 `/`，任一侧是 Windows 盘符或 UNC 路径，或只是前缀命中（`/Users/u` 不能收走 `/Users/u2`）时，路径保持不变。Tool 摘要先做工作区相对缩短，再调用该辅助函数，因此会话 cwd 内的路径仍然更短。`filePath`、Host 打开以及 Workspace 悬停复制仍使用作者给出的文件系统路径。
 
 `ui-tool` 与 `ui-workspace` 在各自的 slot 注册上注入 `connection.hostDescription`。ChatView 不增加 Host 描述钩子。该字段在 `ConnectionHandle` 上是必填的；测试假对象提供一个来源，其快照在连接完成前可以为 undefined。
 
@@ -24,7 +24,7 @@ fixture 的 Host 家目录是 `/home/fixture`。第二个 fixture Workspace 位�
 
 **同样把 Windows `%USERPROFILE%` 缩写成 `~`。** 否决，因为验收规则要求 Windows 路径保持原样，而且 Explorer 与 `cmd` 并不这样拼写这些路径。
 
-**把辅助函数放进 `dsh-home-paths`。** 否决，因为该包在 Node 上展开配置里的波浪号；本辅助函数是浏览器展示改写，不能把 Node `os` 拉进 client 包。
+**把辅助函数放进 `alego-home-paths`。** 否决，因为该包在 Node 上展开配置里的波浪号；本辅助函数是浏览器展示改写，不能把 Node `os` 拉进 client 包。
 
 **从 ChatView owner props 向下传递 `home`。** 否决，因为它会扩大 conversation 注入面和每一份 ChatView 测试夹具，而只有 Tool 与 Workspace 卡片消费这个展示事实。
 

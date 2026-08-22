@@ -27,7 +27,7 @@ Status: implemented
 
 ## Wire 与 CLI（命令行界面）表层
 
-`workspace.create` 只接受 `{ path }`；wire schema 与 `WorkspaceApi` 没有 `name` 成员。网关没有 `workspaceRoot` 配置；客户端约定只通过 `WorkspaceCreateInput`、`WorkspaceRuntime.create` 与 `intentName` 提供按路径接纳，`dsh web` 没有 `--workspace-root` flag。`workspace-name-conflict` 仍保留在 wire 上，作为 `workspace.rename` 的标题重名错误。
+`workspace.create` 只接受 `{ path }`；wire schema 与 `WorkspaceApi` 没有 `name` 成员。网关没有 `workspaceRoot` 配置；客户端约定只通过 `WorkspaceCreateInput`、`WorkspaceRuntime.create` 与 `intentName` 提供按路径接纳，`alego web` 没有 `--workspace-root` flag。`workspace-name-conflict` 仍保留在 wire 上，作为 `workspace.rename` 的标题重名错误。
 
 ## 测试
 

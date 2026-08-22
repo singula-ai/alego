@@ -14,7 +14,7 @@ JSONL 持久化后端会逐字保留每个 `SessionEvent`，其中包括数量�
 
 ### 配置与后缀归属
 
-`dsh-session-persistence-jsonl` 接受 `compression?: 'zstd' | 'none'`，并将省略值显式解析为 `'zstd'`。Zstandard 产物使用 `.jsonl.zstd` 后缀；`'none'` 保留原有的换行分隔 UTF-8 `.jsonl` 表示。`SessionLocation.kind` 仍为 `'jsonl'`，因为两种编码承载同一逻辑记录格式；按照仓库的预发布拒绝且不迁移策略，`SESSION_FORMAT_VERSION` 仍为 `0`。
+`alego-session-persistence-jsonl` 接受 `compression?: 'zstd' | 'none'`，并将省略值显式解析为 `'zstd'`。Zstandard 产物使用 `.jsonl.zstd` 后缀；`'none'` 保留原有的换行分隔 UTF-8 `.jsonl` 表示。`SessionLocation.kind` 仍为 `'jsonl'`，因为两种编码承载同一逻辑记录格式；按照仓库的预发布拒绝且不迁移策略，`SESSION_FORMAT_VERSION` 仍为 `0`。
 
 每个持久化根目录只归属于一种编码。一次性的发现预检会拒绝任何相反后缀，而针对性的加载、活跃采用、列举与物化路径会在最初空目录预检之后再次执行对应后缀检查。错误会指出不兼容产物，并要求部署选择匹配配置或单独根目录。系统不提供迁移、双重读取、双重写入或基于扩展名的兜底。
 

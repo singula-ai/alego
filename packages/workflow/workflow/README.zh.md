@@ -1,12 +1,12 @@
-# @deepseek-ai/dsh-workflow
+# @alego/workflow
 
 [English](README.md) | 中文
 
 工作流 seam（扩展点，`ctx.workflowEngine`）执行由模型编写、可扇出 subagent 的编排脚本。该 seam 定义脚本、运行、结果、错误和事件契约；引擎负责决定如何隔离并执行脚本。
 
-`@deepseek-ai/dsh-workflow-worker-thread` 是当前引擎，`@deepseek-ai/dsh-tool-workflow` 是面向模型的消费方。未来的进程或沙箱引擎可以替换实现，而无需更改工具。
+`@alego/workflow-worker-thread` 是当前引擎，`@alego/tool-workflow` 是面向模型的消费方。未来的进程或沙箱引擎可以替换实现，而无需更改工具。
 
-包根是 Host face。浏览器安全的 `@deepseek-ai/dsh-workflow/types` 子路径包含运行身份、元数据、结果和仅供观察的生命周期 payload，不导入 `Agent`、Cordis service 或 Host Context 声明；Host 专用的 `WorkflowStartRequest` 与 `WorkflowRun` 只从包根提供。
+包根是 Host face。浏览器安全的 `@alego/workflow/types` 子路径包含运行身份、元数据、结果和仅供观察的生命周期 payload，不导入 `Agent`、Cordis service 或 Host Context 声明；Host 专用的 `WorkflowStartRequest` 与 `WorkflowRun` 只从包根提供。
 
 ## 服务与运行契约
 
@@ -44,7 +44,7 @@
 
 ## 模型体验
 
-通过 `dsh-tool-workflow` 和工作流引擎间接产生影响；两者创建子 agent 请求，并返回保留在父级的工具结果。
+通过 `alego-tool-workflow` 和工作流引擎间接产生影响；两者创建子 agent 请求，并返回保留在父级的工具结果。
 
 #### KV Cache 影响
 

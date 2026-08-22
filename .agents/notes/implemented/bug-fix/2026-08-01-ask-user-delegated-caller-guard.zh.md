@@ -24,7 +24,7 @@ Status: implemented
 
 **使用 `session.header.delegationDepth > 0`。** 不予采用：持久化谱系会在恢复后继续存在，却不能证明当前进程内所有者。该方案会拒绝有效的已恢复根，也可能放行持久化 header 不完整的存活子级。
 
-**仅在 `dsh-tool-ask-user` 内拒绝。** 不予采用：`exit_plan_mode` 与直接调用方共用 `ctx.userQuestions.ask()`。服务是所有人机交互消费方共同经过的最窄操作边界。
+**仅在 `alego-tool-ask-user` 内拒绝。** 不予采用：`exit_plan_mode` 与直接调用方共用 `ctx.userQuestions.ask()`。服务是所有人机交互消费方共同经过的最窄操作边界。
 
 **让子级向上委托或等待转发。** 不予采用：一次性委托没有公开从子级向父级请求的通道，也没有回答转发协议。唯一有保证的返回路径是子级的最终结果。
 

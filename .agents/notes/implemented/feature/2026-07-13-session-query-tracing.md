@@ -18,7 +18,7 @@ Session relationships are encoded across immutable headers, positional surface o
 
 ## Validation boundary
 
-Event tracing checks target existence before surface analysis. Both event listing and tracing then use `dsh-session`'s one-pass surface fold, which accepts or rejects the loaded log as a whole: event seqs are zero-based and contiguous, surface markers obey event-type eligibility, only surface event types may cite source-event seqs, present arrays are nonempty and duplicate-free, every source is an earlier seq, and every positional replacement names and cites all surface nodes it removes. Every contract failure uses `SESSION_QUERY_INVALID_SURFACE`; there is no weaker classification-only surface standard.
+Event tracing checks target existence before surface analysis. Both event listing and tracing then use `alego-session`'s one-pass surface fold, which accepts or rejects the loaded log as a whole: event seqs are zero-based and contiguous, surface markers obey event-type eligibility, only surface event types may cite source-event seqs, present arrays are nonempty and duplicate-free, every source is an earlier seq, and every positional replacement names and cites all surface nodes it removes. Every contract failure uses `SESSION_QUERY_INVALID_SURFACE`; there is no weaker classification-only surface standard.
 
 All returned records and arrays are detached. A known live event trace never consults persistence; persisted event traces preserve the exact-read list/load consistency check. Session lineage is necessarily a cross-corpus operation and therefore preserves cross-corpus persistence failure semantics.
 

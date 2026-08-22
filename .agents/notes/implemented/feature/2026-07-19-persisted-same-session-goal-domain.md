@@ -12,7 +12,7 @@ Durable lifecycle and permission to continue are different facts. A session may 
 
 ## Decision
 
-`@deepseek-ai/dsh-goal` in `packages/goal/goal/` owns one current same-session goal through `ctx.goals`. A goal has a branded id, objective, durable phase, compare-and-set revision, and `maxGoalRounds`. `defaultMaxGoalRounds` is a validated deployment setting with default `256`; `create()` materializes it internally before mutation rather than exposing resolution as another service verb.
+`@alego/goal` in `packages/goal/goal/` owns one current same-session goal through `ctx.goals`. A goal has a branded id, objective, durable phase, compare-and-set revision, and `maxGoalRounds`. `defaultMaxGoalRounds` is a validated deployment setting with default `256`; `create()` materializes it internally before mutation rather than exposing resolution as another service verb.
 
 The durable phases are `active`, `paused`, `blocked`, and `complete`. A blocked snapshot includes a policy-owned lower-kebab-case code and a normalized free-form message, so usage limits, round caps, execution failures, and human-input dependencies share one lifecycle state without losing their cause. A separate live activation is `armed` or `disarmed`. Creation and explicit resume arm activation; pause, completion, blocking, and clear disarm it. Edits preserve activation and any blocker reason; resume and completion clear that reason. Activation is never part of the persisted snapshot.
 
@@ -32,7 +32,7 @@ A cache built from any seed starts disarmed, and every `agent/session-start` edg
 
 ### Service boundary
 
-The service accepts only the exact live `Agent` object registered under its id. A committed mutation emits the scoped `goal/changed` event with contained listener failures. Policy consumers use this service plus the public `Agent` interface and `agent/*` events; the goal domain does not import or modify `dsh-agent-loop`.
+The service accepts only the exact live `Agent` object registered under its id. A committed mutation emits the scoped `goal/changed` event with contained listener failures. Policy consumers use this service plus the public `Agent` interface and `agent/*` events; the goal domain does not import or modify `alego-agent-loop`.
 
 ## Testing
 
@@ -44,7 +44,7 @@ Unit coverage pins creation defaults, exact-live-agent checks, compare-and-set r
 - **Couple each durable mutation to queued model context** — rejected by the later [goal-owned durable event decision](../architecture/2026-07-31-goal-owned-durable-events.md): goal tools and scheduled continuation prompts expose state when needed, while domain persistence remains independent from queue outcomes.
 - **Persist activation and restart automatically** — rejected because opening or resuming a session must wait for human input; durable phase records status, not fresh authority to spend resources.
 - **Count all session turns as goal rounds** — rejected because one session can contain human clarification, inspection, and unrelated work; only goal-attributed continuation turns consume this budget.
-- **Add goal state or a generic loop abstraction to `dsh-agent-loop`** — rejected because state and continuation policy can compose through existing plugins, `Agent` verbs, and events without privileging the shipped loop implementation.
+- **Add goal state or a generic loop abstraction to `alego-agent-loop`** — rejected because state and continuation policy can compose through existing plugins, `Agent` verbs, and events without privileging the shipped loop implementation.
 
 ## Consequences
 

@@ -1,8 +1,8 @@
 // Web e2e scenario: at the 800×720 viewport the plan chip and the model
 // trigger keep disjoint click areas, and clicking the chip at its center
 // leaves plan mode through the real command channel. This is the browser
-// regression the external report asked for (dsh-external/issues#107 →
-// deepseek-harness#1406): "increase an 800×720 browser regression test and
+// regression the external report asked for (alego-external/issues#107 →
+// alego#1406): "increase an 800×720 browser regression test and
 // assert that the plan center hits the plan button".
 //
 // Plan mode is entered through the real /plan command with no argument:
@@ -28,8 +28,8 @@ import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
 // Type-only: pulls the plan/mode SessionEventMap merge so the discriminant
 // filter below types as the plan-mode event in the host aggregate.
-import type {} from '@deepseek-ai/dsh-plan-mode'
-import type { SessionEvent } from '@deepseek-ai/dsh-session'
+import type {} from '@alego/plan-mode'
+import type { SessionEvent } from '@alego/session'
 import {
   assertFixtureInventory, compareOrRefreshGolden,
   launchWebScaffold, watchConsole, webSnapshotMode, type WebScaffold,

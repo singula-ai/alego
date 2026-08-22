@@ -43,7 +43,7 @@ export interface Config {
 describe('gen-config-catalog classification', () => {
   it('classifies an apply plugin with a config parameter and extracts the paste', () => {
     const entries = collectConfigCatalog(make({
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
 export const inject = ['tools']
 ${DOCUMENTED_CONFIG}
 /** Load. */
@@ -57,8 +57,8 @@ export function apply(ctx: Context, config: Config): void {}
 
   it('classifies a default service class, reading its constructor and static inject', () => {
     const entries = collectConfigCatalog(make({
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
+import z from '@alego/schemastery'
 ${DOCUMENTED_CONFIG}
 /** Fixture service. */
 export default class Fix {
@@ -110,7 +110,7 @@ export default class Fix {
 describe('gen-config-catalog config extraction guards', () => {
   it('hard-errors on a config field with no JSDoc prose', () => {
     expect(() => collectConfigCatalog(make({
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
 export interface Config {
   knob?: string
 }
@@ -122,7 +122,7 @@ export function apply(ctx: Context, config: Config): void {}
 
   it('hard-errors on an undocumented field nested in a type literal', () => {
     expect(() => collectConfigCatalog(make({
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
 /** Fixture config. */
 export interface Config {
   /** Entries. */
@@ -138,7 +138,7 @@ export function apply(ctx: Context, config: Config): void {}
 
   it('pastes a package-local type transitively and records external refs', () => {
     const entries = collectConfigCatalog(make({
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
 import type { Mode } from './types.ts'
 import type { Remote } from '@fix/dep'
 /** Fixture config. */
@@ -162,7 +162,7 @@ export function apply(ctx: Context, config: Config): void {}
 
   it('pastes an enum referenced by the config type', () => {
     const entries = collectConfigCatalog(make({
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
 /** Fixture mode. */
 export enum Mode {
   A = 'a',
@@ -185,7 +185,7 @@ export function apply(ctx: Context, config: Config): void {}
 
   it('hard-errors on a referenced type name that resolves nowhere', () => {
     expect(() => collectConfigCatalog(make({
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
 /** Fixture config. */
 export interface Config {
   /** The ghost. */
@@ -199,7 +199,7 @@ export function apply(ctx: Context, config: Config): void {}
 
   it('hard-errors on a config type imported from another package', () => {
     expect(() => collectConfigCatalog(make({
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
 import type { Config } from '@fix/dep'
 /** Load. */
 export function apply(ctx: Context, config: Config): void {}
@@ -209,7 +209,7 @@ export function apply(ctx: Context, config: Config): void {}
 
   it('hard-errors when one name resolves to two different declarations across the closure', () => {
     expect(() => collectConfigCatalog(make({
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
 import type { A } from './a.ts'
 import type { B } from './b.ts'
 /** Fixture config. */
@@ -231,8 +231,8 @@ export function apply(ctx: Context, config: Config): void {}
 describe('gen-config-catalog schema cross-check', () => {
   it('accepts a chained schema whose keys all appear on the config type', () => {
     const entries = collectConfigCatalog(make({
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
+import z from '@alego/schemastery'
 ${DOCUMENTED_CONFIG}
 export const Config: z<Config> = z.object({ knob: z.string() }).default({})
 /** Load. */
@@ -244,8 +244,8 @@ export function apply(ctx: Context, config: Config): void {}
 
   it('hard-errors on a schema key the config type does not declare', () => {
     expect(() => collectConfigCatalog(make({
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
+import z from '@alego/schemastery'
 ${DOCUMENTED_CONFIG}
 export const Config: z<Config> = z.object({ knob: z.string(), hidden: z.number() })
 /** Load. */
@@ -256,8 +256,8 @@ export function apply(ctx: Context, config: Config): void {}
 
   it('hard-errors on a NESTED schema key the config type does not declare', () => {
     expect(() => collectConfigCatalog(make({
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
+import z from '@alego/schemastery'
 /** Fixture config. */
 export interface Config {
   /** Entries. */
@@ -280,8 +280,8 @@ export function apply(ctx: Context, config: Config): void {}
       'src/types.ts': '/** Shared options. */\nexport interface Opts {\n  /** Model. */\n  model?: string\n}\n',
     })
     writePkg(root, 'group/one', '@fix/one', {
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
+import z from '@alego/schemastery'
 import type { Opts } from '@fix/dep'
 /** Fixture config. */
 export interface Config {
@@ -301,8 +301,8 @@ export function apply(ctx: Context, config: Config): void {}
 
   it('resolves nested keys through a Partial<> wrapper', () => {
     expect(() => collectConfigCatalog(make({
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
+import z from '@alego/schemastery'
 /** Caps. */
 export interface Caps {
   /** X. */
@@ -322,8 +322,8 @@ export function apply(ctx: Context, config: Config): void {}
 
   it('leaves a nested key under an external (unresolvable) type unreported', () => {
     expect(() => collectConfigCatalog(make({
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
+import z from '@alego/schemastery'
 import type { External } from 'some-external-pkg'
 /** Fixture config. */
 export interface Config {
@@ -340,8 +340,8 @@ export function apply(ctx: Context, config: Config): void {}
   it('folds an intersected workspace schema into the subset check', () => {
     const root = makeRoot()
     writePkg(root, 'group/leaf', '@fix/leaf', {
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
+import z from '@alego/schemastery'
 /** Leaf config. */
 export interface Config {
   /** Leaf knob. */
@@ -355,8 +355,8 @@ export default class Leaf {
 `,
     })
     writePkg(root, 'group/bundle', '@fix/bundle', {
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
+import z from '@alego/schemastery'
 import Leaf from '@fix/leaf'
 /** Bundle config. */
 export interface Config {
@@ -375,8 +375,8 @@ export function apply(ctx: Context, config: Config): void {}
   it('resolves composed nested keys through an indexed-access forwarder', () => {
     const root = makeRoot()
     writePkg(root, 'group/leaf', '@fix/leaf', {
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
+import z from '@alego/schemastery'
 /** Leaf config. */
 export interface Config {
   /** Agents. */
@@ -393,8 +393,8 @@ export default class Leaf {
 `,
     })
     writePkg(root, 'group/bundle', '@fix/bundle', {
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
+import z from '@alego/schemastery'
 import Leaf, { type Config as LeafConfig } from '@fix/leaf'
 /** Bundle config forwarding the leaf's agents list. */
 export interface Config {
@@ -412,8 +412,8 @@ export function apply(ctx: Context, config: Config): void {}
   it('hard-errors when an intersected schema key is missing from the bundle config type', () => {
     const root = makeRoot()
     writePkg(root, 'group/leaf', '@fix/leaf', {
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
+import z from '@alego/schemastery'
 /** Leaf config. */
 export interface Config {
   /** Leaf knob. */
@@ -427,8 +427,8 @@ export default class Leaf {
 `,
     })
     writePkg(root, 'group/bundle', '@fix/bundle', {
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
+import z from '@alego/schemastery'
 import Leaf from '@fix/leaf'
 /** Bundle config that forgot to declare the forwarded field. */
 export interface Config {
@@ -448,7 +448,7 @@ describe('gen-config-catalog render', () => {
   it('renders sections, fences, and the terse classification lists', () => {
     const root = makeRoot()
     writePkg(root, 'group/one', '@fix/one', {
-      'src/index.ts': `import type { Context } from '@deepseek-ai/cordis'
+      'src/index.ts': `import type { Context } from '@alego/cordis'
 ${DOCUMENTED_CONFIG}
 /** Load. */
 export function apply(ctx: Context, config: Config): void {}

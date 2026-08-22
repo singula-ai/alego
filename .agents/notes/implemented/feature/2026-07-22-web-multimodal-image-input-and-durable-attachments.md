@@ -38,13 +38,13 @@ The persistence boundary is message acceptance, not paste:
 | State | Allowed representation | Durability and ordering |
 | --- | --- | --- |
 | Unsent user draft | Browser `File` plus object URL; a native client may use an OS temporary file such as `/var/...` | Temporary and client-owned. It may disappear on reload or process exit and never appears in a session event. |
-| Accepted user image | Immutable object below `DSH_HOME` plus `ImageAttachmentRef` | The host commits every image before `agent.send()` or `agent.steer()` can append the owning user event. |
-| Structured model image output | Immutable object below `DSH_HOME` plus `ImageAttachmentRef` | The provider adapter commits the bytes before it emits a completed image block or assistant message event. Temporary URLs, paths, and base64 are forbidden in the event. |
+| Accepted user image | Immutable object below `ALEGO_HOME` plus `ImageAttachmentRef` | The host commits every image before `agent.send()` or `agent.steer()` can append the owning user event. |
+| Structured model image output | Immutable object below `ALEGO_HOME` plus `ImageAttachmentRef` | The provider adapter commits the bytes before it emits a completed image block or assistant message event. Temporary URLs, paths, and base64 are forbidden in the event. |
 
 Each session's `InputMachine` state keeps the ordered runtime-only attachment identifiers alongside the live draft. The framework-owned chat store receives only the draft's plain-text persistence mirror, while `ConversationController` owns the corresponding browser-only `File` and object-URL registry:
 
 ```ts
-import type { Branded } from '@deepseek-ai/dsh-brand'
+import type { Branded } from '@alego/brand'
 
 type DraftAttachmentId = Branded<'DraftAttachmentId'>
 
@@ -69,7 +69,7 @@ interface ComposerAttachment {
 
 This split uses the session provide channel's input hook and actions as the single subscription path for live composer state while keeping non-serializable browser objects out of persisted JSON. Only the plain-text draft mirror uses `localStorage`; attachment identifiers, browser `File` objects, and object URLs remain scoped to the live session input shell. Unsent images therefore do not survive reload or session-scope disposal. A Workspace switch moves a mixed text-and-image draft only when the destination shell accepts the complete image batch; refusal leaves both parts with the source. A native client may stage input in an OS temporary directory, but it must treat that path exactly like the browser object URL: delete it when no longer needed and copy the bytes into the durable store before message acceptance.
 
-The local attachment backend resolves an explicit `dshHome`, then `$DSH_HOME`, then `~/.dsh`. It stores content-addressed objects below `$DSH_HOME/attachments/v1/objects/<prefix>/<sha256>` with owner-only directory and file permissions. On each process's first save for one home, it creates that home and synchronizes every ancestor entry to the filesystem root; existence is not treated as durability because another process may still be between `mkdir` and parent `fsync`. A temporary file is then written, synchronized, atomically published, and made durable with directory syncs on the publication path (POSIX; Windows relies on filesystem metadata journaling) before the service returns a reference. The content digest is encoded in the opaque `sha256:<digest>` identifier. Admission prepares a provider-independent master by applying orientation, removing metadata, converting to 8-bit sRGB/sRGBA, and preserving aspect ratio under independent dimension and byte limits. Reads verify the digest, byte length, and logged metadata. Route-specific deterministic request versions are cached separately; the full policy is recorded in [Unified image masters, request versions, and provider files](2026-08-20-unified-image-request-pipeline.md).
+The local attachment backend resolves an explicit `alegoHome`, then `$ALEGO_HOME`, then `~/.alego`. It stores content-addressed objects below `$ALEGO_HOME/attachments/v1/objects/<prefix>/<sha256>` with owner-only directory and file permissions. On each process's first save for one home, it creates that home and synchronizes every ancestor entry to the filesystem root; existence is not treated as durability because another process may still be between `mkdir` and parent `fsync`. A temporary file is then written, synchronized, atomically published, and made durable with directory syncs on the publication path (POSIX; Windows relies on filesystem metadata journaling) before the service returns a reference. The content digest is encoded in the opaque `sha256:<digest>` identifier. Admission prepares a provider-independent master by applying orientation, removing metadata, converting to 8-bit sRGB/sRGBA, and preserving aspect ratio under independent dimension and byte limits. Reads verify the digest, byte length, and logged metadata. Route-specific deterministic request versions are cached separately; the full policy is recorded in [Unified image masters, request versions, and provider files](2026-08-20-unified-image-request-pipeline.md).
 
 The store performs no automatic deletion in version one. Sent user images and model-generated images remain reachable for history, resume, and fork. Reference-aware garbage collection needs a separate design because an age-only rule can delete data still referenced by a durable session. Deployment byte and pixel limits are admission policy on writes; reads verify the digest and recorded metadata without reapplying current admission limits, so lowering policy does not invalidate older history.
 
@@ -78,7 +78,7 @@ The store performs no automatic deletion in version one. Sent user images and mo
 The attachment seam exposes immutable image write and verified read operations. The canonical metadata is deliberately narrower than a generic file record:
 
 ```ts
-import type { Branded } from '@deepseek-ai/dsh-brand'
+import type { Branded } from '@alego/brand'
 
 type AttachmentId = Branded<'AttachmentId'>
 
@@ -173,7 +173,7 @@ No compatibility shim is required for the pre-release prompt wire; all call site
 
 ### Keep every intake image in `/var` or another temporary directory
 
-Temporary storage is appropriate before send, including for a native client that receives clipboard files through the operating system. It is not appropriate after acceptance: cleanup is outside the harness's control, paths are host-specific, and resume or fork can outlive the file. The proposal permits temporary staging but copies accepted bytes into `DSH_HOME` before the event.
+Temporary storage is appropriate before send, including for a native client that receives clipboard files through the operating system. It is not appropriate after acceptance: cleanup is outside the harness's control, paths are host-specific, and resume or fork can outlive the file. The proposal permits temporary staging but copies accepted bytes into `ALEGO_HOME` before the event.
 
 ### Persist immediately on paste or drop
 
@@ -211,7 +211,7 @@ Rejected because tool renderers are pure, synchronous, and replayable. MCP prepa
 
 - Storage tests cover content-addressed deduplication, private permissions, admission failures, corruption/missing-object failures, and reading history after deployment limits are lowered.
 - Host and protocol tests cover persist-before-event ordering, absence of base64 in logs, session-scoped authorization, capability rejection, upload limits, bounded HTTP request bodies, image-admission/model-selection ordering, text-only queue edits, and text-only request projection.
-- Client unit tests cover paste and drop, mixed clipboard text, image-only send, draft restoration, ordering, draft/session-scope/application object-URL cleanup, and a deferred historical read that completes after disposal; the keyless assembled built-client lane (`apps/web/tests/image-display.snapshot.ts`, `DSH_EXAMPLE_MODE=lib pnpm run test:snapshot`) covers the historical user and assistant galleries over the authorized attachment route, the original-size lightbox, and the composer paste rail.
+- Client unit tests cover paste and drop, mixed clipboard text, image-only send, draft restoration, ordering, draft/session-scope/application object-URL cleanup, and a deferred historical read that completes after disposal; the keyless assembled built-client lane (`apps/web/tests/image-display.snapshot.ts`, `ALEGO_EXAMPLE_MODE=lib pnpm run test:snapshot`) covers the historical user and assistant galleries over the authorized attachment route, the original-size lightbox, and the composer paste rail.
 - Adapter and compaction tests cover deterministic Pi-AI request versions, DeepSeek Files upload and reuse, stale-id recovery, text-only projection, recursively nested tool-result images, shared summary request versions, and explicit image-output rejection.
 - Attachment, MCP, ACP, and Code Mode tests cover all-member validation before writes, mixed text/image ordering, no inline base64 in durable events, exact route-capability gates, explicit unsupported-content diagnostics, post-execute replacement/block precedence, cancellation during admission, verified assistant-image delivery, and generic nested-image forwarding. A keyless assembled ACP snapshot sends a real inline PNG and pins only its durable reference in the session log.
 - Credentialed real-API tests cover the configured Anthropic route and the built-in `deepseek-official` Files path. The DeepSeek test does not use a custom provider entry.

@@ -1,13 +1,13 @@
 {
-  "name": "@deepseek-ai/dsh-tool-todo",
-  "description": "Model-facing todo_write tool over the DeepSeek Harness event-sourced session log",
+  "name": "@alego/tool-todo",
+  "description": "Model-facing todo_write tool over the Alego event-sourced session log",
   "version": "0.1.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/singula-ai/alego.git",
     "directory": "packages/todo/tool-todo"
   },
   "type": "module",
@@ -37,31 +37,31 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@deepseek-ai/schemastery": "workspace:^",
+    "@alego/schemastery": "workspace:^",
     "zod": "^4.4.3"
   },
   "peerDependencies": {
-    "@deepseek-ai/dsh-agent": "workspace:^",
-    "@deepseek-ai/dsh-invariants": "workspace:^",
-    "@deepseek-ai/dsh-session": "workspace:^",
-    "@deepseek-ai/dsh-session-projection": "workspace:^",
-    "@deepseek-ai/dsh-tools": "workspace:^",
-    "@deepseek-ai/cordis": "workspace:^"
+    "@alego/agent": "workspace:^",
+    "@alego/invariants": "workspace:^",
+    "@alego/session": "workspace:^",
+    "@alego/session-projection": "workspace:^",
+    "@alego/tools": "workspace:^",
+    "@alego/cordis": "workspace:^"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis-plugin-include": "workspace:^",
-    "@deepseek-ai/cordis-plugin-loader": "workspace:^",
-    "@deepseek-ai/dsh-agent": "workspace:^",
-    "@deepseek-ai/dsh-agent-loop": "workspace:^",
-    "@deepseek-ai/dsh-agent-loop-testkit": "workspace:^",
-    "@deepseek-ai/dsh-host-apiproxy": "workspace:^",
-    "@deepseek-ai/dsh-invariants": "workspace:^",
-    "@deepseek-ai/dsh-llm": "workspace:^",
-    "@deepseek-ai/dsh-session": "workspace:^",
-    "@deepseek-ai/dsh-session-projection": "workspace:^",
-    "@deepseek-ai/dsh-system-prompt": "workspace:^",
-    "@deepseek-ai/dsh-tools": "workspace:^",
-    "@deepseek-ai/dsh-user-questions": "workspace:^",
-    "@deepseek-ai/cordis": "workspace:^"
+    "@alego/cordis-plugin-include": "workspace:^",
+    "@alego/cordis-plugin-loader": "workspace:^",
+    "@alego/agent": "workspace:^",
+    "@alego/agent-loop": "workspace:^",
+    "@alego/agent-loop-testkit": "workspace:^",
+    "@alego/host-apiproxy": "workspace:^",
+    "@alego/invariants": "workspace:^",
+    "@alego/llm": "workspace:^",
+    "@alego/session": "workspace:^",
+    "@alego/session-projection": "workspace:^",
+    "@alego/system-prompt": "workspace:^",
+    "@alego/tools": "workspace:^",
+    "@alego/user-questions": "workspace:^",
+    "@alego/cordis": "workspace:^"
   }
 }

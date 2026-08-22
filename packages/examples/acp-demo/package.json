@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-acp-demo",
+  "name": "@alego/acp-demo",
   "description": "ACP automation server app: agent spine + JSONL persistence + ACP transport, with a JSON-RPC stdio bin",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -7,14 +7,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/singula-ai/alego.git",
     "directory": "packages/examples/acp-demo"
   },
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/types/index.d.ts",
   "bin": {
-    "dsh-acp-demo": "lib/bin.js"
+    "alego-acp-demo": "lib/bin.js"
   },
   "exports": {
     ".": {
@@ -40,37 +40,37 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis-plugin-include": "workspace:^",
-    "@deepseek-ai/cordis-plugin-loader": "workspace:^",
-    "@deepseek-ai/dsh-acp": "workspace:^",
-    "@deepseek-ai/dsh-agent-spine-demo": "workspace:^",
-    "@deepseek-ai/dsh-app-boot": "workspace:^",
-    "@deepseek-ai/dsh-invariants": "workspace:^",
-    "@deepseek-ai/dsh-session-checkpoint-policy": "workspace:^",
-    "@deepseek-ai/dsh-session-persistence-jsonl": "workspace:^",
-    "@deepseek-ai/dsh-session-query": "workspace:^",
-    "@deepseek-ai/dsh-session-query-sqlite": "workspace:^",
-    "@deepseek-ai/dsh-tools": "workspace:^",
-    "@deepseek-ai/dsh-agent-instructions": "workspace:^",
-    "@deepseek-ai/cordis": "workspace:^",
-    "@deepseek-ai/schemastery": "workspace:^"
+    "@alego/cordis-plugin-include": "workspace:^",
+    "@alego/cordis-plugin-loader": "workspace:^",
+    "@alego/acp": "workspace:^",
+    "@alego/agent-spine-demo": "workspace:^",
+    "@alego/app-boot": "workspace:^",
+    "@alego/invariants": "workspace:^",
+    "@alego/session-checkpoint-policy": "workspace:^",
+    "@alego/session-persistence-jsonl": "workspace:^",
+    "@alego/session-query": "workspace:^",
+    "@alego/session-query-sqlite": "workspace:^",
+    "@alego/tools": "workspace:^",
+    "@alego/agent-instructions": "workspace:^",
+    "@alego/cordis": "workspace:^",
+    "@alego/schemastery": "workspace:^"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis-plugin-include": "workspace:^",
-    "@deepseek-ai/cordis-plugin-loader": "workspace:^",
-    "@deepseek-ai/dsh-acp": "workspace:^",
-    "@deepseek-ai/dsh-agent": "workspace:^",
-    "@deepseek-ai/dsh-agent-spine-demo": "workspace:^",
-    "@deepseek-ai/dsh-app-boot": "workspace:^",
-    "@deepseek-ai/dsh-invariants": "workspace:^",
-    "@deepseek-ai/dsh-session-checkpoint-policy": "workspace:^",
-    "@deepseek-ai/dsh-session-persistence-jsonl": "workspace:^",
-    "@deepseek-ai/dsh-session-query": "workspace:^",
-    "@deepseek-ai/dsh-session-query-sqlite": "workspace:^",
-    "@deepseek-ai/dsh-system-prompt": "workspace:^",
-    "@deepseek-ai/dsh-tools": "workspace:^",
-    "@deepseek-ai/dsh-agent-instructions": "workspace:^",
-    "@deepseek-ai/cordis": "workspace:^",
-    "@deepseek-ai/schemastery": "workspace:^"
+    "@alego/cordis-plugin-include": "workspace:^",
+    "@alego/cordis-plugin-loader": "workspace:^",
+    "@alego/acp": "workspace:^",
+    "@alego/agent": "workspace:^",
+    "@alego/agent-spine-demo": "workspace:^",
+    "@alego/app-boot": "workspace:^",
+    "@alego/invariants": "workspace:^",
+    "@alego/session-checkpoint-policy": "workspace:^",
+    "@alego/session-persistence-jsonl": "workspace:^",
+    "@alego/session-query": "workspace:^",
+    "@alego/session-query-sqlite": "workspace:^",
+    "@alego/system-prompt": "workspace:^",
+    "@alego/tools": "workspace:^",
+    "@alego/agent-instructions": "workspace:^",
+    "@alego/cordis": "workspace:^",
+    "@alego/schemastery": "workspace:^"
   }
 }

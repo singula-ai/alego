@@ -10,7 +10,7 @@
  * The canonical value never crosses the wire — only the model-facing render text
  * and this JSON `meta` do — so the structured shape a UI renders MUST ride in
  * `meta`. Each projection consumes the SAME retained matches/paths the
- * model-facing render consumes ({@link module:@deepseek-ai/dsh-tool-fs-search/search-core}
+ * model-facing render consumes ({@link module:@alego/tool-fs-search/search-core}
  * `retainGrepMatches`/`retainGlobPaths`), so text and card agree about which
  * results survived the inline cap, and reports `total` (every result found) and
  * `truncated`, so a UI never presents a capped result as complete.
@@ -20,18 +20,18 @@
  * kilobytes, and `meta` is persisted with the session log and re-sent on every
  * request. {@link capMetaBytes} drops trailing groups/paths until the serialized
  * `meta` fits `maxMetaBytes` and marks the result `truncated`; a deployment's
- * final output budget (`dsh-spill-policy`) only shrinks `content`, never `meta`,
+ * final output budget (`alego-spill-policy`) only shrinks `content`, never `meta`,
  * so this projection owns keeping `meta` bounded.
  *
- * @module @deepseek-ai/dsh-tool-fs-search/presentation
+ * @module @alego/tool-fs-search/presentation
  */
 
 import type {
   SearchFileMatches,
   SearchLineMatch,
   SearchResultView,
-} from '@deepseek-ai/dsh-tools'
-import type { RetainedItems } from '@deepseek-ai/dsh-output-retention'
+} from '@alego/tools'
+import type { RetainedItems } from '@alego/output-retention'
 import type { GrepMatch } from './search-core.ts'
 
 /**
@@ -71,7 +71,7 @@ type MetaFileMatches = { path: string; matches: MetaLineMatch[] }
  * Group flat matches by file (first-seen order) into the structured by-file shape
  * a UI renders as expandable per-file groups. The grouping matches the
  * model-facing text grouping
- * ({@link module:@deepseek-ai/dsh-tool-fs-search/grep} `formatGrepMatches`), so
+ * ({@link module:@alego/tool-fs-search/grep} `formatGrepMatches`), so
  * card and text agree about file order and membership.
  *
  * @param matches - the retained matches to group, in output order.

@@ -6,7 +6,7 @@ English | [中文](2026-07-30-bounded-overwrite-diff-basis.zh.md)
 
 ## Problem
 
-`dsh-fs-local` returned the complete prior file in `FsWriteOutcome.before` so consumers could build a contextual overwrite diff. That presentation-only pre-read was unbounded: a large overwrite could allocate the entire prior file, and checking an earlier path stat alone could not enforce a limit because an external process could replace or grow the file between the stat and the read. A large replacement also made the contextual hunk approach the replacement size even when the prior file was small. This closes the deferred bound recorded by [result-time applied-hunk diffs](../../archived/architecture/2026-07-02-result-time-applied-hunk-diffs.md).
+`alego-fs-local` returned the complete prior file in `FsWriteOutcome.before` so consumers could build a contextual overwrite diff. That presentation-only pre-read was unbounded: a large overwrite could allocate the entire prior file, and checking an earlier path stat alone could not enforce a limit because an external process could replace or grow the file between the stat and the read. A large replacement also made the contextual hunk approach the replacement size even when the prior file was small. This closes the deferred bound recorded by [result-time applied-hunk diffs](../../archived/architecture/2026-07-02-result-time-applied-hunk-diffs.md).
 
 ## Decision
 

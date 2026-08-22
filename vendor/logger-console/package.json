@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/cordis-plugin-logger-console",
+  "name": "@alego/cordis-plugin-logger-console",
   "description": "Console logger exporter for cordis",
   "version": "1.0.1",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/singula-ai/alego.git",
     "directory": "vendor/logger-console"
   },
   "type": "module",
@@ -32,11 +32,11 @@
   "author": "Shigma <shigma10826@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:^"
+    "@alego/cordis": "workspace:^"
   },
   "dependencies": {
-    "@deepseek-ai/cosmokit": "workspace:^",
-    "@deepseek-ai/schemastery": "workspace:^",
+    "@alego/cosmokit": "workspace:^",
+    "@alego/schemastery": "workspace:^",
     "supports-color": "^9.4.0"
   }
 }

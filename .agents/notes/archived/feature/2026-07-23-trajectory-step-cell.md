@@ -11,7 +11,7 @@ The trajectory tab needs a reusable step row and turn-list chrome that can show 
 
 ## Decision
 
-[`@deepseek-ai/dsh-client-ui-trajectory`](../../../../packages/client/ui-trajectory/README.md) owns the presentational trajectory list chrome:
+[`@alego/client-ui-trajectory`](../../../../packages/client/ui-trajectory/README.md) owns the presentational trajectory list chrome:
 
 - [`TrajectoryCell`](../../../../packages/client/ui-trajectory/src/client/TrajectoryCell.tsx) — 38px step row with kinds User / Message / Tool (no Think, Call, or Result rows). Reasoning blocks are skipped (no block-level clock). Each `tool-call` + paired `tool-result` folds into one Tool row (`name ·` truncated args) whose Time is `result.time − callTime` when both are known. Message rows carry Input/Output/Think token columns from `assistant.usage`. Own-duration Time uses `+Ns` / `+N.1s`, or `—` when absent. Selected state draws a 2px inset `--dsw-alias-brand-primary-new-colorprimary-new-color` ring (`selected` prop) and is not wired to chat selection.
 - [`TrajectoryTurn`](../../../../packages/client/ui-trajectory/src/client/TrajectoryTurn.tsx) / header / group header — sticky Turn bar paints full-bleed `ghost-active-fill`; title/columns and the Message/Step body sit in a centered `max-width: 880px` lane. Cell trailing columns share the Turn header geometry (`320 = 4×71 + 3×12`); cells use pad 20/8.

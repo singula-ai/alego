@@ -1,14 +1,14 @@
 /**
- * Package-owned invariant companion for `@deepseek-ai/dsh-workspace`.
- * @module @deepseek-ai/dsh-workspace/invariant
+ * Package-owned invariant companion for `@alego/workspace`.
+ * @module @alego/workspace/invariant
  */
 
-import type { Context } from '@deepseek-ai/cordis'
-import type { InvariantInstaller } from '@deepseek-ai/dsh-invariants'
-import type { DomainChanged } from '@deepseek-ai/dsh-storage-domain'
-import { WorkspaceId } from '@deepseek-ai/dsh-workspace'
+import type { Context } from '@alego/cordis'
+import type { InvariantInstaller } from '@alego/invariants'
+import type { DomainChanged } from '@alego/storage-domain'
+import { WorkspaceId } from '@alego/workspace'
 
-const PACKAGE_NAME = '@deepseek-ai/dsh-workspace'
+const PACKAGE_NAME = '@alego/workspace'
 
 /** Cordis companion plugin name. */
 export const name = 'workspace-invariant'

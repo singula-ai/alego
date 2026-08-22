@@ -12,13 +12,13 @@ Status: implemented
 
 ## 决策
 
-`@deepseek-ai/dsh-llm-mock-server` 是一个私有支持包，提供可导入的 Node HTTP 服务器。仓库内的 `pnpm run mock:llm` 源码入口提供一个用于手动故障注入的独立进程；该包不公开可安装的二进制命令。它接受兼容 OpenAI 的根路径和 `/v1` chat-completions 路径，校验可选的 bearer token，捕获请求，并对每个已接受请求消耗一个显式行为。脚本耗尽时会明确报错；只有设置 `repeatLast` 才会重复最后一个行为。
+`@alego/llm-mock-server` 是一个私有支持包，提供可导入的 Node HTTP 服务器。仓库内的 `pnpm run mock:llm` 源码入口提供一个用于手动故障注入的独立进程；该包不公开可安装的二进制命令。它接受兼容 OpenAI 的根路径和 `/v1` chat-completions 路径，校验可选的 bearer token，捕获请求，并对每个已接受请求消耗一个显式行为。脚本耗尽时会明确报错；只有设置 `repeatLast` 才会重复最后一个行为。
 
 请求行为覆盖 socket 重置、发送 header 后断开、发送部分内容后断开、停滞、合法空完成、正常关闭但被截断的流、畸形 payload、典型 HTTP 故障、完整的文本/推理/工具调用响应、慢速流式输出以及达到 token 上限的完成。真正的 `connection_refused` 由 CLI（命令行界面）的监听器生命周期阶段实现，因为已经绑定端口的请求处理器无法拒绝自身的 TCP 连接。
 
 脚本项 `random` 会为每个请求重新执行一次加权选择。服务器公开并记录其无符号 32 位 seed，允许调用方提供相对权重，并内置一套偏重成功结果的压力测试配置，将传输、协议、提供方、超时和语义空结果混合在一起。该配置用于提供可调的测试压力，并非对生产事故发生频率的估算；`connection_refused` 仍不进入请求级随机池。
 
-服务器只报告协议层事实，不判断是否可重试。真实组合测试让请求依次经过 `dsh-llm-deepseek`、`dsh-agent-loop` 和 `dsh-llm-retry`：在现有默认策略下，连接遭拒、硬断开、部分输出后重置、空闲超时以及合法的无内容完成均可恢复；正常关闭的部分输出 EOF 仍归类为 `STREAM_CLOSED`，默认不重试。该包不会改变这些策略。
+服务器只报告协议层事实，不判断是否可重试。真实组合测试让请求依次经过 `alego-llm-deepseek`、`alego-agent-loop` 和 `alego-llm-retry`：在现有默认策略下，连接遭拒、硬断开、部分输出后重置、空闲超时以及合法的无内容完成均可恢复；正常关闭的部分输出 EOF 仍归类为 `STREAM_CLOSED`，默认不重试。该包不会改变这些策略。
 
 ## 验证
 

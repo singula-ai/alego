@@ -48,7 +48,7 @@ const CONTROL_VIEWPORT = 600
  */
 const WIDTHS = [1680, 1200, 1000, 800, CONTROL_VIEWPORT]
 /** Element id of the mutation control's injected sheet, so the test can take it back out. */
-const CONTROL_STYLE_ID = 'dsh-column-overflow-control'
+const CONTROL_STYLE_ID = 'alego-column-overflow-control'
 /** Horizontal wheel delta per gesture; must exceed the widest bleed the sweep can produce. */
 const WHEEL_DELTA = 300
 

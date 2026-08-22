@@ -11,10 +11,10 @@ import { describe, expect, it, vi } from 'vitest'
 import { act, render } from '@testing-library/react'
 import {
   SlotCore, StaleAuthorizationError, type PropsRenderSlots, type SlotRendererHost,
-} from '@deepseek-ai/dsh-client-ui-slots'
+} from '@alego/client-ui-slots'
 import { createSlotRenderer } from '../src/client/scoped-slots.tsx'
 
-declare module '@deepseek-ai/dsh-client-ui-slots' {
+declare module '@alego/client-ui-slots' {
   interface SlotMap {
     // No 'root' merge: the aggregate client program already carries runtime's
     // authoritative 'root' declaration (a private merge would TS2717-collide);

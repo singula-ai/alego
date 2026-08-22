@@ -10,19 +10,19 @@
   margin: 0 auto;
   width: calc(
     100% -
-    var(--dsh-composer-side-clearance) -
-    var(--dsh-composer-side-clearance) -
-    var(--dsh-composer-dock-inset) -
-    var(--dsh-composer-dock-inset) -
-    var(--dsh-composer-dock-inset) -
-    var(--dsh-composer-dock-inset)
+    var(--alego-composer-side-clearance) -
+    var(--alego-composer-side-clearance) -
+    var(--alego-composer-dock-inset) -
+    var(--alego-composer-dock-inset) -
+    var(--alego-composer-dock-inset) -
+    var(--alego-composer-dock-inset)
   );
   max-width: calc(
-    var(--dsh-composer-card-max-width) -
-    var(--dsh-composer-dock-inset) -
-    var(--dsh-composer-dock-inset) -
-    var(--dsh-composer-dock-inset) -
-    var(--dsh-composer-dock-inset)
+    var(--alego-composer-card-max-width) -
+    var(--alego-composer-dock-inset) -
+    var(--alego-composer-dock-inset) -
+    var(--alego-composer-dock-inset) -
+    var(--alego-composer-dock-inset)
   );
   border: 1px solid var(--dsw-alias-border-l1);
   border-radius: 12px;
@@ -32,8 +32,8 @@
      elevation tokens. Declared here because the elevation belongs to the
      surface, and the custom properties inherit down to `.list` (see ui-theme
      styles/scrollbar.css for the rebinding contract). */
-  --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
-  --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
+  --alego-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
+  --alego-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
 }
 
 .body {

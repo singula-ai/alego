@@ -24,7 +24,7 @@ Status: implemented
 
 `packages/fs/tool-fs-search/src/presentation.ts` 拥有投影与收窄。`grepSearchMeta`/`globSearchMeta` 把 canonical 值投影为每个工具声明为 `output.presentationMeta` 的 `SearchMeta` 载荷；`presentGrepResult`/`presentGlobResult` 经 `searchViewFromMeta` 把 `result.meta` 读回。它们消费与面向模型渲染相同的已保留结果——`search-core.ts` 里的 `retainGrepMatches`/`retainGlobPaths` 只跑一次内联上限与每行预览预算，渲染与投影都取这份产出——所以文本与卡片对哪些结果幸存永不分歧，也没有第二次保留计算。`total` 是搜索找到的全部结果（截断前）；`truncated` 在上限丢弃了结果时置位。这是截断诚实点：模型看到的是被截断的内联结果加一个 spill 脚注，所以卡片不能把保留页当作完整结果——UI 读 `truncated`/`total` 显示截断指示，而非宣称模型从未有过的完整性。
 
-**meta 有自己的字节预算。** 内联上限约束的是条目数，但一次宽泛搜索保留下来的匹配（数百条长行）仍可序列化到数百 KB，而 `meta` 会随会话日志持久化并在每次请求时重发。部署的最终输出预算（`dsh-spill-policy` 的 `maxInlineBytes`）只缩减结果的 `content`——`PostToolDecision` 没有 `meta` 通道——所以投影自己负责把 `meta` 约束住。`capMetaBytes` 丢弃末尾的文件组／路径，直到序列化 meta 装进 `searchMetaMaxBytes`（配置，默认 64 KiB），并把结果标记 `truncated`。单个大到自身都装不下的条目会被保留：不变量是可丢弃处一律有界，绝不产出隐藏了真实结果的空卡片。
+**meta 有自己的字节预算。** 内联上限约束的是条目数，但一次宽泛搜索保留下来的匹配（数百条长行）仍可序列化到数百 KB，而 `meta` 会随会话日志持久化并在每次请求时重发。部署的最终输出预算（`alego-spill-policy` 的 `maxInlineBytes`）只缩减结果的 `content`——`PostToolDecision` 没有 `meta` 通道——所以投影自己负责把 `meta` 约束住。`capMetaBytes` 丢弃末尾的文件组／路径，直到序列化 meta 装进 `searchMetaMaxBytes`（配置，默认 64 KiB），并把结果标记 `truncated`。单个大到自身都装不下的条目会被保留：不变量是可丢弃处一律有界，绝不产出隐藏了真实结果的空卡片。
 
 `searchViewFromMeta` 防御性地收窄不透明的 `meta`，对任何畸形或缺失载荷返回 `undefined`，使在较旧或手工编辑的回放日志上运行的 presenter 回退到 generic 卡片而非抛错。它确实接受零结果载荷（`files: []` / `paths: []`）为合法的空卡片——这是对作为参照的 `diffsFromMeta` 的刻意偏离（后者拒绝空 `diffs`），因为零匹配的 grep 是 UI 展示为「no matches」的合法结果，而非缺失的投影。`presentResult` 对失败结果、对缺失 meta（嵌套 `run_code` 分发不计算 `presentationMeta`）、以及对另一工具的 meta 形状（每个 presenter 收窄到自己的 `shape`）返回 `undefined`。
 
@@ -40,7 +40,7 @@ Status: implemented
 
 **把面向模型的文本作为视图的 `content` 附上。** 否决：对每个当前消费方是 no-op，且把整段搜索文本第二次序列化进持久化视图。视图是结构化形状；文本回退读原始结果内容。
 
-**在 `PostToolDecision` 上加 meta 通道，让 `dsh-spill-policy` 像约束 `content` 那样约束 `meta`。** 此处否决：它为一个工具的载荷改动核心工具决策约定与 spill-policy 插件。投影按配置的字节上限约束自己的 `meta` 是自包含的，且保持 seam 不变。
+**在 `PostToolDecision` 上加 meta 通道，让 `alego-spill-policy` 像约束 `content` 那样约束 `meta`。** 此处否决：它为一个工具的载荷改动核心工具决策约定与 spill-policy 插件。投影按配置的字节上限约束自己的 `meta` 是自包含的，且保持 seam 不变。
 
 **镜像 terminal 卡片双侧对称的调用时 `SearchCallView`。** 否决：搜索调用在 `execute` 前没有匹配或路径，视图只会携带 `GenericCallView` 已有的标题。
 

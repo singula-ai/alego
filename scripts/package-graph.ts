@@ -8,11 +8,11 @@
 import { globSync, readFileSync } from 'node:fs'
 import { dirname, resolve, sep } from 'node:path'
 
-const SCOPE = '@deepseek-ai/dsh-'
+const SCOPE = '@alego/'
 
 /** One harness package and its in-repo peer-dependency edges. */
 export interface PackageGraphNode {
-  /** Package name with the `@deepseek-ai/dsh-` prefix removed. */
+  /** Package name with the `@alego/` prefix removed. */
   short: string
   /** Full npm package name. */
   name: string
@@ -20,7 +20,11 @@ export interface PackageGraphNode {
   group: string
   /** Repo-relative package directory. */
   rel: string
-  /** Short names of in-repo peer dependencies, sorted. */
+  /**
+   * Short names of peer dependencies that are themselves graph members, sorted.
+   * Scope-mates outside `packages/<group>/<pkg>` — the rescoped vendor framework
+   * and the apps — are not nodes, so their edges are not part of this graph.
+   */
   deps: string[]
 }
 
@@ -53,6 +57,8 @@ export function collectPackageGraph(root: string, groupOrder: readonly string[],
       deps,
     })
   }
+  const members = new Set(packages.map(pkg => pkg.short))
+  for (const pkg of packages) pkg.deps = pkg.deps.filter(dep => members.has(dep))
   return topoSort(packages, groupOrder, gate)
 }
 

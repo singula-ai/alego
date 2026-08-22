@@ -14,7 +14,7 @@ Status: implemented
 
 如果一个包确实没有需要声明的限制事项，则将其列入 `NO_LIMITATIONS` 并省略该章节。新增限制事项时须移除该条目；包重命名或移除后，陈旧条目会使门禁失败，因为每个条目都必须对应一个被扫描的包。
 
-门禁检查存在性、形状和允许列表。评审依据文档与[行文](../../../skills/dsh-prose-standard/SKILL.md)标准检查覆盖面和准确性。常设规则位于 [packages/AGENTS.md](../../../../packages/AGENTS.md)。
+门禁检查存在性、形状和允许列表。评审依据文档与[行文](../../../skills/alego-prose-standard/SKILL.md)标准检查覆盖面和准确性。常设规则位于 [packages/AGENTS.md](../../../../packages/AGENTS.md)。
 
 ## 曾考虑的替代方案
 

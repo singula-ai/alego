@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-typert-loader
+# @alego/typert-loader
 
 English | [中文](README.zh.md)
 

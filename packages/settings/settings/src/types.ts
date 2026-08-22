@@ -4,10 +4,10 @@
  * no runtime code, and nothing here reaches a Host-only symbol, so a Client
  * compilation face reads exactly the signatures the Host emits.
  *
- * @module @deepseek-ai/dsh-settings/types
+ * @module @alego/settings/types
  */
 
-import type { Branded } from '@deepseek-ai/dsh-brand'
+import type { Branded } from '@alego/brand'
 
 /** Nominal id of one registered settings namespace. */
 export type SettingsNamespace = Branded<'SettingsNamespace'>
@@ -15,7 +15,7 @@ export type SettingsNamespace = Branded<'SettingsNamespace'>
 /** Origin of one committed settings change. */
 export type SettingsUpdateSource = 'update' | 'provider'
 
-declare module '@deepseek-ai/cordis' {
+declare module '@alego/cordis' {
   interface Events {
     /**
      * Committed change to one registered namespace's resolved value. Emitted

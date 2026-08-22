@@ -38,11 +38,11 @@ Every declared harness event must have a discovered producer. A missing producer
 
 [`gen-scoped-events`](../../../../scripts/gen-scoped-events.ts) scans real `scopeTarget(base, key)` calls to establish the routing-key type for each scoped base. It then finds Cordis `Events` members with `this: Scoped<Base>` and searches every payload parameter plus one public property level for a type identical to that key after removing `null` and `undefined`.
 
-Exactly one match generates a resolver. Multiple matches are ambiguous and fail. Zero matches require `@dshScopeScan unsupported`, which is reserved for events whose routing key intentionally stays outside the payload, such as owner-keyed session events and parent-keyed subagent lifecycle events. The annotation records an unsupported scan; it does not encode an event name, parameter index, property path, or replacement type.
+Exactly one match generates a resolver. Multiple matches are ambiguous and fail. Zero matches require `@alegoScopeScan unsupported`, which is reserved for events whose routing key intentionally stays outside the payload, such as owner-keyed session events and parent-keyed subagent lifecycle events. The annotation records an unsupported scan; it does not encode an event name, parameter index, property path, or replacement type.
 
 The committed [`scoped-events.generated.ts`](../../../../packages/core/scope/src/scoped-events.generated.ts) is a runtime-only map in the package that owns scoped dispatch and imports no event-owner package. Semantic completeness lives in the generator: its root Program enumerates every scoped `Events` declaration and real `scopeTarget` contract, resolves the unique payload path with the checker, and refuses missing, stale, or ambiguous entries before rendering the `unknown[]` runtime boundary.
 
-The `dsh-scope/invariant` companion consumes this map instead of maintaining a handwritten table. Because Program analysis happens in the repository gate rather than through generated type imports, neither `dsh-scope` nor `dsh-invariants` acquires dependencies on every event owner.
+The `alego-scope/invariant` companion consumes this map instead of maintaining a handwritten table. Because Program analysis happens in the repository gate rather than through generated type imports, neither `alego-scope` nor `alego-invariants` acquires dependencies on every event owner.
 
 ### Semantic gaps fail explicitly
 

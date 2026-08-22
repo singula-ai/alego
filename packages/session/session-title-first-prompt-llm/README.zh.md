@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-session-title-first-prompt-llm
+# @alego/session-title-first-prompt-llm
 
 [English](README.md) | 中文
 

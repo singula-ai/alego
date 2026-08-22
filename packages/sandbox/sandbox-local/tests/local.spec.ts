@@ -11,14 +11,14 @@ import { mkdtempSync, realpathSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import { LAUNCHER_FAILURE_EXIT } from '@deepseek-ai/node-addon-landlock-run'
-import { SANDBOX_UNAVAILABLE, SandboxUnavailableError } from '@deepseek-ai/dsh-sandbox'
-import type { SandboxPolicy } from '@deepseek-ai/dsh-sandbox'
+import { Context } from '@alego/cordis'
+import { LAUNCHER_FAILURE_EXIT } from '@alego/node-addon-landlock-run'
+import { SANDBOX_UNAVAILABLE, SandboxUnavailableError } from '@alego/sandbox'
+import type { SandboxPolicy } from '@alego/sandbox'
 import {
   LocalSandboxProvider,
-} from '@deepseek-ai/dsh-sandbox-local'
-import type { Config } from '@deepseek-ai/dsh-sandbox-local'
+} from '@alego/sandbox-local'
+import type { Config } from '@alego/sandbox-local'
 import { bwrapProfileArgs, landlockProfileArgs, seatbeltProfileArgs } from '../src/profiles.ts'
 
 const RO: SandboxPolicy = { mode: 'read-only', workspaceRoot: '/ws' }
@@ -39,12 +39,12 @@ async function setup(config: Config = {}, internals: LocalSandboxProvider['inter
  * `sandbox-windows-acl/lib/runner.js`.
  */
 function absentRunnerEntry(): string {
-  return join(mkdtempSync(join(tmpdir(), 'dsh-absent-acl-entry-')), 'runner.js')
+  return join(mkdtempSync(join(tmpdir(), 'alego-absent-acl-entry-')), 'runner.js')
 }
 
 /** Write an executable fake `landlock-run` that answers `--probe` with `report`. */
 function fakeLauncher(report = 'landlock: fully enforced'): string {
-  const dir = mkdtempSync(join(tmpdir(), 'dsh-fake-landlock-'))
+  const dir = mkdtempSync(join(tmpdir(), 'alego-fake-landlock-'))
   const launcher = join(dir, 'landlock-run')
   writeFileSync(launcher, `#!/bin/sh\nif [ "$1" = "--probe" ]; then echo "${report}"; exit 0; fi\nexit ${LAUNCHER_FAILURE_EXIT}\n`, { mode: 0o755 })
   return launcher
@@ -52,7 +52,7 @@ function fakeLauncher(report = 'landlock: fully enforced'): string {
 
 /** Write an executable fake `sandbox-exec` that exits `status` for any invocation. */
 function fakeSeatbeltExec(status: number): string {
-  const dir = mkdtempSync(join(tmpdir(), 'dsh-fake-seatbelt-'))
+  const dir = mkdtempSync(join(tmpdir(), 'alego-fake-seatbelt-'))
   const exec = join(dir, 'sandbox-exec')
   writeFileSync(exec, `#!/bin/sh\nexit ${status}\n`, { mode: 0o755 })
   return exec
@@ -220,7 +220,7 @@ describe('the platform chains', () => {
   })
 
   // The win32 chain's argv contract, denial dialect, and runner-failure rules
-  // live in @deepseek-ai/dsh-sandbox-windows-acl/tests/provider-chain.spec.ts
+  // live in @alego/sandbox-windows-acl/tests/provider-chain.spec.ts
   // (platform-independent assertions that run in every CI lane, including
   // Windows where this package's POSIX-only suites are excluded).
 
@@ -315,7 +315,7 @@ describe('the default landlock probe (launcher CLI contract)', () => {
   })
 
   it('reads a failing launcher as unusable: the chain ends and fails closed', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'dsh-fake-landlock-'))
+    const dir = mkdtempSync(join(tmpdir(), 'alego-fake-landlock-'))
     const launcher = join(dir, 'landlock-run')
     writeFileSync(launcher, `#!/bin/sh\nexit ${LAUNCHER_FAILURE_EXIT}\n`, { mode: 0o755 })
     const { sandbox } = await setup({}, { platform: 'linux', probeBwrap: () => false, landlockLauncher: launcher })
@@ -336,7 +336,7 @@ describe('probeTimeoutMs config', () => {
     // keep a wide margin from the launcher's 1s runtime so a loaded host (where
     // spawnSync blocks the worker and fork/exec latency inflates wall-clock)
     // cannot flip either verdict; the vitest timeout clears the patient budget.
-    const dir = mkdtempSync(join(tmpdir(), 'dsh-slow-landlock-'))
+    const dir = mkdtempSync(join(tmpdir(), 'alego-slow-landlock-'))
     const launcher = join(dir, 'landlock-run')
     writeFileSync(launcher, '#!/bin/sh\nsleep 1\necho "landlock: fully enforced"\nexit 0\n', { mode: 0o755 })
 
@@ -439,7 +439,7 @@ describe('the windows-acl probe (runner invocation contract)', () => {
   })
 
   it('prefers the built lib/runner.js entry when the resolved file exists', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'dsh-fake-acl-entry-'))
+    const dir = mkdtempSync(join(tmpdir(), 'alego-fake-acl-entry-'))
     const builtEntry = join(dir, 'runner.js')
     writeFileSync(builtEntry, '')
     const { sandbox } = await setup({}, {

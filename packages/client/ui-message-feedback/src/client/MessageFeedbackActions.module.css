@@ -79,8 +79,8 @@
   border-radius: 12px;
   background: var(--dsw-specific-menu);
   box-shadow: var(--dsw-shadow-lv3);
-  --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
-  --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
+  --alego-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
+  --alego-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
 }
 
 .noteInput {

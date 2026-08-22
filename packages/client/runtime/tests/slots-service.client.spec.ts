@@ -5,14 +5,14 @@
  * contract (double install / not installed / non-root key), store instance
  * resolution and lifecycle on the ledger axis, and the entry-unload cascade.
  */
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@alego/cordis'
 import { describe, expect, it, vi } from 'vitest'
 import type { FC } from 'react'
-import type { SlotRendererHost } from '@deepseek-ai/dsh-client-ui-slots'
+import type { SlotRendererHost } from '@alego/client-ui-slots'
 import { SlotRegistry } from '../src/client/slots.ts'
 
 // Test-only slot keys (merged so the typed entries/spec faces accept them).
-declare module '@deepseek-ai/dsh-client-ui-slots' {
+declare module '@alego/client-ui-slots' {
   interface SlotMap {
     't.host': { kind: 'single'; scope: 'root' }
     't.panel': { kind: 'single'; scope: 'session' }

@@ -12,10 +12,10 @@ import { dirname, join, resolve, sep } from 'node:path'
 import ts from 'typescript'
 
 /** The module whose `SlotMap` / standard-kit interfaces every slot owner merges into. */
-const SLOTS_MODULE = '@deepseek-ai/dsh-client-ui-slots'
+const SLOTS_MODULE = '@alego/client-ui-slots'
 
 /** Cheap textual prefilter for a slot-contract merge, quote-style agnostic. */
-const MERGE_HEAD = /declare module ['"]@deepseek-ai\/dsh-client-ui-slots['"]/
+const MERGE_HEAD = /declare module ['"]@alego\/client-ui-slots['"]/
 
 /** Cheap textual prefilter for a registration call site. */
 const REGISTER_HEAD = /\.register\(/

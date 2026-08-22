@@ -15,7 +15,7 @@ The bridge must preserve the harness's existing ownership boundaries. It cannot 
 
 ## Decision
 
-`@deepseek-ai/dsh-acp` was a UI/client-driver plugin in the `ui` package group (it now lives in `acp`). It used `@agentclientprotocol/sdk`'s `AgentSideConnection` over stdin/stdout and programmed only interface services: the agent create/resume factory, session persistence, tool registry, user interaction, and optional approval/bash capabilities. It did not change the agent loop and was not a capability-seam implementation.
+`@alego/acp` was a UI/client-driver plugin in the `ui` package group (it now lives in `acp`). It used `@agentclientprotocol/sdk`'s `AgentSideConnection` over stdin/stdout and programmed only interface services: the agent create/resume factory, session persistence, tool registry, user interaction, and optional approval/bash capabilities. It did not change the agent loop and was not a capability-seam implementation.
 
 The bridge implements the following stable session path:
 
@@ -35,13 +35,13 @@ The bridge also provides the ACP-backed `UserInteractionProvider`: `ask_user_que
 
 Lifecycle ownership is explicit. The bridge holds an `AgentHandle` per live session. Disconnect and Cordis disposal cancel pending prompts, dispose every handle in parallel, await loop quiescence and persistence flush, and then remove the records. Stream notification failures are contained so a vanished client cannot corrupt an agent turn. The ACP app composition loads no stdout logger; a test guards stdout as framed JSON-RPC only.
 
-The current protocol contract lives in the [`dsh-acp` package README](../../../../packages/acp/acp/README.md).
+The current protocol contract lives in the [`alego-acp` package README](../../../../packages/acp/acp/README.md).
 
 ## Alternatives considered
 
 **A prepended `tools/execute` listener that asks on every ACP-owned call** — rejected. It would hard-code permission policy into the UI bridge, ask even when no policy requires it, and could not serve approval requests that arise after execution begins. The shared user-approval seam keeps mechanism, asking policy, and UI answerer separate.
 
-**Inject the concrete `agentLoop`** — rejected. Agent creation, resume, idle observation, and disposal are interface-level ownership operations on `dsh-agent`; a UI plugin does not need a dependency-rule exception.
+**Inject the concrete `agentLoop`** — rejected. Agent creation, resume, idle observation, and disposal are interface-level ownership operations on `alego-agent`; a UI plugin does not need a dependency-rule exception.
 
 **Execute bash through ACP `terminal/*`** — rejected. That would move execution outside the harness and bypass its sandbox, credential scrub, task ownership, cwd resolution, and session log. Terminal metadata is presentation only.
 

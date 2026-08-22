@@ -12,7 +12,7 @@ Status: implemented
 
 ## 决策
 
-产品提供方仍是进程级的 host plane（宿主平面）注册。[生产安装排除决策](../simplification/2026-08-12-production-dsh-excludes-product-subagent-providers.zh.md)只取代本说明原先由 base bundle 安装提供方的选择：生产 `dsh-base` 既不依赖也不挂载它们。选择产品集成的 Profile 会安装目标提供方 Bundle；其 patch 挂载默认实例，而 Profile 可以在 host plane 挂载更多命名实例。[命名实例决策](../feature/2026-08-18-product-subagent-named-instances.zh.md)负责每个配置项的注册身份：两个产品都接受多个唯一的 `providerName`，同时保留 `codex` 与 `claude-code` 作为默认值。加载任一插件只会注册一个休眠后端；对应的 Codex 或 Claude 进程直到第一次实际委派调用时才启动。Agent Preset 通过普通 `dsh-tool-subagent` 配置项的 `provider` 与 `toolName` 准确公开单个 agent 所需的已配置实例，而无需更改 Host 注册表。
+产品提供方仍是进程级的 host plane（宿主平面）注册。[生产安装排除决策](../simplification/2026-08-12-production-alego-excludes-product-subagent-providers.zh.md)只取代本说明原先由 base bundle 安装提供方的选择：生产 `alego-base` 既不依赖也不挂载它们。选择产品集成的 Profile 会安装目标提供方 Bundle；其 patch 挂载默认实例，而 Profile 可以在 host plane 挂载更多命名实例。[命名实例决策](../feature/2026-08-18-product-subagent-named-instances.zh.md)负责每个配置项的注册身份：两个产品都接受多个唯一的 `providerName`，同时保留 `codex` 与 `claude-code` 作为默认值。加载任一插件只会注册一个休眠后端；对应的 Codex 或 Claude 进程直到第一次实际委派调用时才启动。Agent Preset 通过普通 `alego-tool-subagent` 配置项的 `provider` 与 `toolName` 准确公开单个 agent 所需的已配置实例，而无需更改 Host 注册表。
 
 每个提供方包都拥有可直接安装的 Bundle patch 与私有产品运行时。本说明继续负责每个已安装提供方的进程级 Host 放置。提供方约定说明继续负责每个产品的协议、结果映射、取消、进程树生命周期与证据层级。[Agent Preset 架构](2026-08-03-per-session-agent-presets.zh.md)继续负责宿主与 agent 的划分、preset 创作，以及改动只影响新组装会话的规则。
 
@@ -20,7 +20,7 @@ Status: implemented
 
 ## 验证
 
-base bundle 测试证明生产 `dsh-base` 既不包含产品提供方依赖，也不包含提供方配置项。Web 组装会安装两个可选 Bundle，并覆盖不暴露任何工具、仅暴露 Codex、仅暴露 Claude 和同时暴露两者这四种工具集合，也覆盖自行创作的 preset 发生改动后的代际隔离。由包负责的 Loader 组装证明每个 Bundle 默认实例与额外命名实例都会完成注册，而不会启动产品进程。无密钥 ACP（Agent Client Protocol）快照固定 Codex 双工具集合与最终四工具组合，提供方测试则另行证明私有平台载荷选择与无宿主回退、配置隔离、失败、取消和进程树完全停稳。
+base bundle 测试证明生产 `alego-base` 既不包含产品提供方依赖，也不包含提供方配置项。Web 组装会安装两个可选 Bundle，并覆盖不暴露任何工具、仅暴露 Codex、仅暴露 Claude 和同时暴露两者这四种工具集合，也覆盖自行创作的 preset 发生改动后的代际隔离。由包负责的 Loader 组装证明每个 Bundle 默认实例与额外命名实例都会完成注册，而不会启动产品进程。无密钥 ACP（Agent Client Protocol）快照固定 Codex 双工具集合与最终四工具组合，提供方测试则另行证明私有平台载荷选择与无宿主回退、配置隔离、失败、取消和进程树完全停稳。
 
 ## 考虑过的替代方案
 

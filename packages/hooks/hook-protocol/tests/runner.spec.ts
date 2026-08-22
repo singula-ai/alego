@@ -1,13 +1,13 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import type { ShellExecRequest, ShellExecSpec, ShellExecutor, ShellRunResult } from '@deepseek-ai/dsh-shell'
-import { DEFAULT_HOOK_TIMEOUT_MS, runHook } from '@deepseek-ai/dsh-hook-protocol'
-import type { RunHookOptions } from '@deepseek-ai/dsh-hook-protocol'
+import type { ShellExecRequest, ShellExecSpec, ShellExecutor, ShellRunResult } from '@alego/shell'
+import { DEFAULT_HOOK_TIMEOUT_MS, runHook } from '@alego/hook-protocol'
+import type { RunHookOptions } from '@alego/hook-protocol'
 
 /**
  * A minimal stand-in for the bits of {@link ShellExecutor} that {@link runHook}
  * actually calls (`resolve` then `run`). `runHook` is pure plumbing over those
  * two methods, so a duck-typed recorder is the right test hook — the REAL
- * executor (dsh-bash-local) is exercised end-to-end by the hook-bridge plugins
+ * executor (alego-bash-local) is exercised end-to-end by the hook-bridge plugins
  * that consume this library, not here.
  */
 function recordingBash(run: (spec: ShellExecSpec) => Promise<ShellRunResult>): {
@@ -18,7 +18,7 @@ function recordingBash(run: (spec: ShellExecSpec) => Promise<ShellRunResult>): {
   const bash = {
     resolve(request: ShellExecRequest): ShellExecSpec {
       // Carry the request through verbatim, defaulting the required spec fields —
-      // exactly what dsh-bash-local's resolve does for the fields runHook sets.
+      // exactly what alego-bash-local's resolve does for the fields runHook sets.
       return {
         command: request.command,
         workdir: request.workdir ?? '/stub',

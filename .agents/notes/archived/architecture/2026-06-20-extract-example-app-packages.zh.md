@@ -15,11 +15,11 @@ Archived: 2026-07-26
 
 每个示例现在**主要是对一个应用包（package）的调用**，沿着既有的[接口 / 实现 / 消费方 seam](2026-06-13-capability-seams.md) 拆分接线：**应用包拥有组合**，叶子 `cordis.yml` 只拥有**可替换的选择**（哪个 LLM（大语言模型）适配器、哪个 bash 执行器、模型、提示词、持久化根目录）。
 
-- **`@deepseek-ai/dsh-agent-spine-demo`**（[packages/examples/agent-spine-demo](../../../../packages/examples/agent-spine-demo)）组合了不含提供方、不含执行器、不含 UI 的主干，并转发 agent loop（智能体循环）的 agent 列表配置。它对具体 loop 的依赖是有意为之，因为该包组合的是主干而非扩展主干；替换 loop 意味着提供另一个 bundle。
-- **`@deepseek-ai/dsh-tui-demo`**、**`@deepseek-ai/dsh-cli-demo`** 和 **`@deepseek-ai/dsh-acp-demo`** 各自内置其进程角色。TUI 包含全屏 UI 和预创建的 `main`；Headless 包含 one-shot driver 和预创建的 `main`；ACP 包含 bridge 且不预创建 agent。三者都包含 JSONL 持久化，并省略 stdout logger。
-- **`start.ts` 已移除。** 每个应用包都暴露一个 bin；`demo:*` 脚本调用它。Loader 引导、`.env` 加载和快速失败守卫位于共享的 [`@deepseek-ai/dsh-app-boot`](../../../../packages/ui/app-boot) 包（在逐文件覆盖率门禁下有单元测试——见[共享应用 bin 的启动胶水](../simplification/2026-07-04-share-app-bin-boot-glue.md)）；精简的自执行入口由 keyless 的 Loader 路径测试驱动。
+- **`@alego/agent-spine-demo`**（[packages/examples/agent-spine-demo](../../../../packages/examples/agent-spine-demo)）组合了不含提供方、不含执行器、不含 UI 的主干，并转发 agent loop（智能体循环）的 agent 列表配置。它对具体 loop 的依赖是有意为之，因为该包组合的是主干而非扩展主干；替换 loop 意味着提供另一个 bundle。
+- **`@alego/tui-demo`**、**`@alego/cli-demo`** 和 **`@alego/acp-demo`** 各自内置其进程角色。TUI 包含全屏 UI 和预创建的 `main`；Headless 包含 one-shot driver 和预创建的 `main`；ACP 包含 bridge 且不预创建 agent。三者都包含 JSONL 持久化，并省略 stdout logger。
+- **`start.ts` 已移除。** 每个应用包都暴露一个 bin；`demo:*` 脚本调用它。Loader 引导、`.env` 加载和快速失败守卫位于共享的 [`@alego/app-boot`](../../../../packages/ui/app-boot) 包（在逐文件覆盖率门禁下有单元测试——见[共享应用 bin 的启动胶水](../simplification/2026-07-04-share-app-bin-boot-glue.md)）；精简的自执行入口由 keyless 的 Loader 路径测试驱动。
 - **每个叶子 `cordis.yml` 精简为**后端、可选产品工具，以及一个承载应用配置的 app 条目。TUI 和 Headless 把模型/会话选择路由到预创建的 agent；ACP 把初始提供方/模型路由到 bridge。
-- **`base.yml`、`base-core.yml` 和 `acp-agent/acp-tail.yml` 已退役**——它们共享的主干现在位于 `dsh-agent-spine-demo` 中。
+- **`base.yml`、`base-core.yml` 和 `acp-agent/acp-tail.yml` 已退役**——它们共享的主干现在位于 `alego-agent-spine-demo` 中。
 
 `bash-local` 和 LLM 适配器仍然是**叶子选择**：bundle 提供 `tool-bash`（消费方 schema），叶子选择执行器实现，因此沙箱执行器或回放适配器无需触碰应用即可替换。
 
@@ -47,12 +47,12 @@ Archived: 2026-07-26
 
 ## 后果
 
-- **裸插件树的教学性。** 主干现在隐藏在 bundle 之后，查看完整树意味着打开 `dsh-agent-spine-demo`。应用包的 README 承担了这份教学职责。
+- **裸插件树的教学性。** 主干现在隐藏在 bundle 之后，查看完整树意味着打开 `alego-agent-spine-demo`。应用包的 README 承担了这份教学职责。
 - **多了一层间接。**「这个演示加载了什么？」从扫描单个 YAML 变成了阅读一个包。
 
 ## 相关
 
-- 取代[使共享示例基础配置与提供方无关](../../rejected/architecture/2026-06-20-providerless-example-base.md)：一旦主干移入 `dsh-agent-spine-demo` 且 `base*.yml` 文件被删除，将 `base.yml` 重命名为无提供方核心便不再有意义。
+- 取代[使共享示例基础配置与提供方无关](../../rejected/architecture/2026-06-20-providerless-example-base.md)：一旦主干移入 `alego-agent-spine-demo` 且 `base*.yml` 文件被删除，将 `base.yml` 重命名为无提供方核心便不再有意义。
 - 基于[能力 seam](2026-06-13-capability-seams.md)的接口/实现/消费方拆分——后端和展示层保持为叶子选择；主干是共享 bundle。
 - 与[将包重组为模块化层级结构](2026-06-20-package-hierarchy.md)互补：新的 app/core 包按该层级结构归入既有分组（`core` 放可复用的主干 bundle，`ui` 放应用特有的前门）。
 - 后续的[冗余 agent 移除](../simplification/2026-07-20-remove-stdio-and-echo-agents.md)拥有最终的 TUI/Headless 拆分，并移除行式与仅 mock 的叶子。

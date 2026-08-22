@@ -11,7 +11,7 @@ import { isAbsolute, join, relative, resolve as resolvePath } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
 import {
-  DeepSeekHarness,
+  Alego,
   HarnessClient,
   HarnessSession,
   JsonRpcResponseError,
@@ -41,8 +41,8 @@ function fakeLaunch(env: Record<string, string> = {}, extra: LaunchOverrides = {
   }
 }
 
-function harnessWith(env: Record<string, string> = {}, extra: LaunchOverrides = {}): DeepSeekHarness {
-  const harness = new DeepSeekHarness({ launch: fakeLaunch(env, extra) })
+function harnessWith(env: Record<string, string> = {}, extra: LaunchOverrides = {}): Alego {
+  const harness = new Alego({ launch: fakeLaunch(env, extra) })
   cleanups.push(() => harness.close())
   return harness
 }
@@ -53,7 +53,7 @@ async function tempDir(prefix: string): Promise<string> {
   return dir
 }
 
-describe('DeepSeekHarness', () => {
+describe('Alego', () => {
   it('ignores notifications that precede the submitted message receipt', async () => {
     const notifications = [
       { method: 'session.status', params: { sessionId: 'owned', status: 'running' } },
@@ -102,7 +102,7 @@ describe('DeepSeekHarness', () => {
           async * [Symbol.asyncIterator]() {},
         }),
       },
-    } as unknown as DeepSeekHarness
+    } as unknown as Alego
 
     const result = await new HarnessSession(harness, 'owned').run('go')
 
@@ -150,7 +150,7 @@ describe('DeepSeekHarness', () => {
   it('sends the configured cwd/provider/model/maxTokens in the handshake exactly once', async () => {
     const dir = await tempDir('sdk-client-init-')
     const recordFile = join(dir, 'init.jsonl')
-    const harness = new DeepSeekHarness({
+    const harness = new Alego({
       launch: fakeLaunch({ FAKE_RECORD_INIT: recordFile }),
       cwd: dir,
       provider: 'custom-provider',
@@ -173,14 +173,14 @@ describe('DeepSeekHarness', () => {
   it('resolves a relative launch cwd to an absolute workspace before the handshake', async () => {
     // vitest workers forbid chdir, so derive a RELATIVE path from the real
     // process cwd to a temp worker dir; resolution is lexical either way.
-    const dir = await mkdtemp(join(process.cwd(), '.dsh-sdk-client-relcwd-'))
+    const dir = await mkdtemp(join(process.cwd(), '.alego-sdk-client-relcwd-'))
     cleanups.push(() => rm(dir, { recursive: true, force: true }))
     const recordFile = join(dir, 'init.jsonl')
     const inner = join(dir, 'worker')
     await mkdir(inner)
     const relativeCwd = relative(process.cwd(), inner)
     expect(isAbsolute(relativeCwd)).toBe(false)
-    const harness = new DeepSeekHarness({
+    const harness = new Alego({
       launch: fakeLaunch({ FAKE_RECORD_INIT: recordFile, FAKE_ECHO_CWD_IN_INIT: '1' }, { cwd: relativeCwd }),
     })
     cleanups.push(() => harness.close())
@@ -230,9 +230,9 @@ describe('DeepSeekHarness', () => {
   })
 
   it('supports await using disposal', async () => {
-    let captured: DeepSeekHarness
+    let captured: Alego
     {
-      await using harness = new DeepSeekHarness({ launch: fakeLaunch() })
+      await using harness = new Alego({ launch: fakeLaunch() })
       captured = harness
       const result = await harness.run('scoped')
       expect(result.finalResponse).toBe('hello from fake runtime')
@@ -308,7 +308,7 @@ describe('HarnessClient', () => {
   })
 
   it('fails fast when the command does not exist', async () => {
-    const client = new HarnessClient({ command: join(tmpdir(), 'dsh-no-such-runtime-bin') })
+    const client = new HarnessClient({ command: join(tmpdir(), 'alego-no-such-runtime-bin') })
     cleanups.push(() => client.close())
     await expect(client.request('initialize', {}, 1_000)).rejects.toThrow(TransportClosedError)
   })
@@ -368,7 +368,7 @@ describe('HarnessClient', () => {
 
     // A bare unbounded request with omitted params sends `{}` on the wire.
     const identity = await client.request('initialize') as { serverInfo: { name: string } }
-    expect(identity.serverInfo.name).toBe('deepseek-harness-sdk-runtime')
+    expect(identity.serverInfo.name).toBe('alego-sdk-runtime')
 
     // Async iteration consumes queued items and then parks.
     const collected: string[] = []

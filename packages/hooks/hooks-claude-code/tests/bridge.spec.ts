@@ -1,25 +1,25 @@
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
+import { createUserMessage } from '@alego/llm'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { chmodSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context, type Fiber } from '@deepseek-ai/cordis'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import { SessionId, type SessionEvent } from '@deepseek-ai/dsh-session'
-import { defineContentToolFixture } from '@deepseek-ai/dsh-tools'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@deepseek-ai/dsh-agent-loop-testkit'
-import { LocalBashExecutor } from '@deepseek-ai/dsh-bash-local'
-import LocalSubprocessRuntime from '@deepseek-ai/dsh-subprocess-local'
-import { scopeTarget } from '@deepseek-ai/dsh-scope'
-import SubagentRuntime, { SubagentRunId } from '@deepseek-ai/dsh-subagent'
-import * as HooksClaude from '@deepseek-ai/dsh-hooks-claude-code'
+import { Context, type Fiber } from '@alego/cordis'
+import Loader from '@alego/cordis-plugin-loader'
+import { SessionId, type SessionEvent } from '@alego/session'
+import { defineContentToolFixture } from '@alego/tools'
+import type { Agent } from '@alego/agent'
+import AgentLoop from '@alego/agent-loop'
+import { mountAgentLoopTestDependencies } from '@alego/agent-loop-testkit'
+import { LocalBashExecutor } from '@alego/bash-local'
+import LocalSubprocessRuntime from '@alego/subprocess-local'
+import { scopeTarget } from '@alego/scope'
+import SubagentRuntime, { SubagentRunId } from '@alego/subagent'
+import * as HooksClaude from '@alego/hooks-claude-code'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 
 /**
  * Full-loop bridge tests: a scripted mock MODEL drives the REAL agent loop + REAL
- * bash executor, and the REAL `dsh-hooks-claude-code` bridge runs REAL shell hook
+ * bash executor, and the REAL `alego-hooks-claude-code` bridge runs REAL shell hook
  * scripts written to a temp dir — only the model is mocked (the "prefer the real
  * implementation" rule). Each test writes a `hooks.json` + executable scripts,
  * loads the bridge pointed at them, and asserts the hook's effect on the loop.
@@ -34,7 +34,7 @@ function subagentCarrier(ctx: Context) {
 
 /** Write a hooks.json + named executable scripts into a fresh temp dir. */
 function writeConfig(hooks: unknown, scripts: Record<string, string> = {}): string {
-  const dir = mkdtempSync(join(tmpdir(), 'dsh-hooks-claude-'))
+  const dir = mkdtempSync(join(tmpdir(), 'alego-hooks-claude-'))
   dirs.push(dir)
   writeFileSync(join(dir, 'hooks.json'), JSON.stringify({ hooks }))
   for (const [name, body] of Object.entries(scripts)) {
@@ -92,7 +92,7 @@ describe('hooks-claude-code bridge — UserPromptSubmit', () => {
   it('a UserPromptSubmit hook that exits 2 closes a blocked turn without a step', async () => {
     // UserPromptSubmit ignores its malformed matcher field, then exit 2 blocks
     // with the reason on stderr.
-    const dir = mkdtempSync(join(tmpdir(), 'dsh-hooks-claude-'))
+    const dir = mkdtempSync(join(tmpdir(), 'alego-hooks-claude-'))
     dirs.push(dir)
     const block = join(dir, 'block.sh')
     writeFileSync(block, '#!/usr/bin/env bash\necho "prompt denied by policy" >&2\nexit 2\n')
@@ -113,7 +113,7 @@ describe('hooks-claude-code bridge — UserPromptSubmit', () => {
   })
 
   it('a UserPromptSubmit hook printing additionalContext injects it for the model', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'dsh-hooks-claude-'))
+    const dir = mkdtempSync(join(tmpdir(), 'alego-hooks-claude-'))
     dirs.push(dir)
     const ctxScript = join(dir, 'ctx.sh')
     writeFileSync(ctxScript, '#!/usr/bin/env bash\necho \'{"hookSpecificOutput":{"hookEventName":"UserPromptSubmit","additionalContext":"remember: be brief"}}\'\n')
@@ -135,7 +135,7 @@ describe('hooks-claude-code bridge — UserPromptSubmit', () => {
 
 describe('hooks-claude-code bridge — PreToolUse', () => {
   it('a matching PreToolUse hook that exits 2 denies the tool (isError result), tool never runs', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'dsh-hooks-claude-'))
+    const dir = mkdtempSync(join(tmpdir(), 'alego-hooks-claude-'))
     dirs.push(dir)
     const deny = join(dir, 'deny.sh')
     writeFileSync(deny, '#!/usr/bin/env bash\necho "danger tool blocked" >&2\nexit 2\n')
@@ -158,7 +158,7 @@ describe('hooks-claude-code bridge — PreToolUse', () => {
   })
 
   it('a PreToolUse hook whose matcher does NOT match leaves the tool alone', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'dsh-hooks-claude-'))
+    const dir = mkdtempSync(join(tmpdir(), 'alego-hooks-claude-'))
     dirs.push(dir)
     const deny = join(dir, 'deny.sh')
     writeFileSync(deny, '#!/usr/bin/env bash\nexit 2\n')
@@ -182,7 +182,7 @@ describe('hooks-claude-code bridge — PreToolUse', () => {
 
 describe('hooks-claude-code bridge — PostToolUse', () => {
   it('a PostToolUse hook that blocks (exit 2) turns the result into an isError with feedback', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'dsh-hooks-claude-'))
+    const dir = mkdtempSync(join(tmpdir(), 'alego-hooks-claude-'))
     dirs.push(dir)
     const block = join(dir, 'block.sh')
     writeFileSync(block, '#!/usr/bin/env bash\necho "output rejected, retry" >&2\nexit 2\n')
@@ -203,7 +203,7 @@ describe('hooks-claude-code bridge — PostToolUse', () => {
   })
 
   it('a PostToolUse hook printing additionalContext attaches it after the tool result', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'dsh-hooks-claude-'))
+    const dir = mkdtempSync(join(tmpdir(), 'alego-hooks-claude-'))
     dirs.push(dir)
     const s = join(dir, 'ctx.sh')
     writeFileSync(s, '#!/usr/bin/env bash\necho \'{"hookSpecificOutput":{"hookEventName":"PostToolUse","additionalContext":"note: tool was slow"}}\'\n')
@@ -226,7 +226,7 @@ describe('hooks-claude-code bridge — PostToolUse', () => {
   })
 
   it('a PreToolUse permissionDecision:ask fails closed without an approval service', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'dsh-hooks-claude-'))
+    const dir = mkdtempSync(join(tmpdir(), 'alego-hooks-claude-'))
     dirs.push(dir)
     const s = join(dir, 'ask.sh')
     writeFileSync(s, '#!/usr/bin/env bash\necho \'{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"ask","permissionDecisionReason":"needs approval"}}\'\n')
@@ -251,7 +251,7 @@ describe('hooks-claude-code bridge — PostToolUse', () => {
 
 describe('hooks-claude-code bridge — SessionStart', () => {
   it('a SessionStart hook injects additionalContext the first request sees', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'dsh-hooks-claude-'))
+    const dir = mkdtempSync(join(tmpdir(), 'alego-hooks-claude-'))
     dirs.push(dir)
     const s = join(dir, 'start.sh')
     writeFileSync(s, '#!/usr/bin/env bash\necho \'{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"project uses tabs"}}\'\n')
@@ -276,7 +276,7 @@ describe('hooks-claude-code bridge — SessionStart', () => {
 
 describe('hooks-claude-code bridge — SubagentStart / SubagentStop (observe)', () => {
   it('runs SubagentStart and SubagentStop hooks when the subagent lifecycle events fire', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'dsh-hooks-claude-'))
+    const dir = mkdtempSync(join(tmpdir(), 'alego-hooks-claude-'))
     dirs.push(dir)
     // Each hook touches a marker file so we can assert it ran (these events are
     // observe-only — there is no decision to assert, only the side effect).
@@ -316,7 +316,7 @@ describe('hooks-claude-code bridge — SubagentStart / SubagentStop (observe)', 
   })
 
   it('disposing the bridge aborts a still-running hook and drains to quiescence', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'dsh-hooks-claude-'))
+    const dir = mkdtempSync(join(tmpdir(), 'alego-hooks-claude-'))
     dirs.push(dir)
     const pidFile = join(dir, 'pid')
     const marker = join(dir, 'started')

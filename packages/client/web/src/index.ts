@@ -3,7 +3,7 @@
  * apps/web's Vite entry runs it against #root. The boot page and fiber-state
  * projection remain internal; the static module table and its platform words
  * form the package's build-time contract.
- * @module @deepseek-ai/dsh-client-web
+ * @module @alego/client-web
  */
 
 export { AppWebEntry, type BootSeams } from './boot.ts'

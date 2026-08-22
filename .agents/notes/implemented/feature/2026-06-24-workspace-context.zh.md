@@ -14,7 +14,7 @@ Status: implemented
 
 ## 决策
 
-该实现在 `packages/context/agent-instructions` 中，包名为 `@deepseek-ai/dsh-agent-instructions`。它是请求上下文扩展，不是核心服务或文件系统后端。共享 demo 主干与 Host Runtime 根据显式的 `{ maxBytes } | false` 部署选择挂载它；`dsh web` 启用 65,536 字节预算，Host Runtime 的 headless 消费方则禁用它。该插件使用 `agent/pre-step`、不可变的 `tools/result` 结果、`session/event` 边界和可选的 `ctx.fs` 功能。
+该实现在 `packages/context/agent-instructions` 中，包名为 `@alego/agent-instructions`。它是请求上下文扩展，不是核心服务或文件系统后端。共享 demo 主干与 Host Runtime 根据显式的 `{ maxBytes } | false` 部署选择挂载它；`alego web` 启用 65,536 字节预算，Host Runtime 的 headless 消费方则禁用它。该插件使用 `agent/pre-step`、不可变的 `tools/result` 结果、`session/event` 边界和可选的 `ctx.fs` 功能。
 
 插件不会静态注入 `fs`。因此，不带提供方的产品树仍能正常启动；在文件系统提供方出现之前，插件保持无操作。所有生产读取都通过该提供方完成。候选项探测会解析每个路径并对结果执行 stat，因此会跟随最终路径组件的符号链接至其目标：指向普通文件的链接会被加载，缺失路径或非文件目标则确认为不存在。允许仓库拥有的链接跨越信任边界，是对最初不跟随探测方式的刻意反转；[跟随指令符号链接记录](2026-07-21-follow-instruction-symlinks.zh.md)负责说明该决策及其残余风险。步骤信号与动态工具执行信号会贯穿解析、元数据探测和流式读取，因此取消不会等待无关的文件系统扫描。解析或 stat 异常归类为不可用：它只跳过该候选项，绝不被解释为已经加载的作用域被删除。
 
@@ -24,7 +24,7 @@ Status: implemented
 
 候选条目必须是同一目录中的文件名。空条目、`.`／`..`，以及包含 `/` 或 `\` 的条目会被忽略。其他同目录名称可以显式选择加入；规则目录和导入语义不属于本约定。
 
-用户全局文件固定为 `$DSH_HOME/AGENTS.md`，不受任一候选列表影响，也没有本地覆盖层。`$DSH_HOME` 默认为 `~/.dsh`，与 `~/.codex` 或 `~/.claude` 在 harness 层的 home 角色一致，而不会引入插件专用 home。波浪号展开与默认值位于 `dsh-home-paths` 中，以便未来的 harness 功能共享同一约定。
+用户全局文件固定为 `$ALEGO_HOME/AGENTS.md`，不受任一候选列表影响，也没有本地覆盖层。`$ALEGO_HOME` 默认为 `~/.alego`，与 `~/.codex` 或 `~/.claude` 在 harness 层的 home 角色一致，而不会引入插件专用 home。波浪号展开与默认值位于 `alego-home-paths` 中，以便未来的 harness 功能共享同一约定。
 
 ### 基线注入
 
@@ -34,7 +34,7 @@ Status: implemented
 
 恢复 agent 会基于持久化历史创建新的 loop 实例。在第一个 `agent/pre-step`，具有当前标识的可见基线仍是权威状态；插件会将其保留的 scope 与当前完整渲染进行比较。未变化和被预算省略的文件不追加任何内容；agent 离线期间新增、编辑、移除或不再属于预算保留集的文件，会在进入步骤的批次中追加 `set`、`replace` 或 `remove` 转换，既不改写也不重复原始基线。不兼容的可见基线会被一条按当前优先级排列的完整基线取代，并以明确措辞说明替换关系；如果当前不存在任何候选文件，一条显式空基线会清除先前的 scope。插件热重挂遵循相同规则。如果压缩（compaction）已遮蔽带类型的基线，下一次进入步骤的 pre-step 会组合一条完整的当前基线，并在同一请求中携带它。
 
-基线是一条 user 角色的 `<system-reminder>`，包含 `Instructions from: <path>` 章节，以及明确的权威性与优先级说明。这种熟悉的模型可见框架避免引入 harness 专用的 XML 词汇。项目路径相对于根目录；使用默认 home 时，用户全局路径为 `~/.dsh/AGENTS.md`，使用已配置 home 时则为 `$DSH_HOME/AGENTS.md`。最终渲染边界会在完成字节核算前，转义指令内容或模型可见的路径、scope 与预算元数据中出现的字面量 `</system-reminder>`。包 README 负责规定当前准确的[提示词形态](../../../../packages/context/agent-instructions/README.zh.md#prompt-shape)。
+基线是一条 user 角色的 `<system-reminder>`，包含 `Instructions from: <path>` 章节，以及明确的权威性与优先级说明。这种熟悉的模型可见框架避免引入 harness 专用的 XML 词汇。项目路径相对于根目录；使用默认 home 时，用户全局路径为 `~/.alego/AGENTS.md`，使用已配置 home 时则为 `$ALEGO_HOME/AGENTS.md`。最终渲染边界会在完成字节核算前，转义指令内容或模型可见的路径、scope 与预算元数据中出现的字面量 `</system-reminder>`。包 README 负责规定当前准确的[提示词形态](../../../../packages/context/agent-instructions/README.zh.md#prompt-shape)。
 
 ### 动态发现与刷新
 

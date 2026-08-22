@@ -11,7 +11,7 @@ import { isPathUnder } from '../src/containment.ts'
 let base: string
 
 beforeEach(async () => {
-  base = await mkdtemp(join(tmpdir(), 'dsh-fssbx-containment-'))
+  base = await mkdtemp(join(tmpdir(), 'alego-fssbx-containment-'))
 })
 
 afterEach(async () => {

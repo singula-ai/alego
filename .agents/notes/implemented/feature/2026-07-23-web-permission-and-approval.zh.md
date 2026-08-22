@@ -6,15 +6,15 @@ Status: implemented
 
 ## 问题
 
-Web 承载层启动的是一个不受限的 agent（智能体）：`bootHost` 组合了 `dsh-bash-local` 与 `dsh-fs-local`，因此每个 Web 会话都以完整文件访问权限运行，既无审批通道，也无权限管控——而 ACP 组合早在数月前就已交付完整的沙箱化产品路径（沙箱提供方 + 策略归属 + 受限的 shell/fs + 审批 + 预设）。Web 协议约定其实早已预留了对应位置——`approval/requested`/`approval/resolved` 的 mux 帧、携带 `ApprovalResponsePayload` 的 `POST /api/respond`、client 侧的 `pendingBuffers`——但 host 的 `respond` 只是一个 stub，没有应答者把 `ctx.approval` 桥接到流上，没有 RPC 暴露权限选择，PendingCard 把审批渲染成可见却无法应答的样子。
+Web 承载层启动的是一个不受限的 agent（智能体）：`bootHost` 组合了 `alego-bash-local` 与 `alego-fs-local`，因此每个 Web 会话都以完整文件访问权限运行，既无审批通道，也无权限管控——而 ACP 组合早在数月前就已交付完整的沙箱化产品路径（沙箱提供方 + 策略归属 + 受限的 shell/fs + 审批 + 预设）。Web 协议约定其实早已预留了对应位置——`approval/requested`/`approval/resolved` 的 mux 帧、携带 `ApprovalResponsePayload` 的 `POST /api/respond`、client 侧的 `pendingBuffers`——但 host 的 `respond` 只是一个 stub，没有应答者把 `ctx.approval` 桥接到流上，没有 RPC 暴露权限选择，PendingCard 把审批渲染成可见却无法应答的样子。
 
 ## 决策
 
-Web 承载层组合与 acp-agent 相同的沙箱化产品路径：`dsh-sandbox-local`、`dsh-sandbox-policy`、`dsh-bash-sandbox`、`dsh-fs-sandbox`、`dsh-user-approval` 与 `dsh-permission-presets`，由 `BootHostOptions.sandbox` 提供部署默认值（`mode`，默认 `workspace-write`；`approvalPolicy`，默认 `ask`）。
+Web 承载层组合与 acp-agent 相同的沙箱化产品路径：`alego-sandbox-local`、`alego-sandbox-policy`、`alego-bash-sandbox`、`alego-fs-sandbox`、`alego-user-approval` 与 `alego-permission-presets`，由 `BootHostOptions.sandbox` 提供部署默认值（`mode`，默认 `workspace-write`；`approvalPolicy`，默认 `ask`）。
 
 `createApiProxy` 拥有审批 pending 注册表。它的 `approval/request` waterfall（瀑布式事件）应答者从会话刚追加的 `approval/asked` 审计事件中读取审批 id（没有审计事件的 ask 属于外部通道，予以委托），为每个问题 mint 一个稳定的 rpcId，向每个打开的 mux 流广播可应答的 `approval/requested` 帧，并在每次 mux 打开时原样重放仍处于 pending 的帧——这正是约定早已承诺的刷新恢复基线。`respond` 按回显的 rpcId 路由，用既有的 zod schema 校验 `ApprovalResponsePayload`，将载荷的审计关联与所路由的条目交叉核对，解析应答者，并广播 `approval/resolved`；ask 的中断信号会以 `cancelled` 撤回该问题。
 
-权限选择依托两个新的一元 RPC，`session.permissions` 与 `session.setPermission`，把 `ctx.permissionPresets` 投影为一个由协议拥有的 `PermissionOption` DTO（沿用 ACP bridge 的先例：每个协议拥有自己的呈现形状）。无权限的组合提供空的选择项，client 隐藏该控件。空闲期的切换以后写胜出（last-write-wins）的方式保存在 proxy 侧的 pending map 中，并在 `agent/pre-step` 时冲刷，因为旋钮事件必须保持轮次内闭合以支持持久回放；共享的 `hasOpenTurn` 折叠迁入 `dsh-session`，取代了 `dsh-user-approval`、ACP bridge 与 proxy 中各自的私有副本。
+权限选择依托两个新的一元 RPC，`session.permissions` 与 `session.setPermission`，把 `ctx.permissionPresets` 投影为一个由协议拥有的 `PermissionOption` DTO（沿用 ACP bridge 的先例：每个协议拥有自己的呈现形状）。无权限的组合提供空的选择项，client 隐藏该控件。空闲期的切换以后写胜出（last-write-wins）的方式保存在 proxy 侧的 pending map 中，并在 `agent/pre-step` 时冲刷，因为旋钮事件必须保持轮次内闭合以支持持久回放；共享的 `hasOpenTurn` 折叠迁入 `alego-session`，取代了 `alego-user-approval`、ACP bridge 与 proxy 中各自的私有副本。
 
 在 client 侧，`Session` 新增了 `permissions` 与 `setPermission`，审批应答则依托运行时的 `PendingWait` 载体。按照设计师草稿，处于 pending 的审批会接管 composer：`ApprovalPanel` 注册为由会话声明的 `conversation.composer` 链中一个按选择器路由的条目（即 ui-user-questions 模式），以理由标题、配对的命令与一次性的拒绝／允许按钮取代 InputBar；ui-conversation 约定中的 `PendingApproval` 领域面拥有 `ApprovalResponsePayload` 在该载体上的协议编码（wire encoding），广播的 resolved 帧使该等待落定并恢复 composer。pending 问题通过 ui-user-questions 接管 composer，包括 `plan-review` 决策形状。侧边栏用一枚优先级高于运行中圆环的琥珀色警示圆点，同步呈现每个被阻塞的交互，搜索期间也不例外：manager 跟踪每个会话的审批与问题请求标识，而非读取 Session 实例；它只把满足 plan-review composer 二元呈现约束的请求分类为计划审查，并在问题与审批并发时优先呈现第一个 pending 问题，以匹配 composer 路由。实例化前的缓冲会保留每个仍有效的请求标识，替换回放产生的重复项，并移除已解决的请求，因此侧边栏状态绝不会比可应答的 `PendingWait` 存续得更久；跟踪以连接代次为单位清除，以保证重开后的回放才是权威依据。从未实例化过的会话仍会点亮该圆点。composer 底行的 chip 经会话注入面挂载 `PermissionSelect` 控件。连接 fixture（测试前置数据）与 host 保持一致：它的常驻审批可应答一次，其权限选择项按会话持久保存。
 

@@ -9,19 +9,19 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import { createUserMessage, CallId } from '@deepseek-ai/dsh-llm'
-import type { ContentBlock } from '@deepseek-ai/dsh-llm'
-import { SessionId } from '@deepseek-ai/dsh-session'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime, { defineContentToolFixture } from '@deepseek-ai/dsh-tools'
-import type { ToolDefinition } from '@deepseek-ai/dsh-tools'
-import type { PostToolDecision, ToolExecution, ToolExecutionToken } from '@deepseek-ai/dsh-tools'
-import { SpillLocator, SpillStore } from '@deepseek-ai/dsh-spill'
-import type { SaveTextSpill, SpillRef } from '@deepseek-ai/dsh-spill'
-import * as SpillPolicy from '@deepseek-ai/dsh-spill-policy'
-import { WorkerThreadCodeRuntime } from '@deepseek-ai/dsh-code-runtime-worker-thread'
+import { Context } from '@alego/cordis'
+import Loader from '@alego/cordis-plugin-loader'
+import { createUserMessage, CallId } from '@alego/llm'
+import type { ContentBlock } from '@alego/llm'
+import { SessionId } from '@alego/session'
+import SystemPrompt from '@alego/system-prompt'
+import ToolRuntime, { defineContentToolFixture } from '@alego/tools'
+import type { ToolDefinition } from '@alego/tools'
+import type { PostToolDecision, ToolExecution, ToolExecutionToken } from '@alego/tools'
+import { SpillLocator, SpillStore } from '@alego/spill'
+import type { SaveTextSpill, SpillRef } from '@alego/spill'
+import * as SpillPolicy from '@alego/spill-policy'
+import { WorkerThreadCodeRuntime } from '@alego/code-runtime-worker-thread'
 
 const testToolSignal = new AbortController().signal
 

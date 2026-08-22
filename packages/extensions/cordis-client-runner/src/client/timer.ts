@@ -1,7 +1,7 @@
 /** Browser implementation of the Cordis timer Service. */
 
-import { Service } from '@deepseek-ai/cordis'
-import type { Context } from '@deepseek-ai/cordis'
+import { Service } from '@alego/cordis'
+import type { Context } from '@alego/cordis'
 
 /*
  * The browser Service preserves the vendored Host TimerService's erased callback tuples and arbitrary
@@ -14,7 +14,7 @@ import type { Context } from '@deepseek-ai/cordis'
 /* oxlint-disable typescript/no-unsafe-return -- The erased generic return values pass through unchanged. */
 /* oxlint-disable typescript/prefer-promise-reject-errors -- Async iterators preserve arbitrary throw reasons. */
 
-declare module '@deepseek-ai/cordis' {
+declare module '@alego/cordis' {
   interface Context extends Pick<ClientTimerService, 'interval' | 'timeout' | 'throttle' | 'debounce' | 'setTimeout' | 'setInterval'> {
     /** Browser timer Service used by the mixed-in Context helpers. */
     timer: ClientTimerService

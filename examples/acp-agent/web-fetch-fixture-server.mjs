@@ -2,7 +2,7 @@
  * Deterministic loopback HTTP fixture for the web-fetch snapshot scenario: a
  * small HTML page (headings, named entities, a GFM table, nested formatting)
  * on a fixed port, so recording and keyless replay drive the REAL
- * `dsh-web-fetch-http` transport and `dsh-tool-web` markdown rendering
+ * `alego-web-fetch-http` transport and `alego-tool-web` markdown rendering
  * without external network. The port is fixed because the fetched URL is part
  * of the recorded model transcript.
  */

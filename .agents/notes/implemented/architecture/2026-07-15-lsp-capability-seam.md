@@ -16,11 +16,11 @@ Many language servers behave best when the queried document is opened with curre
 
 Add LSP as a three-package capability seam with one read-only model tool and one generic local provider implementation:
 
-1. `@deepseek-ai/dsh-lsp` at `packages/lsp/lsp` owns `ctx.lsp`, provider registration and selection, normalized requests/results, execution control, and structured LSP errors.
-2. `@deepseek-ai/dsh-lsp-stdio` at `packages/lsp/lsp-stdio` adapts configured stdio language servers to the seam. One plugin instance accepts a named server table and registers one isolated provider for each command and extension-to-language-id mapping.
-3. `@deepseek-ai/dsh-tool-lsp` at `packages/lsp/tool-lsp` owns the model-facing `lsp` schema, prompt guidance, argument validation, result limits and formatting, and transport-neutral UI presentation.
+1. `@alego/lsp` at `packages/lsp/lsp` owns `ctx.lsp`, provider registration and selection, normalized requests/results, execution control, and structured LSP errors.
+2. `@alego/lsp-stdio` at `packages/lsp/lsp-stdio` adapts configured stdio language servers to the seam. One plugin instance accepts a named server table and registers one isolated provider for each command and extension-to-language-id mapping.
+3. `@alego/tool-lsp` at `packages/lsp/tool-lsp` owns the model-facing `lsp` schema, prompt guidance, argument validation, result limits and formatting, and transport-neutral UI presentation.
 
-`dsh-lsp-stdio` is a generic host, not a language-server catalog or installer. Deployments explicitly configure commands and mappings; future presets belong in composition plugins or `cordis.yml` overlays.
+`alego-lsp-stdio` is a generic host, not a language-server catalog or installer. Deployments explicitly configure commands and mappings; future presets belong in composition plugins or `cordis.yml` overlays.
 
 The model and seam expose exactly `goToDefinition`, `findReferences`, `goToImplementation`, and `hover`; no arbitrary JSON-RPC method escapes through `ctx.lsp`. These operation literals match Claude Code's familiar camelCase names while the tool name and `file_path` field remain harness-owned.
 
@@ -28,14 +28,14 @@ The prompt positions LSP as a precision aid: `Use search/read for ordinary navig
 
 ## Package and ownership boundaries
 
-`dsh-lsp` registers providers by branded id and extension-to-language-id mapping. `registerProvider()` atomically reserves the id and every normalized extension: invalid input or any conflict publishes nothing, and its disposer releases all reservations. Provider plugins register through `ctx.effect()`. Selection is per query and order-independent; no match returns a structured unavailable error. The first version has no glob, language-id, or explicit route selector and no statically declared operation capabilities.
+`alego-lsp` registers providers by branded id and extension-to-language-id mapping. `registerProvider()` atomically reserves the id and every normalized extension: invalid input or any conflict publishes nothing, and its disposer releases all reservations. Provider plugins register through `ctx.effect()`. Selection is per query and order-independent; no match returns a structured unavailable error. The first version has no glob, language-id, or explicit route selector and no statically declared operation capabilities.
 
-The seam exposes one `query(request, signal?)` operation because no fields need implementation defaulting: `workspaceRoot` is required, `languageId` comes from the registration, and consumers own timeouts and result limits. `query()` selects and derives without hidden `??` fallbacks, leaving no executable spec to resolve. `dsh-tool-lsp` validates model arguments and passes only `exec.signal` as a bare `AbortSignal`, matching web and keeping `dsh-lsp` independent of `dsh-tools`. Removal before selection fails as unavailable; later disposal follows the selected provider's cancellation lifecycle without rerouting.
+The seam exposes one `query(request, signal?)` operation because no fields need implementation defaulting: `workspaceRoot` is required, `languageId` comes from the registration, and consumers own timeouts and result limits. `query()` selects and derives without hidden `??` fallbacks, leaving no executable spec to resolve. `alego-tool-lsp` validates model arguments and passes only `exec.signal` as a bare `AbortSignal`, matching web and keeping `alego-lsp` independent of `alego-tools`. Removal before selection fails as unavailable; later disposal follows the selected provider's cancellation lifecycle without rerouting.
 
 The contract shape:
 
 ```ts
-import type { Branded } from '@deepseek-ai/dsh-brand'
+import type { Branded } from '@alego/brand'
 
 type LspOperation = 'goToDefinition' | 'findReferences' | 'goToImplementation' | 'hover'
 type LspProviderId = Branded<'LspProviderId'>
@@ -79,7 +79,7 @@ interface LspService {
 
 Mapping keys normalize to lowercase, leading-dot extensions selected from `filePath`'s final extension; language ids only synchronize documents. Seam positions and ranges are zero-based UTF-16. `findReferences` always includes declarations: providers enforce this internally, the local mapping sets `context.includeDeclaration: true`, and callers get no flag. Closed result unions normalize navigation to locations and hover to content or `null`; navigation results carry the provider's canonical workspace URI so consumers relativize file URIs in the execution world's namespace. The seam exposes no protocol types, process or document controls, or generic request escape hatch.
 
-`dsh-lsp-stdio` owns server configuration, JSON-RPC, process and transient-document state, and protocol translation. It reads through `ctx.fs` and launches through `ctx.subprocess`, depending on their Service Definition packages rather than concrete providers; the [portable execution-world decision](2026-07-28-portable-execution-world-consumers.md) owns that pairing. The server-table key is its provider id. The plugin resolves every server-local setting before registration, rolls back earlier registrations if a later mapping is invalid or conflicts, and retains an independent process pool per provider. `dsh-tool-lsp` runtime-injects only `tools`, `lsp`, and `systemPrompt`, obtains the workspace from `exec.agent?.session.header.cwd` through a package-local `sessionCwd(exec)` helper matching the filesystem tools' lookup, and imports no provider.
+`alego-lsp-stdio` owns server configuration, JSON-RPC, process and transient-document state, and protocol translation. It reads through `ctx.fs` and launches through `ctx.subprocess`, depending on their Service Definition packages rather than concrete providers; the [portable execution-world decision](2026-07-28-portable-execution-world-consumers.md) owns that pairing. The server-table key is its provider id. The plugin resolves every server-local setting before registration, rolls back earlier registrations if a later mapping is invalid or conflicts, and retains an independent process pool per provider. `alego-tool-lsp` runtime-injects only `tools`, `lsp`, and `systemPrompt`, obtains the workspace from `exec.agent?.session.header.cwd` through a package-local `sessionCwd(exec)` helper matching the filesystem tools' lookup, and imports no provider.
 
 ## Model-facing contract
 
@@ -104,15 +104,15 @@ The transport-neutral presenter uses `{ card: 'generic', kind: 'search', title, 
 
 ## Timeout ownership
 
-`dsh-tool-lsp` attaches one configurable `timeoutMs` budget, default `60_000`, to the tool definition. `dsh-tool-call-timeout-policy` enforces it and supplies `exec.signal`, which reaches `ctx.lsp.query`; the budget covers the complete queued open/query/close lifecycle and is not model-configurable.
+`alego-tool-lsp` attaches one configurable `timeoutMs` budget, default `60_000`, to the tool definition. `alego-tool-call-timeout-policy` enforces it and supplies `exec.signal`, which reaches `ctx.lsp.query`; the budget covers the complete queued open/query/close lifecycle and is not model-configurable.
 
 The seam and provider add no startup or request deadline. Non-tool callers therefore receive no hidden timeout and must supply an `AbortSignal`, using `deadline()` when they need a budget.
 
-Provider disposal occurs outside tool execution, so `dsh-lsp-stdio` keeps `shutdownTimeoutMs` (default `5_000`) for `shutdown`/`exit` and `killGraceMs` (default `2_000`) for both request-cancel grace and SIGTERM-to-SIGKILL escalation; the same bounds govern failed-instance cleanup. Timer values above Node's `2_147_483_647` ms scheduling range fail at load. The provider uses `deadline()` and `timeoutOf()` but owns request cancellation, process signals, and awaiting close because timeout notification does not terminate work.
+Provider disposal occurs outside tool execution, so `alego-lsp-stdio` keeps `shutdownTimeoutMs` (default `5_000`) for `shutdown`/`exit` and `killGraceMs` (default `2_000`) for both request-cancel grace and SIGTERM-to-SIGKILL escalation; the same bounds govern failed-instance cleanup. Timer values above Node's `2_147_483_647` ms scheduling range fail at load. The provider uses `deadline()` and `timeoutOf()` but owns request cancellation, process signals, and awaiting close because timeout notification does not terminate work.
 
 ## Workspace, filesystem, and document synchronization
 
-`dsh-lsp-stdio` canonicalizes and reads through `ctx.fs` in the language server's execution world. It requires the workspace target to be a directory, rejects out-of-workspace sources through provider-owned containment, consumes `streamText`, and enforces `maxDocumentBytes` as chunks arrive; the provider retains regular-file validation and UTF-8 decoding while the protocol consumer owns its document limit. It fuses caller cancellation with provider disposal across each filesystem operation, tracks workspace lookups before they enter a queue, and awaits those lookups during disposal. It does not emit `fs/observed`: only the LSP result is model-visible, so the query does not satisfy read-before-write policy.
+`alego-lsp-stdio` canonicalizes and reads through `ctx.fs` in the language server's execution world. It requires the workspace target to be a directory, rejects out-of-workspace sources through provider-owned containment, consumes `streamText`, and enforces `maxDocumentBytes` as chunks arrive; the provider retains regular-file validation and UTF-8 decoding while the protocol consumer owns its document limit. It fuses caller cancellation with provider disposal across each filesystem operation, tracks workspace lookups before they enter a queue, and awaits those lookups during disposal. It does not emit `fs/observed`: only the LSP result is model-visible, so the query does not satisfy read-before-write policy.
 
 The `read` tool is unsuitable source because its output is windowed, numbered, transcript-visible, and observed. Reading in `tool-lsp` would also assign provider-specific synchronization to the consumer and preclude non-local providers.
 
@@ -129,7 +129,7 @@ The canonical workspace target must be a directory. Its target key supplies pool
 
 ## Local server lifecycle and protocol behavior
 
-`dsh-lsp-stdio` lazily single-flights one server per `(provider id, canonical workspace target)`. At load it calls `ctx.subprocess.resolveExecutable()` with the configured environment, failing before registration if unavailable; first query launches through raw protocol pipes with no shell and a bounded collected stderr tail. `maxMessageBytes` defaults to `16_000_000`, `maxStderrBytes` to `1_000_000`, and `maxDocumentBytes` to `4_000_000`. A crash fails the active query without replay; a later query may replace the process. Each query starts at most one process, so the MVP has no cross-request restart counter.
+`alego-lsp-stdio` lazily single-flights one server per `(provider id, canonical workspace target)`. At load it calls `ctx.subprocess.resolveExecutable()` with the configured environment, failing before registration if unavailable; first query launches through raw protocol pipes with no shell and a bounded collected stderr tail. `maxMessageBytes` defaults to `16_000_000`, `maxStderrBytes` to `1_000_000`, and `maxDocumentBytes` to `4_000_000`. A crash fails the active query without replay; a later query may replace the process. Each query starts at most one process, so the MVP has no cross-request restart counter.
 
 Initialization uses `processId: null` because the client and server may inhabit different process namespaces. It advertises `general.positionEncodings: ['utf-16']`, `workspace: { workspaceFolders: true, configuration: true }`, `textDocument.hover.contentFormat: ['markdown', 'plaintext']`, and `linkSupport: true` for definition and implementation, with no dynamic registration. Returned operation and synchronization capabilities are authoritative. An omitted server `positionEncoding` defaults to `utf-16`; any other value is a protocol error. Configuration may supply initialization options and `workspace/configuration` responses, but the client rejects `workspace/applyEdit` and never executes commands or edits.
 

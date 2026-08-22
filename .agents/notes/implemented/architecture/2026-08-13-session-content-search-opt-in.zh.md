@@ -12,7 +12,7 @@ Status: implemented
 
 ## 决策
 
-内容搜索在提供方处强制关闭。`openAt: 'never'` 是 `@deepseek-ai/dsh-session-query-sqlite` 的第三个打开阶段：`searchSessions` 和 `searchEvents` 在任何请求规范化之前就以类型化的 `SESSION_QUERY_SEARCH_DISABLED` 代码失败，node:sqlite 绝不会被导入或打开，也不运行任何来源观察或对账。`ctx.sessionQuery` 上继承的全部精确读取、过滤和跟踪保持可用，因此会话导出、分叉的 Workspace 继承和标题读取不受影响。
+内容搜索在提供方处强制关闭。`openAt: 'never'` 是 `@alego/session-query-sqlite` 的第三个打开阶段：`searchSessions` 和 `searchEvents` 在任何请求规范化之前就以类型化的 `SESSION_QUERY_SEARCH_DISABLED` 代码失败，node:sqlite 绝不会被导入或打开，也不运行任何来源观察或对账。`ctx.sessionQuery` 上继承的全部精确读取、过滤和跟踪保持可用，因此会话导出、分叉的 Workspace 继承和标题读取不受影响。
 
 `SESSION_QUERY_SEARCH_DISABLED` 加入封闭的 `SessionQueryErrorCode` 分类，`tool-session-query` 的服务边界将它映射为模型安全消息 `session search is disabled in this deployment`。
 

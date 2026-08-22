@@ -1,15 +1,15 @@
 # Keyless counterpart to depth-two.cordis.yml: apply the depth patch and replace
 # the live adapter with per-session replay.
 - id: base
-  name: '@deepseek-ai/cordis-plugin-include'
+  name: '@alego/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@deepseek-ai/dsh-llm-deepseek'
+        name: '@alego/llm-deepseek'
         disabled: true
       - id: sandbox
-        name: '@deepseek-ai/dsh-sandbox-local'
+        name: '@alego/sandbox-local'
         config:
           runnerCommand:
             - bash
@@ -19,7 +19,7 @@
           runnerFailureSignatures:
             - 'passthrough-runner: profile rejected'
       - id: tool-subagent
-        name: '@deepseek-ai/dsh-tool-subagent'
+        name: '@alego/tool-subagent'
         config:
           provider: spawn
           toolName: subagent
@@ -29,11 +29,11 @@
       # scenario's corpus was captured on flash. A config patch replaces the
       # whole app config, so the base fields are restated verbatim.
       - id: acp-agent
-        name: '@deepseek-ai/dsh-acp-demo'
+        name: '@alego/acp-demo'
         config:
           provider: deepseek-official
           model: deepseek-v4-flash
-          persistenceRoot: !!js process.env.DSH_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
+          persistenceRoot: !!js process.env.ALEGO_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
           persistenceCompression: none
           workspaceContext:
             maxBytes: 65536
@@ -43,7 +43,7 @@
             Verify your work by running the code or tests. Keep answers brief and factual.
       - insert:
           - id: llm-replay
-            name: '@deepseek-ai/dsh-llm-replay'
+            name: '@alego/llm-replay'
             config:
               providers:
                 - id: deepseek-official

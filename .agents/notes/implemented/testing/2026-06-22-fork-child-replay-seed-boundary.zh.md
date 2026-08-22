@@ -10,7 +10,7 @@ Status: implemented
 
 subagent 脚本由 [`deriveReplayScript`](../../../../packages/test-support/llm-replay) 从已录制的会话日志推导：它按 `(turn, step)` 对日志中的 `assistant/chunk` 事件分组，每次 `stream()` 调用对应一条回放条目。对 **spawn** 子会话而言这是正确的，因为其日志只包含自身的模型调用。
 
-**fork** 子会话不同。fork 后端用*父日志的一段平衡的已完成轮次前缀*（[`dsh-subagent-in-process-driver`](../../../../packages/subagent/subagent-in-process-driver)）来播种子会话，而该 seed 会成为子会话持久化的 `log`（`Session` 构造函数将 seed 复制进 `this.log`）。因此 fork 子会话的 `.jsonl` 以**父会话**的事件开头——包括父会话的 `assistant/chunk` 事件——之后才是子会话自身的轮次。
+**fork** 子会话不同。fork 后端用*父日志的一段平衡的已完成轮次前缀*（[`alego-subagent-in-process-driver`](../../../../packages/subagent/subagent-in-process-driver)）来播种子会话，而该 seed 会成为子会话持久化的 `log`（`Session` 构造函数将 seed 复制进 `this.log`）。因此 fork 子会话的 `.jsonl` 以**父会话**的事件开头——包括父会话的 `assistant/chunk` 事件——之后才是子会话自身的轮次。
 
 从 fork 子会话的完整日志推导脚本，会把**父会话**的已录制响应当作**子会话**的模型调用来回放：实际运行的 fork 子会话第一次调用 `stream()` 时，会收到父会话的第一段分片序列而非自身的。当时已录制的场景全部是 spawn，所以这从未触发——但 fork 快照会静默地错误路由，恰好属于快照层存在的意义所要捕获的那类 bug。
 
@@ -33,7 +33,7 @@ subagent 脚本由 [`deriveReplayScript`](../../../../packages/test-support/llm-
 
 ### 3. 回放从边界之后推导子会话脚本
 
-`dsh-llm-replay` 的 `parseSessionHeader` 现在也读取 `seedLength`（缺失则为 0），`loadSessionScripts` 从 `parseSessionLog(text).slice(seedLength)` 推导子会话条目——即边界及之后的事件，也就是子会话自身的模型调用。对 spawn 子会话而言 `seedLength` 为 0，此操作是空操作，spawn 场景逐字节不变。
+`alego-llm-replay` 的 `parseSessionHeader` 现在也读取 `seedLength`（缺失则为 0），`loadSessionScripts` 从 `parseSessionLog(text).slice(seedLength)` 推导子会话条目——即边界及之后的事件，也就是子会话自身的模型调用。对 spawn 子会话而言 `seedLength` 为 0，此操作是空操作，spawn 场景逐字节不变。
 
 这弥补了路由正确性的缺口，两个已录制的 fork 场景对其进行端到端验证——见[记录 fork 与混合 spawn+fork 快照场景](../../archived/testing/2026-06-22-fork-snapshot-scenarios.md)。
 

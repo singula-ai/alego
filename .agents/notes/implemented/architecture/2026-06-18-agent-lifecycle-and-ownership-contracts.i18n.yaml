@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-06-18-agent-lifecycle-and-ownership-contracts.md
-2026-06-18-agent-lifecycle-and-ownership-contracts.md: 9bc558bfce75892b0ebdb80e9f8735d440cabaf4
-2026-06-18-agent-lifecycle-and-ownership-contracts.zh.md: bbd0a7219f902e5ead4d190c58e9a5d4da2131fd
+2026-06-18-agent-lifecycle-and-ownership-contracts.md: 3ae89a433b7e3f353d195ab0319abc73a1a72419
+2026-06-18-agent-lifecycle-and-ownership-contracts.zh.md: 715eb6952a88b2cbc5c8206977710a936c923435

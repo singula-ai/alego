@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@deepseek-ai/dsh-session-stats`.
- * @module @deepseek-ai/dsh-session-stats/invariant
+ * Package-owned invariant companion for `@alego/session-stats`.
+ * @module @alego/session-stats/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@deepseek-ai/cordis'
-import type { InvariantInstaller } from '@deepseek-ai/dsh-invariants'
+import type { Context } from '@alego/cordis'
+import type { InvariantInstaller } from '@alego/invariants'
 
-const PACKAGE_NAME = '@deepseek-ai/dsh-session-stats'
+const PACKAGE_NAME = '@alego/session-stats'
 
 /** Cordis companion plugin name. */
 export const name = 'session-stats-invariant'
@@ -20,7 +20,7 @@ export const inject = ['invariants']
  * snapshot and change-feed emission, and the event relations the fold relies
  * on (`step/end` exactly once per entered step, monotonic host-assigned turn
  * numbers, chunk and tool events carrying their step coordinates and call
- * ids) are owned and runtime-checked by dsh-agent-loop and the session
+ * ids) are owned and runtime-checked by alego-agent-loop and the session
  * surface, not here.
  */
 const install: InvariantInstaller = () => {}

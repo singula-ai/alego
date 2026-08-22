@@ -9,10 +9,10 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { Command } from 'commander'
-import { Context } from '@deepseek-ai/cordis'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import Include from '@deepseek-ai/cordis-plugin-include'
-import type { PatchOptions } from '@deepseek-ai/cordis-plugin-include'
+import { Context } from '@alego/cordis'
+import Loader from '@alego/cordis-plugin-loader'
+import Include from '@alego/cordis-plugin-include'
+import type { PatchOptions } from '@alego/cordis-plugin-include'
 import { afterEach, describe, expect, it } from 'vitest'
 import { internals, parseCmdline, provideCmdline } from '../src/index.ts'
 
@@ -66,7 +66,7 @@ async function bootFixture(
   resolve: (program: Command) => unknown = resolveDemo,
   options: { objectInject?: boolean; withoutProvider?: boolean } = {},
 ): Promise<Fixture> {
-  const dir = mkdtempSync(join(tmpdir(), 'dsh-cmdline-'))
+  const dir = mkdtempSync(join(tmpdir(), 'alego-cmdline-'))
   const observed: Observed = { exits: [], out: '' }
   writeFileSync(join(dir, 'reader.mjs'), `
 export const name = 'reader'

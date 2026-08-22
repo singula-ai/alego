@@ -1,8 +1,8 @@
-# @deepseek-ai/dsh-jobs-local
+# @alego/jobs-local
 
 [English](README.md) | 中文
 
-[`@deepseek-ai/dsh-jobs`](../jobs/README.zh.md) 注册表约定的进程本地实现：`LocalJobRegistry` 把每条记录保存在内存中，按 kind 签发 `<kind>-N` id，并且只交出全新快照，从不交出实时状态。作为插件加载后即注册为 `ctx.jobs`。
+[`@alego/jobs`](../jobs/README.zh.md) 注册表约定的进程本地实现：`LocalJobRegistry` 把每条记录保存在内存中，按 kind 签发 `<kind>-N` id，并且只交出全新快照，从不交出实时状态。作为插件加载后即注册为 `ctx.jobs`。
 
 ## 准入
 
@@ -18,11 +18,11 @@
 
 结算遵循首次结算优先原则：最早出现的终止结果（生产方结算、作为 `failed` 隔离处理的 `done` 拒绝，或销毁时的强制失败）只记录一次，随后释放等待方，再只通知监听器一次；各监听器的故障会单独隔离。挂起的等待会在监听器运行前把任务标记为已报告，因此完成报告方不会重复发出通知；销毁时的取消出于同样的理由也会标记：面向正在被销毁的所有者的通知不会有人读到。完成是一次结算最后才宣布的事情，排在记录提交与可见集变更发布之后，因为报告方可能同步开启一个模型轮次，而该结算的其他所有观察者都必须已经看到已结算的记录。
 
-控制器与监听器按注册方所在的 scope 分层，形状与 tools 注册表一致：一次注册归档到其注册上下文的 scope，一次读取则把全局层与所有者的 scope 链求并集。因此一个进程级注册表能逐所有者地回答逐所有者的问题——对自身组合未附加任何控制器的所有者，无论其他组合附加了多少，`start()` 都会拒绝并抛出 `background jobs unavailable: no job controller serves this agent (load @deepseek-ai/dsh-tool-jobs in its composition)`；一次结算也只会抵达其所有者所属组合注册的监听器。
+控制器与监听器按注册方所在的 scope 分层，形状与 tools 注册表一致：一次注册归档到其注册上下文的 scope，一次读取则把全局层与所有者的 scope 链求并集。因此一个进程级注册表能逐所有者地回答逐所有者的问题——对自身组合未附加任何控制器的所有者，无论其他组合附加了多少，`start()` 都会拒绝并抛出 `background jobs unavailable: no job controller serves this agent (load @alego/tool-jobs in its composition)`；一次结算也只会抵达其所有者所属组合注册的监听器。
 
 ## 模型体验
 
-通过生产方插件和 [`dsh-tool-jobs`](../tool-jobs/README.zh.md) 间接影响；它们会呈现 job id、输出、状态、取消和完成通知。
+通过生产方插件和 [`alego-tool-jobs`](../tool-jobs/README.zh.md) 间接影响；它们会呈现 job id、输出、状态、取消和完成通知。
 
 #### KV Cache 影响
 

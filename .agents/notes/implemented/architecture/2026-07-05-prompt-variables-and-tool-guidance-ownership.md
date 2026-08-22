@@ -8,13 +8,13 @@ English | [中文](2026-07-05-prompt-variables-and-tool-guidance-ownership.zh.md
 
 The assembled system prompt had four defects, all of one family: facts the harness already knows were restated by hand somewhere else, and drifted.
 
-**The model could not know its own name.** `AgentOptions.model` drives every request, but no prompt text carried it — and nothing COULD carry it: sections in `dsh-system-prompt` were context-global while the model name is per-agent, and `assemble()` took no per-agent input at all.
+**The model could not know its own name.** `AgentOptions.model` drives every request, but no prompt text carried it — and nothing COULD carry it: sections in `alego-system-prompt` were context-global while the model name is per-agent, and `assemble()` took no per-agent input at all.
 
-**Tool guidance was hand-written prose in leaf YAML.** The shell/subagent/todo_write usage guidance lived in the coding-agent and ACP persona strings — two drifting copies (the ACP one was already abridged) — while `dsh-tool-fs` and `dsh-tool-web` owned their guidance as `ctx.systemPrompt.section()` contributions. Loading or dropping a tool plugin meant editing every deployment's persona by hand, and the old terminal welcome banner hand-enumerated the tool set too.
+**Tool guidance was hand-written prose in leaf YAML.** The shell/subagent/todo_write usage guidance lived in the coding-agent and ACP persona strings — two drifting copies (the ACP one was already abridged) — while `alego-tool-fs` and `alego-tool-web` owned their guidance as `ctx.systemPrompt.section()` contributions. Loading or dropping a tool plugin meant editing every deployment's persona by hand, and the old terminal welcome banner hand-enumerated the tool set too.
 
 **The persona rendered after tool guidance.** The loop string-joined `agent.options.systemPrompt` AFTER the assembled sections, so the model read "Use the read tool…" before "You are a coding agent" — backwards relative to the identity-first convention (Claude Code, Codex) and a second composition path besides the section pipeline.
 
-**The fork tool's description was false.** `dsh-tool-subagent` hardcoded one description written for spawn semantics — "a separate agent that works in its own context … it does not see this conversation" — and the `subagent_fork` instance (whose child inherits the parent's completed turns) got the same words; the YAML prose corrected the lie out-of-band. Minor kin: `PromptSection.name` was documented "(diagnostics / dedup)" but duplicates were silently accepted.
+**The fork tool's description was false.** `alego-tool-subagent` hardcoded one description written for spawn semantics — "a separate agent that works in its own context … it does not see this conversation" — and the `subagent_fork` instance (whose child inherits the parent's completed turns) got the same words; the YAML prose corrected the lie out-of-band. Minor kin: `PromptSection.name` was documented "(diagnostics / dedup)" but duplicates were silently accepted.
 
 ## Decision
 
@@ -22,17 +22,17 @@ The assembled system prompt had four defects, all of one family: facts the harne
 
 ### Assemble context
 
-`SystemPrompt.assemble(context)` takes a merge-extensible `AssembleContext`. `dsh-system-prompt` declares the optional `scope` selector used for scoped routing, while `dsh-agent` declaration-merges the optional typed `agent` field onto it (a type-level edge `agent → system-prompt`, with no runtime dependency cycle). The loop calls `assembleContextFor(agent)` each step so both fields identify the same agent; section text providers may read that context, and the `system-prompt/assemble` waterfall receives it so a listener can filter or extend per agent.
+`SystemPrompt.assemble(context)` takes a merge-extensible `AssembleContext`. `alego-system-prompt` declares the optional `scope` selector used for scoped routing, while `alego-agent` declaration-merges the optional typed `agent` field onto it (a type-level edge `agent → system-prompt`, with no runtime dependency cycle). The loop calls `assembleContextFor(agent)` each step so both fields identify the same agent; section text providers may read that context, and the `system-prompt/assemble` waterfall receives it so a listener can filter or extend per agent.
 
 ### Prompt variables
 
 Plugins register `{{name}}` values through `ctx.systemPrompt.variable(name, provider)`. Assembly resolves them into the waterfall-visible variable map. Rendering rejects unknown own-property references, registered providers that return `undefined`, malformed complete references, and unbalanced references that still contain a closing `}}`; a lone unmatched `{{` remains prose, and substituted values are not rescanned. Registration rejects invalid or duplicate variable names, and section names are unique.
 
-`dsh-agent-loop` registers the two built-ins, both pure projections of the context agent: `model` (= `options.model`) and `cwd` (= `session.header.cwd`). The example personas write `powered by the {{model}} model` — the model name is stated once, in the `model:` config key. `{{cwd}}` is demonstrated in the ACP example only: every ACP session carries the client's cwd, while config-pre-created stdio agents have none (a persona claiming `{{cwd}}` there fails the turn — by design). The variables stay on the loop plugin (unlike the sections below): they are runtime facts of the agents THIS loop drives, and a replacement loop supplies its own.
+`alego-agent-loop` registers the two built-ins, both pure projections of the context agent: `model` (= `options.model`) and `cwd` (= `session.header.cwd`). The example personas write `powered by the {{model}} model` — the model name is stated once, in the `model:` config key. `{{cwd}}` is demonstrated in the ACP example only: every ACP session carries the client's cwd, while config-pre-created stdio agents have none (a persona claiming `{{cwd}}` there fails the turn — by design). The variables stay on the loop plugin (unlike the sections below): they are runtime facts of the agents THIS loop drives, and a replacement loop supplies its own.
 
 ### Persona as the order-0 section
 
-`dsh-system-prompt` owns `harness:identity` at order `-100` and the configured `deployment:persona` at order 0, so both survive a replacement loop. Prompt rendering has one path, `renderPrompt(assembly)`, and the routed request header therefore records the exact prompt later replayed by `ctx.tokenMeter` for compaction pressure. An agent-scoped `deployment:persona` shadows the global default and lets subagent providers install a persona before publication. The conventional order bands are identity `-100`, persona `0`, and tool guidance `100–199`.
+`alego-system-prompt` owns `harness:identity` at order `-100` and the configured `deployment:persona` at order 0, so both survive a replacement loop. Prompt rendering has one path, `renderPrompt(assembly)`, and the routed request header therefore records the exact prompt later replayed by `ctx.tokenMeter` for compaction pressure. An agent-scoped `deployment:persona` shadows the global default and lets subagent providers install a persona before publication. The conventional order bands are identity `-100`, persona `0`, and tool guidance `100–199`.
 
 ### Tool guidance ownership
 
@@ -40,11 +40,11 @@ Per-tool semantics and selection guidance live in tool descriptions. Prompt sect
 
 ### The subagent conversation-history descriptor
 
-`SubagentProvider.inheritsParentContext` describes conversation seeding, not scope, services, tools, or authority. Spawn and ACP set it to `false`; fork sets it to `true`. `dsh-tool-subagent` derives its tool and prompt-parameter descriptions from the flag, including that fork inherits completed turns but not the in-flight turn. Provider lifecycle events keep that wording synchronized with reactive provider registration; their rationale lives in the [provider-lifecycle-events Agent Note](2026-07-05-subagent-provider-lifecycle-events.md).
+`SubagentProvider.inheritsParentContext` describes conversation seeding, not scope, services, tools, or authority. Spawn and ACP set it to `false`; fork sets it to `true`. `alego-tool-subagent` derives its tool and prompt-parameter descriptions from the flag, including that fork inherits completed turns but not the in-flight turn. Provider lifecycle events keep that wording synchronized with reactive provider registration; their rationale lives in the [provider-lifecycle-events Agent Note](2026-07-05-subagent-provider-lifecycle-events.md).
 
 ## Alternatives considered
 
-- **The loop composes an identity line itself** — hardcodes model-facing prose in the one package that must stay thin ("plugins, not loop changes"), and outside the section pipeline it would be a second composition path. (The identity DOES ship as a code literal — but as an ordinary section registered by `dsh-system-prompt`, whose `system-prompt/assemble` waterfall remains the escape valve for a deployment that must drop it.)
+- **The loop composes an identity line itself** — hardcodes model-facing prose in the one package that must stay thin ("plugins, not loop changes"), and outside the section pipeline it would be a second composition path. (The identity DOES ship as a code literal — but as an ordinary section registered by `alego-system-prompt`, whose `system-prompt/assemble` waterfall remains the escape valve for a deployment that must drop it.)
 - **Inject the model name via the `agent/request` waterfall** — prompt text would be composed in two places and the earlier rendered persona could disagree with the final routed header. The request plugin that owns late routing must also own any earlier prompt claim about that model.
 - **Hand-write the model name in each persona** — duplicates the `model:` key one line above and silently lies after a config edit; the exact disease this decision cures.
 - **Lenient interpolation (leave unknown refs verbatim, or substitute empty)** — a typo ships `{{modle}}` (or a hole) to the model and nobody notices until transcript review.

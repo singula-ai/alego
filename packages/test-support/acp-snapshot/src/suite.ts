@@ -14,13 +14,13 @@
  * are identical. Every live header is checked against the composed pin, so
  * session-dependent composition must declare a separate class instead of
  * escaping coverage.
- * @module @deepseek-ai/dsh-acp-snapshot/suite
+ * @module @alego/acp-snapshot/suite
  */
 
 import { readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
-import { isSurfaceEligibleType } from '@deepseek-ai/dsh-session/surface'
+import { isSurfaceEligibleType } from '@alego/session/surface'
 import { describe, expect, it } from 'vitest'
 import { type AgentUnderTest, type HarvestedLog, type InputScript, runScenario } from './harness.ts'
 import {
@@ -246,7 +246,7 @@ export interface SnapshotSuiteOptions {
    * `recorded` scenarios' fixtures and refreshes the Vitest expected outputs under
    * `--update`), or `refresh` (keyless replay that rewrites stdout expected outputs and
    * comparable session fixtures from the replay run). The caller derives this
-   * from `$DSH_SNAPSHOT` — env reading stays outside this library.
+   * from `$ALEGO_SNAPSHOT` — env reading stays outside this library.
    */
   mode: 'replay' | 'record' | 'refresh'
   /**

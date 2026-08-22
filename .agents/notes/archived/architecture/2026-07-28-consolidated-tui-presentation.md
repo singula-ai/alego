@@ -57,7 +57,7 @@ The transcript reads as colored status headers over recessed detail, context pre
 
 Cross-workspace resume can move every path-resolving tool to another directory. A missing or inaccessible cwd prevents handoff. The broader picker also makes concurrent access to a shared session store easier to reach; cross-process session locking remains separate work.
 
-The terminal presenter still treats a final output line exactly matching its exit-marker grammar as structured status, so a command that intentionally prints such a line can lose it from the card body. This residual is documented by `dsh-tool-bash`.
+The terminal presenter still treats a final output line exactly matching its exit-marker grammar as structured status, so a command that intentionally prints such a line can lose it from the card body. This residual is documented by `alego-tool-bash`.
 
 ## Testing
 

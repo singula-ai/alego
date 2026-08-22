@@ -44,13 +44,13 @@ Status: implemented
 
 ### epoch 自己的日志就是全部交代
 
-`epochStopReason()` 从 epoch 自己的日志读取结局，因为拆卸成功与否，对「模型是否报错、是否撞到上限、是否被停下」什么也没说明。只读轮次这件事已经错了两次，而两次的形状相同：在第一个 step 之前被停下的轮次，其 `turn/end` 与「拒绝」或「被清空的认领」产生的平衡空转轮次长得一模一样，于是那道用来跳过后者的过滤，也把真实的结局一起跳过了，转而用上一个轮次的干净收尾作答。持久化检查点（`dsh-session-checkpoint-policy`，存在于每个随附 profile 中）与提示词组装都运行在这个边界上、且都会向外传播，而此时 `Inbox.claim()` 已经把消息取走了——于是父级被告知 child 已完成，而它正在等待的那条投递已被吞掉。在已公布的自动结算通知约定下，这恰恰是父级无法察觉、也不会重试的那一种失败。
+`epochStopReason()` 从 epoch 自己的日志读取结局，因为拆卸成功与否，对「模型是否报错、是否撞到上限、是否被停下」什么也没说明。只读轮次这件事已经错了两次，而两次的形状相同：在第一个 step 之前被停下的轮次，其 `turn/end` 与「拒绝」或「被清空的认领」产生的平衡空转轮次长得一模一样，于是那道用来跳过后者的过滤，也把真实的结局一起跳过了，转而用上一个轮次的干净收尾作答。持久化检查点（`alego-session-checkpoint-policy`，存在于每个随附 profile 中）与提示词组装都运行在这个边界上、且都会向外传播，而此时 `Inbox.claim()` 已经把消息取走了——于是父级被告知 child 已完成，而它正在等待的那条投递已被吞掉。在已公布的自动结算通知约定下，这恰恰是父级无法察觉、也不会重试的那一种失败。
 
-缺失的事实从来不属于轮次，而属于 inbox。`Inbox` 会把每次改动连同 `removedCount` 一起记入日志，并给取消标记 `outcome: 'canceled'`，这就把「某个轮次认领了它的输入」与「工作被丢弃且从未运行」区分开来。`dsh-agent` 中的 `foldConsumedWork()` 把两套词汇折叠成一个答案：能为已消费工作作出交代的最新轮次——进入过 step 的，或认领后失败、被停下或被拒绝的——以及此后是否有已接受的工作被取消、而没有任何轮次为它开启过。认领过输入、以 `blocked` 结束的轮次同样是一份交代：产生它的 pre-step 拒绝——hook deny、策略插件——把该轮次认领的消息一并丢弃了，因此通知会说 child 拒绝了任务，而不是完成了任务。只有没认领任何输入的 `blocked` 轮次保持不可见。
+缺失的事实从来不属于轮次，而属于 inbox。`Inbox` 会把每次改动连同 `removedCount` 一起记入日志，并给取消标记 `outcome: 'canceled'`，这就把「某个轮次认领了它的输入」与「工作被丢弃且从未运行」区分开来。`alego-agent` 中的 `foldConsumedWork()` 把两套词汇折叠成一个答案：能为已消费工作作出交代的最新轮次——进入过 step 的，或认领后失败、被停下或被拒绝的——以及此后是否有已接受的工作被取消、而没有任何轮次为它开启过。认领过输入、以 `blocked` 结束的轮次同样是一份交代：产生它的 pre-step 拒绝——hook deny、策略插件——把该轮次认领的消息一并丢弃了，因此通知会说 child 拒绝了任务，而不是完成了任务。只有没认领任何输入的 `blocked` 轮次保持不可见。
 
 从日志而不是从活动状态推导，才让它完整。早先的版本会在 cancel 之前立刻采样管理器自己的 Activation，而那样只能看到本管理器即将执行的取消：来自祖先的 `interrupt()`，或某个正在卸载的插件取消它所跟踪的 Agent，都会让该采样为假，通知照旧说 `finished`。它也让「已接受但从未被认领」这一情形没有任何测试能把它与「该判据不存在」区分开。一次对日志的折叠覆盖了所有发起方，而两个半边在被移除时都会让各自的测试失败。
 
-优先级归消费方：已记录的失败或上限优先于取消，因为停下一个已经失败的 child，不会把它的失败变成一次取消。`dsh-agent` 拥有这个 fold，是因为答案所依赖的那个 inbox 标记归它所有，而两个消费方本来就依赖它——这里的可继续 epoch，以及一次性的 `readResult()`（它有同一个漏洞）。
+优先级归消费方：已记录的失败或上限优先于取消，因为停下一个已经失败的 child，不会把它的失败变成一次取消。`alego-agent` 拥有这个 fold，是因为答案所依赖的那个 inbox 标记归它所有，而两个消费方本来就依赖它——这里的可继续 epoch，以及一次性的 `readResult()`（它有同一个漏洞）。
 
 两者的影响都超出通知本身：`subagent/end` 会把 `stopReason` 送到 jsonrpc UI 与 Claude hook 桥接层，而它们此前把被拆卸的、正在跑轮次的 child 报成 `completed`。
 
@@ -85,7 +85,7 @@ Status: implemented
 - 可继续 child 的父级会为每个已结算 Activation 收到一条消息。因此，做扇出的部署会增加父级轮次；steer 会把同时结算的一批压缩到一个 step。
 - `tool-subagent` 在其 schema 中承诺该通知，因为返回通道是服务行为，不是可选插件。
 - `Activation` 携带 `parentSession` 与 `announced`。前者存在是因为 child handle 在投递前已被 dispose；后者让被回滚的物化保持静默。
-- `foldConsumedWork()` 取代 `dsh-session` 的 `findLastMessageTurnEnd()`，并迁移到 `dsh-agent`——它拥有该 fold 所读取的 inbox 标记；一次性 in-process 路径折叠同一个答案，不会把被中途切断的一次性 child 归类为 `completed`。
+- `foldConsumedWork()` 取代 `alego-session` 的 `findLastMessageTurnEnd()`，并迁移到 `alego-agent`——它拥有该 fold 所读取的 inbox 标记；一次性 in-process 路径折叠同一个答案，不会把被中途切断的一次性 child 归类为 `completed`。
 - 单元覆盖固定了无条件约定、每种终止原因、空闲与繁忙两种调度、批量语义、维护期回归、释放前顺序、父级已消失，以及一次不得让拆卸失败的发送被拒。
 - 三个 ACP 场景使用显式的结算围栏，`subagent-report` 固定默认的报告先于结算的 next-step 顺序。
 - 一个无密钥的 headless Loader 快照固定了「后台启动 → 管理器写入的结算通知 → 父级最终答案」路径，其中没有轮询，也没有 child `report` 调用。
@@ -96,7 +96,7 @@ Status: implemented
 
 当父级紧接着被 dispose 时（每个拆卸调用方都会这么做），在拆卸期间被 inject 的通知不会被模型读到：dispose 的 cancel 会清除这条未被认领的消息，而日志保留 insert/cancel 这一对作为记录。要让拆卸期投递在 resume 之后仍可读，要么需要上面那套离线 mailbox，要么需要改变 dispose 对持久待处理工作的处理方式。dispose 会丢弃每一条未被认领的 inbox 项，用户输入也不例外，因此改变该行为是一个 core-agent 决策，而不是结算投递的细节。resume 后的父级可以发现 child，但不会收到结局：`list_agents` 只报告存在性与「在线/仅存储」状态——`SubagentListEntry.activity` 就是这么写的——要取回结局，必须通过 `send_message` 去问那个 child。
 
-终止原因的归因是对日志既有 splice 词汇的尽力而为，偏向永不高估成功。`Inbox.remove()` 与拆卸的 `clear()` 写出的取消 splice 完全相同，因此删除一条内容仍保留在别处的消息——`agent-instructions` 清理待处理的 instructions 刷新、或结算自身的 cancel 清掉一条仍在挂起的这类消息——可能被读作「工作被丢弃且从未运行」，把已完成的 child 报成被停下。区分二者需要 `dsh-agent` 提供更丰富的删除词汇；在该词汇可用前，这项误读的范围很窄，且错的方向是让父级复查一个已完成的 child，而永远不是信任一个未完成的 child。
+终止原因的归因是对日志既有 splice 词汇的尽力而为，偏向永不高估成功。`Inbox.remove()` 与拆卸的 `clear()` 写出的取消 splice 完全相同，因此删除一条内容仍保留在别处的消息——`agent-instructions` 清理待处理的 instructions 刷新、或结算自身的 cancel 清掉一条仍在挂起的这类消息——可能被读作「工作被丢弃且从未运行」，把已完成的 child 报成被停下。区分二者需要 `alego-agent` 提供更丰富的删除词汇；在该词汇可用前，这项误读的范围很窄，且错的方向是让父级复查一个已完成的 child，而永远不是信任一个未完成的 child。
 
 对于深或宽的树，轮次放大是真实存在的，而且按设计不可配置。step 边界的批量语义只能约束同时结算的情形，无法约束分散结算的 child。
 

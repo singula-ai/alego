@@ -12,7 +12,7 @@
     },
     {
       "op": "waitForFile",
-      "path": ".dsh-snapshot-subagent-settled"
+      "path": ".alego-snapshot-subagent-settled"
     },
     {
       "op": "waitForTurnStart",

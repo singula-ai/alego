@@ -1,4 +1,4 @@
-# `@deepseek-ai/dsh-client-ui-reference`
+# `@alego/client-ui-reference`
 
 English | [中文](README.zh.md)
 
@@ -6,13 +6,13 @@ Unified Web `@file` and `@session` source. The browser starts the `fileReference
 
 File picks preserve the natural text defined by the shared `@path` grammar as their hidden serialized and clipboard form. A file closes completion as an atomic inline reference displayed with a file glyph, business-color filename, and no capsule. A directory remains plain editable path text with a folder glyph and keeps the menu active at its trailing slash so the user can descend another level. Paths containing whitespace use `@"path with spaces"`, and a quote the user opened explicitly remains quoted.
 
-Session picks insert an atomic inline reference whose hidden `ref` and clipboard representation are the canonical `@[label](dsh-session:…)` mention returned by the Host. Its visible form is a chat-bubble glyph plus the business-color session title, without a capsule; serialization never reconstructs identity from that title. Ordinary send carries the canonical mention through `session.prompt`; the session-reference service validates it and captures model context at `agent/pre-step`.
+Session picks insert an atomic inline reference whose hidden `ref` and clipboard representation are the canonical `@[label](alego-session:…)` mention returned by the Host. Its visible form is a chat-bubble glyph plus the business-color session title, without a capsule; serialization never reconstructs identity from that title. Ordinary send carries the canonical mention through `session.prompt`; the session-reference service validates it and captures model context at `agent/pre-step`.
 
 The `/client` export is the plugin body (`apply`/`inject`) only; candidate encoding stays internal to the registration effect.
 
 ## Model Experience
 
-Indirectly, through `@deepseek-ai/dsh-file-reference-local` for path guidance and `@deepseek-ai/dsh-session-reference` for prepared session snapshots.
+Indirectly, through `@alego/file-reference-local` for path guidance and `@alego/session-reference` for prepared session snapshots.
 
 #### KV Cache effect
 

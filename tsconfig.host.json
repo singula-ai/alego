@@ -273,7 +273,7 @@
     { "path": "./packages/subagent/subagent-acp" },
     { "path": "./packages/subagent/subagent-claude-code" },
     { "path": "./packages/subagent/subagent-codex" },
-    { "path": "./packages/subagent/subagent-dsh-sdk" },
+    { "path": "./packages/subagent/subagent-alego-sdk" },
     { "path": "./packages/jobs/jobs" },
     { "path": "./packages/jobs/jobs-local" },
     { "path": "./packages/jobs/tool-jobs" },

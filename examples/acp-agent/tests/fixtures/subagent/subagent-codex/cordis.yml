@@ -4,23 +4,23 @@
   name: './fixture.ts'
 
 - id: subagent
-  name: '@deepseek-ai/dsh-subagent'
+  name: '@alego/subagent'
 
 - id: subprocess
-  name: '@deepseek-ai/dsh-subprocess-local'
+  name: '@alego/subprocess-local'
 
 - id: subagent-codex-primary
-  name: '@deepseek-ai/dsh-subagent-codex'
+  name: '@alego/subagent-codex'
   config:
     providerName: codex-primary
 
 - id: subagent-codex-secondary
-  name: '@deepseek-ai/dsh-subagent-codex'
+  name: '@alego/subagent-codex'
   config:
     providerName: codex-secondary
 
 - id: tool-subagent-codex
-  name: '@deepseek-ai/dsh-tool-subagent'
+  name: '@alego/tool-subagent'
   config:
     provider: codex
     toolName: subagent_codex
@@ -28,7 +28,7 @@
     maxDepth: 'provider-managed'
 
 - id: tool-subagent-codex-primary
-  name: '@deepseek-ai/dsh-tool-subagent'
+  name: '@alego/tool-subagent'
   config:
     provider: codex-primary
     toolName: subagent_codex_primary
@@ -36,7 +36,7 @@
     maxDepth: 'provider-managed'
 
 - id: tool-subagent-codex-secondary
-  name: '@deepseek-ai/dsh-tool-subagent'
+  name: '@alego/tool-subagent'
   config:
     provider: codex-secondary
     toolName: subagent_codex_secondary
@@ -44,7 +44,7 @@
     maxDepth: 'provider-managed'
 
 - id: agent-spine
-  name: '@deepseek-ai/dsh-agent-spine-demo'
+  name: '@alego/agent-spine-demo'
   config:
     agents:
       - id: main
@@ -55,9 +55,9 @@
     workspaceContext: false
 
 - id: persistence
-  name: '@deepseek-ai/dsh-session-persistence-jsonl'
+  name: '@alego/session-persistence-jsonl'
   config:
     root: './.sessions'
 
 - id: checkpoint-policy
-  name: '@deepseek-ai/dsh-session-checkpoint-policy'
+  name: '@alego/session-checkpoint-policy'

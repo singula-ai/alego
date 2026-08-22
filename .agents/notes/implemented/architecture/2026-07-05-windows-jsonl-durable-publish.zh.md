@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-`dsh-session-persistence-jsonl` 在首次追加时延迟发布会话日志。POSIX 协议会写入临时文件，对其执行 fsync，将其链接至最终名称，对父目录执行 fsync，然后移除临时链接。对父目录执行 fsync 是持久性约定的一部分：命名空间变更后发生崩溃时，已经提交的最终名称不能丢失，否则调用方会误以为会话日志已经物化。
+`alego-session-persistence-jsonl` 在首次追加时延迟发布会话日志。POSIX 协议会写入临时文件，对其执行 fsync，将其链接至最终名称，对父目录执行 fsync，然后移除临时链接。对父目录执行 fsync 是持久性约定的一部分：命名空间变更后发生崩溃时，已经提交的最终名称不能丢失，否则调用方会误以为会话日志已经物化。
 
 Windows 具备原子命名空间操作，但 Node 没有暴露与 POSIX 等价的父目录 fsync 约定。如果把 Windows 目录同步失败视为成功，就会在无提示的情况下削弱持久化后端。因此，Windows 路径需要采用不同的发布原语，而不是在 POSIX 的 `syncDir` 辅助函数中添加条件分支。
 
@@ -16,7 +16,7 @@ JSONL 后端会在 `materialize()` 内部、任何命名空间变更之前分流
 
 POSIX 保留现有协议：创建根目录、项目目录与会话目录，并对其父目录执行 fsync；写入临时文件并对其执行 fsync；使用 `link()` 发布，确保绝不覆盖已有的最终日志；对会话目录执行 fsync；最后移除多余的临时硬链接。
 
-Windows 通过持久的暂存发布来创建缺失目录：创建一个以固定的 `.dsh-mkdir-` 为前缀的随机同级目录，其名称与目标基本名无关；随后使用 `MoveFileExW(..., MOVEFILE_WRITE_THROUGH)` 将其发布为最终目录名称，且不使用 `MOVEFILE_REPLACE_EXISTING` 或 `MOVEFILE_COPY_ALLOWED`。文件物化先写入临时日志并对其执行 fsync，再以同一个启用写穿透的 `MoveFileExW` 调用将临时文件发布到最终路径，并且同样不允许替换。`koffi` 是覆盖这组 API 所需的最小 Win32 桥接层；`pnpm-workspace.yaml` 允许执行它的安装脚本，因为该包会分发原生 loader 和预构建的平台模块。
+Windows 通过持久的暂存发布来创建缺失目录：创建一个以固定的 `.alego-mkdir-` 为前缀的随机同级目录，其名称与目标基本名无关；随后使用 `MoveFileExW(..., MOVEFILE_WRITE_THROUGH)` 将其发布为最终目录名称，且不使用 `MOVEFILE_REPLACE_EXISTING` 或 `MOVEFILE_COPY_ALLOWED`。文件物化先写入临时日志并对其执行 fsync，再以同一个启用写穿透的 `MoveFileExW` 调用将临时文件发布到最终路径，并且同样不允许替换。`koffi` 是覆盖这组 API 所需的最小 Win32 桥接层；`pnpm-workspace.yaml` 允许执行它的安装脚本，因为该包会分发原生 loader 和预构建的平台模块。
 
 ## 考虑过的替代方案
 

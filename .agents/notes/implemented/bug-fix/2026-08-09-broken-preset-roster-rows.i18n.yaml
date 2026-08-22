@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-09-broken-preset-roster-rows.md
-2026-08-09-broken-preset-roster-rows.md: 069585957d4d99598cc38e4a7c6bc8c8d82490ca
-2026-08-09-broken-preset-roster-rows.zh.md: 3bd60403edcce8ba7668c66561ce24c4d08b57e8
+2026-08-09-broken-preset-roster-rows.md: 2900a54b80bea841e85d60997bfa41807725ce8d
+2026-08-09-broken-preset-roster-rows.zh.md: 9af5a94441cb83667cd6a15123aa3e4ab8808797

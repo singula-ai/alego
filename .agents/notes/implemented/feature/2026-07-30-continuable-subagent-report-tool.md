@@ -12,7 +12,7 @@ Treating every final assistant message as an implicit result would conflate turn
 
 ## Decision
 
-Add the independently installed `@deepseek-ai/dsh-tool-subagent-report` package. It contributes an ordinary model-facing `report` tool to each continuable in-process child Activation. The mechanism accepts zero or multiple calls in a turn; the child is separately instructed to call it once before finishing ([the report obligation](2026-08-06-continuable-child-report-obligation.md)). Success neither concludes the turn, settles the Activation, nor prevents later parent follow-ups, and finishing a turn never reports automatically.
+Add the independently installed `@alego/tool-subagent-report` package. It contributes an ordinary model-facing `report` tool to each continuable in-process child Activation. The mechanism accepts zero or multiple calls in a turn; the child is separately instructed to call it once before finishing ([the report obligation](2026-08-06-continuable-child-report-obligation.md)). Success neither concludes the turn, settles the Activation, nor prevents later parent follow-ups, and finishing a turn never reports automatically.
 
 The feature is a collaboration control, not a result-bearing execution wrapper. It adds no Task, `SubagentRun`, result promise, Activation state, delivery queue, or replay path.
 
@@ -56,7 +56,7 @@ The subagent seam adds `registerContinuableSetup(contribution): () => void`, bac
 
 The registry owns registration, per-child installation records, setup rollback, child-scope cleanup, and immediate revocation. Applying a batch returns the Agent setup commit that revalidates provisioning after every setup await and immediately before Agent publication. A throwing or concurrently revoked contribution therefore rejects before either Agent or Session publication and rolls back the batch. New registrations affect a resident child only on its next Activation; removing a registration first closes it to new setup and then revokes every provisioning or resident installation immediately. Registration disposal and child-context disposal are idempotent and attempt every release before aggregating failures.
 
-This seam keeps the continuation manager unaware of tool names. The report package installs only `report` and its child-scoped guidance section; `@deepseek-ai/dsh-tool-subagent-control` independently installs parent-side `send_message` and `list_agents`. A deployment can install either direction, both, or neither. Providers remain data-only, durable descriptors do not snapshot report availability or delivery mode, and cold resume uses the deployment's current contributions and policy.
+This seam keeps the continuation manager unaware of tool names. The report package installs only `report` and its child-scoped guidance section; `@alego/tool-subagent-control` independently installs parent-side `send_message` and `list_agents`. A deployment can install either direction, both, or neither. Providers remain data-only, durable descriptors do not snapshot report availability or delivery mode, and cold resume uses the deployment's current contributions and policy.
 
 ### Snapshot coverage
 

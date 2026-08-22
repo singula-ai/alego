@@ -11,13 +11,13 @@
  * ui-sidebar would close a reference cycle through ui-layout and ui-theme.
  * Export discipline: packages/client/AGENTS.md.
  */
-import type { ClientContext } from '@deepseek-ai/dsh-client-runtime/client'
-import type { ConnectionHandle } from '@deepseek-ai/dsh-api-remotes/client'
+import type { ClientContext } from '@alego/client-runtime/client'
+import type { ConnectionHandle } from '@alego/api-remotes/client'
 // Type-only pair supplying `$on` and its key face without dragging a build
 // artifact into the Host graph (rationale beside the same pair in
 // settings-scope.ts).
-import type {} from '@deepseek-ai/dsh-api-remotes/types'
-import type {} from '@deepseek-ai/dsh-settings/types'
+import type {} from '@alego/api-remotes/types'
+import type {} from '@alego/settings/types'
 import { SettingsSchemaService } from './schema.ts'
 import { SettingsScopeBinder } from './settings-scope.ts'
 import { SettingsDescribeMirror } from './settings-mirror.ts'

@@ -1,4 +1,4 @@
-# `@deepseek-ai/dsh-acp-snapshot`
+# `@alego/acp-snapshot`
 
 English | [中文](README.zh.md)
 
@@ -22,7 +22,7 @@ import {
   defineAcpSnapshotSuite,
   type Scenario,
   type SnapshotSuiteOptions,
-} from '@deepseek-ai/dsh-acp-snapshot'
+} from '@alego/acp-snapshot'
 
 function snapshotMode(value: string | undefined): SnapshotSuiteOptions['mode'] {
   switch (value) {
@@ -31,7 +31,7 @@ function snapshotMode(value: string | undefined): SnapshotSuiteOptions['mode'] {
     case 'replay': return 'replay'
     case 'record': return 'record'
     case 'refresh': return 'refresh'
-    default: throw new Error(`unknown DSH_SNAPSHOT mode: ${value}`)
+    default: throw new Error(`unknown ALEGO_SNAPSHOT mode: ${value}`)
   }
 }
 
@@ -47,7 +47,7 @@ defineAcpSnapshotSuite({
   },
   snapshotsDir: join(dirname(fileURLToPath(import.meta.url)), 'snapshots'),
   scenarios: SCENARIOS, // exactly one entry per header class sets pinsHeader
-  mode: snapshotMode(process.env.DSH_SNAPSHOT),
+  mode: snapshotMode(process.env.ALEGO_SNAPSHOT),
 })
 ```
 
@@ -59,7 +59,7 @@ A child session whose own scope composes a different request declares it per fix
 
 Every scenario compares `stdout.expected.jsonl` with cwd-rooted separators canonicalized to `/`. On Windows, `pinsNativeWindowsStdout` additionally compares the complete `stdout.expected.windows.jsonl` after the shared expected output and requires that sidecar exactly when enabled. A scenario requiring a non-Windows host declares `posixOnly`, which skips its run test on Windows while the fixture guards keep covering its committed files everywhere; examples include POSIX process semantics (e.g. cancelling a live bash call kills a detached process group) and generated paths Windows cannot represent. A scenario whose composition needs a usable `pwsh` declares `pwshOnly`; the caller-supplied `hasPwsh` probe (the shipped acp-agent suite follows the executor's own resolution, so Program Files installs count) skips the run test when no usable `pwsh` resolves while the fixture guards keep covering its committed files everywhere.
 
-The example also ships a `cordis.snapshot.yml` replay overlay next to its `cordis.yml` (the bin swaps them under `DSH_SNAPSHOT=replay` — [single-source replay config Agent Note](../../../.agents/notes/archived/testing/2026-07-04-single-source-acp-replay-config.md)); replay fixtures are served by [`dsh-llm-replay`](../llm-replay/README.md), which this package points at via the `DSH_SNAPSHOT_*` env vars it sets on the child. `pnpm run test:snapshot:record` calls the live LLM and rewrites the recorded scenarios' model fixtures; `pnpm run test:snapshot:refresh` stays keyless, runs the replay overlay, and rewrites stdout, comparable session-log expected outputs, and owned prompt and tool-schema sidecars from the committed model scripts. Fixture roles, record/replay/refresh semantics, and scenario-table fields are documented on `Scenario` and in the [snapshot Agent Note](../../../.agents/notes/implemented/testing/2026-06-19-acp-snapshot-tests.md).
+The example also ships a `cordis.snapshot.yml` replay overlay next to its `cordis.yml` (the bin swaps them under `ALEGO_SNAPSHOT=replay` — [single-source replay config Agent Note](../../../.agents/notes/archived/testing/2026-07-04-single-source-acp-replay-config.md)); replay fixtures are served by [`alego-llm-replay`](../llm-replay/README.md), which this package points at via the `ALEGO_SNAPSHOT_*` env vars it sets on the child. `pnpm run test:snapshot:record` calls the live LLM and rewrites the recorded scenarios' model fixtures; `pnpm run test:snapshot:refresh` stays keyless, runs the replay overlay, and rewrites stdout, comparable session-log expected outputs, and owned prompt and tool-schema sidecars from the committed model scripts. Fixture roles, record/replay/refresh semantics, and scenario-table fields are documented on `Scenario` and in the [snapshot Agent Note](../../../.agents/notes/implemented/testing/2026-06-19-acp-snapshot-tests.md).
 
 Constraints: `suite.ts` and `harness.ts` import vitest (the harness polls its durable-boundary waits through `vi.waitFor`), so the package entry is importable only inside a vitest run (the launcher and normalizers have no such dependency but ship from the same entry). The launcher and suite factory are ACP-specific by design — the launcher speaks the SDK's `ClientSideConnection` — while the normalizers are transport-neutral session-log/text helpers also consumed by the JSON-RPC and Web snapshot recorders. Input scripts cover initialization, fresh-session creation, shorthand text prompts, exact structured ACP prompt blocks, cancellation, expected RPC failures, and durable turn-boundary waits. Permission round-trips are a FIFO queue of option-kind selections (`allow_once`, `reject_once`, …) mapped to the agent-issued `optionId`; an absent or exhausted queue answers `cancelled`, and an unoffered kind rejects the run.
 
@@ -74,5 +74,5 @@ None; this package neither assembles nor sends a provider request.
 ## Known Limitations and Deferred Work
 
 - **Session harvest requires raw JSONL mode** — `runScenario` collects persisted `.jsonl` logs, so snapshot configs set `persistenceCompression: 'none'`; compressed JSONL and SQLite compositions have no snapshot-harvest path.
-- **Built mode requires current artifacts** — run `pnpm run build` before selecting `DSH_EXAMPLE_MODE=lib`; source mode remains the zero-build path.
+- **Built mode requires current artifacts** — run `pnpm run build` before selecting `ALEGO_EXAMPLE_MODE=lib`; source mode remains the zero-build path.
 - **Backend coverage still rides an ACP driver** — see the [automation-only ACP decision](../../../.agents/notes/implemented/simplification/2026-07-23-acp-automation-only-protocol.md#snapshot-boundary) for why retained scenarios use this transport.

@@ -1,4 +1,4 @@
-# dsh-output-retention
+# alego-output-retention
 
 [English](README.md) | 中文
 
@@ -14,11 +14,11 @@
 import {
   ItemRetainer, TextRetainer,
   describeOmitted, formatRetentionNotice,
-} from '@deepseek-ai/dsh-output-retention'
+} from '@alego/output-retention'
 import type {
   Omitted, PushDecision, RetainedItems, RetainedText,
   ItemRetentionStrategy, TextRetentionStrategy, RetentionNotice,
-} from '@deepseek-ai/dsh-output-retention'
+} from '@alego/output-retention'
 ```
 
 | 导出项 | 职责 |
@@ -35,7 +35,7 @@ import type {
 两个 retainer 使用独立名称，而不是同一个通用收集器，因为它们的**资源模型**不同。
 
 - **`ItemRetainer` 限制有序逻辑单元**。搜索工具可收集完整结果集用于 spill 文件恢复，同时只为面向模型的预览保留前 `maxItems` 项。因为调用方会继续送入每个已观察到的项，所以省略数量是精确的。
-- **`TextRetainer` 限制面向字节的文本**。`head`、`tail` 和 `headTail` 在 `finish()` 时保留 UTF-8 边界；`headTail` 是 `dsh-spill-policy` 用于围绕 spill 文件通知构建有界预览的形态。
+- **`TextRetainer` 限制面向字节的文本**。`head`、`tail` 和 `headTail` 在 `finish()` 时保留 UTF-8 边界；`headTail` 是 `alego-spill-policy` 用于围绕 spill 文件通知构建有界预览的形态。
 
 ## `truncated` 是预算事实，绝不表示「不完整」
 

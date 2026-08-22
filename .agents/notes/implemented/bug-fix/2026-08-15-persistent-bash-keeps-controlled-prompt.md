@@ -6,7 +6,7 @@ English | [中文](2026-08-15-persistent-bash-keeps-controlled-prompt.zh.md)
 
 ## Problem
 
-`dsh-tool-bash-persistent` initialized its shell with `stty -echo; PS1='__DSH_PERSISTENT_BASH_PROMPT__ '`, overwriting the `PS1` that `dsh-terminal-bash` sets in the spawn environment. The backend's prompt readiness requires the printable tail after the OSC `133;D` marker to exactly equal the controlled prompt ([design](../feature/2026-07-16-persistent-pty-sessions.md)), so after initialization no send could ever settle through it. `PROMPT_COMMAND` survived the override, so the marker kept arriving and every send paid the silence tier plus handoff grace — 3.5 s per tool call under production defaults, 7.2 s for the first call because the initialization send degraded too, and an extra 3.5 s tail after every long command. macOS has no exact stdin-wait tier, and on Linux the exact probe cannot observe a sub-poll-interval command leaving its stdin wait, so the degradation applied to effectively every call. Package tests masked it by configuring `idleSilenceMs: 100`.
+`alego-tool-bash-persistent` initialized its shell with `stty -echo; PS1='__ALEGO_PERSISTENT_BASH_PROMPT__ '`, overwriting the `PS1` that `alego-terminal-bash` sets in the spawn environment. The backend's prompt readiness requires the printable tail after the OSC `133;D` marker to exactly equal the controlled prompt ([design](../feature/2026-07-16-persistent-pty-sessions.md)), so after initialization no send could ever settle through it. `PROMPT_COMMAND` survived the override, so the marker kept arriving and every send paid the silence tier plus handoff grace — 3.5 s per tool call under production defaults, 7.2 s for the first call because the initialization send degraded too, and an extra 3.5 s tail after every long command. macOS has no exact stdin-wait tier, and on Linux the exact probe cannot observe a sub-poll-interval command leaving its stdin wait, so the degradation applied to effectively every call. Package tests masked it by configuring `idleSilenceMs: 100`.
 
 The override existed to give the tool a known prompt for two consumers: a viewport-suffix fallback that detected "shell at a prompt without the end marker", and cosmetic stripping of prompt text from partial output.
 
@@ -20,7 +20,7 @@ The tool stops overwriting `PS1` (initialization is `stty -echo` alone) and repl
 
 **Fix only the tool, leaving `PROMPT_COMMAND` unchanged.** Rejected because the seam would stay silently fragile: any later consumer or model command that touches `PS1` reintroduces the 3.5 s degradation with no failing signal, and providers without foreground inspection lose their only readiness factor.
 
-**Import the controlled prompt into the tool.** Rejected because the prompt is one provider's protocol constant; a Consumer matching it would couple the tool to `dsh-terminal-bash` specifically, and any other mounted backend would break it again.
+**Import the controlled prompt into the tool.** Rejected because the prompt is one provider's protocol constant; a Consumer matching it would couple the tool to `alego-terminal-bash` specifically, and any other mounted backend would break it again.
 
 **Drop the prompt-text factor from backend readiness.** Rejected because for providers whose `inspectForeground` reports nothing, marker-plus-text is the defense against command output that embeds the raw OSC marker sequence; weakening it trades a fast path for a false-settle risk.
 

@@ -3,28 +3,28 @@ requires = ["hatchling==1.30.1"]
 build-backend = "hatchling.build"
 
 [project]
-name = "deepseek-harness-runtime-bin"
+name = "alego-runtime-bin"
 version = "0.0.0.dev0"
-description = "Pinned DeepSeek Harness runtime for the Python SDK"
+description = "Pinned Alego runtime for the Python SDK"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 authors = [{ name = "DeepSeek" }]
 
 [project.urls]
-Homepage = "https://github.com/deepseek-ai/deepseek-harness"
-Documentation = "https://github.com/deepseek-ai/deepseek-harness/blob/master/python/sdk-runtime/README.md"
-Issues = "https://github.com/deepseek-ai/deepseek-harness/issues"
-Source = "https://github.com/deepseek-ai/deepseek-harness"
+Homepage = "https://github.com/singula-ai/alego"
+Documentation = "https://github.com/singula-ai/alego/blob/master/python/sdk-runtime/README.md"
+Issues = "https://github.com/singula-ai/alego/issues"
+Source = "https://github.com/singula-ai/alego"
 
 # Include the injected executable and default config; exclude the dev-only node
 # closure from wheels and sdists.
 [tool.hatch.build]
-artifacts = ["src/deepseek_harness_runtime/runtime/dsh-jsonrpc-agent-*"]
-exclude = ["src/deepseek_harness_runtime/runtime/node"]
+artifacts = ["src/alego_runtime/runtime/alego-jsonrpc-agent-*"]
+exclude = ["src/alego_runtime/runtime/node"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/deepseek_harness_runtime"]
+packages = ["src/alego_runtime"]
 
 [tool.hatch.build.targets.wheel.hooks.custom]
 

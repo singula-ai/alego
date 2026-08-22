@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { RpcResponse } from '@deepseek-ai/dsh-api-remotes/client'
-import { Context } from '@deepseek-ai/cordis'
-import { SettingsSchemaService } from '@deepseek-ai/dsh-client-ui-settings/src/client/schema.ts'
-import { SettingsDescribeMirror } from '@deepseek-ai/dsh-client-ui-settings/src/client/settings-mirror.ts'
-import { SettingsScopeController } from '@deepseek-ai/dsh-client-ui-settings/src/client/settings-scope.ts'
+import type { RpcResponse } from '@alego/api-remotes/client'
+import { Context } from '@alego/cordis'
+import { SettingsSchemaService } from '@alego/client-ui-settings/src/client/schema.ts'
+import { SettingsDescribeMirror } from '@alego/client-ui-settings/src/client/settings-mirror.ts'
+import { SettingsScopeController } from '@alego/client-ui-settings/src/client/settings-scope.ts'
 import { decodeWelcomeSection, WelcomeNoticeStore } from '../src/client/welcome-store.ts'
 import {
   WELCOME_NOTICE_ACK_FIELD, WELCOME_NOTICE_SETTINGS_NAMESPACE, WELCOME_NOTICE_VERSION,

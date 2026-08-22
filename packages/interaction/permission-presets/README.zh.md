@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-permission-presets
+# @alego/permission-presets
 
 [English](README.md) | 中文
 
@@ -14,7 +14,7 @@
 
 ## 模型体验
 
-间接地，通过 `dsh-user-approval` 和 `dsh-tool-bash`：二者会渲染由此服务的可调参数事件所选择的审批策略提示词、切换通知和沙箱工具结果；`permissionPresets/preset` 本身只写入日志。
+间接地，通过 `alego-user-approval` 和 `alego-tool-bash`：二者会渲染由此服务的可调参数事件所选择的审批策略提示词、切换通知和沙箱工具结果；`permissionPresets/preset` 本身只写入日志。
 
 #### KV Cache 影响
 

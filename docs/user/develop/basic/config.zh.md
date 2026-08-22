@@ -9,8 +9,8 @@
 在插件中导出一个 `Config` 类型和同名的 Schemastery schema；默认值直接写在 schema 中：
 
 ```ts
-import type { Context } from '@deepseek-ai/cordis'
-import Schema from '@deepseek-ai/schemastery'
+import type { Context } from '@alego/cordis'
+import Schema from '@alego/schemastery'
 
 export const name = 'my-plugin'
 
@@ -49,8 +49,8 @@ export function apply(ctx: Context, config: Config) {
 对于需要严格校验的场景，使用 Schemastery 定义 schema：
 
 ```ts
-import type { Context } from '@deepseek-ai/cordis'
-import Schema from '@deepseek-ai/schemastery'
+import type { Context } from '@alego/cordis'
+import Schema from '@alego/schemastery'
 
 export const name = 'validated-plugin'
 

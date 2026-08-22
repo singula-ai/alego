@@ -12,7 +12,7 @@ afterEach(() => {
 
 describe('configuration source ownership gate', () => {
   it('rejects inline endpoints in shipped bundle patches', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-config-source-ownership-'))
+    const root = mkdtempSync(join(tmpdir(), 'alego-config-source-ownership-'))
     roots.push(root)
     const directory = join(root, 'packages/subagent/subagent-claude-code')
     mkdirSync(directory, { recursive: true })

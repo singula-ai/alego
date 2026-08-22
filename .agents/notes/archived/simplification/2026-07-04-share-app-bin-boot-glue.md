@@ -11,7 +11,7 @@ The stdio and ACP bins duplicated environment loading, fail-loud handling, entry
 
 ## Decision
 
-The helpers live once, in [`@deepseek-ai/dsh-app-boot`](../../../../packages/ui/app-boot) (`packages/ui/app-boot`, in the `ui` group because the bins are published artifacts whose runtime dependency must itself be published, not `support/`): `resolveConfigPath` (snapshot-aware, the single path resolver for both bins), `loadEnv`, `installFailLoud`, `assertEntriesLoaded`, and `boot`, each parameterized by the bin's diagnostic prefix and injectable at its side-effect seams (the warn sink, the process slice) so the unit suite covers every branch — including `boot()` driven in-process against the real Loader with relative-specifier configs, both the settled-tree happy path and the fiber-less-entry rejection. The package carries the per-file 100% coverage gate; the loader-failure lore has one home.
+The helpers live once, in [`@alego/app-boot`](../../../../packages/ui/app-boot) (`packages/ui/app-boot`, in the `ui` group because the bins are published artifacts whose runtime dependency must itself be published, not `support/`): `resolveConfigPath` (snapshot-aware, the single path resolver for both bins), `loadEnv`, `installFailLoud`, `assertEntriesLoaded`, and `boot`, each parameterized by the bin's diagnostic prefix and injectable at its side-effect seams (the warn sink, the process slice) so the unit suite covers every branch — including `boot()` driven in-process against the real Loader with relative-specifier configs, both the settled-tree happy path and the fiber-less-entry rejection. The package carries the per-file 100% coverage gate; the loader-failure lore has one home.
 
 Each `bin.ts` is a thin self-executing composition over the shared helpers plus its app-specific lifecycle (the ACP bin: replay-mode env skipping and the stdin-EOF dispose; the stdio bin: nothing extra). The bins stay coverage-excluded and export nothing; the published-artifact guards are unchanged — the built-bin smokes still run each bin under plain node in a node_modules-shaped temp dir (now symlinking `ui/app-boot` too) and still assert the missing-config non-zero exit, per the "real entry path means the published artifact" defensive pattern. The [extract-example-app-packages Agent Note](../architecture/2026-06-20-extract-example-app-packages.md)'s bin-ownership facts are amended accordingly.
 
@@ -24,5 +24,5 @@ The bins were framed as independently-owned published artifacts, and a new packa
 ## Consequences
 
 - A boot-glue change (a new guard, a resolution fix) lands once and both published bins inherit it; the bins cannot drift apart again.
-- `dsh-app-boot` stays dependency-light (cordis + the loader/include pair) — it is boot machinery, not app surface.
+- `alego-app-boot` stays dependency-light (cordis + the loader/include pair) — it is boot machinery, not app surface.
 - The bins' own files are near-trivial compositions; everything with branches lives under the coverage gate.

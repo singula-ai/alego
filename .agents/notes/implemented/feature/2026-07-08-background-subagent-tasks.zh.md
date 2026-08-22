@@ -12,7 +12,7 @@ subagent 需要与其他长时间运行的工具相同的启动、收集、列�
 
 ## 决策
 
-每个 `dsh-tool-subagent` 实例都可以公开 `run_in_background`，由 `enableRunInBackground` 控制，且默认启用。禁用该功能的实例不包含此参数，并会在执行时拒绝强制传入的后台参数。提供方选择仍属于部署配置，因此一个实例仍然只为一个提供方注册一个名称可区分的工具。
+每个 `alego-tool-subagent` 实例都可以公开 `run_in_background`，由 `enableRunInBackground` 控制，且默认启用。禁用该功能的实例不包含此参数，并会在执行时拒绝强制传入的后台参数。提供方选择仍属于部署配置，因此一个实例仍然只为一个提供方注册一个名称可区分的工具。
 
 后台 subagent 使用[通用后台任务运行时](../architecture/2026-06-20-generic-long-running-tool-runtime.zh.md)。`job_output`、`job_list` 和 `job_kill` 负责收集、列出、取消、完成通知和提示词引导；系统不提供 subagent 专用的配套工具。
 

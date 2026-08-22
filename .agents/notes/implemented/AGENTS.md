@@ -6,7 +6,7 @@ These Agent Notes describe shipped decisions. Follow the [root instructions](../
 
 Keep paths, symbols, defaults, and mechanisms current in the same change that alters them. Rewrite stale facts in place; do not append change history.
 
-When a shipped note is unlikely to guide future work, archive its complete triplet through [`dsh-archive-agent-notes`](../../skills/dsh-archive-agent-notes/SKILL.md) instead of continuing to maintain it.
+When a shipped note is unlikely to guide future work, archive its complete triplet through [`alego-archive-agent-notes`](../../skills/alego-archive-agent-notes/SKILL.md) instead of continuing to maintain it.
 
 ### This is not a license to rewrite the *decision*
 

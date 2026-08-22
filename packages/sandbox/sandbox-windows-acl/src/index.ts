@@ -1,5 +1,5 @@
 /**
- * Windows ACL write-restriction sandbox backend for the DeepSeek Harness
+ * Windows ACL write-restriction sandbox backend for the Alego
  * sandbox seam. Mirrors the mechanism of github.com/huoyaoyuan/
  * windows-acl-restrict-poc @ 10e4dfb (the fixed revision): a WRITE_RESTRICTED
  * token whose restricting SIDs include distinct workspace and temp write
@@ -37,7 +37,7 @@
  *    the CALLER owns the DACLs (the sandbox seam's grant reuse):
  *    init()/dispose() skip grant/revoke entirely and the caller must not
  *    revoke under live children.
- * @module @deepseek-ai/dsh-sandbox-windows-acl
+ * @module @alego/sandbox-windows-acl
  */
 
 import { existsSync, statSync } from 'node:fs'

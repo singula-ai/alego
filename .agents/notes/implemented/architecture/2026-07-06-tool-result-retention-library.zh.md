@@ -12,7 +12,7 @@ Status: implemented
 
 ## 决策
 
-`@deepseek-ai/dsh-output-retention` 位于 `packages/util/` 下，与 `dsh-brand` 和 `dsh-timeout` 同级，负责有界的模型可见输出。它是一组纯类与函数构成的库，**不是** Cordis 服务或插件：不接收 `ctx`、不注册任何内容、不持有跨调用状态，也不发出事件。各工具包需要限制输出时直接导入它。
+`@alego/output-retention` 位于 `packages/util/` 下，与 `alego-brand` 和 `alego-timeout` 同级，负责有界的模型可见输出。它是一组纯类与函数构成的库，**不是** Cordis 服务或插件：不接收 `ctx`、不注册任何内容、不持有跨调用状态，也不发出事件。各工具包需要限制输出时直接导入它。
 
 该库包含两个相互独立的 retainer：
 
@@ -136,7 +136,7 @@ const formatGrepNotice = (notice: RetentionNotice): string =>
 
 ## 影响
 
-**已交付内容。** `@deepseek-ai/dsh-output-retention` 导出 `ItemRetainer`、`TextRetainer`、结果类型（`RetainedItems`、`RetainedText`）、策略类型（`ItemRetentionStrategy`、`TextRetentionStrategy`）、`Omitted`、`PushDecision`、`RetentionNotice`，以及中性的提示辅助函数 `describeOmitted`／`formatRetentionNotice`，且不依赖 Cordis 或任何工具包。单元测试覆盖具有精确省略计数的条目头部保留、文本头部保留、文本尾部保留、首尾字节保留、零预算、UTF-8 边界处理（2、3、4 字节码位，以及每个裁切位置上的无效起始字节）和未知省略量的措辞。
+**已交付内容。** `@alego/output-retention` 导出 `ItemRetainer`、`TextRetainer`、结果类型（`RetainedItems`、`RetainedText`）、策略类型（`ItemRetentionStrategy`、`TextRetentionStrategy`）、`Omitted`、`PushDecision`、`RetentionNotice`，以及中性的提示辅助函数 `describeOmitted`／`formatRetentionNotice`，且不依赖 Cordis 或任何工具包。单元测试覆盖具有精确省略计数的条目头部保留、文本头部保留、文本尾部保留、首尾字节保留、零预算、UTF-8 边界处理（2、3、4 字节码位，以及每个裁切位置上的无效起始字节）和未知省略量的措辞。
 
 **已记录但尚未迁移的内容。** `glob`、`grep`、`bash`、`web_fetch` 与 `web_search` 的映射已记录在[包 README](../../../../packages/util/output-retention/README.zh.md) 中，但本次改动并未把每个工具都迁移到该库；迁移工作刻意留作独立的后续任务。`read` 被明确记录为不在范围内：其 `read-render` 行窗口约定（`offset`／`limit`、`totalLines`、offset 范围错误、逐行预览截断，以及针对所选窗口的字节上限）不属于通用保留，而一个 `Omitted` 计数也无法同时表达行窗口两侧。
 

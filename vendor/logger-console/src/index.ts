@@ -1,4 +1,4 @@
-import { Formatter } from '@deepseek-ai/cordis'
+import { Formatter } from '@alego/cordis'
 import { inspect } from 'node:util'
 import supportsColor from 'supports-color'
 import { ConsoleExporter as Base } from './shared.ts'

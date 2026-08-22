@@ -55,7 +55,7 @@ interface SessionReferenceCandidate {
 ```ts type-equiv
 /** One discovery candidate carrying its canonical prompt mention. */
 interface SessionReferenceMentionCandidate extends SessionReferenceCandidate {
-  /** Canonical `@[label](dsh-session:…)` mention serialized into the prompt draft. */
+  /** Canonical `@[label](alego-session:…)` mention serialized into the prompt draft. */
   mention: string
 }
 ```

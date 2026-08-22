@@ -3,24 +3,24 @@
  * spill backend does — persist a tool's oversized text and return a model-facing
  * locator plus retrieval guidance — without saying HOW. Implementations
  * subclass {@link SpillStore} and register as the `spillStore` service;
- * `@deepseek-ai/dsh-spill-local` (host filesystem) is the first.
+ * `@alego/spill-local` (host filesystem) is the first.
  *
  * The Service Definition is deliberately minimal: `saveText` and nothing else. It owns NO
- * retention policy (that is `@deepseek-ai/dsh-output-retention`), NO tool-result
- * replacement (that is `@deepseek-ai/dsh-spill-policy`), and NO retrieval or
+ * retention policy (that is `@alego/output-retention`), NO tool-result
+ * replacement (that is `@alego/spill-policy`), and NO retrieval or
  * search API. The backend supplies the locator and retrieval hint appropriate
  * for its storage substrate.
  *
- * @module @deepseek-ai/dsh-spill
+ * @module @alego/spill
  */
 
-import { Context, Service } from '@deepseek-ai/cordis'
+import { Context, Service } from '@alego/cordis'
 import type { SaveTextSpill, SpillRef } from './types.ts'
 
 export { SpillLocator } from './types.ts'
 export type { SaveTextSpill, SpillOwner, SpillRef, SpillSource } from './types.ts'
 
-declare module '@deepseek-ai/cordis' {
+declare module '@alego/cordis' {
   interface Context {
     spillStore: SpillStore
   }

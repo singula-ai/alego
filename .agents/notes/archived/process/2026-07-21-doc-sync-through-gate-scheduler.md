@@ -11,7 +11,7 @@ English | [中文](2026-07-21-doc-sync-through-gate-scheduler.zh.md)
 
 ## Decision
 
-`doc-sync` in `package.json` delegates to the existing bounded scheduler — `tsx scripts/run-gates.ts doc-sync` — like the `check:ci:*` scripts ([parallel gate scheduling](2026-07-06-parallel-pre-push-gates.md), [current CI topology](2026-07-22-evidence-based-larger-hosted-runners.md)). The `doc-sync` mode expands to exactly `docSyncLeafGates()`, making the leaf list in `run-gates.ts` the single source of truth for the member set. The local mode caps default concurrency at four workers because several doc gates each build a full `ts.Program`; `DSH_GATE_CONCURRENCY` still overrides.
+`doc-sync` in `package.json` delegates to the existing bounded scheduler — `tsx scripts/run-gates.ts doc-sync` — like the `check:ci:*` scripts ([parallel gate scheduling](2026-07-06-parallel-pre-push-gates.md), [current CI topology](2026-07-22-evidence-based-larger-hosted-runners.md)). The `doc-sync` mode expands to exactly `docSyncLeafGates()`, making the leaf list in `run-gates.ts` the single source of truth for the member set. The local mode caps default concurrency at four workers because several doc gates each build a full `ts.Program`; `ALEGO_GATE_CONCURRENCY` still overrides.
 
 `docSyncLeafGates` includes `verify-cordis-api`, so relevant local documentation checks and CI gate the generated runtime API catalog alongside the other generated docs.
 

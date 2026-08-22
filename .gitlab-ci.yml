@@ -15,9 +15,9 @@ variables:
   before_script:
     - python3 -m venv .ci-python
     - . .ci-python/bin/activate
-    - export DSH_VERSION="$(python -c 'import json; print(json.load(open("package.json"))["version"])')"
-    - export DSH_WHEEL_VERSION="$(python -c 'import runpy; release = runpy.run_path("scripts/build-python-release.py"); print(release["pep440_version"](release["repository_version"]()))')"
-    - test "$CI_COMMIT_TAG" = "python-v$DSH_VERSION" || { echo "Tag $CI_COMMIT_TAG does not match package.json version $DSH_VERSION"; exit 1; }
+    - export ALEGO_VERSION="$(python -c 'import json; print(json.load(open("package.json"))["version"])')"
+    - export ALEGO_WHEEL_VERSION="$(python -c 'import runpy; release = runpy.run_path("scripts/build-python-release.py"); print(release["pep440_version"](release["repository_version"]()))')"
+    - test "$CI_COMMIT_TAG" = "python-v$ALEGO_VERSION" || { echo "Tag $CI_COMMIT_TAG does not match package.json version $ALEGO_VERSION"; exit 1; }
     - python -m pip install uv==0.11.23
 
 sdk-wheel:
@@ -38,12 +38,12 @@ sdk-wheel:
     - pnpm install --frozen-lockfile
     - pnpm run verify-runtime-closure
     - pnpm exec tsx scripts/build-exe-for-python-sdk.ts --targets="$PKG_TARGET"
-    - EXE="$PWD/dist-exe/dsh-jsonrpc-agent-pkg-$PLATFORM"
+    - EXE="$PWD/dist-exe/alego-jsonrpc-agent-pkg-$PLATFORM"
     - test -x "$EXE"
     - uv run --python 3.10 --group test --project python/sdk python scripts/smoke-python-runtime.py --scenario all --exe "$EXE"
     - python scripts/build-python-release.py --package runtime --tag "$CI_COMMIT_TAG" --platform "$PLATFORM" --runtime-exe "$EXE" --output-dir "release/$PLATFORM"
     - python -m venv .wheel-smoke
-    - .wheel-smoke/bin/python -m pip install --find-links "release/$PLATFORM" --find-links release/sdk deepseek-harness-sdk=="$DSH_WHEEL_VERSION"
+    - .wheel-smoke/bin/python -m pip install --find-links "release/$PLATFORM" --find-links release/sdk alego-sdk=="$ALEGO_WHEEL_VERSION"
     - .wheel-smoke/bin/python scripts/smoke-python-runtime.py --scenario sdk-default
     - .wheel-smoke/bin/python scripts/smoke-python-runtime.py --scenario sdk-mcp
     - |
@@ -57,7 +57,7 @@ sdk-wheel:
           linux-arm64) image=quay.io/pypa/manylinux_2_28_aarch64 ;;
           *) echo "Unsupported Linux platform $PLATFORM"; exit 1 ;;
         esac
-        docker run --rm -v "$PWD:/work" -w /work "$image" bash -euxo pipefail -c "/opt/python/cp310-cp310/bin/python -m venv /tmp/dsh-sdk && /tmp/dsh-sdk/bin/python -m pip install --find-links /work/release/$PLATFORM --find-links /work/release/sdk deepseek-harness-sdk==$DSH_WHEEL_VERSION && /tmp/dsh-sdk/bin/python /work/scripts/smoke-python-runtime.py --scenario sdk-default && /tmp/dsh-sdk/bin/python /work/scripts/smoke-python-runtime.py --scenario sdk-mcp"
+        docker run --rm -v "$PWD:/work" -w /work "$image" bash -euxo pipefail -c "/opt/python/cp310-cp310/bin/python -m venv /tmp/alego-sdk && /tmp/alego-sdk/bin/python -m pip install --find-links /work/release/$PLATFORM --find-links /work/release/sdk alego-sdk==$ALEGO_WHEEL_VERSION && /tmp/alego-sdk/bin/python /work/scripts/smoke-python-runtime.py --scenario sdk-default && /tmp/alego-sdk/bin/python /work/scripts/smoke-python-runtime.py --scenario sdk-mcp"
       fi
     - |
       if [ "$PLATFORM" = macos-arm64 ]; then
@@ -113,16 +113,16 @@ publish-python:
   before_script:
     - python3 -m venv .ci-python
     - . .ci-python/bin/activate
-    - export DSH_VERSION="$(python -c 'import json; print(json.load(open("package.json"))["version"])')"
-    - export DSH_WHEEL_VERSION="$(python -c 'import runpy; release = runpy.run_path("scripts/build-python-release.py"); print(release["pep440_version"](release["repository_version"]()))')"
-    - test "$CI_COMMIT_TAG" = "python-v$DSH_VERSION" || { echo "Tag $CI_COMMIT_TAG does not match package.json version $DSH_VERSION"; exit 1; }
+    - export ALEGO_VERSION="$(python -c 'import json; print(json.load(open("package.json"))["version"])')"
+    - export ALEGO_WHEEL_VERSION="$(python -c 'import runpy; release = runpy.run_path("scripts/build-python-release.py"); print(release["pep440_version"](release["repository_version"]()))')"
+    - test "$CI_COMMIT_TAG" = "python-v$ALEGO_VERSION" || { echo "Tag $CI_COMMIT_TAG does not match package.json version $ALEGO_VERSION"; exit 1; }
     - python -m pip install twine==6.2.0
   script:
     - test "$(find release -name '*.whl' | wc -l | tr -d ' ')" = 4
-    - test -f "release/sdk/deepseek_harness_sdk-${DSH_WHEEL_VERSION}-py3-none-any.whl"
-    - test -f "release/linux-x64/deepseek_harness_runtime_bin-${DSH_WHEEL_VERSION}-py3-none-manylinux_2_28_x86_64.whl"
-    - test -f "release/linux-arm64/deepseek_harness_runtime_bin-${DSH_WHEEL_VERSION}-py3-none-manylinux_2_28_aarch64.whl"
-    - test -f "release/macos-arm64/deepseek_harness_runtime_bin-${DSH_WHEEL_VERSION}-py3-none-macosx_14_0_arm64.whl"
+    - test -f "release/sdk/alego_sdk-${ALEGO_WHEEL_VERSION}-py3-none-any.whl"
+    - test -f "release/linux-x64/alego_runtime_bin-${ALEGO_WHEEL_VERSION}-py3-none-manylinux_2_28_x86_64.whl"
+    - test -f "release/linux-arm64/alego_runtime_bin-${ALEGO_WHEEL_VERSION}-py3-none-manylinux_2_28_aarch64.whl"
+    - test -f "release/macos-arm64/alego_runtime_bin-${ALEGO_WHEEL_VERSION}-py3-none-macosx_14_0_arm64.whl"
     - python -m twine check release/*/*.whl
     - export TWINE_USERNAME=gitlab-ci-token
     - export TWINE_PASSWORD="$CI_JOB_TOKEN"

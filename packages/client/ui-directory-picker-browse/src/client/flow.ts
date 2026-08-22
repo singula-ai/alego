@@ -5,10 +5,10 @@
  */
 import { createElement } from 'react'
 import type { ReactElement } from 'react'
-import type { DirectoryListing } from '@deepseek-ai/dsh-client-runtime/client'
-import type { Translate } from '@deepseek-ai/dsh-client-locale/client'
+import type { DirectoryListing } from '@alego/client-runtime/client'
+import type { Translate } from '@alego/client-locale/client'
 // Type-only: the owner contract of the directory-flow holes.
-import type { DirectoryFlowOwnerProps } from '@deepseek-ai/dsh-client-ui-workspace/client'
+import type { DirectoryFlowOwnerProps } from '@alego/client-ui-workspace/client'
 import { DirectoryBrowser } from './DirectoryBrowser.tsx'
 
 /** Injected face: the browse wire calls and copy the dialog drives (bound in apply's closure). */

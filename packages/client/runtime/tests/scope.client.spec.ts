@@ -6,14 +6,14 @@
  * and a subject-less root dispatch stays unfiltered. Scope-owned listeners
  * dispose with the fiber.
  */
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@alego/cordis'
 import { describe, expect, it } from 'vitest'
-import type { SessionId } from '@deepseek-ai/dsh-api-remotes/client'
+import type { SessionId } from '@alego/api-remotes/client'
 import { createScope, scopeOf } from '../src/client/agents/scope.ts'
 
 const sid = (k: string): SessionId => k as SessionId
 
-declare module '@deepseek-ai/cordis' {
+declare module '@alego/cordis' {
   interface Events {
     /**
      * Test-only routed probe event.

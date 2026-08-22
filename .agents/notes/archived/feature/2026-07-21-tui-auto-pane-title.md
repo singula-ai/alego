@@ -11,7 +11,7 @@ English | [中文](2026-07-21-tui-auto-pane-title.zh.md)
 
 ## Problem
 
-The TUI's terminal title is a single static string (`title`, default `DeepSeek Harness`) shared by every session. A user who runs one agent per tmux pane or terminal tab sees the same label on all of them, so panes are indistinguishable at a glance and the tab bar carries no signal about what each session is doing.
+The TUI's terminal title is a single static string (`title`, default `Alego`) shared by every session. A user who runs one agent per tmux pane or terminal tab sees the same label on all of them, so panes are indistinguishable at a glance and the tab bar carries no signal about what each session is doing.
 
 ## Decision
 
@@ -20,7 +20,7 @@ The TUI's terminal title is a single static string (`title`, default `DeepSeek H
 - The title is set through `runtime.terminal.setTitle`, the same OSC 0 path the static `title` already uses. No new terminal-control surface is introduced, and pi-tui keeps ownership of terminal writes.
 - The call is fire-and-forget and one-shot per session. A `titleSettled` latch guards it: with `autoTitle` off it is pre-settled and never runs; on a resumed session whose first `user/message` is already logged it is pre-settled so the static title stands; a whitespace-only first message is skipped without consuming the slot. Any failure, an empty reply, a missing `llm` service, or a missing agent provider/model leaves the static title untouched. A dedicated `AbortController` cancels an in-flight request on shutdown.
 - The title call reaches `ctx.llm.stream` directly rather than through `agent.send`, so it never appends to the session or transcript and cannot perturb the agent loop.
-- The feature defaults off and is enabled only in the interactive product config (`examples/tui-agent/cordis.yml`) and the scripted PTY fixture. Enabling it in the shared `dsh-tui-demo` schema default would fire an extra model call in keyless replay and boot scenarios that send no user message.
+- The feature defaults off and is enabled only in the interactive product config (`examples/tui-agent/cordis.yml`) and the scripted PTY fixture. Enabling it in the shared `alego-tui-demo` schema default would fire an extra model call in keyless replay and boot scenarios that send no user message.
 
 ## Alternatives considered
 

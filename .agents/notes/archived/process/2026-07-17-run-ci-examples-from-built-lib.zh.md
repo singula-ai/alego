@@ -28,7 +28,7 @@ CI 通过 `node --import tsx` 和根 tsconfig 的 `paths` 映射启动示例与�
 
 ### 启动策略
 
-共享 Loader 测试 harness 通过 `DSH_EXAMPLE_MODE` 选择 `src` 或 `lib`。CI 先构建再选择 `lib`；未设置模式时保留快速的本地源码开发回路。
+共享 Loader 测试 harness 通过 `ALEGO_EXAMPLE_MODE` 选择 `src` 或 `lib`。CI 先构建再选择 `lib`；未设置模式时保留快速的本地源码开发回路。
 
 ## 曾考虑的替代方案
 

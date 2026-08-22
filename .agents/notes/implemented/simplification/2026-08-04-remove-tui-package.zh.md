@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-移除隐式的 `dsh` 终端应用后，`@deepseek-ai/dsh-tui` 不再拥有任何已交付的组合。该包仍包含终端渲染器、交互式命令与问答适配器、扩展浮层、快照 fixture（测试前置数据）、已打补丁的 `pi-tui` 依赖，以及仍将 TUI 宣称为受支持应用接口的 SDK 脚手架。保留这整套能力意味着继续维护一个产品规模的前端，而其唯一剩余消费方就是项目生成器本身。
+移除隐式的 `alego` 终端应用后，`@alego/tui` 不再拥有任何已交付的组合。该包仍包含终端渲染器、交互式命令与问答适配器、扩展浮层、快照 fixture（测试前置数据）、已打补丁的 `pi-tui` 依赖，以及仍将 TUI 宣称为受支持应用接口的 SDK 脚手架。保留这整套能力意味着继续维护一个产品规模的前端，而其唯一剩余消费方就是项目生成器本身。
 
 该包还会使仓库所支持的应用清单产生误导。当前可运行产品使用 Web、ACP（Agent Client Protocol）、JSON-RPC 或一次性 CLI（命令行界面）入口，SDK 却仍提供终端选项，而没有任何示例或产品命令会实际使用它。
 
@@ -14,9 +14,9 @@ Status: implemented
 
 删除 `packages/ui/tui` 包，不提供兼容包或别名。其源码、包测试、终端快照、依赖声明、已打补丁的 `pi-tui` 产物、workspace 引用、生成的服务目录条目和文档会一并移除。通用宿主能力与 agent loop（智能体循环）能力保持不变。
 
-作为 TUI 包最后消费方的 SDK 项目工具链已由[工具链移除决策](2026-08-11-remove-sdk-project-toolchain.zh.md)删除。宿主应用仍可直接挂载提供方无关的 `dsh-user-questions`、`dsh-commands` 和呈现服务。
+作为 TUI 包最后消费方的 SDK 项目工具链已由[工具链移除决策](2026-08-11-remove-sdk-project-toolchain.zh.md)删除。宿主应用仍可直接挂载提供方无关的 `alego-user-questions`、`alego-commands` 和呈现服务。
 
-本决策取代[显式配置 `dsh` 入口决策](../../archived/simplification/2026-08-03-explicit-config-dsh-entrypoint.md)中保留可复用包的决定，也使已归档 TUI 实现记录不再适用于当前状态。这些历史记录继续保持冻结，但不再作为受支持包或应用清单的依据。
+本决策取代[显式配置 `alego` 入口决策](../../archived/simplification/2026-08-03-explicit-config-alego-entrypoint.md)中保留可复用包的决定，也使已归档 TUI 实现记录不再适用于当前状态。这些历史记录继续保持冻结，但不再作为受支持包或应用清单的依据。
 
 本记录汇总了因移除该包而无法继续保持现行有效、现已删除的仅涉及该包的记录。终端 UI 曾在长对话期间保持会话身份可见、移除重复模型标签、为消息附加耗时与阶段状态、在提示词旁显示 workspace 与分支上下文，并保守地解析完整 XML 包装层，以生成人类可读的回退输出。这些选择改善了一个终端前端，但在没有部署的情况下，并不足以证明应保留它。未来的 XML 回退仍必须使用真正的解析器而非正则表达式。
 
@@ -34,6 +34,6 @@ Status: implemented
 
 ## 后果
 
-DeepSeek Harness 不再提供终端 UI 包。现有 import 和依赖该包的 `cordis.yml` 条目会直接失败，不会得到兼容转换。Web 仍是已交付的交互界面；ACP、JSON-RPC 与一次性 CLI 仍是 Web 之外的入口。
+Alego 不再提供终端 UI 包。现有 import 和依赖该包的 `cordis.yml` 条目会直接失败，不会得到兼容转换。Web 仍是已交付的交互界面；ACP、JSON-RPC 与一次性 CLI 仍是 Web 之外的入口。
 
 提供方无关的命令、用户交互、审批、工具呈现、PTY 与会话投影能力仍可供其他宿主使用。重新引入终端前端时，必须为其提供具名产品或部署、显式包边界、具体交互提供方，以及组装后的生命周期与 transcript（文本记录）验收。

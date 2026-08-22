@@ -1,4 +1,4 @@
-# `@deepseek-ai/dsh-llm-mock-server`
+# `@alego/llm-mock-server`
 
 English | [中文](README.zh.md)
 
@@ -23,7 +23,7 @@ Point the shipping DeepSeek adapter at the server; it appends `/chat/completions
 ```sh
 DEEPSEEK_BASE_URL=http://127.0.0.1:8000/v1 \
 DEEPSEEK_API_KEY=mock-key \
-pnpm dsh --profile headless "test provider recovery"
+pnpm alego --profile headless "test provider recovery"
 ```
 
 The repository script writes JSONL to stdout: a `ready` record carries the `/v1` base URL and random seed, followed by request/result records that name both the scripted behavior and the concrete selected behavior. The private support package exposes no installable binary.

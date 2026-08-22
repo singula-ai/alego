@@ -12,7 +12,7 @@ host 与 client 属于独立 TypeScript project；把两者放进同一个 `ts.P
 
 ## Decision
 
-[`dsh-typert-generator`](../../../../packages/typert/generator/README.zh.md) 分别从 host 和 client project 建立 `ts.Program`，只把 compiler node、symbol 和 checker 当作提取工具。分析结束后，所有生成器和扫描器只消费 Typert 自有的 `WorkspaceModel`、`FaceModel` 与 `TypeGraph`，模型中不保留 AST 或 checker 对象。生成器不依赖 `@deepseek-ai/dsh-typert-registry`。
+[`alego-typert-generator`](../../../../packages/typert/generator/README.zh.md) 分别从 host 和 client project 建立 `ts.Program`，只把 compiler node、symbol 和 checker 当作提取工具。分析结束后，所有生成器和扫描器只消费 Typert 自有的 `WorkspaceModel`、`FaceModel` 与 `TypeGraph`，模型中不保留 AST 或 checker 对象。生成器不依赖 `@alego/typert-registry`。
 
 TypeGraph 保存开发者写下的计算前类型结构，包括泛型参数与应用、显式继承、conditional、mapped、递归引用和 JSDoc。无法无损表示的可达类型使分析失败；某个 emitter 无法处理已经建模的节点时由该 emitter 失败，而不是把类型展平或降级为 `unknown`。
 
@@ -20,11 +20,11 @@ TypeGraph 保存开发者写下的计算前类型结构，包括泛型参数与�
 
 PackageModel 识别 Cordis service、event、`@typert object` 引用对象和 `@typert schema` 数据根。service 与 object 只暴露 public instance member，排除 constructor、static、private 和 protected；继承边保留在 TypeGraph 中，不复制为扁平成员。缺少 public property、parameter 或 return 类型标注时，`check` 模式报错，`write` 模式写入 checker 推断结果后重建 project 并再次以严格模式分析。
 
-[`dsh-typert-registry`](../../../../packages/typert/registry/README.zh.md) 提供 `ctx.typert`，且只负责运行时注册：一个 contribution 原子携带 package-face reflection 与可选 Zod schema，并随 Cordis effect 撤销。注册表不分析 TypeScript，也不合并两个 face。JSON Schema 是对已注册 Zod schema 的按需投影。
+[`alego-typert-registry`](../../../../packages/typert/registry/README.zh.md) 提供 `ctx.typert`，且只负责运行时注册：一个 contribution 原子携带 package-face reflection 与可选 Zod schema，并随 Cordis effect 撤销。注册表不分析 TypeScript，也不合并两个 face。JSON Schema 是对已注册 Zod schema 的按需投影。
 
 包产物发布仍通过 package exports 采用显式 opt-in。`WorkspaceTypertGenerator` 仅在被调用时校验所请求 face 的根目录产物协议：host face 必须通过面向用户的 subpath `package/typert` 暴露 `package/lib/typert.host.{js,d.ts}`，client face 必须通过 `package/client/typert` 暴露 `package/lib/typert.client.{js,d.ts}`；它不会修改这些 exports。后续的 [Typert Remote 设计](2026-08-02-typert-remote-method-calls.zh.md) 为根目录 build、typecheck、lint 与文档类型检查增加了全仓 Host 约定 pass。对于已 opt-in 的 Host 包，该 pass 会在消费方解析两者之前生成本地反射产物与严格的 Host-for-Client `/remote` 约定。生成的本地声明将 `TYPERT` 类型保持为 `unknown`，因此业务包不依赖注册表。
 
-构建期的 `CordisCatalogProjector` 一次消费分析后的 `FaceModel` 与 `TypeGraph`，生成 `docs/cordis-catalog/events.md`、`docs/cordis-catalog/services.md`，以及为 `tool-cordis` 提交的静态 `SERVICE_API`、`EVENT_API` 和 `TYPE_API` catalog。`tool-cordis` 读取该静态 catalog，运行时不依赖 `ctx.typert`。[`dsh-typert-loader`](../../../../packages/typert/loader/README.zh.md) 与注册表仍是独立的运行时路径：loader 监听 Cordis Loader 配置项生命周期事件，导入显式发布的 `./typert` host 产物，并通过 `ctx.typert` 注册；两者都不是当前 `cordis_inspect` catalog 的数据源。
+构建期的 `CordisCatalogProjector` 一次消费分析后的 `FaceModel` 与 `TypeGraph`，生成 `docs/cordis-catalog/events.md`、`docs/cordis-catalog/services.md`，以及为 `tool-cordis` 提交的静态 `SERVICE_API`、`EVENT_API` 和 `TYPE_API` catalog。`tool-cordis` 读取该静态 catalog，运行时不依赖 `ctx.typert`。[`alego-typert-loader`](../../../../packages/typert/loader/README.zh.md) 与注册表仍是独立的运行时路径：loader 监听 Cordis Loader 配置项生命周期事件，导入显式发布的 `./typert` host 产物，并通过 `ctx.typert` 注册；两者都不是当前 `cordis_inspect` catalog 的数据源。
 
 ## Verification contract
 
@@ -34,7 +34,7 @@ PackageModel 识别 Cordis service、event、`@typert object` 引用对象和 `@
 
 边界用例固定同 face 与跨 face 的显式包导入、跨 face 命名 re-export、精确 export alias、qualified `import()` link 和全局 `@types` External 归属，并拒绝 package 自有 TypeScript 诊断、相对路径越界、`package.json#exports` 之外的引用，以及尚无模型 target 的跨 face namespace re-export。interface declaration merging 显式保留每个 authored part，无法无损表示的其他 merge 失败。
 
-Zod emitter 对支持的节点和各类 literal 逐类执行成功与失败 parse，对不支持的节点逐类断言明确的 `TypertEmitError`。Emitter fixture 对生成的 Zod JavaScript 与 `.d.ts` 文本做快照，执行 JavaScript，并对声明做类型检查。`dsh-typert-registry` 测试固定原子注册、查询、JSON Schema 和 effect 撤销，`dsh-typert-loader` 测试还证明延迟挂载、卸载及未完成 dynamic import 的释放行为。真实 `dsh-tools` 纵切从模型生成 contribution，经运行时注册表加载后，将其服务、事件与关联类型记录同已提交的静态 `SERVICE_API`、`EVENT_API` 和 `TYPE_API` 对照。全仓 projector 测试重新生成两份 Cordis catalog 文档与 `tool-cordis` API catalog，并要求三份文本同已提交产物逐字节一致。
+Zod emitter 对支持的节点和各类 literal 逐类执行成功与失败 parse，对不支持的节点逐类断言明确的 `TypertEmitError`。Emitter fixture 对生成的 Zod JavaScript 与 `.d.ts` 文本做快照，执行 JavaScript，并对声明做类型检查。`alego-typert-registry` 测试固定原子注册、查询、JSON Schema 和 effect 撤销，`alego-typert-loader` 测试还证明延迟挂载、卸载及未完成 dynamic import 的释放行为。真实 `alego-tools` 纵切从模型生成 contribution，经运行时注册表加载后，将其服务、事件与关联类型记录同已提交的静态 `SERVICE_API`、`EVENT_API` 和 `TYPE_API` 对照。全仓 projector 测试重新生成两份 Cordis catalog 文档与 `tool-cordis` API catalog，并要求三份文本同已提交产物逐字节一致。
 
 ## Alternatives considered
 
@@ -44,7 +44,7 @@ Zod emitter 对支持的节点和各类 literal 逐类执行成功与失败 pars
 
 **合并 host/client project 或复制 host 类型。** 合并会污染 Cordis declaration merging；复制会产生第二份类型事实源。独立 face 加显式 cross-face link 保留了 project 隔离与真实引用关系。
 
-**让 `dsh-typert-registry` 承担类型解析和跨包合成。** 这会把 TypeScript compiler、Cordis 生命周期和具体 schema 策略重新耦合。注册表保持为生成 artifact 的生命周期容器，复杂分析留在构建期模型。
+**让 `alego-typert-registry` 承担类型解析和跨包合成。** 这会把 TypeScript compiler、Cordis 生命周期和具体 schema 策略重新耦合。注册表保持为生成 artifact 的生命周期容器，复杂分析留在构建期模型。
 
 ## Consequences
 

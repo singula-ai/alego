@@ -15,7 +15,7 @@ Archived: 2026-07-26
 
 ## 决策
 
-只移除 `llm/adapter-change`：包括 `dsh-llm` 的 `interface Events` 中的声明、`ctx.emit('llm/adapter-change')` 调用，以及 `LlmService.registerAdapter` JSDoc 中“在注册和释放时发出 `llm/adapter-change`”的句子。`registerAdapter()` 的效应生成器为 HMR（热模块替换）/释放保留变更与回滚 disposer，但移除仅因该事件而存在的监听器抛错回滚顺序。适配器 disposer 测试断言返回的 disposer 会移除适配器，不再订阅事件；监听器抛错回滚测试则随其测试对象一起消失。[docs/architecture.md](../../../../docs/architecture.md) 和 [packages/llm/llm/README.md](../../../../packages/llm/llm/README.md) 中的事件分类也在同一变更中更新。
+只移除 `llm/adapter-change`：包括 `alego-llm` 的 `interface Events` 中的声明、`ctx.emit('llm/adapter-change')` 调用，以及 `LlmService.registerAdapter` JSDoc 中“在注册和释放时发出 `llm/adapter-change`”的句子。`registerAdapter()` 的效应生成器为 HMR（热模块替换）/释放保留变更与回滚 disposer，但移除仅因该事件而存在的监听器抛错回滚顺序。适配器 disposer 测试断言返回的 disposer 会移除适配器，不再订阅事件；监听器抛错回滚测试则随其测试对象一起消失。[docs/architecture.md](../../../../docs/architecture.md) 和 [packages/llm/llm/README.md](../../../../packages/llm/llm/README.md) 中的事件分类也在同一变更中更新。
 
 ## 曾考虑的替代方案
 

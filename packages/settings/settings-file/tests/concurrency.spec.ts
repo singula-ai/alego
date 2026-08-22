@@ -1,14 +1,14 @@
 // Cross-instance and writer-lock behavior: two providers on one document are
-// the in-process equivalent of two dsh processes sharing a harness home —
+// the in-process equivalent of two alego processes sharing a harness home —
 // neither knows the other's cache, so only the read-modify-write cycle under
 // the `<file>.lock` sibling keeps both namespaces alive on disk.
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
+import { Context } from '@alego/cordis'
+import z from '@alego/schemastery'
 import { chmod, mkdtemp, readFile, rm, utimes, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { settingsNamespace } from '@deepseek-ai/dsh-settings'
+import { settingsNamespace } from '@alego/settings'
 import { FileSettingsProvider } from '../src/index.ts'
 
 const AlphaSchema: z<{ value: number }> = z.object({ value: z.number().default(0) })
@@ -21,7 +21,7 @@ afterEach(async () => {
 })
 
 async function tempDir(): Promise<string> {
-  const dir = await mkdtemp(join(tmpdir(), 'dsh-settings-lock-'))
+  const dir = await mkdtemp(join(tmpdir(), 'alego-settings-lock-'))
   cleanups.push(() => rm(dir, { recursive: true, force: true }))
   return dir
 }

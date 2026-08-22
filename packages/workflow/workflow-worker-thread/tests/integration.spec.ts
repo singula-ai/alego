@@ -1,15 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import { SessionId } from '@deepseek-ai/dsh-session'
-import AgentLoop from '@deepseek-ai/dsh-agent-loop'
-import { mountAgentLoopTestDependencies } from '@deepseek-ai/dsh-agent-loop-testkit'
-import InvariantRegistry from '@deepseek-ai/dsh-invariants'
-import * as SessionInvariant from '@deepseek-ai/dsh-session/invariant'
-import * as AgentInvariant from '@deepseek-ai/dsh-agent/invariant'
-import * as AgentLoopInvariant from '@deepseek-ai/dsh-agent-loop/invariant'
-import SubagentRuntime from '@deepseek-ai/dsh-subagent'
-import * as spawn from '@deepseek-ai/dsh-subagent-spawn-in-process'
-import { STRUCTURED_OUTPUT_TOOL } from '@deepseek-ai/dsh-subagent-in-process-driver'
+import { Context } from '@alego/cordis'
+import { SessionId } from '@alego/session'
+import AgentLoop from '@alego/agent-loop'
+import { mountAgentLoopTestDependencies } from '@alego/agent-loop-testkit'
+import InvariantRegistry from '@alego/invariants'
+import * as SessionInvariant from '@alego/session/invariant'
+import * as AgentInvariant from '@alego/agent/invariant'
+import * as AgentLoopInvariant from '@alego/agent-loop/invariant'
+import SubagentRuntime from '@alego/subagent'
+import * as spawn from '@alego/subagent-spawn-in-process'
+import { STRUCTURED_OUTPUT_TOOL } from '@alego/subagent-in-process-driver'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import WorkerThreadWorkflowEngine from '../src/index.ts'
 
@@ -44,7 +44,7 @@ async function setup(script: Script) {
   return { ctx, parent, adapter }
 }
 
-describe('dsh-workflow-worker-thread over the real in-process stack', () => {
+describe('alego-workflow-worker-thread over the real in-process stack', () => {
   it('runs a two-stage workflow: a plain child, then a schema child through the structured runtime', async () => {
     const { ctx, parent } = await setup([
       textResponse('the file list is a.ts'),

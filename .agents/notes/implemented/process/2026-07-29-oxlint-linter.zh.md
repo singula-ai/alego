@@ -18,7 +18,7 @@ Status: implemented
 
 Oxlint 的 JavaScript 插件兼容层运行 `@stylistic/eslint-plugin` 和 `eslint-plugin-sonarjs`，从而继续强制执行现有的格式和文件内重复逻辑规则。兼容层会报告 `@stylistic` 违规并执行其安全修复；`max-len` 仍仅用于验证。自有源码中的抑制指令使用 `oxlint-*` 指令和 `typescript/*` 命名空间，未使用的指令仍作为警告报告；vendor 源码保留其上游指令，因为 Oxlint 会排除 `vendor/**`。
 
-CI 不恢复或保存 lint 结果缓存。`DSH_OXLINT_THREADS` 使共享运行器将同一上限传给 Oxlint 的 `--threads` 选项和类型感知后端的 `GOMAXPROCS` 环境变量；普通本地运行对两者均采用默认值。Pre-commit 运行不加载项目的 Oxlint 验证，应用带一次有界重试的安全修复，接受仅含已忽略文件的文件选择，并通过 lefthook 重新暂存结果。公共 `lint` 和 CI 会先准备生成的声明，并保留完整的类型感知规则。
+CI 不恢复或保存 lint 结果缓存。`ALEGO_OXLINT_THREADS` 使共享运行器将同一上限传给 Oxlint 的 `--threads` 选项和类型感知后端的 `GOMAXPROCS` 环境变量；普通本地运行对两者均采用默认值。Pre-commit 运行不加载项目的 Oxlint 验证，应用带一次有界重试的安全修复，接受仅含已忽略文件的文件选择，并通过 lefthook 重新暂存结果。公共 `lint` 和 CI 会先准备生成的声明，并保留完整的类型感知规则。
 
 ## 验证
 

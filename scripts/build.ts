@@ -27,7 +27,7 @@ function runScript(script: string, environment: NodeJS.ProcessEnv): void {
   }
 }
 
-/** Run the full build selected by `--profile` or `DSH_BUILD_CLIENT_PROFILE`. */
+/** Run the full build selected by `--profile` or `ALEGO_BUILD_CLIENT_PROFILE`. */
 function main(): void {
   const { values } = parseArgs({
     options: { profile: { type: 'string' } },
@@ -36,7 +36,7 @@ function main(): void {
   const root = resolve(import.meta.dirname, '..')
   const parentEnvironment = {
     ...process.env,
-    DSH_CLIENT_COMMIT_HASH: repositoryCommitHash(root, process.env),
+    ALEGO_CLIENT_COMMIT_HASH: repositoryCommitHash(root, process.env),
   }
   const clientEnvironment = resolveClientBuildEnvironment(parentEnvironment, values.profile)
   const buildEnvironment = clientBuildProcessEnvironment(parentEnvironment, clientEnvironment)

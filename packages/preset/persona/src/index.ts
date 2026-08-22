@@ -1,26 +1,26 @@
 /**
  * A per-agent persona as a composable row.
  *
- * `dsh-system-prompt` owns the global persona as its own config, and registers
+ * `alego-system-prompt` owns the global persona as its own config, and registers
  * that section unconditionally — so this row is **scope-only**. Mounted inside
  * an agent preset it shadows the deployment persona for that one session,
- * exactly like the per-child persona `dsh-subagent` installs; mounted globally
+ * exactly like the per-child persona `alego-subagent` installs; mounted globally
  * it collides with the registry's own registration and fails loud.
  *
  * That constraint is the reason the row exists. An agent preset cannot mount
  * the prompt registry itself, so without a row of its own a preset could
  * change an agent's tools but never its identity.
- * @module @deepseek-ai/dsh-persona
+ * @module @alego/persona
  */
 
-import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
-import type {} from '@deepseek-ai/dsh-system-prompt'
+import type { Context } from '@alego/cordis'
+import z from '@alego/schemastery'
+import type {} from '@alego/system-prompt'
 
 // Imported rather than restated: the registry declares the slot this row
 // replaces, and two hardcoded copies would drift into a preset whose persona
 // silently lands beside the deployment's instead of shadowing it.
-import { PERSONA_ORDER, PERSONA_SECTION } from '@deepseek-ai/dsh-system-prompt'
+import { PERSONA_ORDER, PERSONA_SECTION } from '@alego/system-prompt'
 
 export { PERSONA_ORDER, PERSONA_SECTION }
 

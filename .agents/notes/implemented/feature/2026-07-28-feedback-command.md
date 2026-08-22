@@ -12,11 +12,11 @@ The capture surface has to be usable at the moment of annoyance, which rules out
 
 ## Decision
 
-`@deepseek-ai/dsh-command-feedback` in `packages/feedback/command-feedback/` registers one global `feedback` command over `ctx.commands`. `/feedback <text>` acknowledges with the receiving session id and the shared harness-home anonymous user id; bare or whitespace-only input returns a direct usage error. The handler is synchronous, injects only `commands`, and has no configuration. [The shared-id decision](../architecture/2026-08-07-shared-feedback-telemetry-user-id.md) records why feedback and OpenTelemetry use the same `$DSH_HOME/.anonymous-user-id` value.
+`@alego/command-feedback` in `packages/feedback/command-feedback/` registers one global `feedback` command over `ctx.commands`. `/feedback <text>` acknowledges with the receiving session id and the shared harness-home anonymous user id; bare or whitespace-only input returns a direct usage error. The handler is synchronous, injects only `commands`, and has no configuration. [The shared-id decision](../architecture/2026-08-07-shared-feedback-telemetry-user-id.md) records why feedback and OpenTelemetry use the same `$ALEGO_HOME/.anonymous-user-id` value.
 
 The package declares the log-only `feedback/record { text }` session event and exports `recordFeedback(session, text)` as its command-independent producer. The producer discards surrounding whitespace, rejects an empty result, and appends exactly one event. `/feedback` delegates to it, so another UI, hook, or host integration can record the same domain fact without constructing a slash command.
 
-`dsh-commands` still writes its `command/run` / `command/done` lifecycle pair around `/feedback`, but this command sets `recordInput: false`. Its `command/run` therefore carries the command identity and source without `args`; the feedback text exists only in `feedback/record`, while `command/done` carries the acknowledgement outcome. All three records are log-only and non-surface. Their appends enter persistence's ordinary bounded write path; nothing forces a flush, so acknowledgement reports that the feedback is in the log rather than already on disk.
+`alego-commands` still writes its `command/run` / `command/done` lifecycle pair around `/feedback`, but this command sets `recordInput: false`. Its `command/run` therefore carries the command identity and source without `args`; the feedback text exists only in `feedback/record`, while `command/done` carries the acknowledgement outcome. All three records are log-only and non-surface. Their appends enter persistence's ordinary bounded write path; nothing forces a flush, so acknowledgement reports that the feedback is in the log rather than already on disk.
 
 Capture remains inert for the running agent and model. The optional OTel telemetry package later adds one infrastructure consumer: it observes `feedback/record` as a release trigger in `FEEDBACK_ONLY` mode and as the local-only warning trigger in `DISABLED` mode, without changing the feedback event or command path. See [Feedback-gated session telemetry](2026-08-05-feedback-gated-session-telemetry.md) and the [acknowledgement sharing disclosure](2026-08-07-feedback-acknowledgement-sharing-disclosure.md).
 
@@ -54,7 +54,7 @@ Surrounding whitespace is discarded, but nothing else is parsed. `/feedback /pla
 
 ## Consequences
 
-The shipped `dsh` base mounts the command unconditionally — no configuration, no dependency on the goal stack. The Web client exposes it through its command adapter. Headless mode, ACP, and JSON-RPC do not provide a command adapter, so `/feedback` is unavailable there. The first accepted feedback for a harness home can create `$DSH_HOME/.anonymous-user-id`; rejected empty input does not resolve or create an id.
+The shipped `alego` base mounts the command unconditionally — no configuration, no dependency on the goal stack. The Web client exposes it through its command adapter. Headless mode, ACP, and JSON-RPC do not provide a command adapter, so `/feedback` is unavailable there. The first accepted feedback for a harness home can create `$ALEGO_HOME/.anonymous-user-id`; rejected empty input does not resolve or create an id.
 
 The package owns one independent append-only event with no cross-event or mutable-data relation for an invariant companion to check. The event follows the session log's existing replay, fork, persistence, and crash-tail behavior.
 

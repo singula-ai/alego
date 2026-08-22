@@ -6,9 +6,9 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import type { SessionId } from '@deepseek-ai/dsh-session'
-import type { ApiProxy, GoalRef, HostFrame, MuxFrame, RpcMessage, RpcRequest, RpcResponse } from '@deepseek-ai/dsh-host-apiproxy'
-import { InProcessApiClient, RpcId, toFetchHandler } from '@deepseek-ai/dsh-host-apiproxy'
+import type { SessionId } from '@alego/session'
+import type { ApiProxy, GoalRef, HostFrame, MuxFrame, RpcMessage, RpcRequest, RpcResponse } from '@alego/host-apiproxy'
+import { InProcessApiClient, RpcId, toFetchHandler } from '@alego/host-apiproxy'
 
 const sid = (id: string): SessionId => id as SessionId
 
@@ -307,7 +307,7 @@ describe('unary round trip', () => {
   it('rejects a method/path mismatch as bad-request', async () => {
     const handler = toFetchHandler(scriptedApi())
     const body = { type: 'client-request', rpcId: 'r1', method: 'session.create', payload: {} }
-    const response = await handler.fetch('http://dsh.internal/api/session.list', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
+    const response = await handler.fetch('http://alego.internal/api/session.list', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
     expect(response.status).toBe(200)
     const parsed = await response.json() as { result: { ok: boolean; error?: { code: string; message: string } } }
     expect(parsed.result.ok).toBe(false)
@@ -318,13 +318,13 @@ describe('unary round trip', () => {
   it('rejects a malformed envelope as bad-request, salvaging the rpcId or falling back to the sentinel', async () => {
     const handler = toFetchHandler(scriptedApi())
     // No salvageable rpcId → the fixed invalid-request sentinel keeps the response a valid ServerResponse.
-    const noId = await handler.fetch('http://dsh.internal/api/session.list', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ nonsense: true }) })
+    const noId = await handler.fetch('http://alego.internal/api/session.list', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ nonsense: true }) })
     expect(noId.status).toBe(200)
     const noIdParsed = await noId.json() as { rpcId: string; result: { ok: boolean } }
     expect(noIdParsed.result.ok).toBe(false)
     expect(noIdParsed.rpcId).toBe('invalid-request')
     // A string rpcId in the otherwise-bad body is salvaged for correlation.
-    const withId = await handler.fetch('http://dsh.internal/api/session.list', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ rpcId: 'salvage-me', nonsense: true }) })
+    const withId = await handler.fetch('http://alego.internal/api/session.list', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ rpcId: 'salvage-me', nonsense: true }) })
     const withIdParsed = await withId.json() as { rpcId: string; result: { ok: boolean } }
     expect(withIdParsed.result.ok).toBe(false)
     expect(withIdParsed.rpcId).toBe('salvage-me')
@@ -333,10 +333,10 @@ describe('unary round trip', () => {
   it('maps carrier failures to HTTP statuses and the client throws transport failure', async () => {
     const handler = toFetchHandler(scriptedApi())
     // Unknown method → 404.
-    const notFound = await handler.fetch('http://dsh.internal/api/no.such', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })
+    const notFound = await handler.fetch('http://alego.internal/api/no.such', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })
     expect(notFound.status).toBe(404)
     // Non-JSON body → 400.
-    const badBody = await handler.fetch('http://dsh.internal/api/session.list', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{oops' })
+    const badBody = await handler.fetch('http://alego.internal/api/session.list', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{oops' })
     expect(badBody.status).toBe(400)
     // Impl crash → 500, and through the client that is a throw, not an err result.
     const crashing = scriptedApi({ sessions: { list: () => { throw new Error('impl exploded') } } })
@@ -349,14 +349,14 @@ describe('unary round trip', () => {
     const body = JSON.stringify({ type: 'client-request', rpcId: 'r1', method: 'session.list', payload: {} })
     // A "simple" browser POST (text/plain — sent with no CORS preflight) is
     // refused at the carrier before the impl runs.
-    const plain = await handler.fetch('http://dsh.internal/api/session.list', { method: 'POST', headers: { 'content-type': 'text/plain' }, body })
+    const plain = await handler.fetch('http://alego.internal/api/session.list', { method: 'POST', headers: { 'content-type': 'text/plain' }, body })
     expect(plain.status).toBe(415)
     // A string body with no explicit header defaults to text/plain — same fence.
-    const unlabelled = await handler.fetch('http://dsh.internal/api/session.list', { method: 'POST', body })
+    const unlabelled = await handler.fetch('http://alego.internal/api/session.list', { method: 'POST', body })
     expect(unlabelled.status).toBe(415)
     expect(list).not.toHaveBeenCalled()
     // Media-type parameters pass: the fence checks the type, not the exact string.
-    const charset = await handler.fetch('http://dsh.internal/api/session.list', { method: 'POST', headers: { 'content-type': 'application/json; charset=utf-8' }, body })
+    const charset = await handler.fetch('http://alego.internal/api/session.list', { method: 'POST', headers: { 'content-type': 'application/json; charset=utf-8' }, body })
     expect(charset.status).toBe(200)
     expect(list).toHaveBeenCalledTimes(1)
   })
@@ -410,7 +410,7 @@ describe('unary round trip', () => {
       }
     }
     const probe = new Probe({ fetch: () => Promise.resolve(new Response('raw')) })
-    const response = await probe.direct(new URL('http://dsh.internal/probe'))
+    const response = await probe.direct(new URL('http://alego.internal/probe'))
     expect(await response.text()).toBe('raw')
   })
 
@@ -667,7 +667,7 @@ describe('respond path', () => {
   it('returns bad-response for a malformed client-response without reaching the impl', async () => {
     const respond = vi.fn()
     const handler = toFetchHandler(scriptedApi({ respond }))
-    const response = await handler.fetch('http://dsh.internal/api/respond', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ type: 'client-response' }) })
+    const response = await handler.fetch('http://alego.internal/api/respond', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ type: 'client-response' }) })
     expect(await response.json()).toEqual({ accepted: false, reason: 'bad-response' })
     expect(respond).not.toHaveBeenCalled()
   })

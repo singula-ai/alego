@@ -6,7 +6,7 @@ English | [中文](2026-07-05-windows-jsonl-durable-publish.zh.md)
 
 ## Problem
 
-`dsh-session-persistence-jsonl` publishes a session log lazily on the first append. The POSIX protocol writes a temp file, fsyncs it, links it to the final name, fsyncs the parent directory, and then removes the temp link. The parent-directory fsync is part of the durability contract: a crash after the namespace change must not lose the committed final name while leaving callers believing the session log materialized.
+`alego-session-persistence-jsonl` publishes a session log lazily on the first append. The POSIX protocol writes a temp file, fsyncs it, links it to the final name, fsyncs the parent directory, and then removes the temp link. The parent-directory fsync is part of the durability contract: a crash after the namespace change must not lose the committed final name while leaving callers believing the session log materialized.
 
 Windows has atomic namespace operations, but Node does not expose a POSIX-equivalent parent-directory fsync contract there. Treating Windows directory sync failures as success would silently weaken a durable backend. The Windows path therefore needs a different publication primitive rather than a conditional inside the POSIX `syncDir` helper.
 
@@ -16,7 +16,7 @@ The JSONL backend forks inside `materialize()` before any namespace mutation. Sh
 
 POSIX keeps the existing protocol: create the root, project directory, and session directory with parent directory fsyncs, write and fsync a temp file, publish with `link()` so an existing final log is never overwritten, fsync the session directory, then remove the redundant temp hard link.
 
-Windows creates missing directories through a durable staging publish: create a random sibling directory under the constant `.dsh-mkdir-` prefix, independent of the target basename, then publish it to the final directory name with `MoveFileExW(..., MOVEFILE_WRITE_THROUGH)` without `MOVEFILE_REPLACE_EXISTING` or `MOVEFILE_COPY_ALLOWED`. File materialization writes and fsyncs the temp log, then publishes that temp file to the final path with the same write-through `MoveFileExW` call and no replacement. `koffi` is the minimal Win32 bridge for this API; its install script is allowed in `pnpm-workspace.yaml` because the package ships the native loader and prebuilt platform modules.
+Windows creates missing directories through a durable staging publish: create a random sibling directory under the constant `.alego-mkdir-` prefix, independent of the target basename, then publish it to the final directory name with `MoveFileExW(..., MOVEFILE_WRITE_THROUGH)` without `MOVEFILE_REPLACE_EXISTING` or `MOVEFILE_COPY_ALLOWED`. File materialization writes and fsyncs the temp log, then publishes that temp file to the final path with the same write-through `MoveFileExW` call and no replacement. `koffi` is the minimal Win32 bridge for this API; its install script is allowed in `pnpm-workspace.yaml` because the package ships the native loader and prebuilt platform modules.
 
 ## Alternatives considered
 

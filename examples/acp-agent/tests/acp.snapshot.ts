@@ -13,14 +13,14 @@ import {
   type InputScript,
   type Scenario,
   type SnapshotSuiteOptions,
-} from '@deepseek-ai/dsh-acp-snapshot'
-import { resolvePwshPath } from '@deepseek-ai/dsh-pwsh-local'
-import { parseSessionLog } from '@deepseek-ai/dsh-llm-replay'
-import { OFFLOADED_IMAGE_TEXT } from '@deepseek-ai/dsh-llm'
+} from '@alego/acp-snapshot'
+import { resolvePwshPath } from '@alego/pwsh-local'
+import { parseSessionLog } from '@alego/llm-replay'
+import { OFFLOADED_IMAGE_TEXT } from '@alego/llm'
 
 /**
  * The acp-agent example's snapshot suite: the scenario table for
- * `dsh-acp-snapshot`'s suite factory, which owns every compare/guard mechanic
+ * `alego-acp-snapshot`'s suite factory, which owns every compare/guard mechanic
  * (expected-output + re-persisted-log diffs, record/refresh write-back, the pinned-header
  * uniformity guard, the fixture guards). Fixtures live under `snapshots/<name>/`;
  * `pnpm run test:snapshot:record` re-records model transcripts against the real
@@ -29,7 +29,7 @@ import { OFFLOADED_IMAGE_TEXT } from '@deepseek-ai/dsh-llm'
  * .agents/notes/implemented/testing/2026-06-19-acp-snapshot-tests.md.
  */
 
-// The dsh-acp-demo bin (the demo:acp entry), this example's cordis.yml, and
+// The alego-acp-demo bin (the demo:acp entry), this example's cordis.yml, and
 // the repo-root tsconfig (four levels up from examples/acp-agent/tests) — all
 // ABSOLUTE: the subprocess cwd is a temp dir outside the repo.
 const AGENT = {
@@ -89,7 +89,7 @@ const SNAPSHOTS_DIR = join(dirname(fileURLToPath(import.meta.url)), 'snapshots')
 const PACKED_CHUNKS_SOURCE = 'hook-cc-pretool-deny'
 
 async function prepareEditingCordisSkillWorkspace(cwd: string): Promise<void> {
-  const target = join(cwd, '.dsh', 'skills', 'editing-cordis-compositions', 'SKILL.md')
+  const target = join(cwd, '.alego', 'skills', 'editing-cordis-compositions', 'SKILL.md')
   await mkdir(dirname(target), { recursive: true })
   await copyFile(EDITING_CORDIS_SKILL, target)
 }
@@ -155,7 +155,7 @@ function snapshotModeFromEnv(value: string | undefined): SnapshotSuiteOptions['m
     case 'refresh':
       return 'refresh'
     default:
-      throw new Error(`unknown DSH_SNAPSHOT mode: ${value}`)
+      throw new Error(`unknown ALEGO_SNAPSHOT mode: ${value}`)
   }
 }
 
@@ -319,7 +319,7 @@ const SCENARIOS: Scenario[] = [
     recorded: false,
     headerClass: 'sandbox',
     configPath: PARTIAL_LANDLOCK_CONFIG,
-    env: { DSH_PERMISSION_MODE: 'read-only' },
+    env: { ALEGO_PERMISSION_MODE: 'read-only' },
     posixOnly: true,
   },
   // A valid cwd plus a missing provider executable exercises the assembled
@@ -331,8 +331,8 @@ const SCENARIOS: Scenario[] = [
     headerClass: 'sandbox',
     configPath: PARTIAL_LANDLOCK_CONFIG,
     env: {
-      DSH_PERMISSION_MODE: 'read-only',
-      DSH_SNAPSHOT_MISSING_SANDBOX_RUNNER: '1',
+      ALEGO_PERMISSION_MODE: 'read-only',
+      ALEGO_SNAPSHOT_MISSING_SANDBOX_RUNNER: '1',
     },
     posixOnly: true,
   },
@@ -463,7 +463,7 @@ const SCENARIOS: Scenario[] = [
   // and the parent log pins call/call/result/result instead of the serial
   // interleaving. The twin delegations must stay identical: replay binds child
   // scripts and harvest order nondeterministically across concurrent children
-  // (XXX(concurrent-subagents) in dsh-llm-replay).
+  // (XXX(concurrent-subagents) in alego-llm-replay).
   { name: 'subagent-parallel', hasModelTurn: true, recorded: false },
   { name: 'subagent-fork-in-process', hasModelTurn: true, recorded: true },
   { name: 'subagent-mixed', hasModelTurn: true, recorded: true },
@@ -507,7 +507,7 @@ const SCENARIOS: Scenario[] = [
   // published-handle disposal failure.
   {
     name: 'subagent-published-run-failure',
-    env: { DSH_SUBAGENT_PUBLISHED_FAILURE: '1' },
+    env: { ALEGO_SUBAGENT_PUBLISHED_FAILURE: '1' },
     hasModelTurn: true,
     recorded: false,
     overridden: true,
@@ -657,21 +657,21 @@ const SCENARIOS: Scenario[] = [
     headerClass: 'sandbox',
     systemPromptSource: 'text-turn',
     toolSchemasSource: 'text-turn',
-    env: { DSH_PERMISSION_MODE: 'workspace-write' },
+    env: { ALEGO_PERMISSION_MODE: 'workspace-write' },
   },
   {
     name: 'escalation-rejected',
     hasModelTurn: true,
     recorded: true,
     headerClass: 'sandbox',
-    env: { DSH_PERMISSION_MODE: 'workspace-write' },
+    env: { ALEGO_PERMISSION_MODE: 'workspace-write' },
   },
   {
     name: 'fs-escalation-approved',
     hasModelTurn: true,
     recorded: true,
     headerClass: 'sandbox',
-    env: { DSH_PERMISSION_MODE: 'workspace-write' },
+    env: { ALEGO_PERMISSION_MODE: 'workspace-write' },
   },
   // Unlike ordinary snapshots, this session cwd is outside the platform temp
   // roots that workspace-write always grants. The overlay points the
@@ -684,7 +684,7 @@ const SCENARIOS: Scenario[] = [
     overridden: true,
     headerClass: 'sandbox',
     configPath: SESSION_SANDBOX_ROOT_CONFIG,
-    env: { DSH_PERMISSION_MODE: 'workspace-write' },
+    env: { ALEGO_PERMISSION_MODE: 'workspace-write' },
     workspaceParent: homedir(),
   },
 ]
@@ -698,7 +698,7 @@ defineAcpSnapshotSuite({
   agent: AGENT,
   snapshotsDir: SNAPSHOTS_DIR,
   scenarios: SCENARIOS,
-  mode: snapshotModeFromEnv(process.env.DSH_SNAPSHOT),
+  mode: snapshotModeFromEnv(process.env.ALEGO_SNAPSHOT),
   hasPwsh,
 })
 
@@ -736,7 +736,7 @@ it('pins native DeepSeek Files offload and inline fallback in assembled requests
             object: 'file',
             bytes: file.size,
             created_at: createdAt,
-            filename: 'dsh-snapshot.png',
+            filename: 'alego-snapshot.png',
             purpose: 'user_data',
             expires_at: createdAt + Number(form.get('expires_after[seconds]')),
           }))
@@ -798,8 +798,8 @@ it('pins native DeepSeek Files offload and inline fallback in assembled requests
       fixtureFile: join(SNAPSHOTS_DIR, 'image-offload-request', 'session.jsonl'),
       workspaceDir: join(SNAPSHOTS_DIR, 'read-image', 'workspace'),
       env: {
-        DSH_SNAPSHOT_API_KEY: 'snapshot-key',
-        DSH_SNAPSHOT_BASE_URL: `http://127.0.0.1:${address.port}`,
+        ALEGO_SNAPSHOT_API_KEY: 'snapshot-key',
+        ALEGO_SNAPSHOT_BASE_URL: `http://127.0.0.1:${address.port}`,
       },
     })
     expect(result.stderr).toBe('')
@@ -842,7 +842,7 @@ it('pins native DeepSeek Files offload and inline fallback in assembled requests
       {
         role: 'user',
         content: 'Current runtime context. This snapshot supersedes earlier runtime-context snapshots.\n\n'
-          + 'Current DSH file policy: danger-full-access. The DSH file sandbox does not restrict file modifications by available operations.\n\n'
+          + 'Current ALEGO file policy: danger-full-access. The ALEGO file sandbox does not restrict file modifications by available operations.\n\n'
           + 'Approval prompts are disabled in this session: actions that require approval are rejected automatically — do not request sandbox escalation (do not set `sandbox_permissions`).',
       },
       {
@@ -877,8 +877,8 @@ it('pins native DeepSeek Files offload and inline fallback in assembled requests
       fixtureFile: join(SNAPSHOTS_DIR, 'image-offload-request', 'session.jsonl'),
       workspaceDir: join(SNAPSHOTS_DIR, 'read-image', 'workspace'),
       env: {
-        DSH_SNAPSHOT_API_KEY: 'snapshot-fallback-key',
-        DSH_SNAPSHOT_BASE_URL: `http://127.0.0.1:${address.port}`,
+        ALEGO_SNAPSHOT_API_KEY: 'snapshot-fallback-key',
+        ALEGO_SNAPSHOT_BASE_URL: `http://127.0.0.1:${address.port}`,
       },
     })
     expect(fallback.stderr).toBe('')

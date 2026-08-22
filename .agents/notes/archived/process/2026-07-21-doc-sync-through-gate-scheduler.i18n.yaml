@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write
-2026-07-21-doc-sync-through-gate-scheduler.md: ba7eeb75e65e5fc342ad7d3b9055d60a4e6f5770
-2026-07-21-doc-sync-through-gate-scheduler.zh.md: 7723a409e2a5d1ee046869403d9f4aadee10757d
+2026-07-21-doc-sync-through-gate-scheduler.md: 1e6275e43a9ae457dc79434378e83a948e703a58
+2026-07-21-doc-sync-through-gate-scheduler.zh.md: dbd6ef7216e097042e2db9b202d08d7776e398cd

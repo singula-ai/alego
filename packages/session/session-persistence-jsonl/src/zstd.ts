@@ -2,7 +2,7 @@
  * Zstandard frame primitives for the JSONL persistence backend. The backend
  * owns a concatenated-frame container so it can append and recover batches
  * without exposing compression mechanics through the persistence seam.
- * @module dsh-session-persistence-jsonl/zstd
+ * @module alego-session-persistence-jsonl/zstd
  */
 
 import {

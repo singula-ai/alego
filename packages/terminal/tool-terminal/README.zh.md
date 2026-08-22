@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-tool-terminal
+# @alego/tool-terminal
 
 [English](README.md) | 中文
 
@@ -41,7 +41,7 @@ Use a terminal session only when work needs persistent terminal state or interac
 
 #### 模型看到的内容
 
-6 个生成的 schema 列在 [`dsh-tool-terminal` 目录章节](../../../docs/tool-catalog.zh.md#deepseek-aidsh-tool-terminal)中。此插件活跃时，请求中会包含它们的固定 schema token；按 agent 范围过滤工具时可能隐藏这些 schema。
+6 个生成的 schema 列在 [`alego-tool-terminal` 目录章节](../../../docs/tool-catalog.zh.md#alegotool-terminal)中。此插件活跃时，请求中会包含它们的固定 schema token；按 agent 范围过滤工具时可能隐藏这些 schema。
 
 #### Token 影响
 
@@ -68,4 +68,4 @@ spawn 会返回 id 和有界 MOTD。发送／读取会返回有界终端文本�
 ## 已知限制与暂缓事项
 
 - 不公开具名按键序列、TUI、BEL、调整大小、自动启动或跨 agent 共享 schema。
-- 后台模式同时依赖 `@deepseek-ai/dsh-jobs` 及其面向模型的控制器。
+- 后台模式同时依赖 `@alego/jobs` 及其面向模型的控制器。

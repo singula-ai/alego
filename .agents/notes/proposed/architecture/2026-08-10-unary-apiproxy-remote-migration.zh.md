@@ -18,21 +18,21 @@ API Proxy 还包含一些不以业务方法为约定的 BFF 操作：Session 生
 
 只迁移符合以下条件的一元调用：其业务操作已经有自然归属的服务，且其余适配只是少量参数或结果投影。当现有方法的签名就是预期的消费方约定时，服务应绑定 Typert namespace，并直接使用 `@Remote` 装饰现有方法。只有执行实质性适配时才有理由新增方法；不得添加只做恒等转发的 `remote*` 包装层。
 
-`@deepseek-ai/dsh-api-remotes/client` 将挂载所选各业务包生成的 `/remote` 贡献。Client 业务包将调用 `ctx.remote.<service>`，并在包内执行归 Client 所有的关联或呈现投影。对应的 API Proxy 接口成员、schema、路由、处理程序、生成的客户端方法、fixture（测试前置数据）实现和生产调用点，将在该服务的纵向提交中一并移除。
+`@alego/api-remotes/client` 将挂载所选各业务包生成的 `/remote` 贡献。Client 业务包将调用 `ctx.remote.<service>`，并在包内执行归 Client 所有的关联或呈现投影。对应的 API Proxy 接口成员、schema、路由、处理程序、生成的客户端方法、fixture（测试前置数据）实现和生产调用点，将在该服务的纵向提交中一并移除。
 
-大型 BFF 方法仍留在 `dsh-host-apiproxy` 中。如果实现过程中发现某个方法包含端点特有的生命周期策略、大量编排、Client 依赖仅存在于协议层的错误区分，或者其传输数据结构无法用归属方的小型适配器表达，则该方法不在此次迁移范围内。
+大型 BFF 方法仍留在 `alego-host-apiproxy` 中。如果实现过程中发现某个方法包含端点特有的生命周期策略、大量编排、Client 依赖仅存在于协议层的错误区分，或者其传输数据结构无法用归属方的小型适配器表达，则该方法不在此次迁移范围内。
 
 ## 迁移集合
 
 | 旧 RPC | Remote 目标 | Host 方法 | 适配 |
 |---|---|---|---|
-| `session.rename` | `ctx.remote.sessionTitle`，位于 `@deepseek-ai/dsh-session-title` | `SessionTitleService.rename(Session, title)` | 直接使用 `@Remote`；Client 将 `eventSeq` 映射到自身的标题投影序列。 |
-| `command.list`、`command.execute` | `ctx.remote.commands`，位于 `@deepseek-ai/dsh-commands` | `CommandRuntime.list(Agent)`、`execute(Agent, line, signal)` | 直接使用 `@Remote`；Client 将 `undefined` 映射为未匹配结果，并保留调用方的取消行为。 |
-| `llm.providers` | `ctx.remote.llm`，位于 `@deepseek-ai/dsh-llm` | `LlmRuntime.listProviders()`、`listConfigurableProviders()` | 两项读取都直接使用 `@Remote`；Client 关联注册行与配置目录行。 |
-| `credentials.describe`、`credentials.set`、`credentials.unset` | `ctx.remote.credentials`，位于 `@deepseek-ai/dsh-credentials-local` | `LocalCredentialProvider.describe(ref)`、`set(ref, value)`、`unset(ref)` | 直接使用 `@Remote`；当 UI 请求多个 ref 时，Client 批量发起 `describe` 调用。 |
-| `agentPreset.read`、`agentPreset.copy`、`agentPreset.remove` | `ctx.remote.agentPresets`，位于 `@deepseek-ai/dsh-agent-presets` | `readDocument(id)`、`copy(from, id, name?)`、`remove(id)` | `copy` 和 `remove` 直接暴露现有方法；`readDocument` 将存储的内容与一次实时发现取得的元数据组合。 |
-| `subagent.interrupt` | `ctx.remote.subagents`，位于 `@deepseek-ai/dsh-subagent` | `interruptByParent(targetSessionId, parentSessionId)` | 适配器构造内部的用户权限变体，不解析也不恢复任一 Agent。 |
-| `workspace.list`、`workspace.insertSessionBefore`、`workspace.archiveSession` | `ctx.remote.workspace`，位于 `@deepseek-ai/dsh-workspace` | `snapshot()`、`insertSessionBefore(workspaceId, sessionId, before?)`、`archiveSession(sessionId)` | 注册表适配器分离可变实体，并返回已完成更新的 workspace 或归档快照。 |
+| `session.rename` | `ctx.remote.sessionTitle`，位于 `@alego/session-title` | `SessionTitleService.rename(Session, title)` | 直接使用 `@Remote`；Client 将 `eventSeq` 映射到自身的标题投影序列。 |
+| `command.list`、`command.execute` | `ctx.remote.commands`，位于 `@alego/commands` | `CommandRuntime.list(Agent)`、`execute(Agent, line, signal)` | 直接使用 `@Remote`；Client 将 `undefined` 映射为未匹配结果，并保留调用方的取消行为。 |
+| `llm.providers` | `ctx.remote.llm`，位于 `@alego/llm` | `LlmRuntime.listProviders()`、`listConfigurableProviders()` | 两项读取都直接使用 `@Remote`；Client 关联注册行与配置目录行。 |
+| `credentials.describe`、`credentials.set`、`credentials.unset` | `ctx.remote.credentials`，位于 `@alego/credentials-local` | `LocalCredentialProvider.describe(ref)`、`set(ref, value)`、`unset(ref)` | 直接使用 `@Remote`；当 UI 请求多个 ref 时，Client 批量发起 `describe` 调用。 |
+| `agentPreset.read`、`agentPreset.copy`、`agentPreset.remove` | `ctx.remote.agentPresets`，位于 `@alego/agent-presets` | `readDocument(id)`、`copy(from, id, name?)`、`remove(id)` | `copy` 和 `remove` 直接暴露现有方法；`readDocument` 将存储的内容与一次实时发现取得的元数据组合。 |
+| `subagent.interrupt` | `ctx.remote.subagents`，位于 `@alego/subagent` | `interruptByParent(targetSessionId, parentSessionId)` | 适配器构造内部的用户权限变体，不解析也不恢复任一 Agent。 |
+| `workspace.list`、`workspace.insertSessionBefore`、`workspace.archiveSession` | `ctx.remote.workspace`，位于 `@alego/workspace` | `snapshot()`、`insertSessionBefore(workspaceId, sessionId, before?)`、`archiveSession(sessionId)` | 注册表适配器分离可变实体，并返回已完成更新的 workspace 或归档快照。 |
 
 Remote API 有意采用服务名称，而不保留旧 RPC 的点分名称。例如，Session 重命名将变为 `ctx.remote.sessionTitle.rename(...)`。
 

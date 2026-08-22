@@ -3,10 +3,10 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { Context } from '@deepseek-ai/cordis'
-import Include from '@deepseek-ai/cordis-plugin-include'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import LocalJobRegistry from '@deepseek-ai/dsh-jobs-local'
+import { Context } from '@alego/cordis'
+import Include from '@alego/cordis-plugin-include'
+import Loader from '@alego/cordis-plugin-loader'
+import LocalJobRegistry from '@alego/jobs-local'
 
 let root: string | undefined
 let context: Context | undefined
@@ -20,10 +20,10 @@ afterEach(async () => {
 
 describe('jobs-local through a real Loader composition', () => {
   it('applies the provider-owned admission config from a Cordis row', async () => {
-    root = await mkdtemp(join(tmpdir(), 'dsh-jobs-local-loader-'))
+    root = await mkdtemp(join(tmpdir(), 'alego-jobs-local-loader-'))
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@deepseek-ai/dsh-jobs-local'",
+      "- name: '@alego/jobs-local'",
       '  config:',
       '    maxConcurrentJobsPerOwner: 1',
       '',
@@ -36,7 +36,7 @@ describe('jobs-local through a real Loader composition', () => {
     context.loader.internal = {
       version: 'v2',
       async import(specifier: string) {
-        if (specifier === '@deepseek-ai/dsh-jobs-local') return LocalJobRegistry
+        if (specifier === '@alego/jobs-local') return LocalJobRegistry
         throw new Error(`unexpected Loader import: ${specifier}`)
       },
     } as unknown as NonNullable<typeof context.loader.internal>

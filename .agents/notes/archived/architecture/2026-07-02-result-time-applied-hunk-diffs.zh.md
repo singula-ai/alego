@@ -7,7 +7,7 @@ Archived: 2026-07-27
 
 ## 问题
 
-[带标签的 render-intent 联合类型](2026-07-02-tool-render-intent-union.md)为 `dsh-tool-fs` 的 write/edit 在调用时刻提供 `card:'diff'`，纯粹从工具参数推导：write ⇒ `{oldText:null, newText:content}`（整个新文件），edit ⇒ `{oldText:old_string, newText:new_string}`（裸替换片段）。UI 可以将其渲染为行内 diff，但这是一个**无上下文**的 diff：裸的 `old_string`→`new_string` 没有周围行，而一次触及五个分散位置的 `replace_all` 仍然渲染为一对片段。
+[带标签的 render-intent 联合类型](2026-07-02-tool-render-intent-union.md)为 `alego-tool-fs` 的 write/edit 在调用时刻提供 `card:'diff'`，纯粹从工具参数推导：write ⇒ `{oldText:null, newText:content}`（整个新文件），edit ⇒ `{oldText:old_string, newText:new_string}`（裸替换片段）。UI 可以将其渲染为行内 diff，但这是一个**无上下文**的 diff：裸的 `old_string`→`new_string` 没有周围行，而一次触及五个分散位置的 `replace_all` 仍然渲染为一对片段。
 
 在对接 `claude-agent-acp` 自身的 ACP（Agent Client Protocol） bridge 时可以看到完整编辑器 diff 的样子：变更应用后，它发出第二个 `tool_call_update`，其 diff 是**带 ±3 行上下文的 applied hunk**（`replace_all` 的每个变更位置各一个 hunk），由工具的 `structuredPatch` 重建。这个结果时刻的 hunk 正是让 Zed 在文件中*原位*显示变更（而非浮动片段）的关键。我们的工具止步于调用时刻的片段；完成后的结果只携带纯文本「updated successfully」，没有 diff。
 
@@ -29,8 +29,8 @@ Archived: 2026-07-27
 
 按照 [capability-seam 拆分](2026-06-13-capability-seams.md)，存储后端只返回**存储事实**，面向模型的工具拥有**展示**：
 
-- `dsh-fs` 将 `FsEditOutcome` 扩展为包含 `{ before: string; after: string }`，将 `FsWriteOutcome` 扩展为包含 `{ before: string | null; after: string }`（`before: null` 表示创建，或已存在但不可 diff 的二进制/非 UTF-8 文件）。本地后端在写入时已持有两份文本；它以原始 LF 规范化文本返回，**不让任何 diff/UI 概念进入 seam**。
-- `dsh-tool-fs` 返回规范的变更前／后事实，并将上下文 hunk 投影为 `meta: { diffs: FileDiff[] }`。成功的变更以 diff 视图完成：创建或无变化的覆写回退到由参数推导的整文件 diff，而编辑使用 applied hunk。失败的变更不携带 diff 元数据，正常渲染其错误信息。
+- `alego-fs` 将 `FsEditOutcome` 扩展为包含 `{ before: string; after: string }`，将 `FsWriteOutcome` 扩展为包含 `{ before: string | null; after: string }`（`before: null` 表示创建，或已存在但不可 diff 的二进制/非 UTF-8 文件）。本地后端在写入时已持有两份文本；它以原始 LF 规范化文本返回，**不让任何 diff/UI 概念进入 seam**。
+- `alego-tool-fs` 返回规范的变更前／后事实，并将上下文 hunk 投影为 `meta: { diffs: FileDiff[] }`。成功的变更以 diff 视图完成：创建或无变化的覆写回退到由参数推导的整文件 diff，而编辑使用 applied hunk。失败的变更不携带 diff 元数据，正常渲染其错误信息。
 
 ### 3. UI 传输层渲染 `diff` 结果视图
 
@@ -38,11 +38,11 @@ Archived: 2026-07-27
 
 ## 曾考虑的替代方案
 
-**手写或 vendor diff 算法。** 上下文 hunk 有已知的边界情况，因此 `dsh-tool-fs` 使用带类型的 [`diff`](https://www.npmjs.com/package/diff) 包，并在一个模块中规范化 `structuredPatch` 输出。仓库的 vendor 策略适用于框架源码，而非每个叶子工具库。
+**手写或 vendor diff 算法。** 上下文 hunk 有已知的边界情况，因此 `alego-tool-fs` 使用带类型的 [`diff`](https://www.npmjs.com/package/diff) 包，并在一个模块中规范化 `structuredPatch` 输出。仓库的 vendor 策略适用于框架源码，而非每个叶子工具库。
 
 ## 后果
 
-`tool/result` 事件携带工具私有的 `meta` 载荷；它属于磁盘格式词汇的一部分，由 `Session.append` 在运行时限制为 JSON。任何工具都可以投影持久化的结果展示，无需再改 core。diff 卡片在会话重载和快照回放时免费复现：它从日志中读回，从不重新计算。代价：覆写操作在内存中同时持有旧文本和新文本以计算仅用于 UI 的 hunk（`TODO(overwrite-diff-bound)`），且 `dsh-tool-fs` 引入了一个小型、知名的运行时依赖。
+`tool/result` 事件携带工具私有的 `meta` 载荷；它属于磁盘格式词汇的一部分，由 `Session.append` 在运行时限制为 JSON。任何工具都可以投影持久化的结果展示，无需再改 core。diff 卡片在会话重载和快照回放时免费复现：它从日志中读回，从不重新计算。代价：覆写操作在内存中同时持有旧文本和新文本以计算仅用于 UI 的 hunk（`TODO(overwrite-diff-bound)`），且 `alego-tool-fs` 引入了一个小型、知名的运行时依赖。
 
 ## 非目标
 

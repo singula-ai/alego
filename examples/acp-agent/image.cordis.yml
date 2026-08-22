@@ -1,19 +1,19 @@
 # Image-scenario overlay: adds the durable attachment store the read_image tool
-# commits through. The store resolves its root from $DSH_HOME, which the
+# commits through. The store resolves its root from $ALEGO_HOME, which the
 # snapshot harness scopes per run, so the overlay itself carries no paths. The
 # app config is restated to select the shipped vision model because a config
 # patch replaces the whole app config.
 - id: base
-  name: '@deepseek-ai/cordis-plugin-include'
+  name: '@alego/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: acp-agent
-        name: '@deepseek-ai/dsh-acp-demo'
+        name: '@alego/acp-demo'
         config:
           provider: deepseek-official
           model: deepseek-v4-flash-vision-exp
-          persistenceRoot: !!js process.env.DSH_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
+          persistenceRoot: !!js process.env.ALEGO_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
           persistenceCompression: none
           workspaceContext:
             maxBytes: 65536
@@ -23,4 +23,4 @@
             Verify your work by running the code or tests. Keep answers brief and factual.
       - insert:
           - id: attachment-local
-            name: '@deepseek-ai/dsh-attachment-local'
+            name: '@alego/attachment-local'

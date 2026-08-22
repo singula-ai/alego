@@ -1,14 +1,14 @@
-# @deepseek-ai/dsh-sdk-jsonrpc-demo
+# @alego/sdk-jsonrpc-demo
 
 [English](README.md) | 中文
 
-只包含 bin 的应用，启动外部 `cordis.yml`；其 [`jsonrpc`](../../sdk/server/README.zh.md) 入口通过按换行分隔的 stdio 为 SDK 客户端提供服务。配置负责组合主干、后端和服务插件。发布的 `dsh-jsonrpc-agent` bin 从配置项目解析裸插件。Python SDK 的 `dsh-jsonrpc-agent-pkg` [单文件可执行运行时](../../../.agents/notes/implemented/architecture/2026-07-10-single-file-executable-sdk-runtime-distribution.zh.md)改用 `lib/packaged-bin.js`：已打包的裸插件从封闭运行时包树解析，相对插件仍以配置目录为基准。
+只包含 bin 的应用，启动外部 `cordis.yml`；其 [`jsonrpc`](../../sdk/server/README.zh.md) 入口通过按换行分隔的 stdio 为 SDK 客户端提供服务。配置负责组合主干、后端和服务插件。发布的 `alego-jsonrpc-agent` bin 从配置项目解析裸插件。Python SDK 的 `alego-jsonrpc-agent-pkg` [单文件可执行运行时](../../../.agents/notes/implemented/architecture/2026-07-10-single-file-executable-sdk-runtime-distribution.zh.md)改用 `lib/packaged-bin.js`：已打包的裸插件从封闭运行时包树解析，相对插件仍以配置目录为基准。
 
 ## 配置发现
 
-第一个非空通道生效：先 `$DSH_CORDIS_CONFIG`，再位置参数 `argv[2]`。如果二者都没有指向现有文件，bin 会向 stderr 打印单行用法并以 1 退出；没有工作目录回退或内置回退。[`dsh-app-boot`](../../boot/app-boot/README.zh.md) 会使插件加载失败成为致命错误。此协议不使用 `DSH_SNAPSHOT`。
+第一个非空通道生效：先 `$ALEGO_CORDIS_CONFIG`，再位置参数 `argv[2]`。如果二者都没有指向现有文件，bin 会向 stderr 打印单行用法并以 1 退出；没有工作目录回退或内置回退。[`alego-app-boot`](../../boot/app-boot/README.zh.md) 会使插件加载失败成为致命错误。此协议不使用 `ALEGO_SNAPSHOT`。
 
-不含 `dsh-sdk-jsonrpc-server` 的配置仍然有效，只是不提供任何服务；bin 不会指定服务器插件。
+不含 `alego-sdk-jsonrpc-server` 的配置仍然有效，只是不提供任何服务；bin 不会指定服务器插件。
 
 ## 退出生命周期
 
@@ -28,6 +28,6 @@ stdout 只承载 JSON-RPC 帧。bin 和启动守卫在 stderr 上输出诊断，
 
 ## 已知限制与暂缓事项
 
-- **bin 无法证明配置提供 JSON-RPC 服务**：不含 `dsh-sdk-jsonrpc-server` 条目的有效配置也能成功启动，但不会提供任何服务。
-- **不存在内置或默认配置**：每次启动都必须提供 `DSH_CORDIS_CONFIG` 或位置路径；部署方负责完整的插件树和 stdout 纪律。
+- **bin 无法证明配置提供 JSON-RPC 服务**：不含 `alego-sdk-jsonrpc-server` 条目的有效配置也能成功启动，但不会提供任何服务。
+- **不存在内置或默认配置**：每次启动都必须提供 `ALEGO_CORDIS_CONFIG` 或位置路径；部署方负责完整的插件树和 stdout 纪律。
 - **stdin EOF 会截断正在处理的工作**：客户端消失时立即释放根上下文；需要有序完成的调用方应使用协议级 `shutdown` 请求。

@@ -22,7 +22,7 @@ Four infrastructure pieces, then the domains become pure contributors.
 
 A state-carrying log event MUST carry the complete post-change state, never a bare delta. All three domains already comply: `todo/write` is a whole-list snapshot, `plan/mode` a whole boolean, `goal/change` metadata a full `GoalSnapshot` (or a whole-value clear tombstone). The rule keeps every domain's transition trivially cheap (the framework drives it per event), keeps values self-describing on the wire, and lets any consumer treat the latest pushed value as final — out-of-order immunity by seq comparison, self-healing because a missed update is corrected by the next one.
 
-### Host projection registry (`dsh-session-projection`, new package)
+### Host projection registry (`alego-session-projection`, new package)
 
 A light Service Definition package: merge-extensible host-state and client-view type maps, the registry service, and zod validation for persisted state and client values. Capability-seam roles: domain host plugins provide projection units, carriers consume them, and neither knows the other.
 
@@ -138,7 +138,7 @@ The client flow builder gains one generic command node (run/done paired by `comm
 
 Infrastructure first; the three in-flight PRs are left untouched and re-target after the base lands (their migration mapping is the guide):
 
-1. **Host base**: `dsh-session-projection` (unit contract, eager drive, watermark cache) + api-proxy projections block + the `session/projection` push frame. Mergeable with zero domains registered (block and frames simply absent).
+1. **Host base**: `alego-session-projection` (unit contract, eager drive, watermark cache) + api-proxy projections block + the `session/projection` push frame. Mergeable with zero domains registered (block and frames simply absent).
 2. **Client base**: the generic value store + `useProjection` seat; retire the per-domain cell machinery and, with title's unit registered, the `session/title` frame and title-snapshot map. Depends on 1 for the frame shape (fixtures feed synthetic frames meanwhile).
 3. **Command channel**: the two events, executor logging, generic node + keyed slot, notice retirement, `{matched, commandId?}` admission. Parallel with 1.
 4. **Domain re-targets** (after 1+2): todo (unit in `tool-todo`, drop the rider field), then plan (two-event unit, RPCs retired, toggle → `/plan`), then goal (`goal/change` unit, drop `goals.get`, move the six `Session` methods into the domain plugin's inject).

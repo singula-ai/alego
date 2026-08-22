@@ -30,7 +30,7 @@ const repoRoot = fileURLToPath(new URL('../../../../', import.meta.url))
 const acpBin = join(repoRoot, 'packages/examples/acp-demo/lib/bin.js')
 const decompress = promisify(zstdDecompress)
 
-const dshPackages = [
+const alegoPackages = [
   'examples/agent-spine-demo', 'core/agent', 'core/session', 'core/system-prompt',
   'core/tools', 'core/agent-loop', 'llm/llm', 'shell/shell',
   'shell/bash-local', 'shell/tool-bash', 'subprocess/subprocess', 'subprocess/subprocess-local', 'context/agent-instructions', 'runtime-diagnostics/invariants', 'boot/app-boot',
@@ -62,7 +62,7 @@ async function link(target: string, name: string, nm: string): Promise<void> {
 async function makeConsumer(): Promise<string> {
   const dir = await mkdtemp(join(tmpdir(), 'acp-built-bin-'))
   const nm = join(dir, 'node_modules')
-  for (const rel of dshPackages) {
+  for (const rel of alegoPackages) {
     const abs = join(repoRoot, 'packages', rel)
     await link(abs, await pkgName(abs), nm)
   }
@@ -78,7 +78,7 @@ async function makeConsumer(): Promise<string> {
     await link(dirname(resolved), dep, nm)
   }
   await writeFile(join(dir, 'mock-llm.mjs'), [
-    "import { LlmAdapter } from '@deepseek-ai/dsh-llm'",
+    "import { LlmAdapter } from '@alego/llm'",
     'class Mock extends LlmAdapter {',
     '  async * stream() {',
     "    yield { type: 'block-start', index: 0, blockType: 'text' }",
@@ -96,11 +96,11 @@ async function makeConsumer(): Promise<string> {
     '- id: mock-llm',
     '  name: \'./mock-llm.mjs\'',
     '- id: subprocess',
-    '  name: \'@deepseek-ai/dsh-subprocess-local\'',
+    '  name: \'@alego/subprocess-local\'',
     '- id: bash',
-    '  name: \'@deepseek-ai/dsh-bash-local\'',
+    '  name: \'@alego/bash-local\'',
     '- id: acp-agent',
-    '  name: \'@deepseek-ai/dsh-acp-demo\'',
+    '  name: \'@alego/acp-demo\'',
     '  config:',
     '    provider: built-acp-mock',
     '    model: built-acp-mock',
@@ -131,15 +131,15 @@ afterEach(async () => {
   consumer = undefined
 })
 
-describe.skipIf(!existsSync(acpBin))('dsh-acp-demo BUILT bin (node lib/bin.js, no tsx)', () => {
+describe.skipIf(!existsSync(acpBin))('alego-acp-demo BUILT bin (node lib/bin.js, no tsx)', () => {
   it('boots the published bin, completes a turn, and writes default Zstandard persistence', async () => {
     consumer = await makeConsumer()
     child = spawn(process.execPath, [acpBin, '--config', './cordis.yml'], {
       cwd: consumer,
       env: {
         ...process.env,
-        DSH_HOME: join(consumer, '.dsh'),
-        DSH_AGENTS_HOME: join(consumer, '.agents'),
+        ALEGO_HOME: join(consumer, '.alego'),
+        ALEGO_AGENTS_HOME: join(consumer, '.agents'),
       },
       stdio: ['pipe', 'pipe', 'pipe'],
     })
@@ -218,8 +218,8 @@ async function runBinExpectingExit(configArg: string, cwd: string = tmpdir()): P
   const result = await execa(process.execPath, [acpBin, '--config', configArg], {
     cwd,
     env: {
-      DSH_HOME: join(cwd, '.dsh'),
-      DSH_AGENTS_HOME: join(cwd, '.agents'),
+      ALEGO_HOME: join(cwd, '.alego'),
+      ALEGO_AGENTS_HOME: join(cwd, '.agents'),
     },
     input: '',
     timeout: 25_000,

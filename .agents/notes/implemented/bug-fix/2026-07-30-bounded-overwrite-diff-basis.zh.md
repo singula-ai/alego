@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-`dsh-fs-local` 会在 `FsWriteOutcome.before` 中返回完整旧文件，供消费方生成覆写上下文 diff。这个仅用于展示的预读没有上限：大文件覆写可能分配整个旧文件；而仅检查较早的路径 stat 也无法真正实施上限，因为外部进程可以在 stat 与读取之间替换文件或扩大文件。即使旧文件很小，大替换内容也会使上下文 hunk 接近替换内容本身的大小。本改动关闭了 [result-time applied-hunk diff](../../archived/architecture/2026-07-02-result-time-applied-hunk-diffs.md) 中记录的暂缓上限事项。
+`alego-fs-local` 会在 `FsWriteOutcome.before` 中返回完整旧文件，供消费方生成覆写上下文 diff。这个仅用于展示的预读没有上限：大文件覆写可能分配整个旧文件；而仅检查较早的路径 stat 也无法真正实施上限，因为外部进程可以在 stat 与读取之间替换文件或扩大文件。即使旧文件很小，大替换内容也会使上下文 hunk 接近替换内容本身的大小。本改动关闭了 [result-time applied-hunk diff](../../archived/architecture/2026-07-02-result-time-applied-hunk-diffs.md) 中记录的暂缓上限事项。
 
 ## 决策
 

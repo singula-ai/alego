@@ -7,7 +7,7 @@
  * the binding update rules. The unit mapping, mechanical code splice, and
  * first-occurrence tracking follow the incremental-pipeline planner mechanics.
  * The CLI wrapper is `scripts/gen-translation-brief.ts`; the workflow that
- * consumes the briefing is `.agents/skills/dsh-translate-docs/SKILL.md`.
+ * consumes the briefing is `.agents/skills/alego-translate-docs/SKILL.md`.
  */
 
 import type { Nodes } from 'mdast'
@@ -175,7 +175,7 @@ function replaceSpanTexts(markdown: string, spans: MarkdownSpan[], replacements:
 }
 
 function maskCodeSpans(markdown: string, spans: MarkdownSpan[]): string {
-  return replaceSpanTexts(markdown, spans, new Map(spans.map(span => [span.index, `DSH_TRANSLATION_CODE_${span.index}\n`])))
+  return replaceSpanTexts(markdown, spans, new Map(spans.map(span => [span.index, `ALEGO_TRANSLATION_CODE_${span.index}\n`])))
 }
 
 /**

@@ -17,7 +17,7 @@ Status: implemented
 
 注入的会话内容逐字投影，框架由调用方自行负责。`deriveEventMessage` 把 `user/message` 的内容块原样送达模型；`source` 保留在持久事件日志中，但不渲染。
 
-`ContextEnvelope` 类型和所有 `envelope` 字段都被移除——包括 `SessionEventMap` 中的 `context/message`、`InjectOptions`、`HookContext`，以及 `dsh-agent-loop` 中 `inject()`/`additionalContexts` 的相关管线。`agent-instructions` 不再请求 `'raw'`；它自带框架的内容渲染方式不变。`renderTagged`/`renderContextEnvelope` 辅助函数被删除。`context/message.meta` 仍携带持久的、对模型隐藏的 JSON 状态。
+`ContextEnvelope` 类型和所有 `envelope` 字段都被移除——包括 `SessionEventMap` 中的 `context/message`、`InjectOptions`、`HookContext`，以及 `alego-agent-loop` 中 `inject()`/`additionalContexts` 的相关管线。`agent-instructions` 不再请求 `'raw'`；它自带框架的内容渲染方式不变。`renderTagged`/`renderContextEnvelope` 辅助函数被删除。`context/message.meta` 仍携带持久的、对模型隐藏的 JSON 状态。
 
 封套曾携带的 `source` 来源信息并未丢失——它仍保留在持久事件上；只是不再渲染进 transcript。
 

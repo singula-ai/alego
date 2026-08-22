@@ -8,7 +8,7 @@
  * Markdown units, heading sections, whole document — and `--apply` writes
  * the computed counterpart for pairs whose change is code-fence-only.
  * The briefing rules live in `scripts/translation-brief.ts`; the
- * consuming workflow is `.agents/skills/dsh-translate-docs/SKILL.md`.
+ * consuming workflow is `.agents/skills/alego-translate-docs/SKILL.md`.
  */
 
 import { spawnSync } from 'node:child_process'

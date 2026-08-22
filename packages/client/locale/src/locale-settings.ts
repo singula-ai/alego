@@ -1,6 +1,6 @@
 /** Locale preference stored in the Host user-settings document. */
 
-import z from '@deepseek-ai/schemastery'
+import z from '@alego/schemastery'
 
 /** Settings namespace owned by the locale plugin. */
 export const LOCALE_SETTINGS_NAMESPACE = 'locale'

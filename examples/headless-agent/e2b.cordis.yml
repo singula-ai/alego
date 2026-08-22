@@ -8,41 +8,41 @@
 # falls back to /home/user/workspace while Bash and PTY keep targeting the
 # host path, so every tool call fails with a remote spawn error.
 - id: base
-  name: '@deepseek-ai/cordis-plugin-include'
+  name: '@alego/cordis-plugin-include'
   config:
     path: ./advanced.cordis.yml
     patches:
       - id: subprocess
-        name: '@deepseek-ai/dsh-subprocess-local'
+        name: '@alego/subprocess-local'
         disabled: true
       - id: fs-local
-        name: '@deepseek-ai/dsh-fs-local'
+        name: '@alego/fs-local'
         disabled: true
       - insert:
           - id: e2b
-            name: '@deepseek-ai/dsh-e2b'
+            name: '@alego/e2b'
             config:
               cwd: !!js process.cwd()
               timeoutMs: 300000
           - id: subprocess-e2b
-            name: '@deepseek-ai/dsh-subprocess-e2b'
+            name: '@alego/subprocess-e2b'
           - id: fs-e2b
-            name: '@deepseek-ai/dsh-fs-e2b'
+            name: '@alego/fs-e2b'
           - id: sandbox-policy
-            name: '@deepseek-ai/dsh-sandbox-policy'
+            name: '@alego/sandbox-policy'
             config:
               mode: danger-full-access
               workspaceRoot: !!js process.cwd()
           - id: pty
-            name: '@deepseek-ai/dsh-terminal'
+            name: '@alego/terminal'
           - id: terminal-bash
-            name: '@deepseek-ai/dsh-terminal-bash'
+            name: '@alego/terminal-bash'
           - id: tool-terminal
-            name: '@deepseek-ai/dsh-tool-terminal'
+            name: '@alego/tool-terminal'
           - id: lsp
-            name: '@deepseek-ai/dsh-lsp'
+            name: '@alego/lsp'
           - id: lsp-stdio
-            name: '@deepseek-ai/dsh-lsp-stdio'
+            name: '@alego/lsp-stdio'
             config:
               servers:
                 typescript:
@@ -54,4 +54,4 @@
                     .js: javascript
                     .jsx: javascriptreact
           - id: tool-lsp
-            name: '@deepseek-ai/dsh-tool-lsp'
+            name: '@alego/tool-lsp'

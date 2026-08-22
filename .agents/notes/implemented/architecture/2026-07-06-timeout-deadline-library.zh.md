@@ -16,7 +16,7 @@ Status: implemented
 
 ## 决策
 
-`@deepseek-ai/dsh-timeout` 位于 `packages/util/`（与 `dsh-brand` 同级），负责超时的*计时与分类*这一半；*终止*那一半——硬终止——留在各能力的实现中。它是一个纯函数库，**不是** Cordis 服务或插件：不接收 `ctx`、不注册任何东西、不持有跨调用状态、不发射事件。这里刻意不设中央「超时服务」，因为那样的服务必须知道如何停止每个能力的工作——而这正是微内核要排除在共享层之外的知识，也是 Codex 将 `ExecExpiration` 限定于 exec 族所示范的原则。
+`@alego/timeout` 位于 `packages/util/`（与 `alego-brand` 同级），负责超时的*计时与分类*这一半；*终止*那一半——硬终止——留在各能力的实现中。它是一个纯函数库，**不是** Cordis 服务或插件：不接收 `ctx`、不注册任何东西、不持有跨调用状态、不发射事件。这里刻意不设中央「超时服务」，因为那样的服务必须知道如何停止每个能力的工作——而这正是微内核要排除在共享层之外的知识，也是 Codex 将 `ExecExpiration` 限定于 exec 族所示范的原则。
 
 ### 库的对外接口
 
@@ -78,11 +78,11 @@ export function timeoutOf(x: AbortSignal | { reason?: unknown }, code?: string):
 
 | 关注点 | 负责方 |
 |---|---|
-| 校验请求提示并钳位默认值/最大值 | `dsh-timeout`（`clampTimeout`）：纯算术加共享的正有限请求约定 |
-| 启动一次性定时器、到期中止、携带 reason、与上游取消融合 | `dsh-timeout`（`deadline`） |
-| 仅围绕未结算的迭代器 demand 启动和重启，带外活动也会触发重启 | `dsh-timeout`（`idleWatchdog`） |
-| 清除定时器 | `dsh-timeout`（任一原语的 `[Symbol.dispose]`） |
-| 中止后对首个 abort reason 进行分类 | `dsh-timeout`（`timeoutOf`） |
+| 校验请求提示并钳位默认值/最大值 | `alego-timeout`（`clampTimeout`）：纯算术加共享的正有限请求约定 |
+| 启动一次性定时器、到期中止、携带 reason、与上游取消融合 | `alego-timeout`（`deadline`） |
+| 仅围绕未结算的迭代器 demand 启动和重启，带外活动也会触发重启 | `alego-timeout`（`idleWatchdog`） |
+| 清除定时器 | `alego-timeout`（任一原语的 `[Symbol.dispose]`） |
+| 中止后对首个 abort reason 进行分类 | `alego-timeout`（`timeoutOf`） |
 | **实际终止工作** | 各能力的实现 |
 | 默认值/最大值*数值* | 各能力的配置 |
 | 超时 `code` 字符串 | 各能力（`WEB_FETCH_TIMEOUT` ≠ `BASH_TIMEOUT`） |
@@ -93,17 +93,17 @@ export function timeoutOf(x: AbortSignal | { reason?: unknown }, code?: string):
 
 - **web_fetch**：工具层保持校验并转发；提供方手写的 controller + `setTimeout` + 手动监听器 + `finally` + `signal.reason` 恢复被替换为提供方自有的 `deadline`/`timeoutOf`。已预先中止的上游信号仍然立即抛出 `WEB_ABORTED`；否则 `fetch` 使用融合后的 `d.signal` 运行，`translateAbortOrNetwork` 根据信号分类抛出的错误（`timeoutOf` → `WEB_FETCH_TIMEOUT`，否则已中止 → `WEB_ABORTED`，否则网络错误 → `WEB_PROVIDER_ERROR`）。公开的错误码约定不变，`TimeoutReason` 永远不会作为公开错误跨越 web seam。
 - **bash**：`resolve()` 将请求钳位为显式规格。前台 `run()` 创建 deadline 并将其信号传给进程执行，后者既有的 abort 监听器执行进程组 kill。执行器将首个 abort 分类为超时或取消。后台启动保持无超时，仅转发上游取消。
-- **LLM（大语言模型）适配器**：`dsh-llm-deepseek` 和 `dsh-llm-pi-ai` 用 `idleWatchdog` 包装实际的传输迭代。配置的五分钟间隔只覆盖尚未结算的提供方 demand，不包括下游消费方在分片之间花费的时间。DeepSeek 直连适配器还会在其 SSE（Server-Sent Events）解析器观察到注释时，对该项尚未结算的 demand 调用 `pulse()`；该注释既不会作为 `StreamChunk` 产出，也不会写入会话日志。pi-ai SDK 不会向其适配器暴露注释活动，因此该路径只能在 SDK 产出值时重新启动定时器。稳定信号在整个调用期间传给 `fetch` 或 SDK，因此超时会关闭底层请求并映射为 `TIMEOUT`，而更早的调用方中止映射为 `ABORTED`。
+- **LLM（大语言模型）适配器**：`alego-llm-deepseek` 和 `alego-llm-pi-ai` 用 `idleWatchdog` 包装实际的传输迭代。配置的五分钟间隔只覆盖尚未结算的提供方 demand，不包括下游消费方在分片之间花费的时间。DeepSeek 直连适配器还会在其 SSE（Server-Sent Events）解析器观察到注释时，对该项尚未结算的 demand 调用 `pulse()`；该注释既不会作为 `StreamChunk` 产出，也不会写入会话日志。pi-ai SDK 不会向其适配器暴露注释活动，因此该路径只能在 SDK 产出值时重新启动定时器。稳定信号在整个调用期间传给 `fetch` 或 SDK，因此超时会关闭底层请求并映射为 `TIMEOUT`，而更早的调用方中止映射为 `ABORTED`。
 
 ## 后果
 
-- `runBash` 的结果不再独立锁存 `timedOut` 和 `aborted`；超时与用户中止在进程关闭前竞争时，现在报告单一的首个 abort 原因，而非两者同时为 true。统一的 SIGTERM→宽限期→SIGKILL 终止路径不变，Service Definition 类型 `ShellRunResult` 保留两个布尔值（现在互斥），因此 `dsh-tool-bash` 的结果渲染不受影响。
+- `runBash` 的结果不再独立锁存 `timedOut` 和 `aborted`；超时与用户中止在进程关闭前竞争时，现在报告单一的首个 abort 原因，而非两者同时为 true。统一的 SIGTERM→宽限期→SIGKILL 终止路径不变，Service Definition 类型 `ShellRunResult` 保留两个布尔值（现在互斥），因此 `alego-tool-bash` 的结果渲染不受影响。
 - `SpawnSpec.timeoutMs` 和 `SpawnOutcome.timedOut`/`aborted` 被移除，而非作为始终为零/始终为 false 的残余保留：由于 `runBash` 不再拥有定时器且执行器负责分类，这些字段无处被读取。一个始终为 0 且无处读取的字段在逐文件覆盖率门禁下属于死代码。
 - web_fetch 去除了其定制的 controller/timer/listener/reason-recovery；分类器现在基于 deadline 信号（`timeoutOf` + `aborted`）而非抛出错误的形状来判断，这在请求阶段的 reject-with-reason 和读取阶段的裸 `AbortError` 两种情况下都是健壮的。
 - `AbortSignal.any` 和 `using`/`Symbol.dispose` 在此首次进入本仓库（Node ≥ 24 基线，已满足）。
 - 模型流现在共享一个可重启的定时器约定，不会把滑动的空闲间隔变成总调用截止时间，也不会计入消费方思考时间。能够观察到带外传输活动的适配器可以对尚未结算的 demand 调用 `pulse()`；被屏蔽的活动对 watchdog 仍不可见。该原语仍然只做通知；适配器测试证明其传输观察到稳定信号并终止。
 
-以下内容不在本次范围内，列出以标明边界：`web_search` 可以在其工具 schema 和快照覆盖规划完成后获得可选的面向模型的 `timeout_ms`；基于 ripgrep 的文件系统发现工具（[打包的 ripgrep 搜索](2026-08-01-packaged-ripgrep-search.zh.md)）通过 `dsh-tool-call-timeout-policy` 和 `exec.signal` 消费同样的提供方自有 deadline 形状；`tools/execute` waterfall（瀑布式事件）中间件可以通过驱动 `exec.signal` 为每次工具调用设置默认 deadline——那将是一个*消费*本库的插件，仍然只做通知，硬终止仍是各能力自己的事。
+以下内容不在本次范围内，列出以标明边界：`web_search` 可以在其工具 schema 和快照覆盖规划完成后获得可选的面向模型的 `timeout_ms`；基于 ripgrep 的文件系统发现工具（[打包的 ripgrep 搜索](2026-08-01-packaged-ripgrep-search.zh.md)）通过 `alego-tool-call-timeout-policy` 和 `exec.signal` 消费同样的提供方自有 deadline 形状；`tools/execute` waterfall（瀑布式事件）中间件可以通过驱动 `exec.signal` 为每次工具调用设置默认 deadline——那将是一个*消费*本库的插件，仍然只做通知，硬终止仍是各能力自己的事。
 
 ## 曾考虑的替代方案
 

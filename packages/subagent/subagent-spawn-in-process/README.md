@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-subagent-spawn-in-process
+# @alego/subagent-spawn-in-process
 
 English | [中文](README.zh.md)
 
@@ -40,7 +40,7 @@ Independent of the parent request cache. Child history grows append-only, while 
 
 #### What the model sees
 
-Through `dsh-tool-subagent`, the parent receives only the child's final output or stop-reason error.
+Through `alego-tool-subagent`, the parent receives only the child's final output or stop-reason error.
 
 #### Token effect
 

@@ -10,7 +10,7 @@
  * Cancel refuses input only while a commit is in flight, never because the card
  * is disabled: a card the deployment cannot write to must still be dismissable.
  *
- * @module dsh-client-ui-settings-models/client/EditorFooter
+ * @module alego-client-ui-settings-models/client/EditorFooter
  */
 
 import type { ReactNode } from 'react'

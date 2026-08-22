@@ -28,16 +28,16 @@ surface 顺序还让另外两个问题成为结构性的。一次替换之后它
 
 识别需要三个条件同时成立，与终端一致：`event.type === 'user/message'`、压缩缝隙的检查点插件来源，**以及** `isReplacementSurfaceEvent(event)`。一条 append 的插件来源 `user/message` 是注入上下文——跨会话引用卡片——不是压缩。
 
-从 `packages/client/*` 程序无法到达的是 `dsh-compaction` 的**根部**，而不是这个包。根部会到达 `dsh-session` 的根部，后者的 cordis `Context` 合并声明了宿主侧 `sessions: SessionStore`，与客户端的 `sessions: ISessions` 冲突——`TS2717`，即 [development.md](../../../../docs/development.zh.md#typescript-project-layout) 中每侧一个 program 的规则；这一点对仅类型导入同样成立，因为该冲突是编译器事实而非打包器事实。
+从 `packages/client/*` 程序无法到达的是 `alego-compaction` 的**根部**，而不是这个包。根部会到达 `alego-session` 的根部，后者的 cordis `Context` 合并声明了宿主侧 `sessions: SessionStore`，与客户端的 `sessions: ISessions` 冲突——`TS2717`，即 [development.md](../../../../docs/development.zh.md#typescript-project-layout) 中每侧一个 program 的规则；这一点对仅类型导入同样成立，因为该冲突是编译器事实而非打包器事实。
 
-本仓库对这一情形的既有答案是不含 cordis 的叶子子路径，本次变更就新增了一个：`COMPACT_CHECKPOINT_SOURCE` 与 `isCompactCheckpointSource` 现在住在 `packages/compaction/compaction/src/checkpoint.ts`，它不导入 cordis、也不增强任何模块（即 `dsh-commands/brand` / `dsh-llm/message` 的形状），而包根重新导出两者，因此每个宿主侧消费方——终端的 chat helper、`dsh-session-reference` 的投影——都不需改动。适配器用仅类型导入把它的字面量钉在该声明上：
+本仓库对这一情形的既有答案是不含 cordis 的叶子子路径，本次变更就新增了一个：`COMPACT_CHECKPOINT_SOURCE` 与 `isCompactCheckpointSource` 现在住在 `packages/compaction/compaction/src/checkpoint.ts`，它不导入 cordis、也不增强任何模块（即 `alego-commands/brand` / `alego-llm/message` 的形状），而包根重新导出两者，因此每个宿主侧消费方——终端的 chat helper、`alego-session-reference` 的投影——都不需改动。适配器用仅类型导入把它的字面量钉在该声明上：
 
 ```ts
-import type { CompactionCheckpointSource } from '@deepseek-ai/dsh-compaction/checkpoint'
+import type { CompactionCheckpointSource } from '@alego/compaction/checkpoint'
 const COMPACT_PLUGIN: CompactionCheckpointSource['plugin'] = 'compact'
 ```
 
-重命名 Service Definition 的插件 id 现在会在客户端产生编译错误：`TS2322: Type '"compact"' is not assignable to type '"compaction"'`。该导入必须保持**仅类型**——任何既非平台模块又非 inline-safe wire 层的 `@deepseek-ai` 包值导入都会被客户端纯度门禁（`packages/client/tsdown.client.ts`）拒绝，而它自己的报错信息就记录着仅类型导入会被擦除、永不抵达该门禁。仅类型的叶子导入同时需要 `tsconfig.base.json` 的一条 `paths` 条目和 `packages/client/runtime/tsconfig.json` `references` 中的 `{"path": "../../compaction/compaction"}`：composite 的 `rootDir` 规则同样适用于被擦除的导入，缺少该引用时的诊断是 `TS6059`/`TS6307`。
+重命名 Service Definition 的插件 id 现在会在客户端产生编译错误：`TS2322: Type '"compact"' is not assignable to type '"compaction"'`。该导入必须保持**仅类型**——任何既非平台模块又非 inline-safe wire 层的 `@alego` 包值导入都会被客户端纯度门禁（`packages/client/tsdown.client.ts`）拒绝，而它自己的报错信息就记录着仅类型导入会被擦除、永不抵达该门禁。仅类型的叶子导入同时需要 `tsconfig.base.json` 的一条 `paths` 条目和 `packages/client/runtime/tsconfig.json` `references` 中的 `{"path": "../../compaction/compaction"}`：composite 的 `rootDir` 规则同样适用于被擦除的导入，缺少该引用时的诊断是 `TS6059`/`TS6307`。
 
 `packages/client/ui-conversation/tests/conversation-node-definitions.client.spec.ts` 是行为侧的另一半，用检查点与溯源记录驱动压缩 Definition，并证明后续加载的旧分页可以补齐缺失的摘要数据。Definition 仅类型导入该叶子路径，使客户端继续与 compact 包根及经由它可达的宿主侧 `Context` 合并隔离。
 
@@ -49,7 +49,7 @@ const COMPACT_PLUGIN: CompactionCheckpointSource['plugin'] = 'compact'
 
 ## Alternatives considered
 
-**从新叶子值导入该谓词**，并把 `dsh-compaction` 加入客户端 `INLINE_SAFE` 白名单。已拒绝：客户端需要的是插件 id，不是谓词——一个类型就够了，而被擦除的导入根本不会抵达纯度门禁，因此无需向它放行任何东西。白名单只在值导入时才有意义，而在那里它是笔糟糕的交换：`INLINE_SAFE` 按模块说明符*前缀*匹配，因此放行该包会连它那个会导入 cordis 的根部一起放行。
+**从新叶子值导入该谓词**，并把 `alego-compaction` 加入客户端 `INLINE_SAFE` 白名单。已拒绝：客户端需要的是插件 id，不是谓词——一个类型就够了，而被擦除的导入根本不会抵达纯度门禁，因此无需向它放行任何东西。白名单只在值导入时才有意义，而在那里它是笔糟糕的交换：`INLINE_SAFE` 按模块说明符*前缀*匹配，因此放行该包会连它那个会导入 cordis 的根部一起放行。
 
 **一条纯形状规则**——任何 replacement `user/message` 都是压缩。已拒绝：它今天正确只因为压缩是 replacement `user/message` 的唯一生产者，一旦这点改变便无任何机制能捕获。那个 pin 测试只花一个文件，就精确消除了这一风险。
 

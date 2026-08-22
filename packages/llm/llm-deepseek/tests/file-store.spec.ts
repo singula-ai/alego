@@ -2,8 +2,8 @@ import { mkdtemp } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { AttachmentId, ImageVariantId } from '@deepseek-ai/dsh-attachment'
-import type { ImageAttachmentRef, RequestImageAttachment } from '@deepseek-ai/dsh-attachment'
+import { AttachmentId, ImageVariantId } from '@alego/attachment'
+import type { ImageAttachmentRef, RequestImageAttachment } from '@alego/attachment'
 import { DeepSeekFileStore, MAX_CHAT_IMAGE_BYTES } from '../src/file-store.ts'
 import { DeepSeekFileId } from '../src/file-id.ts'
 import { deepSeekFileScope, DeepSeekUploadIndex } from '../src/upload-index.ts'
@@ -47,7 +47,7 @@ function uploadFetch(now: () => number = () => NOW) {
         object: 'file',
         bytes: 3,
         created_at: createdAt,
-        filename: `dsh-${'a'.repeat(16)}-${'b'.repeat(8)}.png`,
+        filename: `alego-${'a'.repeat(16)}-${'b'.repeat(8)}.png`,
         purpose: 'user_data',
         expires_at: createdAt + POLICY.expiresAfterSeconds,
       }), { status: 200 })
@@ -63,7 +63,7 @@ function uploadFetch(now: () => number = () => NOW) {
 
 describe('DeepSeekFileStore', () => {
   it('singleflights the first upload and reuses the durable mapping across store instances', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     const index = new DeepSeekUploadIndex(join(dir, 'index.json'))
     const remote = uploadFetch()
     const first = new DeepSeekFileStore({ index, now: () => NOW, fetch: remote.fetchImpl })
@@ -83,7 +83,7 @@ describe('DeepSeekFileStore', () => {
   })
 
   it('keeps a shared upload alive while another waiter remains', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     const index = new DeepSeekUploadIndex(join(dir, 'index.json'))
     let complete: ((response: Response) => void) | undefined
     let uploadSignal: AbortSignal | undefined
@@ -114,7 +114,7 @@ describe('DeepSeekFileStore', () => {
       object: 'file',
       bytes: 3,
       created_at: NOW / 1_000,
-      filename: `dsh-${'a'.repeat(16)}-${'b'.repeat(8)}.png`,
+      filename: `alego-${'a'.repeat(16)}-${'b'.repeat(8)}.png`,
       purpose: 'user_data',
       expires_at: NOW / 1_000 + POLICY.expiresAfterSeconds,
     }), { status: 200 }))
@@ -122,7 +122,7 @@ describe('DeepSeekFileStore', () => {
   })
 
   it('aborts the shared upload after its only waiter cancels', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     const index = new DeepSeekUploadIndex(join(dir, 'index.json'))
     let uploadSignal: AbortSignal | undefined
     const fetchImpl = vi.fn((_url: string | URL | Request, init?: RequestInit) => {
@@ -148,7 +148,7 @@ describe('DeepSeekFileStore', () => {
   })
 
   it('normalizes a non-Error cancellation reason', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     const fetchImpl = vi.fn((_url: string | URL | Request, init?: RequestInit) => (
       new Promise<Response>((_resolve, reject) => {
         init?.signal?.addEventListener('abort', () => {
@@ -175,7 +175,7 @@ describe('DeepSeekFileStore', () => {
   })
 
   it('starts a fresh upload while the cancelled transport is settling', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     let requests = 0
     const fetchImpl = vi.fn((_url: string | URL | Request, init?: RequestInit) => {
       requests += 1
@@ -190,7 +190,7 @@ describe('DeepSeekFileStore', () => {
       }
       return Promise.resolve(new Response(JSON.stringify({
         id: 'file-api-retry', object: 'file', bytes: 3, created_at: NOW / 1_000,
-        filename: 'dsh-retry.png', purpose: 'user_data',
+        filename: 'alego-retry.png', purpose: 'user_data',
         expires_at: NOW / 1_000 + POLICY.expiresAfterSeconds,
       }), { status: 200 }))
     }) as typeof fetch
@@ -221,7 +221,7 @@ describe('DeepSeekFileStore', () => {
   })
 
   it('does not persist an upload whose response is missing and retries on the next request', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     const index = new DeepSeekUploadIndex(join(dir, 'index.json'))
     const good = uploadFetch()
     let first = true
@@ -241,10 +241,10 @@ describe('DeepSeekFileStore', () => {
   })
 
   it('rejects an upload response whose byte count differs from the request version', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     const fetchImpl = vi.fn(() => Promise.resolve(new Response(JSON.stringify({
       id: 'file-api-wrong-size', object: 'file', bytes: 2, created_at: NOW / 1_000,
-      filename: 'dsh-wrong.png', purpose: 'user_data',
+      filename: 'alego-wrong.png', purpose: 'user_data',
       expires_at: NOW / 1_000 + POLICY.expiresAfterSeconds,
     }), { status: 200 }))) as typeof fetch
     const store = new DeepSeekFileStore({
@@ -261,7 +261,7 @@ describe('DeepSeekFileStore', () => {
     ['image/webp', 'webp'],
     ['image/gif', 'gif'],
   ] as const)('uses the %s filename extension for uploads', async (mediaType, extension) => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     const remote = uploadFetch()
     const store = new DeepSeekFileStore({
       index: new DeepSeekUploadIndex(join(dir, `${extension}.json`)),
@@ -278,7 +278,7 @@ describe('DeepSeekFileStore', () => {
   })
 
   it('normalizes a non-Error failure from the durable upload index', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     const index = new DeepSeekUploadIndex(join(dir, 'index.json'))
     vi.spyOn(index, 'get').mockRejectedValue('index unavailable')
     const store = new DeepSeekFileStore({ index, now: () => NOW, fetch: vi.fn() as typeof fetch })
@@ -290,7 +290,7 @@ describe('DeepSeekFileStore', () => {
   })
 
   it('reuses local expires_at above the refresh margin and uploads again at the margin', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     const index = new DeepSeekUploadIndex(join(dir, 'index.json'))
     let now = NOW
     const remote = uploadFetch(() => now)
@@ -310,7 +310,7 @@ describe('DeepSeekFileStore', () => {
   })
 
   it('releases an indexed file through DELETE and removes only that mapping', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     const index = new DeepSeekUploadIndex(join(dir, 'index.json'))
     const remote = uploadFetch()
     const store = new DeepSeekFileStore({ index, now: () => NOW, fetch: remote.fetchImpl })
@@ -322,7 +322,7 @@ describe('DeepSeekFileStore', () => {
   })
 
   it('removes a losing upload and keeps the winning durable mapping when duplicate cleanup fails', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     const index = new DeepSeekUploadIndex(join(dir, 'index.json'))
     vi.spyOn(index, 'commit').mockResolvedValue({
       accepted: false,
@@ -351,7 +351,7 @@ describe('DeepSeekFileStore', () => {
   })
 
   it('reclaims one owned file after quota rejection and retries the upload once', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     let uploads = 0
     const fetchImpl = vi.fn((input: string | URL | Request, init?: RequestInit) => {
       if (init?.method === 'POST') {
@@ -361,7 +361,7 @@ describe('DeepSeekFileStore', () => {
         }), { status: 400 }))
         return Promise.resolve(new Response(JSON.stringify({
           id: 'file-api-recovered', object: 'file', bytes: 3, created_at: NOW / 1_000,
-          filename: 'dsh-recovered.png', purpose: 'user_data',
+          filename: 'alego-recovered.png', purpose: 'user_data',
           expires_at: NOW / 1_000 + POLICY.expiresAfterSeconds,
         }), { status: 200 }))
       }
@@ -375,7 +375,7 @@ describe('DeepSeekFileStore', () => {
         object: 'list',
         data: [{
           id: 'file-api-old', object: 'file', bytes: 3, created_at: NOW / 1_000,
-          filename: 'dsh-old.png', purpose: 'user_data',
+          filename: 'alego-old.png', purpose: 'user_data',
         }],
         first_id: 'file-api-old', last_id: 'file-api-old', has_more: false,
       }), { status: 200 }))
@@ -393,7 +393,7 @@ describe('DeepSeekFileStore', () => {
   })
 
   it('preserves a quota error when no harness-owned file can be reclaimed', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     const fetchImpl = vi.fn((_input: string | URL | Request, init?: RequestInit) => {
       if (init?.method === 'POST') return Promise.resolve(new Response(JSON.stringify({
         error: { message: 'file count quota exceeded', code: 'file_quota' },
@@ -417,7 +417,7 @@ describe('DeepSeekFileStore', () => {
   })
 
   it('finishes pagination before deleting cursor files during quota recovery', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     const deleted = new Set<string>()
     const fetchImpl = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
       const target = new URL(requestUrl(input))
@@ -436,7 +436,7 @@ describe('DeepSeekFileStore', () => {
           object: 'file',
           bytes: 3,
           created_at: NOW / 1_000,
-          filename: `dsh-${id}.png`,
+          filename: `alego-${id}.png`,
           purpose: 'user_data',
         }],
         first_id: id,
@@ -455,7 +455,7 @@ describe('DeepSeekFileStore', () => {
   })
 
   it('stops pagination when a page omits or repeats its cursor', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     for (const mode of ['missing', 'repeated'] as const) {
       let page = 0
       const fetchImpl = vi.fn((input: string | URL | Request, init?: RequestInit) => {
@@ -481,7 +481,7 @@ describe('DeepSeekFileStore', () => {
   })
 
   it('releases every batch and clears the scoped upload index', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'dsh-file-store-'))
+    const dir = await mkdtemp(join(tmpdir(), 'alego-file-store-'))
     const index = new DeepSeekUploadIndex(join(dir, 'index.json'))
     const store = new DeepSeekFileStore({ index, now: () => NOW, fetch: vi.fn() as typeof fetch })
     const reclaim = vi.spyOn(store, 'reclaimOldestOwned')

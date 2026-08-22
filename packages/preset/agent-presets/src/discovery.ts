@@ -11,14 +11,14 @@
  * path refuses the name while no surface shows anything to delete — and a
  * malformed composition would otherwise read as an ordinary preset until the
  * first session fails to mount it.
- * @module @deepseek-ai/dsh-agent-presets/discovery
+ * @module @alego/agent-presets/discovery
  */
 
 import { readdir, readFile, stat } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { load } from 'js-yaml'
-import { entryListSchema } from '@deepseek-ai/cordis-plugin-include'
-import { expandHomePath } from '@deepseek-ai/dsh-home-paths'
+import { entryListSchema } from '@alego/cordis-plugin-include'
+import { expandHomePath } from '@alego/home-paths'
 import { readPresetMetadata } from './metadata.ts'
 import { PRESET_ID, type AgentPreset, type PresetRoot } from './preset.ts'
 
@@ -28,8 +28,8 @@ export const COMPOSITION_FILE = 'agent.cordis.yml'
 /**
  * Harness-home directory holding locally authored presets.
  *
- * This package owns the writable root the way `dsh-skill-filesystem` owns
- * `<dshHome>/skills`. An app must assemble the SHIPPED root, whose path only
+ * This package owns the writable root the way `alego-skill-filesystem` owns
+ * `<alegoHome>/skills`. An app must assemble the SHIPPED root, whose path only
  * the installed app can resolve; where a person's own presets go is the same
  * place in every deployment that does not say otherwise, so a launcher that
  * forgets to configure one still finds them.

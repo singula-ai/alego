@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-31-experimental-subcommand-gate.md
-2026-07-31-experimental-subcommand-gate.md: a12c93935805a9ab19d4a15905f90783851eabba
-2026-07-31-experimental-subcommand-gate.zh.md: ee05ec2c1c488e9d815bc150135202963f030ae7
+2026-07-31-experimental-subcommand-gate.md: cc29b91948f8690737aaab1bb4f0bdf8e2c48ddc
+2026-07-31-experimental-subcommand-gate.zh.md: 788704cfdfa20cffa761fc93ef7e4a80af7da5fd

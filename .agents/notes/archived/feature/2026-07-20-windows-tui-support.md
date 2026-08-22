@@ -13,7 +13,7 @@ The TUI platform contract must follow the runtime shipped to users rather than t
 
 ## Decision
 
-[`@deepseek-ai/dsh-tui`](../../../../packages/ui/tui/README.md) supports interactive terminals on Windows as well as macOS and Linux. The product continues to use pi-tui's `ProcessTerminal`; on Windows it enables virtual-terminal input after raw mode and avoids the Unix-only `SIGWINCH` refresh. DeepSeek Harness adds no platform rejection or reduced Windows mode.
+[`@alego/tui`](../../../../packages/ui/tui/README.md) supports interactive terminals on Windows as well as macOS and Linux. The product continues to use pi-tui's `ProcessTerminal`; on Windows it enables virtual-terminal input after raw mode and avoids the Unix-only `SIGWINCH` refresh. Alego adds no platform rejection or reduced Windows mode.
 
 The real Loader smoke selects a native pseudo-terminal boundary by host. macOS and Linux retain the Python POSIX PTY driver. Windows uses `node-pty` and ConPTY. Both drivers receive the same launch command, environment, terminal dimensions, marker-gated input actions, timeout, expected exit code, and output assertions, and all three smoke scenarios run on every supported platform.
 

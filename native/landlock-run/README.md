@@ -1,4 +1,4 @@
-# @deepseek-ai/node-addon-landlock-run
+# @alego/node-addon-landlock-run
 
 English | [中文](README.zh.md)
 
@@ -9,15 +9,15 @@ The tool is **`landlock-run`** — a self-restrict-then-exec [Landlock](https://
 ## Install
 
 ```sh
-npm install @deepseek-ai/node-addon-landlock-run
+npm install @alego/node-addon-landlock-run
 ```
 
 Published packages use an entry package plus platform optional packages:
 
 ```text
-@deepseek-ai/node-addon-landlock-run
-@deepseek-ai/node-addon-landlock-run-linux-x64
-@deepseek-ai/node-addon-landlock-run-linux-arm64
+@alego/node-addon-landlock-run
+@alego/node-addon-landlock-run-linux-x64
+@alego/node-addon-landlock-run-linux-arm64
 ```
 
 npm's `os`/`cpu` fields make installers fetch only the matching platform package. There is no install-time build fallback on purpose: on a host without a platform package the resolved path never exists, the probe reports `unusable`, and the consumer falls closed.
@@ -25,7 +25,7 @@ npm's `os`/`cpu` fields make installers fetch only the matching platform package
 ## Usage
 
 ```js
-import { grantArgs, launcherPath, probe } from '@deepseek-ai/node-addon-landlock-run';
+import { grantArgs, launcherPath, probe } from '@alego/node-addon-landlock-run';
 
 const launcher = launcherPath();
 if (probe(launcher) !== 'unusable') {

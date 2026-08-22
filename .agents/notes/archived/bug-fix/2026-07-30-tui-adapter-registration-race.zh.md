@@ -7,7 +7,7 @@ Archived: 2026-08-04
 
 ## Problem
 
-Cordis 按服务可用性而非配置顺序激活插件，因此 TUI（其 `inject` 只要求 `llm` 服务）可能在 `dsh-llm-pi-ai` 这类已配置的适配器插件完成提供方路由注册之前就挂载。TUI 的模型控制器在挂载时立即解析所选模型的上下文窗口；当 agent 的路由指向尚未注册的提供方时，`resolveModelInfo` 以 `NO_ADAPTER` 拒绝，于是每个新会话都会打印 `Could not resolve model context: no adapter registered for provider "…"` —— 对一份完全正常的配置报出的虚假错误（适配器几毫秒后就完成注册，对话也一切正常）。
+Cordis 按服务可用性而非配置顺序激活插件，因此 TUI（其 `inject` 只要求 `llm` 服务）可能在 `alego-llm-pi-ai` 这类已配置的适配器插件完成提供方路由注册之前就挂载。TUI 的模型控制器在挂载时立即解析所选模型的上下文窗口；当 agent 的路由指向尚未注册的提供方时，`resolveModelInfo` 以 `NO_ADAPTER` 拒绝，于是每个新会话都会打印 `Could not resolve model context: no adapter registered for provider "…"` —— 对一份完全正常的配置报出的虚假错误（适配器几毫秒后就完成注册，对话也一切正常）。
 
 ## Decision
 

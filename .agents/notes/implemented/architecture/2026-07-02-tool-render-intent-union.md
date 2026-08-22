@@ -42,13 +42,13 @@ interface TerminalResultView { card: 'terminal'; title?: string; output?: string
 
 - **Invalid states become unrepresentable.** A generic card cannot carry terminal output; a terminal card cannot carry a diff. The old bag permitted all of these.
 - **Consumers switch instead of stitching.** One arm per card kind produces exactly the view that card needs, rather than reconciling five optional fields whose interactions are undocumented.
-- **`diff` is a first-class intent.** `dsh-tool-fs` write/edit declare `card:'diff'` with `{path, oldText, newText}`, allowing capable UIs to render an inline change without tool-name special cases.
+- **`diff` is a first-class intent.** `alego-tool-fs` write/edit declare `card:'diff'` with `{path, oldText, newText}`, allowing capable UIs to render an inline change without tool-name special cases.
 
 ### Producer mapping
 
-- `dsh-tool-fs` read → `generic` (`kind:'read'`, a follow-along `location`); write → `diff` (`oldText:null`); edit → `diff` (`oldText:old_string || null`, `newText:new_string ?? ''`). This mirrors `claude-agent-acp`'s `toolInfoFromToolUse` Read/Write/Edit arms field-for-field.
-- `dsh-tool-bash` foreground → `terminal` call + `terminal` result; `run_in_background` → `generic`. The generic `job_*` controls own their own generic cards.
-- `dsh-tool-todo` → `generic`.
+- `alego-tool-fs` read → `generic` (`kind:'read'`, a follow-along `location`); write → `diff` (`oldText:null`); edit → `diff` (`oldText:old_string || null`, `newText:new_string ?? ''`). This mirrors `claude-agent-acp`'s `toolInfoFromToolUse` Read/Write/Edit arms field-for-field.
+- `alego-tool-bash` foreground → `terminal` call + `terminal` result; `run_in_background` → `generic`. The generic `job_*` controls own their own generic cards.
+- `alego-tool-todo` → `generic`.
 
 ### Terminal fallback ownership
 

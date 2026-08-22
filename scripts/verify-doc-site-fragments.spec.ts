@@ -13,7 +13,7 @@ afterEach(() => {
 })
 
 function fixture(): string {
-  const root = mkdtempSync(join(tmpdir(), 'dsh-doc-fragments-'))
+  const root = mkdtempSync(join(tmpdir(), 'alego-doc-fragments-'))
   roots.push(root)
   mkdirSync(join(root, 'guide'), { recursive: true })
   writeFileSync(join(root, 'index.html'), '<a id="home"></a><a href="/guide/start#ready">start</a>')
@@ -30,7 +30,7 @@ function fixture(): string {
 
 describe('inspectSiteFragments', () => {
   it('rejects a directory with no built pages', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-doc-fragments-empty-'))
+    const root = mkdtempSync(join(tmpdir(), 'alego-doc-fragments-empty-'))
     roots.push(root)
 
     expect(() => inspectSiteFragments(root)).toThrow('no HTML files found')

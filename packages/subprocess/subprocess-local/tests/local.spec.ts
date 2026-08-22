@@ -1,9 +1,9 @@
 import { PassThrough } from 'node:stream'
 import { describe, expect, it, vi } from 'vitest'
 import { basename, dirname, relative, resolve } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
-import LocalSubprocessRuntime from '@deepseek-ai/dsh-subprocess-local'
-import type { SubprocessSpawnSpec, SubprocessTerminalHandle, SubprocessTerminalSpawnSpec } from '@deepseek-ai/dsh-subprocess'
+import { Context } from '@alego/cordis'
+import LocalSubprocessRuntime from '@alego/subprocess-local'
+import type { SubprocessSpawnSpec, SubprocessTerminalHandle, SubprocessTerminalSpawnSpec } from '@alego/subprocess'
 import { childEnv } from '../src/spawn.ts'
 
 function spec(command: string, overrides: Partial<SubprocessSpawnSpec> = {}): SubprocessSpawnSpec {
@@ -132,9 +132,9 @@ describe('LocalSubprocessRuntime', () => {
       .rejects.toThrow('is a relative path')
     await expect(ctx.subprocess.resolveExecutable('node_modules/.bin/server'))
       .rejects.toThrow('is a relative path')
-    await expect(ctx.subprocess.resolveExecutable('dsh-command-that-does-not-exist', { PATH: '' }))
+    await expect(ctx.subprocess.resolveExecutable('alego-command-that-does-not-exist', { PATH: '' }))
       .rejects.toThrow('was not found on PATH')
-    await expect(ctx.subprocess.resolveExecutable('/dsh-absolute-command-that-does-not-exist'))
+    await expect(ctx.subprocess.resolveExecutable('/alego-absolute-command-that-does-not-exist'))
       .rejects.toThrow('is not an executable file')
     await expect(ctx.subprocess.resolveExecutable(process.cwd()))
       .rejects.toThrow('is not an executable file')
@@ -422,7 +422,7 @@ describe('LocalSubprocessRuntime', () => {
   it('disposal tolerates a handle whose spawn already failed', async () => {
     const ctx = new Context()
     const fiber = await ctx.plugin(LocalSubprocessRuntime)
-    const handle = ctx.subprocess.spawn(spec('true', { cwd: '/nonexistent-dir-dsh-subprocess-test' }))
+    const handle = ctx.subprocess.spawn(spec('true', { cwd: '/nonexistent-dir-alego-subprocess-test' }))
     await expect(handle.done).rejects.toThrow()
     await fiber.dispose()
   })
@@ -432,7 +432,7 @@ describe('LocalSubprocessRuntime', () => {
     const fiber = await ctx.plugin(LocalSubprocessRuntime)
     // Dispose before the rejection continuation removes the handle from the
     // live set, so teardown itself must swallow the rejected done.
-    const handle = ctx.subprocess.spawn(spec('true', { cwd: '/nonexistent-dir-dsh-subprocess-test' }))
+    const handle = ctx.subprocess.spawn(spec('true', { cwd: '/nonexistent-dir-alego-subprocess-test' }))
     await fiber.dispose()
     await expect(handle.done).rejects.toThrow()
   })

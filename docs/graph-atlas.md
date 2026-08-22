@@ -12,7 +12,7 @@ The process decision behind this index is recorded in [the documentation graph A
 | [module dependency graph](module-graph.md) | `generated` |
 | [tool schema catalog and package map](tool-catalog.md) | `generated` |
 | [capability seams and core services](capability-seams.md) | `hybrid generated` |
-| [dsh shared base composition](../apps/cli/composition.md) | `hybrid generated` |
+| [alego shared base composition](../apps/cli/composition.md) | `hybrid generated` |
 | [headless-agent app composition](../examples/headless-agent/composition.md) | `hybrid generated` |
 | [acp-agent app composition](../examples/acp-agent/composition.md) | `hybrid generated` |
 | [event producer/consumer matrix](event-producer-consumer.md) | `hybrid generated` |

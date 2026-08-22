@@ -14,12 +14,12 @@ Status: implemented
 
 `jobs/` 包组拥有后台任务语义：
 
-- `@deepseek-ai/dsh-jobs` 将运行中的工作注册为 `ctx.jobs`，并拥有 job id、授权、快照、读取、取消、等待、完成监听器与清理。
-- `@deepseek-ai/dsh-tool-jobs` 暴露 `job_output`、`job_list` 和 `job_kill`，注入完成通知，并提供后台任务的系统提示词指导。
+- `@alego/jobs` 将运行中的工作注册为 `ctx.jobs`，并拥有 job id、授权、快照、读取、取消、等待、完成监听器与清理。
+- `@alego/tool-jobs` 暴露 `job_output`、`job_list` 和 `job_kill`，注入完成通知，并提供后台任务的系统提示词指导。
 
-长时间运行工具是生产方。`dsh-tool-bash` 将 `ShellProcess` 适配为增量输出与进程取消；`dsh-tool-subagent` 将子运行适配为最终输出与子运行释放。bash 与 subagent 能力 seam 保持独立，不依赖会话或任务注册表。
+长时间运行工具是生产方。`alego-tool-bash` 将 `ShellProcess` 适配为增量输出与进程取消；`alego-tool-subagent` 将子运行适配为最终输出与子运行释放。bash 与 subagent 能力 seam 保持独立，不依赖会话或任务注册表。
 
-`JobRegistry` 是 `@deepseek-ai/dsh-jobs` 中的 Service Definition；进程内 Service Provider 是 `@deepseek-ai/dsh-jobs-local` 中的 `LocalJobRegistry`（该拆分记录在[任务注册表约定 Agent Note](2026-07-26-job-registry-seam.zh.md)中）。
+`JobRegistry` 是 `@alego/jobs` 中的 Service Definition；进程内 Service Provider 是 `@alego/jobs-local` 中的 `LocalJobRegistry`（该拆分记录在[任务注册表约定 Agent Note](2026-07-26-job-registry-seam.zh.md)中）。
 
 ## 运行时约定
 
@@ -67,11 +67,11 @@ job id 在运行时全局可见且可预测，因此注册表会授权每次访�
 
 `wait` 在任务完成时返回终止快照，在等待超时时返回当前快照。中止一次等待只取消该次等待。如果结算已经将终止投递分配给该等待方，终止快照仍然优先。等待方在中止时同步注销，因此同一 tick 内发生结算时，不会代表一个实际未收到任何内容的读取方压制完成通知。
 
-如果生产方加载时没有任何任务控制器，调用方就能启动无法收集或停止的工作。因此，`dsh-tool-jobs` 在其整个生命周期内调用 `attachController()`；没有附加控制器时，`start()` 会在生产方开始执行前失败。该检查发生在启动时而非插件加载时，因为兄弟插件可能并发激活。自定义的非模型控制器可以自行附加，无需让注册表了解工具名称。
+如果生产方加载时没有任何任务控制器，调用方就能启动无法收集或停止的工作。因此，`alego-tool-jobs` 在其整个生命周期内调用 `attachController()`；没有附加控制器时，`start()` 会在生产方开始执行前失败。该检查发生在启动时而非插件加载时，因为兄弟插件可能并发激活。自定义的非模型控制器可以自行附加，无需让注册表了解工具名称。
 
 ## 面向模型的控制 API
 
-`dsh-tool-jobs` 注册三个与 kind 无关的工具，并使用通用 UI 卡片：
+`alego-tool-jobs` 注册三个与 kind 无关的工具，并使用通用 UI 卡片：
 
 - `job_output(job_id, wait?, timeout_ms?)` 读取输出，并始终追加 `[status: ...]`。流式任务只返回上次读取以来的输出；最终输出任务在结算后返回结果。除非指定 `wait: true`，否则读取不会阻塞；等待超时由插件配置提供默认值并限定上限。等待超时会报告仍在运行的状态，不会停止任务。
 - `job_list()` 将调用方可见的任务返回为 `<id> [<kind>] <status> — <label>`，没有任务时返回 `(no background jobs)`。
@@ -81,11 +81,11 @@ job id 在运行时全局可见且可预测，因此注册表会授权每次访�
 
 系统提示词要求模型保留 job id、在后台工作运行时继续处理独立工作而非忙轮询或重复启动同一任务、在给出最终答案前收集相关任务，并终止不再重要的工作。完成时，系统会向确切所有者的会话交付一条已记录的消息：繁忙的所有者走注入，空闲的所有者会被唤醒，其有界策略由[空闲所有者唤醒决策](../feature/2026-08-11-background-job-completion-wakes-an-idle-owner.zh.md)负责。
 
-当读取或等待交付终止任务、尚在等待的等待方在结算时认领了投递，或模型显式终止任务时，运行时将终止任务标为 `reported`。已报告的任务不会注入冗余的完成通知。监听器失败会独立记录，不会阻止后续监听器，也不会被等待方或资源销毁过程等待。当快照携带 `outputLimitBytes` 时，`dsh-tool-jobs` 会保持 UTF-8 边界，并复用生产方已有的截断标记，而不会重复添加。读取会为状态后缀预留空间并保留输出尾部；完成通知会先为稳定的 `background job <id>` 前缀与 `job_output` 指令预留空间，再截断可变的 kind、label、status、detail，乃至截断标记本身，因此 PTY 的最小上限仍能标识需要收集的任务。任务控制器在策略有机会拒绝或短路分发之前，于最先执行的 pre-execute 监听器中解析调用方可见的生产方上限；随后通过任务定义最后一道的 `finalizeContent` 回调应用该上限，使规范化的工具错误、外层流水线失败与单文本策略结果都无法绕过该边界；经特意结构化的多块策略结果仍由策略拥有其形状与大小。
+当读取或等待交付终止任务、尚在等待的等待方在结算时认领了投递，或模型显式终止任务时，运行时将终止任务标为 `reported`。已报告的任务不会注入冗余的完成通知。监听器失败会独立记录，不会阻止后续监听器，也不会被等待方或资源销毁过程等待。当快照携带 `outputLimitBytes` 时，`alego-tool-jobs` 会保持 UTF-8 边界，并复用生产方已有的截断标记，而不会重复添加。读取会为状态后缀预留空间并保留输出尾部；完成通知会先为稳定的 `background job <id>` 前缀与 `job_output` 指令预留空间，再截断可变的 kind、label、status、detail，乃至截断标记本身，因此 PTY 的最小上限仍能标识需要收集的任务。任务控制器在策略有机会拒绝或短路分发之前，于最先执行的 pre-execute 监听器中解析调用方可见的生产方上限；随后通过任务定义最后一道的 `finalizeContent` 回调应用该上限，使规范化的工具错误、外层流水线失败与单文本策略结果都无法绕过该边界；经特意结构化的多块策略结果仍由策略拥有其形状与大小。
 
 ## 生产方显式启用
 
-每个生产方通过带默认值的配置，自行决定其 schema 是否暴露 `run_in_background`。`dsh-tool-bash`、`dsh-tool-terminal` 和每个 `dsh-tool-subagent` 实例都使用 `enableRunInBackground`，默认值为 true。禁用的实例会省略该参数；由于通用参数校验器允许未声明的键，它还会在执行时拒绝强制传入的后台参数。省略 schema 用于声明能力不可用；执行检查负责强制该约束。
+每个生产方通过带默认值的配置，自行决定其 schema 是否暴露 `run_in_background`。`alego-tool-bash`、`alego-tool-terminal` 和每个 `alego-tool-subagent` 实例都使用 `enableRunInBackground`，默认值为 true。禁用的实例会省略该参数；由于通用参数校验器允许未声明的键，它还会在执行时拒绝强制传入的后台参数。省略 schema 用于声明能力不可用；执行检查负责强制该约束。
 
 `ctx.jobs` 不改写生产方 schema。bundle 只转发其所拥有的生产方的配置。如果后台调用在没有附加控制器的情况下到达 `start()`，运行时防线会在执行前使其失败。
 
@@ -93,9 +93,9 @@ job id 在运行时全局可见且可预测，因此注册表会授权每次访�
 
 bash seam 暴露 `resolve`、`run` 和 `start`。`start(spec)` 返回一个 `ShellProcess`，提供增量读取、取消、退出事实以及不拒绝的完全停稳 promise。本地执行器只为自身释放时能终止并等待进程而保留活动进程的句柄。前台调用方继续直接使用 `resolve` 和 `run`。
 
-对于后台 bash，`dsh-tool-bash` 将调用方 agent 注册为所有者。其钩子将 `kill()` 映射为取消，将 `done` 映射为 completed 或 killed 的 `JobOutcome`，并将 `readOutput()` 映射为进程的有界增量输出，以及 spill 与沙箱通知。通用任务工具拥有 id、状态行、列表、等待和完成通知。
+对于后台 bash，`alego-tool-bash` 将调用方 agent 注册为所有者。其钩子将 `kill()` 映射为取消，将 `done` 映射为 completed 或 killed 的 `JobOutcome`，并将 `readOutput()` 映射为进程的有界增量输出，以及 spill 与沙箱通知。通用任务工具拥有 id、状态行、列表、等待和完成通知。
 
-对于后台 subagent，`dsh-tool-subagent` 创建由任务拥有的 `AbortController`，并在任务 starter 内启动提供方。无论提供方发布前后，取消都会中止同一个 signal。`done` 同时等待子运行结果和子运行释放，将已完成输出映射为最终结果，将中止映射为 `killed`，并将其他停止原因或基础设施失败映射为 `failed`。中间子历史保留在子会话中，不通过 `readOutput()` 暴露。
+对于后台 subagent，`alego-tool-subagent` 创建由任务拥有的 `AbortController`，并在任务 starter 内启动提供方。无论提供方发布前后，取消都会中止同一个 signal。`done` 同时等待子运行结果和子运行释放，将已完成输出映射为最终结果，将中止映射为 `killed`，并将其他停止原因或基础设施失败映射为 `failed`。中间子历史保留在子会话中，不通过 `readOutput()` 暴露。
 
 ## 备选方案
 

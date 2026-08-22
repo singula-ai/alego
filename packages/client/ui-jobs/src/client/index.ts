@@ -4,12 +4,12 @@
  * through the `jobsBySession` list mirror, so the plugin issues no RPC and
  * holds no state of its own beyond popover visibility.
  */
-import type { ClientContext } from '@deepseek-ai/dsh-client-runtime/client'
+import type { ClientContext } from '@alego/client-runtime/client'
 import { JobListAction } from './JobListAction.tsx'
-import type {} from '@deepseek-ai/dsh-client-locale/client'
+import type {} from '@alego/client-locale/client'
 import { en, NS, zh, type JobKey } from './locales.ts'
 
-declare module '@deepseek-ai/dsh-client-ui-slots' {
+declare module '@alego/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Background-job list copy. */
     'job': JobKey

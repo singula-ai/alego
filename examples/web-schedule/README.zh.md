@@ -2,10 +2,10 @@
 
 [English](README.md) | 中文
 
-此 overlay 让一个 `dsh web` 进程显式启用 Schedule 提醒，同时不改变交付的默认 Web 组合：
+此 overlay 让一个 `alego web` 进程显式启用 Schedule 提醒，同时不改变交付的默认 Web 组合：
 
 ```sh
-dsh web --patch examples/web-schedule/cordis.yml
+alego web --patch examples/web-schedule/cordis.yml
 ```
 
 当前 overlay 支持使用正整数 `after_seconds`、绝对时间 `at` 目标，或至少 300 秒的固定速率 `every_seconds` 间隔创建提醒。模型通过 `schedule_create`、`schedule_list` 和 `schedule_delete` 管理它们；每个结果都会把交付标为 `session-local`。

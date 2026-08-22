@@ -1,8 +1,8 @@
-# @deepseek-ai/dsh-client-ui-workflow-run
+# @alego/client-ui-workflow-run
 
 [English](README.md) | 中文
 
-这个浏览器插件把持久化的顶层工作流运行重建为独立 Chat 节点。它消费由 [`dsh-tool-workflow`](../../workflow/tool-workflow/README.zh.md) 拥有的四类 `tool-workflow/*` Session 事件，注册一个 `ConversationNodeDefinition`，并通过 keyed `conversation.chat.node` slot 渲染，不改变现有工作流工具卡。
+这个浏览器插件把持久化的顶层工作流运行重建为独立 Chat 节点。它消费由 [`alego-tool-workflow`](../../workflow/tool-workflow/README.zh.md) 拥有的四类 `tool-workflow/*` Session 事件，注册一个 `ConversationNodeDefinition`，并通过 keyed `conversation.chat.node` slot 渲染，不改变现有工作流工具卡。
 
 ## 持久状态与回放
 
@@ -30,6 +30,6 @@
 
 ## 已知限制与暂缓事项
 
-- 只有经 `dsh-tool-workflow` 发起的顶层调用会生成这些记录；嵌套 Code Mode 调用和直接 `WorkflowEngine` 消费方不会生成。
+- 只有经 `alego-tool-workflow` 发起的顶层调用会生成这些记录；嵌套 Code Mode 调用和直接 `WorkflowEngine` 消费方不会生成。
 - 导航刻意只面向实时运行。终态成员继续保留供复盘，但本节点永不为其提供冷 Session 入口。
 - 节点只显示运行、阶段、成员身份与状态；脚本、输出、错误、日志、用量、静态拓扑和控制操作都不属于本界面。

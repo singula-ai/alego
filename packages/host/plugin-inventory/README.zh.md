@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-host-plugin-inventory
+# @alego/host-plugin-inventory
 
 [English](README.md) | 中文
 

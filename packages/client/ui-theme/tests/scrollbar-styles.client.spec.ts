@@ -31,13 +31,13 @@ const DARK_ATTRIBUTE = '[data-ds-dark-theme]'
 /** Alias tokens under test: the prefix the elevation pairs share. */
 const TOKEN_PREFIX = '--dsw-alias-scrollbar-'
 /** Prefix of the rebindable indirection scrollbar.css owns. */
-const INDIRECTION_PREFIX = '--dsh-scrollbar-'
+const INDIRECTION_PREFIX = '--alego-scrollbar-'
 /** The one non-token rebind value: a surface that draws no thumb at all. */
 const HIDDEN_THUMB = 'transparent'
 /** The elevation rebind, spelled per property: value-wholeness, not token shape. */
 const ELEVATED_REBIND = new Map([
-  ['--dsh-scrollbar-thumb', '--dsw-alias-scrollbar-bg-l2'],
-  ['--dsh-scrollbar-thumb-hover', '--dsw-alias-scrollbar-hover-l2'],
+  ['--alego-scrollbar-thumb', '--dsw-alias-scrollbar-bg-l2'],
+  ['--alego-scrollbar-thumb-hover', '--dsw-alias-scrollbar-hover-l2'],
 ].map(([property, token]) => [property!, `var(${token!})`]))
 
 /**
@@ -376,7 +376,7 @@ describe('scrollbar.css width variable', () => {
 
   it('every reader of the width variable outside ui-theme references a defined variable', () => {
     // The consumer is ConversationRoot's overlay composer seat
-    // (`right: var(--dsh-scrollbar-width)`); a rename in scrollbar.css without
+    // (`right: var(--alego-scrollbar-width)`); a rename in scrollbar.css without
     // the consumer, or a typo in the consumer, leaves the value
     // guaranteed-invalid and the seat loses the band. The equal-rectangle e2e
     // would catch it only on an engine that draws the bar, so the sheet

@@ -1,4 +1,4 @@
-# Agent Note: dsh-tui 聊天通道模块拆分
+# Agent Note: alego-tui 聊天通道模块拆分
 
 Status: implemented
 Archived: 2026-08-04

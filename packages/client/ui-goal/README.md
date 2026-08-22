@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-client-ui-goal
+# @alego/client-ui-goal
 
 English | [中文](README.zh.md)
 

@@ -20,15 +20,15 @@ Reusable TUI coverage has two complementary package layers:
 1. `packages/ui/tui/tests/tui.spec.ts` tests event mapping, input routing, disposal, and error behavior directly.
 2. `packages/ui/tui/tests/tui.snapshot.ts` mounts the production TUI against a headless terminal emulator for transient states that a completed session log cannot retain: in-flight streaming, pending tool calls, overlays, expansion, compaction reflow, errors, and shutdown.
 
-The [explicit-config entrypoint decision](../simplification/2026-08-03-explicit-config-dsh-entrypoint.md) removed the product TUI composition, recorded application journeys, and PTY suite. A deployment shipping a terminal front door owns those assembled-application layers; package tests do not claim that product coverage.
+The [explicit-config entrypoint decision](../simplification/2026-08-03-explicit-config-alego-entrypoint.md) removed the product TUI composition, recorded application journeys, and PTY suite. A deployment shipping a terminal front door owns those assembled-application layers; package tests do not claim that product coverage.
 
 ### Removed application replay
 
-The deleted application suite gave each scenario `session.jsonl`, optional child logs `session.<n>.jsonl`, and `terminal.expected.txt`. The primary log supplied user-authored `user/message` prompts and the recorded `assistant/chunk` sequence. `dsh-llm-replay` derived one model-call script per session and was the only mocked boundary; the agent loop, tools, workers, presenters, and TUI were production implementations.
+The deleted application suite gave each scenario `session.jsonl`, optional child logs `session.<n>.jsonl`, and `terminal.expected.txt`. The primary log supplied user-authored `user/message` prompts and the recorded `assistant/chunk` sequence. `alego-llm-replay` derived one model-call script per session and was the only mocked boundary; the agent loop, tools, workers, presenters, and TUI were production implementations.
 
 That suite rejected a journey when its tool-call sequence differed, an expected event count was missing, a tool result was an error, a turn ended in error, a workflow lifecycle was incomplete, or the live child-session count differed from the fixture set. These checks remain the acceptance pattern for any future terminal deployment; they are no longer shipped fixtures.
 
-The removed recording workflow used `DSH_SNAPSHOT=record` for model journeys and `DSH_SNAPSHOT=refresh` for derived terminal output. Removing the product entrypoint also removed those modes from the repository snapshot lane; reusable TUI snapshots are authored directly from package scenarios.
+The removed recording workflow used `ALEGO_SNAPSHOT=record` for model journeys and `ALEGO_SNAPSHOT=refresh` for derived terminal output. Removing the product entrypoint also removed those modes from the repository snapshot lane; reusable TUI snapshots are authored directly from package scenarios.
 
 ### Semantic terminal projection
 

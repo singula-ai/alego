@@ -3,10 +3,10 @@
  * Only command hooks run; other hook types are returned as skipped so the
  * bridge can warn. Plugin-root and project-directory substitutions are applied
  * to commands at parse time.
- * @module @deepseek-ai/dsh-hooks-claude-code/config
+ * @module @alego/hooks-claude-code/config
  */
 
-import { matcherDiagnostic, type MatcherGroup } from '@deepseek-ai/dsh-hook-protocol'
+import { matcherDiagnostic, type MatcherGroup } from '@alego/hook-protocol'
 
 const CLAUDE_EVENTS = [
   'SessionStart',

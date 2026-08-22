@@ -9,7 +9,7 @@
     "allowImportingTsExtensions": true,
     "ignoreDeprecations": "6.0",
     "paths": {
-      "@deepseek-ai/dsh-typert-protocol": ["./typert-protocol.d.ts"],
+      "@alego/typert-protocol": ["./typert-protocol.d.ts"],
       "@fixture/domain": ["./packages/domain/src/index.ts"],
       "@fixture/domain/*": ["./packages/domain/src/*"],
       "@fixture/remote": ["./packages/remote/src/index.ts"],

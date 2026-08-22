@@ -2,10 +2,10 @@
  * Wire-safe approval identifiers and outcome vocabulary, free of
  * cordis/service imports so browser type chains (apiproxy api → client) can
  * consume them without loading this package's Context augmentation.
- * @module @deepseek-ai/dsh-user-approval/types
+ * @module @alego/user-approval/types
  */
 
-import type { Branded } from '@deepseek-ai/dsh-brand'
+import type { Branded } from '@alego/brand'
 
 /**
  * Pairs one `approval/asked` audit event with its `approval/decided`.

@@ -16,7 +16,7 @@ Sidebar 声明 `sidebar.settings` single slot，`ui-settings` 占用它并声明
 
 Settings 入口是 sidebar Foot 的 Settings 行，点击直接打开 1080×700 居中浮层（黑 24% 遮罩）；close 按钮、点击遮罩、ESC 均关闭。无任何中间菜单形态。
 
-`@deepseek-ai/dsh-client-locale` 提供 `ctx.locale`，`ui-theme` 提供 `ctx.theme`。两个服务都以 getter 读取、setter 写入并用 typed Cordis 变更事件发布不可变快照；服务自己持久化偏好（只存 id，无效值回退默认）。
+`@alego/client-locale` 提供 `ctx.locale`，`ui-theme` 提供 `ctx.theme`。两个服务都以 getter 读取、setter 写入并用 typed Cordis 变更事件发布不可变快照；服务自己持久化偏好（只存 id，无效值回退默认）。
 
 功能行的 apply 层各自订阅自家变更事件（locale 订 `locale/change`，ui-theme 订 `theme/change`），把快照投影到该行注册时声明的 slot store。React 组件只读 `useStore`、写注入的 setter callback，不读取 ctx 或服务。
 

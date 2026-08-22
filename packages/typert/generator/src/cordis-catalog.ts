@@ -2,7 +2,7 @@
  * Cordis catalog-specific projection over the compiler-independent Typert
  * model. This module owns Cordis validation and text projection mechanics;
  * callers supply repository-specific type classifications and inherited data.
- * @module @deepseek-ai/dsh-typert-generator
+ * @module @alego/typert-generator
  */
 
 import { WorkspaceAnalyzer, WorkspaceCaches } from './analyzer.ts'
@@ -682,7 +682,7 @@ function renderRuntimeApi(
     ' * the same AST walk as docs/cordis-catalog, so this data and the rendered',
     ' * docs cannot diverge.',
     ' *',
-    ' * @module @deepseek-ai/dsh-tool-cordis/api-catalog',
+    ' * @module @alego/tool-cordis/api-catalog',
     ' */',
     '',
     '/* jscpd:ignore-start */',

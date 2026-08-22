@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-28-alego-meta-source-workspace.md
+2026-07-28-alego-meta-source-workspace.md: e0238af2b0b6f809bac1e27f4b252a27d7d8fce5
+2026-07-28-alego-meta-source-workspace.zh.md: 1970a5d7bd71c9b196e15a39f44b2bcd0d0d61f0

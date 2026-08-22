@@ -9,8 +9,8 @@
  * covers everything the card shows.
  */
 
-import type { IApiClient } from '@deepseek-ai/dsh-client-connection/client'
-import type { SettingsScope, SettingsScopeSnapshot, SnapshotStore } from '@deepseek-ai/dsh-client-runtime/client'
+import type { IApiClient } from '@alego/client-connection/client'
+import type { SettingsScope, SettingsScopeSnapshot, SnapshotStore } from '@alego/client-runtime/client'
 import {
   CardForm, numberField, textField,
   type CardActions, type CardFieldState, type CardShell,

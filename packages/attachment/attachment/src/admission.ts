@@ -1,4 +1,4 @@
-/** Wire-form admission of base64-encoded image uploads. @module @deepseek-ai/dsh-attachment/admission */
+/** Wire-form admission of base64-encoded image uploads. @module @alego/attachment/admission */
 
 import { Buffer } from 'node:buffer'
 import { AttachmentError } from './error.ts'

@@ -1,4 +1,4 @@
-# dsh-client-ui-settings-plugins
+# alego-client-ui-settings-plugins
 
 [English](README.md) | 中文
 
@@ -37,6 +37,6 @@
 ## 已知限制与暂缓事项
 
 - **只有宿主平面的插件会出现**——由 agent preset 挂载的插件把配置内联在该 preset 的 `agent.cordis.yml` 中，且根本无法注册 settings 命名空间（同一 preset 挂载第二个会话时会因重复注册而失败），因此本分区不会列出它。编辑那些值仍是 preset 编辑器的职责。
-- **卡片仍然需要一份浏览器 bundle**——浏览器半侧必须是按客户端模块系统的 lazy-CJS factory 格式构建的 `dsh.client` 包，而产出它的 `clientBundle` 预设位于 `packages/client/tsdown.client.ts`，并非已发布的包，因此本仓库之外的插件得自行复刻该构建。bundle 纯净度门禁同时禁止以值的形式导入本包的卡片外观与表单模型，所以这样的卡片要自行拥有暂存与 revision 设栅。
+- **卡片仍然需要一份浏览器 bundle**——浏览器半侧必须是按客户端模块系统的 lazy-CJS factory 格式构建的 `alego.client` 包，而产出它的 `clientBundle` 预设位于 `packages/client/tsdown.client.ts`，并非已发布的包，因此本仓库之外的插件得自行复刻该构建。bundle 纯净度门禁同时禁止以值的形式导入本包的卡片外观与表单模型，所以这样的卡片要自行拥有暂存与 revision 设栅。
 - **被服务的命名空间只在两种信号上重读**——协议通告的是 settings 文档提交与连接重置，而非注册行为，因此在标签页读取之后才被其拥有方注册的命名空间，要等下一次文档提交或重连才会加入列表。
 - **shell 卡片跟随被组装的执行器**——POSIX 与 PowerShell 两个执行器家族共用 `bash` 命名空间，因为一个宿主只组装其中之一，所以被服务的 schema 随平台不同（PowerShell 多出 `pwshPath`），尽管卡片在两者下编辑的都是同样两个字段；而两者都不组装的部署不会显示这张卡片。

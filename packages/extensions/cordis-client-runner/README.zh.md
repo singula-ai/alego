@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-cordis-client-runner
+# @alego/cordis-client-runner
 
 [English](README.md) | 中文
 

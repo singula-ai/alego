@@ -4,7 +4,7 @@
  * discipline), so `./client` projects the same single-source content
  * `./types` serves to host consumers — zero duplication.
  *
- * @module @deepseek-ai/dsh-tool-todo/client
+ * @module @alego/tool-todo/client
  */
 
 export type * from './types.ts'

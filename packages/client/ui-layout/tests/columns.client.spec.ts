@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   CENTER_MIN, clampWidth, computeColumns,
   DETAILS_DEFAULT, DETAILS_MIN, SIDEBAR_COLLAPSED, SIDEBAR_DEFAULT, SIDEBAR_MIN,
-} from '@deepseek-ai/dsh-client-ui-layout/src/client/columns.ts'
+} from '@alego/client-ui-layout/src/client/columns.ts'
 
 // Numeric preference form (0 = closed); helpers keep the scenario names readable.
 const open = (width: number) => width

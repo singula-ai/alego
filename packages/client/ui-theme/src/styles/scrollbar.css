@@ -8,20 +8,20 @@
  * so an `html` rule resolves them to the guaranteed-invalid value and
  * `scrollbar-color` falls back to `auto`.
  *
- * Surfaces pick their elevation by rebinding --dsh-scrollbar-thumb{,-hover}:
+ * Surfaces pick their elevation by rebinding --alego-scrollbar-thumb{,-hover}:
  * the l1 pair here is the base-surface default, and an elevated surface
  * (menu, popover, dialog) rebinds to the l2 pair on its own container. Both
  * rendering paths below read the indirection, so one rebind reaches whichever
  * path the engine took. */
 
 body {
-  --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l1);
-  --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l1);
+  --alego-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l1);
+  --alego-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l1);
   /* The WebKit bar's layout width, mirrored by the ::-webkit-scrollbar rule
      below. A surface that must align itself beside a space-consuming bar
      (ConversationRoot's overlay composer seat) reads this instead of
      hardcoding the number. */
-  --dsh-scrollbar-width: 8px;
+  --alego-scrollbar-width: 8px;
 }
 
 /* The two paths are mutually exclusive, and the gate is load-bearing rather
@@ -44,7 +44,7 @@ body {
 @supports not selector(::-webkit-scrollbar) {
   /* Declared on every element rather than inherited from `body`. Inheriting
      would pass down the COLOUR already substituted at `body`, so a descendant
-     rebinding --dsh-scrollbar-thumb could not change it; re-declaring makes
+     rebinding --alego-scrollbar-thumb could not change it; re-declaring makes
      each element substitute the variable as it sees it, which is what gives
      an elevated surface a working rebind. `scrollbar-width` is not an
      inherited property at all, so it needs the per-element declaration
@@ -55,7 +55,7 @@ body {
   body,
   body * {
     scrollbar-width: thin;
-    scrollbar-color: var(--dsh-scrollbar-thumb) transparent;
+    scrollbar-color: var(--alego-scrollbar-thumb) transparent;
   }
 }
 
@@ -76,11 +76,11 @@ body {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 4px;
-  background: var(--dsh-scrollbar-thumb);
+  background: var(--alego-scrollbar-thumb);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--dsh-scrollbar-thumb-hover);
+  background: var(--alego-scrollbar-thumb-hover);
 }
 
 /* Both scrollbars meeting in a corner: no separate token, so the corner

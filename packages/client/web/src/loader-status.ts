@@ -2,15 +2,15 @@
  * Fiber-state projection vocabulary for the framework-free boot page. The
  * boot chain subscribes to `internal/status` and projects the owning loader
  * entry's current state.
- * @module @deepseek-ai/dsh-client-web/src/loader-status
+ * @module @alego/client-web/src/loader-status
  */
-import type { FiberState } from '@deepseek-ai/cordis'
+import type { FiberState } from '@alego/cordis'
 
 /**
  * Value mirror of cordis's `FiberState` const enum: a const enum has no
  * runtime object to import (and esbuild-based pipelines cannot inline it
  * across modules), so these values mirror the pinned vendored definition
- * while retaining its type (same rationale as dsh-tool-cordis's mirror).
+ * while retaining its type (same rationale as alego-tool-cordis's mirror).
  */
 export const FIBER_STATE = {
   PENDING: 0 as FiberState.PENDING,

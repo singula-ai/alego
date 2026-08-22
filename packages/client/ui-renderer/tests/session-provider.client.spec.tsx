@@ -9,8 +9,8 @@
 import { useEffect, useRef } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { act, render } from '@testing-library/react'
-import type { SessionMaybeProvideInfo, StoredEntry } from '@deepseek-ai/dsh-client-ui-slots'
-import type { SessionProvideInfo, SlotRendererHost } from '@deepseek-ai/dsh-client-ui-renderer/client'
+import type { SessionMaybeProvideInfo, StoredEntry } from '@alego/client-ui-slots'
+import type { SessionProvideInfo, SlotRendererHost } from '@alego/client-ui-renderer/client'
 import { createSlotRenderer } from '../src/client/scoped-slots.tsx'
 import { SessionProvider } from '../src/client/session-provider.tsx'
 

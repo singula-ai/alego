@@ -16,7 +16,7 @@ It had not. The seam (`capSources`, `packages/web/web/src/index.ts`) cuts each p
 
 The model side remains capped at `searchMaxResults`: the seam caps each provider result, the multi-query consumer caps a combined list, and the `truncated` flag and its `来源列表已截断` indicator stay. The card draws the final tool source list in full and scrollable, instead of collapsing its middle.
 
-That list is the one the model reads as long as nothing downstream of the tool rewrites the result content alone. A deployment mounting `dsh-spill-policy` breaks that correspondence for an oversized result: `tools/post-execute` replaces the model-facing `content` with a preview plus a spill locator and leaves `presentationMeta` whole, so the card still draws every source while the model reads a bounded excerpt. The card's contract is therefore the view it receives, not the model's context.
+That list is the one the model reads as long as nothing downstream of the tool rewrites the result content alone. A deployment mounting `alego-spill-policy` breaks that correspondence for an oversized result: `tools/post-execute` replaces the model-facing `content` with a preview plus a spill locator and leaves `presentationMeta` whole, so the card still draws every source while the model reads a bounded excerpt. The card's contract is therefore the view it receives, not the model's context.
 
 `CHAT_WEB_MAX_SOURCES` and the primitive's `DEFAULT_WEB_MAX_SOURCES` are removed: with scroll, the chat row and the details panel show the same full list, differentiated only by their container height. `<li value={ordinal}>` still pins each source's 1-based citation index; without the collapse gap the ordinals are now simply contiguous.
 

@@ -10,7 +10,7 @@ Status: implemented
 
 ## 决策
 
-系统提示词组装逻辑负责权威定义模型侧工具顺序，正如它已经负责权威定义 section 顺序一样。`dsh-system-prompt` 上的 `toolOrder?: string[]` 是可选的显式策略：
+系统提示词组装逻辑负责权威定义模型侧工具顺序，正如它已经负责权威定义 section 顺序一样。`alego-system-prompt` 上的 `toolOrder?: string[]` 是可选的显式策略：
 
 - 列表中已注册的工具按列表位置排列。
 - 列表中的名称没有对应的已注册工具，属于配置错误。形状错误（缺少 rest 条目或名称重复）在服务构造器中快速失败；未注册的名称则会导致每次 `assemble()` 调用被拒绝——这是已注册工具集存在并可供检查的最早时刻（工具插件在服务构造之后才注册），也是唯一的通用时刻（注册随时可能变化；Cordis 没有「所有插件已加载」事件）。在已交付的 agent loop（智能体循环）下，第一个轮次在发出任何模型请求之前就会失败——确切的影响范围见下文「后果」。
@@ -23,7 +23,7 @@ Status: implemented
 
 范围刻意收窄：本 Agent Note 修复的是注册顺序竞态，而非插件行为。`system-prompt/assemble` 的监听器仍然可以添加、移除或重排工具——正如它可以在 section 排序之后编辑 section——并对自身输出的确定性负责；waterfall 约定已经要求监听器是确定性的（可重建性不变式会捕获在构建与回放之间行为不一致的监听器）。
 
-配置传递沿用 `persona` 的先例，`toolOrder` 与之并列：TUI、Headless 和 ACP 应用配置接受该键，并通过 `dsh-agent-spine-demo`（其 schema 是各所有者 schema 的交集）转发给 `SystemPrompt` 子服务。有一个 schemastery 细节至关重要：schemastery 数组默认为 `[]`，但省略的 `toolOrder` 必须保持 ABSENT（= 字典序），而不是变成一个显式配置的空列表（无效——缺少 rest 条目），因此链路上每个 schema 都将默认值强制为 `undefined`。
+配置传递沿用 `persona` 的先例，`toolOrder` 与之并列：TUI、Headless 和 ACP 应用配置接受该键，并通过 `alego-agent-spine-demo`（其 schema 是各所有者 schema 的交集）转发给 `SystemPrompt` 子服务。有一个 schemastery 细节至关重要：schemastery 数组默认为 `[]`，但省略的 `toolOrder` 必须保持 ABSENT（= 字典序），而不是变成一个显式配置的空列表（无效——缺少 rest 条目），因此链路上每个 schema 都将默认值强制为 `undefined`。
 
 ## 曾考虑的替代方案
 
@@ -34,7 +34,7 @@ Status: implemented
 - **在 `LlmRuntime` 上加配置 + `orderTools()` 方法，由 loop 在记录 header 前调用**：可行，但仅为在远处应用一个策略就增加了一个公开服务方法和一处 loop 改动；每个未来的请求组合者都必须记得调用。在列表诞生处进行规范化使得无序列表不可表示，且零新增接口。
 - **在 `llm.stream()` 内部规范化**：在 header 事件已记录之后才运行（抖动仍然存在），且需要重建深度冻结的请求封装对象，静默地解除了重建不变式。
 - **穷举列表（无 rest 条目）**：每个新加载的工具插件都会导致启动失败；强制的 rest 条目使未列出的工具保持确定性，且其位置是显式的。
-- **启动时校验（由 `dsh-app-boot` 在 `loader.await()` 之后调用 `SystemPrompt.assertToolOrderSatisfied()`）**：能将错误配置变为启动时死亡而非首轮失败，但代价是一个公开服务方法加上通用启动胶水对单个服务的结构耦合，且无法替代组装时检查（嵌入式调用者从不运行 app boot；注册在 boot 之后仍会变化）。也没有现成事件可以承载该检查：Cordis v4 没有 ready 类事件，`loader/entry-init`/`internal/status` 在加载中途触发（与工具注册存在竞态——正是本 Agent Note 要消除的熵源），而 agent 生命周期事件不会早于组装。经权衡，选择只在 `assemble()` 设置一个校验点，值得为此接受失败时刻较晚的代价。
+- **启动时校验（由 `alego-app-boot` 在 `loader.await()` 之后调用 `SystemPrompt.assertToolOrderSatisfied()`）**：能将错误配置变为启动时死亡而非首轮失败，但代价是一个公开服务方法加上通用启动胶水对单个服务的结构耦合，且无法替代组装时检查（嵌入式调用者从不运行 app boot；注册在 boot 之后仍会变化）。也没有现成事件可以承载该检查：Cordis v4 没有 ready 类事件，`loader/entry-init`/`internal/status` 在加载中途触发（与工具注册存在竞态——正是本 Agent Note 要消除的熵源），而 agent 生命周期事件不会早于组装。经权衡，选择只在 `assemble()` 设置一个校验点，值得为此接受失败时刻较晚的代价。
 
 ## 后果
 
@@ -42,7 +42,7 @@ Status: implemented
 - 初始 `PromptAssembly.tools` 是权威的，因此 waterfall 监听器从模型侧顺序开始；提供方注册顺序在该协作扩展点之前无处可观测。
 - 快照套件中唯一锁定请求头的 fixture（测试前置数据）为 `text-turn`，其携带新的权威工具顺序；按照锁定请求头的设计，其他 ACP 快照仍将大段 header 替换为 `{{system}}`/`{{tools}}`。
 - 步骤之间的纯工具重排与其他 header 变更一样记录：一份原因是 `'change'` 的完整 `request/header` 快照。稳定的权威顺序会防止注册时序在普通路径上制造这类变化。
-- `toolOrder` 键沿 app → `agent-core` → `SystemPrompt` 的转发链传递，因此部署时将其放在 app 配置中 `persona` 旁边即可；`dsh-llm` 和 agent loop 无需改动。
+- `toolOrder` 键沿 app → `agent-core` → `SystemPrompt` 的转发链传递，因此部署时将其放在 app 配置中 `persona` 旁边即可；`alego-llm` 和 agent loop 无需改动。
 - `toolOrder` 中拼错或未加载的工具名称在提示词组装时使轮次失败，而非启动时：loop 在轮次内部组装（`turn/start` 之后、`step/start` 之前），因此该拒绝会进入轮次的外层 catch——轮次以携带该消息的 `error` 原因完整结束，`agent/error` 也携带该消息，不打开步骤，不记录 `request/header`，不向适配器发出请求，agent 回到空闲状态。每个轮次都以相同方式失败，直到配置被修正；进程本身保持运行（符合仓库规则：显式配置引用不得被静默忽略——校验点设在组装阶段，因为不存在更早的通用时刻）。
 - 工具提供方返回保留的 rest 条目名称时，其提示词组装失败形态与未知的已列名称相同。这防止哨兵值变成一个歧义的真实工具，并保持「从不丢弃工具」的排序约定。
 

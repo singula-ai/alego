@@ -28,7 +28,7 @@ An around-dispatch wrapper may replace `exec.signal` for its delegated lifetime 
 
 ### Cancellation codes record whether dispatch occurred
 
-`dsh-tools` exports `TOOL_ABORTED = 'ABORTED'` and `TOOL_ABORTED_BEFORE_DISPATCH = 'ABORTED_BEFORE_DISPATCH'`. The registry records body invocation immediately before calling `ToolDefinition.execute()`.
+`alego-tools` exports `TOOL_ABORTED = 'ABORTED'` and `TOOL_ABORTED_BEFORE_DISPATCH = 'ABORTED_BEFORE_DISPATCH'`. The registry records body invocation immediately before calling `ToolDefinition.execute()`.
 
 `ABORTED_BEFORE_DISPATCH` carries `{ name: 'AbortError' }` and model text `Error: tool call aborted before dispatch`. It applies whenever cancellation prevents body invocation, including pre-aborted entry, cancellation during pre-policy or approval, an aborted wrapper signal, a wrapper success overtaken by caller cancellation before delegation, and agent-loop siblings skipped after turn cancellation.
 

@@ -12,27 +12,27 @@ Status: implemented
 
 接着选择器又过滤了一次。它在展示前丢弃 `cwd` 与当前会话不同的记录，而 `summarizeResumeCandidate` 又独立地把不同的 `cwd` 标记为 `disabledReason: 'different workspace'`，于是一个确实进入了存储的外部会话既被隐藏，也会被拒绝。
 
-最后，恢复流程从不切换目录。宿主通过 `process.execve` 重新执行 `dsh --resume=<id>`，而它会继承 cwd。会话*头部*的 cwd 会从日志中还原，但 `dsh-fs-local`、bash 执行器以及 glob／grep 解析路径时依据的是进程 cwd，所以恢复一个外部会话会在回放它的 transcript（文本记录）的同时，作用到错误的项目上。
+最后，恢复流程从不切换目录。宿主通过 `process.execve` 重新执行 `alego --resume=<id>`，而它会继承 cwd。会话*头部*的 cwd 会从日志中还原，但 `alego-fs-local`、bash 执行器以及 glob／grep 解析路径时依据的是进程 cwd，所以恢复一个外部会话会在回放它的 transcript（文本记录）的同时，作用到错误的项目上。
 
 ## Decision
 
 共享 CLI（命令行界面）配置提供 Harness home 下的同一个会话根目录，选择器获得 workspace 范围，交接过程携带目标目录。
 
-**存储。** 共享 base 在 `apps/cli/config/base.cordis.yml` 中拥有默认值：其 `session-persistence-jsonl` 配置项调用由 app-boot 提供的 `dshHomePath('sessions')`，该函数使用规范的 `DSH_HOME` 解析器及其标准的 `~/.dsh` 回退值。因此 TUI、Web 与 headless 使用同一个默认值，无需针对会话的启动器补丁或 slot。若 overlay 或个人 patch 显式声明根目录，它会整体替换该配置项的 `config`，并继续作为部署的权威选择。
+**存储。** 共享 base 在 `apps/cli/config/base.cordis.yml` 中拥有默认值：其 `session-persistence-jsonl` 配置项调用由 app-boot 提供的 `alegoHomePath('sessions')`，该函数使用规范的 `ALEGO_HOME` 解析器及其标准的 `~/.alego` 回退值。因此 TUI、Web 与 headless 使用同一个默认值，无需针对会话的启动器补丁或 slot。若 overlay 或个人 patch 显式声明根目录，它会整体替换该配置项的 `config`，并继续作为部署的权威选择。
 
 **是范围，不是排除。** 当前 workspace 之外的 workspace 是一种展示范围，而不是禁用理由。`showResume()` 汇总每一条记录，`ResumePicker` 持有一个 `'workspace' | 'all'` 的 `scope`，默认为当前 workspace，因此常见场景毫无变化。Tab 切换范围；范围行会说明当前生效的范围，以及另一个范围下的数量；在全 workspace 范围中每一行都报告自己的 workspace，而该标签只在展示它的范围里才加入可搜索文本。切换范围会清空查询和选中项，使高亮行始终属于可见列表；而逐行的 workspace 行会让该范围下的每一行在终端里多占一行，可见条数预算已经把这一点计入。
 
 因此 `summarizeResumeCandidate` 去掉了 `'different workspace'`，并新增 `'session has no recorded workspace'`。这是一条真正新增的拒绝理由，而不是改名：没有 `cwd` 的头部没有指明任何目录供宿主进入，所以即便它的日志完好也无法完成交接。
 
-**交接。** `TuiResumeHost.handoff` 在 `SessionId` 之外还接收目标 `cwd`。`preflightResume` 把两者一起解析并一起返回，因此调用方无法从它展示过的那一行里重新推导出一个陈旧目录——在列表展示与预检之间 `cwd` 发生了变化的记录，会在*重新读取到的*目录中恢复，这也是原先「拒绝发生变化的 cwd」的行为如今变成携带新路径完成交接的原因。已交付的宿主在 dispose（资源释放）应用之前切换目录：不可达的目录必须在调用方还能恢复终端时就拒绝，因为拆卸之后已经没有任何所有者可供汇报。恢复始终使用默认的 `dsh --resume` 接口，因为 `meta` 会拒绝父级选项；交接过程已经进入持久化保存的目标目录。
+**交接。** `TuiResumeHost.handoff` 在 `SessionId` 之外还接收目标 `cwd`。`preflightResume` 把两者一起解析并一起返回，因此调用方无法从它展示过的那一行里重新推导出一个陈旧目录——在列表展示与预检之间 `cwd` 发生了变化的记录，会在*重新读取到的*目录中恢复，这也是原先「拒绝发生变化的 cwd」的行为如今变成携带新路径完成交接的原因。已交付的宿主在 dispose（资源释放）应用之前切换目录：不可达的目录必须在调用方还能恢复终端时就拒绝，因为拆卸之后已经没有任何所有者可供汇报。恢复始终使用默认的 `alego --resume` 接口，因为 `meta` 会拒绝父级选项；交接过程已经进入持久化保存的目标目录。
 
 ## Alternatives considered
 
-**从 `dsh` 启动器给 `persistenceRoot` 打补丁，而不是改动组合包默认值。** 在发现 loader 补丁会整体赋值 `config` 之后否决。个人的 `~/.dsh/config.yaml` 覆盖层已经用一份局部配置给 `tui-agent` 那一项打了补丁，这恰恰就是 `persistenceRoot` 一开始会退回到组合包默认值的原因；启动器补丁要么会被该覆盖层擦除，要么必须压过它，从而让覆盖层再也无法设置这个字段。把默认值放在组合包里能经受任何局部补丁，并让这项事实只有一个归属。
+**从 `alego` 启动器给 `persistenceRoot` 打补丁，而不是改动组合包默认值。** 在发现 loader 补丁会整体赋值 `config` 之后否决。个人的 `~/.alego/config.yaml` 覆盖层已经用一份局部配置给 `tui-agent` 那一项打了补丁，这恰恰就是 `persistenceRoot` 一开始会退回到组合包默认值的原因；启动器补丁要么会被该覆盖层擦除，要么必须压过它，从而让覆盖层再也无法设置这个字段。把默认值放在组合包里能经受任何局部补丁，并让这项事实只有一个归属。
 
 **保留 `./.sessions`，并额外扫描 Harness home 根目录。** 否决：两个根目录意味着两份 SQLite 索引，以及一份合并列表——其中各行的活跃状态与版本权威来源并不相同，而这一切只是为了保住不做迁移的决策本就已经放弃的那部分日志可见性。
 
-**把现有的项目本地日志迁移到共享根目录。** 被需求方否决。项目 `./.sessions` 下的会话仍留在磁盘上，从该目录显式执行 `dsh --resume <id>` 仍可恢复，只是不再出现在 `/resume` 中。
+**把现有的项目本地日志迁移到共享根目录。** 被需求方否决。项目 `./.sessions` 下的会话仍留在磁盘上，从该目录显式执行 `alego --resume <id>` 仍可恢复，只是不再出现在 `/resume` 中。
 
 **把所有 workspace 铺成一个扁平列表。** 否决：这会丢掉绝大多数场景想要的「本项目」默认值，而在一个繁忙的 home 目录里，当前项目的会话会和无关会话争夺注意力。
 

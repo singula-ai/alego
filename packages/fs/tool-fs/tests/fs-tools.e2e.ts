@@ -1,10 +1,10 @@
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
+import { createUserMessage } from '@alego/llm'
 import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import type { Context } from '@deepseek-ai/cordis'
-import { SessionId } from '@deepseek-ai/dsh-session'
+import type { Context } from '@alego/cordis'
+import { SessionId } from '@alego/session'
 import { fsHarness, waitForIdle } from './harness.ts'
 
 /** Key-gated smoke for a real model driving the local read/write/edit tools. */
@@ -24,7 +24,7 @@ const SYSTEM = 'You are a coding assistant. Use the write tool to create files, 
 
 describe.skipIf(!process.env.DEEPSEEK_API_KEY)('fs tools with-key smoke', () => {
   it('creates, reads, then edits a file — verified on disk', async () => {
-    workdir = await mkdtemp(join(tmpdir(), 'dsh-fs-e2e-'))
+    workdir = await mkdtemp(join(tmpdir(), 'alego-fs-e2e-'))
     ctx = await fsHarness(workdir, SYSTEM)
     // agentLoop.create prepares a session with no cwd, so the provider default
     // (config.cwd = workdir) is the workspace.
@@ -53,9 +53,9 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY)('fs tools with-key smoke', () => 
     // config.cwd is the harness workdir, but the agent's SESSION cwd is a
     // different dir; the write must land in the SESSION dir, proving the tool
     // passes the per-session cwd (not the backend default).
-    const configDir = await mkdtemp(join(tmpdir(), 'dsh-fs-e2e-cfg-'))
+    const configDir = await mkdtemp(join(tmpdir(), 'alego-fs-e2e-cfg-'))
     workdir = configDir
-    const sessionDir = await mkdtemp(join(tmpdir(), 'dsh-fs-e2e-session-'))
+    const sessionDir = await mkdtemp(join(tmpdir(), 'alego-fs-e2e-session-'))
     try {
       ctx = await fsHarness(configDir, SYSTEM)
       const handle = await ctx.agents.create({

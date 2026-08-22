@@ -16,7 +16,7 @@
  * over as a stream option, which `Models` presents to `resolve()` as the
  * credential key.
  *
- * @module dsh-llm-pi-ai/provider
+ * @module alego-llm-pi-ai/provider
  */
 
 import { createProvider } from '@earendil-works/pi-ai'

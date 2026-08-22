@@ -82,7 +82,7 @@ const REPLAY_SCENARIOS: Scenario[] = [
     hasModelTurn: true,
     recorded: true,
     headerClass: 'main',
-    env: { DSH_PERMISSION_MODE: 'never' },
+    env: { ALEGO_PERMISSION_MODE: 'never' },
     configPath: AGENT.configPath,
     workspaceParent: tmpdir(),
     pinsChildToolSchemas: [1],
@@ -842,7 +842,7 @@ describe('refreshFixtureReplacements', () => {
 
   it('stabilizes moved snapshot spill paths by filename while skipping unchanged or unmatched names', () => {
     const spill = (session: string, hash: string, name: string): string =>
-      `/tmp/dsh-acp-snapshot-spill/session-${session}/${hash}-${name}`
+      `/tmp/alego-acp-snapshot-spill/session-${session}/${hash}-${name}`
     const record = (text: string): string =>
       `${JSON.stringify({ type: 'session', id: 'same', cwd: '/same' })}\n`
       + `${JSON.stringify({ type: 'tool/result', data: { content: [{ type: 'text', text: `stored at: ${text} ` }] } })}\n`
@@ -1111,8 +1111,8 @@ describe('stabilizeRefreshLog', () => {
   it('preserves normalized volatile fields while accepting fresh semantic fields', () => {
     const freshApprovalId = '11111111-1111-4111-8111-111111111111'
     const existingApprovalId = '22222222-2222-4222-8222-222222222222'
-    const freshSpill = '/tmp/dsh-acp-snap-012345678/session-111111111111/222222222222-bash.txt'
-    const existingSpill = '/tmp/dsh-acp-snap-012345678/session-aaaaaaaaaaaa/bbbbbbbbbbbb-bash.txt'
+    const freshSpill = '/tmp/alego-acp-snap-012345678/session-111111111111/222222222222-bash.txt'
+    const existingSpill = '/tmp/alego-acp-snap-012345678/session-aaaaaaaaaaaa/bbbbbbbbbbbb-bash.txt'
     const freshEventRead = [
       'Session main — title',
       'Target event seq 4:',

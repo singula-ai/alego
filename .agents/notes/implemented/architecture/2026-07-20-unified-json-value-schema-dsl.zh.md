@@ -10,7 +10,7 @@ Status: implemented
 
 ## 决策
 
-`dsh-tools` 以两种表示形式统一管理一套 JSON 值 schema 词汇。`ValueSchemaSpec` 是可描述任意 JSON 根类型的作者侧形式；`ParameterSchemaSpec` 是其隐式对象属性映射形式，每个属性可标记 `required: true`。`JsonSchemaNode` 是原始协议形式。两种形式都支持字符串、有限数值、整数、布尔值、null、数组、对象、类型正确的标量 `enum`／`const`，以及要求恰好匹配一个分支的 `oneOf`；`{ type: 'json' }` 仅是作者侧语法糖，会编译为仅含注解、不施加约束的原始节点。
+`alego-tools` 以两种表示形式统一管理一套 JSON 值 schema 词汇。`ValueSchemaSpec` 是可描述任意 JSON 根类型的作者侧形式；`ParameterSchemaSpec` 是其隐式对象属性映射形式，每个属性可标记 `required: true`。`JsonSchemaNode` 是原始协议形式。两种形式都支持字符串、有限数值、整数、布尔值、null、数组、对象、类型正确的标量 `enum`／`const`，以及要求恰好匹配一个分支的 `oneOf`；`{ type: 'json' }` 仅是作者侧语法糖，会编译为仅含注解、不施加约束的原始节点。
 
 显式的作者侧对象必须声明 `additionalProperties: true | false`。隐式参数根对象和原始 JSON Schema 保留标准的默认开放语义。schema 记录只能包含自有且可枚举的字符串键，schema 数组必须是稠密的内建数组，系统只从自有属性读取受支持的关键字；因此，自定义原型、继承的约束、symbol 和 JSON 不可见的附加内容都无法让编译、投影和校验观察到不同的声明。内建的普通 Object 和 Array 容器跨 JavaScript 运行域后仍视为普通容器，而子类和伪造构造函数的原型仍视为非普通对象。
 

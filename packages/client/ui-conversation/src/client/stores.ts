@@ -2,7 +2,7 @@
  * Per-session chat store shared by conversation and details registrations.
  * The plugin creates its handle at apply time so identity follows the fiber.
  */
-import { defineStore, type EngineStoreHandle } from '@deepseek-ai/dsh-client-runtime/client'
+import { defineStore, type EngineStoreHandle } from '@alego/client-runtime/client'
 import type { CallId, ChatStoreState, SelectionTarget } from './contract/views.ts'
 
 /** Declared action shape used to give the exported factory a stable return type. */
@@ -23,7 +23,7 @@ export function createChatStore(): EngineStoreHandle<ChatStoreState, ChatActions
     // PropsStore<ChatStore>'s SnapshotSelectorHook<ChatStoreState>, so init
     // and the contract cannot drift.
     init: (): ChatStoreState => ({ selection: null, draft: '', view: null, inspect: null }),
-    persist: 'dsh.conversation.chat',
+    persist: 'alego.conversation.chat',
     actions: {
       select: (d, target: SelectionTarget | null) => { d.selection = target },
       setDraft: (d, text: string) => { d.draft = text },

@@ -1,6 +1,6 @@
-/** JSON string-prefix accounting for the outer-output ledger. @module @deepseek-ai/dsh-code-runtime-worker-thread/output-json */
+/** JSON string-prefix accounting for the outer-output ledger. @module @alego/code-runtime-worker-thread/output-json */
 
-import type { CodeJsonValue } from '@deepseek-ai/dsh-code-runtime'
+import type { CodeJsonValue } from '@alego/code-runtime'
 
 type IntrinsicCallable = (this: unknown, ...args: unknown[]) => unknown
 

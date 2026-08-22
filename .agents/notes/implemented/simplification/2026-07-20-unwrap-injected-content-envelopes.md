@@ -17,7 +17,7 @@ Two problems:
 
 Injected session content projects verbatim; the caller owns any framing. `deriveEventMessage` renders `user/message` content blocks to the model unchanged; `source` stays in the durable event log but does not render.
 
-The `ContextEnvelope` type and every `envelope` field are removed — `context/message` in `SessionEventMap`, `InjectOptions`, `HookContext`, and the `inject()`/`additionalContexts` plumbing in `dsh-agent-loop`. `agent-instructions` no longer requests `'raw'`; its self-framed content renders as before. The `renderTagged`/`renderContextEnvelope` helpers are deleted. `context/message.meta` still carries durable, model-hidden JSON state.
+The `ContextEnvelope` type and every `envelope` field are removed — `context/message` in `SessionEventMap`, `InjectOptions`, `HookContext`, and the `inject()`/`additionalContexts` plumbing in `alego-agent-loop`. `agent-instructions` no longer requests `'raw'`; its self-framed content renders as before. The `renderTagged`/`renderContextEnvelope` helpers are deleted. `context/message.meta` still carries durable, model-hidden JSON state.
 
 The `source` attribution the envelopes carried is not lost — it remains on the durable events; it simply no longer renders into the transcript.
 

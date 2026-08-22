@@ -22,7 +22,7 @@ The controls answer different questions:
 | `toolFilter` | Which deployment-global tools enter this child's visible tool view? | A scoped restriction filters globals before child-local tools are added |
 | `maxDepth` | How deep may this delegation tree grow? | A start whose child depth exceeds the absolute cap is rejected |
 
-`dsh-tool-subagent` exposes the controls as plugin configuration and copies them into each request it creates. Direct `SubagentRuntime` callers may choose them per request. The provider capability descriptor remains the source of truth for whether a backend can honor each field.
+`alego-tool-subagent` exposes the controls as plugin configuration and copies them into each request it creates. Direct `SubagentRuntime` callers may choose them per request. The provider capability descriptor remains the source of truth for whether a backend can honor each field.
 
 ### Persona is a scoped shadow
 
@@ -53,7 +53,7 @@ The depth limit bounds recursive delegation independently of tool visibility. A 
 
 The effective parent depth is the greater of durable `SessionHeader.delegationDepth` and runtime `AgentOptions.subagentDepth`. An in-process child records its derived depth in the session header, and resume restores that header, so a restart cannot lower the recursion count.
 
-Every public entry validates the domain rather than relying on one model-facing configuration path. Negative values, fractions, negative zero, non-finite values, unsafe integers, malformed stored parent depth, and derived overflow all reject. A direct `SubagentStartRequest` may omit the cap to leave depth unbounded; loader-resolved `dsh-tool-subagent` configuration instead defaults to `3`, accepts a numeric override, and uses explicit `'provider-managed'` to omit the cap for an out-of-process provider whose deployment owns its recursion budget. Three is a small finite default that still permits a root plus three descendant generations: the [JSON-RPC example](../../../../examples/jsonrpc-agent/cordis.yml) uses that general policy, while the ACP and headless examples pin one. A numeric tool cap fails at provider mount when the provider lacks `depthLimit`.
+Every public entry validates the domain rather than relying on one model-facing configuration path. Negative values, fractions, negative zero, non-finite values, unsafe integers, malformed stored parent depth, and derived overflow all reject. A direct `SubagentStartRequest` may omit the cap to leave depth unbounded; loader-resolved `alego-tool-subagent` configuration instead defaults to `3`, accepts a numeric override, and uses explicit `'provider-managed'` to omit the cap for an out-of-process provider whose deployment owns its recursion budget. Three is a small finite default that still permits a root plus three descendant generations: the [JSON-RPC example](../../../../examples/jsonrpc-agent/cordis.yml) uses that general policy, while the ACP and headless examples pin one. A numeric tool cap fails at provider mount when the provider lacks `depthLimit`.
 
 A deployment can combine depth and filtering, but the numeric cap does not synthesize a filter. The delegation tool stays visible at the cap because authorization may depend on runtime state; every attempted start checks the calling agent's current durable and runtime depth, and a rejected start returns an errored tool result without publishing a child. A deployment may separately deny delegation tools in children when its visibility policy is static. Neither choice changes the provider's conversation-history behavior.
 

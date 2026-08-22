@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { AttachmentStore } from '@deepseek-ai/dsh-attachment'
-import { admitEncodedImages } from '@deepseek-ai/dsh-attachment'
-import type { ImageAttachmentRef, SaveImageAttachment } from '@deepseek-ai/dsh-attachment/types'
+import type { AttachmentStore } from '@alego/attachment'
+import { admitEncodedImages } from '@alego/attachment'
+import type { ImageAttachmentRef, SaveImageAttachment } from '@alego/attachment/types'
 
 const PNG = 'AAAA' // canonical base64, 3 bytes
 

@@ -27,7 +27,7 @@ The same-session hierarchy is **Goal → Goal Round → Turn → Step**. A goal 
 
 The fresh-agent hierarchy is **Ralph Run → Ralph Round → fresh child Turn → Step**. One Ralph round creates one child session. The parent transcript and prior child transcripts are not seed context; the shared workspace and one bounded structured report carry cross-round state.
 
-“Round” is therefore an outer policy iteration, not a synonym for every session turn. The concrete `dsh-agent-loop` remains the turn/step engine. The same-session driver uses public agent and session events; its only core addition is the generic observe-before-cancel `agent/cancel-requested` notification needed by any lifecycle policy that must settle cancellation safely.
+“Round” is therefore an outer policy iteration, not a synonym for every session turn. The concrete `alego-agent-loop` remains the turn/step engine. The same-session driver uses public agent and session events; its only core addition is the generic observe-before-cancel `agent/cancel-requested` notification needed by any lifecycle policy that must settle cancellation safely.
 
 Time-based `/loop` or scheduled execution is a third policy and is not implemented by this decision. It belongs with a scheduler rather than either goal family.
 
@@ -35,12 +35,12 @@ Time-based `/loop` or scheduled execution is a third policy and is not implement
 
 | Package | Repository category | Owned structures and verbs |
 |---|---|---|
-| `@deepseek-ai/dsh-goal` | `packages/goal/goal/`, domain service | Owns `GoalId`, compare-and-set `GoalRef`, `GoalSnapshot`, four-state `GoalPhase`, structured `GoalBlockReason`, process-local `GoalActivation`, replay folding, and `get`, `create`, `edit`, `pause`, `resume`, `complete`, `block`, `clear`, and `disarm` verbs. |
-| `@deepseek-ai/dsh-tool-goal` | `packages/goal/tool-goal/`, model-facing consumer | Registers exclusive `get_goal`, `create_goal`, and `update_goal`; requires a direct human message in a live root-agent turn and narrows autonomous-round authority to completion or blocking reports with machine-routable reason codes. |
-| `@deepseek-ai/dsh-goal-round-driver` | `packages/goal/goal-round-driver/`, continuation policy | Reserves, fences, admits, attributes, settles, cancels, and quiescently drains same-session goal rounds without importing the concrete loop. |
-| `@deepseek-ai/dsh-commands` | `packages/interaction/commands/`, UI registry | Owns `CommandDefinition`, discovery, scoped registration, direct dispatch, `CommandResult`, and request cancellation for human-only commands. |
-| `@deepseek-ai/dsh-command-goal` | `packages/goal/command-goal/`, human-command producer | Registers `/goal` status, creation, edit, pause, resume, and clear over the goal domain for TUI. |
-| `@deepseek-ai/dsh-tool-ralph` | `packages/workflow/tool-ralph/`, fixed workflow consumer | Registers `ralph({ objective, maxRounds? })`, validates the fresh structured provider and bounded `RalphRoundReport`, and returns `complete`, `blocked`, or `budget-limited`. |
+| `@alego/goal` | `packages/goal/goal/`, domain service | Owns `GoalId`, compare-and-set `GoalRef`, `GoalSnapshot`, four-state `GoalPhase`, structured `GoalBlockReason`, process-local `GoalActivation`, replay folding, and `get`, `create`, `edit`, `pause`, `resume`, `complete`, `block`, `clear`, and `disarm` verbs. |
+| `@alego/tool-goal` | `packages/goal/tool-goal/`, model-facing consumer | Registers exclusive `get_goal`, `create_goal`, and `update_goal`; requires a direct human message in a live root-agent turn and narrows autonomous-round authority to completion or blocking reports with machine-routable reason codes. |
+| `@alego/goal-round-driver` | `packages/goal/goal-round-driver/`, continuation policy | Reserves, fences, admits, attributes, settles, cancels, and quiescently drains same-session goal rounds without importing the concrete loop. |
+| `@alego/commands` | `packages/interaction/commands/`, UI registry | Owns `CommandDefinition`, discovery, scoped registration, direct dispatch, `CommandResult`, and request cancellation for human-only commands. |
+| `@alego/command-goal` | `packages/goal/command-goal/`, human-command producer | Registers `/goal` status, creation, edit, pause, resume, and clear over the goal domain for TUI. |
+| `@alego/tool-ralph` | `packages/workflow/tool-ralph/`, fixed workflow consumer | Registers `ralph({ objective, maxRounds? })`, validates the fresh structured provider and bounded `RalphRoundReport`, and returns `complete`, `blocked`, or `budget-limited`. |
 
 The detailed contracts live in the [goal-domain](2026-07-19-persisted-same-session-goal-domain.md), [goal-owned event](../architecture/2026-07-31-goal-owned-durable-events.md), [model goal-tools](2026-07-19-model-facing-goal-tools.md), [goal-round driver](2026-07-19-same-session-goal-round-driver.md), [command registry](2026-07-19-plugin-command-registration.md), [human goal-command](2026-07-19-human-goal-command.md), and [Ralph workflow-tool](2026-07-19-fresh-agent-ralph-workflow-tool.md) Agent Notes.
 
@@ -74,7 +74,7 @@ TUI mounts the shared command registry and complete goal stack by default and ex
 
 ### Fresh-agent Ralph execution
 
-Ralph is a first-class model tool in its own plugin, demonstrating that a sophisticated fixed execution policy can be composed without a new loop core. The plugin owns a fixed workflow script over `ctx.workflowEngine` and `ctx.subagents`; it does not create session-goal state or add a branch to `dsh-agent-loop`.
+Ralph is a first-class model tool in its own plugin, demonstrating that a sophisticated fixed execution policy can be composed without a new loop core. The plugin owns a fixed workflow script over `ctx.workflowEngine` and `ctx.subagents`; it does not create session-goal state or add a branch to `alego-agent-loop`.
 
 Each round uses an explicit `WorkflowStartRequest.subagentProvider`, defaulting to `spawn`. The provider must exist, support structured output, and declare that it does not inherit parent context. Ralph also passes its resolved round cap as `WorkflowStartRequest.maxTotalAgents`; the worker engine validates both per-run policies before publishing work, so provider misconfiguration or an engine ceiling below the requested Ralph scale fails before a run exists. The child inherits cwd and lineage but receives only the immutable objective, round/cap, workspace-as-authority instruction, and previous normalized report.
 

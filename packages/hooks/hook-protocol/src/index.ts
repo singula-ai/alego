@@ -3,7 +3,7 @@
  * decoding, restrictive outcome merging, durable event helpers, and detached
  * run quiescence. Claude Code and Codex bridges own their distinct payloads,
  * environment rules, matcher mode, and typed extension-point mappings.
- * @module @deepseek-ai/dsh-hook-protocol
+ * @module @alego/hook-protocol
  */
 
 export type {

@@ -1,4 +1,4 @@
-# `@deepseek-ai/dsh-llm-mock-server`
+# `@alego/llm-mock-server`
 
 [English](README.md) | 中文
 
@@ -23,7 +23,7 @@ pnpm run mock:llm -- \
 ```sh
 DEEPSEEK_BASE_URL=http://127.0.0.1:8000/v1 \
 DEEPSEEK_API_KEY=mock-key \
-pnpm dsh --profile headless "test provider recovery"
+pnpm alego --profile headless "test provider recovery"
 ```
 
 仓库脚本将 JSONL 写入 stdout：`ready` 记录携带以 `/v1` 结尾的基础 URL 和随机种子，后续请求/结果记录同时命名脚本行为和实际选中的具体行为。这个私有支持包不公开可安装的二进制命令。

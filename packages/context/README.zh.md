@@ -2,7 +2,7 @@
 
 [English](README.md) | 中文
 
-在不定义工具的情况下添加模型可见的请求上下文的产品插件。`agent-instructions` 包含在默认 `dsh-agent-spine-demo` 组合包中，可通过组合包配置禁用；`time-context`、`tmux-context`、`session-reference`、`file-reference` 和 `file-reference-local` 需主动启用。
+在不定义工具的情况下添加模型可见的请求上下文的产品插件。`agent-instructions` 包含在默认 `alego-agent-spine-demo` 组合包中，可通过组合包配置禁用；`time-context`、`tmux-context`、`session-reference`、`file-reference` 和 `file-reference-local` 需主动启用。
 
 | 包 | 职责 | ctx key |
 |---|---|---|

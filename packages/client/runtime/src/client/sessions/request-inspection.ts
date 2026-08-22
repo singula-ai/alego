@@ -1,4 +1,4 @@
-import type { ContentBlock, ToolSchema } from '@deepseek-ai/dsh-llm/types'
+import type { ContentBlock, ToolSchema } from '@alego/llm/types'
 import type {
   AssistantProvenanceView, AssistantRequestConfig,
 } from './conversation.ts'

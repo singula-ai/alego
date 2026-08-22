@@ -9,16 +9,16 @@
  * factory in the OWNING package (a plain cast inside — zero runtime cost);
  * comparison, logging, and serialization all behave as ordinary strings.
  *
- * Policy: a package brands the ids it owns — `CallId` in dsh-llm (tool-call
- * correlation), the shared agent/session `SessionId` in dsh-session, and
- * `JobId` in dsh-jobs. Branding is for ids that cross package boundaries and
+ * Policy: a package brands the ids it owns — `CallId` in alego-llm (tool-call
+ * correlation), the shared agent/session `SessionId` in alego-session, and
+ * `JobId` in alego-jobs. Branding is for ids that cross package boundaries and
  * could plausibly be confused; not every string needs a brand.
  * This package owns ONLY the primitive — no concrete id, no runtime code beyond
  * the (erased) type — so the brand vocabulary stays dependency-free and a
  * package can brand its ids without depending on an unrelated capability
  * package.
  *
- * @module @deepseek-ai/dsh-brand
+ * @module @alego/brand
  */
 
 declare const BRAND: unique symbol

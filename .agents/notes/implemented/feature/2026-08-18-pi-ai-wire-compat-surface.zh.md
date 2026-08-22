@@ -48,5 +48,5 @@ pi-ai 依据提供方 id 与 baseURL 决定每个请求的形状——系统提�
 - pi-ai 升级新增 compat 字段会使构建失败，直到有人为它做出分类——`chatTemplateKwargs` 与那两个 `chat-template` 格式正是因此不再是一项长期例外。
 - 未知 compat 键并入了其余所有配置错误的失败模型。相对此前静默丢弃的改善程度受 settings seam 限制：外部文件编辑仍会保留其上一个有效值并告警，因此运维拿到的信号是一次重启，而不是那次写入。
 - **搁置而非解决：** 改指 `api` 且完全未配置 compat 的路由，会经模型字面量的 `...base` 展开保留已安装条目的 `compat`，且形状属于**另一个**协议。多个 compat 类型共有的字段（`supportsLongCacheRetention`、`sendSessionAffinityHeaders`）因而会跨协议串味。它早于本面存在——其所依附的提前返回本就在那里——留给独立的一次改动处理。
-- **搁置而非解决：** `publish()` 对被拒绝的已存 section 只通过 `ctx.logger.warn` 报告，没有面向用户的通道。它影响每一个 settings namespace，归属 `dsh-settings`。
+- **搁置而非解决：** `publish()` 对被拒绝的已存 section 只通过 `ctx.logger.warn` 报告，没有面向用户的通道。它影响每一个 settings namespace，归属 `alego-settings`。
 - [[2026-08-08-pi-ai-per-model-reasoning-declarations]] 被部分取代：其 compat 作用域的陈述在此重述，而其 `reasoningEfforts` 形状、该形状所击败的备选方案以及 `modelOverrides` 仍是当前权威。

@@ -1,10 +1,10 @@
 /** Test adapter for the production conversation.details.tool registration. */
-import type { HostDescription } from '@deepseek-ai/dsh-client-connection/client'
+import type { HostDescription } from '@alego/client-connection/client'
 import type {
   ChatConversationViewNode, ChatSnapshot, ConversationNode, RunningToolCall, SessionId,
-} from '@deepseek-ai/dsh-client-runtime/client'
-import type { SessionProviderComponent, TranslateNS } from '@deepseek-ai/dsh-client-ui-slots'
-import type { DetailsSlotProps, DetailsToolOwnerProps } from '@deepseek-ai/dsh-client-ui-conversation/src/client/contract/slots.ts'
+} from '@alego/client-runtime/client'
+import type { SessionProviderComponent, TranslateNS } from '@alego/client-ui-slots'
+import type { DetailsSlotProps, DetailsToolOwnerProps } from '@alego/client-ui-conversation/src/client/contract/slots.ts'
 import { ToolDetails } from '../src/client/tool/ToolDetails.tsx'
 
 /** Framework session-area seat used by direct DetailsPanel tests. */

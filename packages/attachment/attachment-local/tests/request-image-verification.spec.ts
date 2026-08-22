@@ -1,7 +1,7 @@
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@alego/cordis'
 import sharp from 'sharp'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
@@ -29,9 +29,9 @@ afterEach(async () => {
 
 describe('request image verification', () => {
   it('rejects an encoded request whose decoded facts disagree with the encoder result', async () => {
-    const dshHome = await mkdtemp(join(tmpdir(), 'dsh-request-verification-'))
-    homes.push(dshHome)
-    const attachments = new LocalAttachmentStore(new Context(), { dshHome })
+    const alegoHome = await mkdtemp(join(tmpdir(), 'alego-request-verification-'))
+    homes.push(alegoHome)
+    const attachments = new LocalAttachmentStore(new Context(), { alegoHome })
     const source = new Uint8Array(await sharp({
       create: { width: 64, height: 32, channels: 3, background: { r: 12, g: 34, b: 56 } },
     }).png().toBuffer())

@@ -10,7 +10,7 @@ Status: implemented
 
 ## 决策
 
-一个 preset 是**每进程**一份组装，而不是每会话一份。roster 在一个合成常驻 scope 下挂载它一次；每个 agent 通过把自己的 scope key 绑定到挂载的 key（`bindScopeParent(agentKey, standingKey)`）加入。两条 `dsh-scope` 机制承载了一切：注册视图沿父链解析（`agent → preset → global`，近者遮蔽远者），带作用域的分发对标签为载体键祖先的监听器放行——只向上，兄弟 preset 的监听器保持失聪。
+一个 preset 是**每进程**一份组装，而不是每会话一份。roster 在一个合成常驻 scope 下挂载它一次；每个 agent 通过把自己的 scope key 绑定到挂载的 key（`bindScopeParent(agentKey, standingKey)`）加入。两条 `alego-scope` 机制承载了一切：注册视图沿父链解析（`agent → preset → global`，近者遮蔽远者），带作用域的分发对标签为载体键祖先的监听器放行——只向上，兄弟 preset 的监听器保持失聪。
 
 ## 后果
 

@@ -238,9 +238,9 @@ Below are representative examples of common problems and their corrections. Foll
 - Good: `类型化的服务 seam 与显式扩展点`
 
 ### Slang/jargon → Professional phrasing
-- Source: `The committed agent workflow lives in .agents/skills/dsh-translate-docs`
-- Bad: `进仓的 agent 工作流见 .agents/skills/dsh-translate-docs`
-- Good: `仓库内置的 agent 工作流见 .agents/skills/dsh-translate-docs`
+- Source: `The committed agent workflow lives in .agents/skills/alego-translate-docs`
+- Bad: `进仓的 agent 工作流见 .agents/skills/alego-translate-docs`
+- Good: `仓库内置的 agent 工作流见 .agents/skills/alego-translate-docs`
 
 ### "For humans" — translate the intent, not the word
 - Source: `For humans, start with the development guide`

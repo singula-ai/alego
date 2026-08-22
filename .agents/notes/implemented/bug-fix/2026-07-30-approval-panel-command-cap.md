@@ -14,11 +14,11 @@ The InputBar the panel replaces has always been capped (14 lines, then the texta
 
 The panel's justification and command move into one scroll region (`data-approval-scroll`) capped at the same height as the composer's draft area; the amber strip and the action row sit outside it, so both buttons are in the card at every content length.
 
-The cap is one value with two consumers, declared as `--dsh-composer-text-max-height: 336px` on `ConversationRoot`'s `.composerSeat` — the composer chain's only shared ancestor, since the fallback InputBar and an elected takeover render as siblings. `InputBar`'s draft scrollport and the panel's scroll region both read it, so the seat cannot cap its two states differently: what the designer asked for ("unify it with the input box's max height") is now a fact of the stylesheet rather than a number repeated in two files. The region is `box-sizing: border-box` so the cap is its outer height, the same box the composer's draft area occupies.
+The cap is one value with two consumers, declared as `--alego-composer-text-max-height: 336px` on `ConversationRoot`'s `.composerSeat` — the composer chain's only shared ancestor, since the fallback InputBar and an elected takeover render as siblings. `InputBar`'s draft scrollport and the panel's scroll region both read it, so the seat cannot cap its two states differently: what the designer asked for ("unify it with the input box's max height") is now a fact of the stylesheet rather than a number repeated in two files. The region is `box-sizing: border-box` so the cap is its outer height, the same box the composer's draft area occupies.
 
 The region is a tab stop (`tabIndex={0}`, named `role="group"`). Unlike the question composer's scroll body, whose option rows are focusable and pull the container along, this one holds nothing but text: without its own tab stop a keyboard-only user could reach the buttons and never the command's tail, and approve what they could not finish reading.
 
-The panel's card rebinds `--dsh-scrollbar-thumb{,-hover}` to the l2 pair, as every scrolling surface on an elevated background must ([scrollbar contract](../../../../packages/client/ui-theme/src/styles/scrollbar.css)).
+The panel's card rebinds `--alego-scrollbar-thumb{,-hover}` to the l2 pair, as every scrolling surface on an elevated background must ([scrollbar contract](../../../../packages/client/ui-theme/src/styles/scrollbar.css)).
 
 ## Alternatives considered
 

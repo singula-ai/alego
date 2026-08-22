@@ -1,8 +1,8 @@
-# @deepseek-ai/dsh-jobs
+# @alego/jobs
 
 English | [中文](README.zh.md)
 
-The background job registry contract (`ctx.jobs`). The abstract `JobRegistry` and its vocabulary types give long-running producers shared ids, owner isolation, reads, cancellation, waiting, notices, and cleanup under one contract; the process-local registry lives in [`dsh-jobs-local`](../jobs-local/README.md). Producer plugins extend `JobKindMap` with their opaque id namespace.
+The background job registry contract (`ctx.jobs`). The abstract `JobRegistry` and its vocabulary types give long-running producers shared ids, owner isolation, reads, cancellation, waiting, notices, and cleanup under one contract; the process-local registry lives in [`alego-jobs-local`](../jobs-local/README.md). Producer plugins extend `JobKindMap` with their opaque id namespace.
 
 ## Service contract
 
@@ -27,7 +27,7 @@ See the [job type catalog](../../../docs/subsystems/jobs.md), the [runtime Agent
 
 ## Model Experience
 
-Indirectly, through producer plugins and [`dsh-tool-jobs`](../tool-jobs/README.md), which render job ids, output, status, cancellation, and completion notices.
+Indirectly, through producer plugins and [`alego-tool-jobs`](../tool-jobs/README.md), which render job ids, output, status, cancellation, and completion notices.
 
 #### KV Cache effect
 

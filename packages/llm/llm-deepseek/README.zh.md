@@ -1,10 +1,10 @@
-# @deepseek-ai/dsh-llm-deepseek
+# @alego/llm-deepseek
 
 [English](README.md) | 中文
 
 harness LLM（大语言模型）seam 的 DeepSeek chat-completions 适配器：直接 `fetch` + SSE（Server-Sent Events，由 `eventsource-parser` 分帧），将官方协议格式（wire format；真源：API 文档 guides/thinking_mode、guides/tool_calls、api/create-chat-completion）转换为 `StreamChunk` 协议。
 
-同一 seam 的第二个基于库的实现位于 `@deepseek-ai/dsh-llm-pi-ai`。本包拥有 `deepseek-official` 提供方路由——刻意区别于 pi-ai 的 catalog 名称 `deepseek`，因此同一组合可以并排挂载两条 DeepSeek 路径；而为 `deepseek-official` 本身注册另一个适配器仍会抛出 `LlmError('DUPLICATE_ADAPTER')`。
+同一 seam 的第二个基于库的实现位于 `@alego/llm-pi-ai`。本包拥有 `deepseek-official` 提供方路由——刻意区别于 pi-ai 的 catalog 名称 `deepseek`，因此同一组合可以并排挂载两条 DeepSeek 路径；而为 `deepseek-official` 本身注册另一个适配器仍会抛出 `LlmError('DUPLICATE_ADAPTER')`。
 
 包根入口导出 Cordis 插件约定与 `DeepSeekAdapter`；协议序列化、SSE 解析与分片转换 helper 不属于该根约定。
 
@@ -12,7 +12,7 @@ harness LLM（大语言模型）seam 的 DeepSeek chat-completions 适配器：�
 
 ```yaml
 - id: llm-deepseek
-  name: '@deepseek-ai/dsh-llm-deepseek'
+  name: '@alego/llm-deepseek'
   config:
     apiKeyEnv: DEEPSEEK_API_KEY  # default; resolved per request via ctx.credentials, then the environment
     baseURL: https://api.deepseek.com # optional; $DEEPSEEK_BASE_URL then the public API when omitted
@@ -58,9 +58,9 @@ harness LLM（大语言模型）seam 的 DeepSeek chat-completions 适配器：�
 
 内联回退使用独立的 base64 预算。`maxInlineRequestImageBytes` 默认为 20MiB，`inlineImageOffloadByteQuantum` 默认为 10MiB，因此由 21 个 1MiB base64 负载组成的历史会移除最旧的 11 个并保留 10MiB。计算使用 base64 膨胀后的长度。系统逐字节复用已经准备好的请求版本；回退不会再次解码或压缩图片。前面图片已经成功写入的上传映射会保留，供后续请求复用。
 
-上传 ID 按端点和 API key 作用域以及请求 `variantId` 记录在 `DSH_HOME` 下。变体身份覆盖规范化附件 ID、变换策略版本、路由像素和字节预算及编码参数，因此 Files API 和内联回退引用同一份确定性字节。上传默认请求 7 天有效期，并保存服务端返回的 `expires_at`。本地映射剩余时间不超过一小时时会在使用前替换；适配器不会在每次 chat 前查询远端文件。如果 chat 报告文件 ID 已过期、删除、缺失或无效，并指出本次请求使用的一个或多个 ID，适配器只删除这些映射。如果响应只说明文件状态失效而没有指出 ID，适配器会删除该次 chat 使用的全部文件映射。随后重新上传受影响的请求版本，并重试一次 chat。第二次 chat 仍报告文件失效时，适配器会按该响应清理映射并返回错误，不会发起第三次 chat。上传响应若没有完整文件对象、匹配的字节数和 `expires_at`，就不会写入索引；后续请求会再次上传，而不是信任不一致的本地状态。本地上传索引格式损坏时按空缓存处理，并由下一次成功上传替换。文件解析包括本地索引访问和远端上传，默认每张图片的时限为一分钟。默认的 stream idle 时限为五分钟，因此通常有时间执行内联回退；部署可以设置更短的 stream idle 时限，让外层时限先终止请求。每次成功解析都会刷新外层 idle watchdog。任何解析失败都会把该请求切换到内联模式；显式公共文件管理操作仍会报告自身错误。
+上传 ID 按端点和 API key 作用域以及请求 `variantId` 记录在 `ALEGO_HOME` 下。变体身份覆盖规范化附件 ID、变换策略版本、路由像素和字节预算及编码参数，因此 Files API 和内联回退引用同一份确定性字节。上传默认请求 7 天有效期，并保存服务端返回的 `expires_at`。本地映射剩余时间不超过一小时时会在使用前替换；适配器不会在每次 chat 前查询远端文件。如果 chat 报告文件 ID 已过期、删除、缺失或无效，并指出本次请求使用的一个或多个 ID，适配器只删除这些映射。如果响应只说明文件状态失效而没有指出 ID，适配器会删除该次 chat 使用的全部文件映射。随后重新上传受影响的请求版本，并重试一次 chat。第二次 chat 仍报告文件失效时，适配器会按该响应清理映射并返回错误，不会发起第三次 chat。上传响应若没有完整文件对象、匹配的字节数和 `expires_at`，就不会写入索引；后续请求会再次上传，而不是信任不一致的本地状态。本地上传索引格式损坏时按空缓存处理，并由下一次成功上传替换。文件解析包括本地索引访问和远端上传，默认每张图片的时限为一分钟。默认的 stream idle 时限为五分钟，因此通常有时间执行内联回退；部署可以设置更短的 stream idle 时限，让外层时限先终止请求。每次成功解析都会刷新外层 idle watchdog。任何解析失败都会把该请求切换到内联模式；显式公共文件管理操作仍会报告自身错误。
 
-同一作用域和 `variantId` 的并发解析共享一次 Files 上传，每个等待方可以单独取消。一次上传配额错误会先分页收集配置数量的最旧 `dsh-` 文件，再删除这些文件并重试一次上传。`DeepSeekFilesClient.delete`、`DeepSeekFileStore.release` 和 `releaseAll` 提供主动远端空间回收。本包记录的当前提供方限制为 Files 单次上传 128MiB、chat 单图引用 32MiB、每个 API key 最多 10,000 个文件和 25GiB；默认 1MiB 请求版本低于两个单文件上限。
+同一作用域和 `variantId` 的并发解析共享一次 Files 上传，每个等待方可以单独取消。一次上传配额错误会先分页收集配置数量的最旧 `alego-` 文件，再删除这些文件并重试一次上传。`DeepSeekFilesClient.delete`、`DeepSeekFileStore.release` 和 `releaseAll` 提供主动远端空间回收。本包记录的当前提供方限制为 Files 单次上传 128MiB、chat 单图引用 32MiB、每个 API key 最多 10,000 个文件和 25GiB；默认 1MiB 请求版本低于两个单文件上限。
 
 `contextWindow` 对每个已配置模型都可选，不会通过建议 catalog 公开。`ctx.llm.resolveModelInfo('deepseek-official', model).context` 先返回精确模型值，再对不含容量的配置项或未列出原样传递 id 返回 `defaultContextWindow`。适配器默认值为 1,000,000；因此，压力敏感插件可以获得由部署决定的容量，不会将模型 selector 视为权威。为 `deepseek-official` 注册另一个适配器会抛出 `LlmError('DUPLICATE_ADAPTER')`。
 
@@ -70,7 +70,7 @@ harness LLM（大语言模型）seam 的 DeepSeek chat-completions 适配器：�
 
 `thinking: disabled` 是部署锁定：它只公布 `off`，并以 `off` 为默认值。省略 `reasoningEffort` 或将其配置为 `off` 均有效；配置 `low`、`high` 或 `max` 会使插件加载失败，直接按请求启用思考也会在网络 I/O 前失败。携带 `GenerateOptions.purpose: 'session-title'` 的请求也会强制禁用思考并省略已解析的推理强度，将有界输出保留给可见标题文本，不改变会话或压缩（compaction）默认值。
 
-`streamIdleTimeoutMs` 会限制每次未完成提供方读取，包括初始 `fetch`，但不计入消费方在分片间花费的时间。DeepSeek SSE 注释和成功的文件解析会作为传输活动使尚未完成的读取重新计时，但绝不会成为 `StreamChunk` 值或会话日志事件。同一个稳定的 abort 信号会在整个调用期间传递给请求与 body reader；过期会停止传输并抛出 `LlmError('TIMEOUT')`，较早的调用方 abort 则抛出 `LlmError('ABORTED')`。适配器通常每次 `stream()` 调用发起一次 chat 请求，只有失效文件恢复会发起第二次。首次 chat 前的文件解析失败会发送一次内联请求。如果失效文件响应后的替换解析失败，该内联请求就是唯一允许的重试。适配器把已配置重试策略注册为提供方元数据，再由 `dsh-llm-retry` 在持久化的 agent（智能体）步骤边界单独执行该策略。
+`streamIdleTimeoutMs` 会限制每次未完成提供方读取，包括初始 `fetch`，但不计入消费方在分片间花费的时间。DeepSeek SSE 注释和成功的文件解析会作为传输活动使尚未完成的读取重新计时，但绝不会成为 `StreamChunk` 值或会话日志事件。同一个稳定的 abort 信号会在整个调用期间传递给请求与 body reader；过期会停止传输并抛出 `LlmError('TIMEOUT')`，较早的调用方 abort 则抛出 `LlmError('ABORTED')`。适配器通常每次 `stream()` 调用发起一次 chat 请求，只有失效文件恢复会发起第二次。首次 chat 前的文件解析失败会发送一次内联请求。如果失效文件响应后的替换解析失败，该内联请求就是唯一允许的重试。适配器把已配置重试策略注册为提供方元数据，再由 `alego-llm-retry` 在持久化的 agent（智能体）步骤边界单独执行该策略。
 
 ## 动态配置（settings + credentials）
 
@@ -86,9 +86,9 @@ harness LLM（大语言模型）seam 的 DeepSeek chat-completions 适配器：�
 
 ## 应用归因
 
-每个 chat 和 Files API 请求都携带 dsh-llm `attributionHeaders()` 的共享归因标头，即用于识别 harness 的必需 `User-Agent` 基线（见 [dsh-llm § 应用归因](../llm/README.zh.md#app-attribution-attributionts)）。在该适配器约定（adapter contract）下，直接 DeepSeek 请求与 OpenAI 兼容 gateway 请求都不会获得提供方特定应用归因标头；OpenRouter 应用归因暂缓到未来的显式 OpenRouter 适配器或模式。`GenerateOptions.purpose` 为 `compaction` 的请求（dsh-compaction-basic 的辅助摘要调用）还会携带 `x-deepseek-harness-compact: 1`，让宿主可以将压缩流量与会话请求分开。
+每个 chat 和 Files API 请求都携带 alego-llm `attributionHeaders()` 的共享归因标头，即用于识别 harness 的必需 `User-Agent` 基线（见 [alego-llm § 应用归因](../llm/README.zh.md#app-attribution-attributionts)）。在该适配器约定（adapter contract）下，直接 DeepSeek 请求与 OpenAI 兼容 gateway 请求都不会获得提供方特定应用归因标头；OpenRouter 应用归因暂缓到未来的显式 OpenRouter 适配器或模式。`GenerateOptions.purpose` 为 `compaction` 的请求（alego-compaction-basic 的辅助摘要调用）还会携带 `x-alego-compact: 1`，让宿主可以将压缩流量与会话请求分开。
 
-DeepSeek 请求身份独立于应用归因。凭据解析成功后，每个提供方请求都会通过 `x-deepseek-harness-user-id` 携带来自 [`@deepseek-ai/dsh-anonymous-user-id`](../../identity/anonymous-user-id/README.zh.md) 的稳定匿名 id；携带 `GenerateOptions.sessionId` 的请求还会通过 `x-deepseek-harness-session-id` 发送该确切值，缺少会话的直接调用则省略会话标头。两个标头都会发送至解析后的 `baseURL`（包括已配置的 gateway），且不会进入请求正文或模型可见内容。
+DeepSeek 请求身份独立于应用归因。凭据解析成功后，每个提供方请求都会通过 `x-alego-user-id` 携带来自 [`@alego/anonymous-user-id`](../../identity/anonymous-user-id/README.zh.md) 的稳定匿名 id；携带 `GenerateOptions.sessionId` 的请求还会通过 `x-alego-session-id` 发送该确切值，缺少会话的直接调用则省略会话标头。两个标头都会发送至解析后的 `baseURL`（包括已配置的 gateway），且不会进入请求正文或模型可见内容。
 
 ## 协议格式说明
 

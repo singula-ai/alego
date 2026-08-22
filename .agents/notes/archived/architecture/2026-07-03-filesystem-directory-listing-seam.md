@@ -7,15 +7,15 @@ English | [中文](2026-07-03-filesystem-directory-listing-seam.zh.md)
 
 ## Problem
 
-`@deepseek-ai/dsh-fs` is the provider seam for filesystem access, with local and future non-local backends behind the same `ctx.fs` contract. Before this change it could resolve paths, stat targets, read text, stream text, write text, and edit text. That was enough for model-facing file tools, but not for non-model-facing consumers that need to enumerate directories without importing `node:fs`.
+`@alego/fs` is the provider seam for filesystem access, with local and future non-local backends behind the same `ctx.fs` contract. Before this change it could resolve paths, stat targets, read text, stream text, write text, and edit text. That was enough for model-facing file tools, but not for non-model-facing consumers that need to enumerate directories without importing `node:fs`.
 
-The immediate pressure came from skill loading: reading an individual `SKILL.md` can already go through `ctx.get('fs')`, but discovering which skill roots contain `<name>/SKILL.md` or `<name>.md` still needs directory enumeration. Adding directory listing only in `dsh-skill` would either keep a direct Node dependency there or invent a one-off local helper outside the filesystem provider stack.
+The immediate pressure came from skill loading: reading an individual `SKILL.md` can already go through `ctx.get('fs')`, but discovering which skill roots contain `<name>/SKILL.md` or `<name>.md` still needs directory enumeration. Adding directory listing only in `alego-skill` would either keep a direct Node dependency there or invent a one-off local helper outside the filesystem provider stack.
 
 This decision adds the provider capability without a model-facing `ls`/`list` tool or skill-discovery change. Those consumers require separate UX, prompt, and policy decisions.
 
 ## Decision
 
-Add `FileSystem.listDir(target, signal?)` to `@deepseek-ai/dsh-fs`.
+Add `FileSystem.listDir(target, signal?)` to `@alego/fs`.
 
 `listDir` lists one directory level only. It returns direct children in stable name order and includes:
 
@@ -41,7 +41,7 @@ Broken or disappeared children may be represented as `type: 'other'` without `ve
 
 **Add a model-facing list tool with the seam.** Rejected because its prompt, schema, and rendering contracts are independent of the provider primitive.
 
-**Keep directory enumeration in each consumer.** Rejected. That would bind product packages such as `dsh-skill` to Node/local filesystem behavior and bypass policy/remote/sandboxed backends.
+**Keep directory enumeration in each consumer.** Rejected. That would bind product packages such as `alego-skill` to Node/local filesystem behavior and bypass policy/remote/sandboxed backends.
 
 **Make `listDir` recursive or glob-shaped.** Rejected for now. Skill-root discovery only needs direct children, and a simple direct listing is the smallest backend contract future consumers can safely compose.
 

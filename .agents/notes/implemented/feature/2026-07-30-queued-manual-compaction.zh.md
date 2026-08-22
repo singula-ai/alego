@@ -18,7 +18,7 @@ Status: implemented
 
 ### `/compact` 是基于后端无关 seam 的命令
 
-`@deepseek-ai/dsh-command-compact` 通过 `ctx.commands` 注册一个无参数、面向用户的命令。它调用第三个抽象 `CompactionEngine` 操作 `compactNow(agent, signal)`，并把封闭的 `ManualCompactionError` 分类体系（`busy | changed | summary | commit | persistence`）映射为直接 UI 结果。`command/run` 和 `command/done` 保留命令生命周期，同时不进入模型历史，也不消耗模型循环轮次。
+`@alego/command-compact` 通过 `ctx.commands` 注册一个无参数、面向用户的命令。它调用第三个抽象 `CompactionEngine` 操作 `compactNow(agent, signal)`，并把封闭的 `ManualCompactionError` 分类体系（`busy | changed | summary | commit | persistence`）映射为直接 UI 结果。`command/run` 和 `command/done` 保留命令生命周期，同时不进入模型历史，也不消耗模型循环轮次。
 
 命令插件会独立跟踪每个实际处理器 promise，不依赖命令执行器的中止感知等待。其复合生命周期 effect 先注销 `/compact`，再异步等待所有已开始的处理器结算，因此根级 teardown 只有在后端的闭合与 flush 工作结算后才会完全停稳。
 
@@ -34,7 +34,7 @@ Status: implemented
 
 ### 一个参数化事务拥有每一对标记
 
-`dsh-compaction-basic` 只有一个区域事务，由标记归属值（`number | null`）、稳定性规则（整个会话表层或所选区段）与可选 flush 参数化。它按同一顺序执行：
+`alego-compaction-basic` 只有一个区域事务，由标记归属值（`number | null`）、稳定性规则（整个会话表层或所选区段）与可选 flush 参数化。它按同一顺序执行：
 
 1. 验证所选位置范围，并检查持久日志尾部；
 2. 拒绝活动的未匹配压缩标记；
@@ -53,7 +53,7 @@ Status: implemented
 
 Codex 将手动压缩建模为占用其活动轮次槽位的 `CompactionTask`，自动压缩则以内联方式运行。Pi 使用压缩 abort controller 是否存在作为 mutex，并仅在成功后追加压缩。Claude Code 的自动和手动路径共享同一个压缩例程，但会在摘要流结束后才构造边界。
 
-DSH 有意在调用摘要器前记录 `compaction/start`。缓慢或崩溃的尝试因此可观察，自动与手动路径共享同一个持久锁，之后的写入方也不会把正在生成的摘要误判为未锁定会话。这是对先摘要行为的主动偏离，而不是偶然的事件顺序差异。
+ALEGO 有意在调用摘要器前记录 `compaction/start`。缓慢或崩溃的尝试因此可观察，自动与手动路径共享同一个持久锁，之后的写入方也不会把正在生成的摘要误判为未锁定会话。这是对先摘要行为的主动偏离，而不是偶然的事件顺序差异。
 
 ### 标记是时间点，而不是事件容器
 

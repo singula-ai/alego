@@ -1,4 +1,4 @@
-# `@deepseek-ai/dsh-acp-snapshot`
+# `@alego/acp-snapshot`
 
 [English](README.md) | 中文
 
@@ -22,7 +22,7 @@ import {
   defineAcpSnapshotSuite,
   type Scenario,
   type SnapshotSuiteOptions,
-} from '@deepseek-ai/dsh-acp-snapshot'
+} from '@alego/acp-snapshot'
 
 function snapshotMode(value: string | undefined): SnapshotSuiteOptions['mode'] {
   switch (value) {
@@ -31,7 +31,7 @@ function snapshotMode(value: string | undefined): SnapshotSuiteOptions['mode'] {
     case 'replay': return 'replay'
     case 'record': return 'record'
     case 'refresh': return 'refresh'
-    default: throw new Error(`unknown DSH_SNAPSHOT mode: ${value}`)
+    default: throw new Error(`unknown ALEGO_SNAPSHOT mode: ${value}`)
   }
 }
 
@@ -47,7 +47,7 @@ defineAcpSnapshotSuite({
   },
   snapshotsDir: join(dirname(fileURLToPath(import.meta.url)), 'snapshots'),
   scenarios: SCENARIOS, // exactly one entry per header class sets pinsHeader
-  mode: snapshotMode(process.env.DSH_SNAPSHOT),
+  mode: snapshotMode(process.env.ALEGO_SNAPSHOT),
 })
 ```
 
@@ -59,7 +59,7 @@ defineAcpSnapshotSuite({
 
 每个场景都比较 `stdout.expected.jsonl`，其中以 cwd 为根的分隔符规范化为 `/`。在 Windows 上，`pinsNativeWindowsStdout` 还会在共享预期输出之后比较完整 `stdout.expected.windows.jsonl`，并且仅在启用时要求存在该伴随文件。需要非 Windows 主机的场景声明 `posixOnly`，在 Windows 上跳过运行测试，但 fixture 保护仍在所有平台覆盖其已提交文件；示例包括 POSIX 进程语义（例如取消正在运行的 bash 调用会终止一个已脱离的进程组）和 Windows 无法表示的生成路径。组合需要可用 `pwsh` 的场景声明 `pwshOnly`；调用方提供的 `hasPwsh` 探测（随附的 acp-agent 套件遵循执行器自身的解析，因此 Program Files 安装也计入）在解析不到可用 `pwsh` 时跳过运行测试，而 fixture 保护仍处处覆盖其已提交文件。
 
-示例还发布 `cordis.snapshot.yml` 回放 overlay，位于 `cordis.yml` 旁边（bin 在 `DSH_SNAPSHOT=replay` 下交换它们，见[单源回放配置 Agent Note](../../../.agents/notes/archived/testing/2026-07-04-single-source-acp-replay-config.md)）；回放 fixture 由 [`dsh-llm-replay`](../llm-replay/README.zh.md) 提供，本包通过为子进程设置的 `DSH_SNAPSHOT_*` env var 指向它。`pnpm run test:snapshot:record` 调用在线 LLM（大语言模型），并重写已记录场景的模型 fixture；`pnpm run test:snapshot:refresh` 保持无密钥，运行回放 overlay，并从已提交模型脚本重写 stdout、可比较会话日志预期输出，以及各 pin 自有的提示词与工具 schema 伴随文件。Fixture 角色、录制/回放/刷新语义和场景表字段记录在 `Scenario` 以及[快照 Agent Note](../../../.agents/notes/implemented/testing/2026-06-19-acp-snapshot-tests.zh.md) 中。
+示例还发布 `cordis.snapshot.yml` 回放 overlay，位于 `cordis.yml` 旁边（bin 在 `ALEGO_SNAPSHOT=replay` 下交换它们，见[单源回放配置 Agent Note](../../../.agents/notes/archived/testing/2026-07-04-single-source-acp-replay-config.md)）；回放 fixture 由 [`alego-llm-replay`](../llm-replay/README.zh.md) 提供，本包通过为子进程设置的 `ALEGO_SNAPSHOT_*` env var 指向它。`pnpm run test:snapshot:record` 调用在线 LLM（大语言模型），并重写已记录场景的模型 fixture；`pnpm run test:snapshot:refresh` 保持无密钥，运行回放 overlay，并从已提交模型脚本重写 stdout、可比较会话日志预期输出，以及各 pin 自有的提示词与工具 schema 伴随文件。Fixture 角色、录制/回放/刷新语义和场景表字段记录在 `Scenario` 以及[快照 Agent Note](../../../.agents/notes/implemented/testing/2026-06-19-acp-snapshot-tests.zh.md) 中。
 
 约束：`suite.ts` 与 `harness.ts` 导入 vitest（harness 通过 `vi.waitFor` 轮询其持久边界等待），因此包入口只能在 vitest 运行中导入（启动器和规范化器没有此依赖，但从同一入口发布）。启动器和套件工厂按设计专用于 ACP，启动器使用 SDK 的 `ClientSideConnection`；规范化器是与传输无关的会话日志/文本辅助工具，还由 JSON-RPC 和 Web 快照录制器消费。输入脚本覆盖初始化、新建会话、文本提示简写、精确结构化 ACP 提示词块、取消、预期 RPC 失败和持久轮次边界等待。权限往返是选项类别选择（`allow_once`、`reject_once` 等）的 FIFO 队列，映射到 agent 发出的 `optionId`；缺少或耗尽的队列回答 `cancelled`，未提供类别会拒绝运行。
 
@@ -74,5 +74,5 @@ defineAcpSnapshotSuite({
 ## 已知限制与暂缓事项
 
 - **会话收集需要原始 JSONL mode**：`runScenario` 收集持久化 `.jsonl` 日志，因此快照配置使用 `persistenceCompression: 'none'`；压缩 JSONL 和 SQLite 组合没有快照收集路径。
-- **构建 mode 需要当前产物**：先运行 `pnpm run build`，再选择 `DSH_EXAMPLE_MODE=lib`；源 mode 仍是零构建路径。
+- **构建 mode 需要当前产物**：先运行 `pnpm run build`，再选择 `ALEGO_EXAMPLE_MODE=lib`；源 mode 仍是零构建路径。
 - **后端覆盖仍使用 ACP 驱动器**：保留场景为何使用该传输，见[仅自动化 ACP 决策](../../../.agents/notes/implemented/simplification/2026-07-23-acp-automation-only-protocol.zh.md#snapshot-boundary)。

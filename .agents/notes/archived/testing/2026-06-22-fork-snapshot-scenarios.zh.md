@@ -7,7 +7,7 @@ Archived: 2026-07-26
 
 ## 问题
 
-[seed 边界 Agent Note（agent 决策记录）](2026-06-22-fork-child-replay-seed-boundary.md)让 fork 子项重放能够正确路由：`dsh-llm-replay` 根据持久化 `seedLength` 边界处及其后的事件派生子项脚本，因此 fork 子项继承的父前缀不会作为子项自身的模型调用重放。但落地时**没有记录式 fork 场景**——slice 只由 `llm-replay` 单元测试（合成子项 fixture（测试前置数据））和持久化往返测试覆盖。完整 transcript（文本记录）快照层——会启动真实 `acp-agent` 并重放端到端嵌套 transcript 的那张网——只有 spawn 子项（`subagent-spawn`、`subagent-multi`）。如果 fork 路由回归没有让单元测试变红，它仍会逃过专为捕获 transcript 回归而构建的这一层。
+[seed 边界 Agent Note（agent 决策记录）](2026-06-22-fork-child-replay-seed-boundary.md)让 fork 子项重放能够正确路由：`alego-llm-replay` 根据持久化 `seedLength` 边界处及其后的事件派生子项脚本，因此 fork 子项继承的父前缀不会作为子项自身的模型调用重放。但落地时**没有记录式 fork 场景**——slice 只由 `llm-replay` 单元测试（合成子项 fixture（测试前置数据））和持久化往返测试覆盖。完整 transcript（文本记录）快照层——会启动真实 `acp-agent` 并重放端到端嵌套 transcript 的那张网——只有 spawn 子项（`subagent-spawn`、`subagent-multi`）。如果 fork 路由回归没有让单元测试变红，它仍会逃过专为捕获 transcript 回归而构建的这一层。
 
 表达 fork 场景所需的快照基础设施已经就位：两个进程内后端都在 `cordis.yml` / `cordis.snapshot.yml` 中以两个面向模型的工具接入（`subagent` → spawn、`subagent_fork` → fork），harness 会收集每个子会话的日志，回放按 `seedLength` 为键转发各子会话的 fixture。缺少的是一个*已记录的场景*来驱动 fork 子会话走完这条路径。
 

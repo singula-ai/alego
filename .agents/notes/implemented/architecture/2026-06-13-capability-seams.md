@@ -14,19 +14,19 @@ This is distinct from "who provides vs. needs a capability at runtime", which Co
 
 A swappable capability has **three roles**:
 
-1. **Service Definition** — the Cordis `Service` and vocabulary types owning `ctx.<key>` and depending only on the vocabulary the contract needs (e.g. `dsh-shell`: `ShellExecutor`, `ShellRunResult`, `ShellProcess`). A definition may be an abstract class or a concrete registry service; it is never a TypeScript `interface`.
-2. **Service Provider** — a plugin that supplies or registers an implementation (e.g. `dsh-bash-local`: subprocesses, process-group kills, spill-file truncation). Sandboxed and remote providers are sibling packages implementing or registering against the same Service Definition.
-3. **Consumer** — what the model and plugins program against (e.g. `dsh-tool-bash`: the `bash` schema, with background handles registered into the generic job runtime). Consumers inject the service key and never import provider-specific types.
+1. **Service Definition** — the Cordis `Service` and vocabulary types owning `ctx.<key>` and depending only on the vocabulary the contract needs (e.g. `alego-shell`: `ShellExecutor`, `ShellRunResult`, `ShellProcess`). A definition may be an abstract class or a concrete registry service; it is never a TypeScript `interface`.
+2. **Service Provider** — a plugin that supplies or registers an implementation (e.g. `alego-bash-local`: subprocesses, process-group kills, spill-file truncation). Sandboxed and remote providers are sibling packages implementing or registering against the same Service Definition.
+3. **Consumer** — what the model and plugins program against (e.g. `alego-tool-bash`: the `bash` schema, with background handles registered into the generic job runtime). Consumers inject the service key and never import provider-specific types.
 
 The role names use title case: **Service Definition**, **Service Provider**, and **Consumer**. Generic uses of `provider` and `consumer` remain lowercase.
 
-Service Providers and Consumers then evolve independently: a sandboxed executor replaces `dsh-bash-local` without touching a tool schema.
+Service Providers and Consumers then evolve independently: a sandboxed executor replaces `alego-bash-local` without touching a tool schema.
 
-Roles normally use separate packages when they evolve independently, but the split is not mandatory when the roles are genuinely one concern: the LLM seam folds Service Definition and Consumer into `dsh-llm` (the Consumer is the loop itself, not a swappable schema surface) with adapters as Service Provider packages. Don't split preemptively — a capability with one conceivable provider and one Consumer stays one package until a second appears.
+Roles normally use separate packages when they evolve independently, but the split is not mandatory when the roles are genuinely one concern: the LLM seam folds Service Definition and Consumer into `alego-llm` (the Consumer is the loop itself, not a swappable schema surface) with adapters as Service Provider packages. Don't split preemptively — a capability with one conceivable provider and one Consumer stays one package until a second appears.
 
 ## Terminology: "seam" names the trio, not the interface
 
-A **seam** is the whole capability — the three roles together: a **Service Definition** (the Cordis `Service` that owns `ctx.<key>` and the vocabulary), one or more **Service Providers**, and one or more **Consumers**. `packages/shell` is the canonical example — `dsh-shell` / `dsh-bash-local`+`dsh-bash-sandbox` / `dsh-tool-bash`. A package may own multiple roles, but one role alone is not the seam. The term "seam" is reserved for this complete capability; name a constituent by its role, class, service, contract, or extension point. The [glossary](../../../../docs/glossary.md#capability-seam) is the canonical entry.
+A **seam** is the whole capability — the three roles together: a **Service Definition** (the Cordis `Service` that owns `ctx.<key>` and the vocabulary), one or more **Service Providers**, and one or more **Consumers**. `packages/shell` is the canonical example — `alego-shell` / `alego-bash-local`+`alego-bash-sandbox` / `alego-tool-bash`. A package may own multiple roles, but one role alone is not the seam. The term "seam" is reserved for this complete capability; name a constituent by its role, class, service, contract, or extension point. The [glossary](../../../../docs/glossary.md#capability-seam) is the canonical entry.
 
 ## Alternatives considered
 

@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-上下文压力并不只对压缩（compaction）有用。压缩后端、溢出保护或未来的请求策略插件都可能需要回答同一个问题：持久请求消耗了多少 token？如果把该折叠逻辑留在 `dsh-compaction-basic` 内部，就会重复实现回放逻辑，使未加载压缩的调用方无法使用计量，并诱使调用方复用陈旧的核算结果。
+上下文压力并不只对压缩（compaction）有用。压缩后端、溢出保护或未来的请求策略插件都可能需要回答同一个问题：持久请求消耗了多少 token？如果把该折叠逻辑留在 `alego-compaction-basic` 内部，就会重复实现回放逻辑，使未加载压缩的调用方无法使用计量，并诱使调用方复用陈旧的核算结果。
 
 提供方 usage 也不是完整答案。它只描述某个精确请求信封下的一次成功调用，而当前表层之后还可能增长、缩小或被替换。会话也可能切换提供方与模型，旧日志可能缺少构成 assistant 消息的分片 seq，usage 字段还会分别报告输入、缓存读取、缓存写入、输出与推理计数。因此，可用的服务必须把最新精确锚点与保守的启发式重新定价结合起来，并公开每个结果已经消费的日志修订号。
 
@@ -14,7 +14,7 @@ Status: implemented
 
 ### 一个具体的 LLM（大语言模型）家族服务
 
-`@deepseek-ai/dsh-token-meter` 是 `packages/llm/` 下的单个具体包，并注册 `ctx.tokenMeter`。在第二种实现出现之前，它不会被拆成接口与后端。`TokenMeter` 本身公开 `measure(session, requestHeader?)` 与 `estimateMessage(message)`；消费方直接调用这个单例服务。
+`@alego/token-meter` 是 `packages/llm/` 下的单个具体包，并注册 `ctx.tokenMeter`。在第二种实现出现之前，它不会被拆成接口与后端。`TokenMeter` 本身公开 `measure(session, requestHeader?)` 与 `estimateMessage(message)`；消费方直接调用这个单例服务。
 
 服务没有配置。估算采用固定的每 token 四个字符启发式规则，并加上结构开销。服务不提供模型 profile、容量设置、密度设置、分词器后端或语言专用策略。对精确提供方/模型容量的查询由适配器单独负责，具体见[路由模型上下文与压缩策略 Agent Note](2026-07-20-routed-model-context-and-compaction-policy.zh.md)。
 
@@ -30,7 +30,7 @@ Usage 会对互不重叠的输入、缓存读取、缓存写入与输出 bucket 
 
 ### compaction-basic 消费计量，但不拥有计量
 
-`dsh-compaction-basic` 要求 `ctx.tokenMeter`；`CompactionEngine` 不增加 token 方法或类型。配置、区域事务与摘要分别保留在独立模块中，服务自身注册自动监听器，而 `summarize()` 仍是唯一的子类钩子。单例计量器一致用于压力、保留、被遮蔽内容、引用的源事件以及非缩小摘要拒绝的定价。
+`alego-compaction-basic` 要求 `ctx.tokenMeter`；`CompactionEngine` 不增加 token 方法或类型。配置、区域事务与摘要分别保留在独立模块中，服务自身注册自动监听器，而 `summarize()` 仍是唯一的子类钩子。单例计量器一致用于压力、保留、被遮蔽内容、引用的源事件以及非缩小摘要拒绝的定价。
 
 自动压缩的每次阈值与保留联合决策只使用一次统一计量。区域事务会在追加持久 `compaction/start` 锁后执行计量，在异步摘要完成后再次计量，随后比较分离的表层节点向量。期间发生的表层变更会阻止替换；`logRevision` 可以因无关的纯日志事实而推进，而不会使未变的选定范围失效。
 

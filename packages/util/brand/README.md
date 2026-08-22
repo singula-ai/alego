@@ -1,4 +1,4 @@
-# dsh-brand
+# alego-brand
 
 English | [中文](README.zh.md)
 
@@ -9,7 +9,7 @@ The `Branded<B>` nominal-typing primitive — a tiny, **type-only** package (no 
 A brand makes structurally-identical strings non-interchangeable at the type level: a `SessionId` cannot be passed where a `CallId` is expected, even though both are plain `string`s at runtime.
 
 ```ts
-import type { Branded } from '@deepseek-ai/dsh-brand'
+import type { Branded } from '@alego/brand'
 
 export type SessionId = Branded<'SessionId'>
 
@@ -23,6 +23,6 @@ Construction goes through the per-id factory in the owning package. Comparison, 
 
 ## Policy: brand ids that cross package boundaries
 
-A package brands the ids it owns — `CallId` in `dsh-llm`, the shared agent/session `SessionId` in `dsh-session`, and `JobId` in `dsh-jobs`. Brand cross-package ids that could plausibly be confused; not every string needs one.
+A package brands the ids it owns — `CallId` in `alego-llm`, the shared agent/session `SessionId` in `alego-session`, and `JobId` in `alego-jobs`. Brand cross-package ids that could plausibly be confused; not every string needs one.
 
-This package owns only the primitive. Keeping it dependency-free lets `dsh-jobs`, for example, brand `JobId` without importing an unrelated capability package merely to reach `Branded`.
+This package owns only the primitive. Keeping it dependency-free lets `alego-jobs`, for example, brand `JobId` without importing an unrelated capability package merely to reach `Branded`.

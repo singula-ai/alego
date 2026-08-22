@@ -2,10 +2,10 @@
 
 English | [中文](README.zh.md)
 
-This overlay opts one `dsh web` process into Schedule reminders without changing the shipped default Web composition:
+This overlay opts one `alego web` process into Schedule reminders without changing the shipped default Web composition:
 
 ```sh
-dsh web --patch examples/web-schedule/cordis.yml
+alego web --patch examples/web-schedule/cordis.yml
 ```
 
 The current overlay supports reminders created with a positive whole-number `after_seconds`, an absolute `at` target, or a fixed-rate `every_seconds` interval of at least 300 seconds. The model manages them through `schedule_create`, `schedule_list`, and `schedule_delete`; every result identifies delivery as `session-local`.

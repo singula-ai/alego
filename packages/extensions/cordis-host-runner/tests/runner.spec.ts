@@ -491,7 +491,7 @@ describe('dynamic runner teardown', () => {
     const receipt = await runner.undefine(AGENT_A, 'dyn-404' as CordisDynamicPluginId)
 
     expect(receipt).toMatchObject({ ok: false, reason: 'plugin-missing' })
-    expect((receipt as { message: string }).message).toContain('lost on DSH restart')
+    expect((receipt as { message: string }).message).toContain('lost on ALEGO restart')
   })
 
   it('unwinds every host half when the runner itself is disposed', async () => {

@@ -40,10 +40,10 @@ describe.skipIf(!isWin32 || !pwshAvailable())('AclSandbox write restriction', ()
   let sandbox: AclSandbox
 
   beforeAll(async () => {
-    scratchRoot = mkdtempSync(join(tmpdir(), 'dsh-acl-sandbox-'))
+    scratchRoot = mkdtempSync(join(tmpdir(), 'alego-acl-sandbox-'))
     writableDir = join(scratchRoot, 'writable')
     mkdirSync(writableDir)
-    isolatedTemp = mkdtempSync(join(tmpdir(), 'dsh-acl-sandbox-temp-'))
+    isolatedTemp = mkdtempSync(join(tmpdir(), 'alego-acl-sandbox-temp-'))
     secretFile = join(scratchRoot, 'secret.txt')
     writeFileSync(secretFile, 'top secret - must stay readable to prove the read boundary')
     escapeFile = join(scratchRoot, 'escaped.txt')

@@ -38,13 +38,13 @@ Status: implemented
 | 状态 | 允许的表示 | 持久性与顺序 |
 | --- | --- | --- |
 | 未发送的用户草稿 | 浏览器 `File` 加对象 URL；原生客户端可以使用 `/var/...` 等操作系统临时文件 | 临时且由客户端持有。它可能在重载或进程退出后消失，绝不出现在会话事件中。 |
-| 已接受的用户图片 | `DSH_HOME` 下的不可变对象加 `ImageAttachmentRef` | 在 `agent.send()` 或 `agent.steer()` 能够追加所属用户事件前，宿主提交每张图片。 |
-| 结构化模型图片输出 | `DSH_HOME` 下的不可变对象加 `ImageAttachmentRef` | 提供方适配器在发出已完成的图片块或助手消息事件前提交字节。事件中禁止出现临时 URL、路径和 base64。 |
+| 已接受的用户图片 | `ALEGO_HOME` 下的不可变对象加 `ImageAttachmentRef` | 在 `agent.send()` 或 `agent.steer()` 能够追加所属用户事件前，宿主提交每张图片。 |
+| 结构化模型图片输出 | `ALEGO_HOME` 下的不可变对象加 `ImageAttachmentRef` | 提供方适配器在发出已完成的图片块或助手消息事件前提交字节。事件中禁止出现临时 URL、路径和 base64。 |
 
 每个会话的 `InputMachine` 状态在实时草稿旁保存仅限运行时的有序附件标识符。框架持有的 chat store 只接收草稿的纯文本持久化镜像，`ConversationController` 则持有相应的浏览器专用 `File` 与对象 URL 注册表：
 
 ```ts
-import type { Branded } from '@deepseek-ai/dsh-brand'
+import type { Branded } from '@alego/brand'
 
 type DraftAttachmentId = Branded<'DraftAttachmentId'>
 
@@ -69,7 +69,7 @@ interface ComposerAttachment {
 
 这一拆分把会话 provide 通道的输入 hook 与 actions 用作实时输入区状态的唯一订阅路径，同时避免把不可序列化的浏览器对象写进持久 JSON。只有纯文本草稿镜像使用 `localStorage`；附件标识符、浏览器 `File` 对象和对象 URL 都限定在实时会话输入外壳的 scope 内。未发送图片因此无法跨重载或会话 scope 释放保留。切换 Workspace 时，只有目标外壳接受完整图片批次，图文混合草稿才会移动；拒绝时，文本和图片都留在来源外壳。原生客户端可以在操作系统临时目录中暂存输入，但必须像对待浏览器对象 URL 一样对待该路径：不再需要时删除，并在消息被接受前把字节复制进持久存储。
 
-本地附件后端依次解析显式 `dshHome`、`$DSH_HOME` 和 `~/.dsh`。它把内容寻址对象存储在 `$DSH_HOME/attachments/v1/objects/<prefix>/<sha256>` 下，并为目录和文件设置仅所有者可访问的权限。每个进程首次为某个 home 保存对象时，都会创建该 home，并逐级同步每个祖先目录项直至文件系统根目录；不能把存在视为持久性，因为另一个进程可能仍处于 `mkdir` 与父目录 `fsync` 之间。随后，服务写入并同步临时文件，再以原子方式发布，并对发布路径执行目录同步使其持久（POSIX；Windows 依赖文件系统元数据日志），之后才返回引用。内容摘要编码在不透明的 `sha256:<digest>` 标识符中。准入会应用方向、删除元数据、转换为 8-bit sRGB/sRGBA，并在独立尺寸和字节上限内保持宽高比，生成与提供方无关的主版本。读取会校验摘要、字节长度和已记录元数据。路由专用的确定性请求版本单独缓存，完整策略见[统一图片主版本、请求版本和提供方文件](2026-08-20-unified-image-request-pipeline.zh.md)。
+本地附件后端依次解析显式 `alegoHome`、`$ALEGO_HOME` 和 `~/.alego`。它把内容寻址对象存储在 `$ALEGO_HOME/attachments/v1/objects/<prefix>/<sha256>` 下，并为目录和文件设置仅所有者可访问的权限。每个进程首次为某个 home 保存对象时，都会创建该 home，并逐级同步每个祖先目录项直至文件系统根目录；不能把存在视为持久性，因为另一个进程可能仍处于 `mkdir` 与父目录 `fsync` 之间。随后，服务写入并同步临时文件，再以原子方式发布，并对发布路径执行目录同步使其持久（POSIX；Windows 依赖文件系统元数据日志），之后才返回引用。内容摘要编码在不透明的 `sha256:<digest>` 标识符中。准入会应用方向、删除元数据、转换为 8-bit sRGB/sRGBA，并在独立尺寸和字节上限内保持宽高比，生成与提供方无关的主版本。读取会校验摘要、字节长度和已记录元数据。路由专用的确定性请求版本单独缓存，完整策略见[统一图片主版本、请求版本和提供方文件](2026-08-20-unified-image-request-pipeline.zh.md)。
 
 第一版不对存储执行自动删除。已发送的用户图片和模型生成图片会一直保留，以供历史记录、恢复和 fork 使用。按引用感知的垃圾回收需要单独设计，因为仅按时间清理可能删除仍被持久会话引用的数据。部署的字节和像素限制是写入时的准入策略；读取时会校验摘要和已记录的元数据，但不重新应用当前准入限制，因此收紧策略不会导致旧历史记录失效。
 
@@ -78,7 +78,7 @@ interface ComposerAttachment {
 附件 seam公开不可变图片写入和经过校验的读取操作。规范元数据刻意比通用文件记录更窄：
 
 ```ts
-import type { Branded } from '@deepseek-ai/dsh-brand'
+import type { Branded } from '@alego/brand'
 
 type AttachmentId = Branded<'AttachmentId'>
 
@@ -173,7 +173,7 @@ Pi-AI 与直接 DeepSeek 适配器都会在请求时解析 `ctx.attachments`，�
 
 ### 将每张粘贴图片保留在 `/var` 或其他临时目录中
 
-临时存储适合在发送前使用，也适合通过操作系统接收剪贴板文件的原生客户端。但它不适合在消息被接受后继续使用：清理不在 harness 的控制范围内，路径因宿主而异，恢复或 fork 后的会话也可能比文件存在得更久。提案允许临时暂存，但会在追加事件前将已接受的字节复制进 `DSH_HOME`。
+临时存储适合在发送前使用，也适合通过操作系统接收剪贴板文件的原生客户端。但它不适合在消息被接受后继续使用：清理不在 harness 的控制范围内，路径因宿主而异，恢复或 fork 后的会话也可能比文件存在得更久。提案允许临时暂存，但会在追加事件前将已接受的字节复制进 `ALEGO_HOME`。
 
 ### 粘贴或拖放后立即持久化
 
@@ -211,7 +211,7 @@ UI 状态可能陈旧，也无法保护直接 SDK、ACP、回放或未收录模�
 
 - 存储测试覆盖内容寻址去重、私有权限、准入失败、对象损坏或缺失时的失败，以及收紧部署限制后读取历史数据。
 - 宿主与协议测试覆盖先持久化再追加事件的顺序、日志中不含 base64、会话作用域授权、能力拒绝、上传限制、大小受限的 HTTP 请求体、图片准入与模型选择的排序、仅文本的队列编辑，以及纯文本请求投影。
-- 客户端单元测试覆盖粘贴与拖放、混合剪贴板文本、仅图片发送、草稿恢复、顺序、草稿、会话作用域和应用层级的对象 URL 清理，以及一项在释放后才完成的延迟历史读取；keyless 的组装后构建产物通道（`apps/web/tests/image-display.snapshot.ts`，`DSH_EXAMPLE_MODE=lib pnpm run test:snapshot`）覆盖经授权附件路由渲染的历史用户与助手图片画廊、原图 lightbox，以及 composer 粘贴缩略图条。
+- 客户端单元测试覆盖粘贴与拖放、混合剪贴板文本、仅图片发送、草稿恢复、顺序、草稿、会话作用域和应用层级的对象 URL 清理，以及一项在释放后才完成的延迟历史读取；keyless 的组装后构建产物通道（`apps/web/tests/image-display.snapshot.ts`，`ALEGO_EXAMPLE_MODE=lib pnpm run test:snapshot`）覆盖经授权附件路由渲染的历史用户与助手图片画廊、原图 lightbox，以及 composer 粘贴缩略图条。
 - 适配器与压缩测试覆盖确定性 Pi-AI 请求版本、DeepSeek Files 上传与复用、陈旧 ID 恢复、纯文本投影、递归嵌套在工具结果中的图片、共享摘要请求版本，以及明确拒绝图片输出。
 - 附件、MCP、ACP 与 Code Mode 测试覆盖写入前校验全部成员、图文混合顺序、持久事件不含内联 base64、确切路由能力门禁、明确的不支持内容诊断、post-execute 替换／阻止优先级、准入期间取消、经过校验的助手图片交付，以及通用嵌套图片转发。组装后的无密钥 ACP 快照发送真实内联 PNG，并在会话日志中只固定其持久引用。
 - 需要凭据的实际 API 测试会覆盖配置的 Anthropic 路由和内置 `deepseek-official` Files 路径。DeepSeek 测试不使用自定义提供方条目。

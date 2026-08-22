@@ -12,7 +12,7 @@ Status: implemented
 
 ## 决策
 
-`SubagentRuntime` 是唯一的公开服务。它公开普通的 `start(name, request)`、由 Task 支撑的 `startContinuable(spec)`，以及按意图命名的 `followup(...)`；提供方的 resume 分发仍封装在其继续执行管理器内部。独立的 `@deepseek-ai/dsh-subagent-control` 包和 `ctx.subagentControl` 键均不存在；可选的 `@deepseek-ai/dsh-tool-subagent-control` 包则直接注入 `ctx.subagents`。
+`SubagentRuntime` 是唯一的公开服务。它公开普通的 `start(name, request)`、由 Task 支撑的 `startContinuable(spec)`，以及按意图命名的 `followup(...)`；提供方的 resume 分发仍封装在其继续执行管理器内部。独立的 `@alego/subagent-control` 包和 `ctx.subagentControl` 键均不存在；可选的 `@alego/tool-subagent-control` 包则直接注入 `ctx.subagents`。
 
 合并后的服务及其提供方公开一套 `SubagentError` 分类体系。稳定错误码把提供方查找失败和能力相关失败，与继续执行路由、鉴权、取消、持久化和送达失败区分开来；已移除的服务不保留单独的错误类。
 
@@ -20,7 +20,7 @@ Status: implemented
 
 `startContinuable` 与底层 `start` 保持分离，因为二者的所有权与时序约定不同：前者分配持久化 child id、创建 Task，并同步返回两个 id，而启动过程继续在 Task 内运行；底层 `start` 则等待提供方发布，并移交一个由持有方负责的 run。若通过标志或返回值联合类型将该方法并入 `start`，会扩大底层约定，改动反而多于保留现有的显式入口。
 
-每个 `@deepseek-ai/dsh-tool-subagent` 实例都会选择 `backgroundMode: 'one-shot' | 'continuable'`，默认值为 `one-shot`。这项配置表示策略；`provider.resume` 只用于检查所配置的可继续模式是否受提供方支持。因此，可恢复的提供方仍可执行一次性后台工作。`send_message` 工具是独立适配器：加载或省略该工具既不会启用也不会禁用 `startContinuable`。
+每个 `@alego/tool-subagent` 实例都会选择 `backgroundMode: 'one-shot' | 'continuable'`，默认值为 `one-shot`。这项配置表示策略；`provider.resume` 只用于检查所配置的可继续模式是否受提供方支持。因此，可恢复的提供方仍可执行一次性后台工作。`send_message` 工具是独立适配器：加载或省略该工具既不会启用也不会禁用 `startContinuable`。
 
 ## 已考虑的替代方案
 
@@ -37,5 +37,5 @@ Status: implemented
 - 服务拓扑少了一个公开键和一个包，同时底层提供方分发仍可在没有 Task 或持久化时使用。
 - 配置的提供方缺少 `resume` 时，可继续模式会在提供方挂载阶段失败；缺少 Task、Agent 或持久化时，仍会在需要它们的最早操作处失败。
 - 后续消息投递仍为可选功能。部署可以通过 Task 工具启动并收集可继续工作，而不公开 `send_message`。
-- `dsh-subagent` 包内的继续执行管理器仍然感知 Task 和持久化，因此该包会将这些服务声明为可选的对等依赖（peer dependency），即使普通的 `start` 调用方并不需要它们。
+- `alego-subagent` 包内的继续执行管理器仍然感知 Task 和持久化，因此该包会将这些服务声明为可选的对等依赖（peer dependency），即使普通的 `start` 调用方并不需要它们。
 - 现有的继续执行竞态、授权、持久性、取消及先结算再 dispose 的语义均保持不变，并继续由迁移后的 `subagent` 测试固定。

@@ -1,15 +1,15 @@
 /**
  * Durable agent session-event vocabulary shared with type-only consumers.
  *
- * @module @deepseek-ai/dsh-agent/types
+ * @module @alego/agent/types
  */
 
-import type { UserMessage } from '@deepseek-ai/dsh-llm/types'
+import type { UserMessage } from '@alego/llm/types'
 
 /** One of the two ordered pending-message lists owned by an agent. */
 export type InboxTarget = 'next-turn' | 'next-step'
 
-declare module '@deepseek-ai/dsh-session/types' {
+declare module '@alego/session/types' {
   interface SessionEventMap {
     /**
      * One normalized mutation of an agent's durable pending-message lists.

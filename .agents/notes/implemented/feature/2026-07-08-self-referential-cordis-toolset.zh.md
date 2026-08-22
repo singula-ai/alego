@@ -12,9 +12,9 @@ Status: implemented
 
 ## 决策
 
-该工具集以 [`@deepseek-ai/dsh-tool-cordis`](../../../../packages/extensions/tool-cordis/README.zh.md) 发布，并由 `examples/web-cordis` 演示。它为模型提供三个工具，用于操作当前 DSH 进程中的活跃 Cordis 运行时：检查该运行时、挂载一个仅存于内存的临时插件，再将该插件卸载至完全停稳。
+该工具集以 [`@alego/tool-cordis`](../../../../packages/extensions/tool-cordis/README.zh.md) 发布，并由 `examples/web-cordis` 演示。它为模型提供三个工具，用于操作当前 ALEGO 进程中的活跃 Cordis 运行时：检查该运行时、挂载一个仅存于内存的临时插件，再将该插件卸载至完全停稳。
 
-vm 隔离了意外的全局污染，上下文门面隐藏了框架内部细节。但二者都不限制已暴露服务的权限：临时插件可以调用 `ctx.shell` 以宿主执行器的权限运行命令，也能访问真实的文件系统和网络服务。它运行在共享 DSH 运行时中，可能影响同一进程的其他会话。这是一个需要显式启用的开发工具，信任等级与 bash 相当，不是安全边界，也不是产品默认配置。
+vm 隔离了意外的全局污染，上下文门面隐藏了框架内部细节。但二者都不限制已暴露服务的权限：临时插件可以调用 `ctx.shell` 以宿主执行器的权限运行命令，也能访问真实的文件系统和网络服务。它运行在共享 ALEGO 运行时中，可能影响同一进程的其他会话。这是一个需要显式启用的开发工具，信任等级与 bash 相当，不是安全边界，也不是产品默认配置。
 
 ### 三个工具
 
@@ -24,7 +24,7 @@ vm 隔离了意外的全局污染，上下文门面隐藏了框架内部细节�
 | `cordis_mount` | 立即在 `node:vm` 沙箱中把 `code` 作为异步 JavaScript 函数体求值，且不保存到任何位置。返回的插件挂在内部 `cordis-dynamic` 分组下，并用新的进程内 id（`dyn-1`、`dyn-2`……）跟踪。 |
 | `cordis_unmount` | 按 id 卸载一个 `cordis_mount` 临时插件，并只在其自有工具、监听器、服务、定时器和其他 effect 完全停稳后返回。它不能删除 Loader、已配置或已安装的插件。 |
 
-`cordis_inspect` 的小节是 `services`（每个已提供的 ctx 服务及所属 fiber）、`plugins`（全部存活插件 fiber）、`tools`（模型可调用的工具）、`temporary`（`cordis_mount` 子集，包含 id、running／pending 状态、提供与等待的服务和生命周期）、`api`（活跃服务签名及其引用类型）和 `events`（harness 事件及分发模式和签名）。临时插件可跨后续轮次保持活跃，并在 `cordis_unmount`、工具集卸载或 DSH 重启后消失；系统绝不会自动恢复它们。宽泛的 `api` 和 `events` 报告省略完整 JSDoc；精确 `name` 返回一个服务或事件及其原始 JSDoc。其他小节不能搭配 name，未知目标会失败，而 API 目标必须处于活跃状态。面向模型的工具描述包含调用时所需的操作规则；[生成的工具目录](../../../../docs/tool-catalog.zh.md)是这些规则的完整呈现。
+`cordis_inspect` 的小节是 `services`（每个已提供的 ctx 服务及所属 fiber）、`plugins`（全部存活插件 fiber）、`tools`（模型可调用的工具）、`temporary`（`cordis_mount` 子集，包含 id、running／pending 状态、提供与等待的服务和生命周期）、`api`（活跃服务签名及其引用类型）和 `events`（harness 事件及分发模式和签名）。临时插件可跨后续轮次保持活跃，并在 `cordis_unmount`、工具集卸载或 ALEGO 重启后消失；系统绝不会自动恢复它们。宽泛的 `api` 和 `events` 报告省略完整 JSDoc；精确 `name` 返回一个服务或事件及其原始 JSDoc。其他小节不能搭配 name，未知目标会失败，而 API 目标必须处于活跃状态。面向模型的工具描述包含调用时所需的操作规则；[生成的工具目录](../../../../docs/tool-catalog.zh.md)是这些规则的完整呈现。
 
 ### 沙箱语义
 

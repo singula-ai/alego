@@ -10,9 +10,9 @@
  * trace and does not count toward the empty line.
  */
 
-import type { SettingsDescribeFace } from '@deepseek-ai/dsh-client-ui-settings/client'
-import type { StoredEntry } from '@deepseek-ai/dsh-client-ui-slots'
-import { createSnapshotStore, type SnapshotStore } from '@deepseek-ai/dsh-client-runtime/client'
+import type { SettingsDescribeFace } from '@alego/client-ui-settings/client'
+import type { StoredEntry } from '@alego/client-ui-slots'
+import { createSnapshotStore, type SnapshotStore } from '@alego/client-runtime/client'
 
 /** What the section renders. */
 export interface ConfigurablePluginsTabState {

@@ -12,7 +12,7 @@ The routing problem is ownership: a permission request must reach the channel th
 
 ## Decision
 
-One package, `dsh-user-approval` (`packages/interaction/user-approval`), owns the vocabulary and the `ctx.approval` service — the mechanism. The policy — who answers, and whether a session is asked at all — lives outside it: answerers are `approval/request` waterfall listeners registered by channel-owning plugins (the ACP bridge, host adapters, and test scripts), and a per-session policy tier can decide before a channel is involved. Consumers (`dsh-tools`' ask routing and the sandbox escalation gate) resolve a question to a closed outcome and derive their own tool results from it. This is deliberately one package, not the capability-seam three (see Alternatives).
+One package, `alego-user-approval` (`packages/interaction/user-approval`), owns the vocabulary and the `ctx.approval` service — the mechanism. The policy — who answers, and whether a session is asked at all — lives outside it: answerers are `approval/request` waterfall listeners registered by channel-owning plugins (the ACP bridge, host adapters, and test scripts), and a per-session policy tier can decide before a channel is involved. Consumers (`alego-tools`' ask routing and the sandbox escalation gate) resolve a question to a closed outcome and derive their own tool results from it. This is deliberately one package, not the capability-seam three (see Alternatives).
 
 ### How a deployment uses it
 
@@ -20,12 +20,12 @@ One `cordis.yml` entry mounts the seam. Not loading it is the fail-closed opt-ou
 
 ```yaml
 - id: approval
-  name: '@deepseek-ai/dsh-user-approval'
+  name: '@alego/user-approval'
   # config:
   #   policy: never   # deployment default for sessions without an override; 'ask' when omitted
 ```
 
-The entry alone provides mechanism, not a channel: with no answerer composed, every ask resolves `unavailable` and the asking tool call denies — fail-closed needs no configuration. Composing the ACP app (`@deepseek-ai/dsh-acp-demo`, as in [the acp-agent example's default tree](../../../../examples/acp-agent/README.md)) completes the loop: its [automation-only bridge](../simplification/2026-07-23-acp-automation-only-protocol.md) registers an answerer that sends `session/request_permission` to the owning client with the exact tool-call id and one-shot allow/reject options. `policy: never` is the unattended stance — every ask auto-rejects deterministically, and the current value joins the runtime-context snapshot. `policy` is validated against the closed list at plugin load; anything else throws.
+The entry alone provides mechanism, not a channel: with no answerer composed, every ask resolves `unavailable` and the asking tool call denies — fail-closed needs no configuration. Composing the ACP app (`@alego/acp-demo`, as in [the acp-agent example's default tree](../../../../examples/acp-agent/README.md)) completes the loop: its [automation-only bridge](../simplification/2026-07-23-acp-automation-only-protocol.md) registers an answerer that sends `session/request_permission` to the owning client with the exact tool-call id and one-shot allow/reject options. `policy: never` is the unattended stance — every ask auto-rejects deterministically, and the current value joins the runtime-context snapshot. `policy` is validated against the closed list at plugin load; anything else throws.
 
 What a composed deployment observes: `allowed-once` lets exactly that call proceed; rejection, dismissal, and channel absence deny with three distinct reasons the model can tell apart; a successful in-turn request lands a durable `approval/asked`/`approval/decided` pair on the asking agent's session log; nothing about a grant persists past the call that asked. An idle request or audit append failure rejects instead of returning an unaudited decision.
 
@@ -45,7 +45,7 @@ approval/decided {"outcome": "allowed-once"}
 tool/result      "escalated" — this one call ran under the wider mode; the grant died with it
 ```
 
-The `escalation-rejected` twin ends in `{"outcome": "rejected"}` instead: nothing executes, and the model's result carries the asker's verbatim fail-closed text (`the user rejected escalating this command to "workspace-write"`). A hook's `permissionDecision: ask` rides the identical wire; only the asker and its deny texts differ (§ Ask routing in dsh-tools). Without an answerer, the same request settles `unavailable`.
+The `escalation-rejected` twin ends in `{"outcome": "rejected"}` instead: nothing executes, and the model's result carries the asker's verbatim fail-closed text (`the user rejected escalating this command to "workspace-write"`). A hook's `permissionDecision: ask` rides the identical wire; only the asker and its deny texts differ (§ Ask routing in alego-tools). Without an answerer, the same request settles `unavailable`.
 
 ### Design detail
 
@@ -55,9 +55,9 @@ After validation and a successful `approval/asked` append, the service resolves 
 
 Answerers are `approval/request` waterfall listeners. Zero listeners fall through to `unavailable`; a recognizing listener occupies the first-wins decision slot, while an unrecognized agent must delegate with `next()`. Listeners dispose with their fibers, so an unloaded channel fails closed. Because sibling registration order is not deterministic, a deployment composes one terminal answerer and reserves `prepend` for decide-or-delegate gates.
 
-`ApprovalRequest` carries the asking `agent`, `toolName`, optional exact `callId`, human-readable `reason`, and optional `signal`. It uses the `CallId` brand without importing `dsh-tools`, which depends on this seam. Channel adapters correlate any richer call state by `callId`; the approval request does not duplicate tool arguments.
+`ApprovalRequest` carries the asking `agent`, `toolName`, optional exact `callId`, human-readable `reason`, and optional `signal`. It uses the `CallId` brand without importing `alego-tools`, which depends on this seam. Channel adapters correlate any richer call state by `callId`; the approval request does not duplicate tool arguments.
 
-#### Ask routing in dsh-tools
+#### Ask routing in alego-tools
 
 `ToolRuntime.execute()` resolves `ask` before dispatch: `allowed-once` proceeds, while rejection, cancellation, and channel absence produce distinct deny reasons. Opportunistic `ctx.get('approval')` consumption lets an absent or unmounted service fail closed without gating the registry fiber. Agent-less execution also fails closed because it has neither an audit session nor a channel owner.
 
@@ -77,7 +77,7 @@ The answerer routes through the bridge's exact-agent ownership check described b
 
 #### Entities and dependencies
 
-`dsh-user-approval` depends on Cordis plus the session, agent, and branded-call contracts; `dsh-tools` and `dsh-acp` consume it. The sandbox executor stays independent because `dsh-tool-bash` owns escalation requests. The fixed dispatch-and-audit service remains one package; replaceable answerers live with their channel owners. Static capability grants and `subagent-acp` child-side permission answers remain separate concerns.
+`alego-user-approval` depends on Cordis plus the session, agent, and branded-call contracts; `alego-tools` and `alego-acp` consume it. The sandbox executor stays independent because `alego-tool-bash` owns escalation requests. The fixed dispatch-and-audit service remains one package; replaceable answerers live with their channel owners. Static capability grants and `subagent-acp` child-side permission answers remain separate concerns.
 
 ### Testing
 
@@ -96,7 +96,7 @@ Snapshots record allowed and rejected sandbox escalation through `session/reques
 - **A single registered provider instead of waterfall listeners** — rejected: a `registerProvider()` API forces every composition question — allowlist pre-filters, external hook deciders, scripted test answers, a policy gate in front of a human — inside one provider implementation. The waterfall gets composition, fail-closed absence, and HMR disposal from machinery the runtime already has; the seam's JSDoc pins the single-decision-slot convention instead of inventing a provider registry.
 - **An inline `tools/pre-execute` permission gate in the ACP bridge** — rejected: prompting for every bridge-owned call hardwires the asking policy into the transport, cannot serve a second asker (sandbox escalation happens after execution starts, with no pre-execute moment), and leaves hook-produced `ask` decisions without a shared mechanism.
 - **The generic user-questions seam (`ctx.userQuestions`)** — rejected as the approval mechanism: the two share a skeleton (route by agent, block for a human, handle absence), but approval's contract is narrower in every dimension that matters: a closed outcome vocabulary instead of free text, a protocol-native prompt attached to a tool call instead of a generic form, mandatory fail-closed absence, and audit events. Approval therefore does not ride the shipped `packages/interaction/user-questions` / `ask_user_question` elicitation path — an elicitation form is not a permission prompt, and a free-text answer is not a closed outcome; sharing provider plumbing stays open if the two ever converge.
-- **Static optional injection in `dsh-tools`** — rejected: the vendored cordis `Inject` type has no optional flag — the object form maps service names to intercept config, and a declared inject gates the fiber. `ctx.get('approval')` is the documented opportunistic-consumption pattern (the `tool-bash` owner-token lookup, the loop's persistence probe), reads presence per call, and degrades correctly across HMR without extra machinery.
+- **Static optional injection in `alego-tools`** — rejected: the vendored cordis `Inject` type has no optional flag — the object form maps service names to intercept config, and a declared inject gates the fiber. `ctx.get('approval')` is the documented opportunistic-consumption pattern (the `tool-bash` owner-token lookup, the loop's persistence probe), reads presence per call, and degrades correctly across HMR without extra machinery.
 - **The capability-seam three-package split** — rejected: Service Definition / Service Provider / Consumer fits a seam whose Service Provider is swappable (bash-local vs bash-sandbox). Here the service body is fixed mechanism and the variable part is listeners that live with their owners — splitting would manufacture a Service Provider package with nothing in it ("don't split preemptively").
 - **Offering `allow_always` now** — rejected: the protocol can express it, but honoring it means designing grant storage, scope identity, and revocation (§ Deferred). Advertising an option the harness cannot honor manufactures doomed grants.
 
@@ -136,4 +136,4 @@ In-repo precedents this design copies or contrasts with:
 - `hook/invoked`/`hook/result` — the log-only audit-pair precedent `approval/asked`/`approval/decided` follows; [the hook-bridges Agent Note](2026-06-30-hook-bridges.md) ships `permissionDecision: ask`, the first producer.
 - [The interception extension-points Agent Note](2026-06-30-interception-extension-points.md) — the `tools/pre-execute` `allow`/`deny`/`ask` vocabulary whose `ask` this seam services.
 - [The automation-only ACP Agent Note](../simplification/2026-07-23-acp-automation-only-protocol.md) — the exact-agent ownership check against the session map that the answerer routes through; [the multi-session Agent Note](2026-06-14-acp-multi-session.md) — the per-session permission-ownership blocker this implements.
-- The opportunistic `ctx.get()` consumption pattern (`tool-bash`'s owner-token lookup, the loop's persistence probe) — how `dsh-tools` consumes the seam without gating its fiber on it.
+- The opportunistic `ctx.get()` consumption pattern (`tool-bash`'s owner-token lookup, the loop's persistence probe) — how `alego-tools` consumes the seam without gating its fiber on it.

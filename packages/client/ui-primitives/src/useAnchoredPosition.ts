@@ -7,7 +7,7 @@
  * inside the viewport, and re-run on scroll (capture phase, so scrollers nested
  * inside the page are caught too), on resize, and on the panel's own size
  * changes while the element is open.
- * @module @deepseek-ai/dsh-client-ui-primitives/useAnchoredPosition
+ * @module @alego/client-ui-primitives/useAnchoredPosition
  */
 
 import { useLayoutEffect, useState, type CSSProperties, type RefObject } from 'react'

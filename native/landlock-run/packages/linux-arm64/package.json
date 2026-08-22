@@ -1,10 +1,10 @@
 {
-  "name": "@deepseek-ai/node-addon-landlock-run-linux-arm64",
+  "name": "@alego/node-addon-landlock-run-linux-arm64",
   "version": "0.1.1",
-  "description": "Prebuilt landlock-run Landlock launcher binary for linux-arm64 (static musl) — resolved as a file path by @deepseek-ai/node-addon-landlock-run, never imported",
+  "description": "Prebuilt landlock-run Landlock launcher binary for linux-arm64 (static musl) — resolved as a file path by @alego/node-addon-landlock-run, never imported",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-harness/deepseek-harness.git",
+    "url": "git+https://github.com/singula-ai/alego.git",
     "directory": "native/landlock-run/packages/linux-arm64"
   },
   "os": [

@@ -12,7 +12,7 @@ Workspace hover cards and Tool call summaries showed full POSIX home paths. Thos
 
 `host.describe` reports the host account `home` as a required field. Client and Host ship together, so the field is required rather than optional. ApiProxy fills it from `homedir()` at describe time.
 
-`abbreviateHomePath` in `dsh-client-runtime` is the display-only helper. It returns `~` or `~/…` when the path is the POSIX home or a descendant, and leaves the path unchanged when `home` is missing, empty, or `/`, when either value is a Windows drive or UNC path, or when the match is only a prefix (`/Users/u` does not claim `/Users/u2`). Tool summaries run workspace-relative shortening first, then this helper, so a path inside the session cwd stays short. `filePath`, Host open, and Workspace hover copy keep the authored filesystem path.
+`abbreviateHomePath` in `alego-client-runtime` is the display-only helper. It returns `~` or `~/…` when the path is the POSIX home or a descendant, and leaves the path unchanged when `home` is missing, empty, or `/`, when either value is a Windows drive or UNC path, or when the match is only a prefix (`/Users/u` does not claim `/Users/u2`). Tool summaries run workspace-relative shortening first, then this helper, so a path inside the session cwd stays short. `filePath`, Host open, and Workspace hover copy keep the authored filesystem path.
 
 `ui-tool` and `ui-workspace` inject `connection.hostDescription` at their own slot registrations. ChatView does not grow a Host-description hook. The field is required on `ConnectionHandle`; test fakes supply a source whose snapshot may be undefined before connect.
 
@@ -24,7 +24,7 @@ The fixture Host home is `/home/fixture`. A second fixture Workspace at `/home/f
 
 **Abbreviate Windows `%USERPROFILE%` as `~` as well.** Rejected because the acceptance rule keeps Windows paths verbatim, and `~` is not how Explorer or `cmd` spell those paths.
 
-**Put the helper in `dsh-home-paths`.** Rejected because that package expands configuration tildes on Node; this helper is a browser display rewrite and must not pull Node `os` into client bundles.
+**Put the helper in `alego-home-paths`.** Rejected because that package expands configuration tildes on Node; this helper is a browser display rewrite and must not pull Node `os` into client bundles.
 
 **Thread `home` from ChatView owner props.** Rejected because it enlarges the conversation inject face and every ChatView test harness for a display fact only Tool and Workspace cards consume.
 

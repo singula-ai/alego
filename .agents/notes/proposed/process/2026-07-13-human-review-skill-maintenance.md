@@ -1,4 +1,4 @@
-# Agent Note: Periodic human-review maintenance for dsh-code-review
+# Agent Note: Periodic human-review maintenance for alego-code-review
 
 Status: proposed
 
@@ -6,11 +6,11 @@ English | [中文](2026-07-13-human-review-skill-maintenance.zh.md)
 
 ## Problem
 
-The `dsh-code-review` skill records failure modes that require reviewer judgment, but one-off audits are expensive to repeat and easy to scope inconsistently. Treating every comment as a lesson produces checklist bloat; treating merge, thread resolution, or an author's “fixed” reply as proof of adoption promotes feedback that the final code may not implement. The maintenance process needs enough evidence and independent review to fail closed without requiring a webhook service, durable event state, or automatic repository promotion before the workflow has proven useful.
+The `alego-code-review` skill records failure modes that require reviewer judgment, but one-off audits are expensive to repeat and easy to scope inconsistently. Treating every comment as a lesson produces checklist bloat; treating merge, thread resolution, or an author's “fixed” reply as proof of adoption promotes feedback that the final code may not implement. The maintenance process needs enough evidence and independent review to fail closed without requiring a webhook service, durable event state, or automatic repository promotion before the workflow has proven useful.
 
 ## Proposal
 
-Periodic out-of-repo maintenance. A private tool, kept on the skill maintainer's machine rather than committed to this repository, runs against a clean full-history checkout at refreshed `origin/master`. The intended scheduler runs daily with a two-UTC-day overlap; manual runs accept another `--since` duration or repeated `--pr` arguments for an explicit set. The scan is idempotent against the current skill and stores no repository cursor. The only repository file changed by promotion is [.agents/skills/dsh-code-review/SKILL.md](../../../skills/dsh-code-review/SKILL.md); the draft PR lists the source feedback URLs or IDs and adoption evidence without exposing the private adapter logs.
+Periodic out-of-repo maintenance. A private tool, kept on the skill maintainer's machine rather than committed to this repository, runs against a clean full-history checkout at refreshed `origin/master`. The intended scheduler runs daily with a two-UTC-day overlap; manual runs accept another `--since` duration or repeated `--pr` arguments for an explicit set. The scan is idempotent against the current skill and stores no repository cursor. The only repository file changed by promotion is [.agents/skills/alego-code-review/SKILL.md](../../../skills/alego-code-review/SKILL.md); the draft PR lists the source feedback URLs or IDs and adoption evidence without exposing the private adapter logs.
 
 ```mermaid
 flowchart TD
@@ -52,7 +52,7 @@ The promote helper starts from a clean checkout at refreshed `origin/master` and
 
 ### Where the mechanism lives
 
-The tool source, adapter binaries, provider credentials, and intended daily scheduler are kept private to the maintainer's machine rather than committed to this repository. This document specifies the protocol; the reference implementation is private infrastructure. The mechanism serves a single skill maintained by a single operator, so the ongoing cost of vetting mechanism edits through repository review outweighs the benefit of committing the tool and its history. If the mechanism is ever handed off to a second maintainer, that handoff is a follow-up Agent Note that revises this decision — the operator doc at [docs/cookbook/maintaining-dsh-code-review.md](../../../../docs/cookbook/maintaining-dsh-code-review.md) is the entry point for anyone taking over.
+The tool source, adapter binaries, provider credentials, and intended daily scheduler are kept private to the maintainer's machine rather than committed to this repository. This document specifies the protocol; the reference implementation is private infrastructure. The mechanism serves a single skill maintained by a single operator, so the ongoing cost of vetting mechanism edits through repository review outweighs the benefit of committing the tool and its history. If the mechanism is ever handed off to a second maintainer, that handoff is a follow-up Agent Note that revises this decision — the operator doc at [docs/cookbook/maintaining-alego-code-review.md](../../../../docs/cookbook/maintaining-alego-code-review.md) is the entry point for anyone taking over.
 
 ## Alternatives considered
 
@@ -69,7 +69,7 @@ The tool source, adapter binaries, provider credentials, and intended daily sche
 
 Promotion from `proposed/` to `implemented/` requires all of the following to be observed in a real end-to-end run against this repository:
 
-- The private tool runs from a clean detached checkout at refreshed `origin/master` and either reports "no candidate" or produces a working-tree diff limited to `.agents/skills/dsh-code-review/SKILL.md`. **Observed on 2026-07-15:** 62 merged PRs scanned, 5 skipped (unreachable merge commit or >250-commit acquisition cap), 426 human feedback items considered, 0 candidates surfaced.
+- The private tool runs from a clean detached checkout at refreshed `origin/master` and either reports "no candidate" or produces a working-tree diff limited to `.agents/skills/alego-code-review/SKILL.md`. **Observed on 2026-07-15:** 62 merged PRs scanned, 5 skipped (unreachable merge commit or >250-commit acquisition cap), 426 human feedback items considered, 0 candidates surfaced.
 - Both reviewer adapters are independently configured (distinct providers or models) and complete an analyze / adopt / review pass without user intervention. **Observed on 2026-07-15:** distinct primary/secondary adapters completed adoption + analysis in ~8 minutes; batch fail-closed handled one adapter id-hallucination without aborting the run.
 - A scheduler triggers the tool without an interactive terminal, and a candidate diff (or a "no candidate" record) reaches the operator through a durable notification channel.
 - A controlled acquisition case advances the target branch with a feedback-matching change after the feedback baseline; the reviewer evidence excludes that target-only change while retaining a later PR-owned change.

@@ -4,11 +4,11 @@
  * not the only correct recovery (re-read / read the file), so this package
  * appends the remedy at the model boundary; provider messages stay
  * machine-oriented and unchanged.
- * @module @deepseek-ai/dsh-tool-fs/src/error
+ * @module @alego/tool-fs/src/error
  */
 
-import { FsError } from '@deepseek-ai/dsh-fs'
-import type { FsErrorCode } from '@deepseek-ai/dsh-fs'
+import { FsError } from '@alego/fs'
+import type { FsErrorCode } from '@alego/fs'
 
 /** The remedy appended to each remediable failure code's message. */
 const REMEDIES: Partial<Record<FsErrorCode, string>> = {

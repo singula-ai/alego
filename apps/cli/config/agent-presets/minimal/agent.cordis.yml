@@ -7,7 +7,7 @@
 # `str_replace_editor`. Context compaction is absent.
 
 - id: persona
-  name: '@deepseek-ai/dsh-persona'
+  name: '@alego/persona'
   config:
     text: You are a helpful software engineer assistant.
     complete: true
@@ -25,16 +25,16 @@
     terminals: true
   config:
     - id: pty
-      name: '@deepseek-ai/dsh-terminal'
+      name: '@alego/terminal'
 
     - id: terminal-bash
-      name: '@deepseek-ai/dsh-terminal-bash'
+      name: '@alego/terminal-bash'
       disabled: !!js process.platform === 'win32'
       config:
         timeoutMs: 300000
 
     - id: persistent-bash
-      name: '@deepseek-ai/dsh-tool-bash-persistent'
+      name: '@alego/tool-bash-persistent'
       disabled: !!js process.platform === 'win32'
       config:
         timeoutMs: 300000
@@ -49,14 +49,14 @@
           * Please run long lived commands in the background, e.g. 'sleep 10 &' or start a server in the background.
 
     - id: terminal-pwsh
-      name: '@deepseek-ai/dsh-terminal-bash'
+      name: '@alego/terminal-bash'
       disabled: !!js process.platform !== 'win32'
       config:
         shellDialect: pwsh
         timeoutMs: 300000
 
     - id: persistent-pwsh
-      name: '@deepseek-ai/dsh-tool-pwsh-persistent'
+      name: '@alego/tool-pwsh-persistent'
       disabled: !!js process.platform !== 'win32'
       config:
         timeoutMs: 300000
@@ -78,11 +78,11 @@
     fs: true
   config:
     - id: fs-local
-      name: '@deepseek-ai/dsh-fs-local'
+      name: '@alego/fs-local'
       config:
-        cwd: !!js process.env.DSH_CWD ?? process.cwd()
+        cwd: !!js process.env.ALEGO_CWD ?? process.cwd()
 
     - id: str-replace-editor
-      name: '@deepseek-ai/dsh-tool-str-replace-editor'
+      name: '@alego/tool-str-replace-editor'
       config:
         maxOutputChars: 16000

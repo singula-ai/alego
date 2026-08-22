@@ -1,13 +1,13 @@
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
+import { createUserMessage } from '@alego/llm'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@alego/cordis'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import SessionStore, { SessionId } from '@deepseek-ai/dsh-session'
-import JsonlSessionPersistence from '@deepseek-ai/dsh-session-persistence-jsonl'
-import SqliteSessionPersistence from '@deepseek-ai/dsh-session-persistence-sqlite'
-import SessionTitleService, { foldSessionTitle } from '@deepseek-ai/dsh-session-title'
+import SessionStore, { SessionId } from '@alego/session'
+import JsonlSessionPersistence from '@alego/session-persistence-jsonl'
+import SqliteSessionPersistence from '@alego/session-persistence-sqlite'
+import SessionTitleService, { foldSessionTitle } from '@alego/session-title'
 
 const CONFIG = {
   fallbackMaxWords: 5,
@@ -52,7 +52,7 @@ async function expectPersistedTitle(ctx: Context, id: ReturnType<typeof SessionI
 
 describe('session title persistence round trips', () => {
   it('round-trips through a remounted JSONL backend', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-title-jsonl-'))
+    const root = await mkdtemp(join(tmpdir(), 'alego-title-jsonl-'))
     roots.push(root)
     const id = SessionId('title-jsonl')
     const writer = new Context()
@@ -70,7 +70,7 @@ describe('session title persistence round trips', () => {
   })
 
   it('round-trips through a remounted SQLite backend', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'dsh-title-sqlite-'))
+    const root = await mkdtemp(join(tmpdir(), 'alego-title-sqlite-'))
     roots.push(root)
     const path = join(root, 'sessions.db')
     const id = SessionId('title-sqlite')

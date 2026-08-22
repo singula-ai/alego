@@ -1,8 +1,8 @@
-# @deepseek-ai/dsh-jobs
+# @alego/jobs
 
 [English](README.md) | 中文
 
-后台任务注册表约定（`ctx.jobs`）。抽象的 `JobRegistry` 及其词汇类型在同一份约定下为长时间运行的生产方提供共享 id、owner 隔离、读取、取消、等待、通知和清理；进程局部注册表位于 [`dsh-jobs-local`](../jobs-local/README.zh.md)。生产方插件使用其不透明 id namespace 扩展 `JobKindMap`。
+后台任务注册表约定（`ctx.jobs`）。抽象的 `JobRegistry` 及其词汇类型在同一份约定下为长时间运行的生产方提供共享 id、owner 隔离、读取、取消、等待、通知和清理；进程局部注册表位于 [`alego-jobs-local`](../jobs-local/README.zh.md)。生产方插件使用其不透明 id namespace 扩展 `JobKindMap`。
 
 ## 服务约定
 
@@ -27,7 +27,7 @@
 
 ## 模型体验
 
-通过生产方插件和 [`dsh-tool-jobs`](../tool-jobs/README.zh.md) 间接影响；它们会渲染 job id、输出、状态、取消和完成通知。
+通过生产方插件和 [`alego-tool-jobs`](../tool-jobs/README.zh.md) 间接影响；它们会渲染 job id、输出、状态、取消和完成通知。
 
 #### KV Cache 影响
 

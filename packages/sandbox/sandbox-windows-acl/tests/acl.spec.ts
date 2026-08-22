@@ -5,7 +5,7 @@
  * DELETE + FILE_DELETE_CHILD (never WRITE_DAC/WRITE_OWNER).
  *
  * All state lives in %TEMP% mkdtemp scratch directories; the only exception
- * is the mandated lock infrastructure under <GetTempPathW()>\dsh-acl-locks,
+ * is the mandated lock infrastructure under <GetTempPathW()>\alego-acl-locks,
  * whose per-test lock file is removed in cleanup.
  */
 
@@ -28,7 +28,7 @@ const isWin32 = process.platform === 'win32'
 const FILE_READ_DATA = 0x0001
 
 /** koffi SID layout: revision@0, subAuthorityCount@1, identifierAuthority@2 (6 bytes, big-endian), subAuthority@8. */
-const SID_STRUCT = koffi.struct('DSH_ACL_SPEC_SID', {
+const SID_STRUCT = koffi.struct('ALEGO_ACL_SPEC_SID', {
   revision: 'uint8',
   subAuthorityCount: 'uint8',
   identifierAuthority: 'uint8[6]',
@@ -111,7 +111,7 @@ describe.skipIf(!isWin32)('ACL editing', () => {
   })
 
   function scratch(): string {
-    const dir = mkdtempSync(join(tmpdir(), 'dsh-acl-edit-'))
+    const dir = mkdtempSync(join(tmpdir(), 'alego-acl-edit-'))
     scratchDirs.push(dir)
     return dir
   }

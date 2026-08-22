@@ -6,9 +6,9 @@ Status: implemented
 
 ## 问题
 
-agent preset 已经能按会话组装一个 agent 的工具，却管不了这些工具以何种**形态**抵达模型。Code Mode——一个 `run_code` 工具加一份生成的 TypeScript SDK，用一段程序替代一串调用——此前是宿主 `dsh-tools` 那一行上的部署级 `mode` 字段。一个部署要么所有会话都跑 Code Mode，要么一个都不跑，于是那个显而易见的产品形态（预设选择器里「代码模式」与标准/极简/创造并列）无处安放。
+agent preset 已经能按会话组装一个 agent 的工具，却管不了这些工具以何种**形态**抵达模型。Code Mode——一个 `run_code` 工具加一份生成的 TypeScript SDK，用一段程序替代一串调用——此前是宿主 `alego-tools` 那一行上的部署级 `mode` 字段。一个部署要么所有会话都跑 Code Mode，要么一个都不跑，于是那个显而易见的产品形态（预设选择器里「代码模式」与标准/极简/创造并列）无处安放。
 
-「把 tools 下沉到 agent 平面」这个字面读法行不通。`ctx.tools` 有一批跟不下来的宿主平面消费者：`dsh-agent-loop` 读它私有的调度器 seam，`dsh-apiproxy` 读它的 presenter 来渲染工具卡，每个工具插件都往里注册。按本 stack 自己的规则——只有**所有**消费者一起下沉，服务才能下沉——注册表必须留在原地。
+「把 tools 下沉到 agent 平面」这个字面读法行不通。`ctx.tools` 有一批跟不下来的宿主平面消费者：`alego-agent-loop` 读它私有的调度器 seam，`alego-apiproxy` 读它的 presenter 来渲染工具卡，每个工具插件都往里注册。按本 stack 自己的规则——只有**所有**消费者一起下沉，服务才能下沉——注册表必须留在原地。
 
 ## 决策
 
@@ -23,15 +23,15 @@ agent preset 已经能按会话组装一个 agent 的工具，却管不了这些
 
 SDK 提示词段由 code 模式的部署全局注册（不变），并由 `presentAs` 额外按 scope 注册一份，后者按名字遮蔽前者。它的正文对 native scope 渲染为空，而提示词渲染器会丢弃空段——正是这一点让「在 code 模式部署下选择退出」的 agent 不带 SDK 段。
 
-preset 用一行来表达这个选择：`@deepseek-ai/dsh-agent-tool-presentation`，其全部内容就是一次 `presentAs` 调用。code 类模式通过 `ctx.inject` 等待 `ctx.codeRuntime` 而非假定它存在：运行时在宿主平面，而一个 pending 的行正是 `dsh-agent-presets` 已经会报告的「不可用挂载」并会指名该行——于是在无运行时的部署上选择 Code Mode 的 preset，会在操作者能够动手的地方失败。
+preset 用一行来表达这个选择：`@alego/agent-tool-presentation`，其全部内容就是一次 `presentAs` 调用。code 类模式通过 `ctx.inject` 等待 `ctx.codeRuntime` 而非假定它存在：运行时在宿主平面，而一个 pending 的行正是 `alego-agent-presets` 已经会报告的「不可用挂载」并会指名该行——于是在无运行时的部署上选择 Code Mode 的 preset，会在操作者能够动手的地方失败。
 
 ## 考虑过的替代方案
 
-**在 preset 的 isolate realm 里再起一个 `ToolRuntime`。** 否决：`dsh-agent-loop` 通过一个私有 symbol 从宿主上下文一次性解析注册表，因此按 agent 的注册表对调度器不可见。把 loop 改成按 agent 解析注册表，远比把一个字段变成 scope 感知的改动大。
+**在 preset 的 isolate realm 里再起一个 `ToolRuntime`。** 否决：`alego-agent-loop` 通过一个私有 symbol 从宿主上下文一次性解析注册表，因此按 agent 的注册表对调度器不可见。把 loop 改成按 agent 解析注册表，远比把一个字段变成 scope 感知的改动大。
 
 **在 preset 自己的 YAML 里加一个顶层键。** 否决，理由与 preset 展示元数据落到独立 `preset.yml` 相同：组装是一个顶层的插件行列表，装不下并列的键。
 
-**把包命名为 `dsh-tool-mode`。** 被一道 gate 否决，而且它是对的。`gen-tool-catalog` 以 `packages/*/tool-*` 通配，并要求每个命中项发布一个面向模型的工具 schema——因为在本仓库里这个前缀就意味着「带工具」。而这一行不带任何工具。
+**把包命名为 `alego-tool-mode`。** 被一道 gate 否决，而且它是对的。`gen-tool-catalog` 以 `packages/*/tool-*` 通配，并要求每个命中项发布一个面向模型的工具 schema——因为在本仓库里这个前缀就意味着「带工具」。而这一行不带任何工具。
 
 **在构造函数里无条件注册 SDK 段。** 试过之后否决：`renderPrompt` 会丢弃空段，但 `PromptAssembly.sections` 会保留它们，于是每个 native 部署都将携带一个什么也不渲染的 `tools:sdk` 条目，而两处既有断言不得不为此放宽。
 

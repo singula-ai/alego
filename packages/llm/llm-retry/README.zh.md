@@ -1,4 +1,4 @@
-# `@deepseek-ai/dsh-llm-retry`
+# `@alego/llm-retry`
 
 [English](README.md) | 中文
 
@@ -8,12 +8,12 @@
 
 两种 mode 都使用带对称 jitter 的有界指数退避。有效 `providerRetryAfterMs` 不超过 `maxDelayMs` 时会替换本地退避，并且不加 jitter。超出上限的提供方延迟会使 normal mode 继续委托；always mode 则改用已配置的本地退避，避免该指令终止重试。
 
-等待前，插件会追加一条不进入表层的 `llm/retry` 事件，其中包含共享 `retryId`、提供方、mode、已解析策略的规范 key、失败和计划延迟。该载荷由可安全用于浏览器的 `@deepseek-ai/dsh-llm-retry/types` 子路径导出，因此远程渲染器无需加载策略运行时即可使用该持久状态。该 key 包含所有影响行为的字段，并对 normal mode 的 code 排序，因为合格性采用集合成员关系判断。只有提供方与完整策略 key 都相同的事件才会延续重试编号；因此，用限制、code 成员关系或退避不同的路由替换后，会开始自己的历史。normal 事件包含有限上限；always 事件省略该上限，UI 会渲染 `∞`。等待完成时，插件会在返回 `{ kind: 'retry' }` 前立即追加 `llm/retry-started`，其中带有相同的 `retryId`、轮次、步骤与重试编号；退避期间取消则不会写入 started 事件。随后循环关闭失败轮次，并在同一持久历史上开启重试轮次。取消与插件 dispose 会中止活跃退避，在应用中止前等待活跃的委托恢复结算，并使 dispose 前捕获的 callback 只能以失败结束。
+等待前，插件会追加一条不进入表层的 `llm/retry` 事件，其中包含共享 `retryId`、提供方、mode、已解析策略的规范 key、失败和计划延迟。该载荷由可安全用于浏览器的 `@alego/llm-retry/types` 子路径导出，因此远程渲染器无需加载策略运行时即可使用该持久状态。该 key 包含所有影响行为的字段，并对 normal mode 的 code 排序，因为合格性采用集合成员关系判断。只有提供方与完整策略 key 都相同的事件才会延续重试编号；因此，用限制、code 成员关系或退避不同的路由替换后，会开始自己的历史。normal 事件包含有限上限；always 事件省略该上限，UI 会渲染 `∞`。等待完成时，插件会在返回 `{ kind: 'retry' }` 前立即追加 `llm/retry-started`，其中带有相同的 `retryId`、轮次、步骤与重试编号；退避期间取消则不会写入 started 事件。随后循环关闭失败轮次，并在同一持久历史上开启重试轮次。取消与插件 dispose 会中止活跃退避，在应用中止前等待活跃的委托恢复结算，并使 dispose 前捕获的 callback 只能以失败结束。
 
 单独发布的 `./invariant` 配套模块会检查每个已调度重试是否指向当前开启轮次及其最新已关闭步骤，是否与失败请求的持久提供方匹配，是否携带非空的提供方与策略标识，是否满足 mode 特定边界，是否拥有唯一步骤记录和正确的提供方策略重试编号，以及是否携带有界定时器延迟。它还要求每个 `llm/retry-started` 事件通过相同的 `retryId`、轮次、步骤与重试编号指向一个先前调度的尝试，并拒绝重复的 started 事件。full jitter 可以在下界调度为零毫秒。
 
 ```yaml
-- name: '@deepseek-ai/dsh-llm-deepseek'
+- name: '@alego/llm-deepseek'
   config:
     apiKeyEnv: DEEPSEEK_API_KEY
     retryPolicy:
@@ -23,10 +23,10 @@
         maxDelayMs: 30000
         jitterRatio: 0.2
 
-- name: '@deepseek-ai/dsh-llm-retry'
+- name: '@alego/llm-retry'
 ```
 
-执行器没有策略配置。`dsh-llm-pi-ai` 等多提供方适配器会把 `retryPolicy` 放在每个提供方 profile 内，避免维护第二份提供方名称列表。
+执行器没有策略配置。`alego-llm-pi-ai` 等多提供方适配器会把 `retryPolicy` 放在每个提供方 profile 内，避免维护第二份提供方名称列表。
 
 ## 模型体验
 

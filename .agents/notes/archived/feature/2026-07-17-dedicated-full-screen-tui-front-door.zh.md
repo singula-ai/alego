@@ -7,7 +7,7 @@ Archived: 2026-08-04
 
 ## 问题
 
-可复用的 TUI 包（package）仍然保留实现，但 [`dsh` 不再将其作为应用入口交付](../simplification/2026-08-03-explicit-config-dsh-entrypoint.md)。本记录继续负责包边界和终端行为；后续记录负责产品组合。
+可复用的 TUI 包（package）仍然保留实现，但 [`alego` 不再将其作为应用入口交付](../simplification/2026-08-03-explicit-config-alego-entrypoint.md)。本记录继续负责包边界和终端行为；后续记录负责产品组合。
 
 在本入口引入时，面向行的 agent 负责 pipe 与普通终端，但全屏 coding 界面必须负责原始输入、差分绘制、光标状态、浮层和终端恢复。把这两类契约合并到一个 UI 插件中，会迫使面向 stream 的路径依赖仅适用于 TTY 的生命周期。后续的[移除重复 agent 决策](../simplification/2026-07-20-remove-stdio-and-echo-agents.md)移除了这个面向行 agent；本 Note 继续负责 TUI 设计。
 
@@ -15,9 +15,9 @@ Archived: 2026-08-04
 
 ## 决策
 
-DeepSeek Harness 将 [`@deepseek-ai/dsh-tui`](../../../../packages/ui/tui/README.md) 作为独立的 Cordis 插件交付。该插件只负责终端输入与呈现；agent 生命周期、会话持久化、工具执行以及模型可见的提问工具仍由不同组合项负责。插件要求 stdin 和 stdout 均为 TTY；条件不满足时会失败，不会静默切换为逐行输出。
+Alego 将 [`@alego/tui`](../../../../packages/ui/tui/README.md) 作为独立的 Cordis 插件交付。该插件只负责终端输入与呈现；agent 生命周期、会话持久化、工具执行以及模型可见的提问工具仍由不同组合项负责。插件要求 stdin 和 stdout 均为 TTY；条件不满足时会失败，不会静默切换为逐行输出。
 
-该包是终端入口，而不是完整应用。宿主在已配置 agent 之前挂载 `@deepseek-ai/dsh-tui`，并围绕它组合后端、工具和策略。产品 CLI 目前不交付终端组合；非交互任务使用 headless 模式，Web 是已安装产品中面向人的界面，而 ACP 仍是独立的自动化协议。
+该包是终端入口，而不是完整应用。宿主在已配置 agent 之前挂载 `@alego/tui`，并围绕它组合后端、工具和策略。产品 CLI 目前不交付终端组合；非交互任务使用 headless 模式，Web 是已安装产品中面向人的界面，而 ACP 仍是独立的自动化协议。
 
 宿主提供其预创建 agent 使用的同一个新建或恢复 `SessionId`。TUI 等待相符的根 agent 出现，然后才进入全屏模式。因此，相符的 `agent-loop/config-start-failed` 事件会在接管屏幕前报告。
 
@@ -41,7 +41,7 @@ agent 空闲时，编辑器输入调用 `agent.send()`；轮次运行中则调�
 
 ## 曾考虑的替代方案
 
-- **把 readline 与全屏模式都保留在 `@deepseek-ai/dsh-stdio` 中**：不予采纳，因为逐行输出和差分 TTY 渲染具有不同的依赖、输入规则、日志所有权和资源清理义务。拆分为独立包可以让管道安全契约保持精简、明确。
+- **把 readline 与全屏模式都保留在 `@alego/stdio` 中**：不予采纳，因为逐行输出和差分 TTY 渲染具有不同的依赖、输入规则、日志所有权和资源清理义务。拆分为独立包可以让管道安全契约保持精简、明确。
 - **当任一进程流不是 TTY 时，让 TUI 插件静默降级**：不予采纳，因为回退会掩盖部署错误并改变交互语义。宿主可以选择其他入口；明确挂载的 TUI 会快速失败。
 - **把 TUI 接线与测试保留在 readline `repl-agent` 叶节点下**：当时不予采纳，因为一个叶节点会代表两个不同入口。后续移除产品入口时删除了该应用接线，但保留了包边界。
 - **在 `/model` 运行时修改 `agent.options`**：不予采纳，因为创建选项无法在异步 prompt 组装与请求路由之间提供原子边界。agent 作用域内的 waterfall 会在保持创建输入不可变的同时，为每个 step 快照一次选中的字段组合。

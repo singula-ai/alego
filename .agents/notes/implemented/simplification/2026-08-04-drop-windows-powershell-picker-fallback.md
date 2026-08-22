@@ -16,7 +16,7 @@ The chain also cost real complexity: two spawn tiers running one identical scrip
 
 ## Decision
 
-The win32 tier is exactly the koffi `IFileOpenDialog` child process; any failure surfaces as-is with no fallback. The PowerShell chain — the `pwsh` → Windows PowerShell 5.1 cascade, the DPI-corrected WinForms script, the `AggregateError` aggregation — is deleted, and `pickNativeDirectory`'s win32 branch is a single call. `dsh-native-command` remains a dependency for the POSIX tiers.
+The win32 tier is exactly the koffi `IFileOpenDialog` child process; any failure surfaces as-is with no fallback. The PowerShell chain — the `pwsh` → Windows PowerShell 5.1 cascade, the DPI-corrected WinForms script, the `AggregateError` aggregation — is deleted, and `pickNativeDirectory`'s win32 branch is a single call. `alego-native-command` remains a dependency for the POSIX tiers.
 
 The fallback criterion the rest of the package already followed now applies uniformly: a fallback tier exists only for tools the OS/desktop environment provides and may omit (`zenity` → `kdialog` on Linux, which the boot-time probe also samples); tools our own package ships (`koffi`) fail loud. macOS `osascript` stays fallback-free as before.
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { normalizeTerminalText, TerminalSanitizer } from '@deepseek-ai/dsh-terminal-bash/src/sanitize.ts'
+import { normalizeTerminalText, TerminalSanitizer } from '@alego/terminal-bash/src/sanitize.ts'
 
 describe('TerminalSanitizer', () => {
   it('removes split CSI and owned OSC prompt markers', () => {
@@ -7,7 +7,7 @@ describe('TerminalSanitizer', () => {
     expect(sanitizer.push('red\x1b[3')).toEqual({ text: 'red', prompt: false })
     expect(sanitizer.push('1m text\x1b[0m\r\n')).toEqual({ text: ' text\n', prompt: false })
     expect(sanitizer.push('\x1b]133;')).toEqual({ text: '', prompt: false })
-    expect(sanitizer.push('D;0\x07dsh> ')).toEqual({ text: 'dsh> ', prompt: true, promptTail: 'dsh> ' })
+    expect(sanitizer.push('D;0\x07alego> ')).toEqual({ text: 'alego> ', prompt: true, promptTail: 'alego> ' })
   })
 
   it('drops unrelated OSC, short escapes, BEL, and incomplete trailing escape', () => {
@@ -36,7 +36,7 @@ describe('TerminalSanitizer', () => {
   it('reports printable prompt text that follows a marker in a later chunk', () => {
     const sanitizer = new TerminalSanitizer(64)
     expect(sanitizer.push('\x1b]133;D;0\x07')).toEqual({ text: '', prompt: true, promptTail: '' })
-    expect(sanitizer.push('dsh> ')).toEqual({ text: 'dsh> ', prompt: false, promptTail: 'dsh> ' })
+    expect(sanitizer.push('alego> ')).toEqual({ text: 'alego> ', prompt: false, promptTail: 'alego> ' })
   })
 
   it('bounds and discards unterminated control sequences through their terminators', () => {

@@ -1,7 +1,7 @@
 /**
  * Harness error base with a stable machine-routable code and chained cause.
  * Package errors extend it so tool results and replay can retain failure class.
- * @module @deepseek-ai/dsh-llm/error
+ * @module @alego/llm/error
  */
 
 /**

@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write
-2026-07-04-hook-snapshot-matrix.md: 6c7229ee3b13867e01f657528265aabc2e4430df
-2026-07-04-hook-snapshot-matrix.zh.md: 7e46626db0234e269796338e8e0a4406547e1b71
+2026-07-04-hook-snapshot-matrix.md: 8122b0d39434cc71c2f33188aed7af09dfad1dfe
+2026-07-04-hook-snapshot-matrix.zh.md: ce70bf8afda3dc6d29882dfd29f30b93cb5900d6

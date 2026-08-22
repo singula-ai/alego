@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-[会话持久化 seam](../architecture/2026-06-14-session-persistence.zh.md) 将会话的日志外元数据拆分为 `dsh-session` 拥有的两种类型：一个不可变的 `SessionHeader`（`version`、`id`、`createdAt`、`cwd?`、`parentSession?`），在创建时一次性写入；一个可变的 `SessionSummary`（`updatedAt`、`title?`、`firstPrompt?`），「可在不触碰仅追加日志的情况下更新」。二者合并为 `SessionMeta = SessionHeader & SessionSummary`，抽象的 `SessionPersistence` 服务为此多出第七个方法 `update(id, summary)`，用于重写摘要。各后端各自实现可变存储：JSONL 在日志旁先写入临时文件再重命名，并以尽力而为的方式原子发布一个独立的 `.summary.json` **伴随文件**；SQLite 则使用 `updated_at`/`title`/`first_prompt` **列**，并在追加事务内更新其中的时间列。
+[会话持久化 seam](../architecture/2026-06-14-session-persistence.zh.md) 将会话的日志外元数据拆分为 `alego-session` 拥有的两种类型：一个不可变的 `SessionHeader`（`version`、`id`、`createdAt`、`cwd?`、`parentSession?`），在创建时一次性写入；一个可变的 `SessionSummary`（`updatedAt`、`title?`、`firstPrompt?`），「可在不触碰仅追加日志的情况下更新」。二者合并为 `SessionMeta = SessionHeader & SessionSummary`，抽象的 `SessionPersistence` 服务为此多出第七个方法 `update(id, summary)`，用于重写摘要。各后端各自实现可变存储：JSONL 在日志旁先写入临时文件再重命名，并以尽力而为的方式原子发布一个独立的 `.summary.json` **伴随文件**；SQLite 则使用 `updated_at`/`title`/`first_prompt` **列**，并在追加事务内更新其中的时间列。
 
 摘要是为未来的会话选择器设计的（通过 `updatedAt` 排序近期会话，用 `title`/`firstPrompt` 做预览）。该选择器从未实现。对整个仓库的审计表明，`SessionSummary` 的整套相关接口都只是在维护**无用状态**：
 

@@ -3,7 +3,7 @@
 import { spawnSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
 
-const SNAPSHOT_REF_PREFIX = 'refs/dsh/translation-pairing/snapshots'
+const SNAPSHOT_REF_PREFIX = 'refs/alego/translation-pairing/snapshots'
 
 /** Maximum buffered stdout or stderr for repository-owned Git subprocesses. */
 export const GIT_COMMAND_MAX_BUFFER = 1 << 26

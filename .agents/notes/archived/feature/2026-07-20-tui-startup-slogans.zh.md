@@ -14,9 +14,9 @@ TUI 头部副标题来自一个 `welcome` 配置，示例叶子配置把它设�
 ## Decision
 
 - `examples/tui-agent/cordis.yml` 不再配置 `welcome`；该配置键保留给需要固定、确定性副标题的部署与 fixture（Code Mode overlay 和所有快照/脚本化 fixture 都保留各自的欢迎语）。
-- `welcome` 未设置时，`dsh-tui` 每次启动从导出的 `STARTUP_SLOGANS` 库里挑选一条（`pickStartupSlogan`，随机源可注入），并以打字机动画逐字显示：每帧 40 ms 一个字符，完成前尾随一个 `▌` 块状光标。动画只在 `ui.start()` 成功后启动，其定时器与其他监听器一起在 dispose 时清除。
+- `welcome` 未设置时，`alego-tui` 每次启动从导出的 `STARTUP_SLOGANS` 库里挑选一条（`pickStartupSlogan`，随机源可注入），并以打字机动画逐字显示：每帧 40 ms 一个字符，完成前尾随一个 `▌` 块状光标。动画只在 `ui.start()` 成功后启动，其定时器与其他监听器一起在 dispose 时清除。
 - slogan 库是展示文案，刻意不做成配置：想控制措辞的部署已经有 `welcome` 这个出口。按契约 slogan 只含 ASCII，因为逐字显示按字符切片。
-- `dsh-tui-demo` 只在配置了 `welcome` 时才转发它，不再填默认值，应用不再替 TUI 决定空闲副标题。
+- `alego-tui-demo` 只在配置了 `welcome` 时才转发它，不再填默认值，应用不再替 TUI 决定空闲副标题。
 - 无 key 的 PTY 启动场景改为等待逐字显示的光标（`▌`——空 transcript 里该字形的唯一来源），不再等待已删除的欢迎文本。
 
 同一变更把 `packages/ui/tui/src/index.ts` 恢复到 100% 的单文件覆盖率（颜色方案合并曾在集成分支上破坏它）：`applyColorScheme` 里对编辑器边框颜色的重新赋值是死代码（紧随其后的 `setStatus` 调用会重新推导它），已删除；颜色方案查询的 `.then`/`.catch` 箭头函数改为具名、有测试的处理器（`applyReportedScheme`、`ignoreSchemeQueryFailure`——后者由一个让终端在 DSR 查询写入时抛错的测试固定）。
@@ -32,7 +32,7 @@ TUI 头部副标题来自一个 `welcome` 配置，示例叶子配置把它设�
 ## Consequences
 
 - `welcome` 未设置时启动输出不再字节级确定（随机 slogan、定时帧）。所有录制或快照表面都显式固定 `welcome`，因此没有快照变化；PTY 冒烟测试改为锚定逐字显示光标和会话 id 行。
-- `welcome` 的 schema 默认值从 `dsh-tui` 和 `dsh-tui-demo` 中消失；不传 welcome 的直接调用方现在得到的是 slogan，而不是 `'ready.'`。
+- `welcome` 的 schema 默认值从 `alego-tui` 和 `alego-tui-demo` 中消失；不传 welcome 的直接调用方现在得到的是 slogan，而不是 `'ready.'`。
 - 新增一条 slogan 只需在库里加一行；测试断言成员归属，不断言具体文本。
 
 ## Testing

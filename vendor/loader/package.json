@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/cordis-plugin-loader",
+  "name": "@alego/cordis-plugin-loader",
   "description": "Plugin loader for cordis",
   "version": "1.0.2",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/singula-ai/alego.git",
     "directory": "vendor/loader"
   },
   "type": "module",
@@ -30,7 +30,7 @@
   "author": "Shigma <shigma10826@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:^",
+    "@alego/cordis": "workspace:^",
     "node-addon-require-builtin": "^0.1.4"
   },
   "peerDependenciesMeta": {
@@ -39,6 +39,6 @@
     }
   },
   "dependencies": {
-    "@deepseek-ai/cosmokit": "workspace:^"
+    "@alego/cosmokit": "workspace:^"
   }
 }

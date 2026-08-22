@@ -1,4 +1,4 @@
-# Agent Note: dsh-code-review 的定期人工评审维护
+# Agent Note: alego-code-review 的定期人工评审维护
 
 Status: proposed
 
@@ -6,11 +6,11 @@ Status: proposed
 
 ## 问题
 
-`dsh-code-review` skill（技能）记录需要评审人判断的失败模式，但一次性审计重复开展起来成本高昂，作用域也容易不一致。把每条评论都当作教训会让检查清单不断膨胀；把合并、讨论串已解决或作者回复「已修复」视为采纳证据，则会把最终代码可能并未落实的反馈提升为规则。维护流程需要足够的证据和独立评审，以便在证据不足时按不采纳处理，同时无需在工作流证明有用之前引入 webhook 服务、持久事件状态或自动仓库推广。
+`alego-code-review` skill（技能）记录需要评审人判断的失败模式，但一次性审计重复开展起来成本高昂，作用域也容易不一致。把每条评论都当作教训会让检查清单不断膨胀；把合并、讨论串已解决或作者回复「已修复」视为采纳证据，则会把最终代码可能并未落实的反馈提升为规则。维护流程需要足够的证据和独立评审，以便在证据不足时按不采纳处理，同时无需在工作流证明有用之前引入 webhook 服务、持久事件状态或自动仓库推广。
 
 ## 提案
 
-在仓库外定期维护。一项保存在 skill 维护者机器上、而不提交到本仓库的私有工具，会针对刷新至 `origin/master` 的干净完整历史 checkout 运行。预期的调度器每天运行，并使用两天的 UTC 重叠窗口；手动运行可以通过另一个 `--since` 时长或重复的 `--pr` 参数指定显式集合。扫描相对于当前 skill 是幂等的，不存储仓库游标。推广时唯一会变更的仓库文件是 [.agents/skills/dsh-code-review/SKILL.md](../../../skills/dsh-code-review/SKILL.md)；draft PR（Pull Request）列出源反馈 URL 或 ID 和采纳证据，不会公开私有适配器日志。
+在仓库外定期维护。一项保存在 skill 维护者机器上、而不提交到本仓库的私有工具，会针对刷新至 `origin/master` 的干净完整历史 checkout 运行。预期的调度器每天运行，并使用两天的 UTC 重叠窗口；手动运行可以通过另一个 `--since` 时长或重复的 `--pr` 参数指定显式集合。扫描相对于当前 skill 是幂等的，不存储仓库游标。推广时唯一会变更的仓库文件是 [.agents/skills/alego-code-review/SKILL.md](../../../skills/alego-code-review/SKILL.md)；draft PR（Pull Request）列出源反馈 URL 或 ID 和采纳证据，不会公开私有适配器日志。
 
 ```mermaid
 flowchart TD
@@ -52,7 +52,7 @@ flowchart TD
 
 ### 机制所在位置
 
-工具源码、适配器二进制文件、提供方凭据和预期的每日调度器保存在维护者机器上，不会提交到本仓库。本文规定协议，参考实现属于私有基础设施。该机制只服务于由单个运维方维护的一项 skill，因此，持续通过仓库评审审查机制改动的成本高于提交工具及其历史的收益。如果该机制将来移交给第二位维护者，移交工作需要一篇后续 Agent Note 来修订本决策；任何接手者都应从运维文档 [docs/cookbook/maintaining-dsh-code-review.md](../../../../docs/cookbook/maintaining-dsh-code-review.zh.md) 入手。
+工具源码、适配器二进制文件、提供方凭据和预期的每日调度器保存在维护者机器上，不会提交到本仓库。本文规定协议，参考实现属于私有基础设施。该机制只服务于由单个运维方维护的一项 skill，因此，持续通过仓库评审审查机制改动的成本高于提交工具及其历史的收益。如果该机制将来移交给第二位维护者，移交工作需要一篇后续 Agent Note 来修订本决策；任何接手者都应从运维文档 [docs/cookbook/maintaining-alego-code-review.md](../../../../docs/cookbook/maintaining-alego-code-review.zh.md) 入手。
 
 ## 考虑过的替代方案
 
@@ -69,7 +69,7 @@ flowchart TD
 
 从 `proposed/` 推广到 `implemented/`，需要在针对本仓库的真实端到端运行中观察到以下全部事实：
 
-- 私有工具从刷新至 `origin/master` 的干净 detached checkout 运行，并且要么报告「没有候选项」，要么只生成 `.agents/skills/dsh-code-review/SKILL.md` 的 working-tree diff。**2026-07-15 已观察：** 扫描 62 个已合并 PR，跳过 5 个（merge commit 不可达或采集超过 250 个 commit 的上限），考虑 426 条人类反馈，发现 0 个候选项。
+- 私有工具从刷新至 `origin/master` 的干净 detached checkout 运行，并且要么报告「没有候选项」，要么只生成 `.agents/skills/alego-code-review/SKILL.md` 的 working-tree diff。**2026-07-15 已观察：** 扫描 62 个已合并 PR，跳过 5 个（merge commit 不可达或采集超过 250 个 commit 的上限），考虑 426 条人类反馈，发现 0 个候选项。
 - 两个评审适配器独立配置（不同的提供方或模型），无需用户干预即可完成 analyze／adopt／review 流程。**2026-07-15 已观察：** 不同的主／次适配器约用 8 分钟完成采纳与分析；一次适配器 id 幻觉由批次级保守失败机制处理，没有中止整次运行。
 - 调度器在没有交互式终端的情况下触发工具，并通过持久通知通道把候选 diff（或「没有候选项」记录）送达运维方。
 - 一个受控采集场景会在反馈基线之后，向目标分支加入与反馈匹配的变更；评审证据排除该目标分支专有变更，同时保留后续由 PR 自身加入的变更。

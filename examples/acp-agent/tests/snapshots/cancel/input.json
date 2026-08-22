@@ -5,7 +5,7 @@
     {
       "op": "promptAndCancel",
       "text": "Start a long task; this turn will be cancelled mid-stream.",
-      "waitForFile": { "path": ".dsh-snapshot-stream-ready" }
+      "waitForFile": { "path": ".alego-snapshot-stream-ready" }
     },
     { "op": "waitForTurnEnd" }
   ]

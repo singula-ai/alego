@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-session-projection-cache
+# @alego/session-projection-cache
 
 [English](README.md) | 中文
 
@@ -40,7 +40,7 @@
 
 ```yaml
 - id: session-projection-cache
-  name: '@deepseek-ai/dsh-session-projection-cache'
+  name: '@alego/session-projection-cache'
   config:
     writeEveryEvents: 200
     writeIntervalMs: 5000

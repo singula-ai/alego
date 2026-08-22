@@ -1,9 +1,9 @@
-# Publish the dsh release sequence to npm. This workflow is manual-only
+# Publish the alego release sequence to npm. This workflow is manual-only
 # (workflow_dispatch) and intentionally does not listen to pull_request or push:
-# publication must always be an explicit, reviewed act from a dsh-v* tag, and it
+# publication must always be an explicit, reviewed act from an alego-v* tag, and it
 # must never appear as a PR check. It repacks the current tree before publishing
 # so the bytes uploaded are exactly what this dispatch produced.
-name: Release publish (dsh)
+name: Release publish (alego)
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ permissions:
 
 env:
   PRIMARY_NODE_VERSION: '24'
-  DSH_TELEMETRY_DISABLED: '1'
+  ALEGO_TELEMETRY_DISABLED: '1'
 
 jobs:
   pack:
@@ -55,13 +55,13 @@ jobs:
       - name: Verify release version
         env:
           RELEASE_PUBLISH: 'true'
-        run: pnpm run release:verify --family dsh
+        run: pnpm run release:verify --family alego
 
       - name: Build
         run: pnpm run build:official
 
       - name: Pack release tarballs
-        run: pnpm run release:pack --family dsh --out dist/npm
+        run: pnpm run release:pack --family alego --out dist/npm
 
       # The harness packages declare the vendored framework as a peer, and this
       # verification must not depend on the registry already carrying matching
@@ -71,7 +71,7 @@ jobs:
       - name: Pack the vendored framework for verification
         run: pnpm run release:pack --family vendor --out dist/npm-vendor
 
-      # dsh-sandbox-local declares the Landlock entry as a runtime dependency, so
+      # alego-sandbox-local declares the Landlock entry as a runtime dependency, so
       # the verification needs its tarball. Its platform packages stay out: they
       # are optional, and building them needs a musl toolchain per architecture.
       - name: Pack the Landlock entry for verification
@@ -80,11 +80,11 @@ jobs:
           pnpm --dir native/landlock-run/packages/entry pack --pack-destination "$PWD/dist/npm-landlock"
 
       - name: Verify packed install
-        run: pnpm run release:verify-packed-install --family dsh --from dist/npm --from dist/npm-vendor --from dist/npm-landlock
+        run: pnpm run release:verify-packed-install --family alego --from dist/npm --from dist/npm-vendor --from dist/npm-landlock
 
       - uses: actions/upload-artifact@v4
         with:
-          name: dsh-npm-tarballs
+          name: alego-npm-tarballs
           path: dist/npm/*
           if-no-files-found: error
           retention-days: 7
@@ -122,10 +122,10 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: dsh-npm-tarballs
+          name: alego-npm-tarballs
           path: dist/npm
 
       - name: Publish tarballs
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: pnpm run release:publish --family dsh --from dist/npm
+        run: pnpm run release:publish --family alego --from dist/npm

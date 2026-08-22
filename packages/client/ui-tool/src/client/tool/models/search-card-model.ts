@@ -8,7 +8,7 @@
  *
  * The search card is result-time only: a search call has no matches or paths
  * before `execute`, so its pending state stays a `GenericCallView`
- * ({@link module:@deepseek-ai/dsh-tools/src/presentation}). This derivation
+ * ({@link module:@alego/tools/src/presentation}). This derivation
  * therefore reads only `resultView` and returns null for a still-running call,
  * unlike the terminal card whose call view carries the command before
  * execution.
@@ -21,7 +21,7 @@
  * lost.
  * @module
  */
-import type { SearchBlockProps, SearchFileGroup } from '@deepseek-ai/dsh-client-ui-primitives'
+import type { SearchBlockProps, SearchFileGroup } from '@alego/client-ui-primitives'
 import type { ToolCallBlock } from './tool-call-model.ts'
 
 /**

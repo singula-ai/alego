@@ -4,8 +4,8 @@
  * component stubs cannot prove per-session identity or disposal.
  */
 import { beforeEach, describe, expect, it } from 'vitest'
-import type { SessionId } from '@deepseek-ai/dsh-client-runtime/client'
-import { SlotTestRuntime } from '@deepseek-ai/dsh-client-test-runtime'
+import type { SessionId } from '@alego/client-runtime/client'
+import { SlotTestRuntime } from '@alego/client-test-runtime'
 import { createChatStore } from '../src/client/stores.ts'
 
 const sid = (s: string): SessionId => s as SessionId
@@ -93,14 +93,14 @@ describe('selection survives on the store seat', () => {
     const doomed = storeFor(b, 'conversation.session', sid('s1'))
     doomed.actions.setDraft('to be buried')
     doomed.actions.select({ turnSeq: 1 })
-    expect(localStorage.getItem('dsh.conversation.chat.s1')).not.toBeNull()
+    expect(localStorage.getItem('alego.conversation.chat.s1')).not.toBeNull()
 
     // TestSessions.remove drives the same public slot lifecycle contract the
     // production SessionRuntime calls when the scope dies (pruneStoreScope).
     await b.runtime.sessions.remove('s1')
 
     // Persisted residue is gone with the session...
-    expect(localStorage.getItem('dsh.conversation.chat.s1')).toBeNull()
+    expect(localStorage.getItem('alego.conversation.chat.s1')).toBeNull()
     // ...and a re-created same-id session starts from a FRESH instance.
     const reborn = storeFor(b, 'conversation.session', sid('s1'))
     expect(reborn).not.toBe(doomed)

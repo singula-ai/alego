@@ -6,11 +6,11 @@ Status: implemented
 
 ## 问题
 
-Web「通用」设置页将「权限」显示为禁用的骨架控件，尽管 `dsh-permission-presets` 已经拥有 preset 表和当前会话的切换路径。Settings seam 可以持久化由插件拥有的值，但 Web Settings API 只暴露可配置 LLM（大语言模型）提供方的 namespace。更重要的是，如果把用户偏好当成实时生效的全局权限，现有会话的执行策略就会在其持久日志之外发生变化。
+Web「通用」设置页将「权限」显示为禁用的骨架控件，尽管 `alego-permission-presets` 已经拥有 preset 表和当前会话的切换路径。Settings seam 可以持久化由插件拥有的值，但 Web Settings API 只暴露可配置 LLM（大语言模型）提供方的 namespace。更重要的是，如果把用户偏好当成实时生效的全局权限，现有会话的执行策略就会在其持久日志之外发生变化。
 
 ## 决策
 
-`dsh-permission-presets` 拥有一个 `permission` Settings namespace，其中只有 `defaultPreset` 字段。它的基础值是 `Config.defaultPreset`；省略该配置时，则使用与组合后的沙箱和审批默认值匹配的 preset。schema 的 enum 从已配置的 preset 表派生，因此 Settings 既能校验已存储的值，Web 客户端也能发现部署中的实际选项，而无需重复定义。
+`alego-permission-presets` 拥有一个 `permission` Settings namespace，其中只有 `defaultPreset` 字段。它的基础值是 `Config.defaultPreset`；省略该配置时，则使用与组合后的沙箱和审批默认值匹配的 preset。schema 的 enum 从已配置的 preset 表派生，因此 Settings 既能校验已存储的值，Web 客户端也能发现部署中的实际选项，而无需重复定义。
 
 服务会在 `session/created` 时同步读取当前 Settings 值。真正的新会话会收到三个显式事件：`permission/preset`、`sandbox/mode` 和 `approval/policy`。这些事实将创建时选中的权限固定下来，因此后续 Settings 变更只影响之后的会话。带 seed 或只完成部分初始化的会话会保留其有效调节项，只补齐缺失的事实；恢复时绝不会采用最新的用户默认值。`Session` 甚至会用 `session/end-seed` 标记显式为空的构造器 seed，因此不能把空的持久化日志误认为新会话。
 

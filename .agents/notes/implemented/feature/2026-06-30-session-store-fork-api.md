@@ -8,11 +8,11 @@ English | [中文](2026-06-30-session-store-fork-api.zh.md)
 
 The event-sourced session log already has the primitive a fork needs: create a new session with a seed event prefix, then derive model history from that seeded log exactly as replay does. That primitive is intentionally low-level: `ctx.sessions.create(id, { seed, meta })` accepts any valid seed, but ordinary live-session branching needs policy around which prefix can be copied, which metadata is stamped on the child, and how errors are classified.
 
-The semantic hazard is the fork boundary. A valid user-visible fork seed must be contiguous and end outside an active turn. Forking inside execution would copy an open `turn/start`, possibly an open `step/start`, and possibly dangling tool calls. That violates execution and provider-transcript invariants, and it creates a misleading child history that appears to have participated in an unfinished parent turn. Standalone context and plugin-owned log-only events are stable forkable history after a closed turn. The existing [subagent seam](2026-06-21-subagent-capability-seam.md) deliberately solves a different problem: tool-triggered subagent forks usually happen while the parent turn is open, so `dsh-subagent-fork-in-process` clips the seed to the parent's last completed-turn prefix. A general session fork should not silently clip; it should either fork the requested boundary or reject it.
+The semantic hazard is the fork boundary. A valid user-visible fork seed must be contiguous and end outside an active turn. Forking inside execution would copy an open `turn/start`, possibly an open `step/start`, and possibly dangling tool calls. That violates execution and provider-transcript invariants, and it creates a misleading child history that appears to have participated in an unfinished parent turn. Standalone context and plugin-owned log-only events are stable forkable history after a closed turn. The existing [subagent seam](2026-06-21-subagent-capability-seam.md) deliberately solves a different problem: tool-triggered subagent forks usually happen while the parent turn is open, so `alego-subagent-fork-in-process` clips the seed to the parent's last completed-turn prefix. A general session fork should not silently clip; it should either fork the requested boundary or reject it.
 
 ## Decision
 
-`dsh-session` owns ordinary live-session forking directly on `ctx.sessions`. There is no separate `dsh-session-fork` package or `ctx.sessionFork` service: the API has no independent backend, event vocabulary, lifecycle, or persistence behavior, and all durable work delegates to the existing session store and persistence backends.
+`alego-session` owns ordinary live-session forking directly on `ctx.sessions`. There is no separate `alego-session-fork` package or `ctx.sessionFork` service: the API has no independent backend, event vocabulary, lifecycle, or persistence behavior, and all durable work delegates to the existing session store and persistence backends.
 
 The store exposes one operation:
 
@@ -40,7 +40,7 @@ The Host creates the child through the agent registry with the selected seed and
 
 **Two functions: `snapshot()` plus `fork()`.** This preserved a reusable seed/metadata computation, but the only supported consumer created a session immediately. It also made the API feel more abstract than the concrete operation users need. A single `fork()` with an explicit `boundary` keeps the API direct while still supporting previous-point forks.
 
-**Silently clip open turns to the last completed boundary.** That is correct for `dsh-subagent-fork-in-process`, where delegation often starts while the parent turn is open and the child should inherit only the completed prefix. It is wrong for ordinary user/session branching because it hides that the requested fork point was not actually a valid boundary and silently drops the parent turn tail.
+**Silently clip open turns to the last completed boundary.** That is correct for `alego-subagent-fork-in-process`, where delegation often starts while the parent turn is open and the child should inherit only the completed prefix. It is wrong for ordinary user/session branching because it hides that the requested fork point was not actually a valid boundary and silently drops the parent turn tail.
 
 ## Consequences
 

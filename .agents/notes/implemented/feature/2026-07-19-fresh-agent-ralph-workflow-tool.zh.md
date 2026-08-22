@@ -8,11 +8,11 @@ Status: implemented
 
 同会话目标会保留对话，让一个 agent（智能体）持续完成持久目标；通用工作流工具则让模型编写扇出编排脚本。两者都不是 Ralph 模式：把同一目标反复交给全新的工作者，以共享工作区作为长期记忆，并且在各 Round 之间只传递一份小型显式交接，直到工作完成或触及限制。
 
-如果把 Ralph 行为加入 `dsh-agent-loop`、目标驱动器或面向模型的公开工作流语言，就会让一项策略与无关的执行机制耦合。让每个子 agent 继承父对话也会破坏上下文重置，并让重放依赖不断增长的隐式前缀。此功能需要一项由现有插件原语组合而成的固定、可评审策略，同时保证取消后完全停稳、有界跨 Round 数据、宽裕且可配置的上限，并且不引入新的面向人类目标状态。
+如果把 Ralph 行为加入 `alego-agent-loop`、目标驱动器或面向模型的公开工作流语言，就会让一项策略与无关的执行机制耦合。让每个子 agent 继承父对话也会破坏上下文重置，并让重放依赖不断增长的隐式前缀。此功能需要一项由现有插件原语组合而成的固定、可评审策略，同时保证取消后完全停稳、有界跨 Round 数据、宽裕且可配置的上限，并且不引入新的面向人类目标状态。
 
 ## 决策
 
-在 `packages/workflow/` 下新增独立的消费方包 `@deepseek-ai/dsh-tool-ralph`。它注册 `ralph({ objective, maxRounds? })`，拥有固定工作流脚本，并且只依赖 `ctx.tools`、`ctx.systemPrompt`、`ctx.workflowEngine` 和 `ctx.subagents`。Ralph 运行不是会话目标，不会创建目标状态，也不要求在具体 agent loop 中增加分支。
+在 `packages/workflow/` 下新增独立的消费方包 `@alego/tool-ralph`。它注册 `ralph({ objective, maxRounds? })`，拥有固定工作流脚本，并且只依赖 `ctx.tools`、`ctx.systemPrompt`、`ctx.workflowEngine` 和 `ctx.subagents`。Ralph 运行不是会话目标，不会创建目标状态，也不要求在具体 agent loop 中增加分支。
 
 该工具仅以前台方式运行。调用 agent 作为每个子 agent 的父级以提供 cwd 和谱系，父工具调用等待整次运行结束，父步骤的中止信号会取消工作流。每条路径都会等待 `run.dispose()`，因此调用返回前，取消会经过工作线程引擎的有界收敛并使子 agent 完全停稳。
 

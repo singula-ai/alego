@@ -6,7 +6,7 @@ import { Buffer } from 'node:buffer'
 export const PROMPT_MARKER_PREFIX = '133;D;'
 
 /** Exact printable prompt emitted after the private marker. */
-export const CONTROLLED_PROMPT = 'dsh> '
+export const CONTROLLED_PROMPT = 'alego> '
 
 /** One sanitized chunk plus whether it contained the owned prompt marker. */
 export interface SanitizedChunk {

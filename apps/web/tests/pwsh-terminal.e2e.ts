@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import { resolvePwshPath } from '@deepseek-ai/dsh-pwsh-local'
+import { resolvePwshPath } from '@alego/pwsh-local'
 import {
   assertFixtureInventory, captureStableAria, compareOrRefreshGolden,
   fixtureUserPrompts, launchWebScaffold, seedSession, webSnapshotMode,
@@ -32,7 +32,7 @@ const PROMPT = 'Run a PowerShell command that fails, then stop.'
 const SEED_ID = 'pwsh-terminal-web-e2e'
 const MODE = webSnapshotMode()
 
-// The overlay swaps the shipped bash executor for @deepseek-ai/dsh-pwsh-local;
+// The overlay swaps the shipped bash executor for @alego/pwsh-local;
 // a host without a usable `pwsh` cannot boot it, so the lane self-skips,
 // mirroring the pwshOnly ACP scenarios. The probe follows the executor's own
 // resolution (Program Files installs on Windows are found even when bare

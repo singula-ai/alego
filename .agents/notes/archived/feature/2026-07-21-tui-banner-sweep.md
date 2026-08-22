@@ -33,4 +33,4 @@ The [startup-slogans Agent Note](2026-07-20-tui-startup-slogans.md) replaced the
 
 ## Testing
 
-`packages/ui/tui/tests/tui.spec.ts` pins: the sweep completes to a full banner (both corners + title) and produced at least one clipped mid-sweep frame; a configured welcome renders verbatim with no clipped frames; the unset-welcome banner has no subtitle; and dispose clears the sweep's own interval handle. The PTY smoke boots on the `╮` completion marker across the tui-demo bin, the dsh CLI, and the personal-overlay scenarios. Verified live in tmux.
+`packages/ui/tui/tests/tui.spec.ts` pins: the sweep completes to a full banner (both corners + title) and produced at least one clipped mid-sweep frame; a configured welcome renders verbatim with no clipped frames; the unset-welcome banner has no subtitle; and dispose clears the sweep's own interval handle. The PTY smoke boots on the `╮` completion marker across the tui-demo bin, the alego CLI, and the personal-overlay scenarios. Verified live in tmux.

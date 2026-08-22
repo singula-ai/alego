@@ -13,7 +13,7 @@ Archived: 2026-07-27
 
 session-title 服务是唯一的标题来源。TUI 不包含 `autoTitle` 配置、标题模型请求、闩锁、abort controller、提示词或输出上限。TUI 在挂载时折叠最新的已记录标题（`foldSessionTitle`），将其渲染为横幅副标题，并在每个被接受的 `session/title` 事件上调用 `runtime.terminal.setTitle`，传入 `<session title> — <configured title>`。同一条终端安全的 OSC 0 路径会处理配置的回退标题、恢复的会话和实时修订，既不重命名 tmux 窗口，也不增加另一套终端控制接口。
 
-模型生成的标题是组合选择：`examples/tui-agent/cordis.yml`（以及脚本化 PTY fixture）挂载 `@deepseek-ai/dsh-session-title-first-message-llm`，它继承主请求的确切路由，用简短的模型摘要替换 spine 的确定性回退。未挂载该 provider 的部署保留 `dsh-agent-spine-demo` 内置 `SessionTitleService` 的回退标题。
+模型生成的标题是组合选择：`examples/tui-agent/cordis.yml`（以及脚本化 PTY fixture）挂载 `@alego/session-title-first-message-llm`，它继承主请求的确切路由，用简短的模型摘要替换 spine 的确定性回退。未挂载该 provider 的部署保留 `alego-agent-spine-demo` 内置 `SessionTitleService` 的回退标题。
 
 ## 备选方案
 

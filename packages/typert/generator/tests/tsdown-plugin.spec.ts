@@ -7,7 +7,7 @@ import type { WorkspaceEmitResult } from '../src/workspace.ts'
 
 const generated = vi.hoisted(() => vi.fn<() => WorkspaceEmitResult[]>(() => [
   {
-    package: '@deepseek-ai/dsh-tools',
+    package: '@alego/tools',
     packageRoot: 'packages/core/tools',
     face: 'host' as const,
     exports: [],
@@ -20,7 +20,7 @@ const generated = vi.hoisted(() => vi.fn<() => WorkspaceEmitResult[]>(() => [
     },
   },
   {
-    package: '@deepseek-ai/dsh-tools',
+    package: '@alego/tools',
     packageRoot: 'packages/core/tools',
     face: 'client' as const,
     exports: [],
@@ -43,7 +43,7 @@ const generated = vi.hoisted(() => vi.fn<() => WorkspaceEmitResult[]>(() => [
 ]))
 
 const discovered = vi.hoisted(() => vi.fn(() => [
-  { package: '@deepseek-ai/dsh-tools', root: 'packages/core/tools', faces: ['host'] },
+  { package: '@alego/tools', root: 'packages/core/tools', faces: ['host'] },
   { package: '@fixture/ignored', root: 'packages/ignored', faces: ['host'] },
   { package: '@fixture/remote-only', root: 'packages/remote-only', faces: ['host'] },
 ]))
@@ -74,7 +74,7 @@ describe('typertPlugin', () => {
 
   it('skips outputs that do not identify a Typert contributor', async () => {
     const plugin = typertPlugin()
-    expect(plugin.name).toBe('dsh-typert-generator')
+    expect(plugin.name).toBe('alego-typert-generator')
     plugin.writeBundle({})
 
     const root = await workspace()
@@ -95,11 +95,11 @@ describe('typertPlugin', () => {
   it('writes every generated face beside a nested package bundle', async () => {
     const root = await workspace()
     const output = await packageOutput(root, 'tools', {
-      name: '@deepseek-ai/dsh-tools',
+      name: '@alego/tools',
       exports: { './typert': './lib/typert.host.js' },
     }, 'lib/dev')
     const clientOutput = await packageOutput(root, 'client-tools', {
-      name: '@deepseek-ai/dsh-tools',
+      name: '@alego/tools',
       exports: { './client/typert': './lib/typert.client.js' },
     })
 
@@ -145,7 +145,7 @@ describe('typertPlugin', () => {
   it('removes stale Remote artifacts from a Host package without Remote output', async () => {
     const root = await workspace()
     const output = await packageOutput(root, 'tools', {
-      name: '@deepseek-ai/dsh-tools',
+      name: '@alego/tools',
       exports: { './typert': './lib/typert.host.js' },
     })
     const packageLib = join(root, 'packages', 'tools', 'lib')
@@ -155,7 +155,7 @@ describe('typertPlugin', () => {
       'typert.remote-client.d.ts.map',
     ]) writeFileSync(join(packageLib, file), 'stale\n')
     generated.mockReturnValueOnce([{
-      package: '@deepseek-ai/dsh-tools',
+      package: '@alego/tools',
       packageRoot: 'packages/core/tools',
       face: 'host',
       exports: [],
@@ -174,9 +174,9 @@ describe('typertPlugin', () => {
 
   it('emits every explicit workspace contributor once from a host-only prepass', async () => {
     const root = await workspace()
-    const trigger = await packageOutput(root, 'generator', { name: '@deepseek-ai/dsh-typert-generator' })
+    const trigger = await packageOutput(root, 'generator', { name: '@alego/typert-generator' })
     await packageOutput(root, 'core/tools', {
-      name: '@deepseek-ai/dsh-tools',
+      name: '@alego/tools',
       exports: { './typert': './lib/typert.host.js' },
     })
     await packageOutput(root, 'ignored', { name: '@fixture/ignored' })
@@ -193,7 +193,7 @@ describe('typertPlugin', () => {
     expect(discovered).toHaveBeenCalledWith(['host'])
     expect(generated).toHaveBeenCalledOnce()
     expect(generated).toHaveBeenCalledWith(
-      ['@deepseek-ai/dsh-tools', '@fixture/remote-only'],
+      ['@alego/tools', '@fixture/remote-only'],
       ['host'],
     )
     expect(readFileSync(join(root, 'packages/core/tools/lib/typert.host.js'), 'utf8'))
@@ -205,7 +205,7 @@ describe('typertPlugin', () => {
 })
 
 async function workspace(): Promise<string> {
-  const root = mkdtempSync(join(tmpdir(), 'dsh-typert-tsdown-'))
+  const root = mkdtempSync(join(tmpdir(), 'alego-typert-tsdown-'))
   roots.push(root)
   writeFileSync(join(root, 'tsconfig.host.json'), '{}\n')
   return root

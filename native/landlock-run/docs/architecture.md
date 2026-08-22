@@ -6,8 +6,8 @@ This repository owns confinement *mechanism*, not policy: consumers (agent harne
 
 The family is one entry package plus per-platform binary packages:
 
-- **Entry package** (`@deepseek-ai/node-addon-landlock-run`): ESM JavaScript. Owns the tool's CLI contract — path resolution (`launcherPath`), the functional probe (`probe`), grant-argv construction (`grantArgs`), and the contract constants. Ships the C source in its tarball for auditability. Lists every platform package as an `optionalDependency`.
-- **Platform packages** (`@deepseek-ai/node-addon-landlock-run-linux-{x64,arm64}`): one prebuilt static binary under `bin/`, a `prebuilds.json` declaring it, and no JavaScript at all. npm's `os`/`cpu` fields select the matching one at install time; the entry package resolves it to a file path — there is nothing to import.
+- **Entry package** (`@alego/node-addon-landlock-run`): ESM JavaScript. Owns the tool's CLI contract — path resolution (`launcherPath`), the functional probe (`probe`), grant-argv construction (`grantArgs`), and the contract constants. Ships the C source in its tarball for auditability. Lists every platform package as an `optionalDependency`.
+- **Platform packages** (`@alego/node-addon-landlock-run-linux-{x64,arm64}`): one prebuilt static binary under `bin/`, a `prebuilds.json` declaring it, and no JavaScript at all. npm's `os`/`cpu` fields select the matching one at install time; the entry package resolves it to a file path — there is nothing to import.
 
 Because the CLI parser and binary are versioned together in one package family, the parser cannot fall behind that binary version. Preventing that mismatch is why the package split exists.
 
@@ -15,7 +15,7 @@ There is no shared loader package: platform packages have nothing to load. If a 
 
 ## Resolution and availability
 
-`launcherPath()` resolves `@deepseek-ai/node-addon-landlock-run-<platform>-<arch>` and returns `<package>/bin/landlock-run`. When the package is not resolvable it returns a deterministic fallback path inside the entry package's own `node_modules` that simply never exists. Existence is deliberately unchecked either way: `probe()` is the single availability signal, and a missing binary probes `unusable` exactly like an unenforcing kernel. Consumers get one degradation path, not two.
+`launcherPath()` resolves `@alego/node-addon-landlock-run-<platform>-<arch>` and returns `<package>/bin/landlock-run`. When the package is not resolvable it returns a deterministic fallback path inside the entry package's own `node_modules` that simply never exists. Existence is deliberately unchecked either way: `probe()` is the single availability signal, and a missing binary probes `unusable` exactly like an unenforcing kernel. Consumers get one degradation path, not two.
 
 The probe is functional — the launcher builds and enforces a real maximal ruleset in a short-lived child — because version checks would miss a kernel that has the syscalls but refuses enforcement.
 

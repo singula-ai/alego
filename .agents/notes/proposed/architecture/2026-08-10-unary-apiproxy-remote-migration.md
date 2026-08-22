@@ -18,21 +18,21 @@ Finally, Connection currently applies its loopback-only privileged-method list i
 
 Migrate only unary calls whose business operation already has a natural Service owner and whose remaining adaptation is a small parameter or result projection. The Service binds a Typert namespace and decorates an existing method directly with `@Remote` when its signature is the intended consumer contract. A new method is justified only when it performs real adaptation; an identity `remote*` forwarding wrapper is not.
 
-`@deepseek-ai/dsh-api-remotes/client` will mount each selected business package's generated `/remote` contribution. Client business packages will call `ctx.remote.<service>` and perform Client-owned joins or presentation projection there. The corresponding API Proxy interface member, schema, route, handler, generated client method, fixture implementation, and production invocation will be removed together in that Service's vertical commit.
+`@alego/api-remotes/client` will mount each selected business package's generated `/remote` contribution. Client business packages will call `ctx.remote.<service>` and perform Client-owned joins or presentation projection there. The corresponding API Proxy interface member, schema, route, handler, generated client method, fixture implementation, and production invocation will be removed together in that Service's vertical commit.
 
-Large BFF methods remain in `dsh-host-apiproxy`. A method leaves this migration if implementation discovers endpoint-specific lifecycle policy, substantial orchestration, a Client dependency on a protocol-only error distinction, or a transport shape that cannot be expressed as a small owner-side adapter.
+Large BFF methods remain in `alego-host-apiproxy`. A method leaves this migration if implementation discovers endpoint-specific lifecycle policy, substantial orchestration, a Client dependency on a protocol-only error distinction, or a transport shape that cannot be expressed as a small owner-side adapter.
 
 ## Migration set
 
 | Legacy RPC | Remote destination | Host method | Adaptation |
 |---|---|---|---|
-| `session.rename` | `ctx.remote.sessionTitle` in `@deepseek-ai/dsh-session-title` | `SessionTitleService.rename(Session, title)` | Direct `@Remote`; Client maps `eventSeq` to its title projection sequence. |
-| `command.list`, `command.execute` | `ctx.remote.commands` in `@deepseek-ai/dsh-commands` | `CommandRuntime.list(Agent)`, `execute(Agent, line, signal)` | Direct `@Remote`; Client maps `undefined` to unmatched and preserves caller cancellation. |
-| `llm.providers` | `ctx.remote.llm` in `@deepseek-ai/dsh-llm` | `LlmRuntime.listProviders()`, `listConfigurableProviders()` | Direct `@Remote` on both reads; the Client joins registration and configuration-directory rows. |
-| `credentials.describe`, `credentials.set`, `credentials.unset` | `ctx.remote.credentials` in `@deepseek-ai/dsh-credentials-local` | `LocalCredentialProvider.describe(ref)`, `set(ref, value)`, `unset(ref)` | Direct `@Remote`; Client batches `describe` calls when its UI requests several refs. |
-| `agentPreset.read`, `agentPreset.copy`, `agentPreset.remove` | `ctx.remote.agentPresets` in `@deepseek-ai/dsh-agent-presets` | `readDocument(id)`, `copy(from, id, name?)`, `remove(id)` | `copy` and `remove` are direct; `readDocument` combines stored content with metadata from one live discovery. |
-| `subagent.interrupt` | `ctx.remote.subagents` in `@deepseek-ai/dsh-subagent` | `interruptByParent(targetSessionId, parentSessionId)` | Adapter constructs the internal user-authority variant without resolving or resuming either Agent. |
-| `workspace.list`, `workspace.insertSessionBefore`, `workspace.archiveSession` | `ctx.remote.workspace` in `@deepseek-ai/dsh-workspace` | `snapshot()`, `insertSessionBefore(workspaceId, sessionId, before?)`, `archiveSession(sessionId)` | Registry adapters detach mutable entities and return the settled workspace or archive snapshot. |
+| `session.rename` | `ctx.remote.sessionTitle` in `@alego/session-title` | `SessionTitleService.rename(Session, title)` | Direct `@Remote`; Client maps `eventSeq` to its title projection sequence. |
+| `command.list`, `command.execute` | `ctx.remote.commands` in `@alego/commands` | `CommandRuntime.list(Agent)`, `execute(Agent, line, signal)` | Direct `@Remote`; Client maps `undefined` to unmatched and preserves caller cancellation. |
+| `llm.providers` | `ctx.remote.llm` in `@alego/llm` | `LlmRuntime.listProviders()`, `listConfigurableProviders()` | Direct `@Remote` on both reads; the Client joins registration and configuration-directory rows. |
+| `credentials.describe`, `credentials.set`, `credentials.unset` | `ctx.remote.credentials` in `@alego/credentials-local` | `LocalCredentialProvider.describe(ref)`, `set(ref, value)`, `unset(ref)` | Direct `@Remote`; Client batches `describe` calls when its UI requests several refs. |
+| `agentPreset.read`, `agentPreset.copy`, `agentPreset.remove` | `ctx.remote.agentPresets` in `@alego/agent-presets` | `readDocument(id)`, `copy(from, id, name?)`, `remove(id)` | `copy` and `remove` are direct; `readDocument` combines stored content with metadata from one live discovery. |
+| `subagent.interrupt` | `ctx.remote.subagents` in `@alego/subagent` | `interruptByParent(targetSessionId, parentSessionId)` | Adapter constructs the internal user-authority variant without resolving or resuming either Agent. |
+| `workspace.list`, `workspace.insertSessionBefore`, `workspace.archiveSession` | `ctx.remote.workspace` in `@alego/workspace` | `snapshot()`, `insertSessionBefore(workspaceId, sessionId, before?)`, `archiveSession(sessionId)` | Registry adapters detach mutable entities and return the settled workspace or archive snapshot. |
 
 The Remote API deliberately follows Service names rather than preserving dotted legacy names. For example, Session rename becomes `ctx.remote.sessionTitle.rename(...)`.
 

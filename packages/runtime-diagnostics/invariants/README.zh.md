@@ -1,4 +1,4 @@
-# dsh-invariants
+# alego-invariants
 
 [English](README.md) | 中文
 
@@ -24,7 +24,7 @@ interface Config {
 
 `InvariantError` 扩展 `Error`，携带稳定 `code: 'INVARIANT'`，并公开所属 `packageName`，而不向服务添加产品依赖。
 
-在每个组合中，Session 自身负责不可变且在对外接口层面有效的日志存储：它对每个候选项制作一份无损 JSON 快照，验证引用的源事件是否齐全以及位置替换是否合法，将 `tool/result` 替换限制为一个当前结果的 `content`，深度冻结已接受记录，并通过不可变数组快照公开日志。`dsh-session` 不变量配套入口检查 Session 不负责的其余跨记录规则。
+在每个组合中，Session 自身负责不可变且在对外接口层面有效的日志存储：它对每个候选项制作一份无损 JSON 快照，验证引用的源事件是否齐全以及位置替换是否合法，将 `tool/result` 替换限制为一个当前结果的 `content`，深度冻结已接受记录，并通过不可变数组快照公开日志。`alego-session` 不变量配套入口检查 Session 不负责的其余跨记录规则。
 
 ## 包配套入口
 
@@ -36,14 +36,14 @@ interface Config {
 
 | 配套入口 | 检查 |
 |---|---|
-| `dsh-session`、`dsh-agent`、`dsh-scope`、`dsh-agent-loop` | 会话包含关系和调用/结果跟踪、agent（智能体）状态转换、inbox FIFO 守恒、作用域 subject 和模型请求重建。 |
-| `dsh-llm`、`dsh-llm-retry`、`dsh-tools`、`dsh-system-prompt` | 流语法、持久重试位置和边界、工具流水线阶段与冻结结果，以及权威提示词组装数据。 |
-| `dsh-compaction`、`dsh-hook-protocol`、`dsh-sandbox-policy` | 持久压缩（compaction）与钩子配对、压缩元数据和沙箱 mode 词汇。 |
-| `dsh-fs`、`dsh-subagent`、`dsh-workflow` | 文件系统事件身份、提供方/子级配对和工作流/agent 生命周期身份。 |
-| `dsh-goal`、`dsh-goal-round-driver` | 持久 goal 来源/内容一致性、修订和生命周期转换、时间戳、依次获准的 Round 和重建的继续提示词。 |
-| `dsh-permission-presets`、`dsh-user-approval` | 活动 preset 引用和审批询问/决定审计配对。 |
-| `dsh-jobs`、`dsh-tool-todo` | 任务快照生命周期/归属字段和持久整表 todo 结构。 |
-| `dsh-time-context` | 持久化时钟读数与会话中正在进行的轮次、下一步骤开始前的位置及已用时间 baseline 一致；渲染时间可解析，且不晚于其事件。 |
+| `alego-session`、`alego-agent`、`alego-scope`、`alego-agent-loop` | 会话包含关系和调用/结果跟踪、agent（智能体）状态转换、inbox FIFO 守恒、作用域 subject 和模型请求重建。 |
+| `alego-llm`、`alego-llm-retry`、`alego-tools`、`alego-system-prompt` | 流语法、持久重试位置和边界、工具流水线阶段与冻结结果，以及权威提示词组装数据。 |
+| `alego-compaction`、`alego-hook-protocol`、`alego-sandbox-policy` | 持久压缩（compaction）与钩子配对、压缩元数据和沙箱 mode 词汇。 |
+| `alego-fs`、`alego-subagent`、`alego-workflow` | 文件系统事件身份、提供方/子级配对和工作流/agent 生命周期身份。 |
+| `alego-goal`、`alego-goal-round-driver` | 持久 goal 来源/内容一致性、修订和生命周期转换、时间戳、依次获准的 Round 和重建的继续提示词。 |
+| `alego-permission-presets`、`alego-user-approval` | 活动 preset 引用和审批询问/决定审计配对。 |
+| `alego-jobs`、`alego-tool-todo` | 任务快照生命周期/归属字段和持久整表 todo 结构。 |
+| `alego-time-context` | 持久化时钟读数与会话中正在进行的轮次、下一步骤开始前的位置及已用时间 baseline 一致；渲染时间可解析，且不晚于其事件。 |
 
 每个 owner 的根入口仍独立于诊断。单独加载服务不会安装产品检查；在没有服务时加载配套入口，会等待其声明的 `invariants` 注入。
 
@@ -52,16 +52,16 @@ interface Config {
 ## 组合
 
 ```ts
-import type { Context } from '@deepseek-ai/cordis'
-import InvariantRegistry from '@deepseek-ai/dsh-invariants'
-import * as SessionInvariant from '@deepseek-ai/dsh-session/invariant'
+import type { Context } from '@alego/cordis'
+import InvariantRegistry from '@alego/invariants'
+import * as SessionInvariant from '@alego/session/invariant'
 
 declare const ctx: Context
 
 ctx.plugin(InvariantRegistry, {
   enabled: true,
-  package_allowlist: ['^@deepseek-ai/dsh-'],
-  package_blocklist: ['^@deepseek-ai/dsh-agent-loop$'],
+  package_allowlist: ['^@alego/'],
+  package_blocklist: ['^@alego/agent-loop$'],
 })
 ctx.plugin(SessionInvariant)
 ```

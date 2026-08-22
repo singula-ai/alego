@@ -7,11 +7,11 @@ Archived: 2026-07-26
 
 ## Problem
 
-出厂的 tui-agent `cordis.yml` 加载了 `@deepseek-ai/dsh-tool-todo`，默认向模型暴露 `todo_write`。这个工具是一项任务追踪的便利功能，而非像 `bash` 或 `read`/`write`/`edit` 文件系统工具那样的核心编码能力；多数 TUI 会话从不调用它，但出厂加载它会让每一轮的协议工具列表和系统提示词都随之变大。而 TUI 的计划渲染是事件驱动的：`packages/ui/tui/src/index.ts` 监听 `todo/write` 会话事件，`TodoComponent.render` 在列表为空时不返回任何内容，因此这个入口本就能容忍该工具的缺席或存在，与该插件没有任何运行时耦合。
+出厂的 tui-agent `cordis.yml` 加载了 `@alego/tool-todo`，默认向模型暴露 `todo_write`。这个工具是一项任务追踪的便利功能，而非像 `bash` 或 `read`/`write`/`edit` 文件系统工具那样的核心编码能力；多数 TUI 会话从不调用它，但出厂加载它会让每一轮的协议工具列表和系统提示词都随之变大。而 TUI 的计划渲染是事件驱动的：`packages/ui/tui/src/index.ts` 监听 `todo/write` 会话事件，`TodoComponent.render` 在列表为空时不返回任何内容，因此这个入口本就能容忍该工具的缺席或存在，与该插件没有任何运行时耦合。
 
 ## Decision
 
-tui-agent `cordis.yml` 不再加载 `tool-todo`；`todo_write` 改为可选启用。`code-mode.cordis.yml` 覆盖配置继承基础组合，因此它生成的 SDK 同样不再包含 `todo_write`。启用它只需一条配置项——把 `@deepseek-ai/dsh-tool-todo` 加入 `cordis.yml`（或 `~/.dsh` 的个人覆盖配置）——此后模型照旧记录整份清单的 `todo/write` 快照，TUI 照旧渲染该计划。`TodoItem` 类型与 `todo/write` 事件仍留在 `@deepseek-ai/dsh-session`，TUI 的计划渲染也保持接线，因此默认（禁用）与可选启用（启用）两条路径都是一等公民。同类的 acp-agent、headless-agent、jsonrpc-agent 示例仍然出厂携带该工具。
+tui-agent `cordis.yml` 不再加载 `tool-todo`；`todo_write` 改为可选启用。`code-mode.cordis.yml` 覆盖配置继承基础组合，因此它生成的 SDK 同样不再包含 `todo_write`。启用它只需一条配置项——把 `@alego/tool-todo` 加入 `cordis.yml`（或 `~/.alego` 的个人覆盖配置）——此后模型照旧记录整份清单的 `todo/write` 快照，TUI 照旧渲染该计划。`TodoItem` 类型与 `todo/write` 事件仍留在 `@alego/session`，TUI 的计划渲染也保持接线，因此默认（禁用）与可选启用（启用）两条路径都是一等公民。同类的 acp-agent、headless-agent、jsonrpc-agent 示例仍然出厂携带该工具。
 
 ## Alternatives considered
 
@@ -25,4 +25,4 @@ tui-agent `cordis.yml` 不再加载 `tool-todo`；`todo_write` 改为可选启�
 
 ## Consequences
 
-默认 TUI 的协议工具列表和系统提示词少了一个工具；想要任务追踪的会话加一条插件配置项即可。`examples/tui-agent/composition.md`（已重新生成）及其叶子条目表不再列出 `tool-todo`，`scripts/gen-doc-graphs.ts` 中人工维护的摘要也去掉了它。`@deepseek-ai/dsh-tool-todo` 包本身没有变动，仍由 acp/headless/jsonrpc 示例出厂携带，因此它的覆盖需求在那里得到满足。若要恢复默认，只需重新加入那一条 `cordis.yml` 配置项，并把快照/harness 的可选开关重新打开。
+默认 TUI 的协议工具列表和系统提示词少了一个工具；想要任务追踪的会话加一条插件配置项即可。`examples/tui-agent/composition.md`（已重新生成）及其叶子条目表不再列出 `tool-todo`，`scripts/gen-doc-graphs.ts` 中人工维护的摘要也去掉了它。`@alego/tool-todo` 包本身没有变动，仍由 acp/headless/jsonrpc 示例出厂携带，因此它的覆盖需求在那里得到满足。若要恢复默认，只需重新加入那一条 `cordis.yml` 配置项，并把快照/harness 的可选开关重新打开。

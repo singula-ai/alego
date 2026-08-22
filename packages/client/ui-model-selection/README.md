@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-client-ui-model-selection
+# @alego/client-ui-model-selection
 
 English | [中文](README.zh.md)
 

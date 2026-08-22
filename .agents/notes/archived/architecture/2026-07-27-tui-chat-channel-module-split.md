@@ -1,4 +1,4 @@
-# Agent Note: dsh-tui chat channel module split
+# Agent Note: alego-tui chat channel module split
 
 Status: implemented
 Archived: 2026-08-04

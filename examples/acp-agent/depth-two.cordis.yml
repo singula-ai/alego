@@ -1,12 +1,12 @@
 # Depth-limit snapshot overlay: keep the default composition and allow two
 # generations of spawn children before runtime enforcement rejects another.
 - id: base
-  name: '@deepseek-ai/cordis-plugin-include'
+  name: '@alego/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: tool-subagent
-        name: '@deepseek-ai/dsh-tool-subagent'
+        name: '@alego/tool-subagent'
         config:
           provider: spawn
           toolName: subagent

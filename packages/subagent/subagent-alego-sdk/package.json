@@ -1,0 +1,60 @@
+{
+  "name": "@alego/subagent-alego-sdk",
+  "description": "Out-of-process SDK subagent backend: drives a child Alego runtime subprocess over stdio JSON-RPC through the TypeScript SDK client",
+  "version": "0.1.1-rc.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/subagent/subagent-alego-sdk"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./invariant": {
+      "types": "./lib/types/invariant.d.ts",
+      "default": "./lib/invariant.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/invariant.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@alego/agent": "workspace:^",
+    "@alego/invariants": "workspace:^",
+    "@alego/llm": "workspace:^",
+    "@alego/sdk-client": "workspace:^",
+    "@alego/session": "workspace:^",
+    "@alego/subagent": "workspace:^",
+    "@alego/subprocess": "workspace:^",
+    "@alego/cordis": "workspace:^"
+  },
+  "dependencies": {
+    "@alego/schemastery": "workspace:^"
+  },
+  "devDependencies": {
+    "@alego/cordis-plugin-loader": "workspace:^",
+    "@alego/agent": "workspace:^",
+    "@alego/invariants": "workspace:^",
+    "@alego/llm": "workspace:^",
+    "@alego/loader-smoke": "workspace:^",
+    "@alego/sdk-client": "workspace:^",
+    "@alego/sdk-protocol": "workspace:^",
+    "@alego/session": "workspace:^",
+    "@alego/subagent": "workspace:^",
+    "@alego/subprocess": "workspace:^",
+    "@alego/cordis": "workspace:^"
+  }
+}

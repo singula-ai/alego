@@ -1,10 +1,10 @@
-# @deepseek-ai/dsh-typert-generator
+# @alego/typert-generator
 
 [English](README.md) | 中文
 
 TypeScript 项目分析器和模型驱动的 Typert 生成器。在生成任何产物之前，它会先将开发者编写的源类型树转换为独立于编译器的 `FaceModel` 和 `TypeGraph` 数据。静态分析无需 Cordis 即可消费该模型；各产物生成组件均不会接收 TypeScript 抽象语法树（AST）或类型检查器对象。
 
-分析器可以分别使用由 `tsconfig.host.json` 或 `tsconfig.client.json` 初始化的独立 `ts.Program`。直接项目引用确定编译器 face 的成员归属，而包子路径确定 Typert 运行时 face 的贡献：声明 `dsh.client` 的普通单项目包可以同时贡献 Host 与 Client 运行时模型；只有通过 `tsconfig.host.json` 或 `tsconfig.client.json` 显式引用的拆分项目，才会被限制在相应 face。`package.json#exports` 确定所有跨包公开边界，跨 face 的边只能来自源码导入或重新导出。NPM 依赖拥有的类型（包括 `@types` 包中的全局声明）继续以 `external` 引用表示，不会被展开。
+分析器可以分别使用由 `tsconfig.host.json` 或 `tsconfig.client.json` 初始化的独立 `ts.Program`。直接项目引用确定编译器 face 的成员归属，而包子路径确定 Typert 运行时 face 的贡献：声明 `alego.client` 的普通单项目包可以同时贡献 Host 与 Client 运行时模型；只有通过 `tsconfig.host.json` 或 `tsconfig.client.json` 显式引用的拆分项目，才会被限制在相应 face。`package.json#exports` 确定所有跨包公开边界，跨 face 的边只能来自源码导入或重新导出。NPM 依赖拥有的类型（包括 `@types` 包中的全局声明）继续以 `external` 引用表示，不会被展开。
 
 ## 分析模型
 

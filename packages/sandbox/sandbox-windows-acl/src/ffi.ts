@@ -5,7 +5,7 @@
  * (winnt.h / accctrl.h / aclapi.h / securitybaseapi.h / sddl.h /
  * processthreadsapi.h / fileapi.h / namedpipeapi.h / synchapi.h / winbase.h);
  * struct layouts are asserted at load time against verify/abi-probe.cpp.
- * @module @deepseek-ai/dsh-sandbox-windows-acl/ffi
+ * @module @alego/sandbox-windows-acl/ffi
  */
 
 import koffi from 'koffi'

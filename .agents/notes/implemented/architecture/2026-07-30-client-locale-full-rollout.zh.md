@@ -25,7 +25,7 @@ typed locale 标准席位（`locale:` 注册声明 → 框架注入强类型 `t`
 
 **派生层保持纯函数，本地化只在渲染层**：ui-workspace 的 `relativeTime` 返回结构化 `{unit, n}` 由渲染组合字典模板；blank 会话/未分组桶的存储标题不变，渲染按 `blank` 标志/`workspaceId` 缺席替换本地化文案；**搜索态 blank 行一律排除**（双语标题无法与单语查询稳定匹配）。日期不引 Intl：格式模板进字典（消息时钟 `clock.md`/`clock.ymd`，workspace hover `date.ymd`），格式化函数吃 `t` 参数保持纯。
 
-**测试与 e2e 口径**：`makeTranslate(...dicts)`（dsh-client-test-runtime）镜像服务查找链（首个命中字典胜出、key 兜底、`{name}` 插值），组件测试的 `t` 桩统一用它并以真实 props 席位定型。web e2e 统一通过 `newEnglishPage`（`en-US` 浏览器）打开，built-boot 快照 同样固定 navigator 语言：golden 因而不受语言迁移影响。settings 语言切换用例绕开该 helper 并开启 `zh-CN` 浏览器，因为在显式 Host 偏好到达前，暂定 locale 会跟随 `navigator`（[由浏览器推导初始 locale](../feature/2026-07-31-browser-derived-initial-locale.zh.md)）。
+**测试与 e2e 口径**：`makeTranslate(...dicts)`（alego-client-test-runtime）镜像服务查找链（首个命中字典胜出、key 兜底、`{name}` 插值），组件测试的 `t` 桩统一用它并以真实 props 席位定型。web e2e 统一通过 `newEnglishPage`（`en-US` 浏览器）打开，built-boot 快照 同样固定 navigator 语言：golden 因而不受语言迁移影响。settings 语言切换用例绕开该 helper 并开启 `zh-CN` 浏览器，因为在显式 Host 偏好到达前，暂定 locale 会跟随 `navigator`（[由浏览器推导初始 locale](../feature/2026-07-31-browser-derived-initial-locale.zh.md)）。
 
 [settings/locale/theme 分层 Note](../../proposed/architecture/2026-07-25-client-settings-locale-theme.zh.md) 中「apply 层订阅 `locale/change` 重注册刷新 label」的机制已被本决定取代（thunk + revision 生命周期）。
 

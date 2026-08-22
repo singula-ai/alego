@@ -13,17 +13,17 @@ harness 需要面向模型的 `glob` 和 `grep` 工具，但如果将它们实�
 
 ## 决策
 
-`glob` 和 `grep` 是 `@deepseek-ai/dsh-tool-fs-search` 中的条件式面向模型工具，由 bash seam 支持，不会成为新的 `ctx.fs` 提供方方法。加载插件时，该包（package）执行 `command -v rg >/dev/null 2>&1`：先通过 `ctx.bash.resolve(request)` 解析请求，再通过 `ctx.bash.run(spec)` 运行；如果命令以非零状态退出，该包会记录警告，并且既不注册工具，也不注册提示词章节。如果探针无法启动、超时、中止、被终止，或没有产生退出码，插件加载会明确失败，因为这意味着 bash 执行器损坏，而不是可选二进制文件缺失。注册后，执行流程同样依次调用 `ctx.bash.resolve(request)` 与 `ctx.bash.run(spec)`，并使用工具组装的固定 `rg` 命令模板。工具层负责 schema、参数验证、shell 引用、结果解析、结果格式化、保留、格式化结果落盘交接，以及超时声明。bash 执行器负责请求默认值解析与上限控制、子进程执行、进程组终止、环境清理、原始输出捕获，以及在本地、沙箱或远程 bash 实现之间替换后端。
+`glob` 和 `grep` 是 `@alego/tool-fs-search` 中的条件式面向模型工具，由 bash seam 支持，不会成为新的 `ctx.fs` 提供方方法。加载插件时，该包（package）执行 `command -v rg >/dev/null 2>&1`：先通过 `ctx.bash.resolve(request)` 解析请求，再通过 `ctx.bash.run(spec)` 运行；如果命令以非零状态退出，该包会记录警告，并且既不注册工具，也不注册提示词章节。如果探针无法启动、超时、中止、被终止，或没有产生退出码，插件加载会明确失败，因为这意味着 bash 执行器损坏，而不是可选二进制文件缺失。注册后，执行流程同样依次调用 `ctx.bash.resolve(request)` 与 `ctx.bash.run(spec)`，并使用工具组装的固定 `rg` 命令模板。工具层负责 schema、参数验证、shell 引用、结果解析、结果格式化、保留、格式化结果落盘交接，以及超时声明。bash 执行器负责请求默认值解析与上限控制、子进程执行、进程组终止、环境清理、原始输出捕获，以及在本地、沙箱或远程 bash 实现之间替换后端。
 
-这些工具不使用 `ctx.bash.start()`，也不创建模型可见的后台任务。从 agent loop（智能体循环）的视角看，它们是普通前台工具：只有当 `rg` 命令退出、超时、中止或失败后，工具调用才返回。`defineTool({ timeoutMs })` 声明协作式工具调用预算，`@deepseek-ai/dsh-timeout-policy` 通过 `exec.signal` 强制执行；工具会在 `resolve()`／`run()` 前将该信号转发给 bash 请求。bash 后端自身的超时仍作为第二层安全上限；先触发的中止生效。
+这些工具不使用 `ctx.bash.start()`，也不创建模型可见的后台任务。从 agent loop（智能体循环）的视角看，它们是普通前台工具：只有当 `rg` 命令退出、超时、中止或失败后，工具调用才返回。`defineTool({ timeoutMs })` 声明协作式工具调用预算，`@alego/timeout-policy` 通过 `exec.signal` 强制执行；工具会在 `resolve()`／`run()` 前将该信号转发给 bash 请求。bash 后端自身的超时仍作为第二层安全上限；先触发的中止生效。
 
-这些工具使 `path` 与 Claude Code 的搜索工具保持一致，但将解析绑定到 bash workdir，而不是 `ctx.fs`。工具从 `exec.agent?.session.header.cwd` 派生 bash 请求 workdir，与 `dsh-tool-bash` 和 `dsh-tool-fs` 一致；如果会话没有 cwd，它会省略 `request.workdir`，由 bash 实现通过 `resolve()` 应用其配置的 cwd 或进程 cwd。对于 `grep`，`path` 是可选的 ripgrep 目标，可以是文件或目录；省略时使用已解析的 bash workdir。对于 `glob`，`path` 是可选的目录搜索根；省略时同样使用已解析的 bash workdir。相对 `path` 值基于该 workdir 解析。只要可行，返回路径就会显示为相对于已解析 bash workdir 的形式；只有在共置部署中，bash workdir 与文件系统 `read` 根指向同一个工作区时，这些路径才保证可以继续读取。v1 会记录这项部署要求，但不执行跨服务运行时验证。在形成共享工作区／根契约或提供方专用搜索后端之前，远程或虚拟文件系统搜索保持暂缓。
+这些工具使 `path` 与 Claude Code 的搜索工具保持一致，但将解析绑定到 bash workdir，而不是 `ctx.fs`。工具从 `exec.agent?.session.header.cwd` 派生 bash 请求 workdir，与 `alego-tool-bash` 和 `alego-tool-fs` 一致；如果会话没有 cwd，它会省略 `request.workdir`，由 bash 实现通过 `resolve()` 应用其配置的 cwd 或进程 cwd。对于 `grep`，`path` 是可选的 ripgrep 目标，可以是文件或目录；省略时使用已解析的 bash workdir。对于 `glob`，`path` 是可选的目录搜索根；省略时同样使用已解析的 bash workdir。相对 `path` 值基于该 workdir 解析。只要可行，返回路径就会显示为相对于已解析 bash workdir 的形式；只有在共置部署中，bash workdir 与文件系统 `read` 根指向同一个工作区时，这些路径才保证可以继续读取。v1 会记录这项部署要求，但不执行跨服务运行时验证。在形成共享工作区／根契约或提供方专用搜索后端之前，远程或虚拟文件系统搜索保持暂缓。
 
-该包不注入 `fs`，而是注入 `tools`、`systemPrompt` 和 `bash`；它有意读取 `spillStore` 时使用 `ctx.get('spillStore')`，而不使用静态注入，因为格式化结果落盘是可选功能。现有 `@deepseek-ai/dsh-tool-fs` 部署若只需要 `read`／`write`／`edit`，则无需加载 bash。加载搜索功能的部署则必须让 bash 执行器环境可以使用 `rg`，这些工具才会进入模型可见 schema。
+该包不注入 `fs`，而是注入 `tools`、`systemPrompt` 和 `bash`；它有意读取 `spillStore` 时使用 `ctx.get('spillStore')`，而不使用静态注入，因为格式化结果落盘是可选功能。现有 `@alego/tool-fs` 部署若只需要 `read`／`write`／`edit`，则无需加载 bash。加载搜索功能的部署则必须让 bash 执行器环境可以使用 `rg`，这些工具才会进入模型可见 schema。
 
 ### 包结构
 
-v1 包保持精简。`@deepseek-ai/dsh-tool-fs-search` 内部的源代码布局如下：
+v1 包保持精简。`@alego/tool-fs-search` 内部的源代码布局如下：
 
 ```text
 src/index.ts
@@ -56,7 +56,7 @@ interface GrepArgs {
 }
 ```
 
-常规预算不会进入面向模型的 schema。`@deepseek-ai/dsh-tool-fs-search` 拥有以下带默认值并经过验证的配置字段：
+常规预算不会进入面向模型的 schema。`@alego/tool-fs-search` 拥有以下带默认值并经过验证的配置字段：
 
 | 字段 | 默认值 | 作用 |
 |---|---:|---|
@@ -64,7 +64,7 @@ interface GrepArgs {
 | `grepMaxMatches` | `250` | 内联保留的最大扁平匹配数；与 Claude Code 的默认 `GrepTool` `head_limit` 一致。 |
 | `grepMaxLineBytes` | `2000` | 每条匹配行预览保留的最大字节数，通过 `TextRetainer({ kind: 'head', maxBytes: grepMaxLineBytes })` 应用。 |
 | `rawOutputMaxBytes` | `20000000` | 工具会解析的完整原始 `rg` stdout 最大字节数；与 Claude Code 的 ripgrep 原始缓冲区一致。 |
-| `timeoutMs` | `30000` | 附加到两个工具定义并由 `@deepseek-ai/dsh-timeout-policy` 强制执行的工具调用超时。 |
+| `timeoutMs` | `30000` | 附加到两个工具定义并由 `@alego/timeout-policy` 强制执行的工具调用超时。 |
 
 `globMaxResults` 和 `grepMaxMatches` 使用 `ItemRetainer({ kind: 'head' })`。`grepMaxLineBytes` 针对每条匹配行使用 `TextRetainer({ kind: 'head', maxBytes: grepMaxLineBytes })`，使预览截断保留 UTF-8 边界。这遵循[工具结果保留库](../architecture/2026-07-06-tool-result-retention-library.md)对发现条目的映射：收集完整结果，在内联结果中保留头部条目，并将路径映射、分组和逐行预览放在保留器外部。v1 的 `grep` 不公开 `case_insensitive`、`head_limit`、`offset`、`count`、多行、上下文行、输出模式或文件类型过滤器。模型如需周边上下文，可使用 `read` 读取匹配文件；如需后续结果，则遵循返回的落盘定位符所给出的检索提示。
 
@@ -90,7 +90,7 @@ Claude Code 的数值只是两层预算的参考点，并非面向模型 schema 
 
 ### 格式化结果落盘
 
-`ctx.spillStore` 是可选服务，仅用于面向模型的格式化结果。这是代码库中首个工具自有落盘调用模式；此设计有意为之，因为搜索保留属于条目级策略：`globMaxResults` 限制路径数，`grepMaxMatches` 限制匹配数，而工具此时仍持有完整逻辑结果。通用 `dsh-spill-policy` 会在 `tools/post-execute` 阶段限制最终文本字节数；到那时搜索工具已经省略后续路径或匹配，策略无法恢复它们。
+`ctx.spillStore` 是可选服务，仅用于面向模型的格式化结果。这是代码库中首个工具自有落盘调用模式；此设计有意为之，因为搜索保留属于条目级策略：`globMaxResults` 限制路径数，`grepMaxMatches` 限制匹配数，而工具此时仍持有完整逻辑结果。通用 `alego-spill-policy` 会在 `tools/post-execute` 阶段限制最终文本字节数；到那时搜索工具已经省略后续路径或匹配，策略无法恢复它们。
 
 当搜索产生的逻辑结果数超过内联上限，且 `ctx.spillStore` 存在时，工具会通过 `saveText()` 保存完整的格式化结果。落盘所有者是调用 agent 的会话头 id（`exec.agent?.session.header.id`）；缺少该所有者时，搜索会保留内联结果，并报告完整结果无法保存。落盘来源是工具执行身份：`{ toolName: exec.name, callId: exec.callId, label: 'result' }`。建议文件名为 `grep-results.txt` 和 `glob-results.txt`；落盘后端仍将它们视为提示，而不是路径。
 
@@ -125,7 +125,7 @@ Line 12: ...
 
 **将 `glob`／`grep` 放在 `ctx.fs` 上。** v1 不采用：这会迫使每个文件系统后端增加搜索 API，并使本地 ripgrep 行为成为提供方 seam 的一部分。搜索是有用的产品行为，但不像 `readText` 或 `writeText` 那样属于通用文本存储原语。
 
-**直接从 `dsh-fs-local` spawn ripgrep。** 此 Agent Note 的 v1 不采用：直接 spawn 提供最简洁的 argv 边界、stdout／stderr 控制与提前停止控制，但会重复 bash seam 已负责的进程执行事项，包括环境清理、进程组终止、超时传播、沙箱／远程执行器替换，以及有界输出捕获。如果 bash 支持的搜索被证明过于依赖 shell 字符串，或必须支持前台流式输出，该方案仍是合理优化。
+**直接从 `alego-fs-local` spawn ripgrep。** 此 Agent Note 的 v1 不采用：直接 spawn 提供最简洁的 argv 边界、stdout／stderr 控制与提前停止控制，但会重复 bash seam 已负责的进程执行事项，包括环境清理、进程组终止、超时传播、沙箱／远程执行器替换，以及有界输出捕获。如果 bash 支持的搜索被证明过于依赖 shell 字符串，或必须支持前台流式输出，该方案仍是合理优化。
 
 **通过 `ctx.bash.start()` 实现流式提前停止。** 不采用：`start()` 会创建模型可见的后台任务语义，包括 task id、所有者 token、`bash_output`、`bash_kill`、完成通知，并且没有内置超时。`grep` 需要前台工具结果，而不是后台 bash 工作流。如果将来必须流式搜索，正确的抽象是在 bash／进程 seam 上增加前台流式进程句柄，而不是借用公开后台任务 API。
 
@@ -133,7 +133,7 @@ Line 12: ...
 
 **先为 bash 输出规范化增加 `spillStore.saveFile()`。** 此 Agent Note 的 v1 不采用：未来规范化 bash 时，`saveFile()` 可以帮助将现有执行器落盘文件移动到会话范围的落盘存储，但搜索只需在生成面向模型的产物前，在内存中获取有界的原始 `rg` stdout。`saveText()` 足以保存格式化搜索结果。
 
-**依赖通用 `dsh-spill-policy`。** 不采用：通用 post-execute 落盘只能看到最终工具结果。如果 `grep`／`glob` 内联返回第一页，通用策略无法恢复省略的结果。搜索工具必须在返回有界的面向模型文本前，自行保存完整的格式化结果。
+**依赖通用 `alego-spill-policy`。** 不采用：通用 post-execute 落盘只能看到最终工具结果。如果 `grep`／`glob` 内联返回第一页，通用策略无法恢复省略的结果。搜索工具必须在返回有界的面向模型文本前，自行保存完整的格式化结果。
 
 **公开 Claude Code 的完整 `GrepTool` schema。** v1 不采用：`output_mode`、上下文标志、多行、`head_limit`、`offset`、`case_insensitive` 和类型过滤器会使面向模型的接口变成 ripgrep 包装层。本 harness 将常规预算与续传机制保留在部署策略和落盘产物中。
 
@@ -148,12 +148,12 @@ Line 12: ...
 - 测试覆盖注册时 `rg` 探测（探测成功会注册两个工具和提示词章节；非零探测会跳过工具与提示词章节并发出警告；基础设施探测失败会拒绝插件加载），证明中止的 `exec.signal` 会到达 bash 后端（通过同一引用的 spec 断言和 `SEARCH_ABORTED` 结果），并覆盖命令构造／引用（恶意模式、带空格路径、以短横线开头的值、引号、换行、glob 元字符：既有单元断言，也针对每个恶意值执行真实 `bash -c` 往返）、将 `grep.path` 用作文件与目录目标、将 `glob.path` 用作目录搜索根、无效模式处理、无匹配、格式错误的 `rg --json` 输出、匹配行预览截断、原始输出溢出、超时／中止、格式化落盘成功／失败、包自有 `SEARCH_*` 错误代码，以及无后台任务不变量。
 - 直接覆盖第一方工具自有落盘先例：落盘后端存在、落盘后端缺失、`saveText()` 失败，以及缺少落盘所有者。
 - 该包通过真实 Loader 路径覆盖命名空间插件的导出形状（`name`、`inject`、`Config` 和 `apply`，且没有默认导出）。
-- 真实执行器集成测试（`dsh-bash-local` + 真实 `rg`）验证外部世界：恶意模式保持惰性、逐会话 cwd 解析、VCS 元数据排除、按修改时间排序，以及真实 ripgrep stderr 分类。如果测试进程的 PATH 中没有 `rg`，该测试会自行跳过（这是与无密钥 e2e 跳过相似的 CI 兼容措施）；伪执行器测试覆盖注册和执行时缺少 `rg`，并由逐文件 100% 覆盖率门禁兜底。
+- 真实执行器集成测试（`alego-bash-local` + 真实 `rg`）验证外部世界：恶意模式保持惰性、逐会话 cwd 解析、VCS 元数据排除、按修改时间排序，以及真实 ripgrep stderr 分类。如果测试进程的 PATH 中没有 `rg`，该测试会自行跳过（这是与无密钥 e2e 跳过相似的 CI 兼容措施）；伪执行器测试覆盖注册和执行时缺少 `rg`，并由逐文件 100% 覆盖率门禁兜底。
 - transcript 可见落盘通知仍有快照缺口：此功能合入时记录了缺口说明，没有快照。快照层会回放 acp-agent 树；在其中加入搜索插件会改变组装的系统提示词，必须使用真实密钥重新录制每一份预期输出，而实现环境没有密钥。落盘通知的确切 transcript 文本由单元测试固定（`formatGlobOutput`／`formatGrepOutput` 以及通过注册表执行的落盘测试）；下一次拥有密钥的会话应把插件接入 acp-agent 树，并运行一次 `test:snapshot:record`。
 
 ## 后果
 
-- `glob` 和 `grep` 是 `@deepseek-ai/dsh-tool-fs-search` 中的条件式面向模型工具，不是 `ctx.fs` 提供方方法，也不属于现有 `@deepseek-ai/dsh-tool-fs` 根插件。只有 bash 执行器能找到 `rg` 时才会注册；该包注入 `tools`、`systemPrompt` 和 `bash`，不注入 `fs`，并使 `ctx.spillStore` 保持可选，读取时使用 `ctx.get('spillStore')`。
+- `glob` 和 `grep` 是 `@alego/tool-fs-search` 中的条件式面向模型工具，不是 `ctx.fs` 提供方方法，也不属于现有 `@alego/tool-fs` 根插件。只有 bash 执行器能找到 `rg` 时才会注册；该包注入 `tools`、`systemPrompt` 和 `bash`，不注入 `fs`，并使 `ctx.spillStore` 保持可选，读取时使用 `ctx.get('spillStore')`。
 - Schema 严格为 `glob(pattern, path?)` 和 `grep(pattern, path?, include?)`；搜索上限与超时是带默认值并经过验证的 Config 字段（`globMaxResults`、`grepMaxMatches`、`grepMaxLineBytes`、`rawOutputMaxBytes`、`timeoutMs`）。
 - 工具通过 `ctx.bash.resolve(request)` → `ctx.bash.run(spec)` 执行，转发 `exec.signal`，绝不调用 `ctx.bash.start()`，也绝不公开 bash task id。如果存在 `exec.agent?.session.header.cwd`，bash 请求 workdir 来自该值；解析后的 `spec.workdir` 决定执行与相对路径显示。
 - 工具向 bash seam 请求 `stdoutMaxBytes: rawOutputMaxBytes`，只解析上限内未截断的 stdout，并将超限或仍被截断的原始输出视为明确的搜索失败；绝不向模型公开原始 `rg` 输出。

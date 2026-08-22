@@ -18,13 +18,13 @@ Chat Message Definition 为每个 `ContextMessageNode` 附加一份包含生产�
 
 **名称从日志中读出，绝不来自客户端维护的生产者名称表。** `agent-instructions` 以它对账过的去重指令文件路径命名，`session-reference` 以它读取的会话标题命名，插件来源以其记录的插件 id 命名，其余来源则以自身的 `kind` 命名——这正是可合并扩展联合类型有文档记载的默认分支。没有可读 kind 的来源降级为无名注入。于是新增或重命名的生产者无需客户端发版即可辨识，任何名称都不会相对代码失准，恢复、fork 或来自外部的日志与实时会话的投影结果完全一致。
 
-`recall` 覆盖 `session-reference`，因为它是当前唯一会把另一个会话的材料搬进本会话的已发布来源。今天没有任何 Web 叶子挂载 `dsh-session-reference`——它此前只有终端宿主——因此该分支的存在是为了日志可移植性，而不是为了某个已打包的生产方，其覆盖来自单元测试而非组装后的 Web 场景。
+`recall` 覆盖 `session-reference`，因为它是当前唯一会把另一个会话的材料搬进本会话的已发布来源。今天没有任何 Web 叶子挂载 `alego-session-reference`——它此前只有终端宿主——因此该分支的存在是为了日志可移植性，而不是为了某个已打包的生产方，其覆盖来自单元测试而非组装后的 Web 场景。
 
 Chat Inbox 与 Message Definition 会重放持久 `agent/inbox/spliced` 事件；如果一条用户来源的消息以相同身份从 `next-step` 被领取，后续 `user/message` 就投影为 `SteeringMessageNode`。`MessageItem` 为这种持久消息与待处理 steering 气泡加上 `插话` 标注。从排队轮次领取的消息仍是 `UserMessageNode`，非用户来源的 next-step 消息仍是上下文。这推翻了[已归档的取消 steer 入口与插话装饰决策](../../archived/simplification/2026-07-31-web-ui-no-steer-entry-or-interjection-chrome.md)中的一条结论。当时移除徽章，是因为 composer 无法 steer，标签指向了用户做不到的动作。此后 composer 获得了 Steer 手势，却没有同步修订那份 note；本决策提供了它在「重新引入」条款中要求的产品决策，并订正了其中留下的过时事实。标注是这里唯一的 steering 装饰：composer 模式、Queue dock 的严格 steer 操作、待处理 steering 的生命周期仍归各自的所有者。
 
 ## 考虑过的替代方案
 
-**在客户端本地化生产者名称。** 以插件 id 为键的字典读起来确实比 `@deepseek-ai/dsh-system-prompt` 好，但它会在每次重命名时悄悄失准，每新增一个生产者都要改客户端，而且对来自外部的日志根本无法命名。日志已经记录的生产者名称，比客户端自己编造的标签更可靠。
+**在客户端本地化生产者名称。** 以插件 id 为键的字典读起来确实比 `@alego/system-prompt` 好，但它会在每次重命名时悄悄失准，每新增一个生产者都要改客户端，而且对来自外部的日志根本无法命名。日志已经记录的生产者名称，比客户端自己编造的标签更可靠。
 
 **按来源 kind 注册呈现。** 展开项决策把键控的上下文视图 slot 推迟到出现由来源自有的呈现需求为止。为一行命名并不构成独立呈现，而以「已挂载的生产者」为键的注册表恰恰会在最要紧的地方失效——生产者已不再挂载的恢复日志同样必须渲染出来。
 
@@ -44,7 +44,7 @@ Chat Inbox 与 Message Definition 会重放持久 `agent/inbox/spliced` 事件�
 
 - **部分被取代。** 决策中的 steering 标注条款已不再描述 master：[标注移除决策](../simplification/2026-08-10-web-remove-steering-interjection-caption.zh.md)删除了 `插话` / `Interjection` 标注，轮次中途的 steer 只能靠它在消息流中的位置辨认。决策中的上下文来源与召回命名仍然有效，`SteeringMessageNode` 投影未变。
 - 读者一眼即可归因 transcript 中每一条非提示消息；即便面对本客户端版本从未见过其生产者的日志，标题栏依然如实。
-- 只要来源仅携带插件 id，UI 中的生产者名称就呈现为包名形态（`dsh-tool-skill`、`@deepseek-ai/dsh-system-prompt`）。这是拒绝客户端名称表的代价；想要更好标签的生产者必须在来源字段中记录该标签。
+- 只要来源仅携带插件 id，UI 中的生产者名称就呈现为包名形态（`alego-tool-skill`、`@alego/system-prompt`）。这是拒绝客户端名称表的代价；想要更好标签的生产者必须在来源字段中记录该标签。
 - `ContextMessageNode` 增加了一个必填字段，因此每一处构造该节点的代码——包括测试 fixture（测试前置数据）——都必须提供它。
 - 即使 agent loop（智能体循环）现在把已经接纳的 steering 记录为 `user/message`，`SteeringMessageNode` 仍是独立的呈现节点；它的身份来自持久 inbox 历史，而不是独立消息事件。
-- 在某个宿主挂载 `dsh-session-reference` 之前，`recall` 分支在已发布的 Web 叶子中没有生产者，只能通过别处写入的日志抵达。
+- 在某个宿主挂载 `alego-session-reference` 之前，`recall` 分支在已发布的 Web 叶子中没有生产者，只能通过别处写入的日志抵达。

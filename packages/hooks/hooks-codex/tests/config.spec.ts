@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parseCodexConfig, CODEX_EVENTS } from '@deepseek-ai/dsh-hooks-codex/src/config.ts'
+import { parseCodexConfig, CODEX_EVENTS } from '@alego/hooks-codex/src/config.ts'
 
 describe('parseCodexConfig', () => {
   it('honors only the five bridge-supported Codex events, dropping the rest', () => {

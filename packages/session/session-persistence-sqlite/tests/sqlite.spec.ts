@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { spawn } from 'node:child_process'
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@alego/cordis'
 import { once } from 'node:events'
 import { chmod, mkdir, mkdtemp, rm, stat, symlink, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
@@ -8,13 +8,13 @@ import { join } from 'node:path'
 import { performance } from 'node:perf_hooks'
 import { pathToFileURL } from 'node:url'
 import { DatabaseSync } from 'node:sqlite'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import Include from '@deepseek-ai/cordis-plugin-include'
-import SessionStore, { SessionId, type SessionEvent } from '@deepseek-ai/dsh-session'
+import Loader from '@alego/cordis-plugin-loader'
+import Include from '@alego/cordis-plugin-include'
+import SessionStore, { SessionId, type SessionEvent } from '@alego/session'
 import SessionPersistenceSqlite, {
   DEFAULT_BUSY_TIMEOUT_MS,
   SCHEMA_VERSION,
-} from '@deepseek-ai/dsh-session-persistence-sqlite'
+} from '@alego/session-persistence-sqlite'
 import {
   runCoordinatorContract,
   type CoordinatorFixture,
@@ -43,7 +43,7 @@ afterEach(async () => {
   for (const directory of dirs.splice(0)) await rm(directory, { recursive: true, force: true })
 })
 
-async function freshDbPath(prefix = 'dsh-sqlite-'): Promise<string> {
+async function freshDbPath(prefix = 'alego-sqlite-'): Promise<string> {
   const directory = await mkdtemp(join(tmpdir(), prefix))
   dirs.push(directory)
   return join(directory, 'sessions.db')
@@ -210,7 +210,7 @@ runPersistenceContract('sqlite', async () => {
 })
 
 runCoordinatorContract('sqlite', async (): Promise<CoordinatorFixture> => {
-  const directory = await mkdtemp(join(tmpdir(), 'dsh-sqlite-coord-'))
+  const directory = await mkdtemp(join(tmpdir(), 'alego-sqlite-coord-'))
   const path = join(directory, 'sessions.db')
   return {
     mount: async ctx => ctx.plugin(SessionPersistenceSqlite, { path }),
@@ -232,11 +232,11 @@ runCoordinatorContract('sqlite', async (): Promise<CoordinatorFixture> => {
 
 describe('SessionPersistenceSqlite physical packing', () => {
   it('loads from cordis.yml and packs through the assembled service', async () => {
-    const path = await freshDbPath('dsh-sqlite-loader-')
+    const path = await freshDbPath('alego-sqlite-loader-')
     const configPath = join(path, '..', 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@deepseek-ai/dsh-session'",
-      "- name: '@deepseek-ai/dsh-session-persistence-sqlite'",
+      "- name: '@alego/session'",
+      "- name: '@alego/session-persistence-sqlite'",
       '  config:',
       `    path: ${JSON.stringify(path)}`,
       '',
@@ -249,8 +249,8 @@ describe('SessionPersistenceSqlite physical packing', () => {
     ctx.loader.internal = {
       version: 'sqlite',
       async import(specifier: string) {
-        if (specifier === '@deepseek-ai/dsh-session') return SessionStore
-        if (specifier === '@deepseek-ai/dsh-session-persistence-sqlite') {
+        if (specifier === '@alego/session') return SessionStore
+        if (specifier === '@alego/session-persistence-sqlite') {
           return SessionPersistenceSqlite
         }
         throw new Error(`unexpected Loader import: ${specifier}`)
@@ -310,7 +310,7 @@ describe('SessionPersistenceSqlite physical packing', () => {
 
   it.runIf(process.platform !== 'win32')('bounds paced-stream WAL extent without rewriting committed rows', async () => {
     const events = chunkLog(1_000)
-    const measured = await measureWriteTraffic(await freshDbPath('dsh-sqlite-traffic-'), events)
+    const measured = await measureWriteTraffic(await freshDbPath('alego-sqlite-traffic-'), events)
 
     expect(measured).toMatchObject({ rows: 31, inserted: 31, changed: 0, removed: 0 })
     expect(measured.inserted).toBe(measured.rows)
@@ -319,7 +319,7 @@ describe('SessionPersistenceSqlite physical packing', () => {
   })
 
   it('includes a packed predecessor when an overlapping scalar tail hides it', async () => {
-    const path = await freshDbPath('dsh-sqlite-overlap-')
+    const path = await freshDbPath('alego-sqlite-overlap-')
     const store = new SqliteStore({ path, journalMode: 'wal', busyTimeoutMs: DEFAULT_BUSY_TIMEOUT_MS })
     const header = meta('overlap')
     await store.appendBatch(header, [chunk(0), chunk(1), chunk(2)], false)
@@ -341,7 +341,7 @@ describe('SessionPersistenceSqlite physical packing', () => {
   })
 
   it('waits for a competing process within the configured busy timeout', async () => {
-    const path = await freshDbPath('dsh-sqlite-busy-')
+    const path = await freshDbPath('alego-sqlite-busy-')
     const store = new SqliteStore({ path, journalMode: 'wal', busyTimeoutMs: 1_000 })
     const header = meta('busy')
     await store.appendBatch(header, [chunk(0)], false)
@@ -370,7 +370,7 @@ describe('SessionPersistenceSqlite physical packing', () => {
   })
 
   it('rejects an older SQLite physical schema', async () => {
-    const path = await freshDbPath('dsh-sqlite-old-schema-')
+    const path = await freshDbPath('alego-sqlite-old-schema-')
     const seed = await openDatabase(DatabaseSync, path, 'wal', DEFAULT_BUSY_TIMEOUT_MS)
     seed.exec(testSql('set-user-version-16'))
     seed.close()
@@ -380,7 +380,7 @@ describe('SessionPersistenceSqlite physical packing', () => {
   })
 
   it('rejects a stale physical append without replacing the winning tail', async () => {
-    const path = await freshDbPath('dsh-sqlite-stale-')
+    const path = await freshDbPath('alego-sqlite-stale-')
     const first = new SqliteStore({ path, journalMode: 'wal', busyTimeoutMs: DEFAULT_BUSY_TIMEOUT_MS })
     const second = new SqliteStore({ path, journalMode: 'wal', busyTimeoutMs: DEFAULT_BUSY_TIMEOUT_MS })
     const header = meta(SessionId('stale'))
@@ -393,7 +393,7 @@ describe('SessionPersistenceSqlite physical packing', () => {
   })
 
   it('rejects a stale repair without deleting a newer winning tail', async () => {
-    const path = await freshDbPath('dsh-sqlite-stale-repair-')
+    const path = await freshDbPath('alego-sqlite-stale-repair-')
     const stale = new SqliteStore({ path, journalMode: 'wal', busyTimeoutMs: DEFAULT_BUSY_TIMEOUT_MS })
     const winner = new SqliteStore({ path, journalMode: 'wal', busyTimeoutMs: DEFAULT_BUSY_TIMEOUT_MS })
     const header = meta(SessionId('stale-repair'))
@@ -421,7 +421,7 @@ describe('SessionPersistenceSqlite schema ownership', () => {
     } as const
     for (const mode of ['wal', 'delete', 'truncate', 'persist'] as const) {
       ;(await openDatabase(DatabaseSync, ':memory:', mode, DEFAULT_BUSY_TIMEOUT_MS)).close()
-      const path = await freshDbPath(`dsh-sqlite-journal-${mode}-`)
+      const path = await freshDbPath(`alego-sqlite-journal-${mode}-`)
       const db = await openDatabase(DatabaseSync, path, mode, DEFAULT_BUSY_TIMEOUT_MS)
       expect(db.prepare(sql(resources[mode])).get()).toEqual({ journal_mode: mode })
       expect(db.prepare(sql('select-trusted-schema')).get()).toEqual({ trusted_schema: 0 })
@@ -432,7 +432,7 @@ describe('SessionPersistenceSqlite schema ownership', () => {
   })
 
   it('retries a busy journal-mode transition within its retry budget', async () => {
-    const path = await freshDbPath('dsh-sqlite-journal-busy-')
+    const path = await freshDbPath('alego-sqlite-journal-busy-')
     let attempts = 0
     const BusyOnceDatabase = databaseWithJournalFailure(() => {
       attempts += 1
@@ -466,7 +466,7 @@ describe('SessionPersistenceSqlite schema ownership', () => {
       })
       await expect(openDatabase(
         FailingDatabase,
-        await freshDbPath(`dsh-sqlite-journal-failure-${errcode}-`),
+        await freshDbPath(`alego-sqlite-journal-failure-${errcode}-`),
         'wal',
         timeout,
       )).rejects.toThrow(`SQLite error ${errcode}`)
@@ -487,7 +487,7 @@ describe('SessionPersistenceSqlite schema ownership', () => {
     try {
       await expect(openDatabase(
         BusyDatabase,
-        await freshDbPath('dsh-sqlite-journal-cutoff-'),
+        await freshDbPath('alego-sqlite-journal-cutoff-'),
         'wal',
         100,
       )).rejects.toThrow('database is locked')
@@ -505,7 +505,7 @@ describe('SessionPersistenceSqlite schema ownership', () => {
     })
     await expect(openDatabase(
       BusyDatabase,
-      await freshDbPath('dsh-sqlite-journal-paced-'),
+      await freshDbPath('alego-sqlite-journal-paced-'),
       'wal',
       50,
     )).rejects.toThrow('database is locked')
@@ -514,19 +514,19 @@ describe('SessionPersistenceSqlite schema ownership', () => {
   })
 
   it('rejects unversioned, incompatible, and foreign-application databases', async () => {
-    const unversionedPath = await freshDbPath('dsh-sqlite-unversioned-')
+    const unversionedPath = await freshDbPath('alego-sqlite-unversioned-')
     const unversioned = new DatabaseSync(unversionedPath)
     unversioned.exec(testSql('create-unrelated-table'))
     unversioned.close()
     await expect(openDatabase(DatabaseSync, unversionedPath, 'wal', DEFAULT_BUSY_TIMEOUT_MS)).rejects.toThrow(/unversioned schema/)
 
-    const incompatiblePath = await freshDbPath('dsh-sqlite-incompatible-')
+    const incompatiblePath = await freshDbPath('alego-sqlite-incompatible-')
     const incompatible = new DatabaseSync(incompatiblePath)
     incompatible.exec(testSql('set-user-version-16'))
     incompatible.close()
     await expect(openDatabase(DatabaseSync, incompatiblePath, 'wal', DEFAULT_BUSY_TIMEOUT_MS)).rejects.toThrow(/incompatible with this build/)
 
-    const foreignPath = await freshDbPath('dsh-sqlite-foreign-')
+    const foreignPath = await freshDbPath('alego-sqlite-foreign-')
     const foreign = new DatabaseSync(foreignPath)
     foreign.exec(testSql('set-user-version-17'))
     foreign.exec(testSql('set-application-id-12345'))
@@ -535,21 +535,21 @@ describe('SessionPersistenceSqlite schema ownership', () => {
   })
 
   it('rejects changed columns and non-strict owned tables', async () => {
-    const changedPath = await freshDbPath('dsh-sqlite-columns-')
+    const changedPath = await freshDbPath('alego-sqlite-columns-')
     ;(await openDatabase(DatabaseSync, changedPath, 'wal', DEFAULT_BUSY_TIMEOUT_MS)).close()
     const changed = new DatabaseSync(changedPath)
     changed.exec(testSql('add-unexpected-column'))
     changed.close()
     await expect(openDatabase(DatabaseSync, changedPath, 'wal', DEFAULT_BUSY_TIMEOUT_MS)).rejects.toThrow(/required schema objects/)
 
-    const nonStrictPath = await freshDbPath('dsh-sqlite-nonstrict-')
+    const nonStrictPath = await freshDbPath('alego-sqlite-nonstrict-')
     ;(await openDatabase(DatabaseSync, nonStrictPath, 'wal', DEFAULT_BUSY_TIMEOUT_MS)).close()
     const nonStrict = new DatabaseSync(nonStrictPath)
     nonStrict.exec(testSql('replace-events-with-nonstrict-table'))
     nonStrict.close()
     await expect(openDatabase(DatabaseSync, nonStrictPath, 'wal', DEFAULT_BUSY_TIMEOUT_MS)).rejects.toThrow(/required schema objects/)
 
-    const loosePath = await freshDbPath('dsh-sqlite-loose-')
+    const loosePath = await freshDbPath('alego-sqlite-loose-')
     const loose = new DatabaseSync(loosePath)
     loose.exec(testSql('create-loose-schema'))
     loose.close()
@@ -644,7 +644,7 @@ describe('SessionPersistenceSqlite schema ownership', () => {
   })
 
   it('rejects invalid durable metadata before exposing a session header', async () => {
-    const path = await freshDbPath('dsh-sqlite-metadata-')
+    const path = await freshDbPath('alego-sqlite-metadata-')
     const store = new SqliteStore({ path, journalMode: 'wal', busyTimeoutMs: DEFAULT_BUSY_TIMEOUT_MS })
     const header = meta('invalid-metadata')
     await store.appendBatch(header, [chunk(0)], false)
@@ -663,7 +663,7 @@ describe('SessionPersistenceSqlite schema ownership', () => {
 
 describe('SessionPersistenceSqlite edge behavior', () => {
   it('keeps a fresh database unopened until the first persistence operation', async () => {
-    const path = await freshDbPath('dsh-sqlite-lazy-')
+    const path = await freshDbPath('alego-sqlite-lazy-')
     const ctx = new Context()
     await ctx.plugin(SessionStore)
     await ctx.plugin(SessionPersistenceSqlite, { path })
@@ -676,14 +676,14 @@ describe('SessionPersistenceSqlite edge behavior', () => {
   })
 
   it('disposes after path validation without opening the database', async () => {
-    const path = await freshDbPath('dsh-sqlite-unused-')
+    const path = await freshDbPath('alego-sqlite-unused-')
     const ctx = new Context()
     await ctx.plugin(SessionStore)
     await ctx.plugin(SessionPersistenceSqlite, { path })
     await ctx.fiber.dispose()
     await expect(stat(path)).rejects.toMatchObject({ code: 'ENOENT' })
 
-    const untouchedPath = await freshDbPath('dsh-sqlite-never-validated-')
+    const untouchedPath = await freshDbPath('alego-sqlite-never-validated-')
     const untouched = new SqliteStore({
       path: untouchedPath,
       journalMode: 'wal',
@@ -727,7 +727,7 @@ describe('SessionPersistenceSqlite edge behavior', () => {
   })
 
   it('rejects omitted torn markers and stale closer positions', async () => {
-    const path = await freshDbPath('dsh-sqlite-repair-validation-')
+    const path = await freshDbPath('alego-sqlite-repair-validation-')
     const store = new SqliteStore({ path, journalMode: 'wal', busyTimeoutMs: DEFAULT_BUSY_TIMEOUT_MS })
     const header = meta('repair-validation')
     await store.appendBatch(header, [chunk(0)], false)
@@ -747,7 +747,7 @@ describe('SessionPersistenceSqlite edge behavior', () => {
   })
 
   it('rejects malformed physical tail rows before appending', async () => {
-    const path = await freshDbPath('dsh-sqlite-tail-')
+    const path = await freshDbPath('alego-sqlite-tail-')
     const store = new SqliteStore({ path, journalMode: 'wal', busyTimeoutMs: DEFAULT_BUSY_TIMEOUT_MS })
     const header = meta('invalid-tail')
     await store.appendBatch(header, [chunk(0)], false)
@@ -762,7 +762,7 @@ describe('SessionPersistenceSqlite edge behavior', () => {
 
   it('rejects missing and empty store identities', async () => {
     for (const mode of ['missing', 'empty'] as const) {
-      const path = await freshDbPath(`dsh-sqlite-identity-${mode}-`)
+      const path = await freshDbPath(`alego-sqlite-identity-${mode}-`)
       const db = await openDatabase(DatabaseSync, path, 'wal', DEFAULT_BUSY_TIMEOUT_MS)
       if (mode === 'missing') db.exec(testSql('delete-persistence-state'))
       else db.exec(testSql('empty-store-id'))
@@ -774,7 +774,7 @@ describe('SessionPersistenceSqlite edge behavior', () => {
   })
 
   it('rejects invalid paths during service initialization', async () => {
-    const path = await freshDbPath('dsh-sqlite-invalid-path-')
+    const path = await freshDbPath('alego-sqlite-invalid-path-')
     const ctx = new Context()
     await ctx.plugin(SessionStore)
     await expect(ctx.plugin(SessionPersistenceSqlite, { path: `${path}\0` })).rejects.toMatchObject({
@@ -784,19 +784,19 @@ describe('SessionPersistenceSqlite edge behavior', () => {
   })
 
   it('rejects non-files and symbolic links', async () => {
-    const directoryPath = await freshDbPath('dsh-sqlite-directory-')
+    const directoryPath = await freshDbPath('alego-sqlite-directory-')
     await mkdir(directoryPath)
     expect(errorMessage(await backendFailure(directoryPath)))
       .toMatch(/must be a regular file/)
 
-    const linkPath = await freshDbPath('dsh-sqlite-link-')
+    const linkPath = await freshDbPath('alego-sqlite-link-')
     const target = join(linkPath, '..', 'target.db')
     await writeFile(target, '')
     await symlink(target, linkPath)
     expect(errorMessage(await backendFailure(linkPath)))
       .toMatch(/not a symbolic link/)
 
-    const parentLinkPath = await freshDbPath('dsh-sqlite-parent-link-')
+    const parentLinkPath = await freshDbPath('alego-sqlite-parent-link-')
     const realParent = join(parentLinkPath, '..', 'real-parent')
     const linkedParent = join(parentLinkPath, '..', 'linked-parent')
     await mkdir(realParent, { mode: 0o700 })
@@ -808,20 +808,20 @@ describe('SessionPersistenceSqlite edge behavior', () => {
   it.runIf(
     process.getuid !== undefined && process.getuid() !== 0,
   )('rejects permissive files and writable parents', async () => {
-    const permissivePath = await freshDbPath('dsh-sqlite-permissive-')
+    const permissivePath = await freshDbPath('alego-sqlite-permissive-')
     await writeFile(permissivePath, '')
     await chmod(permissivePath, 0o644)
     expect(errorMessage(await backendFailure(permissivePath)))
       .toMatch(/accessible only by that user/)
 
-    const writableParentPath = await freshDbPath('dsh-sqlite-parent-')
+    const writableParentPath = await freshDbPath('alego-sqlite-parent-')
     await chmod(join(writableParentPath, '..'), 0o770)
     expect(errorMessage(await backendFailure(writableParentPath)))
       .toMatch(/not group\/world-writable/)
   })
 
   it('surfaces database creation failures after path validation', async () => {
-    const path = await freshDbPath('dsh-sqlite-create-failure-')
+    const path = await freshDbPath('alego-sqlite-create-failure-')
     const store = new SqliteStore({ path, journalMode: 'wal', busyTimeoutMs: DEFAULT_BUSY_TIMEOUT_MS })
     await store.validatePath()
     const parent = join(path, '..')

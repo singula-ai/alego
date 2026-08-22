@@ -9,9 +9,9 @@
 创建 `stats.ts`，将它放在 `tmp/cordis-tutorial` 中。它是一项负责计数并在每次变化时发出通知的服务：
 
 ```ts
-import { Service, type Context } from '@deepseek-ai/cordis'
+import { Service, type Context } from '@alego/cordis'
 
-declare module '@deepseek-ai/cordis' {
+declare module '@alego/cordis' {
   interface Context {
     stats: StatsService
   }
@@ -46,7 +46,7 @@ export function apply(ctx: Context) {
 创建 `reporter.ts`：
 
 ```ts ignore-check
-import type { Context } from '@deepseek-ai/cordis'
+import type { Context } from '@alego/cordis'
 import type {} from './stats.ts'
 
 export const name = 'reporter'
@@ -96,9 +96,9 @@ export function apply(ctx: Context) {
 waterfall 是实现拦截的模式。每个监听器都会收到参数和一个 `next()` continuation；它可以转换 `next()` 的返回值，也可以不调用 `next()` 就直接返回，从而短路链条的其余部分。Cordis 文档把后一种行为称为否决。创建 `waterfall-demo.ts`：
 
 ```ts
-import type { Context } from '@deepseek-ai/cordis'
+import type { Context } from '@alego/cordis'
 
-declare module '@deepseek-ai/cordis' {
+declare module '@alego/cordis' {
   interface Events {
     'demo/transform'(input: string, next: () => Promise<string>): Promise<string>
   }
@@ -141,4 +141,4 @@ harness 使用 waterfall 处理协作插件可以包装或回答的决策：[`ag
 
 下一章：[配置](05-config.zh.md)：来自 `cordis.yml` 的插件选项。
 
-[![](https://img.shields.io/badge/powered_by-dsh-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/deepseek-ai/deepseek-harness)
+[![](https://img.shields.io/badge/powered_by-alego-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/singula-ai/alego)

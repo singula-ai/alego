@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/cordis-plugin-hmr",
+  "name": "@alego/cordis-plugin-hmr",
   "description": "Hot Module Replacement Plugin for Cordis",
   "version": "1.0.16",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/singula-ai/alego.git",
     "directory": "vendor/hmr"
   },
   "type": "module",
@@ -29,7 +29,7 @@
   ],
   "author": "Shigma <shigma10826@gmail.com>",
   "license": "MIT",
-  "@deepseek-ai/cordis": {
+  "@alego/cordis": {
     "services": {
       "required": [
         "timer"
@@ -41,15 +41,15 @@
     }
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis-plugin-timer": "workspace:^",
-    "@deepseek-ai/cordis": "workspace:^"
+    "@alego/cordis-plugin-timer": "workspace:^",
+    "@alego/cordis": "workspace:^"
   },
   "dependencies": {
     "@babel/code-frame": "^7.29.0",
     "chokidar": "^4.0.3",
-    "@deepseek-ai/cosmokit": "workspace:^",
+    "@alego/cosmokit": "workspace:^",
     "picomatch": "^4.0.3",
-    "@deepseek-ai/schemastery": "workspace:^"
+    "@alego/schemastery": "workspace:^"
   },
   "devDependencies": {
     "@types/babel__code-frame": "^7.27.0",

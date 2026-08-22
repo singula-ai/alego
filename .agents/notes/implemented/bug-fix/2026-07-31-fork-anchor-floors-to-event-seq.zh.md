@@ -14,7 +14,7 @@ host 的切分规则从来不是障碍。被中止的轮次会记录一条 reaso
 
 ## 决策
 
-`SessionRuntime.fork` 在发起 RPC 前对 `atSeq` 向下取整。分数 seq 这个约定属于 `dsh-client-runtime`，实时投影和回放投影都由它生成，因此也由同一个包在跨出 wire 边界时把它换回真实事件 seq，而不是要求每个 UI 调用方各自记得转换。整数锚点不受影响。
+`SessionRuntime.fork` 在发起 RPC 前对 `atSeq` 向下取整。分数 seq 这个约定属于 `alego-client-runtime`，实时投影和回放投影都由它生成，因此也由同一个包在跨出 wire 边界时把它换回真实事件 seq，而不是要求每个 UI 调用方各自记得转换。整数锚点不受影响。
 
 向下取整落在锚点自身所在的轮次内，不会回退：每一轮都以 `turn/start` 开头，所以 `turnEnd.seq - 1` 不可能是上一轮的 `turn/end`。host 随后按「首个位于锚点或其之后的 `turn/end`」收口，命中的正是读者点击的那一轮，与消息级 fork 按钮在已完成轮次上一贯承诺的整轮语义一致。
 

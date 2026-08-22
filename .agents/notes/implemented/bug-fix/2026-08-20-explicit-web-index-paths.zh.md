@@ -10,7 +10,7 @@ Status: implemented
 
 ## 决策
 
-`dsh-host-frontend-static` 只在规范化目标为 dist 根目录或配置的 index 路径时渲染 `index.html`。当前 Web 客户端没有 History API pathname 路由；查询字符串不会改变 pathname 匹配，URL 片段也不会到达服务器。现有文件照常提供，而 `ENOENT`、`EISDIR` 和 `ENOTDIR` 读取产生不带内容类型的空 404 响应。其他文件系统失败会重新抛给 webserver 的请求失败处理，不会被错误标记为缺失。
+`alego-host-frontend-static` 只在规范化目标为 dist 根目录或配置的 index 路径时渲染 `index.html`。当前 Web 客户端没有 History API pathname 路由；查询字符串不会改变 pathname 匹配，URL 片段也不会到达服务器。现有文件照常提供，而 `ENOENT`、`EISDIR` 和 `ENOTDIR` 读取产生不带内容类型的空 404 响应。其他文件系统失败会重新抛给 webserver 的请求失败处理，不会被错误标记为缺失。
 
 GET 与 HEAD 对 index 入口、文件和未命中项使用相同的状态码与内容类型。具名路由仍先于回退匹配，越出 dist 根目录的遍历仍返回 403，到达回退的非 GET/HEAD 请求仍返回 405。
 

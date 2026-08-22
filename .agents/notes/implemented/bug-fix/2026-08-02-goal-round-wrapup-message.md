@@ -14,7 +14,7 @@ A goal-round `complete` or `blocked` success no longer calls `concludeTurn()`. I
 
 The instruction wording was selected by A/B sampling on `deepseek-v4-pro` with a reconstructed goal-round transcript: a structured instruction (outcome, verification, artifacts, next steps) consistently beat a minimal "summarize" one on completeness; adding a session-grounding clause shifted unsupported detail from asserted fact to hedged suggestion; and the no-instruction control produced high-variance closings, including confidently fabricated file-level detail.
 
-Scripting the keyless proof required one snapshot-harness addition: `dsh-llm-replay` resolves `{{fromRequest:<regex>}}` placeholders in scripted entries against the live request, because a static sidecar cannot know the randomly minted goal id the model must echo into `update_goal`.
+Scripting the keyless proof required one snapshot-harness addition: `alego-llm-replay` resolves `{{fromRequest:<regex>}}` placeholders in scripted entries against the live request, because a static sidecar cannot know the randomly minted goal id the model must echo into `update_goal`.
 
 ## Verification
 

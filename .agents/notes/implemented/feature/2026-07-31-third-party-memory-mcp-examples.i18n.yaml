@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-31-third-party-memory-mcp-examples.md
-2026-07-31-third-party-memory-mcp-examples.md: e82d65a3a5a60cafcc47df5a6873cf5768cd8b8f
-2026-07-31-third-party-memory-mcp-examples.zh.md: 343683315ddfb3a5ecfbee96580900c505df3ef1
+2026-07-31-third-party-memory-mcp-examples.md: 972516f7f7ccbd2757081c1419b60ec40ee1bbfe
+2026-07-31-third-party-memory-mcp-examples.zh.md: c55ee24cc7650e5653943236e1621ae087cb63bc

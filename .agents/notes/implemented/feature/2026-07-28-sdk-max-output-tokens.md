@@ -14,7 +14,7 @@ The high-level SDKs expose one optional process-wide output cap: Python names it
 
 Each SDK-created root Agent receives the cap through `AgentOptions.maxTokens`. Agent Loop places that value in the initial `LlmCallConfig`; final call preparation preserves the explicit value or materializes an exact-model adapter default, logs the effective cap in the request header, and reconstructs every dispatched conversation request from that durable header. Omitting the SDK option therefore allows the selected adapter or provider route default to apply.
 
-In-process subagents inherit the parent's provider, model, and output cap. An explicit `SubagentStartRequest.agentOptions.maxTokens`, including one configured by `dsh-tool-subagent`, overrides the inherited value for that child and its descendants. Out-of-process providers own the configuration of their separate runtime; `subagent-dsh-sdk` therefore exposes its own optional `maxTokens` and forwards it through that child runtime's SDK handshake.
+In-process subagents inherit the parent's provider, model, and output cap. An explicit `SubagentStartRequest.agentOptions.maxTokens`, including one configured by `alego-tool-subagent`, overrides the inherited value for that child and its descendants. Out-of-process providers own the configuration of their separate runtime; `subagent-alego-sdk` therefore exposes its own optional `maxTokens` and forwards it through that child runtime's SDK handshake.
 
 Compaction, session-title generation, web search, and other auxiliary calls keep their independently owned output limits. `maxTokensAsSuccess` remains outcome mapping only: it does not set or alter the cap.
 

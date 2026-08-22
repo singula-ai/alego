@@ -1,4 +1,4 @@
-# dsh-session-checkpoint-policy
+# alego-session-checkpoint-policy
 
 [English](README.md) | 中文
 
@@ -10,10 +10,10 @@
 
 ```yaml
 - id: session-persistence
-  name: '@deepseek-ai/dsh-session-persistence-jsonl'
+  name: '@alego/session-persistence-jsonl'
 
 - id: session-checkpoints
-  name: '@deepseek-ai/dsh-session-checkpoint-policy'
+  name: '@alego/session-checkpoint-policy'
 ```
 
 持久化与检查点调度刻意拆分为独立 Cordis 插件。持久化后端会为追加的 `session/event` 启动有界后台批次，并把每个已请求的 `session/flush` 变成即时完全停稳屏障；该策略选择请求、工具分派和下一步骤屏障。不带此策略加载后端是有效的，但崩溃可能丢失仍位于已配置批处理窗口内的事件，或尚未完成的写入。第一方持久化应用和运行时显式挂载两个插件；专用部署可以刻意省略或替换策略。
@@ -28,7 +28,7 @@
 
 #### 模型看到的内容
 
-插件不添加提示词或工具 schema。工具检查点后、结果前的硬崩溃会留下持久的未匹配调用；会话恢复会提供模型可见的 `TOOL_OUTCOME_UNKNOWN` 结果，该结果由 `dsh-session` 负责。该消息允许重试只读或幂等工作，并要求对可能有副作用的调用验证状态或请求用户确认。
+插件不添加提示词或工具 schema。工具检查点后、结果前的硬崩溃会留下持久的未匹配调用；会话恢复会提供模型可见的 `TOOL_OUTCOME_UNKNOWN` 结果，该结果由 `alego-session` 负责。该消息允许重试只读或幂等工作，并要求对可能有副作用的调用验证状态或请求用户确认。
 
 #### Token 影响
 

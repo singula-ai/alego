@@ -15,7 +15,7 @@ The harness already has every seam the pi extension uses, and better ones: [the 
 
 The guard is a loop-hygiene plugin, not a model-facing tool. It counts consecutive calls to the same tool with identical canonical arguments and injects advisory reminders at configured thresholds. It never delays, blocks, or rewrites a call; the model decides whether to retry differently or finish.
 
-The plugin is `@deepseek-ai/dsh-repeat-tool-guard` at `packages/guard/repeat-tool-guard/`, opening the `guard/` group for loop-hygiene plugins (single-package groups have precedent: [the todo-write Agent Note](2026-06-29-todo-write-tool.md) shipped `todo/tool-todo`). It registers two listeners and holds state in a `WeakMap` keyed by the live `Agent` object — the tool registry is a context-level singleton whose waterfalls interleave every agent's calls (subagents run on the same context), so per-agent keying is correctness, not polish; weak object keys also make a disposal-only cleanup listener unnecessary.
+The plugin is `@alego/repeat-tool-guard` at `packages/guard/repeat-tool-guard/`, opening the `guard/` group for loop-hygiene plugins (single-package groups have precedent: [the todo-write Agent Note](2026-06-29-todo-write-tool.md) shipped `todo/tool-todo`). It registers two listeners and holds state in a `WeakMap` keyed by the live `Agent` object — the tool registry is a context-level singleton whose waterfalls interleave every agent's calls (subagents run on the same context), so per-agent keying is correctness, not polish; weak object keys also make a disposal-only cleanup listener unnecessary.
 
 - **`tools/post-execute` (waterfall)** — the one detection point. The listener receives `(exec, result)` together, so counting and reminder delivery need no cross-event pending map (the pi extension needs one only because its `tool_call`/`tool_result` hooks are separate events). It always delegates via `next()` and, when a threshold is hit, prepends a reminder to the downstream decision's `additionalContexts` — the observe-and-enrich posture [the hooks bridges](2026-06-30-hook-bridges.md) already use, honoring the waterfall contract. Counting happens here rather than in `tools/pre-execute` because post-execute also runs for denied calls (`ToolRegistry.execute` routes a deny through the same pipeline), and a model hammering a denied call is exactly the loop worth breaking.
 - **`agent/prompt-submit` (waterfall)** — pure reset hook: delegate via `next()`, clear the submitting agent's chain. A user interjection changes the context; repetition across it is not a loop.
@@ -37,7 +37,7 @@ Reminders ride `additionalContexts` as their own entries (source `{kind: 'plugin
 
 ```yaml
 - id: repeat-tool-guard
-  name: '@deepseek-ai/dsh-repeat-tool-guard'
+  name: '@alego/repeat-tool-guard'
   config:
     thresholds: [3, 5, 8]        # default; consecutive counts that trigger a reminder
     include: []                  # tool-name patterns to track; empty ⇒ all tools

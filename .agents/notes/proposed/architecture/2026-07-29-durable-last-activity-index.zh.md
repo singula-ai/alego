@@ -6,7 +6,7 @@ Status: proposed
 
 ## 问题
 
-一个冷会话（已持久化、未附加）对「用户上次是什么时候在这里发出 prompt」没有权威的已存储答案。`dsh-host-apiproxy` 从可选 projection cache 的 `lastPromptAt` 提供 `updatedAt`，缺失时回退到 `createdAt`，Web 客户端按该值为 Session 树排序。cache 采用 fail-soft 并异步写入 checkpoint，因此缺失或延迟的记录会让最近收到 prompt 的 Session 排得过旧。
+一个冷会话（已持久化、未附加）对「用户上次是什么时候在这里发出 prompt」没有权威的已存储答案。`alego-host-apiproxy` 从可选 projection cache 的 `lastPromptAt` 提供 `updatedAt`，缺失时回退到 `createdAt`，Web 客户端按该值为 Session 树排序。cache 采用 fail-soft 并异步写入 checkpoint，因此缺失或延迟的记录会让最近收到 prompt 的 Session 排得过旧。
 
 网关以前会在可用时采用 JSONL 产物的 mtime。mtime 回答的是另一件事：这份产物上次是什么时候被写入。每一次持久写入都会刷新它，包括对撕裂尾部的截断修复、平衡中断轮次的合成 closer，以及拾起时追加的 [`session/end-seed` 边界](../../implemented/architecture/2026-07-30-session-end-seed-log-boundary.zh.md)。这套近似会让 Session 仅仅因为被打开就提升排序。[有界冷空白验证](../../implemented/bug-fix/2026-08-13-bounded-cold-blank-verification.zh.md)移除了 mtime 排序，并把 cache 保守的「过旧」错误方向作为现阶段取舍。
 

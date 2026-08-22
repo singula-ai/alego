@@ -2,7 +2,7 @@
  * Decode hook process outcomes for both dialects. Exit 0 may carry structured
  * JSON or plain stdout; exit 2 blocks with stderr as the reason; every other
  * exit is a non-blocking error. Bridges decide which recognized fields apply.
- * @module @deepseek-ai/dsh-hook-protocol/codec
+ * @module @alego/hook-protocol/codec
  */
 
 import type { HookOutput } from './types.ts'

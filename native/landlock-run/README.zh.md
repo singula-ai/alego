@@ -1,4 +1,4 @@
-# @deepseek-ai/node-addon-landlock-run
+# @alego/node-addon-landlock-run
 
 [English](README.md) | 中文
 
@@ -9,15 +9,15 @@
 ## 安装
 
 ```sh
-npm install @deepseek-ai/node-addon-landlock-run
+npm install @alego/node-addon-landlock-run
 ```
 
 已发布包由一个入口包和可选平台包组成：
 
 ```text
-@deepseek-ai/node-addon-landlock-run
-@deepseek-ai/node-addon-landlock-run-linux-x64
-@deepseek-ai/node-addon-landlock-run-linux-arm64
+@alego/node-addon-landlock-run
+@alego/node-addon-landlock-run-linux-x64
+@alego/node-addon-landlock-run-linux-arm64
 ```
 
 npm 的 `os`/`cpu` 字段使安装器只拉取匹配的平台包。系统有意不提供安装时构建回退：在没有对应平台包的宿主上，解析后的路径绝不存在，探测会报告 `unusable`，消费方以失败闭合方式处理。
@@ -25,7 +25,7 @@ npm 的 `os`/`cpu` 字段使安装器只拉取匹配的平台包。系统有意�
 ## 用法
 
 ```js
-import { grantArgs, launcherPath, probe } from '@deepseek-ai/node-addon-landlock-run';
+import { grantArgs, launcherPath, probe } from '@alego/node-addon-landlock-run';
 
 const launcher = launcherPath();
 if (probe(launcher) !== 'unusable') {

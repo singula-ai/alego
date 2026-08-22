@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-session-query
+# @alego/session-query
 
 [English](README.md) | 中文
 
@@ -11,7 +11,7 @@
 - `filterSessions(filters, signal?)` 对同一份克隆逻辑语料库应用与提供方无关的会话元数据和可用性谓词。
 - `filterEvents(sessionId, filters)` 提取第一方语义文档，并按 seq 升序应用与提供方无关的元数据和字面文本谓词。
 - `readTitleSnapshots(sessionIds, signal?)` 从一次实时优先的语料库观察中解析唯一 id，将取消信号传递给持久化列表查询和检查，并按顺序返回每个会话的结算结果，使某个缺失或格式错误的标题来源不会导致其他会话的结果被丢弃。每个实时来源直接 fold，每个持久化 worker fold 为脱离存储的 header/标题结果，并在出队下一个 id 前释放完整日志。取消会拒绝整个批次。`readTitleSnapshot(sessionId, signal?)` 是单次观察视图；`readTitle(sessionId, signal?)` 只返回其可选的 folded `session/title`。
-- `listEvents(sessionId)` 加载实时优先的原始日志，将每个事件分类为 `current`、`shadowed` 或 `log-only`；该分类使用共享 `dsh-session` 表层 fold。
+- `listEvents(sessionId)` 加载实时优先的原始日志，将每个事件分类为 `current`、`shadowed` 或 `log-only`；该分类使用共享 `alego-session` 表层 fold。
 - `readSurface(sessionId)` 返回一个克隆 header、原始日志捕获边界，以及按模型历史顺序排列的完整折叠后当前表层。实时会话优先于持久化；压缩（compaction）只会在其替换追加之前或之后被观察，绝不会出现合成混合。
 - `readEvent(request, signal?)` 返回一个克隆 header、完整目标事件和有界的原始 seq 窗口。`before` 和 `after` 默认为 0，且不得超过 `readWindowMax`。
 - `traceSession(sessionId, signal?)` 只读取一次语料库，返回从直接父级向外的祖先，以及确定性的递归后代树。`complete: false` 标识第一个缺失父级；与目标相连的循环会以 `SESSION_QUERY_INVALID_LINEAGE` 失败。
@@ -29,11 +29,11 @@
 
 `SessionQueryEngine.searchSessions(request, exec?)` 按匹配最强的事件对逻辑语料库分组；`searchEvents(request, exec?)` 搜索一个逻辑会话。这两个是服务仅有的抽象方法。两者都返回分页结果，其延续信息是由服务持有的带品牌 `SessionSearchCursor`；接受可选取消，并在不使用提供方专用数值分数的情况下提供摘录。事件搜索分页结果还携带来自与命中相同索引世代的克隆目标 header，使授权消费方可将策略绑定到此次载荷观察。搜索请求只接受事件元数据过滤器，因为字面文本过滤使用上文所述扫描路径。
 
-该包没有提供方协调器、回退实现或独立具体插件。具体服务后端继承已实现的读取、过滤和跟踪，同时负责全文观察、对账、排名、游标世代和查询执行；第一个实现是 [`@deepseek-ai/dsh-session-query-sqlite`](../session-query-sqlite/README.zh.md)。
+该包没有提供方协调器、回退实现或独立具体插件。具体服务后端继承已实现的读取、过滤和跟踪，同时负责全文观察、对账、排名、游标世代和查询执行；第一个实现是 [`@alego/session-query-sqlite`](../session-query-sqlite/README.zh.md)。
 
 `SessionQueryError.code` 是一个封闭联合，覆盖请求验证、缺失目标、格式错误的表层、来源冲突、持久化/索引失败、取消，以及无效或陈旧游标；精确字面值在 [`src/config.ts`](src/config.ts) 中定义。
 
-`listEvents()`、`readSurface()` 和 `traceEvent()` 执行同一个单遍 `dsh-session` 表层 fold。只有当事件 seq 从零开始且连续、表层标记符合事件类型的适用性要求、源事件数组非空且无重复、引用指向较早事件，且每个位置替换都命名并引用它移除的每个表层节点时，加载的日志才有效；任何违规都以 `SESSION_QUERY_INVALID_SURFACE` 失败。
+`listEvents()`、`readSurface()` 和 `traceEvent()` 执行同一个单遍 `alego-session` 表层 fold。只有当事件 seq 从零开始且连续、表层标记符合事件类型的适用性要求、源事件数组非空且无重复、引用指向较早事件，且每个位置替换都命名并引用它移除的每个表层节点时，加载的日志才有效；任何违规都以 `SESSION_QUERY_INVALID_SURFACE` 失败。
 
 ## 配置
 

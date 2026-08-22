@@ -8,7 +8,7 @@ Status: implemented
 
 preset 把决定 `/` 菜单内容的那些行搬走了。Web 组装禁用了宿主面的 `skill-filesystem`、`tool-skill`、`plan-mode` 和 `command-compact`，改由 preset 提供，因此一个会话有哪些命令和技能，是它自身组成的属性，而不是部署的属性。
 
-浏览器侧两份目录都按会话缓存——`dsh-client-ui-commands` 的 `CommandDirectory`，`dsh-client-ui-skill` 的 single-flight 拉取表——并且 composer 在 scope 出生时就按会话创建时的 preset 预热了它们。随后 hero 上的 chip 允许用户重组这个仍为空的会话，而两份缓存都没有对应的失效边：`commands/change` 是注册表级的，`connection/reset` 需要重连。`agentPresets.recompose` 只是把 agent 的 scope 重新挂接到一个可能已经存在的常驻挂载上，不产生任何注册，注册表级信号因此永远不会为它触发。
+浏览器侧两份目录都按会话缓存——`alego-client-ui-commands` 的 `CommandDirectory`，`alego-client-ui-skill` 的 single-flight 拉取表——并且 composer 在 scope 出生时就按会话创建时的 preset 预热了它们。随后 hero 上的 chip 允许用户重组这个仍为空的会话，而两份缓存都没有对应的失效边：`commands/change` 是注册表级的，`connection/reset` 需要重连。`agentPresets.recompose` 只是把 agent 的 scope 重新挂接到一个可能已经存在的常驻挂载上，不产生任何注册，注册表级信号因此永远不会为它触发。
 
 于是菜单继续提供会话已经不再运行的那套组成。向下切换后 `compact`、`plan` 和全部项目技能仍列在菜单里；向上切换后留在原地的是更窄的目录——四条宿主面行加客户端自己的 `model` 贡献——而且完全没有技能，这正是 bug 报告描述的现象。只有当某个无关的注册表变化或一次重连恰好使其失效时，目录才会自愈。
 
@@ -24,7 +24,7 @@ preset 把决定 `/` 菜单内容的那些行搬走了。Web 组装禁用了宿�
 
 **在客户端自己的 `agentPresets.select` 回调里就地失效。** 改动最小，而且第一轮之后 preset 就锁定，hero 上的 chip 是切换唯一可能的发起处。否决理由是失效逻辑会落在恰好发起 RPC 的那个界面上，而不是提交点：同一个空会话在第二个标签页里仍是过期菜单，将来任何宿主侧的重组也完全没有信号。
 
-**从既有的 `session/event` mux 帧派生客户端事件。** 落账事件本来就会送达每个已订阅的客户端，不需要新增协议类型。因面（face）分离而否决：把 `event.type` 收窄到 `agent-preset/selected` 需要 `SessionEventMap` 增补，而在 Client 程序里加载它只有两条路——引用 `dsh-agent-presets` 工程，那会把宿主的 `ctx.sessions` 合并拖进一个自己也发布同名服务的程序；或者用一次类型断言绕过判别式。
+**从既有的 `session/event` mux 帧派生客户端事件。** 落账事件本来就会送达每个已订阅的客户端，不需要新增协议类型。因面（face）分离而否决：把 `event.type` 收窄到 `agent-preset/selected` 需要 `SessionEventMap` 增补，而在 Client 程序里加载它只有两条路——引用 `alego-agent-presets` 工程，那会把宿主的 `ctx.sessions` 合并拖进一个自己也发布同名服务的程序；或者用一次类型断言绕过判别式。
 
 **复用转发的 `commands/change`。** 它是既有的目录失效事件，但它是注册表级的、不带会话、也与技能无关；客户端会把每个会话的命令都重拉一遍，却依然永远刷不新技能目录。
 

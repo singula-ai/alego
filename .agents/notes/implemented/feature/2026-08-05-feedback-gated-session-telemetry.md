@@ -10,7 +10,7 @@ Session telemetry originally has one mounted behavior: every accepted record ent
 
 ## Decision
 
-`@deepseek-ai/dsh-session-telemetry-otel` exposes the string-valued `SessionTelemetryMode` enum to TypeScript callers and accepts the same three uppercase `mode` values in serialized configuration:
+`@alego/session-telemetry-otel` exposes the string-valued `SessionTelemetryMode` enum to TypeScript callers and accepts the same three uppercase `mode` values in serialized configuration:
 
 - `FULL` explicitly selects immediate delivery to the configured OTel pipeline.
 - `FEEDBACK_ONLY` reads the canonical session log when `feedback/record` is appended and hands over the unreleased prefix through that exact event. Records appended after that boundary remain local until another feedback event.

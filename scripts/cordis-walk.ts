@@ -11,12 +11,12 @@ import ts from 'typescript'
 
 /** Cheap textual prefilter for a cordis module merge, quote-style agnostic
  * (the AST match below reads `stmt.name.text` and never sees the quotes). */
-const MERGE_HEAD = /declare module ['"](?:@deepseek-ai\/cordis|\.\/context\.ts)['"]/
+const MERGE_HEAD = /declare module ['"](?:@alego\/cordis|\.\/context\.ts)['"]/
 
 /**
  * Parse every file matching `patterns` (repo-relative, sorted, `/`-normalized)
  * that textually contains a cordis module merge, yielding one entry per merge
- * BLOCK — a file may legally hold several `declare module '@deepseek-ai/cordis'` blocks
+ * BLOCK — a file may legally hold several `declare module '@alego/cordis'` blocks
  * (the Typert analyzer reads them all), so the exhaustiveness scan must too.
  * Files without a merge are skipped.
  * @param scanRoot - Repository root the patterns are resolved against.
@@ -39,14 +39,14 @@ export function contextMergeFiles(
   return out
 }
 
-/** Every cordis module-merge body in `sf`: `declare module '@deepseek-ai/cordis'` (harness
+/** Every cordis module-merge body in `sf`: `declare module '@alego/cordis'` (harness
  * packages) or `declare module './context.ts'` (vendor core), in source order.
  * Module-local: consumers walk blocks through {@link contextMergeFiles}. */
 function cordisModuleBodies(sf: ts.SourceFile): ts.ModuleBlock[] {
   const bodies: ts.ModuleBlock[] = []
   for (const stmt of sf.statements) {
     if (!ts.isModuleDeclaration(stmt) || !ts.isStringLiteral(stmt.name)) continue
-    if (stmt.name.text !== '@deepseek-ai/cordis' && stmt.name.text !== './context.ts') continue
+    if (stmt.name.text !== '@alego/cordis' && stmt.name.text !== './context.ts') continue
     if (stmt.body && ts.isModuleBlock(stmt.body)) bodies.push(stmt.body)
   }
   return bodies
@@ -60,7 +60,7 @@ export function cordisModuleBody(sf: ts.SourceFile): ts.ModuleBlock | null {
 }
 
 /**
- * Every `key: Type` property a `declare module '@deepseek-ai/cordis'` Context merge
+ * Every `key: Type` property a `declare module '@alego/cordis'` Context merge
  * declares in one module body.
  * @param body - The cordis module augmentation block.
  * @param sf - Owning source file (for text extraction).
@@ -79,7 +79,7 @@ export function contextKeyMap(body: ts.ModuleBlock, sf: ts.SourceFile): Map<stri
 }
 
 /**
- * Every event name a `declare module '@deepseek-ai/cordis'` Events merge declares in one
+ * Every event name a `declare module '@alego/cordis'` Events merge declares in one
  * module body. Names are the literal member keys (`'agent/created'`), read
  * from method and property members alike so a declaration form the projector
  * would reject still enters the exhaustiveness scan.

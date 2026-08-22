@@ -1,4 +1,4 @@
-# `@deepseek-ai/dsh-client-ui-reference`
+# `@alego/client-ui-reference`
 
 [English](README.md) | 中文
 
@@ -6,13 +6,13 @@
 
 选择文件会把共享 `@path` 语法所定义的自然文本保留为隐藏的序列化与剪贴板形式。文件会关闭补全，并显示为文件图标加业务色文件名、无胶囊容器的原子行内引用。目录仍是带文件夹图标的可编辑路径纯文本，并让菜单在尾部斜杠处保持活跃，用户可以继续进入下一层。包含空白的路径使用 `@"path with spaces"`，用户显式打开的引号会继续保留。
 
-选择会话会插入一个原子的行内引用，其隐藏 `ref` 与剪贴板表示均为宿主返回的规范 `@[label](dsh-session:…)` mention。可见形式为聊天气泡图标加业务色会话标题，不使用胶囊容器；序列化永远不会根据该标题重建身份。普通发送会通过 `session.prompt` 携带规范 mention，session-reference 服务会在 `agent/pre-step` 校验它并捕获模型上下文。
+选择会话会插入一个原子的行内引用，其隐藏 `ref` 与剪贴板表示均为宿主返回的规范 `@[label](alego-session:…)` mention。可见形式为聊天气泡图标加业务色会话标题，不使用胶囊容器；序列化永远不会根据该标题重建身份。普通发送会通过 `session.prompt` 携带规范 mention，session-reference 服务会在 `agent/pre-step` 校验它并捕获模型上下文。
 
 `/client` 只导出插件主体（`apply`／`inject`）；候选编码保留在注册 effect 内部。
 
 ## 模型体验
 
-间接影响模型体验：路径指引由 `@deepseek-ai/dsh-file-reference-local` 提供，准备后的会话快照由 `@deepseek-ai/dsh-session-reference` 提供。
+间接影响模型体验：路径指引由 `@alego/file-reference-local` 提供，准备后的会话快照由 `@alego/session-reference` 提供。
 
 #### KV 缓存影响
 

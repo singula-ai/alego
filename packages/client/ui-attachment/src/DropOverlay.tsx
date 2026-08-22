@@ -42,7 +42,7 @@ export function DropOverlay({ disabled, labels }: {
 /** Tilted photo-and-note cards (DeepSeek Chat upload illustration). */
 const UploadIllustration = () => (
   <svg width="115" height="84" viewBox="0 0 115 84" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g clipPath="url(#dshDropOverlayClip)">
+    <g clipPath="url(#alegoDropOverlayClip)">
       <rect y="17.0742" width="44.1832" height="43.6431" rx="12" transform="rotate(-22.7338 0 17.0742)" fill="#9CE5ED" />
       <rect x="73.4043" y="8.54297" width="43.7267" height="50.5284" rx="8" transform="rotate(17.403 73.4043 8.54297)" fill="#679EFE" />
       <path d="M30.4917 28.1369L40.8865 33.4564L37.2232 34.9524L29.5302 31.0159L26.7919 39.2122L23.1285 40.7082L26.8287 29.6338L16.8967 24.5516L20.5601 23.0556L27.7902 26.7549L30.3639 19.052L34.0273 17.556L30.4917 28.1369Z" fill="white" />
@@ -54,7 +54,7 @@ const UploadIllustration = () => (
       <circle cx="60.6157" cy="52.247" r="4.38794" transform="rotate(22.5996 60.6157 52.247)" fill="white" />
     </g>
     <defs>
-      <clipPath id="dshDropOverlayClip">
+      <clipPath id="alegoDropOverlayClip">
         <rect width="115" height="84" fill="white" />
       </clipPath>
     </defs>

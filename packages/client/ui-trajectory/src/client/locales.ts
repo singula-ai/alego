@@ -20,7 +20,7 @@ export type TrajectoryKey =
   | 'toolbar.search'
   | 'toolbar.searchPlaceholder'
 
-declare module '@deepseek-ai/dsh-client-ui-slots' {
+declare module '@alego/client-ui-slots' {
   interface LocaleNamespaceMap {
     /** The trajectory view tab label and toolbar strings. */
     'trajectory': TrajectoryKey

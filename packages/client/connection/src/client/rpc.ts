@@ -4,11 +4,11 @@ import {
   RpcId,
   serverResponseSchema,
   type ClientRequest,
-} from '@deepseek-ai/dsh-host-apiproxy/api'
+} from '@alego/host-apiproxy/api'
 import type { ClientConnectionRpc } from '../rpc.ts'
 import { randomUuid } from './random-uuid.ts'
 
-const INTERNAL_BASE = 'http://dsh.internal'
+const INTERNAL_BASE = 'http://alego.internal'
 const CHANNEL_PATTERN = /^\/[A-Za-z0-9._~-]+$/
 const ENDPOINT_SEGMENT_PATTERN = /^[A-Za-z0-9_$.-]+$/
 

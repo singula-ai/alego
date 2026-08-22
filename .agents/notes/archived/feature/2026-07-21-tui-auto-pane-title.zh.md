@@ -11,7 +11,7 @@ Archived: 2026-07-26
 
 ## Problem
 
-TUI 的终端标题是一个所有会话共用的静态字符串（`title`，默认 `DeepSeek Harness`）。在 tmux 每个窗格或每个终端标签页各跑一个 agent（智能体）的用户看来，它们的标签全都一样，因此窗格一眼看去无从区分，标签栏也不携带任何关于各会话正在做什么的信号。
+TUI 的终端标题是一个所有会话共用的静态字符串（`title`，默认 `Alego`）。在 tmux 每个窗格或每个终端标签页各跑一个 agent（智能体）的用户看来，它们的标签全都一样，因此窗格一眼看去无从区分，标签栏也不携带任何关于各会话正在做什么的信号。
 
 ## Decision
 
@@ -20,7 +20,7 @@ TUI 的终端标题是一个所有会话共用的静态字符串（`title`，默
 - 标题通过 `runtime.terminal.setTitle` 设置——静态 `title` 已经在用的同一条 OSC 0 路径。不引入任何新的终端控制面，终端写入仍归 pi-tui 所有。
 - 该调用发出后不等待其返回，且每会话仅一次。一个 `titleSettled` 门闩守护它：`autoTitle` 关闭时它预先置为已结算、从不运行；在首条 `user/message` 已入日志的恢复会话中它预先结算，因此静态标题得以保留；仅含空白的首条消息被跳过且不消耗名额。任何失败、空回复、缺少 `llm` 服务、或缺少 agent 的 `provider` 或 `model`，都会让静态标题保持不动。一个专用的 `AbortController` 在关闭时取消尚在进行的请求。
 - 标题调用直接抵达 `ctx.llm.stream`，而非经由 `agent.send`，因此它从不追加进会话或 transcript（文本记录），也无法扰动 agent loop（智能体循环）。
-- 该功能默认关闭，仅在交互式产品配置（`examples/tui-agent/cordis.yml`）与脚本化 PTY fixture（测试前置数据）中开启。若在共享的 `dsh-tui-demo` schema 默认值里开启，会在不发送任何用户消息的无密钥回放与启动场景中多发一次模型调用。
+- 该功能默认关闭，仅在交互式产品配置（`examples/tui-agent/cordis.yml`）与脚本化 PTY fixture（测试前置数据）中开启。若在共享的 `alego-tui-demo` schema 默认值里开启，会在不发送任何用户消息的无密钥回放与启动场景中多发一次模型调用。
 
 ## Alternatives considered
 

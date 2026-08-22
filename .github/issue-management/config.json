@@ -1,9 +1,9 @@
 {
-  "organization": "deepseek-harness",
-  "repository": "deepseek-harness",
+  "organization": "alego",
+  "repository": "alego",
   "projectNumber": 1,
-  "projectTitle": "DSH Issue Management",
-  "lifecycleActor": "dsh-issue-management",
+  "projectTitle": "ALEGO Issue Management",
+  "lifecycleActor": "alego-issue-management",
   "priorityField": "Priority",
   "allowUnassignedOwner": true,
   "statuses": [

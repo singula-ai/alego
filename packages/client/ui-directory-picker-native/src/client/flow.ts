@@ -6,7 +6,7 @@
 import { useEffect, useRef } from 'react'
 import type { ReactElement } from 'react'
 // Type-only: the owner contract of the directory-flow holes.
-import type { DirectoryFlowOwnerProps } from '@deepseek-ai/dsh-client-ui-workspace/client'
+import type { DirectoryFlowOwnerProps } from '@alego/client-ui-workspace/client'
 
 /** Injected face: the wire call the flow drives (bound in apply's closure). */
 export interface NativeFlowInjected {

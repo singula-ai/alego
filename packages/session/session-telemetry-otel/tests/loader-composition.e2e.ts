@@ -11,7 +11,7 @@ import { readFile, readdir } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
-import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@deepseek-ai/dsh-loader-smoke'
+import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@alego/loader-smoke'
 
 const driver = fileURLToPath(new URL(
   '../../../../examples/headless-agent/tests/fixtures/session-telemetry-otel-driver.ts',
@@ -120,7 +120,7 @@ describe('session-telemetry-otel through a real headless cordis.yml', () => {
       libBinScript: driver,
       configPath,
       tsconfigPath: repoTsconfig,
-      env: { DSH_TELEMETRY_E2E_MODE: 'FEEDBACK_ONLY' },
+      env: { ALEGO_TELEMETRY_E2E_MODE: 'FEEDBACK_ONLY' },
       inspect: async (cwd) => { output = await readFixtureOutput(cwd) },
     })
     expect(stderr).not.toContain('UNHANDLED')
@@ -142,7 +142,7 @@ describe('session-telemetry-otel through a real headless cordis.yml', () => {
       libBinScript: driver,
       configPath,
       tsconfigPath: repoTsconfig,
-      env: { DSH_TELEMETRY_E2E_MODE: 'DISABLED' },
+      env: { ALEGO_TELEMETRY_E2E_MODE: 'DISABLED' },
       inspect: async (cwd) => { output = await readFixtureOutput(cwd) },
     })
 

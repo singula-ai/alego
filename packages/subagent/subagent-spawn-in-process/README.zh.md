@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-subagent-spawn-in-process
+# @alego/subagent-spawn-in-process
 
 [English](README.md) | 中文
 
@@ -40,7 +40,7 @@ spawn 声明 `{ outputSchema: true, depthLimit: true, toolFilter: true, persona:
 
 #### 模型看到的内容
 
-通过 `dsh-tool-subagent`，父 agent 只接收子 agent 的最终输出或结束原因错误。
+通过 `alego-tool-subagent`，父 agent 只接收子 agent 的最终输出或结束原因错误。
 
 #### Token 影响
 

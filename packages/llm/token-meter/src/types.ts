@@ -1,10 +1,10 @@
 /**
  * Public configuration and measurement vocabulary for replay token metering.
  *
- * @module @deepseek-ai/dsh-token-meter/types
+ * @module @alego/token-meter/types
  */
 
-import type { TokenUsage } from '@deepseek-ai/dsh-llm'
+import type { TokenUsage } from '@alego/llm'
 
 export type { ContextBreakdownProjection, ContextPressureProjection, TokenUsageProjection } from './projection.ts'
 

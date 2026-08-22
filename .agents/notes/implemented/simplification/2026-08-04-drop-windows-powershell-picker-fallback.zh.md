@@ -16,7 +16,7 @@ Status: implemented
 
 ## 决策
 
-win32 层恰好就是 koffi `IFileOpenDialog` 子进程；任何失败原样上报，无回退。PowerShell 链——`pwsh` → Windows PowerShell 5.1 级联、DPI 修正的 WinForms 脚本、`AggregateError` 聚合——被删除，`pickNativeDirectory` 的 win32 分支成为单次调用。`dsh-native-command` 仍为 POSIX 层保留依赖。
+win32 层恰好就是 koffi `IFileOpenDialog` 子进程；任何失败原样上报，无回退。PowerShell 链——`pwsh` → Windows PowerShell 5.1 级联、DPI 修正的 WinForms 脚本、`AggregateError` 聚合——被删除，`pickNativeDirectory` 的 win32 分支成为单次调用。`alego-native-command` 仍为 POSIX 层保留依赖。
 
 本包其余部分早已遵循的回退判据现在统一适用：回退层只存在于操作系统/桌面环境提供且可能缺失的工具（Linux 的 `zenity` → `kdialog`，启动探针同样采样它们）；我们自己打包的工具（`koffi`）失败即明确报错。macOS `osascript` 与之前一样保持无回退。
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "ALEGO Pre-Push Checks"
+  short_description: "Run the relevant Alego checks before push"
+  default_prompt: "Use $alego-pre-push-checks before pushing this Alego branch."

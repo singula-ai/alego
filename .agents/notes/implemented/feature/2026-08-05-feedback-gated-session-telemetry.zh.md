@@ -10,7 +10,7 @@ Status: implemented
 
 ## 决策
 
-`@deepseek-ai/dsh-session-telemetry-otel` 向 TypeScript 调用方公开以字符串为值的 `SessionTelemetryMode` 枚举，并在序列化配置中接受相同的三个大写 `mode` 值：
+`@alego/session-telemetry-otel` 向 TypeScript 调用方公开以字符串为值的 `SessionTelemetryMode` 枚举，并在序列化配置中接受相同的三个大写 `mode` 值：
 
 - `FULL` 显式选择向已配置 OTel 流水线即时投递。
 - `FEEDBACK_ONLY` 在追加 `feedback/record` 时读取权威会话日志，并交接截至该事件的未释放前缀。该边界后追加的记录会留在本地，直到另一个反馈事件。

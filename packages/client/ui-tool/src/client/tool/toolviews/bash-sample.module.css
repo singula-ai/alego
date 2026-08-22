@@ -107,11 +107,11 @@
     color-mix(in srgb, var(--dsw-alias-bg-base) 60%, transparent) 55%,
     transparent 100%
   );
-  animation: dsh-bash-row-sweep 2.6s ease-out infinite;
+  animation: alego-bash-row-sweep 2.6s ease-out infinite;
   pointer-events: none;
 }
 
-@keyframes dsh-bash-row-sweep {
+@keyframes alego-bash-row-sweep {
   0% { left: -300px; }
   90%, 100% { left: 100%; }
 }

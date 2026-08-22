@@ -18,26 +18,26 @@ Status: implemented
 
 遵循[能力 seam Agent Note](../architecture/2026-06-13-capability-seams.zh.md)，压缩以独立包发布，使约定、算法和（后续的）消费方 API 各自独立演进：
 
-1. **接口** — `@deepseek-ai/dsh-compaction`：抽象 `CompactionEngine`，拥有 `ctx.compaction` 键、`CompactionResult` 词汇、`compaction/*` 会话事件、手动失败分类体系以及规范的检查点消息来源。它将 `compactIfNeeded()`、`compactNow()` 和 `compactRegion()` 声明为**抽象方法**——约定说明压缩*做什么*，而非*怎么做*。
-2. **实现** — `@deepseek-ai/dsh-compaction-basic`：具体的 `BasicCompactionEngine`，消费 `ctx.tokenMeter`，并拥有尾→头保留遍历、通过 `ctx.llm.stream()` 生成摘要、surface 替换、锁、步骤前压力处理和规范的上下文溢出恢复。`summarize()` 是其唯一的子类钩子；计价与回放仍归 meter 所有。
-3. **无模型配套服务** — `@deepseek-ai/dsh-compaction-tool-result-pruner`：一个具体的可选服务，在后端选择摘要范围之前，重写当前过大的 `tool/result` 节点。它不是第二种压缩实现，也不实现 `CompactionEngine`。
-4. **面向用户的消费方** — `@deepseek-ai/dsh-command-compact` 通过 `ctx.commands` 注册无参数 `/compact`，并调用后端无关的 `compactNow()` 操作。它是供用户直接控制的命令，不是面向模型的工具。
+1. **接口** — `@alego/compaction`：抽象 `CompactionEngine`，拥有 `ctx.compaction` 键、`CompactionResult` 词汇、`compaction/*` 会话事件、手动失败分类体系以及规范的检查点消息来源。它将 `compactIfNeeded()`、`compactNow()` 和 `compactRegion()` 声明为**抽象方法**——约定说明压缩*做什么*，而非*怎么做*。
+2. **实现** — `@alego/compaction-basic`：具体的 `BasicCompactionEngine`，消费 `ctx.tokenMeter`，并拥有尾→头保留遍历、通过 `ctx.llm.stream()` 生成摘要、surface 替换、锁、步骤前压力处理和规范的上下文溢出恢复。`summarize()` 是其唯一的子类钩子；计价与回放仍归 meter 所有。
+3. **无模型配套服务** — `@alego/compaction-tool-result-pruner`：一个具体的可选服务，在后端选择摘要范围之前，重写当前过大的 `tool/result` 节点。它不是第二种压缩实现，也不实现 `CompactionEngine`。
+4. **面向用户的消费方** — `@alego/command-compact` 通过 `ctx.commands` 注册无参数 `/compact`，并调用后端无关的 `compactNow()` 操作。它是供用户直接控制的命令，不是面向模型的工具。
 
-### 约定依赖 `dsh-session` 和 `dsh-llm`——有意为之的偏离
+### 约定依赖 `alego-session` 和 `alego-llm`——有意为之的偏离
 
-能力 seam Agent Note 规定 Service Definition 包「仅依赖 cordis」（对 `dsh-shell` 成立，因为其词汇是自包含的）。压缩**无法**遵守这一点：它的动词作用于 agent 拥有的 `Session`（`compactRegion(start, end, agent)`），其输出使用内容词汇（`CompactionResult.summary: ContentBlock[]`）。不引用 `Session`/`SessionEvent`（来自 `dsh-session`）和 `ContentBlock`（来自 `dsh-llm`），约定就无法表达。
+能力 seam Agent Note 规定 Service Definition 包「仅依赖 cordis」（对 `alego-shell` 成立，因为其词汇是自包含的）。压缩**无法**遵守这一点：它的动词作用于 agent 拥有的 `Session`（`compactRegion(start, end, agent)`），其输出使用内容词汇（`CompactionResult.summary: ContentBlock[]`）。不引用 `Session`/`SessionEvent`（来自 `alego-session`）和 `ContentBlock`（来自 `alego-llm`），约定就无法表达。
 
-这不是耦合异味，而是约定的领域所在。「仅 cordis」的指导原则一直是「接口仅依赖约定真正需要命名的东西，绝不依赖实现」的简写。`dsh-session` 和 `dsh-llm` 本身是接口/词汇包，不是实现；`dsh-compaction` 仍然不导入任何后端。seam 的真正不变式——*消费方和实现在抽象服务背后独立演进*——完好无损。
+这不是耦合异味，而是约定的领域所在。「仅 cordis」的指导原则一直是「接口仅依赖约定真正需要命名的东西，绝不依赖实现」的简写。`alego-session` 和 `alego-llm` 本身是接口/词汇包，不是实现；`alego-compaction` 仍然不导入任何后端。seam 的真正不变式——*消费方和实现在抽象服务背后独立演进*——完好无损。
 
 ### 三个抽象操作，算法在后端
 
 将完整算法（保留遍历、token 求和、文本提取）作为接口上的具体方法，会将约定重新耦合到一种策略：想要不同保留策略或事件排序的后端必须与继承来的具体代码对抗。将三个操作都设为抽象，把所有*怎么做*的决策放在后端，并让接口保持为*做什么*的声明。token 测量根本不是压缩钩子；单例服务使多个消费方能够共享逐会话的回放折叠。
 
-`compactIfNeeded(agent, trigger, signal)` 接受显式的 `'pressure' | 'context-overflow'` 触发原因与取消信号。它只读取最新的持久化已路由请求；没有 header 就不执行工作，任何已路由的提供方/模型目标都使用单例估算器。`compactNow(agent, signal)` 要求 agent 处于 idle，即使未达到压力也进行一次有效的平衡缩减；不存在这种范围时返回 `null`，且不写入任何内容。`compactRegion(start, end, agent, signal?)` 将 `agent.session` 作为唯一会话身份，并为显式调用方保留可选 signal。默认摘要器依次从显式配置、最新记录的已路由目标和 agent 选项解析目标，并在任何 `llm/stream` 路由后记录提供方/模型对。它回放已路由请求的前缀，并将压缩指令追加为尾部 user 消息，从而复用提供方的热 KV Cache；见[摘要前缀缓存 Agent Note](../bug-fix/2026-07-21-compaction-summary-prefix-cache-reuse.zh.md)。该结果携带 `llmStreamCall: true`，因为生成它时恰好通过此上下文的 LLM 服务发起了一次调用；只有满足相同条件时，子类才设置该标记，因为单有保留的 `rawOutput` 并不能判定调用路径。该调用将提供方无关的 `GenerateOptions.purpose` 设为 `compaction`；适配器可以将此用途映射为对模型隐藏的传输元数据，DeepSeek 适配器会发送 `x-deepseek-harness-compact: 1`。
+`compactIfNeeded(agent, trigger, signal)` 接受显式的 `'pressure' | 'context-overflow'` 触发原因与取消信号。它只读取最新的持久化已路由请求；没有 header 就不执行工作，任何已路由的提供方/模型目标都使用单例估算器。`compactNow(agent, signal)` 要求 agent 处于 idle，即使未达到压力也进行一次有效的平衡缩减；不存在这种范围时返回 `null`，且不写入任何内容。`compactRegion(start, end, agent, signal?)` 将 `agent.session` 作为唯一会话身份，并为显式调用方保留可选 signal。默认摘要器依次从显式配置、最新记录的已路由目标和 agent 选项解析目标，并在任何 `llm/stream` 路由后记录提供方/模型对。它回放已路由请求的前缀，并将压缩指令追加为尾部 user 消息，从而复用提供方的热 KV Cache；见[摘要前缀缓存 Agent Note](../bug-fix/2026-07-21-compaction-summary-prefix-cache-reuse.zh.md)。该结果携带 `llmStreamCall: true`，因为生成它时恰好通过此上下文的 LLM 服务发起了一次调用；只有满足相同条件时，子类才设置该标记，因为单有保留的 `rawOutput` 并不能判定调用路径。该调用将提供方无关的 `GenerateOptions.purpose` 设为 `compaction`；适配器可以将此用途映射为对模型隐藏的传输元数据，DeepSeek 适配器会发送 `x-alego-compact: 1`。
 
 ### 成功的持久步骤工作完成后运行自动压力检查
 
-成功调用的压力检查在下一个 `agent/pre-step` 运行；此时前一响应、工具结果、缓冲上下文与 steering（中途引导）已经持久化，而下一个请求尚未派生。`dsh-compaction-basic` 通过 `ctx.tokenMeter` 测量规范的已记录请求，因此下一个请求无需推测性覆盖信封即可看到任何替换。压力达到条件后，可选的 `ctx.toolResultPruner` 重写在摘要范围选择前运行；compaction-basic 重新测量持久 surface，如果修剪恢复到安全压力便跳过摘要生成。
+成功调用的压力检查在下一个 `agent/pre-step` 运行；此时前一响应、工具结果、缓冲上下文与 steering（中途引导）已经持久化，而下一个请求尚未派生。`alego-compaction-basic` 通过 `ctx.tokenMeter` 测量规范的已记录请求，因此下一个请求无需推测性覆盖信封即可看到任何替换。压力达到条件后，可选的 `ctx.toolResultPruner` 重写在摘要范围选择前运行；compaction-basic 重新测量持久 surface，如果修剪恢复到安全压力便跳过摘要生成。
 
 规范的提供方上下文溢出走另一条路径。失败步骤先关闭，`agent/request-error` 接收原始请求错误。compaction-basic 自行持有按 agent 计的溢出次数，在强制执行一次有效且平衡的缩减前先修剪，且仅当 `session.surface.replaceGeneration` 增加时才返回 `{ kind: 'retry' }`；这包括没有摘要范围时仅修剪取得的进展。随后循环关闭失败轮次，开启新的编号重试轮次，并从持久日志重建请求。没有替换、任何替换前的恢复失败、取消、耗尽的上限或无关错误都会保留原始提供方失败。如果修剪已经推进 generation，而后续摘要工作失败，恢复会从该持久的已修剪 surface 重试，除非取消或 dispose（资源释放）先发生。完整生命周期决策见[调用后恢复 Agent Note](../architecture/2026-07-10-after-call-compaction-pressure-and-overflow-recovery.zh.md)。
 
@@ -55,7 +55,7 @@ retry → next numbered step/start      ⟵ derives from the replacement surface
 
 自动压缩在**每个成功的**步骤之后检查，而非每轮一次。这对失控轮次存活至关重要：工具密集型的 ReAct 轮次每步追加一个 `assistant/message` + 一个 `tool/result`，因此 surface 会在一轮之内增长。下一个 pre-step 检查可以在后续执行开启另一个步骤之前压缩早期已关闭的工具对；如果请求率先越过限制，由提供方确认的溢出仍是兜底机制。
 
-`compactIfNeeded` 保留估算大小达到解析后保留 token 预算的最小完整 surface 单元尾部，压缩更早的节点。一个单元是一个完整的已关闭步骤或一条无步骤消息。如果 token 截断点落在步骤内部，保留范围会扩展直到切割点满足工具配对平衡。平衡按 surface 顺序检查，而非日志序号，因为替换摘要在旧的 surface 位置拥有新的序号。`dsh-compaction` 导出前后边缘辅助函数；只要 `replaceGeneration` 不变，其逐会话缓存就只折叠新增的 surface 尾部节点，面对仅日志增长时不读取事件，并在替换后重建当前成员关系与平衡。`compactRegion` 拒绝将工具调用与其结果拆分的边界。进行中的轮次不享受特殊保留。
+`compactIfNeeded` 保留估算大小达到解析后保留 token 预算的最小完整 surface 单元尾部，压缩更早的节点。一个单元是一个完整的已关闭步骤或一条无步骤消息。如果 token 截断点落在步骤内部，保留范围会扩展直到切割点满足工具配对平衡。平衡按 surface 顺序检查，而非日志序号，因为替换摘要在旧的 surface 位置拥有新的序号。`alego-compaction` 导出前后边缘辅助函数；只要 `replaceGeneration` 不变，其逐会话缓存就只折叠新增的 surface 尾部节点，面对仅日志增长时不读取事件，并在替换后重建当前成员关系与平衡。`compactRegion` 拒绝将工具调用与其结果拆分的边界。进行中的轮次不享受特殊保留。
 
 因此失控轮次的压缩方式与其他历史完全相同：其早期*已关闭*步骤被摘要，近期步骤保持原样。当唯一可压缩的内容只剩一个不可拆分的开放尾部步骤（其工具调用尚无结果）时，压缩拒绝执行（返回 `null`）并在该步骤关闭后重试。
 
@@ -121,9 +121,9 @@ compaction/end      → log-only. Releases the lock (carries `error` on a recove
 - **包**：`packages/compaction/compaction` 提供接口，`compaction-basic` 提供后端，`compaction-tool-result-pruner` 提供可选的确定性重写，`command-compact` 提供面向用户的 `/compact`。`packages/llm/token-meter` 独立拥有回放感知的测量。
 - **自动扩展点**：`agent/pre-step`（`@mode waterfall`）在请求派生前处理压力，`agent/request-error`（`@mode waterfall`）处理失败步骤关闭后的最终请求失败。pre-step 的 payload 携带已领取批次、轮次、步骤与 signal（参见 [payload-object 事件决策](../architecture/2026-08-06-agent-event-payload-objects.zh.md)），不携带压缩专属的提示词/前缀 payload。
 - **`SessionEventMap`** 通过可合并扩展的声明合并获得 `compaction/start` / `compaction/summary` / `compaction/end`；`SurfaceEventType` **未被**触及。这些是会话事件，不是 cordis `Events`，因此事件分类门禁无需新增条目。
-- **`dsh-compaction`** 拥有 `COMPACT_CHECKPOINT_SOURCE`、`isCompactCheckpointSource(source)`、`toolPairingBalancedBefore(session, seq)` 与 `toolPairingBalancedAfter(session, seq)`。该标记用于跨后端实现识别替换摘要。带缓存的 surface 边缘检查会防止 `compactRegion` 和 `compactIfNeeded` 拆分工具调用/结果对，按 seq 校验当前成员关系，从每个切割点的一条平衡序列回答两侧边缘，并拒绝陈旧或缺失的 seq 与孤立结果。
-- **`dsh-session`** 通过唯一的 surface 管理器校验位置替换、引用的来源事件是否覆盖完整，以及仅内容的单节点 `tool/result` 重写。其不变式配套插件将新追加的工具结果视为执行，要求存在已打开的步骤与待处理调用，而压缩配套组件负责维护数字轮次 owner 与独立 `null` owner 事件对之间的关系。
-- **接线**：`examples/tui-agent/cordis.yml` 依次加载零配置的 `dsh-token-meter`、`dsh-compaction-tool-result-pruner`、`dsh-compaction-basic`，然后加载 `dsh-command-compact`；服务级默认值使组合无需重复数值策略即可使用。
+- **`alego-compaction`** 拥有 `COMPACT_CHECKPOINT_SOURCE`、`isCompactCheckpointSource(source)`、`toolPairingBalancedBefore(session, seq)` 与 `toolPairingBalancedAfter(session, seq)`。该标记用于跨后端实现识别替换摘要。带缓存的 surface 边缘检查会防止 `compactRegion` 和 `compactIfNeeded` 拆分工具调用/结果对，按 seq 校验当前成员关系，从每个切割点的一条平衡序列回答两侧边缘，并拒绝陈旧或缺失的 seq 与孤立结果。
+- **`alego-session`** 通过唯一的 surface 管理器校验位置替换、引用的来源事件是否覆盖完整，以及仅内容的单节点 `tool/result` 重写。其不变式配套插件将新追加的工具结果视为执行，要求存在已打开的步骤与待处理调用，而压缩配套组件负责维护数字轮次 owner 与独立 `null` owner 事件对之间的关系。
+- **接线**：`examples/tui-agent/cordis.yml` 依次加载零配置的 `alego-token-meter`、`alego-compaction-tool-result-pruner`、`alego-compaction-basic`，然后加载 `alego-command-compact`；服务级默认值使组合无需重复数值策略即可使用。
 
 ## 测试
 

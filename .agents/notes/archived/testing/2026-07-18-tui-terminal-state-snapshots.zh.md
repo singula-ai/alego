@@ -20,15 +20,15 @@ TUI 是有状态的渲染器。用户最终看到的结果取决于 ANSI 解析�
 1. `packages/ui/tui/tests/tui.spec.ts` 直接测试事件映射、输入路由、资源释放和错误行为。
 2. `packages/ui/tui/tests/tui.snapshot.ts` 将生产 TUI 挂载到无界面终端模拟器，覆盖完整会话日志无法保留的瞬态：进行中的流式输出、待完成工具调用、浮层、展开状态、压缩重排、错误和关闭过程。
 
-[显式配置入口决策](../simplification/2026-08-03-explicit-config-dsh-entrypoint.md)移除了产品 TUI 组合、已录制应用流程和 PTY 测试套件。交付终端入口的部署负责这些组装应用层；包测试不声称提供产品覆盖。
+[显式配置入口决策](../simplification/2026-08-03-explicit-config-alego-entrypoint.md)移除了产品 TUI 组合、已录制应用流程和 PTY 测试套件。交付终端入口的部署负责这些组装应用层；包测试不声称提供产品覆盖。
 
 ### 已移除的应用回放
 
-已删除的应用测试套件为每个场景提供 `session.jsonl`、可选的子会话日志 `session.<n>.jsonl`，以及 `terminal.expected.txt`。主日志提供用户来源的 `user/message` 提示词和已录制的 `assistant/chunk` 序列。`dsh-llm-replay` 为每个会话派生一份模型调用脚本，并且是测试中唯一的 mock 边界；agent loop、工具、worker、呈现器和 TUI 都使用生产实现。
+已删除的应用测试套件为每个场景提供 `session.jsonl`、可选的子会话日志 `session.<n>.jsonl`，以及 `terminal.expected.txt`。主日志提供用户来源的 `user/message` 提示词和已录制的 `assistant/chunk` 序列。`alego-llm-replay` 为每个会话派生一份模型调用脚本，并且是测试中唯一的 mock 边界；agent loop、工具、worker、呈现器和 TUI 都使用生产实现。
 
 如果工具调用顺序不符、预期事件数量不足、工具结果报错、轮次以错误结束、工作流生命周期不完整，或者实时子会话数量与 fixture（测试前置数据）集合不一致，该测试套件都会拒绝流程。这些检查仍是未来任何终端部署的验收模式；它们已不再作为 fixture 交付。
 
-已移除的录制工作流使用 `DSH_SNAPSHOT=record` 录制模型流程，使用 `DSH_SNAPSHOT=refresh` 更新派生的终端输出。移除产品入口时也从仓库快照通道中移除了这些模式；可复用 TUI 快照直接由包级场景编写。
+已移除的录制工作流使用 `ALEGO_SNAPSHOT=record` 录制模型流程，使用 `ALEGO_SNAPSHOT=refresh` 更新派生的终端输出。移除产品入口时也从仓库快照通道中移除了这些模式；可复用 TUI 快照直接由包级场景编写。
 
 ### 语义终端投影
 

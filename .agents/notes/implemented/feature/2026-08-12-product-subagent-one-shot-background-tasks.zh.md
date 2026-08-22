@@ -6,13 +6,13 @@ Status: implemented
 
 ## 问题
 
-Codex 与 Claude Code 提供方已经能够运行一项自包含任务并返回一个最终回答，而 `dsh-tool-subagent` 也已经能够把任意 one-shot 提供方接入通用后台 Job 运行时。随附产品工具行禁用了这条路径，因此即使委托与 agent 的下一步操作彼此独立，agent 也只能等待产品回答。
+Codex 与 Claude Code 提供方已经能够运行一项自包含任务并返回一个最终回答，而 `alego-tool-subagent` 也已经能够把任意 one-shot 提供方接入通用后台 Job 运行时。随附产品工具行禁用了这条路径，因此即使委托与 agent 的下一步操作彼此独立，agent 也只能等待产品回答。
 
 公开后台执行不得增加产品会话、产品专属作业状态、另一取消责任方或另一结果协议。同一个提供方运行必须继续负责一个原生进程或 query 和一个最终回答，而现有作业注册表继续负责 id、收集、取消、owner 清理与完成通知。
 
 ## 决策
 
-生产 `dsh` 不安装可选产品提供方。选择启用产品集成的 Profile 会安装所需的 `dsh-subagent-codex` 或 `dsh-subagent-claude-code` 包，并在 host plane（宿主平面）挂载所需的提供方实例。`standard`、`code` 与 `cordis` Agent Preset 使用 `backgroundMode: one-shot` 配置相应的休眠工具行；删除某一行的 `disabled` 字段后，现有可选参数 `run_in_background` 会向由该 preset 组装的 agent 公开。省略该参数或传入 `false` 时会在前台等待；显式传入 `true` 时会在同步完成 Job 预检与登记后返回由父级拥有的 Job id，而不会等待提供方启动或完成。
+生产 `alego` 不安装可选产品提供方。选择启用产品集成的 Profile 会安装所需的 `alego-subagent-codex` 或 `alego-subagent-claude-code` 包，并在 host plane（宿主平面）挂载所需的提供方实例。`standard`、`code` 与 `cordis` Agent Preset 使用 `backgroundMode: one-shot` 配置相应的休眠工具行；删除某一行的 `disabled` 字段后，现有可选参数 `run_in_background` 会向由该 preset 组装的 agent 公开。省略该参数或传入 `false` 时会在前台等待；显式传入 `true` 时会在同步完成 Job 预检与登记后返回由父级拥有的 Job id，而不会等待提供方启动或完成。
 
 [命名实例决策](2026-08-18-product-subagent-named-instances.zh.md)允许两个产品分别拥有多个配置项。每个新增宿主提供方配置项都有独立的 `providerName`，每个公开的 preset 工具配置项都通过 `provider` 绑定该名称并保持唯一的 `toolName`；前台或后台调度选择不会限制实例数量。
 
@@ -35,23 +35,23 @@ product tool call
 
 | 事实或资源 | 责任方 | 产品工具职责 | 可观察结果 |
 | --- | --- | --- | --- |
-| 产品提供方安装与登记 | 显式 Profile | 安装可选提供方包，并在 host plane 挂载所需的命名实例 | 提供方名称可用，但不会让每次生产 `dsh` 安装都包含该包 |
+| 产品提供方安装与登记 | 显式 Profile | 安装可选提供方包，并在 host plane 挂载所需的命名实例 | 提供方名称可用，但不会让每次生产 `alego` 安装都包含该包 |
 | 产品选择与公开 | Agent Preset | 把一个固定工具名绑定到一个固定提供方 | 启用一行只会公开对应产品工具 |
-| 前台或后台选择 | `dsh-tool-subagent` | 按 `one-shot` 策略解析 `run_in_background` | 省略参数时在前台运行；显式传入 `true` 时返回 Job id |
-| Job id、状态、输出、取消与通知 | `ctx.jobs` 与 `dsh-tool-jobs` | 登记并展示现有 one-shot 运行 | 通用作业工具为准确父级收集或停止运行 |
-| 原生结果、可选诊断与进程完全停稳 | 产品提供方与 `dsh-subprocess` | 产生一个最终结果并释放一棵进程树 | Job 结算与前台返回消费同一结果，且都会等待资源释放 |
+| 前台或后台选择 | `alego-tool-subagent` | 按 `one-shot` 策略解析 `run_in_background` | 省略参数时在前台运行；显式传入 `true` 时返回 Job id |
+| Job id、状态、输出、取消与通知 | `ctx.jobs` 与 `alego-tool-jobs` | 登记并展示现有 one-shot 运行 | 通用作业工具为准确父级收集或停止运行 |
+| 原生结果、可选诊断与进程完全停稳 | 产品提供方与 `alego-subprocess` | 产生一个最终结果并释放一棵进程树 | Job 结算与前台返回消费同一结果，且都会等待资源释放 |
 
 ## 发布组装
 
 生产 base 不让两个可选产品提供方进入依赖闭包。选择启用产品集成的 Profile 会安装所需包，并在 host plane 挂载所需的提供方实例。每个完整 preset 让两个产品工具行保持禁用，并把通用 Job 控制工具贡献到自身 agent 作用域；base host 负责共享 Job 注册表。Profile 提供方实例存在后，用户复制一个 preset，再从对应产品行删除 `disabled`；组装期间不会启动产品进程。
 
-独立自定义组装若启用 one-shot 后台执行，就必须同时提供产品提供方与完整通用 Job 能力：由 `dsh-jobs-local` 充当 Job 提供方，由 `dsh-tool-jobs` 充当面向模型的消费方。基于 `dsh-base` 的 Profile 已具备 Job 能力，只需在启用 preset 工具行前新增可选产品提供方。没有 Job 运行时的产品工具仍可在前台执行，但显式后台请求会在现有 Job 预检中失败，不会发布无法收集的 id。
+独立自定义组装若启用 one-shot 后台执行，就必须同时提供产品提供方与完整通用 Job 能力：由 `alego-jobs-local` 充当 Job 提供方，由 `alego-tool-jobs` 充当面向模型的消费方。基于 `alego-base` 的 Profile 已具备 Job 能力，只需在启用 preset 工具行前新增可选产品提供方。没有 Job 运行时的产品工具仍可在前台执行，但显式后台请求会在现有 Job 预检中失败，不会发布无法收集的 id。
 
 ACP 产品组装使用相同的固定产品行与通用作业控制工具。其无密钥 schema 快照会为每个已启用产品工具公开 `description`、`prompt` 和可选的 `run_in_background`，而不会调用 Codex、Claude Code 或外部模型。
 
 ## 验证
 
-Web 组装测试会从仓库 examples 依赖锚点显式挂载两个可选提供方，再启动四种用户 preset 变体——不启用产品、只启用 Codex、只启用 Claude Code，以及同时启用两者——并检查每个已启用产品工具都会与 `job_output`、`job_list` 和 `job_kill` 一起公开 `run_in_background`。两个由包负责的 Loader 组装会在空 `PATH` 下运行，检查相同 schema 与控制工具，并证明显式加载提供方不会启动产品进程。ACP 无密钥快照会固定显式组装后的产品 schema，而现有 `dsh-tool-subagent` 与作业测试套件会固定前台默认值、Job 登记、最终输出收集、共享诊断呈现、取消、完成通知、owner 资源释放与提供方资源释放。两个真实产品提供方测试套件还会分别证明各自的原生权限失败先进入同一个共享结果，再由任一调度路径消费。
+Web 组装测试会从仓库 examples 依赖锚点显式挂载两个可选提供方，再启动四种用户 preset 变体——不启用产品、只启用 Codex、只启用 Claude Code，以及同时启用两者——并检查每个已启用产品工具都会与 `job_output`、`job_list` 和 `job_kill` 一起公开 `run_in_background`。两个由包负责的 Loader 组装会在空 `PATH` 下运行，检查相同 schema 与控制工具，并证明显式加载提供方不会启动产品进程。ACP 无密钥快照会固定显式组装后的产品 schema，而现有 `alego-tool-subagent` 与作业测试套件会固定前台默认值、Job 登记、最终输出收集、共享诊断呈现、取消、完成通知、owner 资源释放与提供方资源释放。两个真实产品提供方测试套件还会分别证明各自的原生权限失败先进入同一个共享结果，再由任一调度路径消费。
 
 ## 曾考虑的替代方案
 

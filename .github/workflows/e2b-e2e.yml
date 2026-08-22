@@ -11,7 +11,7 @@ permissions:
 env:
   # CI runs must never report to the production telemetry endpoint baked
   # into apps/cli/cordis.yml (AppCLIEntry disables the row when set).
-  DSH_TELEMETRY_DISABLED: '1'
+  ALEGO_TELEMETRY_DISABLED: '1'
 
 jobs:
   e2b:
@@ -51,8 +51,8 @@ jobs:
       - name: E2B tests (live sandbox)
         env:
           E2B_API_KEY: ${{ secrets.E2B_API_KEY_EXTERNAL }}
-          DSH_E2E_MAX_WORKERS: '1'
-          DSH_EXAMPLE_MODE: lib
+          ALEGO_E2E_MAX_WORKERS: '1'
+          ALEGO_EXAMPLE_MODE: lib
         run: >-
           pnpm exec vitest run --config vitest.e2e.config.ts
           packages/e2b/e2b/tests/composition.e2e.ts

@@ -1,7 +1,7 @@
 /**
- * Built-artifact guard for the scope carrier shared by `dsh-subagent` and
- * `dsh-sdk-jsonrpc-server`. The carrier registry is module-local, so both bundles must
- * externalize `dsh-scope`; source-mode tests cannot expose an accidentally
+ * Built-artifact guard for the scope carrier shared by `alego-subagent` and
+ * `alego-sdk-jsonrpc-server`. The carrier registry is module-local, so both bundles must
+ * externalize `alego-scope`; source-mode tests cannot expose an accidentally
  * inlined second registry. This test runs the real `lib/index.js` bundles in a
  * plain Node subprocess, disposes the child before settlement, and requires the
  * SDK completion notification to retain the delegating parent.
@@ -98,7 +98,7 @@ try {
 }
 `
 
-describe.skipIf(!existsSync(jsonrpcBundle))('dsh-sdk-jsonrpc-server BUILT scope carrier', () => {
+describe.skipIf(!existsSync(jsonrpcBundle))('alego-sdk-jsonrpc-server BUILT scope carrier', () => {
   it('preserves parent-scoped completion after child disposal', async () => {
     const { stdout, stderr } = await execFileAsync(process.execPath, ['--input-type=module', '-e', builtRuntimeProbe], {
       cwd: repoRoot,

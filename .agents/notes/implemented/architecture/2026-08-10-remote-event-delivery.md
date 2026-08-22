@@ -28,12 +28,12 @@ All five events ride this path, and their dedicated `HostFrame` variants or Clie
 
 `skills/change`, `tools/change`, and `system-prompt/change` have the same shape but **no consumer today**; under "require a current owner and need" they stay out of the allowlist and are recorded here only as the extension seat.
 
-### Consumer contract (dsh-typert-protocol)
+### Consumer contract (alego-typert-protocol)
 
 type-meta gains one **shape predicate**, one **selection seat**, and **one** member on `TypertClientRemote`. No runtime code:
 
 ```ts
-import type { Events } from '@deepseek-ai/cordis'
+import type { Events } from '@alego/cordis'
 
 /** Cordis events shaped for one-way remote delivery: no Scope binding, void return. */
 export type TypertForwardableEvent = {
@@ -56,7 +56,7 @@ $on<Event extends TypertRemoteEvent>(event: Event, listener: Events[Event]): () 
 
 `Events` resolves per program: the full Host vocabulary in the Host program, whatever the Client face can see in the Client program. The same predicate therefore holds on both sides without dragging Host declarations into the Client.
 
-**The surface separates the consumer verb from the carrier handoff**: consumers subscribe with `$on`, and whoever owns the Host frame sink hands each decoded frame over with `$dispatch`. It cannot be a module-level function reaching across Client plugins — the client bundle purity gate (`packages/client/tsdown.client.ts`) admits value imports only from the implicit `PLATFORM_MODULES` plus `PRELOADED_CLIENT_EXTERNALS` baseline, the package's `dsh.client.external` requests, the `INLINE_SAFE` wire layer, and generated `/remote` contributions. Inlining around it would copy `ClientRemoteService` into the runtime bundle, making `instanceof` permanently false. A cordis service method is the collaboration shape that gate prescribes:
+**The surface separates the consumer verb from the carrier handoff**: consumers subscribe with `$on`, and whoever owns the Host frame sink hands each decoded frame over with `$dispatch`. It cannot be a module-level function reaching across Client plugins — the client bundle purity gate (`packages/client/tsdown.client.ts`) admits value imports only from the implicit `PLATFORM_MODULES` plus `PRELOADED_CLIENT_EXTERNALS` baseline, the package's `alego.client.external` requests, the `INLINE_SAFE` wire layer, and generated `/remote` contributions. Inlining around it would copy `ClientRemoteService` into the runtime bundle, making `instanceof` permanently false. A cordis service method is the collaboration shape that gate prescribes:
 
 ```ts ignore-check
 $dispatch(event: string, args: readonly unknown[]): void
@@ -83,7 +83,7 @@ export const API_REMOTE_FORWARDED_EVENTS = [
 // types.ts — the type face, derived
 export type ApiRemoteForwardedEvent = typeof API_REMOTE_FORWARDED_EVENTS[number]
 
-declare module '@deepseek-ai/dsh-typert-protocol' {
+declare module '@alego/typert-protocol' {
   interface TypertRemoteEventSelection extends Record<ApiRemoteForwardedEvent, true> {}
 }
 ```
@@ -100,7 +100,7 @@ It is an expression statement rather than a named constant, which `noUnusedLocal
 
 **"Verbatim" is proved nowhere because it holds by construction**: `$on`'s listener type comes from the one cordis `Events` declaration in the owner package's `./types`, and Host forwarding reads that same declaration. There is no second declaration that could drift.
 
-JSON-safety is a runtime concern: before forwarding, apiproxy validates each argument with `dsh-session`'s `isJsonValue` and **throws loudly** when one fails, because that is an allowlist composition mistake rather than untrusted input.
+JSON-safety is a runtime concern: before forwarding, apiproxy validates each argument with `alego-session`'s `isJsonValue` and **throws loudly** when one fails, because that is an allowlist composition mistake rather than untrusted input.
 
 ### Wire contract (apiproxy)
 
@@ -112,27 +112,27 @@ The zod branch keeps `args: z.array(z.unknown())`: the frame arrives from `JSON.
 
 `events.host()` subscribes by allowlist when the stream opens. Each stream owns its disposers, so no broadcast set or derived invalidation listener is needed.
 
-`api/events.ts` is a wire contract file the browser side also compiles, so every type it references must come from an owner package's **client-safe, type-only subpath**, never the package root. Evidence: importing one type from `@deepseek-ai/dsh-session` root drags the root's `declare module 'cordis' { interface Context { sessions: SessionStore } }` into the Client compilation face and overrides the Client's `ctx.sessions: ISessions`, producing 18 errors in the unrelated `ui-input-trigger` and `ui-conversation`. `JsonValue` therefore needs a re-export from `dsh-session/src/types.ts`.
+`api/events.ts` is a wire contract file the browser side also compiles, so every type it references must come from an owner package's **client-safe, type-only subpath**, never the package root. Evidence: importing one type from `@alego/session` root drags the root's `declare module 'cordis' { interface Context { sessions: SessionStore } }` into the Client compilation face and overrides the Client's `ctx.sessions: ISessions`, producing 18 errors in the unrelated `ui-input-trigger` and `ui-conversation`. `JsonValue` therefore needs a re-export from `alego-session/src/types.ts`.
 
 ### The apps/web browser e2e belong to the Host face
 
 The `apps/web/tests/**` e2e type-check in the root **`tsconfig.host.json`**: they boot a real harness in-process and read `ctx.apiProxy`, the Host `SessionStore`'s `get`/`create`/`flush`, and `ctx.sessionProjectionCache`. **Driving a browser at runtime does not make a file part of the Client program** — moving them into the Client aggregate immediately produces 21 errors, because one program cannot hold both faces' merges for the same Context key.
 
-That yields a discipline this design depends on: **when those tests import a value or a type from a Client package, they pull that package's whole project — and every project it references — into the Host build graph**. Four consumers (`ui-settings-general`, `ui-settings-models`, `ui-permission`, `ui-commands`) reference `api/remotes`' Client face, and that face cannot compile until Host tsdown has generated `@deepseek-ai/dsh-goal/remote`. The result is a build-order deadlock: Host tsc needs the Client face, which needs the generated artifact, which Host tsdown produces after Host tsc.
+That yields a discipline this design depends on: **when those tests import a value or a type from a Client package, they pull that package's whole project — and every project it references — into the Host build graph**. Four consumers (`ui-settings-general`, `ui-settings-models`, `ui-permission`, `ui-commands`) reference `api/remotes`' Client face, and that face cannot compile until Host tsdown has generated `@alego/goal/remote`. The result is a build-order deadlock: Host tsc needs the Client face, which needs the generated artifact, which Host tsdown produces after Host tsc.
 
-The few Client-owned symbols are therefore **mirrored** on the test side (`scaffold.ts` exports the mirrored welcome-notice constants; the two chat e2e keep importing `dsh-client-runtime/client` because the `runtime` project is already in the Host graph), which lets those four consumers leave the Host graph. The 15 Client project references in `apps/cli/tsconfig.json` lost their owner-map role and are gone. Each mirrored value matches its source verbatim; a drift shows up as a missed selector or an unsuppressed notice, both loud failures.
+The few Client-owned symbols are therefore **mirrored** on the test side (`scaffold.ts` exports the mirrored welcome-notice constants; the two chat e2e keep importing `alego-client-runtime/client` because the `runtime` project is already in the Host graph), which lets those four consumers leave the Host graph. The 15 Client project references in `apps/cli/tsconfig.json` lost their owner-map role and are gone. Each mirrored value matches its source verbatim; a drift shows up as a missed selector or an unsuppressed notice, both loud failures.
 
 ### Change inventory
 
 | Location | Change |
 |---|---|
-| `dsh-typert-protocol` | `src/types.ts` gains `TypertForwardableEvent`, `TypertRemoteEventSelection`, and `TypertRemoteEvent`; `TypertClientRemote` gains `$on` and `$dispatch`. Types only, no runtime |
+| `alego-typert-protocol` | `src/types.ts` gains `TypertForwardableEvent`, `TypertRemoteEventSelection`, and `TypertRemoteEvent`; `TypertClientRemote` gains `$on` and `$dispatch`. Types only, no runtime |
 | `api/gateway` Client half | `ClientRemoteService` implements `$on` (subscriptions addressed by registration, `ctx.effect` ownership for the calling fiber) and `$dispatch` (snapshot delivery in registration order, containing a listener that throws or rejects) |
-| `api/remotes` | New `src/remote-events.ts` (the allowlist value) and `src/types.ts` (type projection, selection seat), both listed in both faces' `files`; a `./types` export with `lib/types/**/*.js` added to `files`; the Host face adds the shape assertion and `import type {}` for the five owner `./types`; the Client half re-exports those five plus `@deepseek-ai/dsh-api-gateway/client` |
+| `api/remotes` | New `src/remote-events.ts` (the allowlist value) and `src/types.ts` (type projection, selection seat), both listed in both faces' `files`; a `./types` export with `lib/types/**/*.js` added to `files`; the Host face adds the shape assertion and `import type {}` for the five owner `./types`; the Client half re-exports those five plus `@alego/api-gateway/client` |
 | Root `tsconfig.base.json` | Client-safe `paths` entries for settings, credentials, llm, agent-presets, and api-remotes types point at the **source** plane |
-| `dsh-commands` / `dsh-settings` / `dsh-credentials` / `dsh-llm` / `dsh-agent-presets` | Each forwarded `interface Events` member lives in the owner's client-safe `./types`; agent-presets moves its previous domain vocabulary to `preset.ts` so the exported file itself remains `types.ts` |
+| `alego-commands` / `alego-settings` / `alego-credentials` / `alego-llm` / `alego-agent-presets` | Each forwarded `interface Events` member lives in the owner's client-safe `./types`; agent-presets moves its previous domain vocabulary to `preset.ts` so the exported file itself remains `types.ts` |
 | `host/apiproxy` | `HostFrame` gains `host/remote-event` and loses the five dedicated passthrough or invalidation variants with their zod branches; `events.host()` subscribes by allowlist and validates through `assertJsonArgs` |
-| `dsh-session` | `src/types.ts` re-exports `JsonValue` so wire contract files can use the client-safe subpath |
+| `alego-session` | `src/types.ts` re-exports `JsonValue` so wire contract files can use the client-safe subpath |
 | `client/runtime` | The five Client-event bridge branches collapse into `ctx.remote.$dispatch(frame.event, frame.args)`, adding a `remote` injection and deleting their duplicated `Events` declarations |
 | Seven consumers | ui-commands / ui-model-selection / ui-settings-models / ui-settings-general / ui-permission / ui-agent-preset / ui-skill subscribe through `ctx.remote.$on(...)`, following `ui-goal`'s precedent for the type-only facade import and the `'remote'` injection |
 | `client/connection` | The fixture's `emitHost` produces `host/remote-event` |
@@ -172,5 +172,5 @@ What pins this behavior:
 - **A malformed argument fails in the emitter's containment, not at load.** `assertJsonArgs` throws inside the forwarding listener, so the emitting seam's listener containment logs it and drops that frame: loud in the Host log rather than at load or at the emit point.
 - **Mirrored test values can drift.** Nothing mechanically checks the Client constants mirrored in `apps/web/tests` against their source; the safety net is only that a drift misses a selector. The rule lives in `apps/web/tests/README.md` and is held by review — a grep-level gate was considered and deliberately skipped.
 - **Capabilities given up.** No projected or redacted payloads, no Scope-bound events (`agentCtx.remote.$on`), and no replay on reconnect — these are pure invalidation signals, and `connection/reset` already covers refetching after a reconnect. The mux stream's session events, answerable frames, and snapshot baselines stay out of scope.
-- **Client packages remain in the Host graph.** Twelve projects (`connection`, `runtime`, `ui-slots`, and kin) still reach it through the unsplit `directory-picker-browse`/`-native` pair and `api/gateway → client/connection`. They compile and no longer implicate api/remotes' Client face, so they did not block this change; splitting those packages would remove a few but was assessed and declined. The two chat e2e importing `dsh-client-runtime/client` rely on `runtime` already being in that graph — incidental, not a guarantee.
+- **Client packages remain in the Host graph.** Twelve projects (`connection`, `runtime`, `ui-slots`, and kin) still reach it through the unsplit `directory-picker-browse`/`-native` pair and `api/gateway → client/connection`. They compile and no longer implicate api/remotes' Client face, so they did not block this change; splitting those packages would remove a few but was assessed and declined. The two chat e2e importing `alego-client-runtime/client` rely on `runtime` already being in that graph — incidental, not a guarantee.
 - **The invariant companion holds no runtime check.** An earlier revision asserted the dispatch shape (`thisArg === null`, `mode === 'emit'`) over the live event bus, which coupled the companion to the allowlist value and made rolldown hoist it into a third bundle chunk the mechanical publication list does not carry. The Host face's `TypertForwardableEvent` assertion already refuses both deviations at compile time, so the companion is an explained empty installer.

@@ -15,7 +15,7 @@ This was not just cosmetic. Because every top-level package looked like part of 
 
 ## Decision
 
-Packages are grouped by modular role at a uniform `packages/<group>/<pkg>/` depth. Group directories are pure containers (no `package.json`); every package keeps its `@deepseek-ai/dsh-<pkg>` name — this is repo structure and maintenance policy, not package renaming.
+Packages are grouped by modular role at a uniform `packages/<group>/<pkg>/` depth. Group directories are pure containers (no `package.json`); every package keeps its `@alego/<pkg>` name — this is repo structure and maintenance policy, not package renaming.
 
 ```text
 packages/
@@ -48,7 +48,7 @@ packages/
 
 ### Placement decisions
 
-- **Same-name nesting for capability families.** A family's interface package sits at `packages/<group>/<group>/` (`llm/llm`, `bash/bash`, `session-persistence/session-persistence`), with implementations and consumers as flat siblings. There is no extra `adapters/`/`impls/` sub-tier — every package is exactly depth 2, which keeps the workspace glob a clean `packages/*/*` and lets one `@deepseek-ai/dsh-*` tsconfig wildcard resolve every package (unique dir names make first-on-disk-wins unambiguous).
+- **Same-name nesting for capability families.** A family's interface package sits at `packages/<group>/<group>/` (`llm/llm`, `bash/bash`, `session-persistence/session-persistence`), with implementations and consumers as flat siblings. There is no extra `adapters/`/`impls/` sub-tier — every package is exactly depth 2, which keeps the workspace glob a clean `packages/*/*` and lets one `@alego/*` tsconfig wildcard resolve every package (unique dir names make first-on-disk-wins unambiguous).
 - **`session` stays in `core/`; persistence is its own family.** The session log is core product API. Its storage backends form a parallel capability family (`session-persistence/`) mirroring `llm/` and `bash/`, rather than nesting under `core/session/`.
 - **`agent-loop` is in `core/`.** It is the one concrete implementation of the `agent` seam, but it ships as the harness's default product loop, so it lives with the core spine. Plugins still depend on the `agent` vocabulary, never on `agent-loop`, so the loop stays swappable.
 - **Product automation and human UI are separate groups.** `acp` is a product transport under `acp/`, while commands, approvals, interaction, and presentation adapters live under `ui/`. Dev-only invariants and replay infrastructure remain under `support/`.
@@ -57,7 +57,7 @@ packages/
 
 The package list had been enumerated in five places. The uniform depth-2 layout lets most of them be derived instead:
 
-- `tsconfig.base.json` maps every package through a single `@deepseek-ai/dsh-*` `paths` wildcard listing one candidate per group, in place of per-package entries. The aggregate configs (`tsconfig.host.json`, `tsconfig.client.json`) reuse that source map and carry the explicit project references that keep package/vendor typecheck boundaries intact. (One subtlety this introduced: a path candidate contains `/*/`, which a naive regex comment-stripper mistakes for a block comment — `scripts/doc-typecheck.ts` reads the JSONC config through TypeScript's parser rather than stripping comments by hand for exactly this reason.)
+- `tsconfig.base.json` maps every package through a single `@alego/*` `paths` wildcard listing one candidate per group, in place of per-package entries. The aggregate configs (`tsconfig.host.json`, `tsconfig.client.json`) reuse that source map and carry the explicit project references that keep package/vendor typecheck boundaries intact. (One subtlety this introduced: a path candidate contains `/*/`, which a naive regex comment-stripper mistakes for a block comment — `scripts/doc-typecheck.ts` reads the JSONC config through TypeScript's parser rather than stripping comments by hand for exactly this reason.)
 - `scripts/publint-all.ts` derives its list by reading the hierarchy (`packages/<group>/<pkg>`), resolving the `TODO(package-inventory)`.
 - The aggregates' project `references` stay explicit lists — TypeScript project references have no wildcard form. Generating these from a manifest is left to a follow-up (see [discover package inventories](../../proposed/process/2026-06-20-discover-package-inventory.md)).
 
@@ -70,7 +70,7 @@ Two doc-sync/hygiene gates keep the structure and its references honest, so the 
 
 ## Alternatives considered
 
-- **A third tier (`adapters/` / `impls/` under each family)** — rejected: uniform depth 2 keeps the workspace glob a clean `packages/*/*` and lets one `@deepseek-ai/dsh-*` tsconfig wildcard resolve every package.
+- **A third tier (`adapters/` / `impls/` under each family)** — rejected: uniform depth 2 keeps the workspace glob a clean `packages/*/*` and lets one `@alego/*` tsconfig wildcard resolve every package.
 - **Nesting persistence under `core/session/`** — rejected: the storage backends form a parallel capability family mirroring `llm/` and `bash/`, while the session log itself stays core product API.
 - **`ui-stdio` under `ui/`** — rejected: it was example-coupled dev support, not a product surface.
 

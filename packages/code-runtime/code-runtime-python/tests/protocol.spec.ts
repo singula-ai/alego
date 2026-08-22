@@ -3,8 +3,8 @@ import { checkDoneValue, encodeJsonPlain, hasNonLosslessNumber, hasUnsafeInteger
 
 describe('logTruncationMarker', () => {
   it('names the configured byte budget', () => {
-    expect(logTruncationMarker(65536)).toBe('[dsh-code-runtime-python] log capture truncated at 65536 bytes')
-    expect(logTruncationMarker(1)).toBe('[dsh-code-runtime-python] log capture truncated at 1 bytes')
+    expect(logTruncationMarker(65536)).toBe('[alego-code-runtime-python] log capture truncated at 65536 bytes')
+    expect(logTruncationMarker(1)).toBe('[alego-code-runtime-python] log capture truncated at 1 bytes')
   })
 })
 

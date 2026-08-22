@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Standalone process wrapper for the scriptable mock LLM server.
- * @module @deepseek-ai/dsh-llm-mock-server/src/bin
+ * @module @alego/llm-mock-server/src/bin
  */
 
 import { setTimeout as delay } from 'node:timers/promises'

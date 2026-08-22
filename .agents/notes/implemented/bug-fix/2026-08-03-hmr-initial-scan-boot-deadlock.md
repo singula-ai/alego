@@ -6,7 +6,7 @@ English | [中文](2026-08-03-hmr-initial-scan-boot-deadlock.zh.md)
 
 ## Problem
 
-A `dsh` launch whose config-tree failed validation exited 13 (unsettled top-level await) with no diagnostic at all, and left the TUI's terminal state stranded on the shell — the exact symptom the [fail-loud release](2026-07-31-fail-loud-releases-the-terminal.md) fixed, reintroduced through a different mechanism after the [transactional config reload](2026-07-20-config-hot-reload-resilience.md).
+A `alego` launch whose config-tree failed validation exited 13 (unsettled top-level await) with no diagnostic at all, and left the TUI's terminal state stranded on the shell — the exact symptom the [fail-loud release](2026-07-31-fail-loud-releases-the-terminal.md) fixed, reintroduced through a different mechanism after the [transactional config reload](2026-07-20-config-hot-reload-resilience.md).
 
 Two defects compounded:
 
@@ -38,4 +38,4 @@ One latent gap remains: a config edit made during a *failing* initial apply can 
 
 ## Testing
 
-The `dsh` invalid-provider PTY case in `apps/cli/tests/tui-keyless-smoke.e2e.ts` pins the end-to-end contract: exit 1, the labelled `dsh: plugin tree failed to load:` diagnostic naming `$.providers`, and the bracketed-paste reset proving the tree was disposed. Before this fix the same case observed exit 13 with no diagnostic. Reload behavior stays covered by `packages/boot/app-boot/tests/config-reload.spec.ts` and `packages/boot/app-boot/tests/hmr-config.spec.ts`.
+The `alego` invalid-provider PTY case in `apps/cli/tests/tui-keyless-smoke.e2e.ts` pins the end-to-end contract: exit 1, the labelled `alego: plugin tree failed to load:` diagnostic naming `$.providers`, and the bracketed-paste reset proving the tree was disposed. Before this fix the same case observed exit 13 with no diagnostic. Reload behavior stays covered by `packages/boot/app-boot/tests/config-reload.spec.ts` and `packages/boot/app-boot/tests/hmr-config.spec.ts`.

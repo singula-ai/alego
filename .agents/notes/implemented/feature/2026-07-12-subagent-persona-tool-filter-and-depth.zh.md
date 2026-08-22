@@ -22,7 +22,7 @@ subagent 启动有三个独立的组合控制：`persona`、`toolFilter` 和 `ma
 | `toolFilter` | 部署全局工具中哪些进入该子 agent 的可见工具视图？ | 一个有作用域的限制在添加子 agent 局部工具之前过滤全局工具 |
 | `maxDepth` | 这棵委派树最深可以长到多少层？ | 子 agent 深度超过绝对上限时，启动请求被拒绝 |
 
-`dsh-tool-subagent` 将这些控制作为插件配置暴露，并复制到它创建的每个请求中。直接调用 `SubagentRuntime` 的调用方可以按请求选择这些控制。提供方的能力描述符仍然是后端能否兑现各字段的真源。
+`alego-tool-subagent` 将这些控制作为插件配置暴露，并复制到它创建的每个请求中。直接调用 `SubagentRuntime` 的调用方可以按请求选择这些控制。提供方的能力描述符仍然是后端能否兑现各字段的真源。
 
 ### 人设是有作用域的遮蔽
 
@@ -55,7 +55,7 @@ subagent 启动有三个独立的组合控制：`persona`、`toolFilter` 和 `ma
 
 有效父级深度取持久 `SessionHeader.delegationDepth` 与运行时 `AgentOptions.subagentDepth` 中的较大值。进程内子 agent 把推导出的深度记录在会话 header 中，恢复时会重新载入该 header，因此重启无法降低递归计数。
 
-每个公开入口都自行验证值域，而非依赖单一的面向模型配置路径。负值、小数、负零、非有限值、不安全整数、格式错误的存储父级深度以及推导溢出均被拒绝。直接的 `SubagentStartRequest` 可以省略上限，让此机制不约束深度；经 loader 解析的 `dsh-tool-subagent` 配置则默认值为 `3`、接受数值覆盖，并使用显式的 `'provider-managed'` 来省略由进程外提供方部署拥有递归预算时的上限。三是一个较小的有限默认值，仍允许 root 加三代后代：[JSON-RPC 示例](../../../../examples/jsonrpc-agent/cordis.yml)采用这项通用策略，而 ACP 与 headless 示例固定为一。提供方缺少 `depthLimit` 时，数值工具上限会在提供方挂载阶段失败。
+每个公开入口都自行验证值域，而非依赖单一的面向模型配置路径。负值、小数、负零、非有限值、不安全整数、格式错误的存储父级深度以及推导溢出均被拒绝。直接的 `SubagentStartRequest` 可以省略上限，让此机制不约束深度；经 loader 解析的 `alego-tool-subagent` 配置则默认值为 `3`、接受数值覆盖，并使用显式的 `'provider-managed'` 来省略由进程外提供方部署拥有递归预算时的上限。三是一个较小的有限默认值，仍允许 root 加三代后代：[JSON-RPC 示例](../../../../examples/jsonrpc-agent/cordis.yml)采用这项通用策略，而 ACP 与 headless 示例固定为一。提供方缺少 `depthLimit` 时，数值工具上限会在提供方挂载阶段失败。
 
 部署可以组合深度与过滤，但数值上限不会合成过滤器。委派工具在上限处仍然可见，因为授权可能依赖运行时状态；每次尝试启动都会检查调用方 agent 当前的持久与运行时深度，被拒绝的启动返回错误工具结果，且不发布子 agent。可见性策略固定的部署可以另外在子 agent 中 deny 委派工具。两种选择都不改变提供方的对话历史行为。
 

@@ -8,7 +8,7 @@ English | [中文](2026-08-09-layered-skill-registry.zh.md)
 
 The agent-preset stack moved the whole skill capability — registry, local provider, and the `skill` tool — into each preset's `isolate` realm, because "which skills an agent has" is an agent-plane choice. That framing conflated two different questions: which skills a *deployment* supplies, and whether an *agent* consumes them. A repository plugin's prepared wrapper declares `inject: ['skills']` and mounts its skill root as a host-plane provider; with no host registry composed in the web and headless profiles, that wrapper waited forever and the repository-plugin e2e hung, which was bypassed at the time by dropping the fixture's skill root. A per-preset realm registry also made the gateway's skill listing depend on a live agent — a cold session's `/` popup had no registry to read at all.
 
-The tools registry never had this problem: it is one host singleton layered per scope over `dsh-scope`, so deployment-level tools (MCP servers, plugin entries) register globally while a preset's rows register into that preset's layer.
+The tools registry never had this problem: it is one host singleton layered per scope over `alego-scope`, so deployment-level tools (MCP servers, plugin entries) register globally while a preset's rows register into that preset's layer.
 
 ## Decision
 

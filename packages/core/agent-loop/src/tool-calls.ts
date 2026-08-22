@@ -8,13 +8,13 @@
  * Abort records synthetic error results for skipped calls so replay stays
  * valid. A terminal scheduler failure preserves already-recorded `tool/call`
  * events without fabricating results.
- * @module dsh-agent-loop/tool-calls
+ * @module alego-agent-loop/tool-calls
  */
 
-import type { Context } from '@deepseek-ai/cordis'
-import { assertNever, createToolResultMessage, type ToolCallBlock } from '@deepseek-ai/dsh-llm'
-import type { Session, UserMessage } from '@deepseek-ai/dsh-session'
-import { TOOL_ABORTED_BEFORE_DISPATCH, TOOL_RUNTIME_SCHEDULER, type ToolExecutionInput, type ToolExecutionMode, type ToolExecutionResult, type ToolRunContext } from '@deepseek-ai/dsh-tools'
+import type { Context } from '@alego/cordis'
+import { assertNever, createToolResultMessage, type ToolCallBlock } from '@alego/llm'
+import type { Session, UserMessage } from '@alego/session'
+import { TOOL_ABORTED_BEFORE_DISPATCH, TOOL_RUNTIME_SCHEDULER, type ToolExecutionInput, type ToolExecutionMode, type ToolExecutionResult, type ToolRunContext } from '@alego/tools'
 
 /** One tool call after argument parsing, ready to schedule. */
 interface PlannedCall {

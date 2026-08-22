@@ -40,7 +40,7 @@ The durability requirement was specific: the doc shows the **literal** current t
 
 ### Maintenance is the author's job, with a gate backstop
 
-`verify-type-equiv` catches a *drifted paste* of an already-documented type, but it cannot tell you a brand-new core type went undocumented. So AGENTS.md and the `dsh-code-review` skill were updated to require keeping the catalog in sync when a change adds or reshapes a documented type — the gate handles drift, the human handles new types.
+`verify-type-equiv` catches a *drifted paste* of an already-documented type, but it cannot tell you a brand-new core type went undocumented. So AGENTS.md and the `alego-code-review` skill were updated to require keeping the catalog in sync when a change adds or reshapes a documented type — the gate handles drift, the human handles new types.
 
 ## Alternatives considered
 
@@ -57,5 +57,5 @@ The durability requirement was specific: the doc shows the **literal** current t
 - The vocabulary now has a single home that **cannot silently drift**: a field or public class-member change in source fails `verify-type-equiv` in `doc-sync` and CI until the paste is refreshed. Cordis service methods remain owned by the generated services catalog rather than being duplicated here.
 - The spine-vs-subsystem line is a reusable scoping tool, not a one-off: the same "the thing you write/hold/receive is core; the machinery that types/renders/persists it is a detail" rule is what later scoped the events/services catalog's harness-vs-inherited tiering.
 - The `ts type-equiv` fence is a third doc-block category alongside ` ```ts ` (compiled) and ` ```ts ignore-check ` (sketch). A later sibling added a fourth, ` ```ts cordis-catalog ` (generated signature), reusing the same skip-and-exclude treatment.
-- Adding or reshaping a core type now carries a documentation obligation the author must honor (the gate cannot detect a missing *new* type), backstopped by the `dsh-code-review` checklist.
+- Adding or reshaping a core type now carries a documentation obligation the author must honor (the gate cannot detect a missing *new* type), backstopped by the `alego-code-review` checklist.
 - Since 2026-07-27 the subsystem-page tier spans every service-bearing subsystem: nine lean pages (permission presets, plan mode, runtime invariants, the HTTP carrier, storage — owning both `ctx.storage` and `ctx.storageDomain` — TUI extensions, workspaces, client modules, telemetry) cover the ten `ctx` services that had none, so each harness service and event scope has exactly one owning subsystems page — the precondition for generating per-subsystem service/event reference into these pages instead of flat catalogs.

@@ -38,7 +38,7 @@ export function requireDist(): void {
   }
 }
 
-/** OS-assigned free port, released before use (the spawned `dsh web` needs a concrete --port). */
+/** OS-assigned free port, released before use (the spawned `alego web` needs a concrete --port). */
 export function probeFreePort(): Promise<number> {
   return new Promise((resolvePort, reject) => {
     const probe = createServer()
@@ -125,7 +125,7 @@ export async function saveFailureShot(page: Page, name: string): Promise<void> {
  * The conversation engine's Context key format, restated here rather than
  * imported: these specs live in the Host compiler aggregate, which must not
  * reach the Client plane. The engine's own copy is
- * `conversationContextKey` in dsh-client-runtime; a drift between them makes
+ * `conversationContextKey` in alego-client-runtime; a drift between them makes
  * the key miss its rendered node, so the assertion fails loudly.
  * @param kind - Definition kind.
  * @param id - Definition-local business identity.

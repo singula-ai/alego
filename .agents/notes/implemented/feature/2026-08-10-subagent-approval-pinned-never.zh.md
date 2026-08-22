@@ -10,7 +10,7 @@ Status: implemented
 
 ## 决策
 
-被委派的子 agent 只在委派时固定的权限范围内行动，审批提示则从它的世界中彻底移除：`captureDelegatedPolicyOverrides(parent)`（`dsh-subagent/src/child-agent.ts`）仍对父会话的显式沙箱覆盖项建立快照，但只要审批能力已组合，就把 `approvalPolicy: 'never'` 钉定下来——不再读取父级自身的审批策略。`appendDelegatedPolicyOverrides()` 把这个钉定作为持久化的 `approval/policy { policy: 'never', source: 'delegation' }` 事件写入子 agent 的日志，与沙箱快照走完全相同的一次性与可继续委派路径，因此冷恢复会重放它，fork 种子中陈旧的父级策略也会输给它。
+被委派的子 agent 只在委派时固定的权限范围内行动，审批提示则从它的世界中彻底移除：`captureDelegatedPolicyOverrides(parent)`（`alego-subagent/src/child-agent.ts`）仍对父会话的显式沙箱覆盖项建立快照，但只要审批能力已组合，就把 `approvalPolicy: 'never'` 钉定下来——不再读取父级自身的审批策略。`appendDelegatedPolicyOverrides()` 把这个钉定作为持久化的 `approval/policy { policy: 'never', source: 'delegation' }` 事件写入子 agent 的日志，与沙箱快照走完全相同的一次性与可继续委派路径，因此冷恢复会重放它，fork 种子中陈旧的父级策略也会输给它。
 
 强制执行沿用既有的 `ApprovalService` `'never'` 语义，落在裁决 ask 的唯一操作上：子 agent 的每次 ask——bash 或 fs 的 `sandbox_permissions` 升级、hook 驱动的权限询问、任何未来的请求方——都在咨询任何应答者之前确定性地解析为 `'rejected'`，同时仍在子日志上留下 `approval/asked`／`approval/decided` 审计对。子 agent 的全部权限故事因此就是它的沙箱范围：`danger-full-access` 父级委派出的子 agent 无需任何审批，`read-only` 父级委派出的子 agent 没有任何逃生通道，而放宽的决定始终属于父级一侧（先放宽父会话，再重新委派或继续 follow-up）。
 
@@ -29,6 +29,6 @@ Status: implemented
 
 - 子 agent 的沙箱继承就是委派权限模型的全部；`DelegatedPolicyOverrides.approvalPolicy` 字段收窄为 `'never' | undefined`（仅在未组合审批能力时为 `undefined`）。
 - 模型可见：每个子 agent 的运行时上下文快照携带 `subagent:delegation` 声明以及固定的审批已禁用语句；父级请求不变。executor 边界测试证明：即使根部有一个本会批准的应答者，子 agent 的升级仍被拒绝且不咨询该应答者，审计对照常落日志。
-- 边界：进程内一次性、可继续以及 workflow 派生的子 agent 都经由共享辅助函数强制执行；`subagent-acp` 子 agent 保留该提供方显式的机器 `permission` 策略；`claude-code`、`codex` 与 `dsh-sdk` 子 agent 运行在外部进程中，由各自的组合决定。
+- 边界：进程内一次性、可继续以及 workflow 派生的子 agent 都经由共享辅助函数强制执行；`subagent-acp` 子 agent 保留该提供方显式的机器 `permission` 策略；`claude-code`、`codex` 与 `alego-sdk` 子 agent 运行在外部进程中，由各自的组合决定。
 - 在钉定之前持久化的子 agent 冷恢复时折叠到部署审批默认值；处于预发布阶段，不添加迁移。
 - 快照夹具记录了该钉定：每个进程内子日志都新增委派 `approval/policy` 事件，`subagent-published-run-failure` 现在会持久化一份单事件子日志，而此前该子 agent 不留任何持久化事件。

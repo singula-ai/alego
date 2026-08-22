@@ -2,9 +2,9 @@
 
 import { Buffer } from 'node:buffer'
 import { posix } from 'node:path'
-import { e2bControlEnvs } from '@deepseek-ai/dsh-e2b'
-import type { Sandbox } from '@deepseek-ai/dsh-e2b'
-import { SENSITIVE_ENV_PATTERN } from '@deepseek-ai/dsh-subprocess'
+import { e2bControlEnvs } from '@alego/e2b'
+import type { Sandbox } from '@alego/e2b'
+import { SENSITIVE_ENV_PATTERN } from '@alego/subprocess'
 
 const BASE64 = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/
 
@@ -29,7 +29,7 @@ export async function readRemoteEnvironment(sandbox: Sandbox, signal?: AbortSign
   // TODO(e2b-replace-environment): Remove this ambient probe when E2B can start
   // a command with a replacement environment instead of merged overrides.
   const result = await sandbox.commands.run(
-    'set -o pipefail; dsh_e2b_passwd="$(getent passwd "$(id -u)")"; IFS=: read -r _ _ _ _ _ dsh_e2b_home _ <<<"$dsh_e2b_passwd"; test -n "$dsh_e2b_home" -a -d "$dsh_e2b_home"; printf \'%s\' "$dsh_e2b_home" | base64 -w 0; printf \'\\n\'; env -0 | base64 -w 0',
+    'set -o pipefail; alego_e2b_passwd="$(getent passwd "$(id -u)")"; IFS=: read -r _ _ _ _ _ alego_e2b_home _ <<<"$alego_e2b_passwd"; test -n "$alego_e2b_home" -a -d "$alego_e2b_home"; printf \'%s\' "$alego_e2b_home" | base64 -w 0; printf \'\\n\'; env -0 | base64 -w 0',
     { envs: e2bControlEnvs(), ...(signal === undefined ? {} : { signal }) },
   )
   const lines = result.stdout.trim().split('\n')
@@ -62,7 +62,7 @@ export async function readRemoteEnvironment(sandbox: Sandbox, signal?: AbortSign
 export function scrubRemoteEnvironment(raw: string): Map<string, string> {
   const environment = new Map<string, string>()
   for (const [name, value] of remoteEnvironmentEntries(raw)) {
-    if (name.startsWith('DSH_') || SENSITIVE_ENV_PATTERN.test(name)) continue
+    if (name.startsWith('ALEGO_') || SENSITIVE_ENV_PATTERN.test(name)) continue
     environment.set(name, value)
   }
   return environment
@@ -76,7 +76,7 @@ export function scrubRemoteEnvironment(raw: string): Map<string, string> {
 export function bootstrapEnvironment(raw: string): Record<string, string> {
   const environment: Record<string, string> = { TERM: 'dumb' }
   for (const [name] of remoteEnvironmentEntries(raw)) {
-    if (name.startsWith('DSH_') || SENSITIVE_ENV_PATTERN.test(name)) environment[name] = ''
+    if (name.startsWith('ALEGO_') || SENSITIVE_ENV_PATTERN.test(name)) environment[name] = ''
   }
   return environment
 }

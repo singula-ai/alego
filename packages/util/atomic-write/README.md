@@ -1,22 +1,22 @@
-# dsh-atomic-write
+# alego-atomic-write
 
 English | [中文](README.zh.md)
 
-Zero-dependency atomic file replacement shared by file-backed stores that must never leave partial, symlink-hijacked, or wider-than-intended content on disk — the user-settings document (`dsh-settings-file`) and the credentials store (`dsh-credentials-local`).
+Zero-dependency atomic file replacement shared by file-backed stores that must never leave partial, symlink-hijacked, or wider-than-intended content on disk — the user-settings document (`alego-settings-file`) and the credentials store (`alego-credentials-local`).
 
 ## Surface
 
 ```ts
-import { withFileLock, writeFileAtomic } from '@deepseek-ai/dsh-atomic-write'
+import { withFileLock, writeFileAtomic } from '@alego/atomic-write'
 
 declare const text: string
 declare const render: (previous: string) => string
 
-await writeFileAtomic('/home/u/.dsh/settings.yaml', text, { mode: 0o600 })
+await writeFileAtomic('/home/u/.alego/settings.yaml', text, { mode: 0o600 })
 
 // Read-modify-write against the same file from several processes.
-await withFileLock('/home/u/.dsh/settings.yaml', async () => {
-  await writeFileAtomic('/home/u/.dsh/settings.yaml', render(text), { mode: 0o600 })
+await withFileLock('/home/u/.alego/settings.yaml', async () => {
+  await writeFileAtomic('/home/u/.alego/settings.yaml', render(text), { mode: 0o600 })
 })
 ```
 

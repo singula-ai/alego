@@ -1,8 +1,8 @@
-# @deepseek-ai/dsh-client-ui-workflow-run
+# @alego/client-ui-workflow-run
 
 English | [中文](README.zh.md)
 
-The browser plugin that reconstructs durable top-level workflow runs as independent Chat nodes. It consumes the four `tool-workflow/*` Session events owned by [`dsh-tool-workflow`](../../workflow/tool-workflow/README.md), registers one `ConversationNodeDefinition`, and renders through the keyed `conversation.chat.node` slot without changing the existing workflow tool card.
+The browser plugin that reconstructs durable top-level workflow runs as independent Chat nodes. It consumes the four `tool-workflow/*` Session events owned by [`alego-tool-workflow`](../../workflow/tool-workflow/README.md), registers one `ConversationNodeDefinition`, and renders through the keyed `conversation.chat.node` slot without changing the existing workflow tool card.
 
 ## Durable state and replay
 
@@ -30,6 +30,6 @@ None.
 
 ## Known Limitations and Deferred Work
 
-- Only top-level calls through `dsh-tool-workflow` produce these records; nested Code Mode calls and direct `WorkflowEngine` consumers do not.
+- Only top-level calls through `alego-tool-workflow` produce these records; nested Code Mode calls and direct `WorkflowEngine` consumers do not.
 - Navigation is intentionally live-only. Terminal members remain visible for review but never expose a cold-session opener from this node.
 - The node shows run, phase, member identity, and status only; scripts, outputs, errors, logs, usage, static topology, and controls remain outside this surface.

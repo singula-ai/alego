@@ -6,11 +6,11 @@ English | [中文](2026-06-22-subagent-snapshot-replay.zh.md)
 
 ## Problem
 
-The snapshot tier (`pnpm run test:snapshot`) boots the real `acp-agent` subprocess, replays a recorded session through [`dsh-llm-replay`](../../../../packages/test-support/llm-replay), and diffs the normalized automation wire + re-persisted session log against committed expected outputs. Most scenarios exercise assembled backend behavior through that real process boundary.
+The snapshot tier (`pnpm run test:snapshot`) boots the real `acp-agent` subprocess, replays a recorded session through [`alego-llm-replay`](../../../../packages/test-support/llm-replay), and diffs the normalized automation wire + re-persisted session log against committed expected outputs. Most scenarios exercise assembled backend behavior through that real process boundary.
 
 It was built for ONE session per process, and that assumption is wired into two places:
 
-- **`dsh-llm-replay` keyed nothing.** It served the Nth `llm/stream` call the Nth recorded entry from a single global cursor. With a parent agent AND an in-process subagent both streaming on one context, the calls interleave and the single cursor hands the child the parent's script (and vice versa).
+- **`alego-llm-replay` keyed nothing.** It served the Nth `llm/stream` call the Nth recorded entry from a single global cursor. With a parent agent AND an in-process subagent both streaming on one context, the calls interleave and the single cursor hands the child the parent's script (and vice versa).
 - **The harness harvested one log.** `findSessionLog` walked the sessions root and returned the FIRST `.jsonl` it found. A subagent runs as a second `Session` with its own log, so the child's transcript was silently dropped.
 
 This was the `TODO(subagent-snapshots)` deferral recorded in the [subagent seam Agent Note](../feature/2026-06-21-subagent-capability-seam.md): the in-process backends shipped with unit + e2e coverage, but the full-transcript snapshot tier could not express a nested-agent shape until this infrastructure landed.
@@ -21,11 +21,11 @@ Replay is keyed **per calling session**, and the harness harvests **every** sess
 
 ### 1. The calling session id rides on the model request
 
-`GenerateOptions` gains an optional `sessionId`, stamped from `agent.session.id` during request assembly. Adapters ignore it; an `llm/stream` listener uses it to route by the issuing session. Its type is `Branded<'SessionId'>` (from `dsh-brand`) rather than `SessionId` from `dsh-session`, because that package imports `Message` from `dsh-llm` and importing back would create a cycle. The types are equivalent, so a session id assigns without a cast. Moving the brand to a dedicated ids package remains separate work because it would touch every id import.
+`GenerateOptions` gains an optional `sessionId`, stamped from `agent.session.id` during request assembly. Adapters ignore it; an `llm/stream` listener uses it to route by the issuing session. Its type is `Branded<'SessionId'>` (from `alego-brand`) rather than `SessionId` from `alego-session`, because that package imports `Message` from `alego-llm` and importing back would create a cycle. The types are equivalent, so a session id assigns without a cast. Moving the brand to a dedicated ids package remains separate work because it would touch every id import.
 
 ### 2. Replay binds live sessions to recorded scripts by first-call order
 
-A nested scenario records more than one log: the parent (`session.jsonl`) plus one per subagent child (`session.1.jsonl`, …). `dsh-llm-replay` loads them all, derives one script per recorded session, and orders the scripts by header `createdAt` (the parent is created before its children).
+A nested scenario records more than one log: the parent (`session.jsonl`) plus one per subagent child (`session.1.jsonl`, …). `alego-llm-replay` loads them all, derives one script per recorded session, and orders the scripts by header `createdAt` (the parent is created before its children).
 
 Live session ids are freshly random every run and never equal the recorded ones, so a live session cannot bind to a script by id equality. Instead it binds by **first-call order**: the first live session to make any model call claims the first ordered script (the parent — earliest `createdAt`, and necessarily the first to stream, because it must run a turn before it can delegate), the next new live session claims the next script, and so on. Each session then advances its own cursor independently.
 

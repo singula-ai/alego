@@ -1,8 +1,8 @@
 /**
  * Cordis-free local filesystem mechanics. This provider layer returns validated UTF-8 text,
- * streams large files, and rejects binary data; line windows belong to `dsh-tool-fs`. Writes
+ * streams large files, and rejects binary data; line windows belong to `alego-tool-fs`. Writes
  * stage an exclusive owner-only file in a private sibling directory and atomically publish it.
- * @module @deepseek-ai/dsh-fs-local/fsio
+ * @module @alego/fs-local/fsio
  */
 
 import { randomUUID } from 'node:crypto'
@@ -11,7 +11,7 @@ import { chmod, link, lstat, mkdir, open, readFile, realpath, readdir, rename, r
 import type { BigIntStats, Dirent, Stats } from 'node:fs'
 import { basename, dirname, join, resolve } from 'node:path'
 import { TextDecoder } from 'node:util'
-import { FsError, FsTargetKey, FsVersion } from '@deepseek-ai/dsh-fs'
+import { FsError, FsTargetKey, FsVersion } from '@alego/fs'
 import { copyFileDaclWin32, replaceFileWin32 } from './win32.ts'
 
 const BINARY_SAMPLE_BYTES = 8192

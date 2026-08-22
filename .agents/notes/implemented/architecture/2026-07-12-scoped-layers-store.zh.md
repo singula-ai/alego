@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-agent（智能体）作用域机制（[决策](2026-07-08-agent-scope-contexts.zh.md)、[运行时设计](2026-07-12-agent-scope-runtime-design.zh.md)）让支持作用域的注册表反复呈现同一种形态：一个全局注册层，加上一个与具体 agent 精确对应的层。七个注册门面都采用这一形态：`tools.register`、`tools.restrict` 和 `tools.guard`（位于 `dsh-tools`）；`SystemPrompt.section`、`SystemPrompt.tools` 和 `SystemPrompt.variable`（位于 `dsh-system-prompt`）；以及 `CommandRuntime.register`（位于 `dsh-commands`）。
+agent（智能体）作用域机制（[决策](2026-07-08-agent-scope-contexts.zh.md)、[运行时设计](2026-07-12-agent-scope-runtime-design.zh.md)）让支持作用域的注册表反复呈现同一种形态：一个全局注册层，加上一个与具体 agent 精确对应的层。七个注册门面都采用这一形态：`tools.register`、`tools.restrict` 和 `tools.guard`（位于 `alego-tools`）；`SystemPrompt.section`、`SystemPrompt.tools` 和 `SystemPrompt.variable`（位于 `alego-system-prompt`）；以及 `CommandRuntime.register`（位于 `alego-commands`）。
 
 如果没有共享原语，每个门面都要围绕自己的领域状态重复相同的生命周期编排：从调用方上下文导出可见性，按需创建专属容器，把属主绑定到同一个 Cordis fiber，先装入 undo 再通知观察者，原样返回 Cordis 的 disposer，并回收空的专属状态。各自分离的映射与集合类型也会让服务缺少一个表示某个 scope 完整贡献的对象。
 
@@ -20,7 +20,7 @@ agent（智能体）作用域机制（[决策](2026-07-08-agent-scope-contexts.z
 
 ## 决策
 
-`@deepseek-ai/dsh-scope` 提供与键类型无关的 `store.ts` 实现模块。该包继续将 Cordis 和 `@deepseek-ai/dsh-invariants` 列为对等依赖（peer dependency），其不变量配套模块保持不变。包根导出四个存储符号：`ScopeLayer`、`ScopedLayers`、`NamedEntries` 和 `AnonymousEntries`。`EntryValues` 仍是内部接口，`store.ts` 不是包子路径。
+`@alego/scope` 提供与键类型无关的 `store.ts` 实现模块。该包继续将 Cordis 和 `@alego/invariants` 列为对等依赖（peer dependency），其不变量配套模块保持不变。包根导出四个存储符号：`ScopeLayer`、`ScopedLayers`、`NamedEntries` 和 `AnonymousEntries`。`EntryValues` 仍是内部接口，`store.ts` 不是包子路径。
 
 `ScopeLayer` 保留显式的聚合概念，同时只要求判断整个层是否为空。服务定义一个具体层，使其表结构与领域 helper 适合该服务；`ScopedLayers` 负责构造、选择、生命周期挂接、通知和聚合回收。
 
@@ -82,11 +82,11 @@ export class AnonymousEntries<V> {
 
 ## 注册表迁移
 
-`dsh-tools` 定义一个 `ToolLayer`，其中包含命名工具以及匿名的已编译 restriction 和 guard 登记。`ToolRuntime` 保留其私有领域解析器，由它处理可见定义、限制前的已知名称、可限制的全局名称、专属遮蔽、restriction，以及保留的 `run_code` 插入。guard 求值会先活遍历全局登记，再活遍历专属登记：向非空 generation 新增的登记可以在当前分发中运行，而 guard 表清空后的自我替换则从下一次分发开始运行。
+`alego-tools` 定义一个 `ToolLayer`，其中包含命名工具以及匿名的已编译 restriction 和 guard 登记。`ToolRuntime` 保留其私有领域解析器，由它处理可见定义、限制前的已知名称、可限制的全局名称、专属遮蔽、restriction，以及保留的 `run_code` 插入。guard 求值会先活遍历全局登记，再活遍历专属登记：向非空 generation 新增的登记可以在当前分发中运行，而 guard 表清空后的自我替换则从下一次分发开始运行。
 
-`dsh-system-prompt` 定义一个 `PromptLayer`，其中包含命名的段落与变量，以及匿名工具提供方。组装流程在求值前合并段落，因此被遮蔽的提供方不会被调用。每次组装只物化一次工具提供方成员集合。变量提供方会先活遍历全局表，再活遍历专属表：向非空 generation 新增的提供方可以在当前组装中运行，而变量表清空后的自我替换则从下一次组装开始运行。
+`alego-system-prompt` 定义一个 `PromptLayer`，其中包含命名的段落与变量，以及匿名工具提供方。组装流程在求值前合并段落，因此被遮蔽的提供方不会被调用。每次组装只物化一次工具提供方成员集合。变量提供方会先活遍历全局表，再活遍历专属表：向非空 generation 新增的提供方可以在当前组装中运行，而变量表清空后的自我替换则从下一次组装开始运行。
 
-`dsh-commands` 定义一个单表层，其中包含 `NamedEntries<RegisteredCommand>`。生效视图使用 `merge()`；`CommandRuntime` 则保留对定义的规范化与冻结处理、精确重名诊断、经过排序的不可变描述符、直接执行、HMR（热模块替换）清理，以及对各个 `commands/change` 观察者分别隔离失败的行为。
+`alego-commands` 定义一个单表层，其中包含 `NamedEntries<RegisteredCommand>`。生效视图使用 `merge()`；`CommandRuntime` 则保留对定义的规范化与冻结处理、精确重名诊断、经过排序的不可变描述符、直接执行、HMR（热模块替换）清理，以及对各个 `commands/change` 观察者分别隔离失败的行为。
 
 七个门面都把校验与诊断留在所属注册表中，并继续返回 Cordis 的原始 disposer。迁移既不改变公开注册表行为，也不改变模型可见或人类可见的输出，以及协议、持久化或配置层面的可见输出。
 
@@ -120,7 +120,7 @@ export class AnonymousEntries<V> {
 
 ## 验证
 
-- `dsh-scope` 单元测试覆盖全局构造、专属层延迟构造、非创建式读取、命名合并顺序与遮蔽、聚合回收、工厂与 action 失败清理、通知顺序与回滚、`notify: false`、effect 标签、原始 disposer 身份、幂等拆除、调用方提供的重名错误、相同匿名值的独立登记、活迭代器，以及表清空后的 generation 脱离。
+- `alego-scope` 单元测试覆盖全局构造、专属层延迟构造、非创建式读取、命名合并顺序与遮蔽、聚合回收、工厂与 action 失败清理、通知顺序与回滚、`notify: false`、effect 标签、原始 disposer 身份、幂等拆除、调用方提供的重名错误、相同匿名值的独立登记、活迭代器，以及表清空后的 generation 脱离。
 - 工具、系统提示词和命令专项测试套件覆盖 restriction、保留传输项处理、已知名称与可限制名称的一致性、guard 重入与自我替换、校验顺序、精确诊断、section 先遮蔽再求值、提供方快照成员关系、variable 重入与自我替换、隔离失败的命令观察者、冻结且经过排序的视图、直接执行和生命周期销毁。
 - 作用域核心数据的类型等价性检查将 `ScopeLayer` 文档与其源声明绑定。仓库级的文档、模块图、构建、hygiene、覆盖率与构建产物门禁会覆盖包根导出与包边界。
 - 现有 ACP（Agent Client Protocol）、headless 和 TUI 无密钥快照继续作为工具 schema 与提示词组装的回归边界；人类命令由 TUI 覆盖。实现不会更新任何预期 transcript（文本记录）。

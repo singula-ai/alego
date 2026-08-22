@@ -12,7 +12,7 @@ const searches: WorkspaceFileSearch[] = []
 const roots: string[] = []
 
 async function workspace(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'dsh-file-autocomplete-'))
+  const root = await mkdtemp(join(tmpdir(), 'alego-file-autocomplete-'))
   roots.push(root)
   await mkdir(join(root, 'src'), { recursive: true })
   await mkdir(join(root, 'docs'), { recursive: true })
@@ -105,14 +105,14 @@ describe('WorkspaceFileSearch', () => {
       { path: `${absoluteSrc}tui.spec.ts`, kind: 'file' },
       { path: `${absoluteSrc}terminal-view.ts`, kind: 'file' },
     ])
-    expect(await files.list('~/.dsh-file-autocomplete-missing/', signal)).toEqual([])
+    expect(await files.list('~/.alego-file-autocomplete-missing/', signal)).toEqual([])
     expect(await files.list('../', signal)).toEqual([])
     expect(await files.list('README.md/', signal)).toEqual([])
   })
 
   it('does not traverse directory symlinks during direct completion', async () => {
     const root = await workspace()
-    const outside = await mkdtemp(join(tmpdir(), 'dsh-file-autocomplete-outside-'))
+    const outside = await mkdtemp(join(tmpdir(), 'alego-file-autocomplete-outside-'))
     roots.push(outside)
     await writeFile(join(outside, 'outside-secret.txt'), 'secret')
     await symlink(

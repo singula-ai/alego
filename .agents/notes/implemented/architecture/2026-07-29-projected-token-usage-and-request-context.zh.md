@@ -12,7 +12,7 @@ Web 统计行原先从当前已加载的会话节点推导 token 总量。该窗
 
 ## 决策
 
-这两个值都是普通的持久会话投影状态。当 `ctx.sessionProjections` 存在时，`@deepseek-ai/dsh-token-meter` 会注册两个单元。
+这两个值都是普通的持久会话投影状态。当 `ctx.sessionProjections` 存在时，`@alego/token-meter` 会注册两个单元。
 
 `tokenUsage` 将完整持久日志归并为未缓存输入、输出、缓存读取和缓存写入四类计数项。即使后续请求失败，`assistant/chunk` 用量样本仍会保留；同一 `(turn, step)` 的 `assistant/message` 用量值会替换先前样本，不会重复计数。推理（reasoning）仍是输出的细分项。压缩和表层替换不会抹除先前的计费用量。
 

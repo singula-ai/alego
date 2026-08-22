@@ -33,9 +33,9 @@ Status: implemented
 
 ## 后果
 
-- **`dsh-compaction-basic`** 拥有 `SummarizationInput`；受保护的 `summarize(input, agent, signal?)` 钩子签名发生变化（发布前可接受），并且 `region.ts` 新增了 `buildSummarizationInput`，它在 header 前缀之后对被遮蔽的 seq 折叠 `deriveEventMessage`。
-- **移除无用的渲染表面。** 旧的拍平路径（`renderTranscript` / `renderContentBlocks` 及其在 `dsh-compaction` 中的 spec）已无消费方，连同其导出一并删除。
-- **README 的 Model Experience** 现在把 `dsh-compaction-basic` 的辅助请求记述为回放的前缀加上一条尾部压缩指令消息，并把其 KV Cache 效果记述为复用已预热的对话前缀。
+- **`alego-compaction-basic`** 拥有 `SummarizationInput`；受保护的 `summarize(input, agent, signal?)` 钩子签名发生变化（发布前可接受），并且 `region.ts` 新增了 `buildSummarizationInput`，它在 header 前缀之后对被遮蔽的 seq 折叠 `deriveEventMessage`。
+- **移除无用的渲染表面。** 旧的拍平路径（`renderTranscript` / `renderContentBlocks` 及其在 `alego-compaction` 中的 spec）已无消费方，连同其导出一并删除。
+- **README 的 Model Experience** 现在把 `alego-compaction-basic` 的辅助请求记述为回放的前缀加上一条尾部压缩指令消息，并把其 KV Cache 效果记述为复用已预热的对话前缀。
 - **带框架的检查点输出未改变**，因此落地的 `user/message` 和每个对话请求快照都不受影响；只有辅助请求的形状发生了变化。
 
 ## 测试

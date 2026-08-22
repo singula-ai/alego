@@ -38,11 +38,11 @@ Context 与 AgentEventDispatch 调用只贡献由字符串字面量构成的有�
 
 [`gen-scoped-events`](../../../../scripts/gen-scoped-events.ts) 扫描真实的 `scopeTarget(base, key)` 调用，为每种 scoped 基础对象确定路由键类型。随后，它查找带有 `this: Scoped<Base>` 的 Cordis `Events` 成员，并在每个事件参数及其第一层公开属性中搜索与该键匹配的类型；移除 `null` 和 `undefined` 后，候选类型必须与路由键类型完全相同。
 
-恰好一个匹配项会生成解析函数。存在多个匹配项时，含义不明确，生成器会失败。没有匹配项时，事件必须标记 `@dshScopeScan unsupported`；该标记只用于路由键有意留在事件参数之外的情况，例如按所属 agent（智能体）路由的会话事件和按父 agent 路由的 subagent 生命周期事件。此标记只表示扫描不受支持，不编码事件名、参数下标、属性路径或替代类型。
+恰好一个匹配项会生成解析函数。存在多个匹配项时，含义不明确，生成器会失败。没有匹配项时，事件必须标记 `@alegoScopeScan unsupported`；该标记只用于路由键有意留在事件参数之外的情况，例如按所属 agent（智能体）路由的会话事件和按父 agent 路由的 subagent 生命周期事件。此标记只表示扫描不受支持，不编码事件名、参数下标、属性路径或替代类型。
 
 提交到仓库的 [`scoped-events.generated.ts`](../../../../packages/core/scope/src/scoped-events.generated.ts) 是位于 scoped dispatch 所属包中的纯运行时映射，不导入任何事件声明方包。语义完整性由生成器自身保证：根 Program 枚举所有 scoped `Events` 声明与真实 `scopeTarget` 约定，通过 checker 解析唯一的 payload 路径，并在渲染 `unknown[]` 运行时边界前拒绝缺失、陈旧或含义不明确的条目。
 
-`dsh-scope/invariant` companion 消费这份映射，不再维护手写事件表。Program 分析发生在仓库门禁内，而不是依赖生成的类型导入，因此 `dsh-scope` 和 `dsh-invariants` 都不需要依赖所有事件声明方。
+`alego-scope/invariant` companion 消费这份映射，不再维护手写事件表。Program 分析发生在仓库门禁内，而不是依赖生成的类型导入，因此 `alego-scope` 和 `alego-invariants` 都不需要依赖所有事件声明方。
 
 ### 语义缺口必须显式失败
 

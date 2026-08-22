@@ -10,7 +10,7 @@ Status: implemented
 
 ## 决策
 
-`*.i18n.yaml` 使用由仓库维护的 `dsh-translation-pairing` 合并驱动。worktree 本地的 Git 安装脚本在设置 Lefthook 的同时注册该驱动命令；Git 配置仍限定于当前 worktree，因为受跟踪的属性可以指定驱动，却无法携带其可执行命令。
+`*.i18n.yaml` 使用由仓库维护的 `alego-translation-pairing` 合并驱动。worktree 本地的 Git 安装脚本在设置 Lefthook 的同时注册该驱动命令；Git 配置仍限定于当前 worktree，因为受跟踪的属性可以指定驱动，却无法携带其可执行命令。
 
 安装脚本会在发布 worktree 集成前加载确切的 Node/tsx 入口点。Git 会调用仓库内已提交且不依赖 Node 的 shell 启动器；该启动器会在每次执行驱动前重复这项探测。运行时或入口点不可用时，即使文本合并干净完成，启动器也会将 Git 的普通三方文本合并结果写入伴随文件并返回冲突状态，使 Git 保留未合并的索引阶段，绝不接受未经验证的元数据。
 
@@ -54,4 +54,4 @@ Status: implemented
 
 完成安装的 worktree 会自动消除仅由配对记录引起的冲突，同时仍由人工处理配对文档冲突并评判翻译质量。GitHub 托管的可合并性计算不会运行 worktree 本地的可执行命令，因此仍须由贡献者或 agent 将 base 分支合入当前分支并推送结果提交，远端冲突标记才会消失。
 
-安装脚本会在 worktree 配置中预留 `merge.dsh-translation-pairing.*`，并拒绝与之冲突的自定义值。与仓库贡献者钩子一样，自动组合依赖已安装的 Node 依赖；运行时不可用时会产生可见的未解决文本结果，而不是选择陈旧元数据。
+安装脚本会在 worktree 配置中预留 `merge.alego-translation-pairing.*`，并拒绝与之冲突的自定义值。与仓库贡献者钩子一样，自动组合依赖已安装的 Node 依赖；运行时不可用时会产生可见的未解决文本结果，而不是选择陈旧元数据。

@@ -15,7 +15,7 @@ Prompt assembly can derive both facts per step from durable session timestamps, 
 
 ## Decision
 
-`@deepseek-ai/dsh-time-context` is an opt-in function plugin at `packages/context/time-context/`. The `context/` product group holds bounded request-context enrichments that define neither a tool nor a service. `dsh-agent-spine-demo` and shipped examples do not load the package; deployments mount it explicitly when its token and disclosure costs are acceptable.
+`@alego/time-context` is an opt-in function plugin at `packages/context/time-context/`. The `context/` product group holds bounded request-context enrichments that define neither a tool nor a service. `alego-agent-spine-demo` and shipped examples do not load the package; deployments mount it explicitly when its token and disclosure costs are acceptable.
 
 The plugin registers the global `context:time` system-prompt section at order 10, after the deployment persona and before tool guidance. For an active turn it emits an ISO-shaped timestamp with numeric UTC offset and IANA zone, plus a compact whole-second duration since the last model-visible message before the turn opened. Bare and idle assemblies receive an empty section.
 
@@ -48,7 +48,7 @@ Unit tests pin formatting, baselines, refresh policy, validation, per-agent stat
 - **Refresh from a background timer** — rejected because a new value has no consumer outside request assembly. Timer-driven `agent.inject()` would create turns and wake idle sessions merely to report time passing.
 - **Keep UTC as the omitted default** — rejected because an explicitly enabled clock should follow its deployment environment unless the operator chooses UTC. `timeZone: UTC` remains available when a deployment requires it.
 - **Add a time-zone detection library** — rejected because Node's `Intl` runtime already exposes the process's IANA zone. Another dependency cannot infer a remote user's zone either.
-- **Mount the plugin in `dsh-agent-spine-demo`** — rejected because time zone, disclosure, token budget, and freshness are deployment policy. Opt-in keeps default context stable.
+- **Mount the plugin in `alego-agent-spine-demo`** — rejected because time zone, disclosure, token budget, and freshness are deployment policy. Opt-in keeps default context stable.
 - **Place the package in `core/`** — rejected because `core/` owns the product API spine, while this plugin is an optional leaf with no service key.
 
 ## Consequences

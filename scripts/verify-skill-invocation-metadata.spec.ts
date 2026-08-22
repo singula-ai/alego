@@ -11,7 +11,7 @@ afterEach(() => {
 })
 
 function fixtureRoot(): string {
-  const root = mkdtempSync(join(tmpdir(), 'dsh-skill-invocation-metadata-'))
+  const root = mkdtempSync(join(tmpdir(), 'alego-skill-invocation-metadata-'))
   roots.push(root)
   return root
 }

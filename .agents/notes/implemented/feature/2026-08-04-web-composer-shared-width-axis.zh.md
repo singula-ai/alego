@@ -10,7 +10,7 @@ Web 会话列的各个区域各自独立设定尺寸：transcript（文本记录
 
 ## 决策
 
-一个内容宽度变量控制整列。`--dsh-chat-content-width`（748px）声明在 ConversationRoot 的 `.root` 上——transcript 与 composer 座位是兄弟子树，声明必须放在共同祖先上，CSS 自定义属性才能通过继承同时到达两者。其他几何全部由它推导：输入卡片上限为 `content + 32px`（`--dsh-composer-card-max-width`），停靠卡片从卡片宽度中减去四个停靠 inset（4 × 8px）正好回到内容宽度，接管卡片直接使用内容宽度。窄视口不变式以结构而非数值表达：内容宽度的区域每侧 pad `calc(var(--dsh-composer-side-clearance) + 16px)`，而输入卡片只留裸 clearance（16px），因此「输入卡片 = 内容 + 32px」在任意视口宽度下都成立，而不只是在上限处。
+一个内容宽度变量控制整列。`--alego-chat-content-width`（748px）声明在 ConversationRoot 的 `.root` 上——transcript 与 composer 座位是兄弟子树，声明必须放在共同祖先上，CSS 自定义属性才能通过继承同时到达两者。其他几何全部由它推导：输入卡片上限为 `content + 32px`（`--alego-composer-card-max-width`），停靠卡片从卡片宽度中减去四个停靠 inset（4 × 8px）正好回到内容宽度，接管卡片直接使用内容宽度。窄视口不变式以结构而非数值表达：内容宽度的区域每侧 pad `calc(var(--alego-composer-side-clearance) + 16px)`，而输入卡片只留裸 clearance（16px），因此「输入卡片 = 内容 + 32px」在任意视口宽度下都成立，而不只是在上限处。
 
 卡片内的控制行是一个 `container-type: inline-size` 容器，权限触发器在 460px 容器查询下收起文字标签（保留图标 + 下拉箭头）。查询刻意匿名：CSS modules 按模块哈希 `container-name`，InputBar 样式表里声明的名字永远无法匹配 PermissionSelect 样式表里写的查询——两个哈希后的名字悄然不同，查询永不触发。只有带模式图标的触发器才收起（`:has(.triggerIcon)`）；没有图标的宿主自定义模式保留文字作为其唯一标识。
 

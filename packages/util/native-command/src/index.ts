@@ -3,7 +3,7 @@
  * native directory chooser, the open-with-default-application hand-off):
  * utf8 stdio capture, abort propagation, Windows console hide. A library,
  * not a plugin — no ctx, no state, no events.
- * @module @deepseek-ai/dsh-native-command
+ * @module @alego/native-command
  */
 
 import { execFile } from 'node:child_process'

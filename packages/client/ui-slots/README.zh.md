@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-client-ui-slots
+# @alego/client-ui-slots
 
 [English](README.md) | 中文
 

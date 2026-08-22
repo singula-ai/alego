@@ -3,23 +3,23 @@
 # key or network; every other entry remains shared. The replay provider
 # catalog claims the `deepseek-official` provider so the SDK server's `initialize`
 # finds it owned and never mounts the real-adapter fallback. The SDK snapshot
-# suite passes this path explicitly through `DSH_CORDIS_CONFIG` (the
-# jsonrpc-demo bin performs no DSH_SNAPSHOT config swap of its own), and
-# `llm-replay` reads `DSH_SNAPSHOT_FILE` / `DSH_SNAPSHOT_CHILD_FILES` from the
+# suite passes this path explicitly through `ALEGO_CORDIS_CONFIG` (the
+# jsonrpc-demo bin performs no ALEGO_SNAPSHOT config swap of its own), and
+# `llm-replay` reads `ALEGO_SNAPSHOT_FILE` / `ALEGO_SNAPSHOT_CHILD_FILES` from the
 # harness. Stdout remains reserved for JSON-RPC frames.
 - id: base
-  name: '@deepseek-ai/cordis-plugin-include'
+  name: '@alego/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       # `name` asserts the target: a mismatch skips the patch and warns only
       # when a logger exists.
       - id: llm-deepseek
-        name: '@deepseek-ai/dsh-llm-deepseek'
+        name: '@alego/llm-deepseek'
         disabled: true
       - insert:
           - id: llm-replay
-            name: '@deepseek-ai/dsh-llm-replay'
+            name: '@alego/llm-replay'
             config:
               providers:
                 - id: deepseek-official

@@ -4,7 +4,7 @@
 import { spawn } from 'node:child_process'
 
 const SURFACES = new Map([
-  // The browser surface with the cordis toolset layered on: `dsh web --config`
+  // The browser surface with the cordis toolset layered on: `alego web --config`
   // applies this overlay over the shipped web composition; it owns port 3081.
   ['web', ['--import', 'tsx', 'apps/cli/src/bin.ts', 'web', '--patch', 'examples/web-cordis/cordis.yml']],
   ['acp', ['--import', 'tsx', 'packages/examples/acp-demo/src/bin.ts', '--config', 'examples/acp-agent/cordis-tools.cordis.yml']],

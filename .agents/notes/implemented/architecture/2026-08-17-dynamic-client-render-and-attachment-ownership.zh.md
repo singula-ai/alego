@@ -12,9 +12,9 @@ Status: implemented
 
 ## 决定
 
-`@deepseek-ai/dsh-client-web` 是不依赖框架的启动内核。它通过 DOM 操作与本地 CSS 回退绘制加载和失败页面，构造客户端模块系统与 Cordis Loader，创建静态接纳的 modules 启动 entry 和宿主图中的每个 entry，并等待所有 fiber 进入 ACTIVE。Loader 状态变化会保留同一个 spinner 节点，只在 entry 首次进入 active 时更新其 CSS 圆弧。圆弧从圆环的五分之一增长至五分之四，在旋转期间始终保留可见缺口。名册稳定后，内核解析 `ctx.uiRenderer`，把现有容器交给 `mount()`。
+`@alego/client-web` 是不依赖框架的启动内核。它通过 DOM 操作与本地 CSS 回退绘制加载和失败页面，构造客户端模块系统与 Cordis Loader，创建静态接纳的 modules 启动 entry 和宿主图中的每个 entry，并等待所有 fiber 进入 ACTIVE。Loader 状态变化会保留同一个 spinner 节点，只在 entry 首次进入 active 时更新其 CSS 圆弧。圆弧从圆环的五分之一增长至五分之四，在旋转期间始终保留可见缺口。名册稳定后，内核解析 `ctx.uiRenderer`，把现有容器交给 `mount()`。
 
-`@deepseek-ai/dsh-client-ui-renderer` 是带 `immediately` 标记的动态客户端插件。它持有 React slot outlet、SessionProvider 与 observable 到 uSES 的绑定。它注入的 `slots` 与 `sessions` 激活后，便安装 slot 渲染器并提供 `ctx.uiRenderer`。`mount()` hydrate 内核生成的启动 DOM，再通过 layout effect 在浏览器绘制中间帧前将其替换为组装完成的应用。hydrate 后的 spinner 节点会保持动画相位。组装后的树投影当前会话标题，并执行唯一一次上下文级 `renderSlot('root')` 调用。服务、渲染器安装和 React 根都随各自持有方 dispose。
+`@alego/client-ui-renderer` 是带 `immediately` 标记的动态客户端插件。它持有 React slot outlet、SessionProvider 与 observable 到 uSES 的绑定。它注入的 `slots` 与 `sessions` 激活后，便安装 slot 渲染器并提供 `ctx.uiRenderer`。`mount()` hydrate 内核生成的启动 DOM，再通过 layout effect 在浏览器绘制中间帧前将其替换为组装完成的应用。hydrate 后的 spinner 节点会保持动画相位。组装后的树投影当前会话标题，并执行唯一一次上下文级 `renderSlot('root')` 调用。服务、渲染器安装和 React 根都随各自持有方 dispose。
 
 `ui-conversation` 声明 `conversation.input.attachments` 与 `conversation.message.images`，并提供附件数据、回调、经会话授权的图片加载及其 locale seat。`ui-attachment` 通过 `ctx.slots.inject()` 等待这些声明，再注册草稿附件栏／拖放目标和历史图片画廊／灯箱。React 实现仍是包内值；跨插件组合通过 slot 完成。这项包集成决策取代[附件展示 Note](../feature/2026-08-11-web-attachment-display-alignment.zh.md)中的直接导入规则，但不改变该 Note 的视觉与交互决策。
 

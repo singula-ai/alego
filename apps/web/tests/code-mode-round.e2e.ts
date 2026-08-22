@@ -6,14 +6,14 @@
 // component a native call renders through — plus details-panel resolution for
 // a clicked sub-row. Drive steps wait only on generic completion
 // (whenTurnSettled); assertion steps run in replay/refresh only.
-// Record: DSH_SNAPSHOT=record rewrites session.jsonl, then a keyless
-// DSH_SNAPSHOT=refresh regenerates ui.expected.md.
+// Record: ALEGO_SNAPSHOT=record rewrites session.jsonl, then a keyless
+// ALEGO_SNAPSHOT=refresh regenerates ui.expected.md.
 import { readFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { SessionEvent } from '@deepseek-ai/dsh-session'
+import type { SessionEvent } from '@alego/session'
 import {
   captureStableAria, compareOrRefreshGolden, fixtureUserPrompts,
   launchWebScaffold, recordFixture, watchConsole, webSnapshotMode, type WebScaffold,

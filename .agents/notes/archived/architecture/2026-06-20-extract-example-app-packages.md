@@ -15,11 +15,11 @@ The leaf configs also owned coupled front doors. ACP requires stdout purity and 
 
 Each example is now **mostly an invocation of an app package**, splitting the wiring along the existing [interface / implementation / consumer seam](2026-06-13-capability-seams.md): the **app package owns the composition**, the leaf `cordis.yml` owns only the **swappable choices** (which LLM adapter, which bash executor, model, prompt, persistence root).
 
-- **`@deepseek-ai/dsh-agent-spine-demo`** ([packages/examples/agent-spine-demo](../../../../packages/examples/agent-spine-demo)) composes the providerless, executor-less, UI-less spine and forwards the loop's agent-list config. Its dependency on the concrete loop is intentional because this package composes the spine rather than extending it; swapping the loop means supplying another bundle.
-- **`@deepseek-ai/dsh-tui-demo`**, **`@deepseek-ai/dsh-cli-demo`**, and **`@deepseek-ai/dsh-acp-demo`** bake in their process roles. TUI includes the full-screen UI and a pre-created `main`; Headless includes the one-shot driver and a pre-created `main`; ACP includes the bridge and no pre-created agent. All three include JSONL persistence and omit stdout loggers.
-- **`start.ts` is gone.** Each app package exposes a bin; the `demo:*` scripts invoke it. Loader boot, `.env` loading, and fail-loud guards live in the shared [`@deepseek-ai/dsh-app-boot`](../../../../packages/ui/app-boot) package (unit-tested under the per-file coverage gate — see [share the app bins' boot glue](../simplification/2026-07-04-share-app-bin-boot-glue.md)); the thin self-executing entries are driven by keyless Loader-path tests.
+- **`@alego/agent-spine-demo`** ([packages/examples/agent-spine-demo](../../../../packages/examples/agent-spine-demo)) composes the providerless, executor-less, UI-less spine and forwards the loop's agent-list config. Its dependency on the concrete loop is intentional because this package composes the spine rather than extending it; swapping the loop means supplying another bundle.
+- **`@alego/tui-demo`**, **`@alego/cli-demo`**, and **`@alego/acp-demo`** bake in their process roles. TUI includes the full-screen UI and a pre-created `main`; Headless includes the one-shot driver and a pre-created `main`; ACP includes the bridge and no pre-created agent. All three include JSONL persistence and omit stdout loggers.
+- **`start.ts` is gone.** Each app package exposes a bin; the `demo:*` scripts invoke it. Loader boot, `.env` loading, and fail-loud guards live in the shared [`@alego/app-boot`](../../../../packages/ui/app-boot) package (unit-tested under the per-file coverage gate — see [share the app bins' boot glue](../simplification/2026-07-04-share-app-bin-boot-glue.md)); the thin self-executing entries are driven by keyless Loader-path tests.
 - **Each leaf `cordis.yml` collapses** to backends, optional product tools, and one app entry carrying the app config. TUI and Headless route model/session choices onto a pre-created agent; ACP routes the initial provider/model onto its bridge.
-- **`base.yml`, `base-core.yml`, and `acp-agent/acp-tail.yml` are retired** — the spine they shared now lives in `dsh-agent-spine-demo`.
+- **`base.yml`, `base-core.yml`, and `acp-agent/acp-tail.yml` are retired** — the spine they shared now lives in `alego-agent-spine-demo`.
 
 `bash-local` and the LLM adapter stay **leaf choices**: the bundle ships `tool-bash` (the consumer schema), the leaf picks the executor implementation, so a sandboxed executor or replay adapter swaps in without touching the app.
 
@@ -47,12 +47,12 @@ The old `base*.yml`/`acp-tail.yml` includes already deduped the *config*, but a 
 
 ## Consequences
 
-- **The bare-plugin-tree pedagogy.** The spine lives behind a bundle, so seeing the whole tree means opening `dsh-agent-spine-demo`. The app package's README carries that teaching weight.
+- **The bare-plugin-tree pedagogy.** The spine lives behind a bundle, so seeing the whole tree means opening `alego-agent-spine-demo`. The app package's README carries that teaching weight.
 - **A layer of indirection.** "What does this demo load?" becomes a package read, not a single YAML scan.
 
 ## Related
 
-- Supersedes [Make the shared example base providerless](../../rejected/architecture/2026-06-20-providerless-example-base.md): renaming `base.yml` to the providerless core is moot once the spine moves into `dsh-agent-spine-demo` and the `base*.yml` files are deleted.
+- Supersedes [Make the shared example base providerless](../../rejected/architecture/2026-06-20-providerless-example-base.md): renaming `base.yml` to the providerless core is moot once the spine moves into `alego-agent-spine-demo` and the `base*.yml` files are deleted.
 - Builds on the [capability-seams](2026-06-13-capability-seams.md) interface/implementation/consumer split — backends and presentation stay leaf choices; the spine is the shared bundle.
 - Complements [Reorganize packages into a modular hierarchy](2026-06-20-package-hierarchy.md): the new app/core packages slot into existing groups under that hierarchy (`core` for the reusable spine bundle, `ui` for the app-specific front doors).
 - The later [redundant-agent removal](../simplification/2026-07-20-remove-stdio-and-echo-agents.md) owns the final TUI/Headless split and removes the line-oriented and mock-only leaves.

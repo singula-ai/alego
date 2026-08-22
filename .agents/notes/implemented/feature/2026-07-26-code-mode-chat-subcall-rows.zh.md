@@ -14,7 +14,7 @@ Status: implemented
 
 **子调用是在 surface 流之外递归附着到父级的标准工具调用块，经由与原生行相同的 keyed slot 渲染，并始终显示在父级之下。**
 
-- **数据层**：运行时的 `ToolCallTree` 把窗口内的 `tool/code-dispatch-start` 与 `tool/code-dispatch` 事件折入私有的逐父级索引，再把运行中和已结算的子级投影到递归的 `ToolCallBlock.subCalls` 上。实时会话投影与 `projectConversationHistory` 共享这一折叠过程；逐父级的写时复制数组和路径复制投影让无关根节点与兄弟节点保持引用稳定。子调用永不进入 `nodes`——surface 流始终精确等于模型可见的轮次结构。这些事件在 wire 消费方边界作结构性收窄，该边界也会拒绝成环的父子关系（dsh-tools 的宿主类型无法进入客户端程序，因为宿主端与客户端两侧的 `Context` 声明合并会冲突）。
+- **数据层**：运行时的 `ToolCallTree` 把窗口内的 `tool/code-dispatch-start` 与 `tool/code-dispatch` 事件折入私有的逐父级索引，再把运行中和已结算的子级投影到递归的 `ToolCallBlock.subCalls` 上。实时会话投影与 `projectConversationHistory` 共享这一折叠过程；逐父级的写时复制数组和路径复制投影让无关根节点与兄弟节点保持引用稳定。子调用永不进入 `nodes`——surface 流始终精确等于模型可见的轮次结构。这些事件在 wire 消费方边界作结构性收窄，该边界也会拒绝成环的父子关系（alego-tools 的宿主类型无法进入客户端程序，因为宿主端与客户端两侧的 `Context` 声明合并会冲突）。
 - **渲染层**：`ChatView` 通过整体工具 seat `'conversation.chat.tool'` 传递每个父调用及其递归子调用。ui-tool 的 `ToolCallTree` 先渲染 parent，再渲染 `[data-subcalls]` 嵌套；每个原子调用都通过同一个 `'tool.call.toolview'` keyed slot，以工具名称作为 `entryKey`，并共用 `GenericToolCard` fallback。一个 keyed 注册因此无需变化即可同时接管任意后代与顶层调用。运行中的 parent（`runningCalls`）在同一个递归块中接收已累积的 dispatch，使 child 行在运行期间实时流入。
 - **`run_code` 的呈现**：新增一种 `code` 行变体（分类器映射 `run_code → code`、标题 `Code`、图标 `IconCodeOutline16`），以模型撰写的 `description` 作摘要，展开后显示程序本身（在 markdown 代码块的填充底色上以等宽字体呈现），而非参数的 JSON 封装。
 - **详情面板**：`materialFor` 递归搜索 `nodes` 与 `runningCalls`，因此被选中的后代 callId 会经由与已完结的原生调用完全相同的渲染路径，解析出完整参数与完整输出。

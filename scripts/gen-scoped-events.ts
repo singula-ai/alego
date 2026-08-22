@@ -1,12 +1,12 @@
 /**
- * Generate dsh-scope's invariant resolver map from the repository TypeScript
+ * Generate alego-scope's invariant resolver map from the repository TypeScript
  * Program.
  *
  * A scoped event declares `this: Scoped<Base>`. Real `scopeTarget(base, key)`
  * calls establish the routing-key type for that base. The generator searches
  * every event payload parameter and one property level for exactly one type
  * equivalent to that key. Each generated resolver compiles against the merged
- * `Events` parameter tuple. Zero matches require `@dshScopeScan unsupported`;
+ * `Events` parameter tuple. Zero matches require `@alegoScopeScan unsupported`;
  * multiple matches are ambiguous and always fail loud.
  *
  *   `tsx scripts/gen-scoped-events.ts`          -> write the generated source
@@ -81,10 +81,10 @@ class ScopedEventGenerator {
     }
     return [
       '/**',
-      ' * Generated scoped-event routing-subject resolvers for dsh-scope invariants.',
+      ' * Generated scoped-event routing-subject resolvers for alego-scope invariants.',
       ' * Do not edit by hand; run `pnpm run gen-scoped-events`.',
       ' *',
-      ' * @module @deepseek-ai/dsh-scope/scoped-events.generated',
+      ' * @module @alego/scope/scoped-events.generated',
       ' */',
       '',
       'type ScopedSubjectResolver = (args: readonly unknown[]) => unknown',
@@ -182,7 +182,7 @@ class ScopedEventGenerator {
                 )
               }
               if (tag.present) {
-                this.violations.push(`${where} has @dshScopeScan metadata but is not a Scoped event`)
+                this.violations.push(`${where} has @alegoScopeScan metadata but is not a Scoped event`)
               }
               continue
             }
@@ -207,7 +207,7 @@ class ScopedEventGenerator {
                 const keyLabel = this.typeText(keyType)
                 this.violations.push(
                   `${where} exposes no parameter or one-level property equivalent to routing key type ${keyLabel}; `
-                  + 'add @dshScopeScan unsupported only when the key is intentionally absent from the payload',
+                  + 'add @alegoScopeScan unsupported only when the key is intentionally absent from the payload',
                 )
               }
               resolvers.push({ event, candidate: null })
@@ -215,7 +215,7 @@ class ScopedEventGenerator {
             }
             if (tag.unsupported) {
               this.violations.push(
-                `${where} has unnecessary @dshScopeScan unsupported; ${candidates[0]?.path} exposes the routing key`,
+                `${where} has unnecessary @alegoScopeScan unsupported; ${candidates[0]?.path} exposes the routing key`,
               )
               continue
             }
@@ -309,14 +309,14 @@ class ScopedEventGenerator {
   }
 }
 
-/** Return whether an Events interface is inside declare module '@deepseek-ai/cordis'. */
+/** Return whether an Events interface is inside declare module '@alego/cordis'. */
 function isCordisModuleInterface(node: ts.InterfaceDeclaration): boolean {
   const block = node.parent
   const declaration = block.parent
   return ts.isModuleBlock(block)
     && ts.isModuleDeclaration(declaration)
     && ts.isStringLiteral(declaration.name)
-    && declaration.name.text === '@deepseek-ai/cordis'
+    && declaration.name.text === '@alego/cordis'
 }
 
 /** Return whether a parameter is the explicit TypeScript this receiver. */
@@ -324,20 +324,20 @@ function isThisParameter(parameter: ts.ParameterDeclaration): boolean {
   return ts.isIdentifier(parameter.name) && parameter.name.text === 'this'
 }
 
-/** Parse and validate the optional @dshScopeScan unsupported tag. */
+/** Parse and validate the optional @alegoScopeScan unsupported tag. */
 function parseScopeTag(raw: string, where: string, violations: string[]): ScopeTag {
   const tags = raw
     .replace(/^\/\*\*/, '')
     .replace(/\*\/$/, '')
     .split('\n')
     .map(line => line.replace(/^\s*\*?\s?/, '').trim())
-    .filter(line => line.startsWith('@dshScopeScan'))
-  if (tags.length > 1) violations.push(`${where} has multiple @dshScopeScan tags`)
+    .filter(line => line.startsWith('@alegoScopeScan'))
+  if (tags.length > 1) violations.push(`${where} has multiple @alegoScopeScan tags`)
   if (tags.length === 0) return { present: false, unsupported: false }
-  const unsupported = tags[0] === '@dshScopeScan unsupported'
+  const unsupported = tags[0] === '@alegoScopeScan unsupported'
   if (!unsupported) {
     violations.push(
-      `${where} has invalid scoped-event scan metadata '${tags[0]}'; expected '@dshScopeScan unsupported'`,
+      `${where} has invalid scoped-event scan metadata '${tags[0]}'; expected '@alegoScopeScan unsupported'`,
     )
   }
   return { present: true, unsupported }
@@ -377,7 +377,7 @@ export function renderScopedEvents(projectRoot: string = root): string {
   return new ScopedEventGenerator(new TypeScriptProject(projectRoot)).render()
 }
 
-/** Generate or freshness-check the fixed dsh-scope source file. */
+/** Generate or freshness-check the fixed alego-scope source file. */
 function main(): void {
   const content = renderScopedEvents()
   const output = resolve(root, OUT)

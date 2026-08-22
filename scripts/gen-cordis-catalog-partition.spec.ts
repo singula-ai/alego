@@ -128,7 +128,7 @@ describe('cordis-walk scan reach', () => {
     const dir = join(root, 'packages/client/ui-x/src/client')
     mkdirSync(dir, { recursive: true })
     writeFileSync(join(dir, 'index.ts'), [
-      "declare module '@deepseek-ai/cordis' {",
+      "declare module '@alego/cordis' {",
       '  interface Events {',
       "    'x/changed'(): void",
       '  }',
@@ -153,12 +153,12 @@ describe('cordis-walk scan reach', () => {
     // backstop must not stop at the first one, skip the double-quoted legal
     // form, or ignore .tsx sources.
     writeFileSync(join(dir, 'split.ts'), [
-      "declare module '@deepseek-ai/cordis' {",
+      "declare module '@alego/cordis' {",
       '  interface Context {',
       '    first: FirstService',
       '  }',
       '}',
-      'declare module "@deepseek-ai/cordis" {',
+      'declare module "@alego/cordis" {',
       '  interface Events {',
       "    'second/changed'(): void",
       '  }',
@@ -167,7 +167,7 @@ describe('cordis-walk scan reach', () => {
       '',
     ].join('\n'))
     writeFileSync(join(dir, 'view.tsx'), [
-      "declare module '@deepseek-ai/cordis' {",
+      "declare module '@alego/cordis' {",
       '  interface Context {',
       '    fromTsx: TsxService',
       '  }',
@@ -189,7 +189,7 @@ describe('cordis-walk scan reach', () => {
 
   it('reads string-literal and identifier member names from an Events merge', () => {
     const sf = ts.createSourceFile('x.ts', [
-      "declare module '@deepseek-ai/cordis' {",
+      "declare module '@alego/cordis' {",
       '  interface Events {',
       "    'scope/list'(items: string[]): void",
       '    plain(): void',

@@ -279,7 +279,7 @@ describe('web e2e: composer draft scrolling', () => {
     await page.mouse.wheel(0, -2000)
     await expect.poll(async () => (await measureComposer(page)).scrollTop, { timeout: 10_000 }).toBe(0)
     const metrics = await measureComposer(page)
-    // The cap is the composer seat's `--dsh-composer-text-max-height` (336px =
+    // The cap is the composer seat's `--alego-composer-text-max-height` (336px =
     // 14 x 24px lines). The count, not the pixels: it is the figma constant and
     // survives a device-pixel-ratio change.
     expect(metrics.visibleLines).toBe(14)

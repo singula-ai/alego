@@ -11,12 +11,12 @@ Web 编辑器页脚原本以独立 stack 行显示一条拼接的统计字符串
 
 ## Decision
 
-**统计行经由新的 `footer` owner prop 渲染进 InputBar 的宽度列内，并扩展为设计稿的分组细节行；composer stack 拥有唯一的 6px 节奏；座位以固定 36px 的 token 绑定渐变淡出消息流；「回到底部」控件跟随实时的 `--dsh-composer-height`；goal、todo 与 queue 共用一条 752px 的 tip 填充列。**
+**统计行经由新的 `footer` owner prop 渲染进 InputBar 的宽度列内，并扩展为设计稿的分组细节行；composer stack 拥有唯一的 6px 节奏；座位以固定 36px 的 token 绑定渐变淡出消息流；「回到底部」控件跟随实时的 `--alego-composer-height`；goal、todo 与 queue 共用一条 752px 的 tip 填充列。**
 
 - `'conversation.composer.dock'` 条目以 `ComposerBarOwnerProps.footer` 席位到达页面，渲染在卡片下方、bar 的 `.root` 之内，统计行与卡片因此共享同一宽度约束。`StatsLine` 全部在客户端从快照推导：turns／steps、由 assistant `timing`（`completedTime - stepStartTime`）折算的 LLM 墙钟时间、由 tool-result 的 `time - callTime` 配对折算的工具墙钟时间、把 cache-read 并入输入侧的提示／输出 token 拆分，以及缓存命中率。各组以竖线分隔、无数据时整组消失；`formatTokens`（517 / 12.2K / 1.2M）与 `formatDuration`（45.2s / 2m42s）导出供测试。耗时只覆盖窗口内节点——该限制由 README 记录。
 - `.composerStack` 采用 Figma 组合矩阵中的 6px 间距。Goal 与 Todo 保持为独立卡片；末端的 Queue 条目减去这段间距及具名的 5px 布局重叠量，使后渲染的 composer 卡片只覆盖 Queue 边缘。[composer 上下文堆栈决策](../bug-fix/2026-07-30-composer-context-stack-order.md) 规定顺序与重叠契约。
 - sticky 座位的背景是从 0px 处的 `color-mix(bg-base 0%, transparent)` 到 36px 处纯色 `bg-base` 的 `linear-gradient`——像素节点而非 figma 导出的百分比，草稿长高只扩大纯色区域；`color-mix` 让两个主题都从各自的底色淡出。
-- 座位上的 `useCallback` ref 挂 ResizeObserver，把 `--dsh-composer-height` 发布到滚动体上；ChatView 的回到底部席位据此计算 `bottom`（首帧回退 152px），替换先前硬编码的 168px。
+- 座位上的 `useCallback` ref 挂 ResizeObserver，把 `--alego-composer-height` 发布到滚动体上；ChatView 的回到底部席位据此计算 `bottom`（首帧回退 152px），替换先前硬编码的 168px。
 - textarea 的 52px 两行下限只保留在 hero 变体；停靠态编辑器折叠到内容高度。Goal、Todo 与 Queue 面板统一使用 44px 边距／752px 上限的列，并采用 `tip` 填充和 l1 边框；独立的 Goal 卡片与折叠后的 Todo 卡片高度分别为 36px 和 44px。
 
 ## Alternatives considered

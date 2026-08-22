@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-subagent-in-process-driver
+# @alego/subagent-in-process-driver
 
 [English](README.md) | 中文
 
@@ -86,7 +86,7 @@ When you have your final answer, you MUST report it by calling the `structured_o
 
 #### 模型看到的内容
 
-通过 `dsh-tool-subagent`，无效深度状态会精确变为 `Error: agent subagentDepth must be a non-negative safe integer`、`Error: subagent child depth exceeds the safe-integer range` 或 `Error: subagent depth <attempted> exceeds maxDepth <max>`。发布前取消的中止原因会通过注册表的 `Error: <message>` 包装传递。
+通过 `alego-tool-subagent`，无效深度状态会精确变为 `Error: agent subagentDepth must be a non-negative safe integer`、`Error: subagent child depth exceeds the safe-integer range` 或 `Error: subagent depth <attempted> exceeds maxDepth <max>`。发布前取消的中止原因会通过注册表的 `Error: <message>` 包装传递。
 
 #### Token 影响
 

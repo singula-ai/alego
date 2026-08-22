@@ -1,14 +1,14 @@
-# `@deepseek-ai/dsh-cmdline`
+# `@alego/cmdline`
 
 [English](README.md) | 中文
 
-dsh 启动器交给它所引导应用的那条命令行。启动器只解析属于自己的 flag（`--profile`、`--patch`、配置 dump），并把**其后的一切**原样交给配置树，因此 flag 家族、`--help` 文本和解析错误都由应用自己持有，启动器不必知道它们。
+alego 启动器交给它所引导应用的那条命令行。启动器只解析属于自己的 flag（`--profile`、`--patch`、配置 dump），并把**其后的一切**原样交给配置树，因此 flag 家族、`--help` 文本和解析错误都由应用自己持有，启动器不必知道它们。
 
 ## 启动器提供的值
 
 启动器在任何配置树条目挂载之前调用 `provideCmdline(ctx, host)`，它提供：
 
-- `ctx.cmdlineArgs`：本次调用的内层参数。`get()` 就是它的全部接口，返回一份快照：`dsh --profile tui --resume abc` 得到 `['--resume', 'abc']`。
+- `ctx.cmdlineArgs`：本次调用的内层参数。`get()` 就是它的全部接口，返回一份快照：`alego --profile tui --resume abc` 得到 `['--resume', 'abc']`。
 - `ctx.appExit`：一个有边界的进程退出请求，接到启动器的关停控制器上。
 
 没有命令行的嵌入宿主提供空列表；这是诚实的答案，而不是缺失的值。
@@ -32,14 +32,14 @@ export function apply(ctx: Context): void {
 
 ```yaml
 - id: web-startup
-  name: '@deepseek-ai/dsh-web-app/startup'
+  name: '@alego/web-app/startup'
 ```
 
 所有由这些取值配置的行都使用普通服务注入，并在惰性配置中直接访问该服务：
 
 ```yaml
 - id: webserver
-  name: '@deepseek-ai/dsh-host-webserver'
+  name: '@alego/host-webserver'
   inject: [webStartup]
   config:
     host: !!js ctx.webStartup.host ?? '127.0.0.1'

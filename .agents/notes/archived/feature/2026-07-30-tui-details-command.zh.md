@@ -11,7 +11,7 @@ TUI 的 transcript（文本记录）细节状态——工具卡片可见性（`c
 
 ## Decision
 
-`dsh-tui` 在其他 agent 作用域命令旁注册 `/details`。裸 `/details` 打开 `DetailsDialog`：一个居中的键盘开关，每个维度一个条目——`Tool cards` 与 `Reasoning`——显示实时值：Tab 循环高亮条目并立即应用变更，对话框背后的 transcript 即是预览，Enter、Esc 或 Ctrl+C 关闭；其宽度由配置键 `detailsDialogWidth` 决定，选择器打开时再次执行 `/details` 会替换它，与 `/model` 浮层一致。参数直接命名目标状态：`collapsed|expanded|hidden` 让工具卡片跳到该阶段，`reasoning on|off` 设置 reasoning 显示，裸 `reasoning` 切换它，且指令可在一次调用中组合。未知 token 返回携带用法行的命令错误。每个入口改动的都是与快捷键相同的闭包状态，重构后循环与切换成为 `setToolsVisibility`/`setReasoning` 之上的薄封装；快捷键及其通知保持不变。
+`alego-tui` 在其他 agent 作用域命令旁注册 `/details`。裸 `/details` 打开 `DetailsDialog`：一个居中的键盘开关，每个维度一个条目——`Tool cards` 与 `Reasoning`——显示实时值：Tab 循环高亮条目并立即应用变更，对话框背后的 transcript 即是预览，Enter、Esc 或 Ctrl+C 关闭；其宽度由配置键 `detailsDialogWidth` 决定，选择器打开时再次执行 `/details` 会替换它，与 `/model` 浮层一致。参数直接命名目标状态：`collapsed|expanded|hidden` 让工具卡片跳到该阶段，`reasoning on|off` 设置 reasoning 显示，裸 `reasoning` 切换它，且指令可在一次调用中组合。未知 token 返回携带用法行的命令错误。每个入口改动的都是与快捷键相同的闭包状态，重构后循环与切换成为 `setToolsVisibility`/`setReasoning` 之上的薄封装；快捷键及其通知保持不变。
 
 组合调用先应用 reasoning 再应用可见性，因为 `setReasoning` 会从会话事件重建 transcript，而重建会丢弃非持久的通知组件；若最后才应用它，会抹掉刚追加的可见性通知。
 

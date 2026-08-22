@@ -10,7 +10,7 @@ Status: implemented
 
 ## 决定
 
-**一个读取方，多个派生面。**`dsh-client-ui-settings` 持有 `SettingsDescribeMirror`——浏览器中唯一的 `settings.describe` 读取方：一个持有完整应答的快照 store，由所属插件的两个订阅（`settings/document-updated`、`connection/reset`）负责刷新。并发的 `load()` 调用折叠进在飞读取加至多一次尾随重读。在飞槽位会在 loading 发布同步重入 `load()` 之前先取得 run 的所有权，随后在 run 自身 try/finally 内、与读取 rerun 标志相同的同步段中清空；若把清理挂在返回 promise 的 `.finally()` 上，它要晚一个微任务执行，落入该间隙的刷新会标记一个无人读取的 rerun。
+**一个读取方，多个派生面。**`alego-client-ui-settings` 持有 `SettingsDescribeMirror`——浏览器中唯一的 `settings.describe` 读取方：一个持有完整应答的快照 store，由所属插件的两个订阅（`settings/document-updated`、`connection/reset`）负责刷新。并发的 `load()` 调用折叠进在飞读取加至多一次尾随重读。在飞槽位会在 loading 发布同步重入 `load()` 之前先取得 run 的所有权，随后在 run 自身 try/finally 内、与读取 rerun 标志相同的同步段中清空；若把清理挂在返回 promise 的 `.finally()` 上，它要晚一个微任务执行，落入该间隙的刷新会标记一个无人读取的 rerun。
 
 `bind()` 返回的 `SettingsScope<T>` 面保持不变，但 controller 现在是镜像上的 selector：自身没有读路径，decode 规则不变，写队列保留。提交成功的写入把应答的 view 折回镜像（`acceptView`），兄弟 scope 无需重读即可看到新 revision；这次折叠会废弃更早发出的在飞应答，而首次完整文档尚未建立时到达的写入会让该读取重跑，不会把单个 namespace 发布成残缺文档。失败的最新写入触发一次镜像恢复读取。跨命名空间的表面——插件目录 tab、permission 行（其动态枚举位于命名空间 schema 中，而 scope 有意不携带 schema）、models join、agent-preset 行的可写性、以及 `hasDocument`——消费 `ctx.settingsScope.describe()` 提供的共享读／折叠面（`getSnapshot`／`subscribe`／`ensure`／`acceptView`）。
 

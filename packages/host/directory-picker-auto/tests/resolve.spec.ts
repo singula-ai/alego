@@ -81,7 +81,7 @@ describe('hasLinuxChooserBinary', () => {
 
 describe('canExecute', () => {
   it('accepts an executable file and rejects an absent one', () => {
-    probeRoot = mkdtempSync(join(tmpdir(), 'dsh-picker-probe-'))
+    probeRoot = mkdtempSync(join(tmpdir(), 'alego-picker-probe-'))
     const binary = join(probeRoot, 'zenity')
     writeFileSync(binary, '#!/bin/sh\n')
     chmodSync(binary, 0o755)

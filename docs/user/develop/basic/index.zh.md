@@ -17,7 +17,7 @@ mkdir -p scratch-plugin/src
 在 Harness 中，插件是一个导出 `apply` 函数的 TypeScript 模块。框架在加载时调用 `apply`，传入一个 `ctx`（上下文对象），你通过 `ctx` 注册能力：
 
 ```ts
-import type { Context } from '@deepseek-ai/cordis'
+import type { Context } from '@alego/cordis'
 
 export const name = 'my-plugin'
 
@@ -33,7 +33,7 @@ export function apply(ctx: Context) {
 创建 `scratch-plugin/src/my-plugin.ts`：
 
 ```ts
-import type { Context } from '@deepseek-ai/cordis'
+import type { Context } from '@alego/cordis'
 
 export const name = 'hello-plugin'
 
@@ -45,12 +45,12 @@ export function apply(ctx: Context) {
 
 ## 注册到 cordis.yml
 
-在仓库根目录运行 `pwd`，然后创建 `scratch-plugin/cordis.yml`，作为插入本地插件的 Web 覆盖层。请将下文的 `/absolute/path/to/deepseek-harness` 替换为命令打印的路径：
+在仓库根目录运行 `pwd`，然后创建 `scratch-plugin/cordis.yml`，作为插入本地插件的 Web 覆盖层。请将下文的 `/absolute/path/to/alego` 替换为命令打印的路径：
 
 ```yaml
 - insert:
     - id: hello
-      name: '/absolute/path/to/deepseek-harness/scratch-plugin/src/my-plugin.ts'
+      name: '/absolute/path/to/alego/scratch-plugin/src/my-plugin.ts'
 ```
 
 插件路径必须是绝对路径。patch 文件只贡献配置，不会改变 loader 解析模块路径时使用的 profile 目录。
@@ -58,7 +58,7 @@ export function apply(ctx: Context) {
 使用该覆盖层启动 Web UI：
 
 ```sh
-pnpm dsh web --patch ./scratch-plugin/cordis.yml
+pnpm alego web --patch ./scratch-plugin/cordis.yml
 ```
 
 打开 `http://127.0.0.1:3080`。启动期间，终端会打印 `[hello-plugin] plugin loaded!`。
@@ -70,7 +70,7 @@ pnpm dsh web --patch ./scratch-plugin/cordis.yml
 如果你有需要手动清理的资源（比如一个网络连接），用 `ctx.effect()` 告诉框架怎么清理：
 
 ```ts
-import type { Context } from '@deepseek-ai/cordis'
+import type { Context } from '@alego/cordis'
 
 export function apply(ctx: Context) {
   ctx.effect(() => {
@@ -89,7 +89,7 @@ export function apply(ctx: Context) {
 如果你的插件需要使用其他服务（如 `tools`、`llm`），需要声明 `inject`：
 
 ```ts ignore-check
-import type { Context } from '@deepseek-ai/cordis'
+import type { Context } from '@alego/cordis'
 
 export const name = 'my-tool-plugin'
 export const inject = ['tools']
@@ -109,7 +109,7 @@ export function apply(ctx: Context) {
 ### 对象形式
 
 ```ts
-import type { Context } from '@deepseek-ai/cordis'
+import type { Context } from '@alego/cordis'
 
 export default {
   name: 'my-plugin',
@@ -123,7 +123,7 @@ export default {
 ### 类形式
 
 ```ts
-import { Service, type Context } from '@deepseek-ai/cordis'
+import { Service, type Context } from '@alego/cordis'
 
 export default class MyService extends Service {
   static inject = ['tools']

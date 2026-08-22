@@ -14,12 +14,12 @@ The job registry, control tools, and completion notices form one harness capabil
 
 The `jobs/` package group owns background-job semantics:
 
-- `@deepseek-ai/dsh-jobs` registers running work as `ctx.jobs` and owns job ids, authorization, snapshots, reads, cancellation, waiting, completion listeners, and cleanup.
-- `@deepseek-ai/dsh-tool-jobs` exposes `job_output`, `job_list`, and `job_kill`, injects completion notices, and supplies the background-job system-prompt guidance.
+- `@alego/jobs` registers running work as `ctx.jobs` and owns job ids, authorization, snapshots, reads, cancellation, waiting, completion listeners, and cleanup.
+- `@alego/tool-jobs` exposes `job_output`, `job_list`, and `job_kill`, injects completion notices, and supplies the background-job system-prompt guidance.
 
-Long-running tools are producers. `dsh-tool-bash` adapts a `ShellProcess` into incremental output and process cancellation; `dsh-tool-subagent` adapts a child run into final output and child disposal. The bash and subagent capability seams remain independent of sessions and the job registry.
+Long-running tools are producers. `alego-tool-bash` adapts a `ShellProcess` into incremental output and process cancellation; `alego-tool-subagent` adapts a child run into final output and child disposal. The bash and subagent capability seams remain independent of sessions and the job registry.
 
-`JobRegistry` is the Service Definition in `@deepseek-ai/dsh-jobs`; the process-local provider is `LocalJobRegistry` in `@deepseek-ai/dsh-jobs-local` (the [task-registry contract Agent Note](2026-07-26-job-registry-seam.md) records that split).
+`JobRegistry` is the Service Definition in `@alego/jobs`; the process-local provider is `LocalJobRegistry` in `@alego/jobs-local` (the [task-registry contract Agent Note](2026-07-26-job-registry-seam.md) records that split).
 
 ## Runtime contract
 
@@ -67,11 +67,11 @@ For contract-compliant producers, `AgentHandle.dispose()` resolves only after ow
 
 `wait` returns the terminal snapshot when the task settles or the live snapshot when its timeout expires. Aborting a wait cancels only that wait. If settlement has already assigned terminal delivery to the waiter, the terminal snapshot still wins. Waiters unregister synchronously on abort so a same-tick settlement cannot suppress a completion notice on behalf of a reader that receives nothing.
 
-A producer loaded without any controller would let callers start work they cannot collect or stop. `dsh-tool-jobs` therefore calls `attachController()` for its lifetime, and `start()` fails before producer execution when no controller is attached. This check occurs at start rather than plugin load because sibling plugins may activate concurrently. Custom non-model controllers can attach themselves without teaching the registry tool names.
+A producer loaded without any controller would let callers start work they cannot collect or stop. `alego-tool-jobs` therefore calls `attachController()` for its lifetime, and `start()` fails before producer execution when no controller is attached. This check occurs at start rather than plugin load because sibling plugins may activate concurrently. Custom non-model controllers can attach themselves without teaching the registry tool names.
 
 ## Model-facing control API
 
-`dsh-tool-jobs` registers three kind-independent tools with generic UI cards:
+`alego-tool-jobs` registers three kind-independent tools with generic UI cards:
 
 - `job_output(job_id, wait?, timeout_ms?)` reads output and always appends `[status: ...]`. Stream tasks return only output since the previous read; final-output tasks return their result after settlement. Reads are non-blocking unless `wait: true`, whose timeout is defaulted and capped by plugin config. A wait timeout reports the still-running status and does not stop the task.
 - `job_list()` returns caller-visible tasks as `<id> [<kind>] <status> — <label>`, or `(no background jobs)`.
@@ -81,11 +81,11 @@ Stream reads share one task-scoped consuming cursor because the owning model is 
 
 The system prompt tells the model to retain job ids, continue independent work instead of busy-polling or duplicating a running task, collect relevant tasks before its final answer, and kill work that no longer matters. Completion delivers a logged message to the exact owner's session. A busy owner is injected; an idle owner is woken, under the bounded policy the [idle-owner wake decision](../feature/2026-08-11-background-job-completion-wakes-an-idle-owner.md) owns.
 
-The runtime marks a terminal task `reported` when a read or wait delivers it, when a live waiter has claimed delivery at settlement, or when the model explicitly kills it. Reported tasks do not inject redundant completion notices. Listener failures are logged independently, do not stop later listeners, and are not awaited by waiters or teardown. When a snapshot carries `outputLimitBytes`, `dsh-tool-jobs` preserves UTF-8 boundaries and reuses an existing producer truncation marker rather than duplicating it. Reads reserve status suffixes and retain the output tail; completion notices reserve the stable `background job <id>` prefix and `job_output` instruction before truncating variable kind, label, status, detail, or the truncation marker itself, so the minimum PTY cap still identifies the task to collect. The job controller resolves the caller-visible producer cap in a prepended pre-execute listener before policy can deny or short-circuit dispatch, then applies it through the task definitions' last-mile `finalizeContent` callback so normalized tool errors, outer pipeline failures, and single-text policy results cannot escape the bound; deliberately structured multi-block policy results retain policy ownership of their shape and size.
+The runtime marks a terminal task `reported` when a read or wait delivers it, when a live waiter has claimed delivery at settlement, or when the model explicitly kills it. Reported tasks do not inject redundant completion notices. Listener failures are logged independently, do not stop later listeners, and are not awaited by waiters or teardown. When a snapshot carries `outputLimitBytes`, `alego-tool-jobs` preserves UTF-8 boundaries and reuses an existing producer truncation marker rather than duplicating it. Reads reserve status suffixes and retain the output tail; completion notices reserve the stable `background job <id>` prefix and `job_output` instruction before truncating variable kind, label, status, detail, or the truncation marker itself, so the minimum PTY cap still identifies the task to collect. The job controller resolves the caller-visible producer cap in a prepended pre-execute listener before policy can deny or short-circuit dispatch, then applies it through the task definitions' last-mile `finalizeContent` callback so normalized tool errors, outer pipeline failures, and single-text policy results cannot escape the bound; deliberately structured multi-block policy results retain policy ownership of their shape and size.
 
 ## Producer opt-in
 
-Each producer owns whether its schema exposes `run_in_background` through defaulted config. `dsh-tool-bash`, `dsh-tool-terminal`, and each `dsh-tool-subagent` instance use `enableRunInBackground`, defaulting to true. A disabled instance omits the parameter and also rejects a forced background argument at execution because the generic argument validator permits undeclared keys. Schema omission advertises the capability; the execution check enforces it.
+Each producer owns whether its schema exposes `run_in_background` through defaulted config. `alego-tool-bash`, `alego-tool-terminal`, and each `alego-tool-subagent` instance use `enableRunInBackground`, defaulting to true. A disabled instance omits the parameter and also rejects a forced background argument at execution because the generic argument validator permits undeclared keys. Schema omission advertises the capability; the execution check enforces it.
 
 `ctx.jobs` does not rewrite producer schemas. A bundle forwards configuration only for producers it owns. If a background call reaches `start()` without an attached controller, the runtime fence fails before execution.
 
@@ -93,9 +93,9 @@ Each producer owns whether its schema exposes `run_in_background` through defaul
 
 The bash seam exposes `resolve`, `run`, and `start`. `start(spec)` returns a `ShellProcess` with incremental reads, cancellation, exit facts, and a non-rejecting quiescence promise. The local executor retains live handles only so its own disposal can kill and join processes. Foreground callers continue to use `resolve` and `run` directly.
 
-For background bash, `dsh-tool-bash` registers the calling agent as owner. Its hooks map `kill()` to cancellation, `done` to a completed or killed `JobOutcome`, and `readOutput()` to the process's bounded incremental output plus spill and sandbox notices. Generic task tools own ids, status lines, listing, waiting, and completion notices.
+For background bash, `alego-tool-bash` registers the calling agent as owner. Its hooks map `kill()` to cancellation, `done` to a completed or killed `JobOutcome`, and `readOutput()` to the process's bounded incremental output plus spill and sandbox notices. Generic task tools own ids, status lines, listing, waiting, and completion notices.
 
-For background subagents, `dsh-tool-subagent` creates a task-owned `AbortController` and begins provider startup inside the task starter. Cancellation aborts the same signal before or after provider publication. `done` awaits both the child result and child disposal, maps completed output to a final result, maps abort to `killed`, and maps other stop reasons or infrastructure failures to `failed`. Intermediate child history remains in the child session and is not exposed through `readOutput()`.
+For background subagents, `alego-tool-subagent` creates a task-owned `AbortController` and begins provider startup inside the task starter. Cancellation aborts the same signal before or after provider publication. `done` awaits both the child result and child disposal, maps completed output to a final result, maps abort to `killed`, and maps other stop reasons or infrastructure failures to `failed`. Intermediate child history remains in the child session and is not exposed through `readOutput()`.
 
 ## Alternatives considered
 

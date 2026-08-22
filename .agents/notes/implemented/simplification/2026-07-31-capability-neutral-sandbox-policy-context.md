@@ -12,9 +12,9 @@ That inventory was neither needed to state the file policy nor authoritative for
 
 ## Decision
 
-`dsh-sandbox-policy` contributes one capability-neutral `sandbox:policy` context for every agent session. It derives the text only from `resolve({ session })`; there is no backend or tool family registration API, contribution map, ordering rule, or registration-driven prompt invalidation.
+`alego-sandbox-policy` contributes one capability-neutral `sandbox:policy` context for every agent session. It derives the text only from `resolve({ session })`; there is no backend or tool family registration API, contribution map, ordering rule, or registration-driven prompt invalidation.
 
-The text conditions capability claims on available operations that the DSH file sandbox enforces. Under `read-only`, it states that such operations cannot modify files in the standing mode and tells the model to try an available tool normally, then follow any denial and escalation guidance that tool returns. Under `workspace-write`, it states the canonical session workspace and the qualified temporary-area allowance. Under `danger-full-access`, it states that the DSH file sandbox does not restrict file modifications by available operations.
+The text conditions capability claims on available operations that the ALEGO file sandbox enforces. Under `read-only`, it states that such operations cannot modify files in the standing mode and tells the model to try an available tool normally, then follow any denial and escalation guidance that tool returns. Under `workspace-write`, it states the canonical session workspace and the qualified temporary-area allowance. Under `danger-full-access`, it states that the ALEGO file sandbox does not restrict file modifications by available operations.
 
 Tool schemas remain the authority for which operations are available. Tool results remain the authority for operation-specific denials and approved wider retries. Filesystem, one-shot bash, and terminal implementations continue to resolve and enforce the same per-call policy; only the redundant model-facing capability inventory is removed.
 

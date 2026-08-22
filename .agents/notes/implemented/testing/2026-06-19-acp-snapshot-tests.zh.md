@@ -63,7 +63,7 @@ Status: implemented
 
 ### 回放插件是独立的包
 
-`@deepseek-ai/dsh-llm-replay` 是一个支撑包，而非示例本地的胶水代码。它通过用从 JSONL 重建的流短路 `llm/stream` 来替换真实适配器，其包级放置使回放逻辑处于正常覆盖率门禁之下。
+`@alego/llm-replay` 是一个支撑包，而非示例本地的胶水代码。它通过用从 JSONL 重建的流短路 `llm/stream` 来替换真实适配器，其包级放置使回放逻辑处于正常覆盖率门禁之下。
 
 ### 两个子命令，回放在默认门禁中
 

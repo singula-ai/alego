@@ -6,13 +6,13 @@ English | [中文](2026-07-31-even-out-shipped-tool-rosters.zh.md)
 
 ## Problem
 
-The two shipped `dsh` surfaces offered different tools for no recorded reason. Session checkpoints, tool-result pruning, the goal tools, and Ralph were in `tui.cordis.yml`; `tool-todo` and, later, web search were in `web.cordis.yml`. Neither surface offered session search, a string-replacement editor, or a repeat-tool guard, though all three exist as packages and none is surface-specific.
+The two shipped `alego` surfaces offered different tools for no recorded reason. Session checkpoints, tool-result pruning, the goal tools, and Ralph were in `tui.cordis.yml`; `tool-todo` and, later, web search were in `web.cordis.yml`. Neither surface offered session search, a string-replacement editor, or a repeat-tool guard, though all three exist as packages and none is surface-specific.
 
 The result was a user-visible difference nobody had decided: the same model, asked the same thing, could set a goal on the terminal but not in the browser, and could search the web in the browser but not on the terminal.
 
 ## Decision
 
-The rows that are not surface-specific move into [`base.cordis.yml`](../../../../packages/bundle/base/cordis.patch.yml), and three more join them: `tool-session-query`, `tool-str-replace-editor`, and `repeat-tool-reminder`. Web search moves there too; its [deployment decision](2026-07-31-web-default-search.md) owns the security boundary while the shared base owns its surface-neutral mount. Both surfaces assemble the same roster, including fixed `glob` and `grep` members because `dsh-tool-fs-search` spawns the [packaged ripgrep binary](../architecture/2026-08-01-packaged-ripgrep-search.md). Two later decisions narrow that roster: the [session-search decision](2026-08-02-session-search-not-shipped-default.md) keeps `tool-session-query` opt-in, and the [single-editor decision](../simplification/2026-08-10-default-presets-single-editor.md) keeps `tool-str-replace-editor` out of the general-purpose presets while retaining it in `minimal`.
+The rows that are not surface-specific move into [`base.cordis.yml`](../../../../packages/bundle/base/cordis.patch.yml), and three more join them: `tool-session-query`, `tool-str-replace-editor`, and `repeat-tool-reminder`. Web search moves there too; its [deployment decision](2026-07-31-web-default-search.md) owns the security boundary while the shared base owns its surface-neutral mount. Both surfaces assemble the same roster, including fixed `glob` and `grep` members because `alego-tool-fs-search` spawns the [packaged ripgrep binary](../architecture/2026-08-01-packaged-ripgrep-search.md). Two later decisions narrow that roster: the [session-search decision](2026-08-02-session-search-not-shipped-default.md) keeps `tool-session-query` opt-in, and the [single-editor decision](../simplification/2026-08-10-default-presets-single-editor.md) keeps `tool-str-replace-editor` out of the general-purpose presets while retaining it in `minimal`.
 
 Two rows stay surface-specific. `tmux-context` is TUI-only because a browser surface has no terminal multiplexer to describe. `session-reference` is TUI-only because it drives the shared session-query index from the launcher's process-local path, and the browser sidebar reconciles that index on its own first search.
 
@@ -22,9 +22,9 @@ Two rows stay surface-specific. `tmux-context` is TUI-only because a browser sur
 
 Three capabilities stay out on the evidence their own packages record, and are listed here so "we forgot" and "we decided against" stay distinguishable.
 
-**`dsh-tool-cordis`** lets the model write JavaScript and mount it as a temporary plugin. Its README states the limit: "The sandbox is containment for honest code, not a security boundary — host-realm helpers on the sandbox global are reachable, so mount code can reach Node" ([Known limitations](../../../../packages/extensions/tool-cordis/README.md)). The `node:vm` realm lives inside the harness process while `dsh-sandbox-local` confines only the argv it spawns, so on the Web surface both the sandbox and the approval seam are bypassed rather than enforced.
+**`alego-tool-cordis`** lets the model write JavaScript and mount it as a temporary plugin. Its README states the limit: "The sandbox is containment for honest code, not a security boundary — host-realm helpers on the sandbox global are reachable, so mount code can reach Node" ([Known limitations](../../../../packages/extensions/tool-cordis/README.md)). The `node:vm` realm lives inside the harness process while `alego-sandbox-local` confines only the argv it spawns, so on the Web surface both the sandbox and the approval seam are bypassed rather than enforced.
 
-**`dsh-web-fetch-http`** stays unmounted and `dsh-tool-web` keeps `fetch: false`. SSRF protection is deferred in the implementation ([`policy.ts`](../../../../packages/web/web-fetch-http/src/policy.ts) validates protocol, credentials, and length only) and the package says so: "this provider is an SSRF primitive and **must not be enabled** in a deployment that can reach sensitive internal network targets" ([README](../../../../packages/web/web-fetch-http/README.md)). The model chooses the target, which includes the harness's own gateway on loopback, private ranges, and cloud metadata endpoints.
+**`alego-web-fetch-http`** stays unmounted and `alego-tool-web` keeps `fetch: false`. SSRF protection is deferred in the implementation ([`policy.ts`](../../../../packages/web/web-fetch-http/src/policy.ts) validates protocol, credentials, and length only) and the package says so: "this provider is an SSRF primitive and **must not be enabled** in a deployment that can reach sensitive internal network targets" ([README](../../../../packages/web/web-fetch-http/README.md)). The model chooses the target, which includes the harness's own gateway on loopback, private ranges, and cloud metadata endpoints.
 
 Withholding it narrows the surface without removing the reach: `bash` is mounted, so `curl` gets the same page, as a live run confirmed. What the absence buys is the removal of an argument-shaped request primitive that needs no shell — and with it the accidental path where a summarization request quietly reaches loopback. A deployment that must contain outbound traffic needs a network-level control.
 
@@ -32,9 +32,9 @@ Withholding it narrows the surface without removing the reach: `bash` is mounted
 
 ### MCP is a dependency, not a row
 
-`@deepseek-ai/dsh-mcp-client` becomes a runtime dependency of the CLI without a row in any shipped config. The plugin mounts exactly one server per instance and `command` is required, so a default would have to name a third-party server and spawn it as a child process on every launch — outside `ctx.shell`, and therefore outside the sandbox policy the Web surface composes.
+`@alego/mcp-client` becomes a runtime dependency of the CLI without a row in any shipped config. The plugin mounts exactly one server per instance and `command` is required, so a default would have to name a third-party server and spawn it as a child process on every launch — outside `ctx.shell`, and therefore outside the sandbox policy the Web surface composes.
 
-The layer that would make MCP a default is the one this repository does not have yet: a bridge that reads a user's server list and mounts one client per entry, the same shape [`dsh-hooks-claude-code`](../../../../packages/hooks/hooks-claude-code/README.md) already has for a Claude Code `hooks.json`. Shipping the dependency means an installed `dsh` can mount servers from `$DSH_HOME/config.yaml` today; the CLI README carries the YAML.
+The layer that would make MCP a default is the one this repository does not have yet: a bridge that reads a user's server list and mounts one client per entry, the same shape [`alego-hooks-claude-code`](../../../../packages/hooks/hooks-claude-code/README.md) already has for a Claude Code `hooks.json`. Shipping the dependency means an installed `alego` can mount servers from `$ALEGO_HOME/config.yaml` today; the CLI README carries the YAML.
 
 ## Testing
 
@@ -46,7 +46,7 @@ The same smoke also pins the TUI execution posture from the same artifact. Those
 
 [`apps/web/tests/shipped-composition.e2e.ts`](../../../../apps/web/tests/shipped-composition.e2e.ts) covers the Web surface in the built lane, asserting its catalog, that its access default is untouched, and that `workspace-write`'s writable roots include the temp directories — a trap that makes sandbox tests lie when the workspace sits under `/tmp` ([`roots.ts`](../../../../packages/sandbox/sandbox/src/roots.ts)).
 
-`glob` and `grep` are asserted as fixed members rather than a host-dependent pair: `dsh-tool-fs-search` spawns the packaged ripgrep binary and registers both tools unconditionally, so the pair is always present.
+`glob` and `grep` are asserted as fixed members rather than a host-dependent pair: `alego-tool-fs-search` spawns the packaged ripgrep binary and registers both tools unconditionally, so the pair is always present.
 
 Beyond the committed tests, both surfaces were driven against a real key from the built `apps/cli/lib/bin.js` under plain Node. Every mounted tool executed successfully, including `ralph` and `web_search`; the model never reached `cordis_*` or `mcp_*`, fell back to `grep` when asked for LSP navigation, and used a background `bash` task when asked for a persistent terminal.
 
@@ -64,6 +64,6 @@ Beyond the committed tests, both surfaces were driven against a real key from th
 
 The same model gets the same tools on both surfaces, and the difference that existed for no recorded reason is gone. The tests assert the twenty unconditional names exactly and pin `glob` and `grep` as fixed members on both sides, so a later change that alters only one surface fails a check instead of shipping quietly; the [session-search-not-shipped-default decision](2026-08-02-session-search-not-shipped-default.md) is exactly such a later change, and both tests moved with it.
 
-`apps/cli` gained five workspace dependencies: four the shipped tree mounted, plus `dsh-mcp-client`, which it does not mount and which exists so an installed `dsh` can. Four remain — the [session-search-not-shipped-default decision](2026-08-02-session-search-not-shipped-default.md) removed `@deepseek-ai/dsh-tool-session-query` along with its row.
+`apps/cli` gained five workspace dependencies: four the shipped tree mounted, plus `alego-mcp-client`, which it does not mount and which exists so an installed `alego` can. Four remain — the [session-search-not-shipped-default decision](2026-08-02-session-search-not-shipped-default.md) removed `@alego/tool-session-query` along with its row.
 
 Execution policy stays independent of the roster. The [shared workspace-write decision](2026-07-31-workspace-write-surface-default.md) owns both surfaces' sandboxed executors and default permission; changing that policy does not add or remove a tool.

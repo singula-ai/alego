@@ -15,7 +15,7 @@ Status: implemented
 - **`verify-translation-pairing` 加入 `doc-sync`。** 门禁（[scripts/verify-translation-pairing.ts](../../../../scripts/verify-translation-pairing.ts)）强制执行以下规则：每个已发现且未排除的源文档都有完整配对；每个现有配对都完整（三个文件齐全）且一致（两侧的 hash 均与记录匹配、中文侧和所有人工撰写的英文源都带语言切换行而清单内的生成英文源除外、结构签名一致）；被排除的生成文档、指令文档或本身即双语的文档不得配对。目标属于该活跃语料的相对文档链接使用与源文件 locale 相同的目标兄弟文件；结构签名则把 `.md` 与 `.zh.md` 兄弟文件规范化为同一个语义目标，并保留完全相同的 query/fragment 后缀；该细化规则由[双语文档链接本地化决策](2026-08-18-localized-bilingual-links.zh.md)负责。[scripts/translation-pairing.manifest.json](../../../../scripts/translation-pairing.manifest.json) 只包含显式排除项，因此任何要求都无法绕过发现流程而接受较弱的检查。只有当 `.zh.md` 围栏序列与其无后缀兄弟文件拥有顺序相同、正文按字节一致的同一组受跟踪围栏时，面向源码的代码门禁才会将其作为派生内容消费；不完整、顺序变更、重分类或已改动的序列仍会独立受检，因此由其所属的代码门禁或配对门禁报告不匹配。
 - **全语料统一要求。** 范围内的每篇文档从创建起就必须有完整配对；政策没有逐文件推进状态、日期分界或 README 专用类别。README 发现会覆盖 vendor 源码、依赖目录与被忽略的构建产物目录之外所有文件名不区分大小写匹配 README 的文件，包括今后新增的顶层目录。发布到文档站的配对使用 `pairedPages()`，由根 locale 投影 `.zh.md`，由 `/en/` 投影 `.md`；仅创建对侧文件并不会发布它。
 - **配对记录是元数据，而不是 Cordis Loader 配置。** Cordis 配置发现会接受实际的 `.cordis.yml` 和 `.cordis.yaml` 文件，同时排除 `*.i18n.yaml`，即使文档名中包含 `cordis` 也不例外。这样既能继续校验可执行的 Loader 配置项，又不会把翻译 hash 当作配置来解析。
-- **翻译是 agent 的工作，由人评审。** 常规改动采用由[轻量翻译决策](2026-08-08-lightweight-routine-documentation-translation.zh.md)确立的直接单遍路径。[扩展翻译 skill（技能）](../../../skills/dsh-translate-docs/SKILL.md)保留委派翻译和其他较重机制，供用户显式调用；两条路径均以文档契约为真源。
+- **翻译是 agent 的工作，由人评审。** 常规改动采用由[轻量翻译决策](2026-08-08-lightweight-routine-documentation-translation.zh.md)确立的直接单遍路径。[扩展翻译 skill（技能）](../../../skills/alego-translate-docs/SKILL.md)保留委派翻译和其他较重机制，供用户显式调用；两条路径均以文档契约为真源。
 
 ## 验证
 

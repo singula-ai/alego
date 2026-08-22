@@ -1,7 +1,7 @@
 /**
  * SQLite storage primitives: transactional append-batch packing, physical
  * reads, schema validation, revisions, repair, and lifecycle closure.
- * @module @deepseek-ai/dsh-session-persistence-sqlite/store
+ * @module @alego/session-persistence-sqlite/store
  */
 
 import { randomUUID } from 'node:crypto'
@@ -13,7 +13,7 @@ import {
   type SessionEvent,
   type SessionHeader,
   type SessionId,
-} from '@deepseek-ai/dsh-session'
+} from '@alego/session'
 import {
   SessionPersistenceRevision,
   type PersistenceBackend,
@@ -21,7 +21,7 @@ import {
   type SessionPersistenceSnapshot,
   type StoredPrefix,
   type StoredSuffix,
-} from '@deepseek-ai/dsh-session-persistence'
+} from '@alego/session-persistence'
 import {
   MAX_PACKED_ROW_MEMBERS,
   packChunkRuns,

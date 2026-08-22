@@ -4,12 +4,12 @@
  * `unit_globals` table. Each primitive is a single statement, so atomicity
  * comes from SQLite itself — no explicit transactions, and no write queue
  * (write ordering is the caller's responsibility per the KV contract).
- * @module @deepseek-ai/dsh-storage-sqlite/unit
+ * @module @alego/storage-sqlite/unit
  */
 
 import type { DatabaseSync, StatementSync } from 'node:sqlite'
-import { StorageError } from '@deepseek-ai/dsh-storage'
-import type { KvUnit, KvUnitDescriptor } from '@deepseek-ai/dsh-storage'
+import { StorageError } from '@alego/storage'
+import type { KvUnit, KvUnitDescriptor } from '@alego/storage'
 import { recordTableName } from './schema.ts'
 
 /** Prepared statements for one declared table. */

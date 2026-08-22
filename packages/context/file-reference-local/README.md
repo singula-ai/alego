@@ -1,4 +1,4 @@
-# `@deepseek-ai/dsh-file-reference-local`
+# `@alego/file-reference-local`
 
 English | [中文](README.zh.md)
 

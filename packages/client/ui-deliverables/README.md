@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-client-ui-deliverables
+# @alego/client-ui-deliverables
 
 English | [中文](README.zh.md)
 

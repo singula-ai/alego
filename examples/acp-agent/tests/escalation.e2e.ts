@@ -12,14 +12,14 @@ import {
   launchAcpTestAgent,
   type AgentUnderTest,
   type LaunchedAcpTestAgent,
-} from '@deepseek-ai/dsh-acp-snapshot'
-import { bwrapProfileArgs } from '@deepseek-ai/dsh-sandbox-local/src/profiles.ts'
+} from '@alego/acp-snapshot'
+import { bwrapProfileArgs } from '@alego/sandbox-local/src/profiles.ts'
 import { cleanupAcpExampleTest } from './cleanup.ts'
 
 /**
  * The default ACP composition (`cordis.yml`) end to end.
  *
- * Keyless smoke: boot the REAL `cordis.yml` through the `dsh-acp-agent` bin as
+ * Keyless smoke: boot the REAL `cordis.yml` through the `alego-acp-agent` bin as
  * an ACP subprocess and drive initialize + session/new — the real-Loader-path
  * guard (postmortem 0001) for THIS tree's exports, including the
  * sandbox executor AND the approval service. No prompt is sent, so neither the
@@ -70,7 +70,7 @@ function launchExampleAcpAgent(
     // A dummy key lets the adapter boot keylessly; live tests carry the real key.
     env: {
       DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY ?? 'sk-dummy-for-boot',
-      DSH_PERMISSION_MODE: sandboxMode,
+      ALEGO_PERMISSION_MODE: sandboxMode,
     },
     requestPermission(params) {
       permissionRequests.push(params)

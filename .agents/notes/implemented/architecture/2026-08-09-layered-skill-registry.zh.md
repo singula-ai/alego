@@ -8,7 +8,7 @@ Status: implemented
 
 agent-preset stack 曾把整个 skill 能力——注册表、本地提供方和 `skill` 工具——搬进每个 preset 的 `isolate` realm，理由是"agent 拥有哪些 skill"属于 agent 平面的选择。这一框架混淆了两个不同的问题：*部署*供给哪些 skill，与*agent*是否消费它们。repository 插件的 prepared wrapper 声明 `inject: ['skills']` 并把它的 skill 根目录挂载为宿主平面的提供方；web 与 headless profile 不再组合宿主注册表后，该 wrapper 永远等待，repository-plugin e2e 因而挂死，当时通过删掉 fixture 的 skill 根目录绕过。按 preset 的 realm 注册表还让网关的 skill 列表依赖存活 agent——冷会话的 `/` 弹窗根本没有注册表可读。
 
-工具注册表从未有过这个问题：它是一个宿主单例，基于 `dsh-scope` 按 scope 分层，因此部署级工具（MCP 服务器、插件 entry）注册进全局层，preset 的行注册进该 preset 的层。
+工具注册表从未有过这个问题：它是一个宿主单例，基于 `alego-scope` 按 scope 分层，因此部署级工具（MCP 服务器、插件 entry）注册进全局层，preset 的行注册进该 preset 的层。
 
 ## 决定
 

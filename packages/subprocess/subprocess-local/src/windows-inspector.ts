@@ -6,12 +6,12 @@
  * The koffi bindings load lazily so
  * non-Windows processes never touch Win32 libraries; all decision logic takes
  * an injectable internals boundary so suites can pin it on any host.
- * @module dsh-subprocess-local/windows-inspector
+ * @module alego-subprocess-local/windows-inspector
  */
 
 import { spawnSync } from 'node:child_process'
 import koffi from 'koffi'
-import type { SubprocessTerminalSignal } from '@deepseek-ai/dsh-subprocess'
+import type { SubprocessTerminalSignal } from '@alego/subprocess'
 import type { ProcessIdentity, ProcessInspector } from './process-inspector.ts'
 
 /** One Toolhelp32 process-table row. */

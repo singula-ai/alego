@@ -1,6 +1,6 @@
-/** DeepSeek Files API identifiers. @module dsh-llm-deepseek/file-id */
+/** DeepSeek Files API identifiers. @module alego-llm-deepseek/file-id */
 
-import type { Branded } from '@deepseek-ai/dsh-brand'
+import type { Branded } from '@alego/brand'
 
 /** Opaque identifier returned by the DeepSeek Files API. */
 export type DeepSeekFileId = Branded<'DeepSeekFileId'>

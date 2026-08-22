@@ -15,7 +15,7 @@ describe('Windows ACL temp path boundary', () => {
   })
 
   function scratch(): string {
-    const dir = mkdtempSync(join(tmpdir(), 'dsh-acl-boundary-'))
+    const dir = mkdtempSync(join(tmpdir(), 'alego-acl-boundary-'))
     scratchDirs.push(dir)
     return dir
   }

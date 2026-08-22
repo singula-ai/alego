@@ -1,9 +1,9 @@
 import { join } from 'node:path'
-import type { ConfinedArgv, SandboxPolicy } from '@deepseek-ai/dsh-sandbox'
-import { SandboxProvider } from '@deepseek-ai/dsh-sandbox'
+import type { ConfinedArgv, SandboxPolicy } from '@alego/sandbox'
+import { SandboxProvider } from '@alego/sandbox'
 
 const NOTICE = 'landlock-run: partial enforcement (older Landlock ABI)'
-const MISSING_RUNNER_ENV = 'DSH_SNAPSHOT_MISSING_SANDBOX_RUNNER'
+const MISSING_RUNNER_ENV = 'ALEGO_SNAPSHOT_MISSING_SANDBOX_RUNNER'
 
 /**
  * Snapshot-only provider for deterministic runner classification. Its default
@@ -15,7 +15,7 @@ export default class PartialLandlockSandboxProvider extends SandboxProvider {
   confine(argv: readonly string[], policy: SandboxPolicy): ConfinedArgv {
     if (process.env[MISSING_RUNNER_ENV] === '1') {
       return {
-        argv: [join(policy.workspaceRoot, '.dsh-missing-sandbox-runner'), ...argv],
+        argv: [join(policy.workspaceRoot, '.alego-missing-sandbox-runner'), ...argv],
         enforcement: 'full',
         denialSignatures: ['permission denied'],
         runnerFailureRules: [{ fatalSignatures: ['snapshot-runner: '] }],

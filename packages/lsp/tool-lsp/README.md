@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-tool-lsp
+# @alego/tool-lsp
 
 English | [中文](README.zh.md)
 
@@ -18,7 +18,7 @@ The tool requires the workspace root from the session `header.cwd`, with no fall
 |---|---|---|
 | `maxLocations` | `100` | Largest number of rendered locations before an omission marker. |
 | `maxResultChars` | `16000` | Largest complete rendered result, including truncation metadata. |
-| `timeoutMs` | `60000` | Tool-call timeout budget, enforced by `dsh-tool-call-timeout-policy`; covers the complete queued open/query/close lifecycle and is not model-configurable. |
+| `timeoutMs` | `60000` | Tool-call timeout budget, enforced by `alego-tool-call-timeout-policy`; covers the complete queued open/query/close lifecycle and is not model-configurable. |
 
 ## Model Experience
 
@@ -46,7 +46,7 @@ Prefix-stable while the plugin scope and guidance text are unchanged; activation
 
 #### What the model sees
 
-The model sees the generated [`lsp` schema](../../../docs/tool-catalog.md#deepseek-aidsh-tool-lsp).
+The model sees the generated [`lsp` schema](../../../docs/tool-catalog.md#alegotool-lsp).
 
 #### Token effect
 

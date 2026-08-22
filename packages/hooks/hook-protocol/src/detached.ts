@@ -2,7 +2,7 @@
  * Quiescence tracking for emit-shaped hook runs that no extension point awaits. Bridges
  * track the run plus its continuation, pass the tracker signal into execution,
  * and drain on disposal so no process or late callback outlives the fiber.
- * @module @deepseek-ai/dsh-hook-protocol/detached
+ * @module @alego/hook-protocol/detached
  */
 
 /** In-flight registry for one bridge's detached hook runs; see the module doc for the wiring contract. */

@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/archived/feature/2026-07-21-tui-skill-slash-command.md
-2026-07-21-tui-skill-slash-command.md: e151f92d0d9eb1486bcf21498fb73ba156edd861
-2026-07-21-tui-skill-slash-command.zh.md: ac1c4da948dcbd6b01bdb6e62d66d5f704c0b132
+2026-07-21-tui-skill-slash-command.md: e97670126648f6582be0c1bc034e489a54d687ef
+2026-07-21-tui-skill-slash-command.zh.md: 44d437cbe2c310f772dbf3957ee584d56e6552d3

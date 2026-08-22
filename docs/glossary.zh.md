@@ -2,11 +2,11 @@
 
 [English](glossary.md) | 中文
 
-DeepSeek Harness 的领域词汇为每个概念规定一个规范术语。各术语通过标准 Markdown 锚点链接到相应条目；实现细节留在各包的 README 与 Agent Note 中。
+Alego 的领域词汇为每个概念规定一个规范术语。各术语通过标准 Markdown 锚点链接到相应条目；实现细节留在各包的 README 与 Agent Note 中。
 
 ## capability-seam
 
-- **seam**：一种包含三种角色的*可替换能力*：**Service Definition**（拥有自身 `ctx.<key>` 和词汇类型的 Cordis `Service`——可以是 `ShellExecutor` 这样的抽象类，也可以是 `WebRuntime` 这样的具体注册表，绝不是 TypeScript `interface`）、一个或多个 **Service Provider**，以及一个或多个注入该服务的 **Consumer**。`packages/shell` 是规范范例：`dsh-shell`（Service Definition）、`dsh-bash-local` / `dsh-bash-sandbox`（提供方），以及 `dsh-tool-bash`（Consumer）。角色需要独立演进时通常位于不同包，但属于同一关注点时，一个包也可以承担多个角色（`dsh-llm` 同时承担 Service Definition 和 Consumer）。seam 是完整能力，绝不是其中一个角色；该术语仅保留此义，能力成员应按其角色、类、服务、约定或扩展点命名。
+- **seam**：一种包含三种角色的*可替换能力*：**Service Definition**（拥有自身 `ctx.<key>` 和词汇类型的 Cordis `Service`——可以是 `ShellExecutor` 这样的抽象类，也可以是 `WebRuntime` 这样的具体注册表，绝不是 TypeScript `interface`）、一个或多个 **Service Provider**，以及一个或多个注入该服务的 **Consumer**。`packages/shell` 是规范范例：`alego-shell`（Service Definition）、`alego-bash-local` / `alego-bash-sandbox`（提供方），以及 `alego-tool-bash`（Consumer）。角色需要独立演进时通常位于不同包，但属于同一关注点时，一个包也可以承担多个角色（`alego-llm` 同时承担 Service Definition 和 Consumer）。seam 是完整能力，绝不是其中一个角色；该术语仅保留此义，能力成员应按其角色、类、服务、约定或扩展点命名。
 
 ## agent-scope
 
@@ -30,7 +30,7 @@ DeepSeek Harness 的领域词汇为每个概念规定一个规范术语。各术
 
 - **人类命令**：以斜杠开头的指令，由面向人类的适配器通过 `ctx.commands` 解释并执行，不会成为模型消息。它既不同于面向模型的工具，也不同于通过 `ctx.shell` 执行 shell 命令。
 - **命令平面**：由 UI 适配器和命令插件负责的发现、解析、分发、取消与结果渲染机制。除非处理器另行改变持久领域，否则命令输出属于 UI 状态。
-- **目标命令**：`/goal` 是由 `dsh-command-goal` 提供的人类命令；它直接观察或更改当前目标，而目标领域拥有每条持久且模型可见的记录。
+- **目标命令**：`/goal` 是由 `alego-command-goal` 提供的人类命令；它直接观察或更改当前目标，而目标领域拥有每条持久且模型可见的记录。
 
 ## 循环层级
 

@@ -5,7 +5,7 @@
  * workspace package's tests import it by relative path (it lives under
  * `tests/`, never `src/`, so it stays out of the published surface).
  *
- * Fidelity to the backend contract (`dsh-storage` `src/backend.ts`): version
+ * Fidelity to the backend contract (`alego-storage` `src/backend.ts`): version
  * stamping and `version-mismatch` on reopen, `malformed` never (memory cannot
  * corrupt), per-call atomicity trivially, `closed` after close, delete
  * idempotence. Media survive across backends through the shared `media` map
@@ -15,8 +15,8 @@
  * @module
  */
 
-import { StorageError } from '@deepseek-ai/dsh-storage'
-import type { KvFacet, KvUnit, KvUnitDescriptor, StorageBackend } from '@deepseek-ai/dsh-storage'
+import { StorageError } from '@alego/storage'
+import type { KvFacet, KvUnit, KvUnitDescriptor, StorageBackend } from '@alego/storage'
 
 /** One unit's medium: tables of records plus the global slot (`null` = never written). */
 export interface MemoryMedium {

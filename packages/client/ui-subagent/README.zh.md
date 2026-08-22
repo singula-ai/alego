@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-client-ui-subagent
+# @alego/client-ui-subagent
 
 [English](README.md) | 中文
 

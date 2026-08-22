@@ -12,13 +12,13 @@ Status: implemented
 
 ## 决策
 
-[scripts/run-gates.ts](../../../../scripts/run-gates.ts) 拥有 CI、`doc-sync` 和按需启用的 `check:all` 命令所使用的有界调度器。它将具名模式展开为叶子门禁，在启动子进程前拒绝空的或有歧义的依赖图，遵守产物依赖，默认缓冲可归因的输出，分别报告进程退出与信号终止结果，并在调用方需要不同 worker 上限时接受 `DSH_GATE_CONCURRENCY`。`needs` 边要求前置门禁通过，否则跳过依赖方；`after` 边只等待前置门禁以任意结果结算，随后仍允许后继门禁运行。标记为 `allowFailure` 的门禁仍会报告结果，但不会使聚合流程失败。
+[scripts/run-gates.ts](../../../../scripts/run-gates.ts) 拥有 CI、`doc-sync` 和按需启用的 `check:all` 命令所使用的有界调度器。它将具名模式展开为叶子门禁，在启动子进程前拒绝空的或有歧义的依赖图，遵守产物依赖，默认缓冲可归因的输出，分别报告进程退出与信号终止结果，并在调用方需要不同 worker 上限时接受 `ALEGO_GATE_CONCURRENCY`。`needs` 边要求前置门禁通过，否则跳过依赖方；`after` 边只等待前置门禁以任意结果结算，随后仍允许后继门禁运行。标记为 `allowFailure` 的门禁仍会报告结果，但不会使聚合流程失败。
 
 自身子进程能够保留有效归因的长时间协调门禁可以选择 `streamOutput`。其 stdout 与 stderr 会立即到达父进程，不会被缓冲，也不会在结束时重复打印。分区覆盖率与并行 Web 快照使用该模式，使运行中途的失败无需等待兄弟工作结束就能显示。
 
 Node 24 消费方任务采用单个包含 10 道门禁的模式，而非由 shell 管理的进程池。其默认 worker 数等于门禁数，拉取请求 CI 则把活动门禁限制为 8 道，并由依赖关系控制就绪状态。构建与源码兼容性立即启动；构建完成后，`publint` 与已构建包不变式验证并行运行。lint、两套快照、文档类型检查、NodeNext 类型检查和 built-bin 冒烟测试等待不变式验证器清除临时包视图。
 
-[scripts/publint-all.ts](../../../../scripts/publint-all.ts) 从 `packages/<group>/<pkg>` 发现包，并以根据 `availableParallelism()` 确定大小的 worker 池运行 `publint`。`DSH_PUBLINT_CONCURRENCY` 可以针对资源配置不同的本地机器和 CI runner 限制或提高 worker 数量。结果按包缓冲，并按确定性的包顺序打印，因此并行执行不会打乱各包的日志块。
+[scripts/publint-all.ts](../../../../scripts/publint-all.ts) 从 `packages/<group>/<pkg>` 发现包，并以根据 `availableParallelism()` 确定大小的 worker 池运行 `publint`。`ALEGO_PUBLINT_CONCURRENCY` 可以针对资源配置不同的本地机器和 CI runner 限制或提高 worker 数量。结果按包缓冲，并按确定性的包顺序打印，因此并行执行不会打乱各包的日志块。
 
 各门禁的包脚本仍是临时本地运行所用的命令入口。`hygiene` 调用包含相同十三道检查且限制为本地四个 worker 的调度器模式，而 `doc-sync` 的成员列表由调度器管理（[通过门禁调度器运行 doc-sync](../../archived/process/2026-07-21-doc-sync-through-gate-scheduler.md)）。
 

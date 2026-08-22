@@ -12,7 +12,7 @@ Turning the capability off by unmounting the plugin row is not viable. `ApiProxy
 
 ## Decision
 
-Content search is enforced off at the provider. `openAt: 'never'` is a third opening phase on `@deepseek-ai/dsh-session-query-sqlite`: `searchSessions` and `searchEvents` fail with the typed `SESSION_QUERY_SEARCH_DISABLED` code before any request normalization, node:sqlite is never imported or opened, and no source observation or reconciliation runs. Every inherited `ctx.sessionQuery` exact read, filter, and trace keeps working, so session export, fork Workspace inheritance, and title reads are unaffected.
+Content search is enforced off at the provider. `openAt: 'never'` is a third opening phase on `@alego/session-query-sqlite`: `searchSessions` and `searchEvents` fail with the typed `SESSION_QUERY_SEARCH_DISABLED` code before any request normalization, node:sqlite is never imported or opened, and no source observation or reconciliation runs. Every inherited `ctx.sessionQuery` exact read, filter, and trace keeps working, so session export, fork Workspace inheritance, and title reads are unaffected.
 
 `SESSION_QUERY_SEARCH_DISABLED` joins the closed `SessionQueryErrorCode` taxonomy, and the `tool-session-query` service boundary maps it to the model-safe message `session search is disabled in this deployment`.
 

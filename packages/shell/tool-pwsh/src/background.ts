@@ -1,13 +1,13 @@
 /**
  * Generic-task adaptation for background pwsh process handles — the shell-agnostic
- * twin of `dsh-tool-bash`'s background adaptation.
+ * twin of `alego-tool-bash`'s background adaptation.
  *
- * @module @deepseek-ai/dsh-tool-pwsh/background
+ * @module @alego/tool-pwsh/background
  */
 
-import type { ShellProcess } from '@deepseek-ai/dsh-shell'
+import type { ShellProcess } from '@alego/shell'
 
-/* jscpd:ignore-start -- deliberate twin of dsh-tool-bash/background.ts (Agent Note). */
+/* jscpd:ignore-start -- deliberate twin of alego-tool-bash/background.ts (Agent Note). */
 
 /**
  * Map a settled background process onto the generic task-outcome vocabulary:

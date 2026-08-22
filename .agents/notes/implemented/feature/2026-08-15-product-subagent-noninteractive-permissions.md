@@ -57,9 +57,9 @@ The foreground consumer presents the stop-reason headline, then the optional dia
 | Profile permission choice | Each product Provider Config | Invalid, interactive, or unknown values fail during configuration. |
 | Permission and sandbox semantics | Claude Code Agent SDK or Codex app-server | Each Provider passes one native mode and does not mirror product policy. |
 | Interaction decisions and safe diagnostic | One product run | Concurrent runs keep independent mode, protocol, and diagnostic state. |
-| Diagnostic type and byte limit | `dsh-subagent` | Consumers receive a bounded optional field separate from assistant output. |
-| Foreground and Job presentation | `dsh-tool-subagent` and the generic Job runtime | Scheduling choice does not change the underlying failure fact. |
-| Process cancellation and quiescence | Product Provider and `dsh-subprocess` | Result settlement still precedes idempotent whole-tree disposal. |
+| Diagnostic type and byte limit | `alego-subagent` | Consumers receive a bounded optional field separate from assistant output. |
+| Foreground and Job presentation | `alego-tool-subagent` and the generic Job runtime | Scheduling choice does not change the underlying failure fact. |
+| Process cancellation and quiescence | Product Provider and `alego-subprocess` | Result settlement still precedes idempotent whole-tree disposal. |
 
 ## Verification
 

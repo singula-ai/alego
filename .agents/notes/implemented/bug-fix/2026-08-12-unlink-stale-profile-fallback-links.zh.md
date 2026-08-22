@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-`healProfilesModuleFallback` 在安装位置迁移时会把 `$DSH_HOME/profiles/node_modules` 中的条目重新指向新目标，而 Windows 主机上这些条目是 junction。`ensureSymlink` 原先用 `rmSync(link)` 删除过期条目，但 Node 在删除时把 junction 当作目录处理：不带 `recursive` 的 `rmSync` 会抛 `ERR_FS_EISDIR`，于是从迁移后的安装或第二个 worktree 启动时，每次都会在应用引导前崩溃。`replaces a wrong symlink` 单元测试在 Windows 上正好在该删除调用处复现了这一崩溃。
+`healProfilesModuleFallback` 在安装位置迁移时会把 `$ALEGO_HOME/profiles/node_modules` 中的条目重新指向新目标，而 Windows 主机上这些条目是 junction。`ensureSymlink` 原先用 `rmSync(link)` 删除过期条目，但 Node 在删除时把 junction 当作目录处理：不带 `recursive` 的 `rmSync` 会抛 `ERR_FS_EISDIR`，于是从迁移后的安装或第二个 worktree 启动时，每次都会在应用引导前崩溃。`replaces a wrong symlink` 单元测试在 Windows 上正好在该删除调用处复现了这一崩溃。
 
 ## 决策
 

@@ -3,15 +3,15 @@
  * deterministic ordering and labels, quoted-path suppression, pick projections, codec
  * round-trip, and registration lifecycle.
  */
-import { Context, Service } from '@deepseek-ai/cordis'
+import { Context, Service } from '@alego/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import { LocaleRuntime } from '@deepseek-ai/dsh-client-locale/client'
-import type { SessionId } from '@deepseek-ai/dsh-client-runtime/client'
+import { LocaleRuntime } from '@alego/client-locale/client'
+import type { SessionId } from '@alego/client-runtime/client'
 import type {
   CandidateRequest, ClientSessionContext, InputTriggerCandidate, InputTriggerSource,
-} from '@deepseek-ai/dsh-client-ui-input-trigger/client'
-import type { FileReferenceCandidate } from '@deepseek-ai/dsh-file-reference/types'
-import type { SessionReferenceMentionCandidate } from '@deepseek-ai/dsh-session-reference/types'
+} from '@alego/client-ui-input-trigger/client'
+import type { FileReferenceCandidate } from '@alego/file-reference/types'
+import type { SessionReferenceMentionCandidate } from '@alego/session-reference/types'
 import { apply, inject } from '../src/client/index.ts'
 import { apply as nodeApply } from '../src/index.ts'
 
@@ -55,7 +55,7 @@ async function bench(
       label: 'Research',
       cwd: '/project',
       createdAt: 1_700_000_000_000,
-      mention: '@[Research](dsh-session:InNvdXJjZSI)',
+      mention: '@[Research](alego-session:InNvdXJjZSI)',
     }],
   })),
 ): Promise<{ ctx: Context; fiber: ReturnType<Context['plugin']>; source: InputTriggerSource }> {
@@ -154,7 +154,7 @@ describe('candidates', () => {
             label: 'Research',
             cwd: '/project',
             createdAt: 1_700_000_000_000,
-            mention: '@[Research](dsh-session:InNvdXJjZSI)',
+            mention: '@[Research](alego-session:InNvdXJjZSI)',
           }],
         })
       }
@@ -198,7 +198,7 @@ describe('candidates', () => {
         label: 'Research',
         cwd: '/project',
         createdAt: 0,
-        mention: '@[Research](dsh-session:InNvdXJjZSI)',
+        mention: '@[Research](alego-session:InNvdXJjZSI)',
       }],
     }))
     const { source } = await bench(files, sessions)
@@ -262,7 +262,7 @@ describe('candidates', () => {
         sessionId: sid('same'),
         label: 'same',
         createdAt: 0,
-        mention: '@[same](dsh-session:InNhbWUi)',
+        mention: '@[same](alego-session:InNhbWUi)',
       }],
     }))
     const { source } = await bench(files, sessions)
@@ -305,7 +305,7 @@ describe('pick and codec', () => {
     const { source } = await bench()
     const candidates = await source.candidates(session, request(''))
     const candidate = candidates.find(item => item.name === 'Session · Research')!
-    const mention = '@[Research](dsh-session:InNvdXJjZSI)'
+    const mention = '@[Research](alego-session:InNvdXJjZSI)'
     expect(pick(source, candidate)).toEqual({
       insert: {
         source: 'reference',

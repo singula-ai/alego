@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write
-2026-07-22-installer-in-repo-skip-clone.md: 607ce3baf842d437b64050a5ef17f3c7e4cffba5
-2026-07-22-installer-in-repo-skip-clone.zh.md: 17260427d514b5fd1c87c1d7faae5b1c8c1d9b0b
+2026-07-22-installer-in-repo-skip-clone.md: 8ea67985d9688f7a9fbff6042bbe69df6754fc8e
+2026-07-22-installer-in-repo-skip-clone.zh.md: 02db531ebd4b7cbcb62957ffcce2a5958f5fba46

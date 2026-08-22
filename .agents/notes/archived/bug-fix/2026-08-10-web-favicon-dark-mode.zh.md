@@ -13,7 +13,7 @@ Archived: 2026-08-10
 
 favicon 保持单一文件，并通过浏览器自身的配色方案信号自适应：`favicon.svg` 内嵌 `@media (prefers-color-scheme: dark) { path { fill: #fff } }`，在暗色方案下把图标切换为白色，浅色方案保持黑色。`index.html` 与 `manifest.webmanifest` 同时声明 32×32 PNG 兜底（`favicon-32x32.png`，DeepSeek 品牌蓝 `#4D6BFE`），Safari 26 之前的版本会渲染该 PNG，且它在浅色与深色标签栏上都清晰可见；这是对 [Web 安装 manifest 决策](../feature/2026-08-06-web-install-manifest.md) 的扩展。
 
-主题信号取操作系统/浏览器方案，而不是 GUI 应用内 `dsh.theme` 开关：favicon 位于浏览器 chrome 中，其背景跟随浏览器方案，因此 `prefers-color-scheme` 是正确语义，无需任何 JavaScript。已知的浏览器怪癖——Chromium 在切换方案后可能要到刷新页面才重绘标签图标，Safari 26 之前的版本忽略 SVG 变体——均被接受，旧版 Safari 场景由 PNG 兜底覆盖。
+主题信号取操作系统/浏览器方案，而不是 GUI 应用内 `alego.theme` 开关：favicon 位于浏览器 chrome 中，其背景跟随浏览器方案，因此 `prefers-color-scheme` 是正确语义，无需任何 JavaScript。已知的浏览器怪癖——Chromium 在切换方案后可能要到刷新页面才重绘标签图标，Safari 26 之前的版本忽略 SVG 变体——均被接受，旧版 Safari 场景由 PNG 兜底覆盖。
 
 ## 曾考虑的替代方案
 

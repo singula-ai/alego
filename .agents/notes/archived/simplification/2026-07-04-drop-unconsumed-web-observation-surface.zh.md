@@ -10,7 +10,7 @@ Archived: 2026-07-26
 `WebService` 暴露了一组没有任何生产代码观测的观测接口：
 
 - **`web/providers-change`**（`packages/web/web/src/index.ts`）在每次提供方注册和 dispose（资源释放）时声明并发出，且每个注册 effect 的回滚 yield 被刻意排在 emit 之前，唯一目的是让抛出异常的 change listener 能回退注册。在该包自身的两个单元测试之外没有任何 listener（其中一个测试的存在仅仅是为了固定那个回滚顺序）。
-- **`searchStatus()` / `fetchStatus()` 与 `WebCapabilityStatus` 联合类型**（同一包）没有生产调用方：`dsh-tool-web` 直接通过 `ctx.web.search()`/`fetch()` 执行，并把不可用性呈现为 seam 在执行时抛出的结构化 `WebError` code（`packages/web/tool-web/src/search.ts`、`packages/web/tool-web/src/fetch.ts`）；唯一的 status 调用方是 web 包自己的测试。`packages/web/tool-web/README.md` 和 [architecture.md](../../../../docs/architecture.md) 中的正文声称工具“只读取聚合的 `searchStatus()`/`fetchStatus()`”——这种漂移之所以存续，只是因为没有机制对照调用位置检查正文。
+- **`searchStatus()` / `fetchStatus()` 与 `WebCapabilityStatus` 联合类型**（同一包）没有生产调用方：`alego-tool-web` 直接通过 `ctx.web.search()`/`fetch()` 执行，并把不可用性呈现为 seam 在执行时抛出的结构化 `WebError` code（`packages/web/tool-web/src/search.ts`、`packages/web/tool-web/src/fetch.ts`）；唯一的 status 调用方是 web 包自己的测试。`packages/web/tool-web/README.md` 和 [architecture.md](../../../../docs/architecture.md) 中的正文声称工具“只读取聚合的 `searchStatus()`/`fetchStatus()`”——这种漂移之所以存续，只是因为没有机制对照调用位置检查正文。
 
 seam 自身的设计使这两个接口天然没有消费方：工具注册跟随产品 ENABLEMENT 而非提供方可用性（`packages/web/tool-web/src/index.ts`），提供方选择在执行时解析且从不缓存——因此没有需要失效的缓存、没有需要重算的注册集合、也没有调用方需要一个有别于「执行并路由结构化错误」的可用性探测。HMR（热模块替换）清理由 effect disposer 自身承载。
 

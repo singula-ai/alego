@@ -10,7 +10,7 @@ The `standard`, `code`, and `cordis` presets exposed both the `read`/`write`/`ed
 
 ## Decision
 
-The `standard`, `code`, and `cordis` preset configurations mount `dsh-tool-fs` and `dsh-tool-fs-search`, but do not mount `dsh-tool-str-replace-editor`. Code Mode therefore omits `str_replace_editor` from both its registry and generated SDK. The `minimal` preset continues to mount `dsh-tool-str-replace-editor`, and deployments or user-authored presets may still mount the plugin explicitly.
+The `standard`, `code`, and `cordis` preset configurations mount `alego-tool-fs` and `alego-tool-fs-search`, but do not mount `alego-tool-str-replace-editor`. Code Mode therefore omits `str_replace_editor` from both its registry and generated SDK. The `minimal` preset continues to mount `alego-tool-str-replace-editor`, and deployments or user-authored presets may still mount the plugin explicitly.
 
 This decision narrows the preset roster rather than removing the tool package or its Python runtime support. The earlier [shared-roster decision](../feature/2026-07-31-even-out-shipped-tool-rosters.md) continues to own why surface-neutral tools live in preset composition; this note owns the editor exception.
 

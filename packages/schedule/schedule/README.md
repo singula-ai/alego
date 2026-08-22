@@ -1,14 +1,14 @@
-# @deepseek-ai/dsh-schedule
+# @alego/schedule
 
 English | [中文](README.zh.md)
 
-`dsh-schedule` gives future live root Agents three Session-scoped tools for durable reminders. Version 1 accepts positive safe-integer `after_seconds` delays, explicit absolute `at` targets, and fixed-rate `every_seconds` intervals of at least five minutes. The Session event log owns reminder state; timers, tool values, and model follow-ups are disposable projections of that log.
+`alego-schedule` gives future live root Agents three Session-scoped tools for durable reminders. Version 1 accepts positive safe-integer `after_seconds` delays, explicit absolute `at` targets, and fixed-rate `every_seconds` intervals of at least five minutes. The Session event log owns reminder state; timers, tool values, and model follow-ups are disposable projections of that log.
 
 ## Composition
 
 Load this function plugin after `ctx.sessions`, `ctx.agents`, `ctx.tools`, `ctx.sessionPersistence`, and the persistence listener that implements Session flushes. Static injection makes a missing persistence service a composition error. The plugin listens only to later `agent/created` events, installs on runtime roots, and registers all tools through the exact `agent.ctx`. Agents that already existed when the plugin loaded and runtime children do not receive Schedule.
 
-Time-context is not a Schedule dependency. A composition may mount `@deepseek-ai/dsh-time-context` so the model can interpret natural language in the browser's request-local zone, as the official Schedule Web overlay does. The model must still pass an explicit offset or `time_zone` to `schedule_create`; Schedule never imports or infers from model context.
+Time-context is not a Schedule dependency. A composition may mount `@alego/time-context` so the model can interpret natural language in the browser's request-local zone, as the official Schedule Web overlay does. The model must still pass an explicit offset or `time_zone` to `schedule_create`; Schedule never imports or infers from model context.
 
 Every operation that reads or decides from the Schedule fold first awaits `ctx.sessions.flush(session)`. A missing, rejected, or detached persistence path returns `persistence_uncertain`; it never turns an unconfirmed live suffix into a list or not-found answer. A successful create or actual delete also awaits a post-append barrier before confirming the mutation.
 

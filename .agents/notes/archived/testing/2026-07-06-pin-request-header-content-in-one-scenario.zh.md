@@ -11,7 +11,7 @@ Archived: 2026-07-26
 
 ## 决策
 
-每种请求头组合类别恰好有一个场景标记为 `pinsHeader`。其目录按评审格式拆分固定内容：`system-prompt.expected.md` 以普通 Markdown 包含规范化的完整提示词序列；`tool-schemas.expected.json` 以结构化 JSON 包含对应的完整 schema 序列；`session.jsonl` 保留 config、reason 和所有模型可见前缀，同时将 `header.system` 与 `header.tools` 存为 `"{{system}}"` / `"{{tools}}"`。其他每份 JSONL 都使用相同的提示词与工具 token，并同样将会话前缀内容 token 化。固定机制位于 [`dsh-acp-snapshot`](../../../../packages/support/acp-snapshot/README.md)，其套件 factory 强制每种类别恰好有一个固定场景。
+每种请求头组合类别恰好有一个场景标记为 `pinsHeader`。其目录按评审格式拆分固定内容：`system-prompt.expected.md` 以普通 Markdown 包含规范化的完整提示词序列；`tool-schemas.expected.json` 以结构化 JSON 包含对应的完整 schema 序列；`session.jsonl` 保留 config、reason 和所有模型可见前缀，同时将 `header.system` 与 `header.tools` 存为 `"{{system}}"` / `"{{tools}}"`。其他每份 JSONL 都使用相同的提示词与工具 token，并同样将会话前缀内容 token 化。固定机制位于 [`alego-acp-snapshot`](../../../../packages/support/acp-snapshot/README.md)，其套件 factory 强制每种类别恰好有一个固定场景。
 
 纯 `scrubSystemPrompts` 和 `scrubToolSchemas` 规范化器会分别将每个已存储完整请求头 token 化。`scrubRequestHeaders` 还会为非固定场景把会话前缀内容 token 化，同时保留请求头数量、字段存在性、config、reason 和前缀消息数量。记录与刷新写回会在写入 JSONL 前应用适当清理，并根据规范化的实时完整请求头序列重新生成两个 sidecar，因此两条路径都无法把大段提示词/schema 重新引入 JSONL，也不会留下陈旧的评审产物。
 

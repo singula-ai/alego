@@ -12,11 +12,11 @@ Web `minimal` preset 与独立 JSON-RPC minimal 组合对外提供持久 `bash` 
 
 ## 决策
 
-两种随附 minimal profile 都只对外提供持久 `bash` 与 `str_replace_editor`，不挂载上下文压缩提供方，为新建会话抑制每个 `dsh-system-prompt` runtime-context 贡献，并让编辑器使用 `@deepseek-ai/dsh-fs-local`。Web preset 在 agent entry 内隔离 `ctx.fs`，将 `fs-local` 与编辑器一起挂载，因此其他 Web agent 仍使用宿主文件系统提供方。其 persona 继续采用较早的 [minimal preset 组合决策](../bug-fix/2026-08-10-minimal-preset-owns-rl-composition.zh.md)所拥有的固定 complete 提示词，并仅为该 agent 作用域实施 runtime-context 抑制。独立 spine 将同一设置转发给其进程拥有的 system-prompt 服务。沙箱与批准服务仍保持挂载并强制其策略；只有它们面向模型的动态上下文缺席。
+两种随附 minimal profile 都只对外提供持久 `bash` 与 `str_replace_editor`，不挂载上下文压缩提供方，为新建会话抑制每个 `alego-system-prompt` runtime-context 贡献，并让编辑器使用 `@alego/fs-local`。Web preset 在 agent entry 内隔离 `ctx.fs`，将 `fs-local` 与编辑器一起挂载，因此其他 Web agent 仍使用宿主文件系统提供方。其 persona 继续采用较早的 [minimal preset 组合决策](../bug-fix/2026-08-10-minimal-preset-owns-rl-composition.zh.md)所拥有的固定 complete 提示词，并仅为该 agent 作用域实施 runtime-context 抑制。独立 spine 将同一设置转发给其进程拥有的 system-prompt 服务。沙箱与批准服务仍保持挂载并强制其策略；只有它们面向模型的动态上下文缺席。
 
-独立的 [`minimal.cordis.yml`](../../../../examples/jsonrpc-agent/minimal.cordis.yml) 仍是完整的 JSON-RPC 进程组合。它挂载 `dsh-sdk-jsonrpc-server`、持久 Bash 所需的本地 PTY 和子进程服务、`fs-local`、两个工具消费方，以及未压缩的 JSONL 持久化。它不挂载 `token-meter`、`compaction-basic`、`fs-sandbox` 或 `fs-observation-policy`。持久 Bash 仍消费部署的 danger-full-access 沙箱策略；编辑器不受该策略限制。
+独立的 [`minimal.cordis.yml`](../../../../examples/jsonrpc-agent/minimal.cordis.yml) 仍是完整的 JSON-RPC 进程组合。它挂载 `alego-sdk-jsonrpc-server`、持久 Bash 所需的本地 PTY 和子进程服务、`fs-local`、两个工具消费方，以及未压缩的 JSONL 持久化。它不挂载 `token-meter`、`compaction-basic`、`fs-sandbox` 或 `fs-observation-policy`。持久 Bash 仍消费部署的 danger-full-access 沙箱策略；编辑器不受该策略限制。
 
-`DSH_SYSTEM_PROMPT` 选择独立组合的 persona。`DSH_MODEL` 命名 DeepSeek 提供方目录项，`DSH_CONTEXT_WINDOW` 提供该目录项的容量。由于 SDK 客户端拥有 JSON-RPC `initialize` 请求，[`minimal.py`](../../../../examples/jsonrpc-agent/minimal.py)也使用 `DSH_MODEL` 作为 `model` 参数的默认值；显式 `--model` 仍具有最高优先级。端点与凭据变量继续由 DeepSeek 适配器现有的环境解析路径持有。
+`ALEGO_SYSTEM_PROMPT` 选择独立组合的 persona。`ALEGO_MODEL` 命名 DeepSeek 提供方目录项，`ALEGO_CONTEXT_WINDOW` 提供该目录项的容量。由于 SDK 客户端拥有 JSON-RPC `initialize` 请求，[`minimal.py`](../../../../examples/jsonrpc-agent/minimal.py)也使用 `ALEGO_MODEL` 作为 `model` 参数的默认值；显式 `--model` 仍具有最高优先级。端点与凭据变量继续由 DeepSeek 适配器现有的环境解析路径持有。
 
 ## 验证
 
@@ -32,7 +32,7 @@ SDK 回放通过 SDK 客户端启动真实 JSON-RPC agent 进程，注入由环�
 
 **为 Web 与 Python SDK 启动使用同一个 Cordis leaf。** 不予采用，因为 Web preset 向现有多会话宿主贡献 agent 作用域服务，而 Python SDK 必须启动包含 JSON-RPC 服务器及其进程级依赖的完整进程。
 
-**只在 Cordis 内读取 `DSH_MODEL`。** 不予采用，因为 Cordis 配置提供方目录，但不拥有 SDK 客户端的 JSON-RPC `initialize` 请求。launcher 必须向客户端请求传递同一个模型，环境值才能选择路由模型。
+**只在 Cordis 内读取 `ALEGO_MODEL`。** 不予采用，因为 Cordis 配置提供方目录，但不拥有 SDK 客户端的 JSON-RPC `initialize` 请求。launcher 必须向客户端请求传递同一个模型，环境值才能选择路由模型。
 
 ## 后果
 

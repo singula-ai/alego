@@ -3,7 +3,7 @@
  * standard decorators in TypeScript dependencies before bundling, then emits
  * model-driven face artifacts at the package output root. Packages without a
  * Typert or Remote export are skipped.
- * @module @deepseek-ai/dsh-typert-generator/tsdown
+ * @module @alego/typert-generator/tsdown
  */
 
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
@@ -39,7 +39,7 @@ export function typertPlugin(pluginOptions: TypertPluginOptions = {}): TypertPlu
   const artifactsByRoot = new Map<string, readonly WorkspaceEmitResult[]>()
   const emittedWorkspaces = new Set<string>()
   return {
-    name: 'dsh-typert-generator',
+    name: 'alego-typert-generator',
     transform(code, id) {
       const file = id.split('?', 1)[0] ?? id
       if (!/\.[cm]?tsx?$/.test(file) || !DECORATOR_SYNTAX.test(code)) return

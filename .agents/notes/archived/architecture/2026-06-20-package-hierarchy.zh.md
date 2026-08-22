@@ -15,7 +15,7 @@ Archived: 2026-07-27
 
 ## 决策
 
-按模块角色将包分组，统一放在 `packages/<group>/<pkg>/` 深度。分组目录是纯容器（没有 `package.json`）；每个包保留其 `@deepseek-ai/dsh-<pkg>` 名称——这是仓库结构与维护策略的调整，不是包的重命名。
+按模块角色将包分组，统一放在 `packages/<group>/<pkg>/` 深度。分组目录是纯容器（没有 `package.json`）；每个包保留其 `@alego/<pkg>` 名称——这是仓库结构与维护策略的调整，不是包的重命名。
 
 ```text
 packages/
@@ -48,7 +48,7 @@ packages/
 
 ### 放置决策
 
-- **能力族使用同名嵌套。** 一个族的接口包位于 `packages/<group>/<group>/`（`llm/llm`、`bash/bash`、`session-persistence/session-persistence`），实现和消费方作为扁平兄弟并列。不设额外的 `adapters/`/`impls/` 子层——每个包恰好在深度 2，这使 workspace glob 保持简洁的 `packages/*/*`，并让一条 `@deepseek-ai/dsh-*` tsconfig 通配符即可解析所有包（唯一的目录名使 first-on-disk-wins 无歧义）。
+- **能力族使用同名嵌套。** 一个族的接口包位于 `packages/<group>/<group>/`（`llm/llm`、`bash/bash`、`session-persistence/session-persistence`），实现和消费方作为扁平兄弟并列。不设额外的 `adapters/`/`impls/` 子层——每个包恰好在深度 2，这使 workspace glob 保持简洁的 `packages/*/*`，并让一条 `@alego/*` tsconfig 通配符即可解析所有包（唯一的目录名使 first-on-disk-wins 无歧义）。
 - **`session` 留在 `core/`；持久化独立成族。** 会话日志是核心产品 API。其存储后端构成一个平行的能力族（`session-persistence/`），与 `llm/` 和 `bash/` 对称，而非嵌套在 `core/session/` 下。
 - **`agent-loop` 在 `core/` 中。** 它是 `agent` seam 唯一的具体实现，但作为 harness 的默认产品循环交付，因此与核心主干同处。插件仍然依赖 `agent` 的词汇，从不依赖 `agent-loop`，所以循环仍可替换。
 - **产品自动化与面向人类的 UI 是两个独立分组。** `acp` 是位于 `acp/` 下的产品传输层，而命令、审批、交互和展示适配器位于 `ui/` 下。仅开发用的 invariants 与回放基础设施仍留在 `support/` 中。
@@ -57,7 +57,7 @@ packages/
 
 包列表此前在五个地方重复枚举。统一的深度 2 布局使大部分可以被推导：
 
-- `tsconfig.base.json` 通过一条 `@deepseek-ai/dsh-*` `paths` 通配符（每个分组列一个候选）映射所有包，取代了逐包条目。聚合配置（`tsconfig.host.json`、`tsconfig.client.json`）复用该源映射，并携带显式 project references 以保持包/vendor 类型检查边界完整。（这里引入了一个细节：路径候选中包含 `/*/`，朴素的正则注释剥离器会将其误认为块注释——`scripts/doc-typecheck.ts` 正是因此通过 TypeScript 解析器读取 JSONC 配置，而非手动剥离注释。）
+- `tsconfig.base.json` 通过一条 `@alego/*` `paths` 通配符（每个分组列一个候选）映射所有包，取代了逐包条目。聚合配置（`tsconfig.host.json`、`tsconfig.client.json`）复用该源映射，并携带显式 project references 以保持包/vendor 类型检查边界完整。（这里引入了一个细节：路径候选中包含 `/*/`，朴素的正则注释剥离器会将其误认为块注释——`scripts/doc-typecheck.ts` 正是因此通过 TypeScript 解析器读取 JSONC 配置，而非手动剥离注释。）
 - `scripts/publint-all.ts` 通过读取层级结构（`packages/<group>/<pkg>`）推导列表，解决了 `TODO(package-inventory)`。
 - 聚合配置的 project `references` 仍为显式列表——TypeScript project references 没有通配符形式。从 manifest（元数据清单）生成这些引用留作后续工作（见[通过发现机制获取包清单](../../proposed/process/2026-06-20-discover-package-inventory.md)）。
 
@@ -70,7 +70,7 @@ packages/
 
 ## 曾考虑的替代方案
 
-- **第三层（每个族下设 `adapters/`/`impls/`）**：否决。统一深度 2 使 workspace glob 保持简洁的 `packages/*/*`，并让一条 `@deepseek-ai/dsh-*` tsconfig 通配符即可解析所有包。
+- **第三层（每个族下设 `adapters/`/`impls/`）**：否决。统一深度 2 使 workspace glob 保持简洁的 `packages/*/*`，并让一条 `@alego/*` tsconfig 通配符即可解析所有包。
 - **将持久化嵌套在 `core/session/` 下**：否决。存储后端构成一个平行的能力族，与 `llm/` 和 `bash/` 对称，而会话日志本身属于核心产品 API。
 - **`ui-stdio` 放在 `ui/` 下**：否决。它曾是与示例耦合的开发支撑，不是产品接口。
 

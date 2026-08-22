@@ -361,11 +361,11 @@ export interface RemainingSchema {
     const root = copyFixture()
     const manifestPath = join(root, 'packages/remote/package.json')
     const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as {
-      dsh?: { client?: object }
+      alego?: { client?: object }
       exports: Record<string, unknown>
       files: string[]
     }
-    manifest.dsh = { client: {} }
+    manifest.alego = { client: {} }
     manifest.exports['./client'] = './src/client.ts'
     manifest.exports['./client/typert'] = {
       types: './lib/typert.client.d.ts',
@@ -604,7 +604,7 @@ function remotePackage(root: string): {
 }
 
 function copyFixture(sourceRoot = fixtureRoot): string {
-  const root = mkdtempSync(join(tmpdir(), 'dsh-typert-remote-model-'))
+  const root = mkdtempSync(join(tmpdir(), 'alego-typert-remote-model-'))
   cpSync(sourceRoot, root, { recursive: true })
   temporaryRoots.push(root)
   return root
@@ -641,7 +641,7 @@ import type {
   TypertRemoteScopeMap,
   TypertRemoteMap,
   TypertRemoteNamespaceMap,
-} from '@deepseek-ai/dsh-typert-protocol'
+} from '@alego/typert-protocol'
 import type { CreateGoalResult, RenameGoalResult } from '@fixture/remote/types'
 
 const contribution: TypertRemoteContribution = remote
@@ -669,7 +669,7 @@ void navigated
       composite: false,
       skipLibCheck: false,
       paths: {
-        '@deepseek-ai/dsh-typert-protocol': ['./typert-protocol.d.ts'],
+        '@alego/typert-protocol': ['./typert-protocol.d.ts'],
         '@fixture/domain/types': ['./packages/domain/src/types.ts'],
         '@fixture/remote/types': ['./packages/remote/src/types.ts'],
         '@fixture/remote/remote': ['./packages/remote/lib/typert.remote-client.d.ts'],
@@ -731,7 +731,7 @@ void navigated
 function assertRemoteConsumerWithoutImportHasNoNamespace(consumerRoot: string): void {
   const consumerPath = join(consumerRoot, 'consumer-without-remote.ts')
   writeFileSync(consumerPath, `
-import type { TypertRemoteNamespaceMap } from '@deepseek-ai/dsh-typert-protocol'
+import type { TypertRemoteNamespaceMap } from '@alego/typert-protocol'
 declare const ctx: { remote: TypertRemoteNamespaceMap }
 ctx.remote.goals.create('agent-1', { title: 'must not compile' })
 `)
@@ -742,7 +742,7 @@ ctx.remote.goals.create('agent-1', { title: 'must not compile' })
       composite: false,
       skipLibCheck: false,
       paths: {
-        '@deepseek-ai/dsh-typert-protocol': ['./typert-protocol.d.ts'],
+        '@alego/typert-protocol': ['./typert-protocol.d.ts'],
       },
     },
     files: ['./consumer-without-remote.ts'],

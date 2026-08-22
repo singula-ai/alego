@@ -10,7 +10,7 @@
 | [`bash-local/`](bash-local/README.zh.md) | 通过本地 [`subprocess`](../subprocess/README.zh.md) 服务执行命令。 | （注册 `ctx.shell`） |
 | [`bash-sandbox/`](bash-sandbox/README.zh.md) | 在本地执行前应用已配置的 [`sandbox`](../sandbox/README.zh.md) 后端。 | （注册 `ctx.shell`） |
 | [`pwsh-local/`](pwsh-local/README.zh.md) | 采用 Windows 特有的进程行为执行 PowerShell 命令。 | （注册 `ctx.shell`） |
-| [`shell-env/`](shell-env/README.zh.md) | 提供 shell 工具共享的托管 `DSH_*` 环境。 | `ctx.shellEnv` |
+| [`shell-env/`](shell-env/README.zh.md) | 提供 shell 工具共享的托管 `ALEGO_*` 环境。 | `ctx.shellEnv` |
 | [`tool-bash/`](tool-bash/README.zh.md) | 向模型公开 Bash 执行和后台任务集成。 | （注册到 `ctx.tools`） |
 | [`tool-pwsh/`](tool-pwsh/README.zh.md) | 向模型公开 PowerShell 执行。 | （注册到 `ctx.tools`） |
 

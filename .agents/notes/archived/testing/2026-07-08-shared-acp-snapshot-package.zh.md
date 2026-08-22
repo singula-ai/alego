@@ -9,11 +9,11 @@ Archived: 2026-07-27
 
 ACP（Agent Client Protocol）快照层（[快照 Agent Note（agent 决策记录）](2026-06-19-acp-snapshot-tests.md)）由位于一个示例测试目录内的三个模块构建：`snapshot-harness.ts`（启动真实 bin 子进程，通过 ACP JSON-RPC 驱动它，采集持久化日志）、`snapshot-normalize.ts`（纯预期输出规范化器），以及 `acp.snapshot.ts` 中约 150 行的场景主体与 fixture（测试前置数据）守卫（记录/回放模式、stdout 预期输出与日志比较、固定请求头一致性守卫、孤立项/必需文件/单一固定项元测试）。
 
-第二个希望获得快照覆盖的 ACP 示例——直接消费方是沙箱/approval 组合——只能复制这些模块，恰好分叉了绝不能漂移的逻辑：记录写回、请求头清理、子会话采集顺序。spawn/client 胶水也在 `acp.e2e.ts`、`hooks.e2e.ts` 和 harness 中重复三份。文件位置决定了测试严格度：逐文件 100% 覆盖率门禁只测量 `packages/*/*/src`，因此这些机制完全未被测量——正是同一种缺口，曾推动 `dsh-llm-replay` 从 `examples/` 移入 [packages/support](../../../../packages/support/README.md)。此外，harness 的 ACP client 硬编码 `requestPermission → cancelled`，因此 approval 往返——沙箱组合的主打行为——完全无法在快照层表达。
+第二个希望获得快照覆盖的 ACP 示例——直接消费方是沙箱/approval 组合——只能复制这些模块，恰好分叉了绝不能漂移的逻辑：记录写回、请求头清理、子会话采集顺序。spawn/client 胶水也在 `acp.e2e.ts`、`hooks.e2e.ts` 和 harness 中重复三份。文件位置决定了测试严格度：逐文件 100% 覆盖率门禁只测量 `packages/*/*/src`，因此这些机制完全未被测量——正是同一种缺口，曾推动 `alego-llm-replay` 从 `examples/` 移入 [packages/support](../../../../packages/support/README.md)。此外，harness 的 ACP client 硬编码 `requestPermission → cancelled`，因此 approval 往返——沙箱组合的主打行为——完全无法在快照层表达。
 
 ## 决策
 
-这些机制位于 [`packages/support/acp-snapshot`](../../../../packages/support/acp-snapshot/README.md)（`@deepseek-ai/dsh-acp-snapshot`）；示例的 `*.snapshot.ts` 只包含场景表、agent 路径和一次工厂调用，依赖自己的 `snapshots/` fixture 与 `cordis.snapshot.yml` overlay（[单源回放配置](../../archived/testing/2026-07-04-single-source-acp-replay-config.md)）。读取 `DSH_SNAPSHOT` 留在边缘层——库接收的是已解析的 `mode`。
+这些机制位于 [`packages/support/acp-snapshot`](../../../../packages/support/acp-snapshot/README.md)（`@alego/acp-snapshot`）；示例的 `*.snapshot.ts` 只包含场景表、agent 路径和一次工厂调用，依赖自己的 `snapshots/` fixture 与 `cordis.snapshot.yml` overlay（[单源回放配置](../../archived/testing/2026-07-04-single-source-acp-replay-config.md)）。读取 `ALEGO_SNAPSHOT` 留在边缘层——库接收的是已解析的 `mode`。
 
 **`src/launcher.ts`**——`launchAcpTestAgent` 拥有通用的未构建进程边界：绝对 tsx loader 解析、`TSX_TSCONFIG_PATH`、隔离的 harness home、stdio 接线、原始字节 stdout tee、stderr 与更新捕获、失败关闭的权限后备、更新 waiter，以及优雅或信号式关闭。快照场景和普通 e2e 套件提供相同的 `AgentUnderTest`（`binScript`、`configPath`、`tsconfigPath`）；扮演用户的测试只提供其权限 handler。ACP 与钩子 e2e 套件以及沙箱/approval e2e 套件都使用该 launcher，而不再重新构建 SDK client 边界。
 
@@ -27,7 +27,7 @@ ACP（Agent Client Protocol）快照层（[快照 Agent Note（agent 决策记�
 
 - **把模块复制到每个示例中**——这正是本 Agent Note 要防止的分叉：记录/守卫逻辑恰好是必须在各套件间保持逐字节相同的代码，而示例位于覆盖率门禁之外，所以每份副本也都无法测量。
 - **在 `examples/` 下建共享模块目录**：代码仍在覆盖率门禁之外，且需要跨示例边界的相对导入，违反包名导入约定；`examples/` 的叶子节点按设计应保持轻薄。
-- **`dsh-acp-demo` 的 `/testing` 子路径导出**：将测试基础设施耦合到产品包的对外服务接口与依赖集中；`packages/support/` 的存在正是为了真实但兼容性承诺较低的开发/测试包，`dsh-llm-replay` 是先例，本包与之配套。
+- **`alego-acp-demo` 的 `/testing` 子路径导出**：将测试基础设施耦合到产品包的对外服务接口与依赖集中；`packages/support/` 的存在正是为了真实但兼容性承诺较低的开发/测试包，`alego-llm-replay` 是先例，本包与之配套。
 - **导出原始测试体函数而非套件工厂**：每个示例将重新拥有 `describe`/`it` 骨架（每套件约 80 行注册样板），却无灵活性收益；工厂使消费方只需一张场景表加一次调用，而导出的纯辅助函数在工厂设计内保留了可单元测试性。
 - **使用可注入 ACP `Client` factory 代替声明式 `permissionAnswers`**——灵活性最大，但会把 SDK client 构造泄漏给每个消费方，并恰好在正在统一的层重新引入逐示例漂移；声明式队列让 `input.json` 保持为唯一脚本表面，并与预期输出规范化兼容。
 - **泛化到 ACP 之外（传输无关的快照 harness）**：不存在第二种传输方式；harness 端到端都是 ACP 形态（SDK 客户端、JSON-RPC 帧、`session/update` 等待器），推测性的抽象将是一个超前于任何消费方的 seam 拆分。

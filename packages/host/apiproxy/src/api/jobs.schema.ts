@@ -4,7 +4,7 @@
  */
 
 import { z } from 'zod'
-import type { JobId } from '@deepseek-ai/dsh-jobs/brand'
+import type { JobId } from '@alego/jobs/brand'
 import type { JobView } from './jobs.ts'
 import type { Wire } from './rpc.schema.ts'
 

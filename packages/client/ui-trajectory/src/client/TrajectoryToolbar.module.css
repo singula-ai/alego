@@ -4,7 +4,7 @@
   z-index: 4;
   box-sizing: border-box;
   width: 100%;
-  height: var(--dsh-trajectory-toolbar-height);
+  height: var(--alego-trajectory-toolbar-height);
   border-bottom: 1px solid var(--dsw-alias-border-l2);
   background: var(--dsw-alias-bg-layer-1);
 }

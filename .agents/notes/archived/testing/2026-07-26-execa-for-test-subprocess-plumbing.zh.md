@@ -13,11 +13,11 @@ Archived: 2026-08-07
 
 - `packages/support/llm-mock-server/src/cli.ts` 曾手工逐个切分 17 个带值的 `--flag value` 选项外加若干布尔标志（约 45–60 行的循环与取值辅助函数），而 `node:util` 内置的 `parseArgs` 早已是本仓库的惯用写法（`cli-demo`、`acp-demo`、`verify-runtime-closure.ts`、`packages/sdk/scripts`）。
 - `apps/web/tests/smoke-real.e2e.ts` 与 `apps/web/tests/scaffold.ts` 曾携带两份逐字相同的正则 `.env` 解析器拷贝（约 20 行），而内置的 `process.loadEnvFile` 恰好具备所需的「不覆盖已有值」语义；并且 vitest 的 e2e/snapshot/web 配置在这些文件运行之前就已用它加载了根 `.env`，这两份拷贝实为死代码。
-- 快照 harness 曾手写三个「轮询直到截止时间」的循环（`packages/support/acp-snapshot/src/harness.ts` 中的 `waitForPersistedTurnStart`/`waitForPersistedTurnEnd`/`waitForWorkspaceFile`，约 55 行），外加 `crash-recovery.e2e.ts` 中的 `waitForFile`，而 `vi.waitFor`/`expect.poll` 正好覆盖这种形态；vitest 本来就是 `dsh-acp-snapshot` 的运行时依赖，因此这不新增任何东西。
+- 快照 harness 曾手写三个「轮询直到截止时间」的循环（`packages/support/acp-snapshot/src/harness.ts` 中的 `waitForPersistedTurnStart`/`waitForPersistedTurnEnd`/`waitForWorkspaceFile`，约 55 行），外加 `crash-recovery.e2e.ts` 中的 `waitForFile`，而 `vi.waitFor`/`expect.poll` 正好覆盖这种形态；vitest 本来就是 `alego-acp-snapshot` 的运行时依赖，因此这不新增任何东西。
 
 ## 决定
 
-- `execa` 是根 devDependency，同时是 `@deepseek-ai/dsh-loader-smoke`（唯一的 `src/` 消费方）的运行时依赖。上述 spawn、收集、超时的代码位置统一经由 `await execa(cmd, args, { cwd, env, timeout, killSignal: 'SIGKILL', reject: false })` 运行：其结果以相互独立的字段报告 `{ stdout, stderr, exitCode, signal, timedOut, failed }`，与本仓库防御模式中「正交的子进程结果各自独立上报」的规则一致。`runLoaderSmoke` 传 `input: ''` 以兑现其 stdin 关闭契约；断言固定精确流字节的位置传 `stripFinalNewline: false`。
+- `execa` 是根 devDependency，同时是 `@alego/loader-smoke`（唯一的 `src/` 消费方）的运行时依赖。上述 spawn、收集、超时的代码位置统一经由 `await execa(cmd, args, { cwd, env, timeout, killSignal: 'SIGKILL', reject: false })` 运行：其结果以相互独立的字段报告 `{ stdout, stderr, exitCode, signal, timedOut, failed }`，与本仓库防御模式中「正交的子进程结果各自独立上报」的规则一致。`runLoaderSmoke` 传 `input: ''` 以兑现其 stdin 关闭契约；断言固定精确流字节的位置传 `stripFinalNewline: false`。
 - 真正定制的部分继续保持定制，只是架在 execa 拥有的子进程之上：cli-demo 在流中遇到标记即中断的逻辑、jsonrpc 基于行谓词的协议驱动，以及 crash-recovery 在故障点发送 SIGKILL 的编排。`smoke-real.e2e.ts` 的三个长驻交互式服务器保留原生 `spawn`——跨双流监听就绪行加上分级的 SIGTERM→等待→SIGKILL 拆除就是该处的全部内容，execa 在那里删不掉任何东西；本 Agent Note 涉及该文件的部分，仅是那份已成为死代码的 `.env` 解析器。
 - `llm-mock-server` 的 CLI（命令行界面）经由 `parseArgs` 切分（strict、不允许位置参数）；数值转换、边界检查与跨选项约束仍手工实现，固定错误消息的测试改为采用 `parseArgs` 自己的切分器文本。
 - 两份 `loadRootEnv` 拷贝被整体删除：拥有它们的 vitest 配置（`vitest.web.config.ts` 无条件、`vitest.snapshot.config.ts` 在 record 模式下）在这些文件运行之前就加载了仓库根部的 `.env`。

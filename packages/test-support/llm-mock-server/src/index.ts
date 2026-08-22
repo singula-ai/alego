@@ -3,7 +3,7 @@
  * semantic-empty LLM recovery tests. Each accepted chat-completions request
  * consumes one behavior; the server never retries or interprets harness policy.
  *
- * @module @deepseek-ai/dsh-llm-mock-server
+ * @module @alego/llm-mock-server
  */
 
 import { createServer } from 'node:http'

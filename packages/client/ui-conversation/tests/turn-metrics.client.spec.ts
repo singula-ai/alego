@@ -1,7 +1,7 @@
 // Per-turn latency/throughput fold and the footer figure formatters.
 
 import { describe, expect, it } from 'vitest'
-import type { AssistantMessageNode, ConversationNode, UserMessageNode } from '@deepseek-ai/dsh-client-runtime/client'
+import type { AssistantMessageNode, ConversationNode, UserMessageNode } from '@alego/client-runtime/client'
 import { assistantStepReading, deriveTurnMetrics } from '../src/client/chat/turn-metrics.ts'
 import { formatLatencySeconds, formatTokensPerSecond } from '../src/client/chat/message-chrome.ts'
 

@@ -1,4 +1,4 @@
-# dsh-timeout
+# alego-timeout
 
 [English](README.md) | 中文
 
@@ -11,7 +11,7 @@
 ## 对外接口
 
 ```ts
-import { clampTimeout, deadline, idleWatchdog, MAX_TIMER_DELAY_MS, timeoutOf, TimeoutReason } from '@deepseek-ai/dsh-timeout'
+import { clampTimeout, deadline, idleWatchdog, MAX_TIMER_DELAY_MS, timeoutOf, TimeoutReason } from '@alego/timeout'
 ```
 
 | 导出项 | 职责 |
@@ -30,7 +30,7 @@ import { clampTimeout, deadline, idleWatchdog, MAX_TIMER_DELAY_MS, timeoutOf, Ti
 ## 使用形态
 
 ```ts
-import { deadline, timeoutOf } from '@deepseek-ai/dsh-timeout'
+import { deadline, timeoutOf } from '@alego/timeout'
 
 declare function runWork(options: { signal: AbortSignal }): Promise<unknown>
 
@@ -56,7 +56,7 @@ export async function runWithDeadline(upstream: AbortSignal | undefined, timeout
 
 ## 模型体验
 
-通过 `dsh-tool-call-timeout-policy` 等消费方间接影响模型；消费方可能会将提供方结果替换为已保留的超时错误，或抑制延迟结果。
+通过 `alego-tool-call-timeout-policy` 等消费方间接影响模型；消费方可能会将提供方结果替换为已保留的超时错误，或抑制延迟结果。
 
 #### KV Cache 影响
 

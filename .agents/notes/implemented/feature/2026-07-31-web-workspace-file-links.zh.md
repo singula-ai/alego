@@ -8,13 +8,13 @@ Status: implemented
 
 ## 问题
 
-一个产出了文件的 web 会话，没有办法看到那个文件。agent（智能体）写出了 `deepseek-homepage.html` 并如实告知，而用户唯一的办法是把 `/private/tmp/dsh-client-hotplug.ygPvsm/workspaces/plugin-hotplug/deepseek-homepage.html` 这样的绝对路径复制进终端。
+一个产出了文件的 web 会话，没有办法看到那个文件。agent（智能体）写出了 `deepseek-homepage.html` 并如实告知，而用户唯一的办法是把 `/private/tmp/alego-client-hotplug.ygPvsm/workspaces/plugin-hotplug/deepseek-homepage.html` 这样的绝对路径复制进终端。
 
 这背后是两个不同的缺陷。transcript（文本记录）从不说明一个轮次产出了什么：`ToolCallView.locations`——文件工具早已填好的跟随文件词汇——在客户端没有任何消费方，因此读者对产出的唯一交代，就是收尾消息恰好拼出来的那点内容。而已经存在的那个交互是隐形的：`ToolRow` 早已把改写行或读取行的路径渲染成一个接到 `host.openPath` 的真按钮，但它的样式与周围正文一模一样、只有悬停才有下划线，于是没人发现。所报告的「做完了打不开」，是一个可发现性失败叠在一项本就可用的能力之上。
 
 ## 决策
 
-**完成的一轮以它产出的文件收尾。** 该行是独立插件 `@deepseek-ai/dsh-client-ui-deliverables`，注册进 chat 视图在收尾消息正文与其 IconActions 之间渲染的 `conversation.chat.turnTail` 空位——ui-conversation 拥有空位与 owner 通货（节点、收尾 seq、`openFile`），插件拥有全部策略。`producedForClosing` 从改写工具自身的跟随文件 `locations` 中读出路径——diff 卡片，或 `kind` 为 `edit` 的 generic 卡片（即 `str_replace_editor` 的 insert 所呈现的形状）——因此无论收尾消息是否点名，这一轮的产出都会被列出；新的改写工具靠声明自己做了什么加入，而不是靠被加进某张名单。read、删除与失败的调用不贡献任何条目；同一路径在一轮内按首见顺序只出现一次；累积在 turn 边界重置，因此一轮若先改写文件、随后没有正文内容就结束，不会溢进下一轮的行里。单行 lane 会测量 chip 和本地化剩余计数，再显示能放下的最大前缀（至多六个）及 `+ N 个文件`。cordis.yml 中的一行即可把该交互面组合进来或去掉；未注册的空位什么也不渲染。
+**完成的一轮以它产出的文件收尾。** 该行是独立插件 `@alego/client-ui-deliverables`，注册进 chat 视图在收尾消息正文与其 IconActions 之间渲染的 `conversation.chat.turnTail` 空位——ui-conversation 拥有空位与 owner 通货（节点、收尾 seq、`openFile`），插件拥有全部策略。`producedForClosing` 从改写工具自身的跟随文件 `locations` 中读出路径——diff 卡片，或 `kind` 为 `edit` 的 generic 卡片（即 `str_replace_editor` 的 insert 所呈现的形状）——因此无论收尾消息是否点名，这一轮的产出都会被列出；新的改写工具靠声明自己做了什么加入，而不是靠被加进某张名单。read、删除与失败的调用不贡献任何条目；同一路径在一轮内按首见顺序只出现一次；累积在 turn 边界重置，因此一轮若先改写文件、随后没有正文内容就结束，不会溢进下一轮的行里。单行 lane 会测量 chip 和本地化剩余计数，再显示能放下的最大前缀（至多六个）及 `+ N 个文件`。cordis.yml 中的一行即可把该交互面组合进来或去掉；未注册的空位什么也不渲染。
 
 **路径链接读得出是链接。** 静止状态下就带下划线，而不只在悬停时。这是本次改动中更小的那一半，却是修复中更大的那一半。
 

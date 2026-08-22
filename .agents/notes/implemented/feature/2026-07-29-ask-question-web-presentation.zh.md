@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-Web GUI 已经可以通过 `QuestionComposer` 的输入区接管收集回答，但其周边的会话记录呈现在三个方面是错的。待回答的问题会渲染两次：一次是输入区接管，一次是早于接管存在的只读 `PendingCard` 占位卡片。已结算的 `ask_user_question` 调用渲染为通用 "Tool call" 行并直接倾倒原始 args JSON，因此两种输入区裁决 —— 用户放弃整组问题（`ASK_CANCELLED`）与问题待回答期间轮次被打断（`ASK_ABORTED`）—— 都显示为无名的红点失败。而且输入区自身的界面文案（分页、按钮、占位符、校验反馈）是硬编码中文，而周边客户端已通过 `dsh-client-locale` 实现双语。
+Web GUI 已经可以通过 `QuestionComposer` 的输入区接管收集回答，但其周边的会话记录呈现在三个方面是错的。待回答的问题会渲染两次：一次是输入区接管，一次是早于接管存在的只读 `PendingCard` 占位卡片。已结算的 `ask_user_question` 调用渲染为通用 "Tool call" 行并直接倾倒原始 args JSON，因此两种输入区裁决 —— 用户放弃整组问题（`ASK_CANCELLED`）与问题待回答期间轮次被打断（`ASK_ABORTED`）—— 都显示为无名的红点失败。而且输入区自身的界面文案（分页、按钮、占位符、校验反馈）是硬编码中文，而周边客户端已通过 `alego-client-locale` 实现双语。
 
 另外，输入区视觉也偏离了当前设计：自定义回答需展开才能输入、多选除尾部对勾外没有可见标识、分页挂在头部、还有从模型文本里解析 `（可多选）` 标题后缀的约定。
 
@@ -16,7 +16,7 @@ Web GUI 已经可以通过 `QuestionComposer` 的输入区接管收集回答，�
 
 输入区重设计将分页移到底部操作区旁，多选选项渲染显式复选框，单选保留编号行，并用始终可见的自定义输入行取代展开式自定义入口（无选项问题用多行文本框）。删除 `parseQuestionTitle` 的多选后缀约定；`multi_select` 已是结构化元数据，标题原样渲染。
 
-输入区界面文案实现双语：插件在 `dsh-client-locale` 的 `question` 命名空间下注册中英词典，并通过 slot inject face 向条目提供绑定命名空间的翻译器和作为 hooks compartment 来源的 locale 快照，语言切换时已挂载的输入区会重新渲染。校验反馈以词典 key 存储、切换时重新翻译；载体失败消息与所有模型撰写的问题/选项文本原样渲染。
+输入区界面文案实现双语：插件在 `alego-client-locale` 的 `question` 命名空间下注册中英词典，并通过 slot inject face 向条目提供绑定命名空间的翻译器和作为 hooks compartment 来源的 locale 快照，语言切换时已挂载的输入区会重新渲染。校验反馈以词典 key 存储、切换时重新翻译；载体失败消息与所有模型撰写的问题/选项文本原样渲染。
 
 两个相邻修复随行。所有通用 toolview 前导图标（含悬停箭头）现在统一继承三级标签色 —— 删除了 others 变体的二级色覆盖和独立的箭头颜色规则，只保留有意为之的 cordis 业务主色强调。客户端 dev-watch 打包器用 `addWatchFile` 注册每个 CSS 模块，因为虚拟模块间接层此前使仅改 CSS 的编辑对 watcher 不可见。
 
@@ -38,7 +38,7 @@ Web GUI 已经可以通过 `QuestionComposer` 的输入区接管收集回答，�
 
 行内裁决字符串是问题流程仅剩的硬编码英文面；将其本地化是推迟的后续工作。审批输入区接管已交付（[Web 权限与审批](2026-07-23-web-permission-and-approval.zh.md)，并按[审批面板 Agent Note](../bug-fix/2026-07-30-approval-panel-command-cap.zh.md)施加高度上限），`PendingCard` 已不复存在。
 
-`ui-user-questions` 新增 `dsh-client-locale` 依赖和此前没有的 inject face；其约定（`QuestionComposerInjected`）与消费方一起放在 `contract/slots.ts`。
+`ui-user-questions` 新增 `alego-client-locale` 依赖和此前没有的 inject face；其约定（`QuestionComposerInjected`）与消费方一起放在 `contract/slots.ts`。
 
 ## 验证
 

@@ -11,17 +11,17 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import AgentRegistry from '@deepseek-ai/dsh-agent'
-import type { Agent } from '@deepseek-ai/dsh-agent'
-import SessionStore from '@deepseek-ai/dsh-session'
-import type { Session } from '@deepseek-ai/dsh-session'
-import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
-import ToolRuntime from '@deepseek-ai/dsh-tools'
-import SessionProjectionRegistry from '@deepseek-ai/dsh-session-projection'
-import UserQuestionService from '@deepseek-ai/dsh-user-questions'
-import { CommandId } from '@deepseek-ai/dsh-commands/brand'
-import PlanModeController from '@deepseek-ai/dsh-plan-mode'
+import { Context } from '@alego/cordis'
+import AgentRegistry from '@alego/agent'
+import type { Agent } from '@alego/agent'
+import SessionStore from '@alego/session'
+import type { Session } from '@alego/session'
+import SystemPrompt from '@alego/system-prompt'
+import ToolRuntime from '@alego/tools'
+import SessionProjectionRegistry from '@alego/session-projection'
+import UserQuestionService from '@alego/user-questions'
+import { CommandId } from '@alego/commands/brand'
+import PlanModeController from '@alego/plan-mode'
 
 interface Bench {
   ctx: Context

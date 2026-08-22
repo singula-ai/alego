@@ -2,7 +2,7 @@
  * Code Mode codegen — Python flavor. The pure projection from registered tool schemas to the
  * Python SDK text the model programs against under `runtime.language === 'python'`. Sibling of
  * {@link ./ts-types.ts | ts-types.ts}; the two files are two projections of the same registry
- * store, keyed by the loaded {@link @deepseek-ai/dsh-code-runtime#CodeRuntime.language | code
+ * store, keyed by the loaded {@link @alego/code-runtime#CodeRuntime.language | code
  * runtime's language}.
  *
  * Under `mode: 'code'` the native tool schemas are omitted from the request, so this generated
@@ -11,7 +11,7 @@
  * alongside it and it is one of two. Object-shaped arguments and outputs therefore render as one
  * named `TypedDict` per tool (and per nested object), not an opaque `dict[str, Any]`, so the
  * shape survives into the program under the mode that has nothing else to carry it.
- * @module @deepseek-ai/dsh-tools/src/py-types
+ * @module @alego/tools/src/py-types
  */
 
 import { assertSupportedJsonSchema } from './json-schema.ts'

@@ -7,7 +7,7 @@ English | [中文](2026-07-30-tui-adapter-registration-race.zh.md)
 
 ## Problem
 
-Cordis activates plugins by service availability, not configuration order, so the TUI (whose `inject` requires only the `llm` service) can mount before a configured adapter plugin such as `dsh-llm-pi-ai` finishes registering its provider routes. The TUI's model controller resolves the selected model's context window immediately on mount; when the agent's route pointed at a not-yet-registered provider, `resolveModelInfo` rejected with `NO_ADAPTER` and every fresh session printed `Could not resolve model context: no adapter registered for provider "…"` — a spurious error for a fully working configuration (the adapter registered milliseconds later, and chatting worked).
+Cordis activates plugins by service availability, not configuration order, so the TUI (whose `inject` requires only the `llm` service) can mount before a configured adapter plugin such as `alego-llm-pi-ai` finishes registering its provider routes. The TUI's model controller resolves the selected model's context window immediately on mount; when the agent's route pointed at a not-yet-registered provider, `resolveModelInfo` rejected with `NO_ADAPTER` and every fresh session printed `Could not resolve model context: no adapter registered for provider "…"` — a spurious error for a fully working configuration (the adapter registered milliseconds later, and chatting worked).
 
 ## Decision
 

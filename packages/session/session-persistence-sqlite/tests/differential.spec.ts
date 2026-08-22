@@ -1,15 +1,15 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import fc from 'fast-check'
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@alego/cordis'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
-import { CallId, type StreamChunk } from '@deepseek-ai/dsh-llm'
-import SessionStore, { type SessionEvent } from '@deepseek-ai/dsh-session'
-import type { SessionPersistence } from '@deepseek-ai/dsh-session-persistence'
-import SessionPersistenceJsonl from '@deepseek-ai/dsh-session-persistence-jsonl'
-import SessionPersistenceSqlite from '@deepseek-ai/dsh-session-persistence-sqlite'
+import { CallId, type StreamChunk } from '@alego/llm'
+import SessionStore, { type SessionEvent } from '@alego/session'
+import type { SessionPersistence } from '@alego/session-persistence'
+import SessionPersistenceJsonl from '@alego/session-persistence-jsonl'
+import SessionPersistenceSqlite from '@alego/session-persistence-sqlite'
 import { meta } from '../../session-persistence/tests/contract.ts'
 import { testSql } from './test-sql.ts'
 
@@ -216,7 +216,7 @@ const randomWorkload = fc.record({
 describe('SQLite cross-backend differential behavior', () => {
   it('preserves ignorable logical events whose names match physical storage tags', async () => {
     const events = storageTagCollisionLog()
-    const directory = await freshDirectory('dsh-sqlite-storage-tag-collision-')
+    const directory = await freshDirectory('alego-sqlite-storage-tag-collision-')
     const root = join(directory, 'sqlite')
     await verifyBackend('sqlite', root, events, [2, 1])
     const db = new DatabaseSync(join(root, 'sessions.db'), { readOnly: true })
@@ -231,7 +231,7 @@ describe('SQLite cross-backend differential behavior', () => {
   it('matches JSONL/Zstandard for every packed kind, scalar fallback, suffix, partition, and reopen', async () => {
     const events = packingMatrixLog()
     for (const [partitionIndex, sizes] of [[events.length], [1], [2, 1, 5, 3]].entries()) {
-      const directory = await freshDirectory(`dsh-sqlite-matrix-${partitionIndex}-`)
+      const directory = await freshDirectory(`alego-sqlite-matrix-${partitionIndex}-`)
       for (const name of ['jsonl-zstd', 'sqlite'] as const) {
         const root = join(directory, name)
         await verifyBackend(name, root, events, sizes)
@@ -263,7 +263,7 @@ describe('SQLite cross-backend differential behavior', () => {
 
   it('matches JSONL/Zstandard across randomized logical logs and append partitions', async () => {
     await fc.assert(fc.asyncProperty(randomWorkload, async ({ events, batchSizes }) => {
-      const directory = await freshDirectory('dsh-sqlite-property-')
+      const directory = await freshDirectory('alego-sqlite-property-')
       for (const name of ['jsonl-zstd', 'sqlite'] as const) {
         await verifyBackend(name, join(directory, name), events, batchSizes)
       }

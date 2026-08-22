@@ -16,7 +16,7 @@ Each new external-process or network tool re-derived the same four things — cl
 
 ## Decision
 
-`@deepseek-ai/dsh-timeout` lives under `packages/util/` (peer to `dsh-brand`) and owns the *timing and classification* half of timeout; the *termination* half — the hard kill — stays in each capability's implementation. It is a library of pure functions, **not** a cordis service or plugin: it takes no `ctx`, registers nothing, holds no cross-call state, and emits no events. There is deliberately no central "timeout service" that would have to know how to stop every capability's work — that knowledge is exactly what a microkernel keeps out of shared layers, and what Codex's exec-only `ExecExpiration` scope demonstrates.
+`@alego/timeout` lives under `packages/util/` (peer to `alego-brand`) and owns the *timing and classification* half of timeout; the *termination* half — the hard kill — stays in each capability's implementation. It is a library of pure functions, **not** a cordis service or plugin: it takes no `ctx`, registers nothing, holds no cross-call state, and emits no events. There is deliberately no central "timeout service" that would have to know how to stop every capability's work — that knowledge is exactly what a microkernel keeps out of shared layers, and what Codex's exec-only `ExecExpiration` scope demonstrates.
 
 ### The library API
 
@@ -78,11 +78,11 @@ export function timeoutOf(x: AbortSignal | { reason?: unknown }, code?: string):
 
 | Concern | Owner |
 |---|---|
-| Validate request hint and clamp default/max | `dsh-timeout` (`clampTimeout`) — pure arithmetic plus the shared positive-finite request contract |
-| Arm one-shot timer, abort on deadline, carry reason, fuse with upstream cancel | `dsh-timeout` (`deadline`) |
-| Arm and rearm only around outstanding iterator demand, including out-of-band activity | `dsh-timeout` (`idleWatchdog`) |
-| Clear the timer | `dsh-timeout` (`[Symbol.dispose]` on either primitive) |
-| Classify the first abort reason after abort | `dsh-timeout` (`timeoutOf`) |
+| Validate request hint and clamp default/max | `alego-timeout` (`clampTimeout`) — pure arithmetic plus the shared positive-finite request contract |
+| Arm one-shot timer, abort on deadline, carry reason, fuse with upstream cancel | `alego-timeout` (`deadline`) |
+| Arm and rearm only around outstanding iterator demand, including out-of-band activity | `alego-timeout` (`idleWatchdog`) |
+| Clear the timer | `alego-timeout` (`[Symbol.dispose]` on either primitive) |
+| Classify the first abort reason after abort | `alego-timeout` (`timeoutOf`) |
 | **Actually terminate the work** | the capability's implementation |
 | The default/max *values* | the capability's config |
 | The timeout `code` string | the capability (`WEB_FETCH_TIMEOUT` ≠ `BASH_TIMEOUT`) |
@@ -93,17 +93,17 @@ The signal only *notifies*; termination is always the listener's job, and the li
 
 - **web_fetch** — the tool stays validate-and-forward; the provider's hand-rolled controller + `setTimeout` + manual listener + `finally` + `signal.reason` recovery is replaced by provider-owned `deadline`/`timeoutOf`. A pre-aborted upstream signal still throws `WEB_ABORTED` up front; otherwise `fetch` runs against the fused `d.signal`, and `translateAbortOrNetwork` classifies a thrown error by the signal (`timeoutOf` → `WEB_FETCH_TIMEOUT`, else aborted → `WEB_ABORTED`, else network → `WEB_PROVIDER_ERROR`). The public error-code contract is unchanged, and `TimeoutReason` never crosses the web seam as the public error.
 - **bash** — `resolve()` clamps the request into an explicit spec. Foreground `run()` creates the deadline and passes its signal to process execution, whose existing abort listener performs the process-group kill. The executor classifies the first abort as timeout or cancellation. Background starts remain timeout-free and forward only upstream cancellation.
-- **LLM adapters** — `dsh-llm-deepseek` and `dsh-llm-pi-ai` wrap actual transport iteration with `idleWatchdog`. The five-minute configured interval covers only outstanding provider demand, not time the downstream consumer spends between chunks. The direct DeepSeek adapter also pulses that outstanding demand when its SSE parser observes a comment, without yielding the comment as a `StreamChunk` or writing it to the session log. The pi-ai SDK does not expose comment activity to its adapter, so that path can rearm only when the SDK yields. The stable signal reaches `fetch` or the SDK for the whole call, so timeout closes the underlying request and maps to `TIMEOUT`, while an earlier caller abort maps to `ABORTED`.
+- **LLM adapters** — `alego-llm-deepseek` and `alego-llm-pi-ai` wrap actual transport iteration with `idleWatchdog`. The five-minute configured interval covers only outstanding provider demand, not time the downstream consumer spends between chunks. The direct DeepSeek adapter also pulses that outstanding demand when its SSE parser observes a comment, without yielding the comment as a `StreamChunk` or writing it to the session log. The pi-ai SDK does not expose comment activity to its adapter, so that path can rearm only when the SDK yields. The stable signal reaches `fetch` or the SDK for the whole call, so timeout closes the underlying request and maps to `TIMEOUT`, while an earlier caller abort maps to `ABORTED`.
 
 ## Consequences
 
-- `runBash`'s outcome no longer independently latches `timedOut` and `aborted`; a timeout and a user abort racing before process close now report a single first-abort cause instead of both being true. The uniform SIGTERM→grace→SIGKILL kill is unchanged, and the Service Definition type `ShellRunResult` keeps both booleans (now mutually exclusive), so `dsh-tool-bash`'s result rendering is untouched.
+- `runBash`'s outcome no longer independently latches `timedOut` and `aborted`; a timeout and a user abort racing before process close now report a single first-abort cause instead of both being true. The uniform SIGTERM→grace→SIGKILL kill is unchanged, and the Service Definition type `ShellRunResult` keeps both booleans (now mutually exclusive), so `alego-tool-bash`'s result rendering is untouched.
 - `SpawnSpec.timeoutMs` and `SpawnOutcome.timedOut`/`aborted` were removed rather than kept as always-zero/always-false vestiges: with `runBash` owning no timer and the executor owning classification, they were read nowhere. An always-0 field read by nothing is dead weight under the per-file coverage gate.
 - web_fetch shed its bespoke controller/timer/listener/reason-recovery; the classifier now keys off the deadline signal (`timeoutOf` + `aborted`) rather than the thrown error's shape, which is robust across both the request-phase reject-with-reason and the read-phase bare-`AbortError`.
 - `AbortSignal.any` and `using`/`Symbol.dispose` enter the repo for the first time here (Node ≥ 24 baseline, already met).
 - Model streams now share one rearmable timer contract without turning a sliding idle interval into a total-call deadline or charging consumer think time. Adapters that can observe out-of-band transport activity may pulse an outstanding demand; suppressed activity remains invisible to the watchdog. The primitive still only notifies; adapter tests prove their transports observe its stable signal and terminate.
 
-Out of scope, named to mark the boundary: `web_search` can gain an optional model-facing `timeout_ms` once its tool-schema/snapshot coverage is planned; the ripgrep-backed fs discovery tools ([packaged ripgrep search](2026-08-01-packaged-ripgrep-search.md)) consume the same provider-owned deadline shape through `dsh-tool-call-timeout-policy` and `exec.signal`; a `tools/execute` waterfall middleware could arm a default deadline for every tool call by driving `exec.signal` — that would be a plugin that *consumes* this library and still only notifies, the hard kill remaining each capability's job.
+Out of scope, named to mark the boundary: `web_search` can gain an optional model-facing `timeout_ms` once its tool-schema/snapshot coverage is planned; the ripgrep-backed fs discovery tools ([packaged ripgrep search](2026-08-01-packaged-ripgrep-search.md)) consume the same provider-owned deadline shape through `alego-tool-call-timeout-policy` and `exec.signal`; a `tools/execute` waterfall middleware could arm a default deadline for every tool call by driving `exec.signal` — that would be a plugin that *consumes* this library and still only notifies, the hard kill remaining each capability's job.
 
 ## Alternatives considered
 

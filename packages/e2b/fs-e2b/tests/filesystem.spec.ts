@@ -1,18 +1,18 @@
 import { Buffer } from 'node:buffer'
 import { dirname, posix } from 'node:path'
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@alego/cordis'
 import {
   CommandExitError,
   FileNotFoundError,
   FileType,
   type EntryInfo,
   type Sandbox,
-} from '@deepseek-ai/dsh-e2b'
-import type E2BRuntime from '@deepseek-ai/dsh-e2b'
-import { FsTargetKey, FsVersion } from '@deepseek-ai/dsh-fs'
-import E2BFileSystem from '@deepseek-ai/dsh-fs-e2b'
+} from '@alego/e2b'
+import type E2BRuntime from '@alego/e2b'
+import { FsTargetKey, FsVersion } from '@alego/fs'
+import E2BFileSystem from '@alego/fs-e2b'
 import * as E2BFsInvariant from '../src/invariant.ts'
-import InvariantRegistry from '@deepseek-ai/dsh-invariants'
+import InvariantRegistry from '@alego/invariants'
 import { describe, expect, it, vi } from 'vitest'
 
 interface RemoteNode {
@@ -238,7 +238,7 @@ class FakeRemote {
       ): Promise<{ exitCode: number; stdout: string; stderr: string }> => {
         this.checkAbort(options)
         const home = options?.envs?.HOME
-        expect(home).toMatch(/^\/\.dsh-e2b-control-/)
+        expect(home).toMatch(/^\/\.alego-e2b-control-/)
         expect(options?.envs).toEqual({ HOME: home })
         this.commands.push(command)
         if (this.nextCommandError !== undefined) {
@@ -307,7 +307,7 @@ async function setup(remote = new FakeRemote()): Promise<{ ctx: Context; fs: E2B
   const ctx = new Context()
   const runtime = {
     cwd: '/workspace',
-    runtimeRoot: '/workspace/.dsh-e2b',
+    runtimeRoot: '/workspace/.alego-e2b',
     getSandbox: async () => remote.sandbox,
   } as unknown as E2BRuntime
   ctx.provide('e2b', runtime)
@@ -540,7 +540,7 @@ describe('E2BFileSystem atomic writes and edits', () => {
     const outcome = await fs.writeText(target, 'one\r\ntwo\rthree', { kind: 'createIfAbsent' })
     expect(outcome).toMatchObject({ operation: 'create', before: null, after: 'one\ntwo\rthree' })
     expect(remote.nodes.get('/workspace/new.txt')?.mode).toBe(0o600)
-    expect(remote.nodes.get('/workspace/new.txt')?.metadata?.['dsh-version']).toBeDefined()
+    expect(remote.nodes.get('/workspace/new.txt')?.metadata?.['alego-version']).toBeDefined()
     expect(remote.writeParentModes).toEqual([0o700])
     expect(remote.links).toHaveLength(1)
     const stagingDirectory = posix.dirname(remote.writes[0]!.path)

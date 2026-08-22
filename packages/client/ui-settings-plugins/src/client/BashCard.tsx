@@ -1,6 +1,6 @@
 /** The shell plugin's card: the limits every command the agent runs is bound by. */
 
-import type { InjectFace, PropsLocale, PropsRuntime } from '@deepseek-ai/dsh-client-ui-slots'
+import type { InjectFace, PropsLocale, PropsRuntime } from '@alego/client-ui-slots'
 import { ValueField } from './fields.tsx'
 import { PluginCard } from './PluginCard.tsx'
 import type { BashCardFace } from './bash-card-controller.ts'

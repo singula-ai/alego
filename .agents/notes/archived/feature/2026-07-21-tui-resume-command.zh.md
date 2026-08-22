@@ -15,7 +15,7 @@ Archived: 2026-08-04
 
 `session-query.readSession()` 提供一份脱离运行时的完整日志，并通过恢复流程所用的同一核心回放边界完成验证。TUI 从该日志中折叠出标题和目标状态。候选项加载失败时只影响该行；选择候选项后会复查日志、workspace、路由、当前 agent 的空闲状态，以及针对当前会话和已在本运行时中处于活跃状态的会话的排除规则，避免陈旧列表绕过预检。适配器缺失时会报告会话完整但路由不可用。该预检不会锁定目标，也不会排除其他进程。
 
-预检通过后，TUI 会刷写当前会话，再次确认其 agent 仍处于空闲状态，然后停止终端并以经过验证的 id 和目标 workspace 调用 `TuiRuntime.handoffResume`。已交付的 `dsh` 宿主会释放根应用，并使用带有规范化 `--resume` 参数的 `process.execve` 原子替换当前进程，而不是启动子进程。恢复后的应用发布相同的 `SessionId`；常规回放会还原 transcript（文本记录）、标题、待办事项和持久化目标状态。系统会有意解除目标的激活状态，TUI 则要求用户确认继续或执行 `/goal resume`。
+预检通过后，TUI 会刷写当前会话，再次确认其 agent 仍处于空闲状态，然后停止终端并以经过验证的 id 和目标 workspace 调用 `TuiRuntime.handoffResume`。已交付的 `alego` 宿主会释放根应用，并使用带有规范化 `--resume` 参数的 `process.execve` 原子替换当前进程，而不是启动子进程。恢复后的应用发布相同的 `SessionId`；常规回放会还原 transcript（文本记录）、标题、待办事项和持久化目标状态。系统会有意解除目标的激活状态，TUI 则要求用户确认继续或执行 `/goal resume`。
 
 退出时打印的行是启动器拥有的上下文插槽，而非配置模板；不支持原地交接的宿主会说明会话仍可恢复，而不再给出它无法构造的命令。[由启动器持有的会话身份与退出行](../architecture/2026-07-28-launcher-owned-resume-identity.md)记录了这次所有权迁移，并取代本记录最初交付的 `resumeCommand` 配置键。TUI 仍然绝不执行 shell 文本。
 

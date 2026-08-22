@@ -1,13 +1,13 @@
 /**
  * E2B provider for the filesystem capability seam. Paths, contents, and
  * atomic staging files remain inside the shared remote sandbox.
- * @module @deepseek-ai/dsh-fs-e2b
+ * @module @alego/fs-e2b
  */
 
 import { createHash, randomUUID } from 'node:crypto'
 import { Buffer } from 'node:buffer'
 import { posix } from 'node:path'
-import { FileSystem, FsError, FsTargetKey, FsVersion } from '@deepseek-ai/dsh-fs'
+import { FileSystem, FsError, FsTargetKey, FsVersion } from '@alego/fs'
 import type {
   FsDirEntry,
   FsEditOutcome,
@@ -17,17 +17,17 @@ import type {
   FsTarget,
   FsWriteIntent,
   FsWriteOutcome,
-} from '@deepseek-ai/dsh-fs'
+} from '@alego/fs'
 import {
   CommandExitError,
   e2bControlEnvs,
   FileNotFoundError,
   FileType,
   quoteE2BShellArg,
-} from '@deepseek-ai/dsh-e2b'
-import type { EntryInfo, Sandbox } from '@deepseek-ai/dsh-e2b'
+} from '@alego/e2b'
+import type { EntryInfo, Sandbox } from '@alego/e2b'
 
-const VERSION_METADATA_KEY = 'dsh-version'
+const VERSION_METADATA_KEY = 'alego-version'
 const BINARY_SAMPLE_BYTES = 8192
 const BASE64 = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/
 
@@ -518,7 +518,7 @@ export class E2BFileSystem extends FileSystem {
     const sandbox = await this.ctx.e2b.getSandbox()
     const targetPath = String(target.targetKey)
     const versionId = randomUUID()
-    const stagingDirectory = posix.join(posix.dirname(targetPath), `.dsh-${randomUUID()}.tmp`)
+    const stagingDirectory = posix.join(posix.dirname(targetPath), `.alego-${randomUUID()}.tmp`)
     const temporary = posix.join(stagingDirectory, 'content')
     let stagingDirectoryCreated = false
     try {

@@ -1,6 +1,6 @@
 /**
  * Shared exit-status parse contract: the inverse of the `[exit code: N]` /
- * `[killed by signal: X]` markers `dsh-tool-bash` and `dsh-tool-pwsh` append.
+ * `[killed by signal: X]` markers `alego-tool-bash` and `alego-tool-pwsh` append.
  * Both tools' presenter suites round-trip their own renderers through this
  * parse; this spec pins the parse's own edges (marker-like output, body
  * slicing) once, at the seam that owns it.

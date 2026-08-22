@@ -12,7 +12,7 @@ Status: implemented
 
 ## 决策
 
-`@deepseek-ai/dsh-time-context` 是位于 `packages/context/time-context/`、需要显式启用的函数插件。默认组合不启用其披露内容与 token 成本；Schedule Web overlay 会挂载它，使模型能够按附加到当前请求的浏览器时区解释未明确限定时区的日期和时间。
+`@alego/time-context` 是位于 `packages/context/time-context/`、需要显式启用的函数插件。默认组合不启用其披露内容与 token 成本；Schedule Web overlay 会挂载它，使模型能够按附加到当前请求的浏览器时区解释未明确限定时区的日期和时间。
 
 该插件会前置一个 `agent/pre-step` 监听器，并先行委托下游。当下游决策进入步骤且需要生成读数时，插件会把该决策的最终消息与开放轮次中已有的持久用户消息合并，从确切的 user-rpc 来源派生浏览器时区来源信息，并向该决策追加一条读数。决策被拒绝、监听器失败或信号已经中止时，不会记录任何内容。在当前批次之后被认领的 steering（中途引导）仍归属于普通的下一步骤，并在该步骤进入时获得新读数。
 

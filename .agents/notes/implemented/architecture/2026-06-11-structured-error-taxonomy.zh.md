@@ -10,9 +10,9 @@ Status: implemented
 
 ## 决策
 
-在 `dsh-llm`（叶子包，所有其他包都已依赖它，不引入新的依赖边）中引入一个 `HarnessError extends Error` 基类：稳定的 `code`（与 `message` 分离）、通过 `ErrorOptions` 进行 `cause` 链接、`name` 默认为子类名。`isHarnessError` 在 seam 处做类型收窄。
+在 `alego-llm`（叶子包，所有其他包都已依赖它，不引入新的依赖边）中引入一个 `HarnessError extends Error` 基类：稳定的 `code`（与 `message` 分离）、通过 `ErrorOptions` 进行 `cause` 链接、`name` 默认为子类名。`isHarnessError` 在 seam 处做类型收窄。
 
-- `LlmError` 和 `ToolArgsError`（dsh-tools）继承该基类，保留各自既有的 code。
+- `LlmError` 和 `ToolArgsError`（alego-tools）继承该基类，保留各自既有的 code。
 - `ToolExecutionResult` 新增可选字段 `error: { name, code }`，在注册表的 catch 中当抛出值为 `HarnessError` 时填充。agent loop 将其转发到 `tool/result` 会话事件（该事件也新增了同一可选字段），使结构化的失败信息保留在日志中，供重试/沙箱插件和回放使用。面向模型的文本块保持不变。
 - agent loop 的 `toError` 将非 Error 的 throw 包装为 `HarnessError`（`code: 'UNKNOWN'`，原始值作为 `cause` 链接），而非裸 `Error`；这样即使是不规范的 throw 也能携带可路由的 code 进入会话的 `error` 事件（该事件此前已暴露 `code`）。
 

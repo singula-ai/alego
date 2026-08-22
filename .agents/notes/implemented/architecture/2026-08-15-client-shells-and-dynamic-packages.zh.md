@@ -21,10 +21,10 @@ Client npm 依赖区段描述安装和开发关系，但不能可靠描述 bundl
 | 层 | 成员 | 职责 | 构建与加载形态 |
 | --- | --- | --- | --- |
 | Web 编译壳 | `apps/web` | 拥有 `index.html`、Vite 配置、dist chunk 和静态资源 | 从已构建 package export 组装最终浏览器产物 |
-| 启动内核 | `packages/client/web` | 拥有纯 DOM 启动页、模块系统接线、Cordis settle 和 renderer handoff | `staticLinked` `lib/index.js`；无 `dsh.client` row |
+| 启动内核 | `packages/client/web` | 拥有纯 DOM 启动页、模块系统接线、Cordis settle 和 renderer handoff | `staticLinked` `lib/index.js`；无 `alego.client` row |
 | 静态装配库 | Cordis、`ui-primitives`、`ui-slots` | 提供共享模块身份和直接实体 API | ESM `lib/index.js`，由 Vite 合并拆分；不是 Loader entry |
 | 模块自举包 | `packages/client/modules` | 提供 client 模块表及其 Cordis wrapper | 带一个普通 `lib/client.js` 的动态包；host 提前送达其 factory |
-| 动态 client 包 | runtime、`ui-renderer`、主题和功能插件 | 通过 Cordis service、slot 和 effect 参与应用 | 声明 `dsh.client`，产出自注册 `lib/client.js`，并保留 host graph entry |
+| 动态 client 包 | runtime、`ui-renderer`、主题和功能插件 | 通过 Cordis service、slot 和 effect 参与应用 | 声明 `alego.client`，产出自注册 `lib/client.js`，并保留 host graph entry |
 
 `packages/client/web` 把 Cordis 保持为 matching peer 与开发依赖，并把 modules 和静态 UI 包作为开发期编译输入。`apps/web` 消费已构建 package export，不通过 alias 读取 workspace 源码。
 
@@ -32,14 +32,14 @@ Client npm 依赖区段描述安装和开发关系，但不能可靠描述 bundl
 
 ### 共享模块请求
 
-动态浏览器 bundle 会隐式 external 统一基座：`PLATFORM_MODULES` 命名由外壳播种的 React、Cordis 和静态 UI 身份，`PRELOADED_CLIENT_EXTERNALS` 命名由 HTML parser 预载的 runtime 动态身份。包只在精确请求基座外实体时使用 `dsh.client.external`。纯类型 import 会被擦除，不产生请求；允许的第三方实现库保留为 bundle 私有内容。
+动态浏览器 bundle 会隐式 external 统一基座：`PLATFORM_MODULES` 命名由外壳播种的 React、Cordis 和静态 UI 身份，`PRELOADED_CLIENT_EXTERNALS` 命名由 HTML parser 预载的 runtime 动态身份。包只在精确请求基座外实体时使用 `alego.client.external`。纯类型 import 会被擦除，不产生请求；允许的第三方实现库保留为 bundle 私有内容。
 
 请求只有两种提供方：
 
 1. 请求所命名的 dynamic package row；末尾 `/client` 会别名到该 package row。
 2. 外壳静态模块表中的精确 key。
 
-不存在通用 `dsh.client.provide` 别名机制。动态 row 和静态 key 已穷尽实际提供方，Cordis service provide 与此相互独立。图组合会拒绝畸形或缺失请求、自请求和同步请求环，并把动态提供方排在消费者之前。`ClientModuleSystem.import()` 与 `prefetch()` 会在消费者能够物化前递归登记这些动态提供方的 factory，因此网络时序无法破坏同步请求图。
+不存在通用 `alego.client.provide` 别名机制。动态 row 和静态 key 已穷尽实际提供方，Cordis service provide 与此相互独立。图组合会拒绝畸形或缺失请求、自请求和同步请求环，并把动态提供方排在消费者之前。`ClientModuleSystem.import()` 与 `prefetch()` 会在消费者能够物化前递归登记这些动态提供方的 factory，因此网络时序无法破坏同步请求图。
 
 ### Parser 预载与 React 移交
 
@@ -48,7 +48,7 @@ Modules Node 半按以下顺序向实际返回的 HTML 注入启动协议：
 1. 以 queue 模式安装 `window.__ModuleLoader__`，包含 `pendingQueue`、`load()` 与 `create()`。
 2. 以阻塞式 classic script 执行 modules graph row 的普通 `lib/client.js`。
 3. 以相同方式执行 runtime 的普通 `lib/client.js`。
-4. 赋值 `window.__DSH_BOOT__`。
+4. 赋值 `window.__ALEGO_BOOT__`。
 5. 执行 Vite 主模块。
 
 两个提前执行的脚本都只注册 factory。启动内核把原始图与外壳 seed 传给 `__ModuleLoader__.create()`。Facade 移除 modules registration，用拒绝全部 external 的 `require` 函数将其物化，再调用其 `createClientModuleSystem` 导出。Modules bundle 解析图、构造 `ClientModuleSystem`、把自身 exports 缓存为 modules row，并在模块闭包中保留该系统。构造过程先把同一 facade 切换到 live 模式，再排空 runtime 的 pending factory。因此 modules client face 必须满足零 runtime external 的自举要求。
@@ -57,7 +57,7 @@ Modules Node 半按以下顺序向实际返回的 HTML 注入启动协议：
 
 ### 依赖声明
 
-每个 client 包都把 Cordis 保持为 matching `peerDependencies` 和 `devDependencies`。动态包若 import、re-export、augment 内部动态包，或在 `dsh.client.inject` 中命名它，就把该包保持为 matching peer 与开发依赖。静态 client 输入和 React 模块对动态包只是开发依赖，因为外壳提供其运行期身份。
+每个 client 包都把 Cordis 保持为 matching `peerDependencies` 和 `devDependencies`。动态包若 import、re-export、augment 内部动态包，或在 `alego.client.inject` 中命名它，就把该包保持为 matching peer 与开发依赖。静态 client 输入和 React 模块对动态包只是开发依赖，因为外壳提供其运行期身份。
 
 普通安装库仍放在 `dependencies`：动态构建可以内联私有实现，而 `staticLinked` 库会保留 bare import 交给最终宿主。各构建 face 独立决定 external，不由 npm 区段推导。发布文件列表覆盖产物实际可达的每个运行期入口、相对资产和声明文件。
 

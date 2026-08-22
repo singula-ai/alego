@@ -3,11 +3,11 @@
 // broken observer never fails a committed write), and the YAML document
 // editor's isolation between entries.
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
+import { Context } from '@alego/cordis'
 import { mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { credentialKey, credentialRef } from '@deepseek-ai/dsh-credentials'
+import { credentialKey, credentialRef } from '@alego/credentials'
 import { LocalCredentialProvider } from '../src/index.ts'
 
 /** Credential documents are seeded owner-only, exactly as the provider creates them. */
@@ -15,9 +15,9 @@ function writeCredentials(file: string, text: string): Promise<void> {
   return writeFile(file, text, { mode: 0o600 })
 }
 
-const ALPHA = credentialRef('DSH_REVIEW_ALPHA')
-const BETA = credentialRef('DSH_REVIEW_BETA')
-const INNER = credentialRef('DSH_REVIEW_INNER')
+const ALPHA = credentialRef('ALEGO_REVIEW_ALPHA')
+const BETA = credentialRef('ALEGO_REVIEW_BETA')
+const INNER = credentialRef('ALEGO_REVIEW_INNER')
 
 const cleanups: Array<() => Promise<void>> = []
 
@@ -26,7 +26,7 @@ afterEach(async () => {
 })
 
 async function tempDir(): Promise<string> {
-  const dir = await mkdtemp(join(tmpdir(), 'dsh-cred-review-'))
+  const dir = await mkdtemp(join(tmpdir(), 'alego-cred-review-'))
   cleanups.push(() => rm(dir, { recursive: true, force: true }))
   return dir
 }
@@ -159,13 +159,13 @@ describe('document editor', () => {
   it('leaves a sibling multi-line value untouched while patching one entry', async () => {
     const dir = await tempDir()
     const path = join(dir, '.credentials.yaml')
-    const wrapped = `version: 1\nrefs:\n  DSH_REVIEW_WRAPPED: |-\n    line1\n    line2\n  ${ALPHA}: a\n`
+    const wrapped = `version: 1\nrefs:\n  ALEGO_REVIEW_WRAPPED: |-\n    line1\n    line2\n  ${ALPHA}: a\n`
     await writeCredentials(path, wrapped)
     const ctx = await boot({ path, watch: false })
     await ctx.credentials.set(ALPHA, 'b')
     expect(await readFile(path, 'utf8'))
-      .toBe(`version: 1\nrefs:\n  DSH_REVIEW_WRAPPED: |-\n    line1\n    line2\n  ${ALPHA}: b\n`)
-    expect(await ctx.credentials.resolve(credentialRef('DSH_REVIEW_WRAPPED')))
+      .toBe(`version: 1\nrefs:\n  ALEGO_REVIEW_WRAPPED: |-\n    line1\n    line2\n  ${ALPHA}: b\n`)
+    expect(await ctx.credentials.resolve(credentialRef('ALEGO_REVIEW_WRAPPED')))
       .toEqual({ value: 'line1\nline2', source: 'file' })
   })
 

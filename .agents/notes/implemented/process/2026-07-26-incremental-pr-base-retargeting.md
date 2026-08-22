@@ -12,7 +12,7 @@ A PR base can advance while its current tip is being merged into the PR branch. 
 
 When merge-forward is chosen, each observed base tip gets its own merge checkpoint. If the base advances during the work, finish and validate the merge already in progress, commit it, and push it when the task authorizes a push. Only then fetch and merge the newer base in a separate merge commit. Do not abandon or rewrite a checkpoint within that merge-forward sequence.
 
-The [native-stack and optional-rebase decision](2026-08-02-native-github-stacks-and-optional-rebases.md) also permits a lease-protected rebase for standalone or stacked PRs, including after review. This note owns the merge-forward path only. The [stacked-PR landing skill](../../../skills/dsh-merging-stacked-prs/SKILL.md) selects either history under the root [AGENTS.md](../../../../AGENTS.md), and the [stack review guide](../../../../docs/cookbook/responding-to-pr-review-on-a-stack.md) owns propagating fixes through dependent layers.
+The [native-stack and optional-rebase decision](2026-08-02-native-github-stacks-and-optional-rebases.md) also permits a lease-protected rebase for standalone or stacked PRs, including after review. This note owns the merge-forward path only. The [stacked-PR landing skill](../../../skills/alego-merging-stacked-prs/SKILL.md) selects either history under the root [AGENTS.md](../../../../AGENTS.md), and the [stack review guide](../../../../docs/cookbook/responding-to-pr-review-on-a-stack.md) owns propagating fixes through dependent layers.
 
 ## Alternatives considered
 

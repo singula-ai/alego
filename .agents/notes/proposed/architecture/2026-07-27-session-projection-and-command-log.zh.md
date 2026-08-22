@@ -22,7 +22,7 @@ Status: proposed
 
 携带状态的日志事件必须携带变更后的完整状态，绝不携带裸增量。三个领域现状已然合规：`todo/write` 是整表快照，`plan/mode` 是一个完整布尔值，`goal/change` 元数据是完整的 `GoalSnapshot`（或一个全量值清除墓碑）。该规则让每个领域的状态转移始终足够廉价（框架逐事件驱动它），让值在协议层自描述，并让任何消费方都可以把最近推送的值当作最终值——靠 seq 比较获得乱序免疫，且自愈：漏掉的更新会被下一次更新纠正。
 
-### host 侧投影注册表（`dsh-session-projection`，新包）
+### host 侧投影注册表（`alego-session-projection`，新包）
 
 一个轻量的 Service Definition 包：merge-extensible 的 host 状态与客户端视图类型表、注册表服务，以及针对持久状态和客户端值的 zod 校验。能力 seam 的角色如下：领域 host 插件提供投影单元，载体消费这些单元，两侧互不相识。
 
@@ -138,7 +138,7 @@ host 侧命令执行器（`packages/interaction/commands`）在调用处理器�
 
 基础设施先行；三个在途 PR（Pull Request）原样不动，待基座落地后重新对接（它们的迁移映射即指南）：
 
-1. **host 基座**：`dsh-session-projection`（单元约定、主动驱动、水位线缓存）+ api-proxy 的 projections 块 + `session/projection` 推送帧。零领域注册也可合入（此时块与帧直接缺席）。
+1. **host 基座**：`alego-session-projection`（单元约定、主动驱动、水位线缓存）+ api-proxy 的 projections 块 + `session/projection` 推送帧。零领域注册也可合入（此时块与帧直接缺席）。
 2. **客户端基座**：通用值仓 + `useProjection` 席位；下线按领域的 cell 机制，并在标题单元注册后一并下线 `session/title` 帧与标题快照表。帧的形状依赖 1（在此之前 fixture（测试前置数据）喂合成帧）。
 3. **命令通道**：两个事件、执行器落日志、通用节点 + keyed slot、通知通道下线、`{matched, commandId?}` 准入。与 1 并行。
 4. **领域重新对接**（在 1+2 之后）：先 todo（单元进 `tool-todo`，删掉搭载字段），再 plan（双事件单元、RPC 下线、开关改发 `/plan`），最后 goal（`goal/change` 单元，删掉 `goals.get`，把六个 `Session` 方法移入领域插件的 inject）。

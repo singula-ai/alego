@@ -53,10 +53,10 @@ jobs:
         if: ${{ github.event_name != 'pull_request_review' || github.event.review.state == 'changes_requested' }}
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
         with:
-          client-id: ${{ vars.DSH_ISSUE_APP_CLIENT_ID }}
-          private-key: ${{ secrets.DSH_ISSUE_APP_PRIVATE_KEY }}
-          owner: deepseek-harness
-          repositories: deepseek-harness
+          client-id: ${{ vars.ALEGO_ISSUE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.ALEGO_ISSUE_APP_PRIVATE_KEY }}
+          owner: alego
+          repositories: alego
       - name: Handle repository event
         if: ${{ github.event_name != 'pull_request_review' || github.event.review.state == 'changes_requested' }}
         env:

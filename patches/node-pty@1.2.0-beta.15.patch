@@ -11,7 +11,7 @@ index 6966d24..18f1d25 100644
 -helperPath = helperPath.replace('app.asar', 'app.asar.unpacked');
 -helperPath = helperPath.replace('node_modules.asar', 'node_modules.asar.unpacked');
 +// A current external embedded-runtime consumer supplies a non-sibling helper.
-+var helperPath = process.env.DSH_NODE_PTY_SPAWN_HELPER;
++var helperPath = process.env.ALEGO_NODE_PTY_SPAWN_HELPER;
 +if (helperPath) {
 +    helperPath = path.resolve(helperPath);
 +}

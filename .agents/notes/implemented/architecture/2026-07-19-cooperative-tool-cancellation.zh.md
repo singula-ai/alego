@@ -28,7 +28,7 @@ Status: implemented
 
 ### 取消代码记录是否发生过调度
 
-`dsh-tools` 导出 `TOOL_ABORTED = 'ABORTED'` 和 `TOOL_ABORTED_BEFORE_DISPATCH = 'ABORTED_BEFORE_DISPATCH'`。注册表在调用 `ToolDefinition.execute()` 的前一刻记录工具主体已调用。
+`alego-tools` 导出 `TOOL_ABORTED = 'ABORTED'` 和 `TOOL_ABORTED_BEFORE_DISPATCH = 'ABORTED_BEFORE_DISPATCH'`。注册表在调用 `ToolDefinition.execute()` 的前一刻记录工具主体已调用。
 
 `ABORTED_BEFORE_DISPATCH` 携带 `{ name: 'AbortError' }` 和模型可见文本 `Error: tool call aborted before dispatch`。凡取消阻止工具主体调用时都使用该结果，包括进入时已中止、前置策略或审批期间取消、包装层信号已中止、包装层在委托前返回的成功结果被调用方取消抢先，以及轮次取消后 agent loop（智能体循环）跳过的同批调用。
 

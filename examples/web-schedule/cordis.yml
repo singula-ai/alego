@@ -3,7 +3,7 @@
 
 - insert:
     - id: time-context
-      name: '@deepseek-ai/dsh-time-context'
+      name: '@alego/time-context'
 
     - id: schedule
-      name: '@deepseek-ai/dsh-schedule'
+      name: '@alego/schedule'

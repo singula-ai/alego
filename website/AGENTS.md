@@ -1,6 +1,6 @@
 # AGENTS.md — Documentation website adapter
 
-Follow the [root instructions](../AGENTS.md), the [documentation standard](../docs/AGENTS.md), and the [documentation-site sync workflow](../.agents/skills/dsh-doc-site-sync/SKILL.md).
+Follow the [root instructions](../AGENTS.md), the [documentation standard](../docs/AGENTS.md), and the [documentation-site sync workflow](../.agents/skills/alego-doc-site-sync/SKILL.md).
 
 ## Keep documentation content out of this tree
 

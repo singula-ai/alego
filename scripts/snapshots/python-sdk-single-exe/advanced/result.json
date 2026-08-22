@@ -2848,7 +2848,7 @@
             ],
             "source": {
               "kind": "plugin",
-              "plugin": "@deepseek-ai/dsh-system-prompt",
+              "plugin": "@alego/system-prompt",
               "form": "snapshot",
               "sections": [
                 {
@@ -3552,7 +3552,7 @@
             ],
             "source": {
               "kind": "plugin",
-              "plugin": "@deepseek-ai/dsh-system-prompt",
+              "plugin": "@alego/system-prompt",
               "form": "snapshot",
               "sections": [
                 {

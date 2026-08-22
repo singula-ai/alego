@@ -20,7 +20,7 @@ implemented Agent Note 作为当前决策记录持续维护，因此活跃记录
 
 [`verify-archived-agent-notes`](../../../../scripts/verify-archived-agent-notes.ts) 负责维护冻结边界。它只接受封闭集合中的 Agent Note 类别，要求三个配对文件完整、状态为 implemented，且归档日期有效并互相匹配；它还会用双方当前的 Git blob hash 校验伴随记录，并在仅追加的 manifest（元数据清单）中按路径和 SHA-256 内容 hash 封存每项产物。其 `--write` 模式会先证明每条现有封存记录对应的内容都未改变，再仅追加新归档的产物。拉取请求 CI 会提供可信的基准 SHA，并在运行校验器前检出完整历史，因此复用运行器上的浅克隆检出无法漏掉基线 manifest。普通的 Agent Note 格式、翻译配对、换行、Markdown 链接、包路径、Mermaid、文档 TypeScript 和类型等价门禁都排除归档源文件，因此这些门禁持续演进的标准不会产生修改历史记录的压力。
 
-[`dsh-archive-agent-notes`](../../../skills/dsh-archive-agent-notes/SKILL.md) 工作流负责分类判断。它要求逐份 Agent Note 做语义审计，使用代码和当前文档识别现行权威依据，仅把字数作为初步筛选手段，收录经过校准的保留、归档和删除示例，并报告真正处于边界的结果，以供评审。
+[`alego-archive-agent-notes`](../../../skills/alego-archive-agent-notes/SKILL.md) 工作流负责分类判断。它要求逐份 Agent Note 做语义审计，使用代码和当前文档识别现行权威依据，仅把字数作为初步筛选手段，收录经过校准的保留、归档和删除示例，并报告真正处于边界的结果，以供评审。
 
 在编写新的 Agent Note 时就检查取代关系，而不是推迟到日后清理记录集合时再处理。作者会将新记录与涵盖同一项决策、机制或被否决备选方案的活跃记录进行比较，并逐项判定属于完全取代还是部分取代。符合条件的 implemented Agent Note 三文件配对会在同一个拉取请求中归档；仅部分被取代的记录，以及仍保有独立价值的决策依据，会继续作为活跃记录保留并与新记录互相链接，而匹配到的 proposed 和 rejected Agent Note 则遵循各自的生命周期规则。
 

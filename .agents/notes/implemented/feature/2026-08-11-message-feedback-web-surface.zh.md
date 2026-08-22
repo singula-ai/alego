@@ -22,7 +22,7 @@ Status: implemented
 
 `extraActions` 是一个 `ReactNode` prop 而不是第二个 render-slot 洞，因为 `MessageIconActions` 是用户消息与 assistant 消息共享的外壳：由 assistant 一侧解析槽位并把结果向下传递，用户路径则对这个它永远不该渲染的槽位保持无感。
 
-**per-session controller 中的逐条 CAS。** `@deepseek-ai/dsh-client-ui-message-feedback` 为每个 Session 持有一个 `MessageFeedbackController`，以 `MessageId` 为键存入 map。一次 `list` 为该 Session 转录中的所有控件播种。每次 mutation 发送该 controller 最后观察到的版本作为 `ifVersion`——当它不知道任何条目时为 `null`，这正是 Host 的「必须不存在」前置条件。
+**per-session controller 中的逐条 CAS。** `@alego/client-ui-message-feedback` 为每个 Session 持有一个 `MessageFeedbackController`，以 `MessageId` 为键存入 map。一次 `list` 为该 Session 转录中的所有控件播种。每次 mutation 发送该 controller 最后观察到的版本作为 `ifVersion`——当它不知道任何条目时为 `null`，这正是 Host 的「必须不存在」前置条件。
 
 冲突路径是与 #1010 分歧最大的地方。`MessageFeedbackVersionConflict` 携带权威的 `current` 条目（或 `null`），因此竞争失败方直接从回复本身收敛；#1010 对每次冲突都以一次盲目的全量刷新作答。报告 `current: null` 的冲突会删除本地条目，这就是在另一个标签页中被移除的评价在此处消失的方式。mutation 在 per-Session 的尾部串行化，因此排队中的操作总是与已提交的版本比较，而不是与点击落下那一刻读到的版本比较。
 
@@ -30,7 +30,7 @@ list 读取被推迟到首次 hover 或 focus，而不是在 mount 时触发，�
 
 切换语义让两个动词保持诚实：再次点击已记录的评价调用 `delete`，切换到另一侧调用 `put` 并携带已有备注，而对没有已知条目的消息执行清除会直接返回成功且不发起调用，因为它已处于被请求的状态。
 
-**Remote 挂载。** `@deepseek-ai/dsh-api-remotes` 现在把 `messageFeedbackRemote` 与 `goalsRemote` 并列挂载，并以相反顺序组合两个 disposer。生成的 `./remote` 产物在 #2217 的包导出中已存在，因此不需要 codegen 改动；客户端调用 `ctx.remote.messageFeedback`，从不接触传输层。业务结果以普通的 tagged union 穿过该边界——gateway 只在传输失败时抛出——因此 controller 对 `ok` 做模式匹配，并把抛出翻译为控件已经在渲染的同一种结算结果形状。
+**Remote 挂载。** `@alego/api-remotes` 现在把 `messageFeedbackRemote` 与 `goalsRemote` 并列挂载，并以相反顺序组合两个 disposer。生成的 `./remote` 产物在 #2217 的包导出中已存在，因此不需要 codegen 改动；客户端调用 `ctx.remote.messageFeedback`，从不接触传输层。业务结果以普通的 tagged union 穿过该边界——gateway 只在传输失败时抛出——因此 controller 对 `ok` 做模式匹配，并把抛出翻译为控件已经在渲染的同一种结算结果形状。
 
 ## 考虑过的替代方案
 

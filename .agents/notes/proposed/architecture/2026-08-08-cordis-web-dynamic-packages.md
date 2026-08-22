@@ -6,7 +6,7 @@ English | [中文](2026-08-08-cordis-web-dynamic-packages.zh.md)
 
 ## Problem
 
-The model needs to extend the current DSH process temporarily without modifying repository source, rebuilding the application, or refreshing the browser. An extension may run in the Host Node.js process, in a Client browser page, or as one plugin whose Host half retrieves data and whose Client half presents it.
+The model needs to extend the current ALEGO process temporarily without modifying repository source, rebuilding the application, or refreshing the browser. An extension may run in the Host Node.js process, in a Client browser page, or as one plugin whose Host half retrieves data and whose Client half presents it.
 
 This capability cannot be limited to “execute some code.” Before writing code, the model needs to discover the Services, Events, Builtins, Slots, and theme tokens available on both platforms. The user needs to preview the code before deciding whether Client code may enter the page. A single plugin needs immutable versions, retries after failure, and rollback. Asynchronous runtime errors need to return to the model instead of remaining only in server logs or the browser console.
 
@@ -31,10 +31,10 @@ Four packages under `packages/self-modification/` implement the dynamic runtime:
 
 | Package | npm package | Responsibility |
 | --- | --- | --- |
-| `tool-cordis` | `@deepseek-ai/dsh-tool-cordis` | Registers the System Prompt, seven model-facing Tools, Host Inspect Providers, `@pluginId` context injection, and Tool presentation metadata |
-| `cordis-host-runner` | `@deepseek-ai/dsh-cordis-host-runner` | Stores the authoritative Registry, allocates IDs, executes Host code, and manages versions, approvals, Runs, private handlers, Inspect routing, and model feedback |
-| `cordis-client-runner` | `@deepseek-ai/dsh-cordis-client-runner` | Synchronizes Inspect manifests in the browser, orchestrates approved Host→Client activation, evaluates Client code, and manages the Guard, Loader/Fiber, timer, styles, and teardown |
-| `ui-cordis` | `@deepseek-ai/dsh-client-ui-cordis` | Renders Define/Run Tool cards, the global Cordis panel, approval controls, version selection, runtime status, and Package-specific business views |
+| `tool-cordis` | `@alego/tool-cordis` | Registers the System Prompt, seven model-facing Tools, Host Inspect Providers, `@pluginId` context injection, and Tool presentation metadata |
+| `cordis-host-runner` | `@alego/cordis-host-runner` | Stores the authoritative Registry, allocates IDs, executes Host code, and manages versions, approvals, Runs, private handlers, Inspect routing, and model feedback |
+| `cordis-client-runner` | `@alego/cordis-client-runner` | Synchronizes Inspect manifests in the browser, orchestrates approved Host→Client activation, evaluates Client code, and manages the Guard, Loader/Fiber, timer, styles, and teardown |
+| `ui-cordis` | `@alego/client-ui-cordis` | Renders Define/Run Tool cards, the global Cordis panel, approval controls, version selection, runtime status, and Package-specific business views |
 
 `tool-cordis` depends only on the Host Runner's in-process service and does not import the Client implementation. `ui-cordis` consumes only the Client Runner face and Client-safe wire types and does not import the Host implementation. Existing generated Remote APIs and forwarded events connect Host and Client runtime control; the gateway owns no dynamic Plugin domain logic.
 
@@ -69,7 +69,7 @@ If an update target fails, the old physical Run is not restarted automatically. 
 
 ### Host authority and persistence
 
-`DynamicCordisRunnerService` and its internal Registry are the sole authority in the current DSH process. They store:
+`DynamicCordisRunnerService` and its internal Registry are the sole authority in the current ALEGO process. They store:
 
 - each Plugin's Session ownership and immutable Package set;
 - `currentPackageId`, `nextPackageId`, the physical Run, and `latestRun`;
@@ -151,7 +151,7 @@ Host and Client `timer` are same-named Cordis Services with the same interface, 
 
 The current Fiber owns every registration and reversible side effect. Event listeners, Services, Tools, handlers, timers, Slots, styles, and theme overrides register through `ctx.effect()`, `ctx.on()`, or official APIs that return disposers. Stopping, updating, failure rollback, or undefining tears down both halves' contributions. Theme overrides are layered by source and return a disposer so unloading restores the previous theme values.
 
-Host, DSH, Cordis, and their Service instances, Event payloads, Slot props, Session/Conversation Snapshots, Tool state, and other runtime objects are internal live data. Dynamic code must not run `JSON.stringify`, `structuredClone`, recursive enumeration, full copying, or whole-object display on these objects or their descendants. It reads only leaf fields needed by the current task and constructs minimal owned data without Host references.
+Host, ALEGO, Cordis, and their Service instances, Event payloads, Slot props, Session/Conversation Snapshots, Tool state, and other runtime objects are internal live data. Dynamic code must not run `JSON.stringify`, `structuredClone`, recursive enumeration, full copying, or whole-object display on these objects or their descendants. It reads only leaf fields needed by the current task and constructs minimal owned data without Host references.
 
 ### Inspect Providers and Catalogs
 

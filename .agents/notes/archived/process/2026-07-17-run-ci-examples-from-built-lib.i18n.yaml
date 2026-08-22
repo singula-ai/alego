@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write
-2026-07-17-run-ci-examples-from-built-lib.md: 3063bdcc8a170713151229a2a4cee22a91f1e8a9
-2026-07-17-run-ci-examples-from-built-lib.zh.md: b70367c1d25f4942043a60458b0197288c8094ba
+2026-07-17-run-ci-examples-from-built-lib.md: 50006861af58aad0bc3f0ee40c963539104f4299
+2026-07-17-run-ci-examples-from-built-lib.zh.md: 4ac3f353c1db9ea941d825e8016dc7065ce825f8

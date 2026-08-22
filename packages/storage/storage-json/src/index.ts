@@ -2,15 +2,15 @@
  * JSON storage backend: one human-readable file per unit under a configured
  * root, published by atomic whole-file rewrite. Registers as backend `json`
  * on the storage hub.
- * @module @deepseek-ai/dsh-storage-json
+ * @module @alego/storage-json
  */
 
 import { mkdir } from 'node:fs/promises'
 import { join } from 'node:path'
-import type { Context } from '@deepseek-ai/cordis'
-import z from '@deepseek-ai/schemastery'
-import { StorageError, UNIT_NAME_RE, storageBackendServiceKey } from '@deepseek-ai/dsh-storage'
-import type { KvFacet, KvUnit, KvUnitDescriptor, StorageBackend } from '@deepseek-ai/dsh-storage'
+import type { Context } from '@alego/cordis'
+import z from '@alego/schemastery'
+import { StorageError, UNIT_NAME_RE, storageBackendServiceKey } from '@alego/storage'
+import type { KvFacet, KvUnit, KvUnitDescriptor, StorageBackend } from '@alego/storage'
 import { openJsonUnit } from './unit.ts'
 
 /** Cordis plugin name. */

@@ -1,11 +1,11 @@
 /** Host BFF policy for resolving Remote Agent and Session identities. */
 
-import type { Context } from '@deepseek-ai/cordis'
-import type { Agent, AgentOptions, AgentSetup } from '@deepseek-ai/dsh-agent'
-import type { Session, SessionEvent, SessionHeader, SessionId } from '@deepseek-ai/dsh-session'
-import type {} from '@deepseek-ai/dsh-session-persistence'
-import { TypertLookupFailure } from '@deepseek-ai/dsh-typert-protocol'
-import type {} from '@deepseek-ai/dsh-typert-registry'
+import type { Context } from '@alego/cordis'
+import type { Agent, AgentOptions, AgentSetup } from '@alego/agent'
+import type { Session, SessionEvent, SessionHeader, SessionId } from '@alego/session'
+import type {} from '@alego/session-persistence'
+import { TypertLookupFailure } from '@alego/typert-protocol'
+import type {} from '@alego/typert-registry'
 
 /** Caller-facing failures preserved by the Gateway's RPC adapter. */
 export type ApiRemoteLookupError =
@@ -97,7 +97,7 @@ export async function inspectApiRemoteSession(
 ): Promise<{ meta: SessionHeader; events: SessionEvent[] }> {
   const persistence = ctx.get('sessionPersistence')
   if (persistence === undefined) {
-    throw new Error('session persistence is not configured (load a dsh-session-persistence backend)')
+    throw new Error('session persistence is not configured (load an alego-session-persistence backend)')
   }
   const meta = (await persistence.list()).find(candidate => candidate.id === sessionId)
   if (meta === undefined || meta.cwd === undefined) {

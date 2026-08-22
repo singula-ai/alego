@@ -1,4 +1,4 @@
-# Agent Note: 由 dsh-llm 拥有的提供方无关内容块词汇
+# Agent Note: 由 alego-llm 拥有的提供方无关内容块词汇
 
 Status: implemented
 

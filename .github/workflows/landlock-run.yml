@@ -34,7 +34,7 @@ permissions:
 env:
   # CI runs must never report to the production telemetry endpoint baked
   # into apps/cli/cordis.yml (AppCLIEntry disables the row when set).
-  DSH_TELEMETRY_DISABLED: '1'
+  ALEGO_TELEMETRY_DISABLED: '1'
 
 defaults:
   run:
@@ -73,7 +73,7 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
-        run: pnpm install --filter @deepseek-ai/node-addon-landlock-run-workspace... --frozen-lockfile
+        run: pnpm install --filter @alego/node-addon-landlock-run-workspace... --frozen-lockfile
 
       - name: Install musl toolchain
         run: |
@@ -124,7 +124,7 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
-        run: pnpm install --filter @deepseek-ai/node-addon-landlock-run-workspace... --frozen-lockfile
+        run: pnpm install --filter @alego/node-addon-landlock-run-workspace... --frozen-lockfile
 
       - name: Build TypeScript
         run: pnpm build:ts

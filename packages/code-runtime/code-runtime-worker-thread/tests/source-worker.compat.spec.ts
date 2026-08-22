@@ -11,7 +11,7 @@ import { decodeWorkerJson } from '../src/worker-json.ts'
  * `lib/` artifacts happen to exist.
  */
 it('boots the source worker without workspace package outputs', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'dsh-code-source-worker-'))
+  const directory = await mkdtemp(join(tmpdir(), 'alego-code-source-worker-'))
   let worker: Worker | undefined
   try {
     const files = ['worker.ts', 'bootstrap.ts', 'protocol.ts', 'worker-json.ts', 'output-json.ts']

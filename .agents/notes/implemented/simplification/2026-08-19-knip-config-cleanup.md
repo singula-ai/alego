@@ -20,7 +20,7 @@ The change is a deletion only: `knip.json` went from 790 to 655 lines with no be
 ## Alternatives considered
 
 - Fold `zod` and other workspace-level `ignoreDependencies` up to the root. Rejected: the root `ignoreDependencies` is a repository-wide fallback, and these exemptions are deliberately workspace-scoped (the README of `cordis-host-runner` records why `src` cannot import the flagged dependency while the generated TypeRT face in `lib` needs it). Widening scope would mask a genuinely misplaced dependency in any future package.
-- Upgrade knip to 6.18+ to get an automatic stale-workspace check. Deferred: 6.32.2 (latest at the time) re-flags many `@deepseek-ai/...` test dependencies as unused, i.e. it changes analysis semantics, not just adds hints. That is a separate dependency-upgrade decision with its own CI blast radius, not part of this cleanup.
+- Upgrade knip to 6.18+ to get an automatic stale-workspace check. Deferred: 6.32.2 (latest at the time) re-flags many `@alego/...` test dependencies as unused, i.e. it changes analysis semantics, not just adds hints. That is a separate dependency-upgrade decision with its own CI blast radius, not part of this cleanup.
 - Keep the entries as documentation of intent. Rejected: an entry identical to the glob it sits under documents nothing beyond the glob itself, and a key naming an absent package actively misleads.
 
 ## Consequences

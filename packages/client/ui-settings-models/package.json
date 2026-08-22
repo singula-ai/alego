@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/dsh-client-ui-settings-models",
+  "name": "@alego/client-ui-settings-models",
   "description": "Models settings and shared product-onboarding dialogs over existing settings and credential joins",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/singula-ai/alego.git",
     "directory": "packages/client/ui-settings-models"
   },
   "type": "module",
@@ -29,13 +29,13 @@
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
-  "dsh": {
+  "alego": {
     "client": {
       "inject": [
-        "@deepseek-ai/dsh-client-runtime",
-        "@deepseek-ai/dsh-client-ui-settings",
-        "@deepseek-ai/dsh-client-locale",
-        "@deepseek-ai/dsh-api-remotes"
+        "@alego/client-runtime",
+        "@alego/client-ui-settings",
+        "@alego/client-locale",
+        "@alego/api-remotes"
       ],
       "platform": "web"
     }
@@ -46,26 +46,26 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:^",
-    "@deepseek-ai/dsh-api-remotes": "workspace:^",
-    "@deepseek-ai/dsh-client-connection": "workspace:^",
-    "@deepseek-ai/dsh-client-runtime": "workspace:^",
-    "@deepseek-ai/dsh-invariants": "workspace:^",
-    "@deepseek-ai/dsh-client-locale": "workspace:^",
-    "@deepseek-ai/dsh-client-ui-settings": "workspace:^"
+    "@alego/cordis": "workspace:^",
+    "@alego/api-remotes": "workspace:^",
+    "@alego/client-connection": "workspace:^",
+    "@alego/client-runtime": "workspace:^",
+    "@alego/invariants": "workspace:^",
+    "@alego/client-locale": "workspace:^",
+    "@alego/client-ui-settings": "workspace:^"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-api-remotes": "workspace:^",
-    "@deepseek-ai/dsh-client-connection": "workspace:^",
-    "@deepseek-ai/dsh-client-locale": "workspace:^",
-    "@deepseek-ai/dsh-client-runtime": "workspace:^",
-    "@deepseek-ai/dsh-client-test-runtime": "workspace:^",
-    "@deepseek-ai/dsh-client-ui-primitives": "workspace:^",
-    "@deepseek-ai/dsh-client-ui-settings": "workspace:^",
-    "@deepseek-ai/dsh-client-ui-slots": "workspace:^",
-    "@deepseek-ai/dsh-invariants": "workspace:^",
+    "@alego/api-remotes": "workspace:^",
+    "@alego/client-connection": "workspace:^",
+    "@alego/client-locale": "workspace:^",
+    "@alego/client-runtime": "workspace:^",
+    "@alego/client-test-runtime": "workspace:^",
+    "@alego/client-ui-primitives": "workspace:^",
+    "@alego/client-ui-settings": "workspace:^",
+    "@alego/client-ui-slots": "workspace:^",
+    "@alego/invariants": "workspace:^",
     "@types/react": "~18.3.1",
-    "@deepseek-ai/cordis": "workspace:^",
+    "@alego/cordis": "workspace:^",
     "react": "^18.2.0"
   },
   "files": [

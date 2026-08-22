@@ -10,7 +10,7 @@ Status: implemented
 
 ## 决策
 
-`SidebarRoot` 跟踪整列上的指针，只要指针不在列内就给根元素挂上 `quietBars` 类。该类选中的规则把 ui-theme 的那组间接变量——`--dsh-scrollbar-thumb` 与 `--dsh-scrollbar-thumb-hover`——重新绑定为 `transparent`，于是嵌套在这一列下的每个滚动区域都不绘制滑块。今天这样的区域只有会话列表；将来新增的区域会直接继承这一行为，而不需要逐个接入。
+`SidebarRoot` 跟踪整列上的指针，只要指针不在列内就给根元素挂上 `quietBars` 类。该类选中的规则把 ui-theme 的那组间接变量——`--alego-scrollbar-thumb` 与 `--alego-scrollbar-thumb-hover`——重新绑定为 `transparent`，于是嵌套在这一列下的每个滚动区域都不绘制滑块。今天这样的区域只有会话列表；将来新增的区域会直接继承这一行为，而不需要逐个接入。
 
 拖尾是 `SCROLLBAR_LINGER_MS = 2000`：离开会启动一个定时器，进入会取消尚未触发的定时器，只有定时器真正触发才会把类加回去。指针越过列边界又折返时——绕过一个 portal 菜单，或是奔向某一行时冲过了头——不会看到滑块闪动。
 
@@ -30,7 +30,7 @@ Status: implemented
 
 **只用列上的 CSS `:hover`，不引入 JavaScript 状态。** 整套机制只需一条规则，但它表达不出拖尾：指针越过边界的那一帧滑块就会消失，而那恰好是指针正奔向对话区或绕行 portal 菜单的时刻。诉求本身点名了拖尾，只有 hover 的版本读起来就是闪烁。
 
-**留在 CSS 里、用过渡拿到这段延迟**，即通过 `@property` 注册 `--dsh-scrollbar-thumb` 让该自定义属性可动画，再用 `transition-delay` 把颜色按住。因代价与作用范围被否决：这项注册对每个读取这组变量的表面都是全局的，却只为一列的时序服务；而且这套调色板实际渲染所走的 WebKit 滚动条伪元素并不可靠地支持过渡——延迟会被声明在观察不到它的地方。
+**留在 CSS 里、用过渡拿到这段延迟**，即通过 `@property` 注册 `--alego-scrollbar-thumb` 让该自定义属性可动画，再用 `transition-delay` 把颜色按住。因代价与作用范围被否决：这项注册对每个读取这组变量的表面都是全局的，却只为一列的时序服务；而且这套调色板实际渲染所走的 WebKit 滚动条伪元素并不可靠地支持过渡——延迟会被声明在观察不到它的地方。
 
 **直接把滚动条藏掉**——`scrollbar-width: none`，或对 `::-webkit-scrollbar` 用 `display: none`。被否决，因为这会连带取消那段预留：滚动条重新出现时会重新占走 8px，使每一行都在触发其显示的指针下方横向移动，而这正是当初加入空槽预留所修掉的回归。
 
@@ -56,7 +56,7 @@ Status: implemented
 
 `apps/web/tests/sidebar-scrollbar.e2e.ts` 是两半在真实引擎里汇合的地方。它在每次读取颜色前先把指针停在列表上，因为一个从不移动鼠标的场景全程测到的都是静默状态，会在未实际验证目标行为的情况下通过。随后它自己的用例把指针移开，断言在 leave 当下滑块仍在绘制，轮询直到它解析为 `rgba(0, 0, 0, 0)`，在该状态下重新测量几何以证明滚动条隐藏期间那份预留依然生效，并以编程方式滚动列表——键盘或触摸拖动所做的事——来钉住无指针滚动不绘制任何滑块。提交的 golden 记录了两套调色板下、两个指针位置上的滑块颜色。
 
-这条 e2e 的对照是一次 mutation，而它需要插件自己的产物：把 `quietBars` 从外壳中去掉，先重新构建 `@deepseek-ai/dsh-client-ui-sidebar`、之后再跑 `build:web`，该用例会因为滑块解析为 `rgb(229, 229, 229)`、而期望 `rgba(0, 0, 0, 0)` 而变红。只重跑 `build:web` 用的是陈旧产物，即使改动已被删除也照样通过，这正是[空槽 Agent Note](../bug-fix/2026-07-28-themed-scrollbars-and-reserved-gutter.zh.md)记录过的陷阱。
+这条 e2e 的对照是一次 mutation，而它需要插件自己的产物：把 `quietBars` 从外壳中去掉，先重新构建 `@alego/client-ui-sidebar`、之后再跑 `build:web`，该用例会因为滑块解析为 `rgb(229, 229, 229)`、而期望 `rgba(0, 0, 0, 0)` 而变红。只重跑 `build:web` 用的是陈旧产物，即使改动已被删除也照样通过，这正是[空槽 Agent Note](../bug-fix/2026-07-28-themed-scrollbars-and-reserved-gutter.zh.md)记录过的陷阱。
 
 拓宽后的门禁也有自己的对照，每个都是对真实样式表的一处声明改动：把 `transparent` 与 l2 的 hover 混用，以及把 l2 token 包进 `color-mix(…)`，都会让这条成对断言变红。
 

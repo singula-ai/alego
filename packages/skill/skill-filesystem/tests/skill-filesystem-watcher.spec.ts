@@ -4,8 +4,8 @@ import { mkdir, realpath, rm, symlink, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import SkillRegistry from '@deepseek-ai/dsh-skill'
+import { Context } from '@alego/cordis'
+import SkillRegistry from '@alego/skill'
 
 interface FakeWatcherControl {
   emitter: EventEmitter
@@ -92,7 +92,7 @@ vi.mock('chokidar', () => ({
 const SkillFileSystem = await import('../src/index.ts')
 
 async function tempDir(name: string): Promise<string> {
-  return await import('node:fs/promises').then(fs => fs.mkdtemp(join(tmpdir(), `dsh-${name}-`)))
+  return await import('node:fs/promises').then(fs => fs.mkdtemp(join(tmpdir(), `alego-${name}-`)))
 }
 
 async function writeSkill(root: string, name: string): Promise<void> {
@@ -120,12 +120,12 @@ describe('skill-filesystem watcher failures', () => {
     const aliasParent = await tempDir('skill-watch-canonical-alias')
     const alias = join(aliasParent, 'alias')
     await symlink(target, alias, process.platform === 'win32' ? 'junction' : 'dir')
-    const root = join(alias, '.dsh/skills')
+    const root = join(alias, '.alego/skills')
     await writeSkill(root, 'canonical-skill')
     const ctx = new Context()
     await ctx.plugin(SkillRegistry)
     const fiber = await ctx.plugin(SkillFileSystem, {
-      dshHome: join(alias, '.dsh'),
+      alegoHome: join(alias, '.alego'),
       agentsHome: join(alias, '.agents'),
       watch: true,
     })
@@ -167,7 +167,7 @@ describe('skill-filesystem watcher failures', () => {
     const ctx = new Context()
     await ctx.plugin(SkillRegistry)
     const fiber = await ctx.plugin(SkillFileSystem, {
-      dshHome: join(home, '.dsh'),
+      alegoHome: join(home, '.alego'),
       agentsHome: join(home, '.agents'),
       watch: true,
       watchPollIntervalMs: 10,
@@ -189,7 +189,7 @@ describe('skill-filesystem watcher failures', () => {
 
   it('keeps skills loadable across persistent watcher startup failures without caching them', async () => {
     const home = await tempDir('skill-watch-start-error')
-    const root = join(home, '.dsh/skills')
+    const root = join(home, '.alego/skills')
     await writeSkill(root, 'retry-skill')
     watcherHarness.startupErrors.push(
       new Error('watch failed once'),
@@ -200,7 +200,7 @@ describe('skill-filesystem watcher failures', () => {
     const ctx = new Context()
     await ctx.plugin(SkillRegistry)
     const fiber = await ctx.plugin(SkillFileSystem, {
-      dshHome: join(home, '.dsh'),
+      alegoHome: join(home, '.alego'),
       agentsHome: join(home, '.agents'),
       watch: true,
       watchUsePolling: true,
@@ -236,12 +236,12 @@ describe('skill-filesystem watcher failures', () => {
 
   it('filters events, coalesces invalidation, recovers runtime errors, and contains late callbacks', async () => {
     const home = await tempDir('skill-watch-runtime-error')
-    const root = join(home, '.dsh/skills')
+    const root = join(home, '.alego/skills')
     await writeSkill(root, 'watched-skill')
     const ctx = new Context()
     await ctx.plugin(SkillRegistry)
     const fiber = await ctx.plugin(SkillFileSystem, {
-      dshHome: join(home, '.dsh'),
+      alegoHome: join(home, '.alego'),
       agentsHome: join(home, '.agents'),
       watch: true,
       watchPollIntervalMs: 10,
@@ -283,12 +283,12 @@ describe('skill-filesystem watcher failures', () => {
 
   it('replaces a retained watcher when its root emits unlinkDir', async () => {
     const home = await tempDir('skill-watch-root-unlink')
-    const root = join(home, '.dsh/skills')
+    const root = join(home, '.alego/skills')
     await writeSkill(root, 'removed-skill')
     const ctx = new Context()
     await ctx.plugin(SkillRegistry)
     const fiber = await ctx.plugin(SkillFileSystem, {
-      dshHome: join(home, '.dsh'),
+      alegoHome: join(home, '.alego'),
       agentsHome: join(home, '.agents'),
       watch: true,
       watchPollIntervalMs: 10,
@@ -311,12 +311,12 @@ describe('skill-filesystem watcher failures', () => {
 
   it('re-probes a retained root after child unlink and observes immediate recreation', async () => {
     const home = await tempDir('skill-watch-root-reprobe')
-    const root = join(home, '.dsh/skills')
+    const root = join(home, '.alego/skills')
     await writeSkill(root, 'old-skill')
     const ctx = new Context()
     await ctx.plugin(SkillRegistry)
     const fiber = await ctx.plugin(SkillFileSystem, {
-      dshHome: join(home, '.dsh'),
+      alegoHome: join(home, '.alego'),
       agentsHome: join(home, '.agents'),
       watch: true,
       watchPollIntervalMs: 10,
@@ -345,7 +345,7 @@ describe('skill-filesystem watcher failures', () => {
 
   it('settles an opening watcher when plugin disposal races its ready event', async () => {
     const home = await tempDir('skill-watch-opening-dispose')
-    const root = join(home, '.dsh/skills')
+    const root = join(home, '.alego/skills')
     await writeSkill(root, 'racing-skill')
     watcherHarness.deferredReady = 1
     const ctx = new Context()
@@ -353,7 +353,7 @@ describe('skill-filesystem watcher failures', () => {
     let provider!: InstanceType<typeof SkillFileSystem.FileSystemSkillProvider>
     const disposeProvider = ctx.skills.registerProvider((control) => {
       provider = new SkillFileSystem.FileSystemSkillProvider(ctx, control, {
-        dshHome: join(home, '.dsh'),
+        alegoHome: join(home, '.alego'),
         agentsHome: join(home, '.agents'),
         watch: true,
         watchPollIntervalMs: 10,
@@ -377,7 +377,7 @@ describe('skill-filesystem watcher failures', () => {
 
   it('closes an opening watcher when disposal wins the mode probe', async () => {
     const home = await tempDir('skill-watch-probe-dispose')
-    const root = join(home, '.dsh/skills')
+    const root = join(home, '.alego/skills')
     await writeSkill(root, 'racing-skill')
     watcherHarness.deferredReady = 1
     const statGate: FakeStatGate = {
@@ -390,7 +390,7 @@ describe('skill-filesystem watcher failures', () => {
     let provider!: InstanceType<typeof SkillFileSystem.FileSystemSkillProvider>
     const disposeProvider = ctx.skills.registerProvider((control) => {
       provider = new SkillFileSystem.FileSystemSkillProvider(ctx, control, {
-        dshHome: join(home, '.dsh'),
+        alegoHome: join(home, '.alego'),
         agentsHome: join(home, '.agents'),
         watch: true,
         watchPollIntervalMs: 10,
@@ -413,7 +413,7 @@ describe('skill-filesystem watcher failures', () => {
 
   it('contains an opening watcher rejection during provider teardown', async () => {
     const home = await tempDir('skill-watch-opening-reject')
-    const root = join(home, '.dsh/skills')
+    const root = join(home, '.alego/skills')
     await writeSkill(root, 'rejected-skill')
     watcherHarness.deferredReady = 1
     const ctx = new Context()
@@ -421,7 +421,7 @@ describe('skill-filesystem watcher failures', () => {
     let provider!: InstanceType<typeof SkillFileSystem.FileSystemSkillProvider>
     const disposeProvider = ctx.skills.registerProvider((control) => {
       provider = new SkillFileSystem.FileSystemSkillProvider(ctx, control, {
-        dshHome: join(home, '.dsh'),
+        alegoHome: join(home, '.alego'),
         agentsHome: join(home, '.agents'),
         watch: true,
         watchPollIntervalMs: 10,

@@ -355,7 +355,7 @@ Tool arguments and return values must be JSON-compatible. `execute` owns the bus
 
 ## Handle internal live data
 
-Service instances, Event payloads, Slot props, Session and Conversation Snapshots, Tool state, and other DSH/Cordis objects are internal live data.
+Service instances, Event payloads, Slot props, Session and Conversation Snapshots, Tool state, and other ALEGO/Cordis objects are internal live data.
 
 Do not:
 

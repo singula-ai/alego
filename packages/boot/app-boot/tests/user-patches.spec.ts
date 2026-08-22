@@ -1,5 +1,5 @@
 /**
- * User patch-layer behavior of `dsh-app-boot`: the optional patch-list loader
+ * User patch-layer behavior of `alego-app-boot`: the optional patch-list loader
  * (a profile's `cordis.patch.yml`) and `boot()` applying the user layer over
  * a real Loader tree, kept live through transactional HMR.
  */
@@ -9,11 +9,11 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@deepseek-ai/cordis'
-import Hmr from '@deepseek-ai/cordis-plugin-hmr'
-import Include, { type PatchOptions } from '@deepseek-ai/cordis-plugin-include'
-import Loader from '@deepseek-ai/cordis-plugin-loader'
-import Timer from '@deepseek-ai/cordis-plugin-timer'
+import { Context } from '@alego/cordis'
+import Hmr from '@alego/cordis-plugin-hmr'
+import Include, { type PatchOptions } from '@alego/cordis-plugin-include'
+import Loader from '@alego/cordis-plugin-loader'
+import Timer from '@alego/cordis-plugin-timer'
 import {
   boot,
   loadOptionalPatches,
@@ -21,9 +21,9 @@ import {
   watchUserPatches,
 } from '../src/index.ts'
 
-const NAME = 'dsh-test-bin'
+const NAME = 'alego-test-bin'
 
-const tmp = (): string => mkdtempSync(join(tmpdir(), 'dsh-user-patches-'))
+const tmp = (): string => mkdtempSync(join(tmpdir(), 'alego-user-patches-'))
 
 async function eventually(test: () => boolean, message: string): Promise<void> {
   const deadline = Date.now() + 10_000
@@ -37,7 +37,7 @@ const settleChokidarChangeThrottle = (): Promise<void> => new Promise(resolve =>
 
 describe('loadOptionalPatches', () => {
   afterEach(() => {
-    delete process.env.DSH_HOME
+    delete process.env.ALEGO_HOME
   })
 
   it('returns undefined when no user patch file exists', () => {
@@ -48,19 +48,19 @@ describe('loadOptionalPatches', () => {
     const dir = tmp()
     writeFileSync(join(dir, PROFILE_PATCH_FILENAME), [
       '- id: agent-loop',
-      "  name: '@deepseek-ai/dsh-agent-loop'",
+      "  name: '@alego/agent-loop'",
       '  config:',
-      '    model: !!js process.env.DSH_SPEC_MODEL',
+      '    model: !!js process.env.ALEGO_SPEC_MODEL',
       '- insert:',
       '    - id: llm',
-      "      name: '@deepseek-ai/dsh-llm-pi-ai'",
+      "      name: '@alego/llm-pi-ai'",
       '',
     ].join('\n'))
     const patches = loadOptionalPatches(NAME, join(dir, PROFILE_PATCH_FILENAME))
     expect(patches).toHaveLength(2)
     expect(patches?.[0]).toMatchObject({
       id: 'agent-loop',
-      config: { model: { __jsExpr: 'process.env.DSH_SPEC_MODEL' } },
+      config: { model: { __jsExpr: 'process.env.ALEGO_SPEC_MODEL' } },
     })
     expect(patches?.[1]?.insert).toHaveLength(1)
   })
@@ -275,13 +275,13 @@ describe('boot with user patches', () => {
       '- id: noop',
       '  name: ./noop.mjs',
       '  config:',
-      '    value: !!js process.env.DSH_APP_BOOT_USER_SPEC',
+      '    value: !!js process.env.ALEGO_APP_BOOT_USER_SPEC',
       '- insert:',
       '    - id: user-extra',
       '      name: ./noop.mjs',
       '',
     ].join('\n'))
-    process.env['DSH_APP_BOOT_USER_SPEC'] = 'user-value'
+    process.env['ALEGO_APP_BOOT_USER_SPEC'] = 'user-value'
     const ctx = await boot(NAME, writeTree(dir), loadOptionalPatches(NAME, join(userDir, PROFILE_PATCH_FILENAME)))
     try {
       const noop = [...ctx.loader.entries()].find(entry => entry.options.id === 'noop')
@@ -290,7 +290,7 @@ describe('boot with user patches', () => {
       expect([...ctx.loader.entries()].some(entry => entry.options.id === 'user-extra')).toBe(true)
     } finally {
       await ctx.fiber.dispose()
-      delete process.env['DSH_APP_BOOT_USER_SPEC']
+      delete process.env['ALEGO_APP_BOOT_USER_SPEC']
     }
   })
 

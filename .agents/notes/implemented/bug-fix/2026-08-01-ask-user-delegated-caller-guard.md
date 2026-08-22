@@ -24,7 +24,7 @@ This safety boundary is independent of the browser's composer election. The prop
 
 **Use `session.header.delegationDepth > 0`.** Rejected because durable lineage survives resume and does not attest the current process-local owner. It rejects valid resumed roots and can admit a live child whose durable header is incomplete.
 
-**Reject only inside `dsh-tool-ask-user`.** Rejected because `exit_plan_mode` and direct callers share `ctx.userQuestions.ask()`. The service is the narrow operation boundary common to every human-interaction consumer.
+**Reject only inside `alego-tool-ask-user`.** Rejected because `exit_plan_mode` and direct callers share `ctx.userQuestions.ask()`. The service is the narrow operation boundary common to every human-interaction consumer.
 
 **Tell the child to delegate upward or wait for forwarding.** Rejected because one-shot delegation exposes no child-to-parent request channel and no answer-forwarding protocol. The only guaranteed return path is the child's final result.
 

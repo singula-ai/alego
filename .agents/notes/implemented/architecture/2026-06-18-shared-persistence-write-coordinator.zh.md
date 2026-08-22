@@ -6,11 +6,11 @@ Status: implemented
 
 ## 问题
 
-`dsh-session-persistence-jsonl` 与 `dsh-session-persistence-sqlite` 有意在不同存储介质上证明同一份 `SessionPersistence` 约定，但它们重复实现了写入路径编排：每会话状态、`session/created` 接管、后端特定的前缀读取、write-behind（延迟写入）控制、按 id 串行执行操作、HMR（热模块替换）种子注入与 dispose（资源释放）排空。纯粹的种子前缀碰撞检查与可序列化守卫已迁入 Service Definition 包；剩余的编排仍然对正确性要求很高，且同样的修复被应用了两次。唯一的差异在于存储原语（写字节 vs. INSERT 行）。
+`alego-session-persistence-jsonl` 与 `alego-session-persistence-sqlite` 有意在不同存储介质上证明同一份 `SessionPersistence` 约定，但它们重复实现了写入路径编排：每会话状态、`session/created` 接管、后端特定的前缀读取、write-behind（延迟写入）控制、按 id 串行执行操作、HMR（热模块替换）种子注入与 dispose（资源释放）排空。纯粹的种子前缀碰撞检查与可序列化守卫已迁入 Service Definition 包；剩余的编排仍然对正确性要求很高，且同样的修复被应用了两次。唯一的差异在于存储原语（写字节 vs. INSERT 行）。
 
 ## 决策
 
-将一个后端无关的 `PersistenceCoordinator` 提取到 `dsh-session-persistence` 中。协调器统一拥有编排逻辑；每个第一方后端组合一个协调器实例（`new PersistenceCoordinator(ctx, this)`），实现一个小型 `PersistenceBackend` 钩子接口，并将其有状态的公开方法（`create`/`append`/`prepare`/`load`/`inspect`/`readFrom`）委托给协调器。由后端拥有的元数据与修订版本列举会绕过协调器。
+将一个后端无关的 `PersistenceCoordinator` 提取到 `alego-session-persistence` 中。协调器统一拥有编排逻辑；每个第一方后端组合一个协调器实例（`new PersistenceCoordinator(ctx, this)`），实现一个小型 `PersistenceBackend` 钩子接口，并将其有状态的公开方法（`create`/`append`/`prepare`/`load`/`inspect`/`readFrom`）委托给协调器。由后端拥有的元数据与修订版本列举会绕过协调器。
 
 组合，而非继承。协调器是后端持有的具体类，不是后端继承的基类。协调器让非常规后端与继承层级作斗争的风险由此规避：后端只暴露钩子，无法触及协调器的私有编排状态。第三方后端仍然可以完全不使用协调器、直接实现抽象服务，包括不可变逻辑检查，以及通过 `load` 实现的默认准备回退。
 
@@ -35,7 +35,7 @@ Status: implemented
 
 ### 不透明的 torn marker
 
-保持 seam 整洁的唯一设计选择：崩溃修复中「损坏尾部在哪里」的 token 对协调器是不透明的。协调器计算合成收尾事件（它拥有来自 `dsh-session` 的 `interruptedTurnClosers`），但它只测试 `tornMarker !== undefined` 并将值原样传回 `commitRepair`——从不检视其内容。每个后端选择自己的 marker 类型：JSONL 携带要截断到的字节偏移，以及从不完整最终帧中解码出的任何完整事件；SQLite 则携带要从其开始删除的 seq。协调器因此既不了解字节长度，也不了解帧恢复状态。
+保持 seam 整洁的唯一设计选择：崩溃修复中「损坏尾部在哪里」的 token 对协调器是不透明的。协调器计算合成收尾事件（它拥有来自 `alego-session` 的 `interruptedTurnClosers`），但它只测试 `tornMarker !== undefined` 并将值原样传回 `commitRepair`——从不检视其内容。每个后端选择自己的 marker 类型：JSONL 携带要截断到的字节偏移，以及从不完整最终帧中解码出的任何完整事件；SQLite 则携带要从其开始删除的 seq。协调器因此既不了解字节长度，也不了解帧恢复状态。
 
 ## 测试
 

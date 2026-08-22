@@ -34,7 +34,7 @@ describe('Cordis core API generation', () => {
   })
 
   it('rejects a public core class without source JSDoc', () => {
-    const root = mkdtempSync(join(tmpdir(), 'dsh-cordis-core-api-'))
+    const root = mkdtempSync(join(tmpdir(), 'alego-cordis-core-api-'))
     roots.push(root)
     mkdirSync(join(root, 'vendor/cordis/src'), { recursive: true })
     writeFileSync(join(root, 'vendor/cordis/src/service.ts'), 'export class Service {\n  run(): string { return "ok" }\n}\n')

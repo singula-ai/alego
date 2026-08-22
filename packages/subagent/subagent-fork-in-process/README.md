@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-subagent-fork-in-process
+# @alego/subagent-fork-in-process
 
 English | [中文](README.zh.md)
 
@@ -23,7 +23,7 @@ Fork advertises `{ outputSchema: true, depthLimit: true, toolFilter: true, perso
 | Key | Meaning |
 |---|---|
 | `providerName` | Registry name on `ctx.subagents` (default `fork`). |
-See [`dsh-subagent-spawn-in-process`](../subagent-spawn-in-process/README.md) for the run lifecycle, model inheritance, and depth tracking — all shared.
+See [`alego-subagent-spawn-in-process`](../subagent-spawn-in-process/README.md) for the run lifecycle, model inheritance, and depth tracking — all shared.
 
 ## Model Experience
 
@@ -45,7 +45,7 @@ The child may reuse the inherited byte-identical prefix under the same provider 
 
 #### What the model sees
 
-The parent receives only the child's own final output through `dsh-tool-subagent`, not the inherited prefix or intermediate work.
+The parent receives only the child's own final output through `alego-tool-subagent`, not the inherited prefix or intermediate work.
 
 #### Token effect
 

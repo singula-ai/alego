@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-15-lsp-capability-seam.md
-2026-07-15-lsp-capability-seam.md: 90f9daf4b890bd53621916e492d4d82baaa3e8cc
-2026-07-15-lsp-capability-seam.zh.md: bdb5e812e94a4aec4402fe83ca9c818bfa00f9f9
+2026-07-15-lsp-capability-seam.md: 3afa057cca1dbd31e4f3d67a884dd3acf276f4f9
+2026-07-15-lsp-capability-seam.zh.md: 3681bb70d75b8abc81c6fbf52a1eff85e4d721b1

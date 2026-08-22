@@ -6,23 +6,23 @@ Status: implemented
 
 ## 问题
 
-Web agent（智能体）既无法识别承载当前会话的 GUI，也不知道用户正在查看哪个 URL。[运行时上下文决策](2026-07-28-web-agent-runtime-context.zh.md)提供前一项事实，但 GUI 编辑仍然没有可执行的验收目标：源码编辑、产物构建、监听中的进程与用户已打开的页面只是互不关联的观察结果。仓库提供的入口让错误的替代方案显得合理，因为 `apps/web/package.json` 将 `vite` 暴露为 `dev` 脚本，而裸 Vite 即使无法注入 `window.__DSH_BOOT__`，仍会返回 HTTP 200。
+Web agent（智能体）既无法识别承载当前会话的 GUI，也不知道用户正在查看哪个 URL。[运行时上下文决策](2026-07-28-web-agent-runtime-context.zh.md)提供前一项事实，但 GUI 编辑仍然没有可执行的验收目标：源码编辑、产物构建、监听中的进程与用户已打开的页面只是互不关联的观察结果。仓库提供的入口让错误的替代方案显得合理，因为 `apps/web/package.json` 将 `vite` 暴露为 `dev` 脚本，而裸 Vite 即使无法注入 `window.__ALEGO_BOOT__`，仍会返回 HTTP 200。
 
 [事故复盘](../../../../docs/postmortem/0003-web-agent-gui-feedback-loop.zh.md)集中记录事件日志时间线，并解释原有检查为何会接受错误的页面、进程和端口。
 
 ## 决策
 
-常规 `dsh web` 组合会挂载 Web 组合包的 `web-runtime` 插件，由它发布一个规范的回环 URL，同时将其作为模型可见的界面定位信息和受管 shell 事实。`app:web-surface` 提示词段说明：未加限定的指代指向此 GUI，并给出 URL；`DSH_WEB_URL` 会把同样的事实传入每次前台或受管后台 bash 调用。该段保留「不会隐式获得 DOM、路由或截图」这一边界，也不声称局域网别名等于浏览器中的实际地址。拥有完整提示词的 profile 会把该配置行的 `surfaceContext` 设为 false，并且不会收到该提示词段和该受管变量；Web 启动器也会使用同一项设置来抑制其源码 checkout 提示词段。
+常规 `alego web` 组合会挂载 Web 组合包的 `web-runtime` 插件，由它发布一个规范的回环 URL，同时将其作为模型可见的界面定位信息和受管 shell 事实。`app:web-surface` 提示词段说明：未加限定的指代指向此 GUI，并给出 URL；`ALEGO_WEB_URL` 会把同样的事实传入每次前台或受管后台 bash 调用。该段保留「不会隐式获得 DOM、路由或截图」这一边界，也不声称局域网别名等于浏览器中的实际地址。拥有完整提示词的 profile 会把该配置行的 `surfaceContext` 设为 false，并且不会收到该提示词段和该受管变量；Web 启动器也会使用同一项设置来抑制其源码 checkout 提示词段。
 
 提示词让 agent 而非用户负责隐藏的启动约定。HMR（热模块替换）接收端始终挂载，但客户端插件要自动重新加载，还需要在同一检出中运行 `pnpm run dev:web` 监听进程，agent 会在承诺无需刷新即可更新前验证这一点。外壳和其他普通包的变更仍然需要重新构建受影响的产物并刷新现有 URL。除非用户要求，agent 不会启动替代 GUI。
 
-`apps/web` 开发脚本和 Vite 配置都会在打开端口前拒绝服务模式。诊断信息会指出 `apps/web` 只是一个仅供构建的外壳，说明只有 `dsh web` 才会注入 `window.__DSH_BOOT__`，并给出生产入口与 HMR 入口路径。Vite 构建模式保持不变。
+`apps/web` 开发脚本和 Vite 配置都会在打开端口前拒绝服务模式。诊断信息会指出 `apps/web` 只是一个仅供构建的外壳，说明只有 `alego web` 才会注入 `window.__ALEGO_BOOT__`，并给出生产入口与 HMR 入口路径。Vite 构建模式保持不变。
 
 静态产物发生变化时，不需要仅为此重启或替换服务器。宿主会在每次请求时读取 `index.html` 和静态资源，客户端 bundle 也会从当前文件提供，并设置 `no-cache`；因此，重新构建相关外壳与插件 bundle 后，刷新现有 URL 就是验收路径。启动另一个服务器只能证明另一个服务器可用。如果用户明确要求再启动一个长期运行的服务器，则现有受管后台任务约定负责其生命周期和完成通知；shell `&` 不能替代这套生命周期机制。
 
 ## 验证
 
-无密钥的 fresh-round-trip 浏览器场景会启动已交付的 Web 组合，驱动真实的回放会话，对包含 URL 的系统提示词前缀生成快照，并调用组装后的 bash 工具，证明 `$DSH_WEB_URL` 与实际绑定的运行时一致。真实 CLI 冒烟测试会启动 `dsh web` 并捕获模型提供方请求，从而固定完整的双命令开发约定。`dev:web` watcher 测试会在源码发生变化后重新构建隔离的客户端 bundle；浏览器 HMR 场景会启动 `dsh web`，修改初始 roster 中的 bundle，并在页面 identity 不变的情况下观察新 DOM。真实 Vite 子进程测试要求服务模式在给出改用完整宿主的纠正信息后自然退出，并通过插桩 `Server.listen()` 证明它从未被调用。真实 loader Web 服务器测试会在进程完成绑定后改写静态资源，并证明同一端口返回新的字节。这些断言检查提示词状态、进程退出状态、shell 输出、DOM identity 和 HTTP 字节，而不是 agent 的成功声明。
+无密钥的 fresh-round-trip 浏览器场景会启动已交付的 Web 组合，驱动真实的回放会话，对包含 URL 的系统提示词前缀生成快照，并调用组装后的 bash 工具，证明 `$ALEGO_WEB_URL` 与实际绑定的运行时一致。真实 CLI 冒烟测试会启动 `alego web` 并捕获模型提供方请求，从而固定完整的双命令开发约定。`dev:web` watcher 测试会在源码发生变化后重新构建隔离的客户端 bundle；浏览器 HMR 场景会启动 `alego web`，修改初始 roster 中的 bundle，并在页面 identity 不变的情况下观察新 DOM。真实 Vite 子进程测试要求服务模式在给出改用完整宿主的纠正信息后自然退出，并通过插桩 `Server.listen()` 证明它从未被调用。真实 loader Web 服务器测试会在进程完成绑定后改写静态资源，并证明同一端口返回新的字节。这些断言检查提示词状态、进程退出状态、shell 输出、DOM identity 和 HTTP 字节，而不是 agent 的成功声明。
 
 ## 考虑过的替代方案
 

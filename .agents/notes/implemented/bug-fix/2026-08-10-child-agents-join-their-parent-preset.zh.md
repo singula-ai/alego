@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-工具与提示段的可见性沿 `dsh-scope` 的父链继承，而 agent 的 scope key 铸造出来时没有父。[逐会话 agent preset](../architecture/2026-08-03-per-session-agent-presets.zh.md) 把所有面向模型的行搬到了 agent 平面，并让 `AgentPresets.mount()` 成为绑定那条父链的唯一途径——调用点在 api-proxy 的会话创建、恢复与 fork 路径上。两个进程内 subagent 驱动通过 `applyChildComposition()` 组装子 agent，而它只安装了逐子 agent 的 persona 与工具限制，于是子 agent 的 scope 链长度为一，其注册表视图只能解析到全局层。
+工具与提示段的可见性沿 `alego-scope` 的父链继承，而 agent 的 scope key 铸造出来时没有父。[逐会话 agent preset](../architecture/2026-08-03-per-session-agent-presets.zh.md) 把所有面向模型的行搬到了 agent 平面，并让 `AgentPresets.mount()` 成为绑定那条父链的唯一途径——调用点在 api-proxy 的会话创建、恢复与 fork 路径上。两个进程内 subagent 驱动通过 `applyChildComposition()` 组装子 agent，而它只安装了逐子 agent 的 persona 与工具限制，于是子 agent 的 scope 链长度为一，其注册表视图只能解析到全局层。
 
 在任何配置了 preset roster 的部署里，那一层现在是空的：web-app 补丁层禁用了全部宿主平面工具行。因此一次性子 agent 抵达模型时工具为零，可继续子 agent 只剩宿主平面的 `report`，两者都不带父方的 persona、工作区上下文、plan-mode 段与技能目录。fork 路径此前已因同一理由做过相同处理；委派没有。
 
@@ -20,7 +20,7 @@ Status: implemented
 
 `applyChildComposition(childCtx, parent, composition)` 接收父方，并在应用子 agent 自身注册之前完成加入。这个参数正是要点所在：它让"组装子 agent 却不做该加入"在各调用点无法表达，而不是把第二个步骤留给每个新驱动去记住。`childSessionMeta()` 通过 `AgentPresets.composedPreset()` 记录所加入的 id，该值从父方**活着的** scope 链读取而不是从其 header 读取，因为在空白期切换过 preset 的父方运行在更新的那份组装上，而它的 header 仍写着旧的那个。
 
-`dsh-subagent` 以类型级导入加可选 peer 依赖的方式，通过 `ctx.get('agentPresets')` 触达 roster——这正是它对 `sandboxPolicy` 与 `approval` 已在使用的、有明确文档的机会性消费模式。
+`alego-subagent` 以类型级导入加可选 peer 依赖的方式，通过 `ctx.get('agentPresets')` 触达 roster——这正是它对 `sandboxPolicy` 与 `approval` 已在使用的、有明确文档的机会性消费模式。
 
 把父方的工具交给子 agent 之后，暴露出同一次 agent 平面搬迁引入的第二个缺陷：`ToolRuntime` 把**作用域级**注册排除在限制之外、只过滤全局层，因此当所有面向模型的行都变成祖先贡献之后，子 agent 的 `toolFilter` 就不再约束任何东西——而且全局层为空时，`restrict()` 会把收到的每个名字都判为未知并直接让子 agent 创建失败。豁免集合应当是作用域**自己注册**的工具，而不是恰好位于全局层的工具；后一种读法只在这两个集合重合时才成立。`view()` 现在过滤作用域继承来的一切——全局层与每个祖先层——只豁免它自己那层。这条自身层豁免是承重的而非顺带的：委派运行时把子 agent 的 `report` 与结构化输出工具注册进子 agent 自己那层，而一个只点名子 agent 可用能力的过滤器绝不能把它回报所依赖的机制一并剥掉。
 
@@ -32,7 +32,7 @@ Status: implemented
 
 **扩展可继续 activation setup 注册表以覆盖一次性子 agent。** 否决，因为该注册表的贡献类型是同步的 `(childCtx) => () => void` 并带有逐次安装的撤销，建模的是会来会走的部署能力，而 preset 加入是一次性认父、自身没有撤销可言。扩展它反而会让任何绕过该注册表的驱动重新具备遗漏的可能。
 
-**让 `dsh-subagent` 导入 `resolveSessionPreset` 并按解析出的 id 挂载。** 否决，因为这会给一个必须在没有 roster 时也能工作的包引入硬模块边，而且最终仍落回上述的重新挂载语义。
+**让 `alego-subagent` 导入 `resolveSessionPreset` 并按解析出的 id 挂载。** 否决，因为这会给一个必须在没有 roster 时也能工作的包引入硬模块边，而且最终仍落回上述的重新挂载语义。
 
 **过滤链上的每一层，包括作用域自身那层。** 否决，因为那会让逐子 agent 的能力过滤器把该子 agent 的回报与结构化输出工具一并删掉——它们由委派运行时注册进子 agent 自己那层——于是一个点名"子 agent 可用哪些能力"的 `allow` 会让它彻底无法回报。
 

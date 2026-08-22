@@ -16,7 +16,7 @@ Status: implemented
 
 ### 一个注册表服务，贡献归包所有
 
-`@deepseek-ai/dsh-invariants` 是与产品无关的 Cordis 服务插件，注册 `ctx.invariants`。它只负责配置、注册唯一性、子 fiber 生命周期和带包归属的失败；不导入 session、agent、scope 或 agent-loop 包，也不包含这些包的检查。
+`@alego/invariants` 是与产品无关的 Cordis 服务插件，注册 `ctx.invariants`。它只负责配置、注册唯一性、子 fiber 生命周期和带包归属的失败；不导入 session、agent、scope 或 agent-loop 包，也不包含这些包的检查。
 
 工作区内的每个包都发布 `./invariant` 伴随插件，注册自己完整且准确的 npm 包名。如果所有者具备有意义的事件或可变数据关系，companion 就检查该关系；否则空 installer 必须携带该所有者专属的说明。后续的[运行时约定 Agent Note](2026-07-19-package-invariant-runtime-contracts.zh.md) 禁止生成的所有权占位符和合成 API 形状断言。包的根入口不会隐式导入或注册诊断，因此加载根包不会改变运行时检查，也不要求不变式服务存在。
 
@@ -59,10 +59,10 @@ blocklist 匹配优先于 allowlist 匹配。每个条目都是区分大小写�
 
 | 伴随入口 | 注册名 | 所属检查 |
 |---|---|---|
-| `@deepseek-ai/dsh-session/invariant` | `@deepseek-ai/dsh-session` | 会话序列、轮次/步骤包围关系和同一步骤的调用/结果轨迹 |
-| `@deepseek-ai/dsh-agent/invariant` | `@deepseek-ai/dsh-agent` | agent 状态转换 |
-| `@deepseek-ai/dsh-scope/invariant` | `@deepseek-ai/dsh-scope` | 作用域事件载体的存在性与主体一致性 |
-| `@deepseek-ai/dsh-agent-loop/invariant` | `@deepseek-ai/dsh-agent-loop` | 模型请求重建 |
+| `@alego/session/invariant` | `@alego/session` | 会话序列、轮次/步骤包围关系和同一步骤的调用/结果轨迹 |
+| `@alego/agent/invariant` | `@alego/agent` | agent 状态转换 |
+| `@alego/scope/invariant` | `@alego/scope` | 作用域事件载体的存在性与主体一致性 |
+| `@alego/agent-loop/invariant` | `@alego/agent-loop` | 模型请求重建 |
 
 这四个所有者提供了首批有状态检查。后续运行时约定决策为另外十七个确有事件或可变数据关系的所有者增加检查，并为其余包记录有理由的空 companion。每个伴随入口都是单独打包的 `./invariant` export，具有独立声明和对 Loader 安全的命名空间插件形态；服务包自身的伴随插件导入本地服务类型，避免形成自依赖。
 
@@ -70,11 +70,11 @@ blocklist 匹配优先于 allowlist 匹配。每个条目都是区分大小写�
 
 ### 作用域事件语义映射
 
-生成的作用域事件主体解析表位于 `dsh-scope`，与消费它的约定和不变式相邻。`gen-scoped-events` 使用根 TypeScript Program 枚举 `this: Scoped<Base>` 声明，从真实 `scopeTarget(base, key)` 调用推断路由键类型，并要求唯一、无歧义的 payload 主体或显式 unsupported 标记。提交的运行时映射不导入事件所有者包，因此语义完整性不会扩大服务包或 scope 包的运行时依赖闭包。
+生成的作用域事件主体解析表位于 `alego-scope`，与消费它的约定和不变式相邻。`gen-scoped-events` 使用根 TypeScript Program 枚举 `this: Scoped<Base>` 声明，从真实 `scopeTarget(base, key)` 调用推断路由键类型，并要求唯一、无歧义的 payload 主体或显式 unsupported 标记。提交的运行时映射不导入事件所有者包，因此语义完整性不会扩大服务包或 scope 包的运行时依赖闭包。
 
 ### 示例组合与 SDK 输出
 
-示例 agent 主干会挂载服务和四个有状态伴随子路径，并把 `enabled`、`package_allowlist` 与 `package_blocklist` 转发给服务。生成的 SDK Cordis 组合输出相同条目。子路径条目添加可安装的根 npm 包，而不会把子路径误当成包名。根据[交付配置决策](../simplification/2026-08-03-omit-invariants-from-shipped-config.zh.md)，交付的 `dsh` TUI 与 Web 配置树会省略该服务及其伴随插件。
+示例 agent 主干会挂载服务和四个有状态伴随子路径，并把 `enabled`、`package_allowlist` 与 `package_blocklist` 转发给服务。生成的 SDK Cordis 组合输出相同条目。子路径条目添加可安装的根 npm 包，而不会把子路径误当成包名。根据[交付配置决策](../simplification/2026-08-03-omit-invariants-from-shipped-config.zh.md)，交付的 `alego` TUI 与 Web 配置树会省略该服务及其伴随插件。
 
 Workspace 约束识别独立的不变式 bundle；包 exports、项目引用、构建配置、依赖声明和 lockfile 描述同一份发布元数据。生成的配置目录、模块图和 API 文档都从这些源派生。
 
@@ -88,7 +88,7 @@ Workspace 约束识别独立的不变式 bundle；包 exports、项目引用、�
 
 ## 考虑过的替代方案
 
-- **把所有检查保留在 `dsh-invariants`。** 不予采纳，因为注册表仍要导入所有被检查的产品领域，所有者变更仍需中央编辑，测试也继续远离被保护的约定。
+- **把所有检查保留在 `alego-invariants`。** 不予采纳，因为注册表仍要导入所有被检查的产品领域，所有者变更仍需中央编辑，测试也继续远离被保护的约定。
 - **当 `ctx.invariants` 恰好存在时，让根包入口隐式注册检查。** 不予采纳，因为根入口行为会依赖组合顺序与可选服务是否存在，诊断无法独立选择，而且包加载会隐藏一个不在显式伴随插件中的注册 effect。
 - **在运行时自动发现所有 `invariant.ts` 文件。** 不予采纳，因为文件系统或包发现不是运行时所有权约定，会让 bundle 发布含义不清，也无法表达显式 Cordis 加载顺序或依赖安装。构建期生成与校验以及测试宿主可以枚举源码树，因为它们验证的是仓库完整性，而不是组合已发布的部署。
 - **根据当前已加载包集合验证 allow/block 条目。** 不予采纳，因为零匹配模式可能有意指向稍后加载或 HMR 加载的贡献；当前加载顺序不能决定配置有效性。

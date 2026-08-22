@@ -8,13 +8,13 @@
  * entries, so the surface is discovered exactly as a config-row's would be
  * and one resolved choice still swaps both faces; pinning an interaction
  * remains composing that pair directly instead of this row.
- * @module @deepseek-ai/dsh-host-directory-picker-auto
+ * @module @alego/host-directory-picker-auto
  */
 
-import type { Context } from '@deepseek-ai/cordis'
+import type { Context } from '@alego/cordis'
 // Empty type imports carry the `loader` and `webServer` Context merges for the reads below.
-import type {} from '@deepseek-ai/cordis-plugin-loader'
-import type {} from '@deepseek-ai/dsh-host-webserver'
+import type {} from '@alego/cordis-plugin-loader'
+import type {} from '@alego/host-webserver'
 import { canExecute, hasLinuxChooserBinary } from './probe.ts'
 import type { DirectoryPickerBackendKind } from './resolve.ts'
 import { resolveDirectoryPickerBackend } from './resolve.ts'
@@ -35,8 +35,8 @@ export const inject = ['webServer', 'loader']
  * app composing this chooser to declare both values as dependencies.
  */
 export const BACKEND_PACKAGES: Record<DirectoryPickerBackendKind, string> = {
-  native: '@deepseek-ai/dsh-host-directory-picker-native',
-  browse: '@deepseek-ai/dsh-host-directory-picker-browse',
+  native: '@alego/host-directory-picker-native',
+  browse: '@alego/host-directory-picker-browse',
 }
 
 /**
@@ -48,8 +48,8 @@ export const BACKEND_PACKAGES: Record<DirectoryPickerBackendKind, string> = {
  * workspace.
  */
 export const SURFACE_PACKAGES: Record<DirectoryPickerBackendKind, string> = {
-  native: '@deepseek-ai/dsh-client-ui-directory-picker-native',
-  browse: '@deepseek-ai/dsh-client-ui-directory-picker-browse',
+  native: '@alego/client-ui-directory-picker-native',
+  browse: '@alego/client-ui-directory-picker-browse',
 }
 
 /**

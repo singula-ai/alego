@@ -3,7 +3,7 @@
  * `method` are requests, `id` alone is a response, and `method` alone is a
  * notification. Malformed lines are ignored; handler failures become error frames.
  *
- * @module @deepseek-ai/dsh-sdk-protocol/transport
+ * @module @alego/sdk-protocol/transport
  */
 
 import { randomUUID } from 'node:crypto'

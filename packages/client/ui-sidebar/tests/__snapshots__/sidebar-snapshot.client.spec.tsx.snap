@@ -27,10 +27,10 @@ exports[`sidebar shell snapshots > renders the collapsed rail after the crossfad
           >
             <svg
               aria-hidden="true"
-              data-content="965fe321"
+              data-content="1566723e"
               fill="none"
-              height="17.6580310880829"
-              viewBox="0 0 23.16 17.04"
+              height="18"
+              viewBox="0 0 24 18"
               width="24"
             />
           </div>
@@ -122,10 +122,10 @@ exports[`sidebar shell snapshots > renders the expanded column (wordmark, capsul
             >
               <svg
                 aria-hidden="true"
-                data-content="965fe321"
+                data-content="1566723e"
                 fill="none"
-                height="17.6580310880829"
-                viewBox="0 0 23.16 17.04"
+                height="18"
+                viewBox="0 0 24 18"
                 width="24"
               />
             </div>
@@ -140,7 +140,7 @@ exports[`sidebar shell snapshots > renders the expanded column (wordmark, capsul
               <span
                 class="fallbackBrandName"
               >
-                DSH Local Build
+                ALEGO Local Build
               </span>
               <span
                 class="buildRevision"
@@ -248,10 +248,10 @@ exports[`sidebar shell snapshots > renders the expanded column in the default lo
             >
               <svg
                 aria-hidden="true"
-                data-content="965fe321"
+                data-content="1566723e"
                 fill="none"
-                height="17.6580310880829"
-                viewBox="0 0 23.16 17.04"
+                height="18"
+                viewBox="0 0 24 18"
                 width="24"
               />
             </div>
@@ -266,7 +266,7 @@ exports[`sidebar shell snapshots > renders the expanded column in the default lo
               <span
                 class="fallbackBrandName"
               >
-                DSH Local Build
+                ALEGO Local Build
               </span>
               <span
                 class="buildRevision"

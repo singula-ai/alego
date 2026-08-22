@@ -17,7 +17,7 @@ harness 将其核心词汇——内容块、消息来源、结束原因、轮次
 
 ## 为什么这不是一个持久化层的改动
 
-很容易把「用 Zod 做序列化」理解为对 `dsh-session-persistence-jsonl/src/format.ts` 的局部修改。但它不是，原因在于一个结构性事实：**插件无法对 Zod schema 进行声明合并。** 声明合并是 TypeScript 编译期机制；Zod schema 是运行时值。要用 Zod 校验事件，就需要一个**运行时注册表**，每个产出事件的包向其贡献自己的 schema（如 `ctx.sessionEvents.register('compaction/marker', z.object({…}))`），每个消费方从中读取。这个注册表——而非持久化后端——将成为词汇的真源，取代 merge-extensible 接口。
+很容易把「用 Zod 做序列化」理解为对 `alego-session-persistence-jsonl/src/format.ts` 的局部修改。但它不是，原因在于一个结构性事实：**插件无法对 Zod schema 进行声明合并。** 声明合并是 TypeScript 编译期机制；Zod schema 是运行时值。要用 Zod 校验事件，就需要一个**运行时注册表**，每个产出事件的包向其贡献自己的 schema（如 `ctx.sessionEvents.register('compaction/marker', z.object({…}))`），每个消费方从中读取。这个注册表——而非持久化后端——将成为词汇的真源，取代 merge-extensible 接口。
 
 因此，真正的提案是：**用运行时 schema 注册表替换编译期的 merge-extensible-map 模式，范围覆盖整个仓库。** 这是一次核心词汇的重新设计。
 
@@ -25,11 +25,11 @@ harness 将其核心词汇——内容块、消息来源、结束原因、轮次
 
 将事件/词汇接口迁移到运行时 schema，至少涉及：
 
-- **六个 merge-extensible map**（约 370 行核心类型）：`ContentBlockMap`、`MessageSourceMap`、`FinishReasonMap`（位于 `dsh-llm`）；`TurnTriggerMap`、`TurnEndReasonMap`、`SessionEventMap`（位于 `dsh-session`）。
-- **约 10 处 `declare module` 声明增补位置**，分布在 `dsh-agent`、`dsh-agent-loop`、`dsh-shell`、`dsh-llm`、`dsh-session`、`dsh-session-persistence`、`dsh-system-prompt`、`dsh-tools` 各包中——每处都将从声明合并改为运行时 `register()` 调用。
+- **六个 merge-extensible map**（约 370 行核心类型）：`ContentBlockMap`、`MessageSourceMap`、`FinishReasonMap`（位于 `alego-llm`）；`TurnTriggerMap`、`TurnEndReasonMap`、`SessionEventMap`（位于 `alego-session`）。
+- **约 10 处 `declare module` 声明增补位置**，分布在 `alego-agent`、`alego-agent-loop`、`alego-shell`、`alego-llm`、`alego-session`、`alego-session-persistence`、`alego-system-prompt`、`alego-tools` 各包中——每处都将从声明合并改为运行时 `register()` 调用。
 - **事件生产者**——agent loop（智能体循环）中 16 处 `session.append(...)` 调用——形状不变，但现在在边界处被校验。
-- **约 7 个 switch 消费方**，对这些联合类型进行分支：`deriveMessages` 与包自有的不变式 companion（`dsh-session`）、`BlockAssembler`（`dsh-llm`）、两个 LLM（大语言模型）适配器（`dsh-llm-deepseek`、`dsh-llm-pi-ai`）以及工具 schema 层（`dsh-tools`）。`assertNever` 对封闭联合类型的穷举 vs 对可扩展联合类型的 fall-through 约定（一条已记录的 lint 规则）需要重新考量——运行时变体在静态层面不可穷举。
-- **`defineTool` 的 `InferArgs` DSL**（`dsh-tools`），它从编译期 schema 规范派生出零类型转换的 `execute` 参数类型——这是当前方案的标杆用例。
+- **约 7 个 switch 消费方**，对这些联合类型进行分支：`deriveMessages` 与包自有的不变式 companion（`alego-session`）、`BlockAssembler`（`alego-llm`）、两个 LLM（大语言模型）适配器（`alego-llm-deepseek`、`alego-llm-pi-ai`）以及工具 schema 层（`alego-tools`）。`assertNever` 对封闭联合类型的穷举 vs 对可扩展联合类型的 fall-through 约定（一条已记录的 lint 规则）需要重新考量——运行时变体在静态层面不可穷举。
+- **`defineTool` 的 `InferArgs` DSL**（`alego-tools`），它从编译期 schema 规范派生出零类型转换的 `execute` 参数类型——这是当前方案的标杆用例。
 - **文档**：architecture.md（该模式被描述为基础性的）、[开发模式不变式](../../implemented/architecture/2026-06-11-dev-invariants-over-deep-readonly.zh.md)，以及所有引用该模式的 Agent Note。
 
 这是一次仓库级别的词汇重新设计，而非持久化的实现细节。

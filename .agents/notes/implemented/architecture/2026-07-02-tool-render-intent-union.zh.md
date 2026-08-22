@@ -42,13 +42,13 @@ interface TerminalResultView { card: 'terminal'; title?: string; output?: string
 
 - **无效状态变得不可表达。** generic 卡片不能携带终端输出；terminal 卡片不能携带 diff。旧的字段集合允许所有这些组合。
 - **消费方分发而非拼接。** 每种卡片一个分支，精确产出该卡片所需的视图，而非调和五个交互关系未文档化的可选字段。
-- **`diff` 成为一等意图。** `dsh-tool-fs` 的 write/edit 声明带 `{path, oldText, newText}` 的 `card:'diff'`，让有能力的 UI 无需针对工具名做特殊处理即可渲染行内变更。
+- **`diff` 成为一等意图。** `alego-tool-fs` 的 write/edit 声明带 `{path, oldText, newText}` 的 `card:'diff'`，让有能力的 UI 无需针对工具名做特殊处理即可渲染行内变更。
 
 ### 生产者映射
 
-- `dsh-tool-fs` read → `generic`（`kind:'read'`，附带一个 follow-along `location`）；write → `diff`（`oldText:null`）；edit → `diff`（`oldText:old_string || null`，`newText:new_string ?? ''`）。这与 `claude-agent-acp` 的 `toolInfoFromToolUse` 中 Read/Write/Edit 各分支逐字段对应。
-- `dsh-tool-bash` 前台运行 → `terminal` 调用 + `terminal` 结果；`run_in_background` → `generic`。通用 `job_*` 控制工具拥有各自的 generic 卡片。
-- `dsh-tool-todo` → `generic`。
+- `alego-tool-fs` read → `generic`（`kind:'read'`，附带一个 follow-along `location`）；write → `diff`（`oldText:null`）；edit → `diff`（`oldText:old_string || null`，`newText:new_string ?? ''`）。这与 `claude-agent-acp` 的 `toolInfoFromToolUse` 中 Read/Write/Edit 各分支逐字段对应。
+- `alego-tool-bash` 前台运行 → `terminal` 调用 + `terminal` 结果；`run_in_background` → `generic`。通用 `job_*` 控制工具拥有各自的 generic 卡片。
+- `alego-tool-todo` → `generic`。
 
 ### 终端回退的归属
 

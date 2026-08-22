@@ -1,9 +1,9 @@
 /**
  * Shared cancellation helpers for the local LSP provider's host-I/O, queue, and protocol phases.
- * @module @deepseek-ai/dsh-lsp-stdio/abort
+ * @module @alego/lsp-stdio/abort
  */
 
-import { timeoutOf } from '@deepseek-ai/dsh-timeout'
+import { timeoutOf } from '@alego/timeout'
 
 /**
  * Build an abort Error carrying the signal's reason and preserving timeout classification.

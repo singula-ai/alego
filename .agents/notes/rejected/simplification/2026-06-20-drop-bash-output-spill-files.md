@@ -6,7 +6,7 @@ English | [中文](2026-06-20-drop-bash-output-spill-files.zh.md)
 
 ## Problem
 
-`dsh-bash-local` keeps bounded in-memory output and spills large stdout/stderr streams into private temp files. That requires a private directory, random owner-only file creation, close-failure handling, byte-offset incremental reads, lossy read reporting, path rendering in model-facing text, and cleanup discipline. The tool then tells the model to read a local spill path when output was truncated.
+`alego-bash-local` keeps bounded in-memory output and spills large stdout/stderr streams into private temp files. That requires a private directory, random owner-only file creation, close-failure handling, byte-offset incremental reads, lossy read reporting, path rendering in model-facing text, and cleanup discipline. The tool then tells the model to read a local spill path when output was truncated.
 
 This solves a real problem, but in a narrow and leaky way. A spill path is a process-local filesystem artifact exposed to model output, not a durable harness artifact with scoped access, retention, or UI affordances. It also complicates background-job reads because a lossy incremental read has to point at one or two spill files.
 

@@ -10,7 +10,7 @@ Status: implemented
 
 ## 决策
 
-[`base.cordis.yml`](../../../../packages/bundle/base/cordis.patch.yml) 为所有已交付的 TUI、Web 以及由浏览器支撑的无头会话统一持有一套沙箱与权限栈：`dsh-sandbox-local`、`dsh-sandbox-policy`、`dsh-bash-sandbox`、`dsh-fs-sandbox`、`dsh-user-approval` 和 `dsh-permission-presets`。组合回退值为 `workspace-write` preset，其中包含 `workspace-write` 文件效果模式与 `ask` 审批策略。`DSH_PERMISSION_MODE` 仍是显式的进程级覆盖；已存储的 `permission.defaultPreset` 仍是面向后续会话的用户偏好，并通过 Settings seam 优先于该回退值。
+[`base.cordis.yml`](../../../../packages/bundle/base/cordis.patch.yml) 为所有已交付的 TUI、Web 以及由浏览器支撑的无头会话统一持有一套沙箱与权限栈：`alego-sandbox-local`、`alego-sandbox-policy`、`alego-bash-sandbox`、`alego-fs-sandbox`、`alego-user-approval` 和 `alego-permission-presets`。组合回退值为 `workspace-write` preset，其中包含 `workspace-write` 文件效果模式与 `ask` 审批策略。`ALEGO_PERMISSION_MODE` 仍是显式的进程级覆盖；已存储的 `permission.defaultPreset` 仍是面向后续会话的用户偏好，并通过 Settings seam 优先于该回退值。
 
 真正的新会话会在执行前固定 `permission/preset: workspace-write`、`sandbox/mode: workspace-write` 和 `approval/policy: ask`。现有会话和恢复的会话保留日志中记录的权限，更改「通用」设置中的默认值只影响之后创建的会话。浏览器保留 Access 选择器、可应答的审批卡片，以及选择 Full access 时的风险确认。共享 Permission 服务在 TUI 中激活其命令子件，因此 TUI 会获得现有的 `/permission` 命令。
 

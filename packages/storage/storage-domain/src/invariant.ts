@@ -1,19 +1,19 @@
 /**
- * Package-owned invariant companion for `@deepseek-ai/dsh-storage-domain`: every
+ * Package-owned invariant companion for `@alego/storage-domain`: every
  * `domain/changed` event must agree with the emitting domain's authoritative
  * in-memory state (the owned event-stream ↔ mutable-data relationship of this
  * package). Writes emit strictly after mutating memory and the write chain
  * serializes them, so at emission time the event's snapshot equals the
  * current read — any divergence means a write path skipped the chain or
  * emitted a stale value.
- * @module @deepseek-ai/dsh-storage-domain/invariant
+ * @module @alego/storage-domain/invariant
  */
 
-import type { Context } from '@deepseek-ai/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@deepseek-ai/dsh-invariants'
+import type { Context } from '@alego/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
 import type { DomainChanged } from './events.ts'
 
-const PACKAGE_NAME = '@deepseek-ai/dsh-storage-domain'
+const PACKAGE_NAME = '@alego/storage-domain'
 
 /** Cordis companion plugin name. */
 export const name = 'storage-domain-invariant'

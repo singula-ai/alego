@@ -1,4 +1,4 @@
-# Loader overlay for the real-host smoke (`dsh web --patch`): pin the
+# Loader overlay for the real-host smoke (`alego web --patch`): pin the
 # in-browser directory picker. The shipped row is `-auto`, which resolves to
 # the native OS chooser on a loopback bind with a local display — an
 # interaction a Playwright page cannot drive, so the resolved backend would
@@ -8,6 +8,6 @@
   disabled: true
 - insert:
     - id: directory-picker-browse
-      name: '@deepseek-ai/dsh-host-directory-picker-browse'
+      name: '@alego/host-directory-picker-browse'
     - id: ui-directory-picker-browse
-      name: '@deepseek-ai/dsh-client-ui-directory-picker-browse'
+      name: '@alego/client-ui-directory-picker-browse'

@@ -12,7 +12,7 @@ Archived: 2026-07-28
 这一假设并不成立。有两条路径在任何轮次之外记录了事件：
 
 1. **排队的用户消息。** agent loop（智能体循环）排空排队消息并在 `turn/start` *之前*追加 `user/message`——于是一个轮次自身的提示词落在了前一个 `turn/end` 与下一个 `turn/start` 之间的间隙中。
-2. **空闲时的上下文注入。** `agent.inject()` 直接追加一条 `context/message`。它在生产环境中的真实调用方是 `dsh-tool-bash`，后者从 `ctx.bash.onTaskDone` 注入后台任务完成通知——该回调在后台 bash 任务完成时触发，而这经常发生在 agent **空闲**（轮次之间）时。
+2. **空闲时的上下文注入。** `agent.inject()` 直接追加一条 `context/message`。它在生产环境中的真实调用方是 `alego-tool-bash`，后者从 `ctx.bash.onTaskDone` 注入后台任务完成通知——该回调在后台 bash 任务完成时触发，而这经常发生在 agent **空闲**（轮次之间）时。
 
 在情况 2 中，如果注入的 `context/message` 是 flush/dispose 之前的最后一个事件（之后没有轮次追加 `turn/end`），`scanLog` 会将其视为崩溃残留并在**恢复时丢弃**——注入的上下文已持久写入磁盘，但重新加载后被静默丢失。情况 1 本身无害（`user/message` 之后总会跟着它触发的轮次），但使「什么可以出现在轮次之外」这条规则变得模糊。
 
@@ -24,7 +24,7 @@ Archived: 2026-07-28
 - agent **运行中**调用 `agent.inject()` 时，它会加入已打开的轮次。当前步骤执行 assistant 工具调用期间，已接受的上下文按到达顺序等待该批次结算，随后在每个已记录结果之后追加；即使执行中断，也会在轮次关闭前写入。
 - agent **空闲时**调用 `agent.inject()`，则将 `context/message` 包裹在一个一次性轮次中：`turn/start{trigger:{kind:'injection'}}` → `context/message` → `turn/end{completed}`。一个新的 `injection` 变体加入可合并扩展的 `TurnTriggerMap`。
 - agent loop 每次迭代从日志推导下一个轮次编号（`lastTurnNumber(session) + 1`），而不是维护一个私有计数器，这样空闲注入的一次性轮次不会与下一个真实轮次的编号冲突。
-- `dsh-session/invariant` companion 将该检查注册到 `ctx.invariants`：选中后，在没有打开轮次的情况下追加 `user/message` / `context/message` / `steering/message` 会抛出归因于 `@deepseek-ai/dsh-session` 的 `InvariantError`。
+- `alego-session/invariant` companion 将该检查注册到 `ctx.invariants`：选中后，在没有打开轮次的情况下追加 `user/message` / `context/message` / `steering/message` 会抛出归因于 `@alego/session` 的 `InvariantError`。
 
 可序列化性不变式在同一源码边界处强制执行（`Session.append` 对不可 JSON 序列化的数据抛出异常），因此「什么可以进入日志」现在由一个位置统一管控，而非由下游碰巧在监听的某个后端各自发现。
 

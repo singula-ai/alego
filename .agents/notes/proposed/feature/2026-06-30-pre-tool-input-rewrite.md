@@ -14,7 +14,7 @@ In the loop, a tool call's arguments are committed to the log and read by live c
 
 1. **`assistant/message`** is appended before tool dispatch — it is the model-history source `deriveMessages()` replays, so it carries the tool-call arguments the model itself emitted.
 2. **`tool/call`** is the durable AUDIT record, appended before `ctx.tools.execute()`.
-3. **Human-facing presentation reads `tool/call.arguments`**: UI renderers pass them to `presentResult`; `dsh-tool-bash` derives the card title, the rawInput, the cwd, and the terminal-vs-background treatment from them.
+3. **Human-facing presentation reads `tool/call.arguments`**: UI renderers pass them to `presentResult`; `alego-tool-bash` derives the card title, the rawInput, the cwd, and the terminal-vs-background treatment from them.
 
 An execution-only rewrite would make the UI show one command while another ran and render the result against the wrong arguments. The registry prevents that failure mode today: it structured-clones and deep-freezes `arguments`, makes the execution identity properties non-writable, and exposes no test shim or listener path that can replace them. The rewrite design must preserve that protected-identity boundary rather than weaken it.
 

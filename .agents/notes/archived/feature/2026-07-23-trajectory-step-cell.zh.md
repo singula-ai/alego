@@ -11,7 +11,7 @@ trajectory 标签页需要可复用的步骤行与轮次列表 chrome，以展�
 
 ## Decision
 
-[`@deepseek-ai/dsh-client-ui-trajectory`](../../../../packages/client/ui-trajectory/README.md) 拥有展示型 trajectory 列表 chrome：
+[`@alego/client-ui-trajectory`](../../../../packages/client/ui-trajectory/README.md) 拥有展示型 trajectory 列表 chrome：
 
 - [`TrajectoryCell`](../../../../packages/client/ui-trajectory/src/client/TrajectoryCell.tsx) — 高 38px 的步骤行，类型为 User / Message / Tool（无 Think、Call、Result 行）。reasoning 块跳过（无块级时钟）。每对 `tool-call` + `tool-result` 折成一行 Tool（`name ·` 加截断参数），Time 在两端皆知时为 `result.time − callTime`。Message 行携带来自 `assistant.usage` 的 Input/Output/Think token 列。自身耗时 Time 使用 `+Ns` / `+N.1s`，缺失时为 `—`。选中态绘制 2px 内嵌的 `--dsw-alias-brand-primary-new-colorprimary-new-color` 环（`selected` prop），且未接线到 chat 选中。
 - [`TrajectoryTurn`](../../../../packages/client/ui-trajectory/src/client/TrajectoryTurn.tsx) / header / group header — 粘性 Turn 条背景通栏铺 `ghost-active-fill`；标题／列标与 Message/Step 主体落在居中的 `max-width: 880px` 内容道。单元格右侧列与 Turn 标头共用几何（`320 = 4×71 + 3×12`）；cell pad 20/8。

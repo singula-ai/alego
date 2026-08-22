@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-lsp
+# @alego/lsp
 
 [English](README.md) | 中文
 
@@ -8,9 +8,9 @@
 
 | 包 | 职责 |
 |---|---|
-| `@deepseek-ai/dsh-lsp`（本包） | Service Definition：服务、以品牌化 id + 扩展名映射为 key 的提供方注册表、逐查询选择、请求／结果词汇、`LspError` 分类体系 |
-| `@deepseek-ai/dsh-lsp-stdio` | Service Provider：通用本地后端，注册已配置的 stdio 语言服务器提供方 |
-| `@deepseek-ai/dsh-tool-lsp` | Consumer：面向模型的 `lsp` 工具，基于 `ctx.lsp` |
+| `@alego/lsp`（本包） | Service Definition：服务、以品牌化 id + 扩展名映射为 key 的提供方注册表、逐查询选择、请求／结果词汇、`LspError` 分类体系 |
+| `@alego/lsp-stdio` | Service Provider：通用本地后端，注册已配置的 stdio 语言服务器提供方 |
+| `@alego/tool-lsp` | Consumer：面向模型的 `lsp` 工具，基于 `ctx.lsp` |
 
 该 seam 恰好公开四种语义操作：`goToDefinition`、`findReferences`、`goToImplementation`、`hover`，且没有通用 JSON-RPC 逃生口，因此任何协议载荷或未经评审的命令／修改都无法通过 `ctx.lsp` 到达提供方。
 
@@ -23,7 +23,7 @@
 
 选择逐查询进行且与顺序无关：一个提供方独占一组扩展名，因此注册和 HMR（热模块替换）顺序绝不会改变路由。扩展名 key 规范化为小写且以点开头；`languageId` 只用于同步临时文档，绝不参与选择。第一版没有 glob、language-id 或显式路由 selector。
 
-提供方注册的是**能力**而非工具。`dsh-tool-lsp` 是面向模型的名称、描述、提示词指引、schema 和呈现的唯一 owner。
+提供方注册的是**能力**而非工具。`alego-tool-lsp` 是面向模型的名称、描述、提示词指引、schema 和呈现的唯一 owner。
 
 ## 词汇
 
@@ -31,11 +31,11 @@
 
 ## 模型体验
 
-通过 `dsh-tool-lsp` 间接影响；该工具拥有面向模型的 `lsp` schema、提示词与渲染结果，本注册表自身不贡献提示词或 schema。
+通过 `alego-tool-lsp` 间接影响；该工具拥有面向模型的 `lsp` schema、提示词与渲染结果，本注册表自身不贡献提示词或 schema。
 
 #### KV Cache 影响
 
-不会直接失效；请求前缀变更由 `dsh-tool-lsp` 负责。
+不会直接失效；请求前缀变更由 `alego-tool-lsp` 负责。
 
 ## 已知限制与暂缓事项
 

@@ -18,7 +18,7 @@ Status: implemented
 - 已实现的 Agent Note 陈述已交付的现实：「推迟到后续 PR」的说法若其目标已经交付，就改为点名那篇已交付的 note。
 - 已录制的 fixture（测试前置数据）、快照与已归档的 Agent Note 不受此约束：已录制的模型输出与封存的历史保持原有行文。在 note 的变更故事段落内，历史阶段名称（「首版交付了 X」）符合只描述当前状态的要求；「this cut」这类指示当前版本的标记在任何地方都仍被禁止。
 
-一次全仓库清理把这些规则应用到了各个行文表面，包括生成器持有的模板（`scripts/gen-doc-graphs.ts`、`scripts/gen-tool-catalog.ts`、typert 生成器的页面提示语，改后重新生成）、type-equiv 源码中的 JSDoc（改后重新同步到文档页）以及双语对侧文件（改后重新记录配对）。[dsh-trim-cot-leakage 技能](../../../skills/dsh-trim-cot-leakage/SKILL.md)把这些规则落地为可执行工作流：审计分类法、已提交的成批召回检索，以及用于判断保留或删除内容的少样本示例。
+一次全仓库清理把这些规则应用到了各个行文表面，包括生成器持有的模板（`scripts/gen-doc-graphs.ts`、`scripts/gen-tool-catalog.ts`、typert 生成器的页面提示语，改后重新生成）、type-equiv 源码中的 JSDoc（改后重新同步到文档页）以及双语对侧文件（改后重新记录配对）。[alego-trim-cot-leakage 技能](../../../skills/alego-trim-cot-leakage/SKILL.md)把这些规则落地为可执行工作流：审计分类法、已提交的成批召回检索，以及用于判断保留或删除内容的少样本示例。
 
 ## 曾考虑的替代方案
 

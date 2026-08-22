@@ -14,7 +14,7 @@ The TUI opened with a boxed product banner ("DEEPSEEK HARNESS" + model/session d
 ## Decision
 
 - `HeaderComponent`, the sweep animation, and its lifecycle wiring are deleted. The TUI mounts straight into the transcript; startup renders nothing above the separator.
-- The model name moves into the footer status line's left segment (`<model>  <cwd>  ↑tokens ↓tokens`), so the session's driving model stays visible at all times, not just at boot. The session id is no longer displayed — it lives in the session log and `./.sessions` filenames, where `dsh --resume <id>` and the `/resume` selector retrieve it.
+- The model name moves into the footer status line's left segment (`<model>  <cwd>  ↑tokens ↓tokens`), so the session's driving model stays visible at all times, not just at boot. The session id is no longer displayed — it lives in the session log and `./.sessions` filenames, where `alego --resume <id>` and the `/resume` selector retrieve it.
 - `welcome`, when configured, renders as the transcript's first line (a muted notice) inside `rebuildTranscript`, so palette swaps preserve it. Unset renders nothing. Fixtures keep their configured welcomes; the PTY smoke's boot marker becomes the footer's model name, the only mounted-TUI text guaranteed to render regardless of cwd length.
 
 This supersedes the [banner sweep Agent Note](2026-07-21-tui-banner-sweep.md) entirely: both the sweep and the banner it animated are gone.

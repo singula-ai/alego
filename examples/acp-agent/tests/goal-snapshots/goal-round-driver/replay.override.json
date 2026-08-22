@@ -39,5 +39,5 @@
       { "type": "finish", "reason": { "kind": "stop" } }
     ]
   },
-  { "kind": "hang", "readyFile": ".dsh-snapshot-goal-cancel-ready" }
+  { "kind": "hang", "readyFile": ".alego-snapshot-goal-cancel-ready" }
 ]

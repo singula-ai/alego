@@ -1,4 +1,4 @@
-# dsh-tool-call-timeout-policy
+# alego-tool-call-timeout-policy
 
 [English](README.md) | 中文
 
@@ -6,20 +6,20 @@
 
 ## 插件（命名空间：`timeout-policy`）
 
-它是函数／命名空间插件（`name`／`inject`／`apply`），而非服务。它不注册工具，也不接受配置；它消费 `ctx.tools` 的 `tools/execute` waterfall（瀑布式事件）（由 `dsh-tools` 注册表始终提供），并读取每个已分发工具声明的 `timeoutMs`；该声明来自注册表（`ctx.tools.get(exec.name)`）。
+它是函数／命名空间插件（`name`／`inject`／`apply`），而非服务。它不注册工具，也不接受配置；它消费 `ctx.tools` 的 `tools/execute` waterfall（瀑布式事件）（由 `alego-tools` 注册表始终提供），并读取每个已分发工具声明的 `timeoutMs`；该声明来自注册表（`ctx.tools.get(exec.name)`）。
 
 ```yaml
 - id: timeout-policy
-  name: '@deepseek-ai/dsh-tool-call-timeout-policy'
+  name: '@alego/tool-call-timeout-policy'
 ```
 
-每工具预算由工具插件声明（例如 `dsh-tool-web` 的 `fetchTimeoutMs`／`searchTimeoutMs` 配置，会附加为 `ToolDefinition.timeoutMs`）；此插件只负责强制执行，因此不可能拼错工具名。
+每工具预算由工具插件声明（例如 `alego-tool-web` 的 `fetchTimeoutMs`／`searchTimeoutMs` 配置，会附加为 `ToolDefinition.timeoutMs`）；此插件只负责强制执行，因此不可能拼错工具名。
 
 ### 行为
 
 对 **声明了 `timeoutMs` 的工具**，监听器会：
 
-1. 从注册表中的工具自身声明（`ctx.tools.get(exec.name)?.timeoutMs`）读取预算，并设置 `deadline(exec.signal, timeoutMs, 'TOOL_TIMEOUT')`：一个将调用方中止与此插件计时器融合的信号（`@deepseek-ai/dsh-timeout`）。
+1. 从注册表中的工具自身声明（`ctx.tools.get(exec.name)?.timeoutMs`）读取预算，并设置 `deadline(exec.signal, timeoutMs, 'TOOL_TIMEOUT')`：一个将调用方中止与此插件计时器融合的信号（`@alego/timeout`）。
 2. 将该派生信号替换到 `exec` 上用于下游分发，然后恢复调用方自身的信号（Cordis `next()` 忽略传入的参数，因此包装层会原地修改共享 `exec`；恢复可使 `tools/post-execute` 看到调用方的信号）。
 3. 分发后，如果 `timeoutOf(d.signal, 'TOOL_TIMEOUT')` 检测到此插件自身的计时器已触发，则将结果替换为结构化 `TOOL_TIMEOUT` 工具结果：`{ isError: true, error: { message, info: { name: 'ToolTimeoutError', code: 'TOOL_TIMEOUT' } }, content: 'Error: tool call timed out after <ms>ms' }`。
 
@@ -29,7 +29,7 @@
 
 ### 协作式，而非硬终止
 
-派生信号只会**通知**；是否终止仍取决于工具及其将 `exec.signal` 转发到的能力（`dsh-timeout` 库本身不负责硬终止）。**因此，声明 `timeoutMs` 意味着「与 `exec.signal` 协作」**：忽略该信号的工具不会在超时时停止。只有转发信号的工具才应声明该字段；已交付的 `web_fetch`／`web_search`（通过 `ctx.web` 转发给提供方）是参考实现。`TOOL_TIMEOUT` 无需会话事件以满足可重建性：它是最终面向模型的 `tool/result`，已由循环记录。
+派生信号只会**通知**；是否终止仍取决于工具及其将 `exec.signal` 转发到的能力（`alego-timeout` 库本身不负责硬终止）。**因此，声明 `timeoutMs` 意味着「与 `exec.signal` 协作」**：忽略该信号的工具不会在超时时停止。只有转发信号的工具才应声明该字段；已交付的 `web_fetch`／`web_search`（通过 `ctx.web` 转发给提供方）是参考实现。`TOOL_TIMEOUT` 无需会话事件以满足可重建性：它是最终面向模型的 `tool/result`，已由循环记录。
 
 ### 与其他 `tools/execute` 包装层组合
 

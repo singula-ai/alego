@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write
-2026-06-15-turn-enclosure-invariant.md: f38f5b2600b57ad8f5fc4c8975579e281b5f3a49
-2026-06-15-turn-enclosure-invariant.zh.md: b74ddf3f6b65a7990329a8a903aafe2e4ca41c90
+2026-06-15-turn-enclosure-invariant.md: b34b74cbc486a99179f91ee911d71c8724c60db8
+2026-06-15-turn-enclosure-invariant.zh.md: f24ed0860908d6490a552d15b9a9c1d443f0ade8

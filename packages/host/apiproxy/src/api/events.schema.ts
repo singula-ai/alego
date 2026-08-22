@@ -5,7 +5,7 @@
  */
 
 import { z } from 'zod'
-import type { AskUserQuestionItem } from '@deepseek-ai/dsh-user-questions/types'
+import type { AskUserQuestionItem } from '@alego/user-questions/types'
 import type { HostFrame, MuxFrame } from './events.ts'
 import type { Wire } from './rpc.schema.ts'
 import { rpcErrorSchema, rpcIdSchema } from './rpc.schema.ts'
@@ -16,7 +16,7 @@ import {
 import { taskViewSchema } from './jobs.schema.ts'
 import { workspaceIdSchema, workspaceViewSchema } from './workspace.schema.ts'
 
-/** Question fields validated strictly against core dsh-user-questions. */
+/** Question fields validated strictly against core alego-user-questions. */
 export const askUserQuestionItemSchema = z.object({
   id: z.string(),
   question: z.string(),

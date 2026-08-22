@@ -10,7 +10,7 @@ Guarded `write` and `edit` failures reach the model with messages that state the
 
 ## Decision
 
-`dsh-tool-fs` owns a model-facing error wrapper, `remediateFsError` in `src/error.ts`, applied in `write.ts` and `edit.ts` after the sandbox denial mapping. It appends the recovery instruction to the two guarded-mutation codes and passes everything else through untouched:
+`alego-tool-fs` owns a model-facing error wrapper, `remediateFsError` in `src/error.ts`, applied in `write.ts` and `edit.ts` after the sandbox denial mapping. It appends the recovery instruction to the two guarded-mutation codes and passes everything else through untouched:
 
 - `FS_STALE_VERSION` (including a missing edit target, which shares the stale code) gains `— re-read the file, then retry`.
 - `FS_NOT_OBSERVED` gains `— read the file, then retry`.
@@ -21,12 +21,12 @@ In `edit.ts` the `fs/edit-intent` waterfall now sits inside the same `try` as th
 
 ## Alternatives considered
 
-- **Append the remedy to the provider messages in `dsh-fs` / `dsh-fs-local`.** Rejected because those messages are machine-oriented seam vocabulary consumed by retry, permission, UI, and model-facing layers; model-facing wording belongs at the model boundary, where `dsh-tool-fs` already owns result formatting ([filesystem capability seam](../architecture/2026-06-17-filesystem-capability-seam.md)).
+- **Append the remedy to the provider messages in `alego-fs` / `alego-fs-local`.** Rejected because those messages are machine-oriented seam vocabulary consumed by retry, permission, UI, and model-facing layers; model-facing wording belongs at the model boundary, where `alego-tool-fs` already owns result formatting ([filesystem capability seam](../architecture/2026-06-17-filesystem-capability-seam.md)).
 - **Add the recovery to prompt guidance instead.** Rejected because the failure arrives mid-task; a static instruction does not reliably reach the retry decision, while the error message is present exactly when the model must act.
 - **Signal the remedy with a new `FsError` code.** Rejected because the two failures are the same conditions retry layers already handle; splitting the code would fork routing on identical semantics.
 
 ## Consequences
 
-Model-visible text for the two codes changes; the `fs-policy-reject` keyless snapshot is re-recorded, and the READMEs of `dsh-tool-fs` and `dsh-fs-observation-policy` pin the exact appended text. Unit tests cover the wrapper directly (remedy text, code preservation, cause chaining, passthrough of other codes and non-`FsError` values) and the assembled tool paths assert the remedy reaches the model for both codes.
+Model-visible text for the two codes changes; the `fs-policy-reject` keyless snapshot is re-recorded, and the READMEs of `alego-tool-fs` and `alego-fs-observation-policy` pin the exact appended text. Unit tests cover the wrapper directly (remedy text, code preservation, cause chaining, passthrough of other codes and non-`FsError` values) and the assembled tool paths assert the remedy reaches the model for both codes.
 
 The [filesystem absence-observation follow-up](../bug-fix/2026-08-09-filesystem-absence-observation.md) makes the stale remedy actionable for external deletion. The failed reread still returns `FS_NOT_FOUND`, but records confirmed absence: edit then returns `FS_NOT_FOUND` without another stale remedy, while write retries as an atomic `createIfAbsent` and preserves any concurrent creator.

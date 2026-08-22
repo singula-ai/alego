@@ -12,7 +12,7 @@ A durable session-persistence backend (added in a companion change) uses the **t
 That assumption did not hold. Two paths recorded events outside any turn:
 
 1. **Queued user messages.** The loop drained queued messages and appended `user/message` *before* `turn/start` — so a turn's own prompt sat in the gap between the previous `turn/end` and the next `turn/start`.
-2. **Idle context injection.** `agent.inject()` appends a `context/message` directly. Its real production caller is `dsh-tool-bash`, which injects a background-task completion notice from `ctx.bash.onTaskDone` — a callback that fires whenever a background bash task finishes, frequently while the agent is **idle** (between turns).
+2. **Idle context injection.** `agent.inject()` appends a `context/message` directly. Its real production caller is `alego-tool-bash`, which injects a background-task completion notice from `ctx.bash.onTaskDone` — a callback that fires whenever a background bash task finishes, frequently while the agent is **idle** (between turns).
 
 In case 2, if the injected `context/message` is the last event before a flush/dispose (no later turn appends a `turn/end`), `scanLog` treats it as crash debris and **drops it on resume** — the injected context is durably on disk but silently lost on reload. Case 1 was benign in isolation (a `user/message` is always followed by the turn it triggered) but made the "what may appear outside a turn" rule fuzzy.
 
@@ -24,7 +24,7 @@ In case 2, if the injected `context/message` is the last event before a flush/di
 - An `agent.inject()` made while the agent is **running** joins the already-open turn. While the current step executes assistant tool calls, accepted context waits in arrival order until that batch settles, then appends after every recorded result and before the turn closes even when execution is interrupted.
 - An `agent.inject()` made while **idle** wraps its `context/message` in a one-shot turn: `turn/start{trigger:{kind:'injection'}}` → `context/message` → `turn/end{completed}`. A new `injection` variant joins the merge-extensible `TurnTriggerMap`.
 - The loop derives the next turn number from the log each iteration (`lastTurnNumber(session) + 1`) instead of keeping a private counter, so an idle injection's one-shot turn cannot collide with the next real turn's number.
-- The `dsh-session/invariant` companion registers the check with `ctx.invariants`: when selected, a `user/message` / `context/message` / `steering/message` appended while no turn is open throws an `InvariantError` attributed to `@deepseek-ai/dsh-session`.
+- The `alego-session/invariant` companion registers the check with `ctx.invariants`: when selected, a `user/message` / `context/message` / `steering/message` appended while no turn is open throws an `InvariantError` attributed to `@alego/session`.
 
 The serializability invariant is enforced at the same source boundary (`Session.append` throws on non-JSON-serializable data), so "what may enter the log" is now governed in one place rather than discovered downstream by whichever backend happens to be watching.
 

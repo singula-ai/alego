@@ -5,12 +5,12 @@
  */
 
 import { z } from 'zod'
-import type { AskUserQuestionAnswer } from '@deepseek-ai/dsh-user-questions/types'
+import type { AskUserQuestionAnswer } from '@alego/user-questions/types'
 import type { QuestionResponsePayload } from './questions.ts'
 import type { Wire } from './rpc.schema.ts'
 import { sessionIdSchema } from './sessions.schema.ts'
 
-/** AskUserQuestionAnswer validated strictly against core dsh-user-questions. */
+/** AskUserQuestionAnswer validated strictly against core alego-user-questions. */
 export const askUserQuestionAnswerSchema = z.object({
   answers: z.array(z.object({
     id: z.string(),

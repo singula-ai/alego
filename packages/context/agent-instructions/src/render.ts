@@ -1,7 +1,7 @@
 /**
  * Model-facing workspace instruction rendering within an explicit byte budget.
  *
- * @module @deepseek-ai/dsh-agent-instructions/render
+ * @module @alego/agent-instructions/render
  */
 
 import { basename, dirname } from 'node:path'
@@ -90,8 +90,8 @@ function sectionText(file: LoadedInstructionFile): string {
 export const USER_GLOBAL_DIRECTORY = 'user-global'
 
 /**
- * File name of the single user-global instruction file under `$DSH_HOME`.
- * Discovery (`$DSH_HOME/<name>`) and reconciliation (the user-global scope key's
+ * File name of the single user-global instruction file under `$ALEGO_HOME`.
+ * Discovery (`$ALEGO_HOME/<name>`) and reconciliation (the user-global scope key's
  * candidate component) both key on this name, so it lives in one place: were the
  * two to disagree, the user-global instruction would load but never reconcile.
  */
@@ -103,7 +103,7 @@ export const USER_GLOBAL_FILE = 'AGENTS.md'
  * @returns `user-global`, `.`, or the containing project-relative directory.
  */
 export function scopeForDisplayPath(displayPath: string): string {
-  if (displayPath === '~/.dsh/AGENTS.md' || displayPath === '$DSH_HOME/AGENTS.md') return USER_GLOBAL_DIRECTORY
+  if (displayPath === '~/.alego/AGENTS.md' || displayPath === '$ALEGO_HOME/AGENTS.md') return USER_GLOBAL_DIRECTORY
   return dirname(displayPath)
 }
 

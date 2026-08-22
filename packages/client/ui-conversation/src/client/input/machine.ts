@@ -13,7 +13,7 @@
  * as a draftRev advance (begin-command / insert-ref / consume-token /
  * paste-upgrade all answer their bail events this way).
  */
-import type { CommandClaim, ReferenceInsert, TokenSpan } from '@deepseek-ai/dsh-client-ui-input-trigger/client'
+import type { CommandClaim, ReferenceInsert, TokenSpan } from '@alego/client-ui-input-trigger/client'
 import type { InputSubmitMode } from '../contract/composer-submission.ts'
 import type {
   ConsumeTokenGuard, EditRange, EditSelection, InputEffect, InputEvent, InputMachineOptions,

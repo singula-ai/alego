@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-client-ui-cordis
+# @alego/client-ui-cordis
 
 English | [中文](README.zh.md)
 

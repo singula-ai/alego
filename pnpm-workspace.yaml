@@ -5,7 +5,7 @@ packages:
   # its native build and publication scripts under native/landlock-run.
   - native/landlock-run
   - native/landlock-run/packages/*
-  # Product assemblies over the package tier; apps/cli owns the `dsh` bin.
+  # Product assemblies over the package tier; apps/cli owns the `alego` bin.
   - apps/*
   - website
   # The runnable demo leaves join as ONE workspace member: examples/package.json
@@ -25,8 +25,8 @@ packages:
 linkWorkspacePackages: true
 
 overrides:
-  '@deepseek-ai/cosmokit': 'link:vendor/cosmokit'
-  '@deepseek-ai/schemastery': 'link:vendor/schemastery'
+  '@alego/cosmokit': 'link:vendor/cosmokit'
+  '@alego/schemastery': 'link:vendor/schemastery'
 
 peerDependencyRules:
   allowedVersions:
@@ -52,7 +52,7 @@ allowBuilds:
   koffi: true
   # The Python runtime deploy includes the reviewed workspace postinstall that
   # restores the executable bit on node-pty's macOS spawn helper.
-  '@deepseek-ai/dsh-subprocess-local@file:packages/subprocess/subprocess-local': true
+  '@alego/subprocess-local@file:packages/subprocess/subprocess-local': true
 
 minimumReleaseAgeExclude:
   # Fresh pi-ai releases carry the model catalog updates that are the whole

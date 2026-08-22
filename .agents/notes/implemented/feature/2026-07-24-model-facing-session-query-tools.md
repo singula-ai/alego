@@ -10,7 +10,7 @@ The unified `ctx.sessionQuery` service exposes exact reads, filters, relationshi
 
 ## Decision
 
-`@deepseek-ai/dsh-tool-session-query` is the model-facing consumer of `ctx.sessionQuery`. It registers five narrow read-only tools: `session_search`, `session_event_search`, `session_trace`, `session_event_trace`, and `session_event_read`. The package imports the interface rather than the SQLite implementation, owns model argument validation and readable text rendering, and contributes one concise prompt section that teaches the prior-history search and search-to-trace/read workflow.
+`@alego/tool-session-query` is the model-facing consumer of `ctx.sessionQuery`. It registers five narrow read-only tools: `session_search`, `session_event_search`, `session_trace`, `session_event_trace`, and `session_event_read`. The package imports the interface rather than the SQLite implementation, owns model argument validation and readable text rendering, and contributes one concise prompt section that teaches the prior-history search and search-to-trace/read workflow.
 
 The package entrypoint is only the public composition root for configuration, prompt registration, and tool registration. Its internal modules follow the execution boundary: `input.ts` owns model schemas, normalization, and filter construction; `service-boundary.ts` contains provider calls and model-safe error translation; `workspace-access.ts` owns caller identity, workspace authorization, title access, and lineage projection; `operations.ts` orchestrates the five service workflows; and `presentation.ts` renders tool results and call cards. This keeps policy in its owning layer without changing the package contract.
 

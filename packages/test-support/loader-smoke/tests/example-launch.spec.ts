@@ -3,7 +3,7 @@ import {
   EXAMPLE_MODE_ENV,
   resolveExampleLaunch,
   resolveExampleMode,
-} from '@deepseek-ai/dsh-loader-smoke'
+} from '@alego/loader-smoke'
 
 const SRC_BIN = '/repo/packages/examples/acp-demo/src/bin.ts'
 const TSCONFIG = '/repo/tsconfig.json'
@@ -62,13 +62,13 @@ describe('resolveExampleLaunch', () => {
       srcBin: SRC_BIN,
       configArgs: ['--config', './cordis.yml'],
       mode: 'lib',
-      env: { DSH_HOME: '/tmp/home' },
+      env: { ALEGO_HOME: '/tmp/home' },
     })
     expect(args).not.toContain('--import')
     expect(args).toContain('/repo/packages/examples/acp-demo/lib/bin.js')
     expect(args.slice(-2)).toEqual(['--config', './cordis.yml'])
     expect(env.TSX_TSCONFIG_PATH).toBeUndefined()
-    expect(env.DSH_HOME).toBe('/tmp/home')
+    expect(env.ALEGO_HOME).toBe('/tmp/home')
   })
 
   it('lib mode: uses an explicit plain-Node bin when provided', () => {

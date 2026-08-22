@@ -1,4 +1,4 @@
-# Agent Note: dsh-hooks-claude-code + dsh-hooks-codex — the Claude Code / Codex hook bridges
+# Agent Note: alego-hooks-claude-code + alego-hooks-codex — the Claude Code / Codex hook bridges
 
 Status: implemented
 
@@ -14,8 +14,8 @@ The core rule is: **a bridge is a compatibility adapter, not a power tool.** Any
 
 Two independent plugins in the `packages/hooks/` group, each a function/namespace plugin (`name`/`inject`/`Config`/`apply`, NO default export — see [postmortem 0001](../../../../docs/postmortem/0001-acp-default-export-drops-inject.md)) injecting only `bash`:
 
-- **`dsh-hooks-claude-code`** — the CC dialect. Seven of Claude Code's current hook points: `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `PostToolUse`, `Stop`, `SubagentStart`, and `SubagentStop`. Owns CC-shaped per-event stdin payloads (a base of `session_id`/`transcript_path`/`cwd`/`hook_event_name` plus per-event fields), `CLAUDE_PROJECT_DIR` plus `${CLAUDE_PLUGIN_ROOT}`/`${CLAUDE_PROJECT_DIR}` substitution, and the literal-or-regex matcher mode. `transcript_path` is the persistence locator result or `''`; stdin carries a **trailing newline**.
-- **`dsh-hooks-codex`** — five of Codex's current hook points: `PreToolUse`, `PostToolUse`, `SessionStart`, `UserPromptSubmit`, and `Stop`. It uses an always-regex matcher, Codex-shaped snake_case payloads with `turn_id`/`model`/`permission_mode` extras written WITHOUT a trailing newline, no Codex plugin-env injection or config-time placeholder substitution, and no pre-tool approval or rewrite path. `transcript_path` is the same locator result or `null`; tool payloads carry the real `tool_name` in the reduced `tool_input: { command }` shape.
+- **`alego-hooks-claude-code`** — the CC dialect. Seven of Claude Code's current hook points: `SessionStart`, `UserPromptSubmit`, `PreToolUse`, `PostToolUse`, `Stop`, `SubagentStart`, and `SubagentStop`. Owns CC-shaped per-event stdin payloads (a base of `session_id`/`transcript_path`/`cwd`/`hook_event_name` plus per-event fields), `CLAUDE_PROJECT_DIR` plus `${CLAUDE_PLUGIN_ROOT}`/`${CLAUDE_PROJECT_DIR}` substitution, and the literal-or-regex matcher mode. `transcript_path` is the persistence locator result or `''`; stdin carries a **trailing newline**.
+- **`alego-hooks-codex`** — five of Codex's current hook points: `PreToolUse`, `PostToolUse`, `SessionStart`, `UserPromptSubmit`, and `Stop`. It uses an always-regex matcher, Codex-shaped snake_case payloads with `turn_id`/`model`/`permission_mode` extras written WITHOUT a trailing newline, no Codex plugin-env injection or config-time placeholder substitution, and no pre-tool approval or rewrite path. `transcript_path` is the same locator result or `null`; tool payloads carry the real `tool_name` in the reduced `tool_input: { command }` shape.
 
 ### Outcome → Decision mapping
 
@@ -31,7 +31,7 @@ Each bridge maps the neutral `MergedHookOutcome` from the shared lib onto each e
 | `subagent/start` (emit) | additionalContext → inject into a live in-process child; a remote child has no local injection target | unsupported by this bridge |
 | `subagent/end` (emit) | observe-only | unsupported by this bridge |
 
-The CC bridge's `ask` result is a real permission path, not a terminal bridge decision: `dsh-tools` resolves it through the optional [approval seam](2026-07-06-approval-seam.md). An ACP automation client may answer the owning session's one-shot machine-policy request and `allowed-once` proceeds; without an ApprovalService or answerer, the call fails closed to `deny`.
+The CC bridge's `ask` result is a real permission path, not a terminal bridge decision: `alego-tools` resolves it through the optional [approval seam](2026-07-06-approval-seam.md). An ACP automation client may answer the owning session's one-shot machine-policy request and `allowed-once` proceeds; without an ApprovalService or answerer, the call fails closed to `deny`.
 
 ### Context source is always the plugin (the mislabel guard)
 
@@ -69,4 +69,4 @@ Hooks run in the agent's session workspace, so relative paths target the user's 
 
 ## Consequences
 
-Matcher semantics, exit-code handling, and merge precedence live in `dsh-hook-protocol`; each bridge only parses config, builds dialect payloads, and maps outcomes. Per-file coverage includes config branches plus end-to-end mappings through a real loop, `dsh-bash-local`, and shell scripts, while a real-Loader smoke guards the package export shape. Native plugins bypass the wire protocol and return typed decisions directly.
+Matcher semantics, exit-code handling, and merge precedence live in `alego-hook-protocol`; each bridge only parses config, builds dialect payloads, and maps outcomes. Per-file coverage includes config branches plus end-to-end mappings through a real loop, `alego-bash-local`, and shell scripts, while a real-Loader smoke guards the package export shape. Native plugins bypass the wire protocol and return typed decisions directly.

@@ -23,7 +23,7 @@ Status: implemented
 
 **`instructions`**——从工作区文件中读出的指令。`agent-instructions` 在启动基线与后续增量上都声明它；其既有的 `changes[]` 已经携带了呈现所需的路径、动作与 digest，因此没有新增字段。内容区在正文之上列出对账过的文件，并原样保留 `<system-reminder>` 包装：那层包装本就是模型读到的一部分，隐藏它会歪曲这次请求。
 
-**`catalog`**——本会话可用项的目录，随变化重新发布。`dsh-tool-skill` 从共享的 `plugin` kind 迁到自有的 `skill-catalog` 来源，携带 `entries`（本次发布的 `name`／`description` 对）以及替换时的 `update`，后者由内容区渲染成替换提示。内容区直接列出这些条目，不再从散文里反解 `<available_skills>` 块。
+**`catalog`**——本会话可用项的目录，随变化重新发布。`alego-tool-skill` 从共享的 `plugin` kind 迁到自有的 `skill-catalog` 来源，携带 `entries`（本次发布的 `name`／`description` 对）以及替换时的 `update`，后者由内容区渲染成替换提示。内容区直接列出这些条目，不再从散文里反解 `<available_skills>` 块。
 
 条目记录的是**未转义**的发布事实。伪 XML 转义属于 `<available_skills>` 这层为模型而设的框架，因此只在渲染该框架时施加、从不存储；否则消费方要正确展示含 `<` 的描述就得知道框架的编码方式，本决策刚移除的框架知识会换一种形式泄漏回来。`escapeText` 确定且单射，故对未转义条目取 digest 与此前完全等价，重新发布语义不变，面向模型的文本逐字节不变。
 

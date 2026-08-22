@@ -7,7 +7,7 @@ English | [中文](2026-07-17-dedicated-full-screen-tui-front-door.zh.md)
 
 ## Problem
 
-The reusable TUI package remains implemented, but [`dsh` no longer ships it as an application entrypoint](../simplification/2026-08-03-explicit-config-dsh-entrypoint.md). This note continues to own the package boundary and terminal behavior; the later note owns product composition.
+The reusable TUI package remains implemented, but [`alego` no longer ships it as an application entrypoint](../simplification/2026-08-03-explicit-config-alego-entrypoint.md). This note continues to own the package boundary and terminal behavior; the later note owns product composition.
 
 At the time this front door was introduced, the line-oriented agent handled pipes and ordinary terminals, but a full-screen coding interface had to own raw input, differential screen drawing, cursor state, overlays, and terminal restoration. Combining those contracts in one UI plugin would have coupled a stream-oriented path to a TTY-only lifecycle. The later [redundant-agent removal](../simplification/2026-07-20-remove-stdio-and-echo-agents.md) removes that line agent; this Note continues to own the TUI design.
 
@@ -15,9 +15,9 @@ The interactive channel must remain a Cordis plugin over the same agent, session
 
 ## Decision
 
-DeepSeek Harness ships [`@deepseek-ai/dsh-tui`](../../../../packages/ui/tui/README.md) as a dedicated Cordis plugin. It owns terminal input and presentation only; agent lifecycle, session persistence, tool execution, and the model-facing question tool remain separate composition entries. The plugin requires both stdin and stdout to be TTYs and fails instead of silently changing to line-oriented behavior.
+Alego ships [`@alego/tui`](../../../../packages/ui/tui/README.md) as a dedicated Cordis plugin. It owns terminal input and presentation only; agent lifecycle, session persistence, tool execution, and the model-facing question tool remain separate composition entries. The plugin requires both stdin and stdout to be TTYs and fails instead of silently changing to line-oriented behavior.
 
-The package is a terminal front door, not a complete application. A host mounts `@deepseek-ai/dsh-tui` before its configured agent and composes the backends, tools, and policies around it. The product CLI currently ships no terminal composition; non-interactive tasks use headless mode, Web owns the installed human surface, and ACP remains a separate automation protocol.
+The package is a terminal front door, not a complete application. A host mounts `@alego/tui` before its configured agent and composes the backends, tools, and policies around it. The product CLI currently ships no terminal composition; non-interactive tasks use headless mode, Web owns the installed human surface, and ACP remains a separate automation protocol.
 
 The host supplies the exact generated or resumed `SessionId` used by its pre-created agent. The TUI waits for the matching root agent and enters full-screen mode only after that agent exists. A matching `agent-loop/config-start-failed` event is therefore reported before screen takeover.
 
@@ -41,7 +41,7 @@ The implemented [TUI terminal-state snapshot Agent Note](../testing/2026-07-18-t
 
 ## Alternatives considered
 
-- **Keep readline and full-screen modes inside `@deepseek-ai/dsh-stdio`** — rejected because line-oriented output and differential TTY rendering have different dependencies, input rules, logging ownership, and teardown obligations. Separate packages keep the pipe-safe contract small and explicit.
+- **Keep readline and full-screen modes inside `@alego/stdio`** — rejected because line-oriented output and differential TTY rendering have different dependencies, input rules, logging ownership, and teardown obligations. Separate packages keep the pipe-safe contract small and explicit.
 - **Let the TUI plugin silently downgrade when either stream is not a TTY** — rejected because a fallback hides deployment mistakes and changes interaction semantics. A host may select a different front door; an explicitly mounted TUI fails loud.
 - **Keep TUI wiring and tests under the readline `repl-agent` leaf** — rejected at the time because one leaf would represent two distinct front doors. The later product-entrypoint removal deleted that application wiring while retaining the package boundary.
 - **Mutate `agent.options` when `/model` runs** — rejected because creation options do not provide an atomic boundary between asynchronous prompt assembly and request routing. Agent-scoped waterfalls preserve immutable creation input and snapshot the selected pair for each step.

@@ -27,7 +27,7 @@ The direct-open path carries the busy rule the menu entry states: while a pick i
 
 ## Wire and CLI surface
 
-`workspace.create` accepts only `{ path }`; the wire schema and `WorkspaceApi` have no `name` member. The gateway has no `workspaceRoot` config, the client contract exposes only path adoption through `WorkspaceCreateInput`, `WorkspaceRuntime.create`, and `intentName`, and `dsh web` has no `--workspace-root` flag. `workspace-name-conflict` remains on the wire as `workspace.rename`'s duplicate-title error.
+`workspace.create` accepts only `{ path }`; the wire schema and `WorkspaceApi` have no `name` member. The gateway has no `workspaceRoot` config, the client contract exposes only path adoption through `WorkspaceCreateInput`, `WorkspaceRuntime.create`, and `intentName`, and `alego web` has no `--workspace-root` flag. `workspace-name-conflict` remains on the wire as `workspace.rename`'s duplicate-title error.
 
 ## Testing
 

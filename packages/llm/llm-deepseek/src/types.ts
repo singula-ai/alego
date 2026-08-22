@@ -6,7 +6,7 @@
  * guides/thinking_mode.mdx, guides/tool_calls.md), cross-checked against
  * live streams from the internal endpoint (2026-06).
  *
- * @module dsh-llm-deepseek/types
+ * @module alego-llm-deepseek/types
  */
 
 /** Request body for `POST {baseURL}/chat/completions`. */

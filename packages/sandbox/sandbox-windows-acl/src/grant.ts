@@ -8,7 +8,7 @@
  * Fail-closed: `add` throws on any grant failure and the caller disposes the
  * instance (revoking every path granted so far); `dispose` revokes every
  * standing grant and reports every cleanup failure.
- * @module @deepseek-ai/dsh-sandbox-windows-acl/grant
+ * @module @alego/sandbox-windows-acl/grant
  */
 
 import { grantWrite, revokeWrite } from './acl.ts'

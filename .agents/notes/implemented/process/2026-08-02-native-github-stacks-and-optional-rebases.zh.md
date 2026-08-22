@@ -22,7 +22,7 @@ merge-forward 和 rebase 都可以作为独立 PR 与官方堆叠 PR 的历史�
 
 ## 验证
 
-[堆叠落地 skill（技能）](../../../skills/dsh-merging-stacked-prs/SKILL.md)验证原生支持、同仓库分支、实时作者信息、官方成员关系与顺序、合并范围以及最终合并状态。[堆叠评审指南](../../../../docs/cookbook/responding-to-pr-review-on-a-stack.zh.md)让修复留在引入问题的层，并涵盖两种用于传播修复的历史策略。[推送前工作流](../../../skills/dsh-pre-push-checks/SKILL.md)负责 lease 保护和同步后立即验证所得的证据。
+[堆叠落地 skill（技能）](../../../skills/alego-merging-stacked-prs/SKILL.md)验证原生支持、同仓库分支、实时作者信息、官方成员关系与顺序、合并范围以及最终合并状态。[堆叠评审指南](../../../../docs/cookbook/responding-to-pr-review-on-a-stack.zh.md)让修复留在引入问题的层，并涵盖两种用于传播修复的历史策略。[推送前工作流](../../../skills/alego-pre-push-checks/SKILL.md)负责 lease 保护和同步后立即验证所得的证据。
 
 ## 曾考虑的替代方案
 

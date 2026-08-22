@@ -4,7 +4,7 @@
  * files, tree-scoped signalling (POSIX groups; Windows taskkill), and the
  * SIGTERM→SIGKILL escalation. This layer reacts to an abort signal; callers
  * own deadlines, teardown ladders, and cause classification.
- * @module dsh-subprocess-local/spawn
+ * @module alego-subprocess-local/spawn
  */
 
 import { type ChildProcess, spawn, spawnSync } from 'node:child_process'
@@ -14,8 +14,8 @@ import { closeSync, mkdtempSync, openSync, unlinkSync, writeSync } from 'node:fs
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { setTimeout as sleepMs } from 'node:timers/promises'
-import { scrubbedParentEnv } from '@deepseek-ai/dsh-subprocess'
-import { MAX_TIMER_DELAY_MS } from '@deepseek-ai/dsh-timeout'
+import { scrubbedParentEnv } from '@alego/subprocess'
+import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
 import type {
   CollectedOutput,
   SubprocessCollect,
@@ -23,7 +23,7 @@ import type {
   SubprocessOutcome,
   SubprocessOutputMode,
   SubprocessSpawnSpec,
-} from '@deepseek-ai/dsh-subprocess'
+} from '@alego/subprocess'
 import { linuxProcessGroupHasLiveMembers } from './process-inspector.ts'
 
 /**
@@ -87,7 +87,7 @@ let defaultSpillDir: string | undefined
  * other local users read command output or pre-create symlinks.
  */
 function privateSpillDir(): string {
-  defaultSpillDir ??= mkdtempSync(join(tmpdir(), 'dsh-subprocess-'))
+  defaultSpillDir ??= mkdtempSync(join(tmpdir(), 'alego-subprocess-'))
   return defaultSpillDir
 }
 
@@ -164,7 +164,7 @@ export class OutputCollector {
       // prediction and symlink planting in shared tmp dirs.
       this.spillFile = join(
         this.spillDir,
-        `dsh-subprocess-${process.pid}-${++spillCounter}-${randomBytes(6).toString('hex')}-${this.label}.log`,
+        `alego-subprocess-${process.pid}-${++spillCounter}-${randomBytes(6).toString('hex')}-${this.label}.log`,
       )
       this.spillFd = openSync(this.spillFile, 'wx', 0o600)
       for (const prior of this.chunks) writeSync(this.spillFd, prior)

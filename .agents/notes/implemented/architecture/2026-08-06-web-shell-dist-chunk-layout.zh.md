@@ -31,7 +31,7 @@ apps/web 的壳此前打成单一约 1.2 MB（minified）的 index 分片，其�
 
 ## Alternatives considered
 
-- **react 等 vendor 走 CDN**：dsh web 面向本机/内网主机（常无外网），CDN 直接不可用；react 是全部插件 bundle 的 platform seed external（壳是唯一供给方），改 CDN 全局变量形态需牵动 platform 清单/seed/模块表三处；缓存收益由 vendor 切分即可取得。
+- **react 等 vendor 走 CDN**：alego web 面向本机/内网主机（常无外网），CDN 直接不可用；react 是全部插件 bundle 的 platform seed external（壳是唯一供给方），改 CDN 全局变量形态需牵动 platform 清单/seed/模块表三处；缓存收益由 vendor 切分即可取得。
 - **反向兜底规则（node_modules 除 react 族全归 vendor）**：成员从配置上读不出来，且把 anser/clsx 类小件错归 vendor；被正向精确包名清单取代。
 - **正则家族匹配**：可读性差；精确包名 + rollup 对传递依赖的自动着色使模式匹配没有必要。
 - **以 facadeModuleId 识别语法 chunk**：无 facade 的内嵌语法共享 chunk 会漏检落回根目录；`moduleIds` 成员判据覆盖两种形态。

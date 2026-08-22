@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-DeepSeek Harness 需要为 Python 库专门提供一种无需安装 Node、可直接在目标平台运行的 SDK 分发形态：一个单文件可执行程序（下称 exe），通过 stdio 提供 JSON-RPC 对外服务接口（`HarnessSdkJsonRpcServer`，Python SDK 的对端），且实际启动的插件与配置完全由 exe 外部输入的 `cordis.yml` 决定。
+Alego 需要为 Python 库专门提供一种无需安装 Node、可直接在目标平台运行的 SDK 分发形态：一个单文件可执行程序（下称 exe），通过 stdio 提供 JSON-RPC 对外服务接口（`HarnessSdkJsonRpcServer`，Python SDK 的对端），且实际启动的插件与配置完全由 exe 外部输入的 `cordis.yml` 决定。
 
 - 与 Python SDK 通信的 JSON-RPC 协议已经过验证
 - 需要提供一种让 `cordis.yml` 加载所有插件（ES 模块）的标准方式
@@ -21,46 +21,46 @@ exe 使用 [@yao-pkg/pkg](https://github.com/yao-pkg/pkg)（vercel/pkg 归档后
 
 `--sea` 要求构建目标 ≥ node22，exe 统一以 node24 为构建目标；每次 pkg 调用只打包一个构建目标，多平台各调用一次。
 
-术语提醒：pkg 的 `/snapshot` VFS 与本仓库测试体系的「快照」（ACP（Agent Client Protocol）回放预期输出、`$DSH_SNAPSHOT`）无关，本文用「VFS」指前者。
+术语提醒：pkg 的 `/snapshot` VFS 与本仓库测试体系的「快照」（ACP（Agent Client Protocol）回放预期输出、`$ALEGO_SNAPSHOT`）无关，本文用「VFS」指前者。
 
 ### 对外服务接口也是插件：sdk/server + examples/jsonrpc-demo 两个包
 
 确定性协议实现（`server.ts` / `transport.ts`）按 `acp/acp` + `examples/acp-demo` 的既有模式落为两包——对外服务接口本身也是插件：
 
-- [`packages/sdk/server`](../../../../packages/sdk/server/README.zh.md)（`@deepseek-ai/dsh-sdk-jsonrpc-server`）：纯协议插件；执行 `apply` 时，在进程 stdio 上挂载 `HarnessSdkJsonRpcServer` 与按行分隔的 JSON-RPC 传输层，资源释放走 `ctx.effect()`。是否提供服务由 `cordis.yml` 决定；未挂载该插件的配置会启动一个不提供此服务的合法进程。协议级退出归插件所有（应答并确保 `shutdown` 响应发送完毕后，对根运行时执行 dispose（资源释放），让待处理的持久化操作完成，再调用 `exit(0)`；HMR（热模块替换）式卸载只停止服务，不退出进程）。
-- [`packages/examples/jsonrpc-demo`](../../../../packages/examples/jsonrpc-demo/README.zh.md)（`@deepseek-ai/dsh-sdk-jsonrpc-demo`）：轻量应用入口——`installFailLoud` + `loadEnv` + 配置发现 + [`dsh-app-boot`](../../../../packages/boot/app-boot/src/index.ts) 的 `boot()`；`boot()` 完成后入口即完成，服务器由 `cordis.yml` 中的 `dsh-sdk-jsonrpc-server` 条目启动。它只依赖 `app-boot`。进程级退出归 `bin` 所有（stdin EOF/SIGTERM → dispose 后返回 0，SIGINT → 130）。
+- [`packages/sdk/server`](../../../../packages/sdk/server/README.zh.md)（`@alego/sdk-jsonrpc-server`）：纯协议插件；执行 `apply` 时，在进程 stdio 上挂载 `HarnessSdkJsonRpcServer` 与按行分隔的 JSON-RPC 传输层，资源释放走 `ctx.effect()`。是否提供服务由 `cordis.yml` 决定；未挂载该插件的配置会启动一个不提供此服务的合法进程。协议级退出归插件所有（应答并确保 `shutdown` 响应发送完毕后，对根运行时执行 dispose（资源释放），让待处理的持久化操作完成，再调用 `exit(0)`；HMR（热模块替换）式卸载只停止服务，不退出进程）。
+- [`packages/examples/jsonrpc-demo`](../../../../packages/examples/jsonrpc-demo/README.zh.md)（`@alego/sdk-jsonrpc-demo`）：轻量应用入口——`installFailLoud` + `loadEnv` + 配置发现 + [`alego-app-boot`](../../../../packages/boot/app-boot/src/index.ts) 的 `boot()`；`boot()` 完成后入口即完成，服务器由 `cordis.yml` 中的 `alego-sdk-jsonrpc-server` 条目启动。它只依赖 `app-boot`。进程级退出归 `bin` 所有（stdin EOF/SIGTERM → dispose 后返回 0，SIGINT → 130）。
 
-配置发现有两个通道，均缺失时立即报错：优先使用 `DSH_CORDIS_CONFIG` 环境变量（SDK 客户端约定），其次使用 argv 位置参数；没有默认路径或内置回退——「实际启动的插件由外部 `cordis.yml` 决定」是硬语义。
+配置发现有两个通道，均缺失时立即报错：优先使用 `ALEGO_CORDIS_CONFIG` 环境变量（SDK 客户端约定），其次使用 argv 位置参数；没有默认路径或内置回退——「实际启动的插件由外部 `cordis.yml` 决定」是硬语义。
 
 ### 插件解析：VFS 装载真实包树，闭包 manifest（元数据清单）就是部署根目录
 
 exe 的 VFS 内是**构建产物形态的真实包树**（各包的 `lib/` + 真实 `node_modules`）。打包专用 JSON-RPC 入口会向 app-boot 的根 Include 提供自身已安装 harness 的基准位置：相对插件说明符从外部配置目录解析，裸包名则从 VFS 解析，因此位于另一个 Node 项目内的配置无法遮蔽已打包的插件集合。普通开发 bin 仍由配置项目提供裸包。打包入口中的裸包名从该入口在 VFS 内的位置沿 `node_modules` 向上解析，自然落在 VFS 内。封闭集不需要白名单代码——VFS 中安装了什么，集合中就有什么；`import()` 集合外的名称会失败。
 
-部署根目录是 [`python/sdk-runtime/package.json`](../../../../python/sdk-runtime/package.json)（`dsh-jsonrpc-agent-pkg`，pnpm 工作区成员、零代码纯依赖 manifest），也是「exe 安装哪些插件」与「Python 运行时分发什么」的统一真源。向 exe 添加插件，就是在 manifest 中增加一行依赖后重新打包。[`scripts/verify-runtime-closure.ts`](../../../../scripts/verify-runtime-closure.ts) 读取每个已发布的 `apps/cli/config/agent-presets/*/agent.cordis.yml`，针对 `python/sdk-runtime/platforms.json` 中的每个目标解析比较 `process.platform` 的 `disabled` 条件，并要求该目标启用的每个工作区插件都通过显式的 `workspace:` 依赖列在运行时根目录。它还遍历该 manifest 覆盖的全部工作区包，要求每个非可选的工作区对等依赖（peer dependency）都显式列出，并报告“preset 或引用包 → 缺失依赖”的完整链路；无法识别的平台条件会保持启用，避免因不支持的表达式遗漏插件。`pnpm run hygiene`、CI 静态检查与 single-exe 构建都会在打包前运行该门禁。部署还会依据各包的 `files` 字段打包，因此 tsdown 拆出的共享分片必须被 `files` 覆盖。
+部署根目录是 [`python/sdk-runtime/package.json`](../../../../python/sdk-runtime/package.json)（`alego-jsonrpc-agent-pkg`，pnpm 工作区成员、零代码纯依赖 manifest），也是「exe 安装哪些插件」与「Python 运行时分发什么」的统一真源。向 exe 添加插件，就是在 manifest 中增加一行依赖后重新打包。[`scripts/verify-runtime-closure.ts`](../../../../scripts/verify-runtime-closure.ts) 读取每个已发布的 `apps/cli/config/agent-presets/*/agent.cordis.yml`，针对 `python/sdk-runtime/platforms.json` 中的每个目标解析比较 `process.platform` 的 `disabled` 条件，并要求该目标启用的每个工作区插件都通过显式的 `workspace:` 依赖列在运行时根目录。它还遍历该 manifest 覆盖的全部工作区包，要求每个非可选的工作区对等依赖（peer dependency）都显式列出，并报告“preset 或引用包 → 缺失依赖”的完整链路；无法识别的平台条件会保持启用，避免因不支持的表达式遗漏插件。`pnpm run hygiene`、CI 静态检查与 single-exe 构建都会在打包前运行该门禁。部署还会依据各包的 `files` 字段打包，因此 tsdown 拆出的共享分片必须被 `files` 覆盖。
 
-部署根目录显式包含 `@deepseek-ai/dsh-mcp-client`，将其作为自定义配置可用的插件，即使随附 preset 均未挂载该插件。外部配置因此可以连接由用户提供的 stdio 与 Streamable HTTP MCP server 并注册其工具；分发物不包含这些 server，也不将桥接范围扩展到 MCP Resources 和 Prompts。可执行程序与已安装 wheel 包的冒烟测试会启动临时 stdio server，发现其工具，并完成一次由模型请求的调用。
+部署根目录显式包含 `@alego/mcp-client`，将其作为自定义配置可用的插件，即使随附 preset 均未挂载该插件。外部配置因此可以连接由用户提供的 stdio 与 Streamable HTTP MCP server 并注册其工具；分发物不包含这些 server，也不将桥接范围扩展到 MCP Resources 和 Prompts。可执行程序与已安装 wheel 包的冒烟测试会启动临时 stdio server，发现其工具，并完成一次由模型请求的调用。
 
 ### 构建流水线与产物
 
-[`scripts/build-exe-for-python-sdk.ts`](../../../../scripts/build-exe-for-python-sdk.ts)：运行时闭包校验 → `pnpm run build` →（清空后）`pnpm --filter dsh-jsonrpc-agent-pkg deploy --legacy --prod --config.node-linker=hoisted --config.auto-install-peers=false --config.link-workspace-packages=true` **直接写入** `python/sdk-runtime/src/deepseek_harness_runtime/runtime/node/` → 恢复被 legacy deploy 提升回源 manifest 的 `node_modules` 下的任何直接工作区包，同时省略其包内依赖树，并拒绝剩余的 manifest 缺口 → 将暂存依赖中的每个符号链接替换为目标文件内容，删除包管理器的 `.bin` 链接，并在仍有任何符号链接时失败 → 注入 pkg 配置（`bin` 指向闭包内的 `node_modules/@deepseek-ai/dsh-sdk-jsonrpc-demo/lib/packaged-bin.js`；`assets` 使用全量 glob，因为动态 `import()` 对 pkg 静态分析不可见，必须显式打入全部内容）→ 暂存目标平台的 `node-pty` addon → 每个构建目标调用一次 `pkg --sea` → 可执行文件 `dsh-jsonrpc-agent-pkg-<platform>-<arch>` 写入 `dist-exe/`，并拷回运行时目录。Linux 安装会从源码构建 `pty.node`；CI 会在打包前进入匹配架构的 manylinux 2.28 容器重新构建该 addon，而 `--legacy` 部署会省略这一副作用目录，因此构建器会把它从根安装目录复制到暂存闭包。每个目标都会把对应的原生 `@vscode/ripgrep` 二进制复制到可执行文件旁，作为必需的 `-rg` 伴随文件；pkg 运行时通过 `process.pkg` 选择该伴随文件，普通 Node 执行则直接使用 `@vscode/ripgrep`。macOS 使用对应目标的预构建产物，并额外生成所需的 `-spawn-helper`。CI 将这些产物作为测试中间输入，只保留对应平台的 wheel 包。四个部署标志都有实测依据：未启用 `inject-workspace-packages` 时必须使用 `--legacy`；`hoisted` 为 pkg 提供稳定的单实例布局，再由显式物化步骤消除符号链接；关闭对等依赖自动安装可防止未声明的对等依赖扩大闭包；`link-workspace-packages` 选择直接工作区依赖。[`pnpm-workspace.yaml`](../../../../pnpm-workspace.yaml) 将传递的 `@deepseek-ai/cosmokit` 与 `@deepseek-ai/schemastery` semver 请求覆盖到固定的 vendor 源码，使 legacy deploy 不会从注册表解析这些未发布名称。
+[`scripts/build-exe-for-python-sdk.ts`](../../../../scripts/build-exe-for-python-sdk.ts)：运行时闭包校验 → `pnpm run build` →（清空后）`pnpm --filter alego-jsonrpc-agent-pkg deploy --legacy --prod --config.node-linker=hoisted --config.auto-install-peers=false --config.link-workspace-packages=true` **直接写入** `python/sdk-runtime/src/alego_runtime/runtime/node/` → 恢复被 legacy deploy 提升回源 manifest 的 `node_modules` 下的任何直接工作区包，同时省略其包内依赖树，并拒绝剩余的 manifest 缺口 → 将暂存依赖中的每个符号链接替换为目标文件内容，删除包管理器的 `.bin` 链接，并在仍有任何符号链接时失败 → 注入 pkg 配置（`bin` 指向闭包内的 `node_modules/@alego/sdk-jsonrpc-demo/lib/packaged-bin.js`；`assets` 使用全量 glob，因为动态 `import()` 对 pkg 静态分析不可见，必须显式打入全部内容）→ 暂存目标平台的 `node-pty` addon → 每个构建目标调用一次 `pkg --sea` → 可执行文件 `alego-jsonrpc-agent-pkg-<platform>-<arch>` 写入 `dist-exe/`，并拷回运行时目录。Linux 安装会从源码构建 `pty.node`；CI 会在打包前进入匹配架构的 manylinux 2.28 容器重新构建该 addon，而 `--legacy` 部署会省略这一副作用目录，因此构建器会把它从根安装目录复制到暂存闭包。每个目标都会把对应的原生 `@vscode/ripgrep` 二进制复制到可执行文件旁，作为必需的 `-rg` 伴随文件；pkg 运行时通过 `process.pkg` 选择该伴随文件，普通 Node 执行则直接使用 `@vscode/ripgrep`。macOS 使用对应目标的预构建产物，并额外生成所需的 `-spawn-helper`。CI 将这些产物作为测试中间输入，只保留对应平台的 wheel 包。四个部署标志都有实测依据：未启用 `inject-workspace-packages` 时必须使用 `--legacy`；`hoisted` 为 pkg 提供稳定的单实例布局，再由显式物化步骤消除符号链接；关闭对等依赖自动安装可防止未声明的对等依赖扩大闭包；`link-workspace-packages` 选择直接工作区依赖。[`pnpm-workspace.yaml`](../../../../pnpm-workspace.yaml) 将传递的 `@alego/cosmokit` 与 `@alego/schemastery` semver 请求覆盖到固定的 vendor 源码，使 legacy deploy 不会从注册表解析这些未发布名称。
 
 CI 使用 [`.github/workflows/build-exe-for-python-sdk.yml`](../../../../.github/workflows/build-exe-for-python-sdk.yml)：[必需的 Python 运行时拉取请求验证](../testing/2026-08-12-required-python-runtime-pull-request-ci.zh.md)调用它构建 linux-x64，手动派发 `workflow_dispatch` 或 PR（Pull Request）的 `build-exe` 标签可以显式选择构建目标，[公开发布工作流](../process/2026-08-11-python-publication-workflow.zh.md)则调用它构建全部目标。linux-x64、linux-arm64（`ubuntu-24.04-arm`）和 macos-arm64 三个平台分别进行原生构建，并缓存 `~/.pkg-cache`；macOS 的 ad-hoc 签名由 pkg 处理。每个平台都使用 mock SSE（Server-Sent Events）模型，分别通过默认配置和自定义 `cordis.yml` 驱动 SDK，再通过 NDJSON JSON-RPC 直接驱动 exe，校验 JSONL 与最终响应；最后把发布形态的 wheel 包安装到干净的 venv 中，并在不传 `runtime_bin` 的情况下运行。Linux 还会检查可执行文件和原生 addon 各自的 GLIBC 依赖，并在 manylinux 2.28 容器中运行；macOS 则验证可执行文件的部署目标符合 wheel 包标签。完整构建三个目标时保留 4 个产物，每个产物只含一个发布文件：平台无关的 SDK wheel 包与 3 个原生运行时 wheel 包；手动选择部分目标时保留 SDK wheel 与所选运行时 wheel。裸 exe 与源码包只作为测试中间输入。[`.gitlab-ci.yml`](../../../../.gitlab-ci.yml) 只接受版本与根目录 `package.json` 匹配的 `python-v<repository-version>` 标签流水线，构建一个 SDK wheel 包和 3 个原生运行时 wheel 包，再由单个串行任务校验并将这 4 个文件发布到项目的 PyPI 注册表。Windows 不在目标范围内。
 
 ### Python SDK 分发：双载体，exe 用于生产，`node` 用于开发
 
-Python SDK 位于 [`python/`](../../../../python/README.zh.md)：`python/sdk` 是客户端，`python/sdk-runtime` 是运行时载体包。运行时包的数据目录包含检入的默认 `runtime/cordis.yml`、构建注入的平台 exe 及其必需的 `-rg` 伴随文件和可选的 macOS helper，以及构建注入的 `runtime/node/` 闭包树。`resolve_bundled_launch_args()` 的自动解析**只查找 exe**；`node` 载体仅在显式设置 `DSH_RUNTIME_MODE=node` 时启用（运行 `runtime/node/node_modules/@deepseek-ai/dsh-sdk-jsonrpc-demo/lib/packaged-bin.js`，需要系统 Node ≥22.19），定位为本仓库成员的开发验证通道，不随 wheel 包分发。
+Python SDK 位于 [`python/`](../../../../python/README.zh.md)：`python/sdk` 是客户端，`python/sdk-runtime` 是运行时载体包。运行时包的数据目录包含检入的默认 `runtime/cordis.yml`、构建注入的平台 exe 及其必需的 `-rg` 伴随文件和可选的 macOS helper，以及构建注入的 `runtime/node/` 闭包树。`resolve_bundled_launch_args()` 的自动解析**只查找 exe**；`node` 载体仅在显式设置 `ALEGO_RUNTIME_MODE=node` 时启用（运行 `runtime/node/node_modules/@alego/sdk-jsonrpc-demo/lib/packaged-bin.js`，需要系统 Node ≥22.19），定位为本仓库成员的开发验证通道，不随 wheel 包分发。
 
-[`scripts/build-python-release.py`](../../../../scripts/build-python-release.py) 从仓库根目录的 `package.json` 读取权威的 `X.Y.Z` 或预发布版本，把预发布版本转换为 PEP 440 写法，并以该 wheel 包版本暂存两个包，让 `deepseek-harness-sdk` 精确依赖匹配版本的 `deepseek-harness-runtime-bin`。可选的 `python-v<repository-version>` 发布标签只是一项一致性断言，与仓库版本不同时会被拒绝；源码 `pyproject.toml` 中的开发占位版本从不决定发布版本。暂存过程还会把仓库许可证放入两个 wheel 包，并把第三方声明放入内置运行时 wheel 包。SDK 是 `py3-none-any` wheel 包；每个只提供 wheel 包的运行时包都包含一个 exe 及其架构匹配的 `-rg` 伴随文件，macOS wheel 包还包含与其架构匹配的 spawn helper。运行时 wheel 包使用 `py3-none-manylinux_2_28_x86_64`、`py3-none-manylinux_2_28_aarch64`，或针对 Node 24 可执行文件 macOS 13.5 部署目标而保守选择的 `py3-none-macosx_14_0_arm64` 标签；Hatch 钩子拒绝 sdist、通用标签、混合平台载荷、伴随文件缺失或多余，以及不支持的平台。
+[`scripts/build-python-release.py`](../../../../scripts/build-python-release.py) 从仓库根目录的 `package.json` 读取权威的 `X.Y.Z` 或预发布版本，把预发布版本转换为 PEP 440 写法，并以该 wheel 包版本暂存两个包，让 `alego-sdk` 精确依赖匹配版本的 `alego-runtime-bin`。可选的 `python-v<repository-version>` 发布标签只是一项一致性断言，与仓库版本不同时会被拒绝；源码 `pyproject.toml` 中的开发占位版本从不决定发布版本。暂存过程还会把仓库许可证放入两个 wheel 包，并把第三方声明放入内置运行时 wheel 包。SDK 是 `py3-none-any` wheel 包；每个只提供 wheel 包的运行时包都包含一个 exe 及其架构匹配的 `-rg` 伴随文件，macOS wheel 包还包含与其架构匹配的 spawn helper。运行时 wheel 包使用 `py3-none-manylinux_2_28_x86_64`、`py3-none-manylinux_2_28_aarch64`，或针对 Node 24 可执行文件 macOS 13.5 部署目标而保守选择的 `py3-none-macosx_14_0_arm64` 标签；Hatch 钩子拒绝 sdist、通用标签、混合平台载荷、伴随文件缺失或多余，以及不支持的平台。
 
-exe「必须显式配置」的硬语义不变；零配置体验由包装层恢复：调用方没有提供 `cordis`、没有显式指定运行时，且环境中没有 `DSH_CORDIS_CONFIG` 时，客户端将检入的默认 `cordis.yml`（`agent-core` + 预载的 `llm-deepseek` + JSONL 持久化 + `bash-local` + `dsh-sdk-jsonrpc-server` 对外服务条目，并通过 `!!js` 使用环境变量兜底）显式注入 `DSH_CORDIS_CONFIG`。
+exe「必须显式配置」的硬语义不变；零配置体验由包装层恢复：调用方没有提供 `cordis`、没有显式指定运行时，且环境中没有 `ALEGO_CORDIS_CONFIG` 时，客户端将检入的默认 `cordis.yml`（`agent-core` + 预载的 `llm-deepseek` + JSONL 持久化 + `bash-local` + `alego-sdk-jsonrpc-server` 对外服务条目，并通过 `!!js` 使用环境变量兜底）显式注入 `ALEGO_CORDIS_CONFIG`。
 
 ### 命名血统
 
-`@deepseek-ai/dsh-sdk-jsonrpc-demo`（包）→ `dsh-jsonrpc-agent`（`bin`）→ `dsh-jsonrpc-agent-pkg`（闭包 manifest；没有作用域前缀，刻意避开 `constraints` 对 `@deepseek-ai/dsh-*` 的包形状规则）→ `dsh-jsonrpc-agent-pkg-<platform>-<arch>`（exe 产物）。协议字段 `serverInfo.name` 保持为 `deepseek-harness-sdk-runtime`（协议稳定值）；Python 分发包名为 `deepseek-harness-sdk` / `deepseek-harness-runtime-bin`，导入模块名仍为 `deepseek_harness` / `deepseek_harness_runtime`。
+`@alego/sdk-jsonrpc-demo`（包）→ `alego-jsonrpc-agent`（`bin`）→ `alego-jsonrpc-agent-pkg`（闭包 manifest；没有作用域前缀，刻意避开 `constraints` 对 `@alego/*` 的包形状规则）→ `alego-jsonrpc-agent-pkg-<platform>-<arch>`（exe 产物）。协议字段 `serverInfo.name` 保持为 `alego-sdk-runtime`（协议稳定值）；Python 分发包名为 `alego-sdk` / `alego-runtime-bin`，导入模块名仍为 `alego` / `alego_runtime`。
 
 ## 工作线程插件
 
-exe 内支持 `dsh-workflow-worker-thread` 与 `dsh-code-runtime-worker-thread`。两个后端构建后的宿主都通过 `fileURLToPath()` 转换相邻 `lib/worker.cjs` 的 URL，再将所得文件系统字符串传给 `Worker`；pkg 的 Worker 钩子可以用这种形式解析 VFS 内文件。该钩子会把 VFS 内的工作线程文件作为 CommonJS 编译，所以工作线程入口采用 CommonJS。工作流引擎在未构建的源码执行中仍保留 `data:` URL 引导程序，只有构建后的相邻入口使用文件系统字符串。自定义配置的可执行文件冒烟测试会加载两个后端，实际调用 `run_code` 与不启动 agent（智能体）的 `workflow`，并要求两个工作线程都从 pkg 的 VFS 内返回 `42`。
+exe 内支持 `alego-workflow-worker-thread` 与 `alego-code-runtime-worker-thread`。两个后端构建后的宿主都通过 `fileURLToPath()` 转换相邻 `lib/worker.cjs` 的 URL，再将所得文件系统字符串传给 `Worker`；pkg 的 Worker 钩子可以用这种形式解析 VFS 内文件。该钩子会把 VFS 内的工作线程文件作为 CommonJS 编译，所以工作线程入口采用 CommonJS。工作流引擎在未构建的源码执行中仍保留 `data:` URL 引导程序，只有构建后的相邻入口使用文件系统字符串。自定义配置的可执行文件冒烟测试会加载两个后端，实际调用 `run_code` 与不启动 agent（智能体）的 `workflow`，并要求两个工作线程都从 pkg 的 VFS 内返回 `42`。
 
 ## 测试
 

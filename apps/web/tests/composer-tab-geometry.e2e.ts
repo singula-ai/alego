@@ -16,7 +16,7 @@
 // transcript starts to scroll; the overlay branch does NOT reserve (the view
 // owns its own scrollers, so a reserved gutter would only narrow the view's
 // content by the bar's width), and the overlay seat instead gives back the
-// bar's width (`right: var(--dsh-scrollbar-width)`) so both seats measure the
+// bar's width (`right: var(--alego-scrollbar-width)`) so both seats measure the
 // same width and the card does not move.
 //
 // Only a real engine can show this. The seat's geometry is layout: jsdom gives

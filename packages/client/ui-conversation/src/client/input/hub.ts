@@ -8,9 +8,9 @@
  * bail events) and owns the default-sink choreography: every session is a
  * real host entity, so the sink is one unconditional prompt path.
  */
-import type { ClientContext, ISessions, SessionBinding, SessionFace, SessionId } from '@deepseek-ai/dsh-client-runtime/client'
-import type { InputTriggerController, SubmitImageAttachment, SubmitOutcome } from '@deepseek-ai/dsh-client-ui-input-trigger/client'
-import type { TranslateNS } from '@deepseek-ai/dsh-client-locale/client'
+import type { ClientContext, ISessions, SessionBinding, SessionFace, SessionId } from '@alego/client-runtime/client'
+import type { InputTriggerController, SubmitImageAttachment, SubmitOutcome } from '@alego/client-ui-input-trigger/client'
+import type { TranslateNS } from '@alego/client-locale/client'
 import { queueReadFaceOf } from '../queue/store.ts'
 import type { ComposerKeyboard, DraftAttachmentId, SessionInputResolver, SessionInput } from './contract.ts'
 import type { InputSubmitMode } from '../contract/composer-submission.ts'

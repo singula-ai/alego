@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-terminal
+# @alego/terminal
 
 English | [中文](README.zh.md)
 
@@ -25,7 +25,7 @@ The seam contains no `node-pty`, sandbox, tool-schema, prompt, task, or terminal
 
 #### What the model sees
 
-Nothing directly. This package registers no prompt or tool; `@deepseek-ai/dsh-tool-terminal` owns visible schemas and result text.
+Nothing directly. This package registers no prompt or tool; `@alego/tool-terminal` owns visible schemas and result text.
 
 #### Token effect
 

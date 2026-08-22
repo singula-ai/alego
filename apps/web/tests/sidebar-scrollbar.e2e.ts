@@ -103,9 +103,9 @@ interface ListMetrics {
   standardColor: string
   /** `::-webkit-scrollbar-thumb:hover` background declarations found in the cascade, in sheet order. */
   hoverRules: string[]
-  /** `--dsh-scrollbar-thumb` resolved on the list, serialized as a colour. */
+  /** `--alego-scrollbar-thumb` resolved on the list, serialized as a colour. */
   token: string
-  /** `--dsh-scrollbar-thumb-hover` resolved on the list, serialized the same way. */
+  /** `--alego-scrollbar-thumb-hover` resolved on the list, serialized the same way. */
   hoverToken: string
   /** True when the list actually scrolls. */
   overflows: boolean
@@ -189,8 +189,8 @@ function measureList(page: Page): Promise<ListMetrics> {
       standardWidth: style.scrollbarWidth,
       standardColor: style.scrollbarColor,
       hoverRules,
-      token: resolve('--dsh-scrollbar-thumb'),
-      hoverToken: resolve('--dsh-scrollbar-thumb-hover'),
+      token: resolve('--alego-scrollbar-thumb'),
+      hoverToken: resolve('--alego-scrollbar-thumb-hover'),
       overflows: list.scrollHeight > list.clientHeight,
       band: listRect.width - list.clientWidth,
       scrollbarEdgeOffset: sidebarEdge - listRect.right,
@@ -235,7 +235,7 @@ function measureRowInset(page: Page): Promise<Pick<ListMetrics, 'overflows' | 'r
 interface PaletteMetrics {
   /** Everything measured with the pointer over the list, which is when a thumb exists. */
   hovered: ListMetrics
-  /** `--dsh-scrollbar-thumb` with the pointer parked outside the column. */
+  /** `--alego-scrollbar-thumb` with the pointer parked outside the column. */
   quietThumb: string
 }
 
@@ -279,15 +279,15 @@ function renderGeometry(light: PaletteMetrics, dark: PaletteMetrics): string {
   const palette = (name: string, { hovered: metrics, quietThumb }: PaletteMetrics): string[] => [
     `## ${name}`,
     '',
-    `- --dsh-scrollbar-thumb, pointer outside the sidebar: ${quietThumb}`,
+    `- --alego-scrollbar-thumb, pointer outside the sidebar: ${quietThumb}`,
     `- scrollbar-gutter: ${metrics.gutter}`,
     `- ::-webkit-scrollbar width: ${metrics.width}`,
     `- ::-webkit-scrollbar-track background: ${metrics.track}`,
     `- scrollbar-width: ${metrics.standardWidth}`,
     `- scrollbar-color: ${metrics.standardColor}`,
     `- ::-webkit-scrollbar-thumb:hover declarations: ${metrics.hoverRules.join(' | ')}`,
-    `- --dsh-scrollbar-thumb, pointer over the list: ${metrics.token}`,
-    `- --dsh-scrollbar-thumb-hover, pointer over the list: ${metrics.hoverToken}`,
+    `- --alego-scrollbar-thumb, pointer over the list: ${metrics.token}`,
+    `- --alego-scrollbar-thumb-hover, pointer over the list: ${metrics.hoverToken}`,
     `- list overflows: ${String(metrics.overflows)}`,
     `- reserved band: ${String(metrics.band)}px`,
     `- scrollbar inset from the sidebar edge: ${String(metrics.scrollbarEdgeOffset)}px`,
@@ -306,7 +306,7 @@ function renderGeometry(light: PaletteMetrics, dark: PaletteMetrics): string {
 }
 
 /**
- * Resolve `--dsh-scrollbar-thumb` as the list sees it, without the rest of the
+ * Resolve `--alego-scrollbar-thumb` as the list sees it, without the rest of the
  * geometry. Own probe element for the same reason {@link measureList} uses
  * one: `getComputedStyle` returns a live declaration.
  * @param page - the page under test.
@@ -317,7 +317,7 @@ function resolveThumb(page: Page): Promise<string> {
     const list = document.querySelector<HTMLElement>('[role="tree"][aria-label="Sessions"]')
     if (list === null) throw new Error('sidebar session list not in the DOM')
     const probe = document.createElement('span')
-    probe.style.color = 'var(--dsh-scrollbar-thumb)'
+    probe.style.color = 'var(--alego-scrollbar-thumb)'
     list.append(probe)
     const value = getComputedStyle(probe).color
     probe.remove()
@@ -501,7 +501,7 @@ describe('web e2e: sidebar session list scrollbar (reserved gutter / themed thum
     // The resting and the hover rule each read the rebindable indirection, and
     // the two resolve to DIFFERENT colours on this list: the l1 pair arrived
     // here intact rather than collapsing to one value or falling back.
-    expect(light.hoverRules).toEqual(['var(--dsh-scrollbar-thumb-hover)'])
+    expect(light.hoverRules).toEqual(['var(--alego-scrollbar-thumb-hover)'])
     expect(light.token).toMatch(/^rgba?\(/)
     expect(light.hoverToken).not.toBe(light.token)
     // The dark palette declares different scrollbar tokens; driving the body

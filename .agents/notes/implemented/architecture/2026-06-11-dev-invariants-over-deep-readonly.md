@@ -32,7 +32,7 @@ This guarantee belongs in `Session`, not in an optional listener, because every 
 
 ### Package-owned invariant companions check relationships
 
-`dsh-invariants` registers the configurable `ctx.invariants` service and contains no product checks. Every package publishes a `./invariant` ownership companion; `dsh-session`, `dsh-agent`, `dsh-scope`, and `dsh-agent-loop` currently add the rules that require trace state or observation of another seam: monotonic sequence numbers, turn and step nesting, tool-call/result pairing, legal agent-status transitions, subject-correct scoped dispatch, and equality between a loop-built request and the request reconstructed from its session-log prefix. Global enablement and package-name regex filters belong to the service ([package-owned invariant service](2026-07-19-package-owned-invariant-service.md)).
+`alego-invariants` registers the configurable `ctx.invariants` service and contains no product checks. Every package publishes a `./invariant` ownership companion; `alego-session`, `alego-agent`, `alego-scope`, and `alego-agent-loop` currently add the rules that require trace state or observation of another seam: monotonic sequence numbers, turn and step nesting, tool-call/result pairing, legal agent-status transitions, subject-correct scoped dispatch, and equality between a loop-built request and the request reconstructed from its session-log prefix. Global enablement and package-name regex filters belong to the service ([package-owned invariant service](2026-07-19-package-owned-invariant-service.md)).
 
 When the session companion attaches to an existing or seeded session, it replays the immutable log to rebuild trace state. The service gives each contribution a disposable child fiber, so hot reload is safe in the middle of a turn without giving diagnostics ownership of session storage.
 
@@ -56,5 +56,5 @@ Detaching `deriveMessages()` would protect the most common request path but leav
 - `session.events` exposes stable immutable snapshots instead of the private growing array.
 - Request-side mutation cannot reach stored history through derived messages.
 - Development builds can enable relational assertions without changing storage behavior, and disposing or filtering a companion does not weaken log immutability.
-- `dsh-invariants` configures global enablement plus package allow/block regex lists; each check remains owned and tested by its product package.
+- `alego-invariants` configures global enablement plus package allow/block regex lists; each check remains owned and tested by its product package.
 - The runtime boundary carries a recursive snapshot-and-freeze cost once per accepted event; later readers and cached projections reuse the owned immutable records.

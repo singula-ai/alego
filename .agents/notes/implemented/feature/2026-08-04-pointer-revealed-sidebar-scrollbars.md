@@ -10,7 +10,7 @@ The sidebar's session list overflows after a handful of sessions, and from that 
 
 ## Decision
 
-`SidebarRoot` tracks the pointer over the whole column and carries a `quietBars` class whenever it is outside. The rule that class selects rebinds ui-theme's indirection pair — `--dsh-scrollbar-thumb` and `--dsh-scrollbar-thumb-hover` — to `transparent`, so every scroll region nested under the column draws no thumb. The session list is the only one today; a future one inherits the behavior rather than opting into it.
+`SidebarRoot` tracks the pointer over the whole column and carries a `quietBars` class whenever it is outside. The rule that class selects rebinds ui-theme's indirection pair — `--alego-scrollbar-thumb` and `--alego-scrollbar-thumb-hover` — to `transparent`, so every scroll region nested under the column draws no thumb. The session list is the only one today; a future one inherits the behavior rather than opting into it.
 
 The tail is `SCROLLBAR_LINGER_MS = 2000`: leaving arms a timer, entering cancels a pending one, and only the timer firing puts the class back. A pointer that crosses the column's edge and returns — travelling around a portalled menu, or overshooting on the way to a row — never sees the thumb blink.
 
@@ -30,7 +30,7 @@ Hiding no longer counts as elevating: only an l2 rebind exempts a sheet from "ev
 
 **CSS `:hover` on the column, with no JavaScript state.** The whole mechanism in one rule, and it cannot express the tail: the bar would vanish on the frame the pointer crossed the edge, which is exactly when a pointer is travelling to the conversation or around a portalled menu. The ask names the tail, and a hover-only version reads as flicker.
 
-**Keep it in CSS and get the delay from a transition,** by registering `--dsh-scrollbar-thumb` through `@property` so the custom property becomes animatable and a `transition-delay` could hold the colour. Rejected on cost and on reach: the registration is global to every surface that reads the pair, for one column's timing, and the WebKit scrollbar pseudo-elements this palette actually renders through do not reliably transition — the delay would be specified where it cannot be observed.
+**Keep it in CSS and get the delay from a transition,** by registering `--alego-scrollbar-thumb` through `@property` so the custom property becomes animatable and a `transition-delay` could hold the colour. Rejected on cost and on reach: the registration is global to every surface that reads the pair, for one column's timing, and the WebKit scrollbar pseudo-elements this palette actually renders through do not reliably transition — the delay would be specified where it cannot be observed.
 
 **Hide the bar itself** — `scrollbar-width: none`, or `display: none` on `::-webkit-scrollbar`. Rejected because it takes the reserved band with it: the bar would reappear by re-taking 8px and shift every row sideways under the pointer that revealed it, which is the regression the gutter reservation was added to fix.
 
@@ -56,7 +56,7 @@ Hiding no longer counts as elevating: only an l2 rebind exempts a sheet from "ev
 
 `apps/web/tests/sidebar-scrollbar.e2e.ts` is where the two halves meet a real engine. It parks the pointer over the list before every colour reading, since a scenario that never moves the mouse would measure the quiet state throughout and read as vacuous green. Its own test then moves the pointer away, asserts the thumb is still drawn on the leave itself, polls until it resolves to `rgba(0, 0, 0, 0)`, re-measures the geometry there to prove the reservation held while the bar was hidden, and scrolls the list programmatically — what a keyboard or a touch drag does — to pin that a pointerless scroll draws nothing. The committed golden records the thumb at both pointer positions in both palettes.
 
-The e2e's control is a mutation, and it needs the plugin's own bundle: dropping `quietBars` from the shell, rebuilding `@deepseek-ai/dsh-client-ui-sidebar` and only then `build:web`, turns that test red on the thumb resolving to `rgb(229, 229, 229)` where it expects `rgba(0, 0, 0, 0)`. Rerunning `build:web` alone exercises a stale bundle and passes with the change removed, which is the trap [the gutter note](../bug-fix/2026-07-28-themed-scrollbars-and-reserved-gutter.md) documented.
+The e2e's control is a mutation, and it needs the plugin's own bundle: dropping `quietBars` from the shell, rebuilding `@alego/client-ui-sidebar` and only then `build:web`, turns that test red on the thumb resolving to `rgb(229, 229, 229)` where it expects `rgba(0, 0, 0, 0)`. Rerunning `build:web` alone exercises a stale bundle and passes with the change removed, which is the trap [the gutter note](../bug-fix/2026-07-28-themed-scrollbars-and-reserved-gutter.md) documented.
 
 The widened gate has its own controls, each a one-declaration mutation of a real sheet: crossing `transparent` with an l2 hover, and wrapping an l2 token in `color-mix(…)`, each turn the pair assertion red.
 

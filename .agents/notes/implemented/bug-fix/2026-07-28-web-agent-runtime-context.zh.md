@@ -6,13 +6,13 @@ Status: implemented
 
 ## 问题
 
-CLI（命令行界面）共享 base 配置了空的部署 persona，Web overlay 没有替换它，而 Web 启动器既未添加源码提示词段，也未添加交互界面提示词段。会话 header 会记录工作目录，供工具与持久化使用，但模型提示词既不说明该目录，也不标识 DeepSeek Harness Web GUI。因此，当用户提出「修改这个页面的主题」之类的请求时，即使用户指的是承载当前会话的 GUI，agent（智能体）也会在所选项目中搜索一个未明确说明的页面。
+CLI（命令行界面）共享 base 配置了空的部署 persona，Web overlay 没有替换它，而 Web 启动器既未添加源码提示词段，也未添加交互界面提示词段。会话 header 会记录工作目录，供工具与持久化使用，但模型提示词既不说明该目录，也不标识 Alego Web GUI。因此，当用户提出「修改这个页面的主题」之类的请求时，即使用户指的是承载当前会话的 GUI，agent（智能体）也会在所选项目中搜索一个未明确说明的页面。
 
 ## 决策
 
-Web profile 会组合 `dsh-base` 与 `dsh-web-app` 两个组合包。Web 组合包提供一段简洁的编码 agent persona，其中包含解析后的 `{{model}}` 与会话 `{{cwd}}`；当 `surfaceContext` 为 true 时，其 `web-runtime` 插件会添加 `app:web-surface` 提示词段。挂载 profile 配置树前，`dsh web` 别名会读取组合后的同一项设置，并且仅在启用界面上下文时安装现有的 `harness:source` 提示词段。无头组合包和拥有完整提示词的 profile 都会设置 `surfaceContext: false`，从而抑制 Web 提示词与受管 shell 事实；Web 别名也会抑制源码提示词段，而无需检查 overlay 路径。每项已挂载的提示词贡献仍会在 agent loop（智能体循环）等消费方发出 request header 前激活。源码提示词段的措辞，以及其中不得从一条路径推断另一条路径的警告，均由另行记录的[源码 checkout 与工作目录区分决策](2026-07-30-source-checkout-workdir-distinction.zh.md)负责。
+Web profile 会组合 `alego-base` 与 `alego-web-app` 两个组合包。Web 组合包提供一段简洁的编码 agent persona，其中包含解析后的 `{{model}}` 与会话 `{{cwd}}`；当 `surfaceContext` 为 true 时，其 `web-runtime` 插件会添加 `app:web-surface` 提示词段。挂载 profile 配置树前，`alego web` 别名会读取组合后的同一项设置，并且仅在启用界面上下文时安装现有的 `harness:source` 提示词段。无头组合包和拥有完整提示词的 profile 都会设置 `surfaceContext: false`，从而抑制 Web 提示词与受管 shell 事实；Web 别名也会抑制源码提示词段，而无需检查 overlay 路径。每项已挂载的提示词贡献仍会在 agent loop（智能体循环）等消费方发出 request header 前激活。源码提示词段的措辞，以及其中不得从一条路径推断另一条路径的警告，均由另行记录的[源码 checkout 与工作目录区分决策](2026-07-30-source-checkout-workdir-distinction.zh.md)负责。
 
-Web 提示词段把未限定的「这个页面」「这个 GUI」或「这个应用」解释为 DeepSeek Harness Web GUI。同时，它会明确说明浏览器不会隐式提供 DOM、路由或截图上下文，使模型能够识别产品，但不会声称掌握未收到的视觉状态。组装后的文本会记录在 `request/header` 中，从而保持「模型可见内容必须有日志记录」这一不变量。
+Web 提示词段把未限定的「这个页面」「这个 GUI」或「这个应用」解释为 Alego Web GUI。同时，它会明确说明浏览器不会隐式提供 DOM、路由或截图上下文，使模型能够识别产品，但不会声称掌握未收到的视觉状态。组装后的文本会记录在 `request/header` 中，从而保持「模型可见内容必须有日志记录」这一不变量。
 
 ## 验证
 
@@ -24,7 +24,7 @@ Web 运行时单元测试会固定启用和禁用 `surfaceContext` 时的行为�
 
 **要求会话 Workspace 必须是 harness checkout。** Workspace cwd 是用户任务的目标，可以合理地指向空项目或其他仓库。将其与应用源码位置混为一谈会破坏这一边界，并且仍无法消除已安装版本或外部启动会话中的歧义。
 
-**把 Web 文案放入全局 harness 身份。** `dsh-system-prompt` 还服务于 TUI、ACP（Agent Client Protocol）、SDK 和不在浏览器中运行的自定义部署。该界面事实应由组装 Web 应用负责。
+**把 Web 文案放入全局 harness 身份。** `alego-system-prompt` 还服务于 TUI、ACP（Agent Client Protocol）、SDK 和不在浏览器中运行的自定义部署。该界面事实应由组装 Web 应用负责。
 
 **为所有 CLI 界面修改现有源码位置提示词段。** TUI 也复用源码位置提示词段，而该段只陈述 checkout 事实。单独保留 Web 界面定位可以维持这份可复用约定，避免错误地告诉无头或终端 agent 它们正处于浏览器中。
 

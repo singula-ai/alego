@@ -12,11 +12,11 @@ Status: implemented
 
 ## 决策
 
-位于 `packages/feedback/command-feedback/` 的 `@deepseek-ai/dsh-command-feedback` 通过 `ctx.commands` 注册一个全局 `feedback` 命令。`/feedback <text>` 在确认文本中包含接收反馈的会话 id 与 harness home 的共享匿名用户 id；空输入或仅含空白的输入返回直接用法错误。处理器是同步的，只注入 `commands`，且没有任何配置。[共享 id 决策](../architecture/2026-08-07-shared-feedback-telemetry-user-id.zh.md)说明了反馈与 OpenTelemetry 为何使用同一个 `$DSH_HOME/.anonymous-user-id` 值。
+位于 `packages/feedback/command-feedback/` 的 `@alego/command-feedback` 通过 `ctx.commands` 注册一个全局 `feedback` 命令。`/feedback <text>` 在确认文本中包含接收反馈的会话 id 与 harness home 的共享匿名用户 id；空输入或仅含空白的输入返回直接用法错误。处理器是同步的，只注入 `commands`，且没有任何配置。[共享 id 决策](../architecture/2026-08-07-shared-feedback-telemetry-user-id.zh.md)说明了反馈与 OpenTelemetry 为何使用同一个 `$ALEGO_HOME/.anonymous-user-id` 值。
 
 本包声明仅写入日志的 `feedback/record { text }` 会话事件，并导出 `recordFeedback(session, text)`，作为不依赖命令的生产方。该生产方丢弃前后空白，拒绝空结果，并且恰好追加一个事件。`/feedback` 委托给它，因此其他 UI、钩子或 host 集成无需构造斜杠命令也能记录同一个领域事实。
 
-`dsh-commands` 仍会围绕 `/feedback` 写入 `command/run` / `command/done` 生命周期配对，但该命令设置了 `recordInput: false`。因此，它的 `command/run` 携带命令标识与来源，但不携带 `args`；反馈文本只存在于 `feedback/record` 中，而 `command/done` 携带确认结果。三个记录都仅写入日志且非 surface。它们的追加会进入持久化的常规有界写入路径；没有任何环节强制 flush，因此确认文本报告的是反馈已进入日志，而非已经落盘。
+`alego-commands` 仍会围绕 `/feedback` 写入 `command/run` / `command/done` 生命周期配对，但该命令设置了 `recordInput: false`。因此，它的 `command/run` 携带命令标识与来源，但不携带 `args`；反馈文本只存在于 `feedback/record` 中，而 `command/done` 携带确认结果。三个记录都仅写入日志且非 surface。它们的追加会进入持久化的常规有界写入路径；没有任何环节强制 flush，因此确认文本报告的是反馈已进入日志，而非已经落盘。
 
 采集对正在运行的 agent（智能体）与模型仍不产生后续动作。可选的 OTel 遥测包后续增加了一个基础设施消费方：它在 `FEEDBACK_ONLY` 模式下将 `feedback/record` 作为释放触发器，在 `DISABLED` 模式下将其作为仅限本地的警告触发器，且不改变反馈事件或命令路径。见[反馈门控的会话遥测](2026-08-05-feedback-gated-session-telemetry.zh.md)与[确认文本中的共享披露](2026-08-07-feedback-acknowledgement-sharing-disclosure.zh.md)。
 
@@ -54,7 +54,7 @@ Status: implemented
 
 ## 后果
 
-随附的 `dsh` 基础组合无条件挂载该命令：没有配置，也不依赖 goal 栈。Web 客户端通过命令适配器暴露该命令。无头模式、ACP（Agent Client Protocol）和 JSON-RPC 不提供命令适配器，因此 `/feedback` 在那里不可用。对于某个 harness home，首次接受反馈时可能创建 `$DSH_HOME/.anonymous-user-id`；被拒绝的空输入不会获取或创建 id。
+随附的 `alego` 基础组合无条件挂载该命令：没有配置，也不依赖 goal 栈。Web 客户端通过命令适配器暴露该命令。无头模式、ACP（Agent Client Protocol）和 JSON-RPC 不提供命令适配器，因此 `/feedback` 在那里不可用。对于某个 harness home，首次接受反馈时可能创建 `$ALEGO_HOME/.anonymous-user-id`；被拒绝的空输入不会获取或创建 id。
 
 本包拥有一个独立的仅追加事件，不存在跨事件关系或可变数据关系可供不变式伴生插件检查。该事件遵循会话日志现有的回放、fork、持久化和崩溃尾部行为。
 

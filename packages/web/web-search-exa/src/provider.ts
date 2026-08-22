@@ -3,16 +3,16 @@
  * highlight contents). It maps the first non-blank highlight to `snippet`, maps
  * `publishedDate` to `publishedAt`, drops entries without a snippet, and omits `content`
  * because Exa returns no generated answer.
- * @module @deepseek-ai/dsh-web-search-exa/provider
+ * @module @alego/web-search-exa/provider
  */
 
-import { WebError } from '@deepseek-ai/dsh-web'
+import { WebError } from '@alego/web'
 import type {
   WebSearchProvider,
   WebSearchRequest,
   WebSearchResult,
   WebSearchSource,
-} from '@deepseek-ai/dsh-web'
+} from '@alego/web'
 import type { ExaError, ExaResult, ExaSearchResponse } from './types.ts'
 
 /** Stable id this provider registers under. */
@@ -28,7 +28,7 @@ export const EXA_DEFAULT_SEARCH_TYPE = 'auto'
 export const EXA_DEFAULT_HIGHLIGHTS_PER_RESULT = 1
 
 /** Attribution header sent on every request. Bump with the package version. */
-const USER_AGENT = 'deepseek-harness/0.0.1'
+const USER_AGENT = 'alego/0.0.1'
 
 /** Resolved provider options (the plugin's `apply` supplies env-var and constant defaults). */
 export interface ExaSearchProviderOptions {

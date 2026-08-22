@@ -33,4 +33,4 @@ Archived: 2026-07-26
 
 ## Testing
 
-`packages/ui/tui/tests/tui.spec.ts` 固定：扫入完成为完整横幅（两个角 + 标题）且产生了至少一个裁剪的中途帧；配置的欢迎语原文渲染且无裁剪帧；未设置欢迎语的横幅没有副标题；dispose 清除扫入自己的定时器句柄。PTY 冒烟测试在 tui-demo bin、dsh CLI 和个人 overlay 场景中以 `╮` 完成标记启动。已在 tmux 中实机验证。
+`packages/ui/tui/tests/tui.spec.ts` 固定：扫入完成为完整横幅（两个角 + 标题）且产生了至少一个裁剪的中途帧；配置的欢迎语原文渲染且无裁剪帧；未设置欢迎语的横幅没有副标题；dispose 清除扫入自己的定时器句柄。PTY 冒烟测试在 tui-demo bin、alego CLI 和个人 overlay 场景中以 `╮` 完成标记启动。已在 tmux 中实机验证。

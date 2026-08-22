@@ -1,4 +1,4 @@
-# dsh-fs-sandbox：强制沙箱的文件系统后端
+# alego-fs-sandbox：强制沙箱的文件系统后端
 
 [English](README.md) | 中文
 
@@ -6,7 +6,7 @@
 
 它原样复用本地后端配置：`cwd` 仍是相对路径的解析默认值，`diffBasisMaxBytes` 则限制可选的覆写上下文 diff 基础。
 
-只需加载它来替代 `dsh-fs-local`，并同时加载 [`ctx.sandboxPolicy`](../../sandbox/sandbox-policy/README.zh.md)，即可完成替换；面向模型的工具（`dsh-tool-fs`）无需改动。工具层把调用会话的模式和 cwd 解析为与 bash 相同的按调用策略，因此两个能力族绝不会约束到不同根目录。
+只需加载它来替代 `alego-fs-local`，并同时加载 [`ctx.sandboxPolicy`](../../sandbox/sandbox-policy/README.zh.md)，即可完成替换；面向模型的工具（`alego-tool-fs`）无需改动。工具层把调用会话的模式和 cwd 解析为与 bash 相同的按调用策略，因此两个能力族绝不会约束到不同根目录。
 
 ## 围栏
 
@@ -18,9 +18,9 @@
 
 ## 威胁模型：策略围栏，而非内核边界
 
-围栏是在可信代码中检查模型控制的路径。操作本身属于 seam（open、rename），只有目标路径不可信，因此「规范化后检查包含关系」就是该接口的完整答案。这与 `code-runtime` 的立场相同：提供约束，但不是安全边界。不可信代码的内核级隔离仍由 `ctx.shell` 负责（[`dsh-bash-sandbox`](../../shell/bash-sandbox/README.zh.md)）。剩余 TOCTOU（在包含关系复查与系统调用之间替换祖先符号链接）会通过写入前立即重新规范化来缩小，并为该威胁模型所接受；内核严密边界需要 `openat2` 一类原语，其可移植性成本在此不值得。
+围栏是在可信代码中检查模型控制的路径。操作本身属于 seam（open、rename），只有目标路径不可信，因此「规范化后检查包含关系」就是该接口的完整答案。这与 `code-runtime` 的立场相同：提供约束，但不是安全边界。不可信代码的内核级隔离仍由 `ctx.shell` 负责（[`alego-bash-sandbox`](../../shell/bash-sandbox/README.zh.md)）。剩余 TOCTOU（在包含关系复查与系统调用之间替换祖先符号链接）会通过写入前立即重新规范化来缩小，并为该威胁模型所接受；内核严密边界需要 `openat2` 一类原语，其可移植性成本在此不值得。
 
-拒绝是结构化 `FsError`（`FS_SANDBOX_DENIED`，携带有效模式），不通过 stderr 文本推断（不同于 bash 的内核拒绝），因为进程内围栏准确知道自己拒绝了什么。面向模型的 `[sandbox: file access denied under <mode> mode]` 标记以及唯一一次获批的更宽权限重试位于工具层（`dsh-tool-fs`），与 bash 完全相同。见[跨能力族 fs 沙箱 Agent Note](../../../.agents/notes/implemented/feature/2026-07-14-cross-family-fs-sandbox.zh.md)。
+拒绝是结构化 `FsError`（`FS_SANDBOX_DENIED`，携带有效模式），不通过 stderr 文本推断（不同于 bash 的内核拒绝），因为进程内围栏准确知道自己拒绝了什么。面向模型的 `[sandbox: file access denied under <mode> mode]` 标记以及唯一一次获批的更宽权限重试位于工具层（`alego-tool-fs`），与 bash 完全相同。见[跨能力族 fs 沙箱 Agent Note](../../../.agents/notes/implemented/feature/2026-07-14-cross-family-fs-sandbox.zh.md)。
 
 ## 模型体验
 
@@ -28,7 +28,7 @@
 
 #### 模型看到的内容
 
-策略归属方会贡献与具体能力无关的 `sandbox:policy` 上下文。作为间接影响，`dsh-tool-fs` 会把本后端的 `FS_SANDBOX_DENIED` 拒绝渲染为 `[sandbox: file access denied under <mode> mode]` 标记和同轮次升级提示。
+策略归属方会贡献与具体能力无关的 `sandbox:policy` 上下文。作为间接影响，`alego-tool-fs` 会把本后端的 `FS_SANDBOX_DENIED` 拒绝渲染为 `[sandbox: file access denied under <mode> mode]` 标记和同轮次升级提示。
 
 #### Token 影响
 

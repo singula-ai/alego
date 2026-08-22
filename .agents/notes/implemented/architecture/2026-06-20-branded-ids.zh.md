@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-harness 使用 `Branded<B> = string & { readonly [BRAND]: B }` 机制，为 `CallId`（`packages/llm/llm/src/brand.ts`）和 agent（智能体）/会话共享的 `SessionId`（`packages/core/session/src/types.ts`）做 brand 处理；该机制由纯类型包 `@deepseek-ai/dsh-brand` 拥有，位于 `packages/util/brand/`，见其 [README](../../../../packages/util/brand/README.zh.md)，并为每个类型提供零开销的 cast 工厂。`dsh-brand` 还声明了治理策略：*「Branding 用于跨包边界且可能被混淆的 id；不是每个 string 都需要 brand。」* 这条策略是正确的；问题在于它只落实了一半。两处缺口使得结构相同但语义错误的 string 今天仍能通过类型检查器。
+harness 使用 `Branded<B> = string & { readonly [BRAND]: B }` 机制，为 `CallId`（`packages/llm/llm/src/brand.ts`）和 agent（智能体）/会话共享的 `SessionId`（`packages/core/session/src/types.ts`）做 brand 处理；该机制由纯类型包 `@alego/brand` 拥有，位于 `packages/util/brand/`，见其 [README](../../../../packages/util/brand/README.zh.md)，并为每个类型提供零开销的 cast 工厂。`alego-brand` 还声明了治理策略：*「Branding 用于跨包边界且可能被混淆的 id；不是每个 string 都需要 brand。」* 这条策略是正确的；问题在于它只落实了一半。两处缺口使得结构相同但语义错误的 string 今天仍能通过类型检查器。
 
 **缺口 1：bash seam 中未 brand 的跨边界 ID。** 后台 job id 是普通 `string`：`BashTask.id: string`（`packages/shell/shell/src/types.ts`），作为 `string` 贯穿整个执行器 seam（`packages/shell/shell/src/index.ts` 中的 `ShellExecutor.get`/`ownerOf`/`readOutput`/`kill(id: string)`），再由面向模型的工具以 `string` 校验并传递（`validateJobId`、`assertTaskAccess`、`packages/shell/tool-bash/src/index.ts` 中 `job_id` 的 schema 参数）。它由每执行器计数器生成——`packages/shell/bash-local/src/index.ts` 中的 `` `bash-${this.nextTaskId++}` ``——其形状与 `SessionId` 的默认值**完全相同，都是 `name-N`**（`packages/core/session/src/index.ts` 中的 `` `session-${++counter}` ``）。bash job id 和会话 id 在调用点轻易就能互换，而编译器毫无反应。它是面向模型的 id（模型会把 `job_id` 传回 `bash_output`/`bash_kill`），所以该混淆可由不受信任的输入触达。
 
@@ -18,16 +18,16 @@ bash **owner token** 是相关的子情形：`ShellExecRequest.owner?: string` �
 
 纯类型变更。Brand 是零开销 cast；运行时行为、序列化、比较和协议格式（wire format）均不变。该决策分三部分，全部遵循既有的「不是每个 string 都需要」策略。
 
-- **为 bash job id 加 brand。** 在 `packages/shell/shell/src/types.ts`（*拥有*该 id 的包）中添加 `BashTaskId = Branded<'BashTaskId'>` 及其同名工厂，从 `@deepseek-ai/dsh-brand` 导入 `Branded`，方式与 `SessionId` 完全一致。brand 原语位于无依赖的 `dsh-brand` 工具包中，正是为了让 `dsh-shell` 仅依赖它就能为自己的 id 加 brand，而无需引入 `dsh-llm`（或 `dsh-session`）来获取 `Branded`。将其贯穿 `BashTask.id`、`ShellExecutor` Service Definition 方法（`get`/`ownerOf`/`readOutput`/`kill`）、`dsh-bash-local` 中的生成点（在创建时对计数器输出做一次 brand），以及 `dsh-tool-bash` 的校验/访问面（`validateJobId` 返回 `BashTaskId`；`job_id` 在模型 string 到达的工具边界处被 brand）。
+- **为 bash job id 加 brand。** 在 `packages/shell/shell/src/types.ts`（*拥有*该 id 的包）中添加 `BashTaskId = Branded<'BashTaskId'>` 及其同名工厂，从 `@alego/brand` 导入 `Branded`，方式与 `SessionId` 完全一致。brand 原语位于无依赖的 `alego-brand` 工具包中，正是为了让 `alego-shell` 仅依赖它就能为自己的 id 加 brand，而无需引入 `alego-llm`（或 `alego-session`）来获取 `Branded`。将其贯穿 `BashTask.id`、`ShellExecutor` Service Definition 方法（`get`/`ownerOf`/`readOutput`/`kill`）、`alego-bash-local` 中的生成点（在创建时对计数器输出做一次 brand），以及 `alego-tool-bash` 的校验/访问面（`validateJobId` 返回 `BashTaskId`；`job_id` 在模型 string 到达的工具边界处被 brand）。
 
-- **铸造独立的 `OwnerToken` brand。** 在 `packages/shell/shell/src/types.ts` 中添加 `OwnerToken = Branded<'OwnerToken'>`；将 `ShellExecRequest.owner` / `ShellExecSpec.owner` / `ShellExecutor.ownerOf` 的类型标注为 `OwnerToken | undefined`。`dsh-tool-bash` 消费方在边界处将 agent 共享的 `id`（`SessionId`）cast 为 `OwnerToken`——这是两套词汇唯一交汇的地方。bash Service Definition 从不导入 `dsh-session`。（理由见下一节。）
+- **铸造独立的 `OwnerToken` brand。** 在 `packages/shell/shell/src/types.ts` 中添加 `OwnerToken = Branded<'OwnerToken'>`；将 `ShellExecRequest.owner` / `ShellExecSpec.owner` / `ShellExecutor.ownerOf` 的类型标注为 `OwnerToken | undefined`。`alego-tool-bash` 消费方在边界处将 agent 共享的 `id`（`SessionId`）cast 为 `OwnerToken`——这是两套词汇唯一交汇的地方。bash Service Definition 从不导入 `alego-session`。（理由见下一节。）
 
 - **阻止 brand 侵蚀。** 将既有 brand 传播到缺口 2 列出的 `Map` 键类型和公开方法参数中：`Map<SessionId, Session>`、`Map<SessionId, Agent>`、`get(id: SessionId)`、`Map<CallId, …>`、ACP 的 `SessionId` surface、协调器的 `Map<SessionId, …>`。这是变更中机械量最大的部分，也是让*既有* brand 在查找处真正发挥作用（而不仅仅标注在结构体字段上）的关键。
 
 示意形状（工厂模式与已有的三个 brand 完全一致）：
 
 ```ts ignore-check
-import type { Branded } from '@deepseek-ai/dsh-brand'
+import type { Branded } from '@alego/brand'
 
 /** A background bash task handle (generated `bash-N` by the local executor). */
 export type BashTaskId = Branded<'BashTaskId'>
@@ -46,7 +46,7 @@ export function OwnerToken(id: string): OwnerToken {
 
 ### 为什么不把 `owner` 类型标注为 `SessionId`？
 
-显而易见的捷径是直接把 `owner` 类型标注为 `SessionId`——它确实*总是*一个会话 id。我们否决这个方案。bash 执行器 seam 是能力 seam（Service Definition `dsh-shell`、Service Provider `dsh-bash-local`、Consumer `dsh-tool-bash`），其 owner token 被*明确记录为刻意不透明*：执行器「从不解释它（seam 中没有访问策略——那是消费方的职责）」（`packages/shell/shell/src/types.ts`）。把 Service Definition 的字段类型标注为 `SessionId`，会把 `dsh-session` 的词汇引入一个不应知道 owner token *含义*的包——这会让通用执行后端耦合会话模型，并违背不透明 token 的设计。取代 `dsh-bash-local` 的沙箱化执行器或远程执行器不应继承会话依赖。独立的 `OwnerToken` brand 使 seam 保持解耦：`dsh-shell` 只知道「owner 是某种带 brand 的不透明 token」，而已经决定访问策略的 `dsh-tool-bash` 消费方，是把其 `SessionId` cast 为 `OwnerToken` 的唯一边界。该 brand 仍带来安全收益（不能把 `BashTaskId` 或裸 string 传到 owner 位置），且不引入耦合。
+显而易见的捷径是直接把 `owner` 类型标注为 `SessionId`——它确实*总是*一个会话 id。我们否决这个方案。bash 执行器 seam 是能力 seam（Service Definition `alego-shell`、Service Provider `alego-bash-local`、Consumer `alego-tool-bash`），其 owner token 被*明确记录为刻意不透明*：执行器「从不解释它（seam 中没有访问策略——那是消费方的职责）」（`packages/shell/shell/src/types.ts`）。把 Service Definition 的字段类型标注为 `SessionId`，会把 `alego-session` 的词汇引入一个不应知道 owner token *含义*的包——这会让通用执行后端耦合会话模型，并违背不透明 token 的设计。取代 `alego-bash-local` 的沙箱化执行器或远程执行器不应继承会话依赖。独立的 `OwnerToken` brand 使 seam 保持解耦：`alego-shell` 只知道「owner 是某种带 brand 的不透明 token」，而已经决定访问策略的 `alego-tool-bash` 消费方，是把其 `SessionId` cast 为 `OwnerToken` 的唯一边界。该 brand 仍带来安全收益（不能把 `BashTaskId` 或裸 string 传到 owner 位置），且不引入耦合。
 
 ## 不在范围内 / 可能的扩展
 
@@ -56,11 +56,11 @@ export function OwnerToken(id: string): OwnerToken {
 - **`ToolName`**（`ToolRuntime` 的键）：由作者定义、人类可读，且很少与其他 id 混淆；最弱的候选，可能不值得加 brand。
 - **`ErrorCode`**（`HarnessError.code`）：一个封闭词汇（`ABORTED`、`NO_ADAPTER`……），不是逐实例的 id；如果要做，string 字面量联合类型比 brand 更合适。
 - **数值序号**：轮次号、步骤号和事件 `seq` 是 `number` 而非 `string`，`Branded<string>` 不适用；可以用并行的 `number & { readonly [BRAND]: B }` 变体来 brand 它们，但它们是位置序号、很少跨边界传递，收益较低。
-- **带校验的构造**：brand 工厂是纯 cast，无运行时检查，且每个边界（ACP `sessionId`、提供方签发的 `call.id`、`dsh-llm-deepseek` 中的空字符串回退）今天都信任裸 string。一个在边界处对格式错误的输入抛异常的 `SessionId.parse()` / `isValid()` 配套工具确实是缺口，但它是*运行时行为*变更，有自己的设计问题（什么算「格式错误」？失败时会怎样？），应在独立决策中处理，不应捆绑进这次纯类型变更。
+- **带校验的构造**：brand 工厂是纯 cast，无运行时检查，且每个边界（ACP `sessionId`、提供方签发的 `call.id`、`alego-llm-deepseek` 中的空字符串回退）今天都信任裸 string。一个在边界处对格式错误的输入抛异常的 `SessionId.parse()` / `isValid()` 配套工具确实是缺口，但它是*运行时行为*变更，有自己的设计问题（什么算「格式错误」？失败时会怎样？），应在独立决策中处理，不应捆绑进这次纯类型变更。
 
 ## 验证
 
-已落地的不变式如下：`BashTaskId` 和 `OwnerToken` 定义在 `dsh-shell` 中，并端到端贯穿 Service Definition、`dsh-bash-local` 生成点与 `dsh-tool-bash` 面向模型的工具，且 `dsh-shell` 未添加对 `dsh-session` 的依赖；没有任何以范围内 brand id（`CallId`/`SessionId`/`BashTaskId`）为键的集合使用裸 `string`；公开方法参数和导出签名保留 brand；每个原始 string 进入的边界（提供方 call id、ACP 会话 id、模型提供的 `job_id`）都通过 cast 工厂构造 brand，而不是散落的 `as` cast。
+已落地的不变式如下：`BashTaskId` 和 `OwnerToken` 定义在 `alego-shell` 中，并端到端贯穿 Service Definition、`alego-bash-local` 生成点与 `alego-tool-bash` 面向模型的工具，且 `alego-shell` 未添加对 `alego-session` 的依赖；没有任何以范围内 brand id（`CallId`/`SessionId`/`BashTaskId`）为键的集合使用裸 `string`；公开方法参数和导出签名保留 brand；每个原始 string 进入的边界（提供方 call id、ACP 会话 id、模型提供的 `job_id`）都通过 cast 工厂构造 brand，而不是散落的 `as` cast。
 
 ## 后果
 

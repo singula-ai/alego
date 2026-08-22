@@ -48,7 +48,7 @@ function write(path: string, content: string, mode?: number): void {
 }
 
 function fixture(worktreeName = 'worktree'): Fixture {
-  const container = mkdtempSync(join(tmpdir(), 'dsh-change-scope-'))
+  const container = mkdtempSync(join(tmpdir(), 'alego-change-scope-'))
   fixtureRoots.push(container)
   const origin = join(container, 'origin.git')
   const root = join(container, worktreeName)

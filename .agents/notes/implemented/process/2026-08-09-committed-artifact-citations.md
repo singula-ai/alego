@@ -18,7 +18,7 @@ Durable prose — comments, JSDoc, docs, notes, test comments and titles — cit
 - Implemented notes state shipped reality: a "deferred to a later PR" claim whose target shipped names the shipped note instead.
 - Recorded fixtures, snapshots, and archived notes are exempt: recorded model output and sealed history keep their original voice. Inside a note's change-story sections, a historical stage name ("the first cut shipped X") is current-state-safe; indexical stamps ("this cut") stay banned everywhere.
 
-One repo-wide purge applied these rules across the prose surfaces, including the generator-owned templates (`scripts/gen-doc-graphs.ts`, `scripts/gen-tool-catalog.ts`, the typert generator's page notice) with regeneration, the type-equiv source JSDoc with page re-pastes, and the bilingual counterparts with pair re-records. The [dsh-trim-cot-leakage skill](../../../skills/dsh-trim-cot-leakage/SKILL.md) operationalizes these rules: the audit taxonomy, the committed recall batteries, and few-shot examples for deciding what to keep or delete.
+One repo-wide purge applied these rules across the prose surfaces, including the generator-owned templates (`scripts/gen-doc-graphs.ts`, `scripts/gen-tool-catalog.ts`, the typert generator's page notice) with regeneration, the type-equiv source JSDoc with page re-pastes, and the bilingual counterparts with pair re-records. The [alego-trim-cot-leakage skill](../../../skills/alego-trim-cot-leakage/SKILL.md) operationalizes these rules: the audit taxonomy, the committed recall batteries, and few-shot examples for deciding what to keep or delete.
 
 ## Alternatives considered
 

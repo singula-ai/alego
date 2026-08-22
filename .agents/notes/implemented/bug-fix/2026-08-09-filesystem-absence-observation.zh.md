@@ -12,18 +12,18 @@ Status: implemented
 
 ## 决策
 
-`dsh-fs` 拥有一个显式观测联合类型：`{ kind: 'present', version: FsVersion } | { kind: 'absent' }`。`fs/observed` 事件携带该联合类型。成功的读取与变更发出存在观测；`read` 的元数据未命中，或 `str_replace_editor` 的 `view`、`str_replace`、`insert` 命令发生元数据未命中时，都会在返回 `FS_NOT_FOUND` 前同步发出缺失观测。其他读取失败不会产生缺失观测。
+`alego-fs` 拥有一个显式观测联合类型：`{ kind: 'present', version: FsVersion } | { kind: 'absent' }`。`fs/observed` 事件携带该联合类型。成功的读取与变更发出存在观测；`read` 的元数据未命中，或 `str_replace_editor` 的 `view`、`str_replace`、`insert` 命令发生元数据未命中时，都会在返回 `FS_NOT_FOUND` 前同步发出缺失观测。其他读取失败不会产生缺失观测。
 
-`dsh-fs-observation-policy` 按所有者与目标存储三种逻辑状态，既不注入也不调用 `ctx.fs`：映射中无条目即未见，`absent` 表示确认缺失，`present(version)` 是替换/编辑基准。写入把未见和缺失映射到现有 `createIfAbsent` 意图，把存在映射到 `replaceIfVersion`。编辑把未见映射到 `FS_NOT_OBSERVED`，把缺失映射到 `FS_NOT_FOUND`，把存在映射到其版本守卫。成功创建或变更后，系统会用其产生的存在版本取代缺失状态。
+`alego-fs-observation-policy` 按所有者与目标存储三种逻辑状态，既不注入也不调用 `ctx.fs`：映射中无条目即未见，`absent` 表示确认缺失，`present(version)` 是替换/编辑基准。写入把未见和缺失映射到现有 `createIfAbsent` 意图，把存在映射到 `replaceIfVersion`。编辑把未见映射到 `FS_NOT_OBSERVED`，把缺失映射到 `FS_NOT_FOUND`，把存在映射到其版本守卫。成功创建或变更后，系统会用其产生的存在版本取代缺失状态。
 
-每个提供方都必须在发布点执行 `createIfAbsent`，不能只在初始探测时执行。`dsh-fs-local` 在私有同级目录中暂存并执行 fsync，再通过硬链接把暂存文件发布到目标位置；链接失败后，它会检查目标条目：与普通文件冲突时返回 `FS_NOT_OBSERVED`，条目非普通时返回 `FS_NOT_REGULAR_FILE`，目标仍然缺失时返回 `FS_IO_ERROR`。`dsh-fs-e2b` 使用远程 `ln -T` 返回明确的已创建/已存在结果，并根据不可取消提交前取得的元数据推导已提交目标的版本。替换操作和裸无条件写入仍沿用现有发布路径。
+每个提供方都必须在发布点执行 `createIfAbsent`，不能只在初始探测时执行。`alego-fs-local` 在私有同级目录中暂存并执行 fsync，再通过硬链接把暂存文件发布到目标位置；链接失败后，它会检查目标条目：与普通文件冲突时返回 `FS_NOT_OBSERVED`，条目非普通时返回 `FS_NOT_REGULAR_FILE`，目标仍然缺失时返回 `FS_IO_ERROR`。`alego-fs-e2b` 使用远程 `ln -T` 返回明确的已创建/已存在结果，并根据不可取消提交前取得的元数据推导已提交目标的版本。替换操作和裸无条件写入仍沿用现有发布路径。
 
 本决策不宣称 `replaceIfVersion` 具有跨进程线性一致性：提供方的版本检查与替换仍只能防范被其自身锁纳入协调的写入方，以及能通过元数据检测到的写入方。更窄的保证边界准确且足以支持缺失恢复：带防护的创建绝不会覆盖在发布前出现的目标。本地带防护的创建要求支持硬链接；任何本地发布一旦成功，暂存清理便采用尽力而为语义，因为私有残留无法否定已提交写入的成功。
 
 ## 曾考虑的替代方案
 
 - **读取返回未找到时删除缓存版本。** 不予采用，因为这会混淆未见与确认缺失，无法让 edit 返回正确的 `FS_NOT_FOUND` 结果，还会抹去该事件本应传达的状态转换。
-- **让 `dsh-fs-observation-policy` 在选择意图前调用 `stat`。** 不予采用，因为这会让只依赖事件的策略转而依赖提供方，为每次决策增加 I/O，并且在发布前仍留下 TOCTOU 间隙。
+- **让 `alego-fs-observation-policy` 在选择意图前调用 `stat`。** 不予采用，因为这会让只依赖事件的策略转而依赖提供方，为每次决策增加 I/O，并且在发布前仍留下 TOCTOU 间隙。
 - **允许 `replaceIfVersion` 在目标消失后执行创建。** 不予采用，因为存在观测是执行替换而非创建的依据；静默改变该提供方意图会绕过必须针对缺失目标执行的重新读取，并削弱陈旧保护。
 - **让删除目标后的死路继续保持 fail-closed。** 不予采用，因为这样会使面向模型的恢复指令失实，而且正常的外部清理操作无法在会话内恢复。
 

@@ -1,5 +1,5 @@
 {
-  "name": "@deepseek-ai/cordis",
+  "name": "@alego/cordis",
   "description": "Meta-Framework for Modern JavaScript Applications",
   "version": "4.0.1",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deepseek-ai/deepseek-harness.git",
+    "url": "git+https://github.com/singula-ai/alego.git",
     "directory": "vendor/cordis"
   },
   "sideEffects": false,
@@ -33,19 +33,19 @@
   "author": "Shigma <shigma10826@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis-plugin-include": "workspace:^",
-    "@deepseek-ai/cordis-plugin-loader": "workspace:^"
+    "@alego/cordis-plugin-include": "workspace:^",
+    "@alego/cordis-plugin-loader": "workspace:^"
   },
   "peerDependenciesMeta": {
-    "@deepseek-ai/cordis-plugin-include": {
+    "@alego/cordis-plugin-include": {
       "optional": true
     },
-    "@deepseek-ai/cordis-plugin-loader": {
+    "@alego/cordis-plugin-loader": {
       "optional": true
     }
   },
   "dependencies": {
     "@standard-schema/spec": "^1.1.0",
-    "@deepseek-ai/cosmokit": "workspace:^"
+    "@alego/cosmokit": "workspace:^"
   }
 }

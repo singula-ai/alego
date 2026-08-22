@@ -6,15 +6,15 @@ Status: implemented
 
 ## Problem
 
-本项目对外的每一个面都只在发布 tag 上前进。npm 序列从 `dsh-v*` tag 经人工审阅的手动 dispatch 发布，Python wheel 从 `python-v*` tag 发布，背后有发布仓库校验和两个受保护环境，公开源码仓库也只推进到每个发布 commit。文档网站却在每次触及 `docs/`、`website/`、投影器或锁文件的 master 推送上部署，既没有审阅人也没有版本校验。尽管仓库是私有的，该站点无需认证即可访问，因此一次合并会在几分钟内把文档发布到公网：其中包含描述尚无任何已发布产物承载的工作的页面，以及从领先于读者所能获取的一切的源码树生成的参考资料。
+本项目对外的每一个面都只在发布 tag 上前进。npm 序列从 `alego-v*` tag 经人工审阅的手动 dispatch 发布，Python wheel 从 `python-v*` tag 发布，背后有发布仓库校验和两个受保护环境，公开源码仓库也只推进到每个发布 commit。文档网站却在每次触及 `docs/`、`website/`、投影器或锁文件的 master 推送上部署，既没有审阅人也没有版本校验。尽管仓库是私有的，该站点无需认证即可访问，因此一次合并会在几分钟内把文档发布到公网：其中包含描述尚无任何已发布产物承载的工作的页面，以及从领先于读者所能获取的一切的源码树生成的参考资料。
 
 ## Decision
 
-`docs-pages.yml` 只声明 `workflow_dispatch`，并从 `dsh-v*` tag 发布，这正是 `release-publish.yml` 为 npm 采用的结构：发布是从发布 tag 出发的显式动作，绝不作为拉取请求检查出现。
+`docs-pages.yml` 只声明 `workflow_dispatch`，并从 `alego-v*` tag 发布，这正是 `release-publish.yml` 为 npm 采用的结构：发布是从发布 tag 出发的显式动作，绝不作为拉取请求检查出现。
 
-build 作业在构建任何东西之前先以 `RELEASE_PUBLISH=true` 运行 `release:verify --family dsh`。这就是 npm 发布所用的门禁，因此站点和 npm 序列共用同一个「已发布版本」的定义，而不是各自携带一份：运行必须来自 `refs/tags/` ref，tag 必须带有该家族前缀，且 tag 必须命名工作树确实携带的版本。checkout 取完整历史，因为发布脚本要读 tag。
+build 作业在构建任何东西之前先以 `RELEASE_PUBLISH=true` 运行 `release:verify --family alego`。这就是 npm 发布所用的门禁，因此站点和 npm 序列共用同一个「已发布版本」的定义，而不是各自携带一份：运行必须来自 `refs/tags/` ref，tag 必须带有该家族前缀，且 tag 必须命名工作树确实携带的版本。checkout 取完整历史，因为发布脚本要读 tag。
 
-`github-pages` 环境携带 `dsh-v*` 部署 tag 策略和必需审阅人，与 `npm-publish` 一致。两层应对的是不同的失效：脚本门禁拒绝从错误 ref 发起的 dispatch，而当日后某次工作流编辑不再校验时，环境策略仍会拒绝该次部署。
+`github-pages` 环境携带 `alego-v*` 部署 tag 策略和必需审阅人，与 `npm-publish` 一致。两层应对的是不同的失效：脚本门禁拒绝从错误 ref 发起的 dispatch，而当日后某次工作流编辑不再校验时，环境策略仍会拒绝该次部署。
 
 `DOCS_REPOSITORY_REF` 保持 `master`，因此投影出的源码链接继续指向公开仓库的默认分支，而不是被 dispatch 的 tag。该仓库只推进到每个发布 commit，所以它的 master 从不携带未发布的工作，被发布的 tag 在暴露控制上没有任何增益。它还只保留最近的若干 tag，因此跟随被 dispatch 的 tag 会让从较旧 tag 部署的站点上每一条投影源码链接都无法解析。
 

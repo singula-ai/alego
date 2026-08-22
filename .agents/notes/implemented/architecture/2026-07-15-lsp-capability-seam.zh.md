@@ -16,11 +16,11 @@ harness 已具备文本搜索与文件读取能力，但二者都无法识别程
 
 将 LSP 建成由三个包组成的能力 seam，其中包含一个只读模型工具和一个通用本地提供方实现：
 
-1. `packages/lsp/lsp` 下的 `@deepseek-ai/dsh-lsp` 负责 `ctx.lsp`、提供方注册与选择、标准化请求与结果、执行控制，以及结构化 LSP 错误。
-2. `packages/lsp/lsp-stdio` 下的 `@deepseek-ai/dsh-lsp-stdio` 将配置的 stdio 语言服务器适配到该 seam。一个插件实例接收具名服务器表，并为每组命令及扩展名到语言 id 的映射注册一个隔离的提供方。
-3. `packages/lsp/tool-lsp` 下的 `@deepseek-ai/dsh-tool-lsp` 负责面向模型的 `lsp` schema、提示词指导、参数校验、结果限制与格式化，以及与传输方式无关的 UI 展示。
+1. `packages/lsp/lsp` 下的 `@alego/lsp` 负责 `ctx.lsp`、提供方注册与选择、标准化请求与结果、执行控制，以及结构化 LSP 错误。
+2. `packages/lsp/lsp-stdio` 下的 `@alego/lsp-stdio` 将配置的 stdio 语言服务器适配到该 seam。一个插件实例接收具名服务器表，并为每组命令及扩展名到语言 id 的映射注册一个隔离的提供方。
+3. `packages/lsp/tool-lsp` 下的 `@alego/tool-lsp` 负责面向模型的 `lsp` schema、提示词指导、参数校验、结果限制与格式化，以及与传输方式无关的 UI 展示。
 
-`dsh-lsp-stdio` 是通用 host，不是语言服务器目录或安装器。部署显式配置命令与映射；未来 preset 属于组合插件或 `cordis.yml` overlay。
+`alego-lsp-stdio` 是通用 host，不是语言服务器目录或安装器。部署显式配置命令与映射；未来 preset 属于组合插件或 `cordis.yml` overlay。
 
 模型与 seam 仅公开 `goToDefinition`、`findReferences`、`goToImplementation` 和 `hover`；`ctx.lsp` 不提供任意 JSON-RPC 方法。这些操作字面量与 Claude Code 熟悉的 camelCase 命名一致，而工具名与 `file_path` 字段仍由 harness 自行定义。
 
@@ -28,14 +28,14 @@ harness 已具备文本搜索与文件读取能力，但二者都无法识别程
 
 ## 包与职责边界
 
-`dsh-lsp` 按带品牌类型的 id 和扩展名到语言 id 的映射注册提供方。`registerProvider()` 以原子方式占用 id 与所有规范化扩展名：输入无效或存在冲突时不发布任何状态，dispose（资源释放）函数释放全部占用。提供方插件通过 `ctx.effect()` 注册。系统按查询且不受顺序影响地选择提供方；没有匹配项时返回结构化不可用错误。第一版不提供 glob、language-id 或显式路由选择器，也不静态声明操作能力。
+`alego-lsp` 按带品牌类型的 id 和扩展名到语言 id 的映射注册提供方。`registerProvider()` 以原子方式占用 id 与所有规范化扩展名：输入无效或存在冲突时不发布任何状态，dispose（资源释放）函数释放全部占用。提供方插件通过 `ctx.effect()` 注册。系统按查询且不受顺序影响地选择提供方；没有匹配项时返回结构化不可用错误。第一版不提供 glob、language-id 或显式路由选择器，也不静态声明操作能力。
 
-seam 只公开 `query(request, signal?)`，因为没有字段需要实现层填充默认值：`workspaceRoot` 是必填项，`languageId` 来自注册映射，超时与结果限制由消费方负责。`query()` 执行选择与推导时不使用隐藏的 `??` 后备逻辑，因此没有需要 resolve 的可执行 spec。`dsh-tool-lsp` 校验模型参数，并只把 `exec.signal` 作为裸 `AbortSignal` 传递，与 web 一致，并使 `dsh-lsp` 不依赖 `dsh-tools`。提供方在选择前被移除时按不可用失败；之后的 dispose 遵循已选提供方的取消生命周期，不改路由。
+seam 只公开 `query(request, signal?)`，因为没有字段需要实现层填充默认值：`workspaceRoot` 是必填项，`languageId` 来自注册映射，超时与结果限制由消费方负责。`query()` 执行选择与推导时不使用隐藏的 `??` 后备逻辑，因此没有需要 resolve 的可执行 spec。`alego-tool-lsp` 校验模型参数，并只把 `exec.signal` 作为裸 `AbortSignal` 传递，与 web 一致，并使 `alego-lsp` 不依赖 `alego-tools`。提供方在选择前被移除时按不可用失败；之后的 dispose 遵循已选提供方的取消生命周期，不改路由。
 
 约定如下：
 
 ```ts
-import type { Branded } from '@deepseek-ai/dsh-brand'
+import type { Branded } from '@alego/brand'
 
 type LspOperation = 'goToDefinition' | 'findReferences' | 'goToImplementation' | 'hover'
 type LspProviderId = Branded<'LspProviderId'>
@@ -79,7 +79,7 @@ interface LspService {
 
 映射键规范化为带前导点的小写扩展名，并按 `filePath` 的最后一个扩展名选择；语言 id 仅用于文档同步。seam 中的位置和范围从零开始按 UTF-16 计数。`findReferences` 始终包含声明：提供方在内部执行该约束，本地映射设置 `context.includeDeclaration: true`，调用方不能配置。封闭结果联合将导航统一为位置，将 `hover` 统一为内容或 `null`；导航结果携带提供方的规范工作区 URI，使消费方在执行世界的命名空间内相对化文件 URI。seam 不公开协议类型、进程或文档控制，也不提供通用请求逃生口。
 
-`dsh-lsp-stdio` 负责服务器配置、JSON-RPC、进程与临时文档状态和协议转换。它通过 `ctx.fs` 读取，通过 `ctx.subprocess` 启动，只依赖二者的 Service Definition 包而非具体提供方；[可移植执行环境决策](2026-07-28-portable-execution-world-consumers.zh.md)负责定义这种配对。服务器表的键是提供方 id。插件在注册前解析每个服务器的本地设置；如果后续映射无效或发生冲突，插件会撤销此前的注册，并为每个提供方保留独立进程池。`dsh-tool-lsp` 在运行时只注入 `tools`、`lsp` 和 `systemPrompt`，通过包内的 `sessionCwd(exec)` 辅助函数从 `exec.agent?.session.header.cwd` 取得工作区，其取值方式与文件系统工具一致，也不导入提供方。
+`alego-lsp-stdio` 负责服务器配置、JSON-RPC、进程与临时文档状态和协议转换。它通过 `ctx.fs` 读取，通过 `ctx.subprocess` 启动，只依赖二者的 Service Definition 包而非具体提供方；[可移植执行环境决策](2026-07-28-portable-execution-world-consumers.zh.md)负责定义这种配对。服务器表的键是提供方 id。插件在注册前解析每个服务器的本地设置；如果后续映射无效或发生冲突，插件会撤销此前的注册，并为每个提供方保留独立进程池。`alego-tool-lsp` 在运行时只注入 `tools`、`lsp` 和 `systemPrompt`，通过包内的 `sessionCwd(exec)` 辅助函数从 `exec.agent?.session.header.cwd` 取得工作区，其取值方式与文件系统工具一致，也不导入提供方。
 
 ## 面向模型的约定
 
@@ -104,15 +104,15 @@ interface LspToolInput {
 
 ## 超时归属
 
-`dsh-tool-lsp` 将一个可配置的 `timeoutMs` 预算附加到工具定义，默认值为 `60_000`。`dsh-tool-call-timeout-policy` 执行预算并提供传入 `ctx.lsp.query` 的 `exec.signal`；该预算覆盖排队、打开、查询和关闭的完整生命周期，模型不可配置。
+`alego-tool-lsp` 将一个可配置的 `timeoutMs` 预算附加到工具定义，默认值为 `60_000`。`alego-tool-call-timeout-policy` 执行预算并提供传入 `ctx.lsp.query` 的 `exec.signal`；该预算覆盖排队、打开、查询和关闭的完整生命周期，模型不可配置。
 
 seam 和提供方不增加启动或请求截止时间。非工具调用方不会获得隐藏超时，必须自行提供 `AbortSignal`，并在需要预算时使用 `deadline()`。
 
-提供方 dispose 发生在工具执行之外，因此 `dsh-lsp-stdio` 保留 `shutdownTimeoutMs`（默认 `5_000`）限制 `shutdown`/`exit`，以及 `killGraceMs`（默认 `2_000`），同时用于限制请求取消宽限期和从 SIGTERM 升级到 SIGKILL 的宽限期；失败实例的清理也使用相同边界。定时器值超过 Node `2_147_483_647` ms 的调度范围时，插件加载失败。提供方使用 `deadline()` 和 `timeoutOf()`，但仍负责请求取消、进程信号和等待关闭，因为超时通知不会终止工作。
+提供方 dispose 发生在工具执行之外，因此 `alego-lsp-stdio` 保留 `shutdownTimeoutMs`（默认 `5_000`）限制 `shutdown`/`exit`，以及 `killGraceMs`（默认 `2_000`），同时用于限制请求取消宽限期和从 SIGTERM 升级到 SIGKILL 的宽限期；失败实例的清理也使用相同边界。定时器值超过 Node `2_147_483_647` ms 的调度范围时，插件加载失败。提供方使用 `deadline()` 和 `timeoutOf()`，但仍负责请求取消、进程信号和等待关闭，因为超时通知不会终止工作。
 
 ## 工作区、文件系统与文档同步
 
-`dsh-lsp-stdio` 在语言服务器的执行环境中通过 `ctx.fs` 规范化并读取文件。它要求工作区目标是目录，使用提供方自有的 containment 拒绝工作区外的源文件，消费 `streamText`，并在分片到达时执行 `maxDocumentBytes` 上限；普通文件校验和 UTF-8 解码仍由提供方负责，文档上限则由协议消费方负责。它会针对每项文件系统操作合并调用方取消与提供方 dispose，跟踪尚未进入队列的工作区查找，并在 dispose 期间等待这些查找结算。它不发送 `fs/observed`：只有 LSP 结果对模型可见，因此查询不满足写前读取策略。
+`alego-lsp-stdio` 在语言服务器的执行环境中通过 `ctx.fs` 规范化并读取文件。它要求工作区目标是目录，使用提供方自有的 containment 拒绝工作区外的源文件，消费 `streamText`，并在分片到达时执行 `maxDocumentBytes` 上限；普通文件校验和 UTF-8 解码仍由提供方负责，文档上限则由协议消费方负责。它会针对每项文件系统操作合并调用方取消与提供方 dispose，跟踪尚未进入队列的工作区查找，并在 dispose 期间等待这些查找结算。它不发送 `fs/observed`：只有 LSP 结果对模型可见，因此查询不满足写前读取策略。
 
 `read` 工具的输出带窗口与行号，进入 transcript（文本记录）且已被观察，不适合作为源文件。在 `tool-lsp` 内读取还会把提供方专用同步职责交给消费方，并排除非本地提供方。
 
@@ -129,7 +129,7 @@ seam 和提供方不增加启动或请求截止时间。非工具调用方不会
 
 ## 本地服务器生命周期与协议行为
 
-`dsh-lsp-stdio` 按 `(provider id, canonical workspace target)` 懒启动一个服务器，并通过 single-flight 合并启动。插件加载时，它使用已配置的环境调用 `ctx.subprocess.resolveExecutable()`；命令不可用时在注册前失败。首次查询通过原始协议管道启动服务器，不经过 shell，并收集有界的 stderr 尾部。`maxMessageBytes` 默认值为 `16_000_000`，`maxStderrBytes` 默认值为 `1_000_000`，`maxDocumentBytes` 默认值为 `4_000_000`。崩溃使当前查询失败且不重放；后续查询可以替换进程。每次查询最多启动一个进程，因此 MVP 不设置跨请求重启计数器。
+`alego-lsp-stdio` 按 `(provider id, canonical workspace target)` 懒启动一个服务器，并通过 single-flight 合并启动。插件加载时，它使用已配置的环境调用 `ctx.subprocess.resolveExecutable()`；命令不可用时在注册前失败。首次查询通过原始协议管道启动服务器，不经过 shell，并收集有界的 stderr 尾部。`maxMessageBytes` 默认值为 `16_000_000`，`maxStderrBytes` 默认值为 `1_000_000`，`maxDocumentBytes` 默认值为 `4_000_000`。崩溃使当前查询失败且不重放；后续查询可以替换进程。每次查询最多启动一个进程，因此 MVP 不设置跨请求重启计数器。
 
 初始化使用 `processId: null`，因为客户端与服务器可能位于不同的进程命名空间。它声明 `general.positionEncodings: ['utf-16']`、`workspace: { workspaceFolders: true, configuration: true }`、`textDocument.hover.contentFormat: ['markdown', 'plaintext']`，以及 definition 与 implementation 的 `linkSupport: true`，但不支持动态注册。服务器返回的操作与同步能力均为真源。服务器省略 `positionEncoding` 时默认为 `utf-16`；其他值均属于协议错误。配置可以提供初始化选项和 `workspace/configuration` 响应，但客户端拒绝 `workspace/applyEdit`，绝不执行命令或编辑。
 

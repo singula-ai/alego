@@ -6,7 +6,7 @@ English | [中文](2026-08-06-plan-narrow-viewport-regression.zh.md)
 
 ## Problem
 
-The external report dsh-external/issues#107 (clustered internally as deepseek-harness#1406) measured that at viewports between 760px and 850px the plan control and the model selector overlapped, with the model selector covering the plan control's click area so plan mode could not be left by mouse at 800×720. Its acceptance list asked for a browser regression test asserting that the plan center hit-tests to the plan button.
+The external report alego-external/issues#107 (clustered internally as alego#1406) measured that at viewports between 760px and 850px the plan control and the model selector overlapped, with the model selector covering the plan control's click area so plan mode could not be left by mouse at 800×720. Its acceptance list asked for a browser regression test asserting that the plan center hit-tests to the plan button.
 
 The browser regression test reproduced the report on current master: at 800×720 the plan chip and the model trigger overlapped by 36.9px and the chip's center hit-tested to the trigger's label. The composer control row is `display: flex; justify-content: space-between` with `.trailing { flex: none }`: when the combined control width exceeds the card, the shrinking `.tools` group keeps its flow children inside its `min-width: 0` box, so the chip — the last flow child before the overflow — is painted over the trailing group. The plan-control form changed since the report (select → chip, `c20b988166`/`fe91919346`) and the row gained adaptive behavior (`c8c75ec891`, [web-composer-shared-width-axis](../feature/2026-08-04-web-composer-shared-width-axis.md)), but the row had no wrap, so the overlap survived both.
 

@@ -1,5 +1,5 @@
-import { Context } from '@deepseek-ai/cordis'
-import InvariantRegistry from '@deepseek-ai/dsh-invariants'
+import { Context } from '@alego/cordis'
+import InvariantRegistry from '@alego/invariants'
 import { describe, expect, it } from 'vitest'
 import * as BrandInvariant from '../src/invariant.ts'
 import { apply as nodeApply } from '../src/index.ts'

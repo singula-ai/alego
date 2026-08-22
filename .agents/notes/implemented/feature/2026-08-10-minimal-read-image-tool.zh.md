@@ -10,7 +10,7 @@ Status: implemented
 
 ## 决定
 
-两个图片读取操作都放在 `dsh-tool-fs`，通过现有扩展点发布普通的持久工具结果。
+两个图片读取操作都放在 `alego-tool-fs`，通过现有扩展点发布普通的持久工具结果。
 
 - **`read_image` 读取文件系统路径。** 扩展名选择声明的 PNG/JPEG/WebP/GIF 媒体类型，附件存储的魔数与像素校验保持权威。字节沿 `ctx.fs.stat` → 有界 `ctx.fs.readBytes` → `ctx.attachments.saveImage` → `fs/observed` 流动。工具结果包含元数据和一个 `ImageBlock`。
 - **`FileSystem.readBytes(target, signal, maxBytes)`** 是新的必备提供方原语：字节上限放在 seam 上，任何后端都无法无界缓冲文件；stat 大小先短路，随后的流最多多读一个字节以防 stat 之后的增长（`FS_TOO_LARGE`）。

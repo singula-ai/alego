@@ -1,8 +1,8 @@
-# @deepseek-ai/dsh-code-runtime-python
+# @alego/code-runtime-python
 
 English | [中文](README.zh.md)
 
-CPython-subprocess implementation of the [`@deepseek-ai/dsh-code-runtime`](../code-runtime/README.md) seam. Companion to [`@deepseek-ai/dsh-code-runtime-worker-thread`](../code-runtime-worker-thread/README.md); trades the Node worker thread for a fresh `python3` subprocess so model code is Python instead of TypeScript.
+CPython-subprocess implementation of the [`@alego/code-runtime`](../code-runtime/README.md) seam. Companion to [`@alego/code-runtime-worker-thread`](../code-runtime-worker-thread/README.md); trades the Node worker thread for a fresh `python3` subprocess so model code is Python instead of TypeScript.
 
 The package owns the wire protocol for that seam: the host-side frame codec and the Python-side mirror of the same message vocabulary.
 
@@ -17,7 +17,7 @@ The host and the CPython subprocess exchange a versionless, JSON-lines protocol 
 
 ## Model Experience
 
-Indirectly, through Code Mode in [`dsh-tools`](../../core/tools/README.md), which renders this backend's exact completion value when it fits (or an explicit `invalid-output` / `output-limit` failure), plus the exact `[dsh-code-runtime-python] log capture truncated at <maxLogBytes> bytes` log marker, into a retained `run_code` result.
+Indirectly, through Code Mode in [`alego-tools`](../../core/tools/README.md), which renders this backend's exact completion value when it fits (or an explicit `invalid-output` / `output-limit` failure), plus the exact `[alego-code-runtime-python] log capture truncated at <maxLogBytes> bytes` log marker, into a retained `run_code` result.
 
 #### KV Cache effect
 

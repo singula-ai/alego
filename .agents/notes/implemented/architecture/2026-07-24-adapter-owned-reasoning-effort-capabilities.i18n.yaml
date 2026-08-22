@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-24-adapter-owned-reasoning-effort-capabilities.md
-2026-07-24-adapter-owned-reasoning-effort-capabilities.md: f59e5d351970e785e6ade32797f1c1a5dd9e2591
-2026-07-24-adapter-owned-reasoning-effort-capabilities.zh.md: 6e657a90e8ef3cd400a3e252f728bb1aadd9f4f2
+2026-07-24-adapter-owned-reasoning-effort-capabilities.md: c8ccf902885d4666ac0ccea3ec2724d84f5ff90c
+2026-07-24-adapter-owned-reasoning-effort-capabilities.zh.md: ae0afe6d7c3b6e544ef8b1da79f49b5a5abe231d

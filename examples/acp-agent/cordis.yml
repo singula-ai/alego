@@ -1,5 +1,5 @@
 # ACP automation server and backend snapshot-record composition. With
-# `DSH_SNAPSHOT=record`, the app bin runs the real DeepSeek adapter and the
+# `ALEGO_SNAPSHOT=record`, the app bin runs the real DeepSeek adapter and the
 # harness harvests its persisted log. The bin loads the gitignored root `.env`
 # before this config. This tree has no stdout logger or HMR because stdout
 # carries ACP JSON-RPC.
@@ -7,7 +7,7 @@
 # The DeepSeek adapter. Shipped default: full thinking at max effort on every
 # request; exact-model resolution materializes request defaults before logging.
 - id: llm-deepseek
-  name: '@deepseek-ai/dsh-llm-deepseek'
+  name: '@alego/llm-deepseek'
   config:
     thinking: enabled
     reasoningEffort: max
@@ -20,43 +20,43 @@
 # The default composition confines bash AND the filesystem tools to the
 # workspace and asks before a wider retry. Snapshot runs select
 # danger-full-access so the established scenarios remain runner-independent;
-# DSH_PERMISSION_MODE provides the same explicit deployment/test override
+# ALEGO_PERMISSION_MODE provides the same explicit deployment/test override
 # outside the snapshot harness. The sandbox default + fallback root live on
 # ctx.sandboxPolicy; agent calls resolve both families against the session cwd.
 - id: sandbox
-  name: '@deepseek-ai/dsh-sandbox-local'
+  name: '@alego/sandbox-local'
 
 - id: sandbox-policy
-  name: '@deepseek-ai/dsh-sandbox-policy'
+  name: '@alego/sandbox-policy'
   config:
-    mode: !!js "process.env.DSH_PERMISSION_MODE ?? (process.env.DSH_SNAPSHOT === undefined ? 'workspace-write' : 'danger-full-access')"
+    mode: !!js "process.env.ALEGO_PERMISSION_MODE ?? (process.env.ALEGO_SNAPSHOT === undefined ? 'workspace-write' : 'danger-full-access')"
     workspaceRoot: !!js process.cwd()
 
 # Managed child-process groups for the bash executor (spawn/kill/output plumbing).
 - id: subprocess
-  name: '@deepseek-ai/dsh-subprocess-local'
+  name: '@alego/subprocess-local'
 
 - id: bash
-  name: '@deepseek-ai/dsh-bash-sandbox'
+  name: '@alego/bash-sandbox'
   config:
     timeoutMs: 60000
 
 - id: approval
-  name: '@deepseek-ai/dsh-user-approval'
+  name: '@alego/user-approval'
   config:
-    policy: !!js "(process.env.DSH_PERMISSION_MODE ?? (process.env.DSH_SNAPSHOT === undefined ? 'workspace-write' : 'danger-full-access')) === 'danger-full-access' ? 'never' : 'ask'"
+    policy: !!js "(process.env.ALEGO_PERMISSION_MODE ?? (process.env.ALEGO_SNAPSHOT === undefined ? 'workspace-write' : 'danger-full-access')) === 'danger-full-access' ? 'never' : 'ask'"
 
 # The ACP automation app: agent spine + JSONL persistence + protocol bridge.
-# Persistence root: $DSH_SNAPSHOT_SESSIONS_ROOT when the snapshot harness sets it
+# Persistence root: $ALEGO_SNAPSHOT_SESSIONS_ROOT when the snapshot harness sets it
 # (so it can harvest / isolate the log), else ./.sessions for the demo.
 # Snapshot modes use raw JSONL fixtures; ordinary runs keep the compressed default.
 - id: acp-agent
-  name: '@deepseek-ai/dsh-acp-demo'
+  name: '@alego/acp-demo'
   config:
     provider: deepseek-official
     model: deepseek-v4-pro
-    persistenceRoot: !!js process.env.DSH_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
-    persistenceCompression: !!js "process.env.DSH_SNAPSHOT === undefined ? 'zstd' : 'none'"
+    persistenceRoot: !!js process.env.ALEGO_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
+    persistenceCompression: !!js "process.env.ALEGO_SNAPSHOT === undefined ? 'zstd' : 'none'"
     workspaceContext:
       maxBytes: 65536
     # Keep the persona to identity and behavior; tool plugins own tool guidance.
@@ -68,12 +68,12 @@
 
 # Replay-aware request pressure; the routed adapter supplies model capacity.
 - id: token-meter
-  name: '@deepseek-ai/dsh-token-meter'
+  name: '@alego/token-meter'
 
 # Summarize an older range after measured pressure or a canonical provider overflow.
 # Ratios scale against the routed model's context window.
 - id: compaction-basic
-  name: '@deepseek-ai/dsh-compaction-basic'
+  name: '@alego/compaction-basic'
   config:
     thresholdRatio: 0.8
     retainRatio: 0.08
@@ -84,21 +84,21 @@
 # its registered units; the catalog surfaces (`list_agents`, subagent listing)
 # fail loud without the capability.
 - id: session-projection
-  name: '@deepseek-ai/dsh-session-projection'
+  name: '@alego/session-projection'
 
 # Expose fresh-child `spawn` and completed-prefix `fork` through separate tool
 # names so multi-child scenarios exercise both transports. These leaves follow
 # the app because it provides `ctx.agents` and `ctx.tools`.
 - id: subagent
-  name: '@deepseek-ai/dsh-subagent'
+  name: '@alego/subagent'
 
 - id: subagent-spawn-in-process
-  name: '@deepseek-ai/dsh-subagent-spawn-in-process'
+  name: '@alego/subagent-spawn-in-process'
   config:
     providerName: spawn
 
 - id: subagent-fork-in-process
-  name: '@deepseek-ai/dsh-subagent-fork-in-process'
+  name: '@alego/subagent-fork-in-process'
   config:
     providerName: fork
 
@@ -107,16 +107,16 @@
 # list plugin registers `list_agents`, served through the sessionProjections
 # registry mounted above. `report` is installed only in continuable child scopes.
 - id: tool-subagent-control
-  name: '@deepseek-ai/dsh-tool-subagent-control'
+  name: '@alego/tool-subagent-control'
 
 - id: tool-subagent-list-agents
-  name: '@deepseek-ai/dsh-tool-subagent-control/list-agents'
+  name: '@alego/tool-subagent-control/list-agents'
 
 - id: tool-subagent-report
-  name: '@deepseek-ai/dsh-tool-subagent-report'
+  name: '@alego/tool-subagent-report'
 
 - id: tool-subagent
-  name: '@deepseek-ai/dsh-tool-subagent'
+  name: '@alego/tool-subagent'
   config:
     provider: spawn
     toolName: subagent
@@ -128,7 +128,7 @@
 # as an explicit foreground-only choice even though agent-spine-demo mounts the
 # generic Job runtime. See .agents/notes/implemented/architecture/2026-08-10-fork-children-stay-one-shot.md.
 - id: tool-subagent-fork
-  name: '@deepseek-ai/dsh-tool-subagent'
+  name: '@alego/tool-subagent'
   config:
     provider: fork
     toolName: subagent_fork
@@ -140,41 +140,41 @@
 # The worker-thread workflow engine fans a model-written JavaScript script's
 # `agent()` calls out through the spawn backend; the adjacent tool exposes it to the model.
 - id: workflow-worker-thread
-  name: '@deepseek-ai/dsh-workflow-worker-thread'
+  name: '@alego/workflow-worker-thread'
   config:
     provider: spawn
 
 - id: tool-workflow
-  name: '@deepseek-ai/dsh-tool-workflow'
+  name: '@alego/tool-workflow'
 
 - id: tool-ralph
-  name: '@deepseek-ai/dsh-tool-ralph'
+  name: '@alego/tool-ralph'
 # `todo_write` replaces the logged whole list for later model requests.
 - id: tool-todo
-  name: '@deepseek-ai/dsh-tool-todo'
+  name: '@alego/tool-todo'
   config:
     allowParallelInProgress: true
 
 # Identical repeat calls trigger advisory context, never a block, at the default
 # thresholds [3, 5, 8]. Only the repeat-tool-reminder snapshot scenario reaches them.
 - id: repeat-tool-reminder
-  name: '@deepseek-ai/dsh-repeat-tool-reminder'
+  name: '@alego/repeat-tool-reminder'
 
-# The filesystem stack rides the SAME sandbox policy as bash: dsh-fs-sandbox
-# replaces dsh-fs-local behind ctx.fs and fences write/edit by the effective
+# The filesystem stack rides the SAME sandbox policy as bash: alego-fs-sandbox
+# replaces alego-fs-local behind ctx.fs and fences write/edit by the effective
 # mode (read-only denies, workspace-write contains to the workspace + temp
 # roots, danger-full-access passes through), so read/write/edit are available
 # under every mode. fs-observation-policy (read-before-edit) composes orthogonally on top.
 - id: fs-sandbox
-  name: '@deepseek-ai/dsh-fs-sandbox'
+  name: '@alego/fs-sandbox'
   config:
     cwd: !!js process.cwd()
 
 - id: fs-observation-policy
-  name: '@deepseek-ai/dsh-fs-observation-policy'
+  name: '@alego/fs-observation-policy'
 
 - id: tool-fs
-  name: '@deepseek-ai/dsh-tool-fs'
+  name: '@alego/tool-fs'
 
 # `configPath` is read once at load and resolves from the server launch cwd, not
 # `session/new.cwd`; one `hooks.json` therefore applies to every session and a
@@ -182,7 +182,7 @@
 # commands still run in the session cwd. Warnings use `ctx.logger`, never stdout;
 # see packages/hooks/hooks-claude-code/README.md for the deferred per-session design.
 - id: hooks-claude-code
-  name: '@deepseek-ai/dsh-hooks-claude-code'
+  name: '@alego/hooks-claude-code'
   config:
     configPath: ./hooks.json
 
@@ -190,6 +190,6 @@
 # cannot share Claude's file. It has the same process-level, read-once, missing-is-no-op,
 # logger-only contract. Shipping both bridges lets a scenario seed and exercise either dialect.
 - id: hooks-codex
-  name: '@deepseek-ai/dsh-hooks-codex'
+  name: '@alego/hooks-codex'
   config:
     configPath: ./codex-hooks.json

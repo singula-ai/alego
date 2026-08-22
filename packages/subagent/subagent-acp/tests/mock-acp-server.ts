@@ -1,6 +1,6 @@
 /**
  * A minimal mock ACP AGENT, run as a subprocess, for the keyless
- * `dsh-subagent-acp` tests. It speaks the agent side of ACP over stdio and is
+ * `alego-subagent-acp` tests. It speaks the agent side of ACP over stdio and is
  * fully scripted by environment variables — no model, no network:
  *
  * - `MOCK_TEXT`        — the assistant text it streams as one `agent_message_chunk`.
@@ -48,7 +48,7 @@
  * the mode-aware example resolver (tsx in source mode, Node type stripping in
  * built mode). It imports no harness code or workspace paths.
  *
- * @module @deepseek-ai/dsh-subagent-acp/tests/mock-acp-server
+ * @module @alego/subagent-acp/tests/mock-acp-server
  */
 
 import { randomUUID } from 'node:crypto'

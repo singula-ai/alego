@@ -6,7 +6,7 @@ Status: implemented
 
 ## Problem
 
-`dsh-llm-pi-ai` 把 pi-ai 包生成的 catalog 当成了可配置范围的边界。路由键必须点名一个已安装提供方（`resolveProfiles` 拒绝其余一切），模型列举原样返回 `getBuiltinModels(provider)`，请求期的模型解析又在同一份 catalog 里查这个 id、且只覆盖 `baseURL`。由此产生三个后果，而且三个都是死路而非缺口：OpenAI 兼容网关、自建服务，或比已安装 catalog 更新的提供方，根本无法配置；catalog 尚未跟上的模型即便端点正确也会以 `UNKNOWN_MODEL` 失败；模型的上下文窗口与输出上限完全由锁定的 pi-ai 版本决定，部署既无法更正陈旧值，也无法为 pi-ai 从未描述过的模型补上。要动其中任何一条，只能升级依赖。
+`alego-llm-pi-ai` 把 pi-ai 包生成的 catalog 当成了可配置范围的边界。路由键必须点名一个已安装提供方（`resolveProfiles` 拒绝其余一切），模型列举原样返回 `getBuiltinModels(provider)`，请求期的模型解析又在同一份 catalog 里查这个 id、且只覆盖 `baseURL`。由此产生三个后果，而且三个都是死路而非缺口：OpenAI 兼容网关、自建服务，或比已安装 catalog 更新的提供方，根本无法配置；catalog 尚未跟上的模型即便端点正确也会以 `UNKNOWN_MODEL` 失败；模型的上下文窗口与输出上限完全由锁定的 pi-ai 版本决定，部署既无法更正陈旧值，也无法为 pi-ai 从未描述过的模型补上。要动其中任何一条，只能升级依赖。
 
 适配器还经 `@earendil-works/pi-ai/compat` 的 `streamSimple` 发起流式请求，而该入口自己的模块文档声明它是临时兼容面——其 catalog 读取标了 `@deprecated`，并会在 pi-ai 完成 `ModelManager` 迁移时被删除。这三条配置限制与这个废弃依赖的解法是同一个，因为 pi-ai 受支持的运行时（`createModels()` / `createProvider()`）正是围绕「提供方是被*声明*出来的，而非查出来的」建立的。
 

@@ -12,7 +12,7 @@ Provider policy must follow the request that actually failed, including a route 
 
 ## Decision
 
-Each concrete adapter accepts an optional `retryPolicy` inside its provider configuration, validates and resolves it, and exposes that resolved route policy through `providerRetryPolicy()`. Omission selects the shared core normal default of five retries for every composition, including Web, headless, and custom profiles. The effective policy remains route-owned registration state rather than a retry-executor setting. Layered settings may retain normal-only `maxRetries` or `retryableCodes` after changing `mode` to `always`; the resolver ignores those inactive fields while still rejecting unknown keys, and the registered always policy omits them. When a call enters its final adapter boundary, `ctx.llm` binds the serving registration's immutable policy to that call; the agent loop passes it to closed-step recovery even if the route is disposed or replaced while the request is in flight. `@deepseek-ai/dsh-llm-retry` combines that call-local policy with the failed step's durable provider identity. A call that never reaches a final adapter has no serving policy and delegates.
+Each concrete adapter accepts an optional `retryPolicy` inside its provider configuration, validates and resolves it, and exposes that resolved route policy through `providerRetryPolicy()`. Omission selects the shared core normal default of five retries for every composition, including Web, headless, and custom profiles. The effective policy remains route-owned registration state rather than a retry-executor setting. Layered settings may retain normal-only `maxRetries` or `retryableCodes` after changing `mode` to `always`; the resolver ignores those inactive fields while still rejecting unknown keys, and the registered always policy omits them. When a call enters its final adapter boundary, `ctx.llm` binds the serving registration's immutable policy to that call; the agent loop passes it to closed-step recovery even if the route is disposed or replaced while the request is in flight. `@alego/llm-retry` combines that call-local policy with the failed step's durable provider identity. A call that never reaches a final adapter has no serving policy and delegates.
 
 ```yaml
 providers:
@@ -46,7 +46,7 @@ Each scheduled retry appends a non-surface `llm/retry` event with the failed pro
 
 **One retry-executor-level `always` switch** — rejected because it cannot isolate the unbounded cost and latency risk to the provider that needs it and can silently apply after runtime rerouting. Provider route policies remain authoritative, and the effective policy is captured only after routing selects a registration.
 
-**A separate exact-provider list on `dsh-llm-retry`** — rejected because it duplicates provider route names outside their owning adapter configuration and lets provider registration drift from recovery policy.
+**A separate exact-provider list on `alego-llm-retry`** — rejected because it duplicates provider route names outside their owning adapter configuration and lets provider registration drift from recovery policy.
 
 **A very large finite retry count** — rejected because it eventually violates the requested keep-retrying contract and serializes an arbitrary operational limit as if it were meaningful.
 

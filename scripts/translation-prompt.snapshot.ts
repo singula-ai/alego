@@ -9,7 +9,7 @@ import { describe, expect, it } from 'vitest'
 const execFileAsync = promisify(execFile)
 const root = resolve(import.meta.dirname, '..')
 const expected = join(root, 'scripts/snapshots/translation-prompt-v4/request-response.expected.json')
-const refreshing = process.env.DSH_SNAPSHOT === 'record' || process.env.DSH_SNAPSHOT === 'refresh'
+const refreshing = process.env.ALEGO_SNAPSHOT === 'record' || process.env.ALEGO_SNAPSHOT === 'refresh'
 
 describe('translation prompt runnable snapshot', () => {
   it('assembles the reviewed examples and consumes a recorded new-pair response', async () => {

@@ -28,8 +28,8 @@
   box-shadow: var(--dsw-shadow-lv3);
   transform: translateX(-50%);
   animation:
-    dsh-toast-in 160ms ease-out,
-    dsh-toast-fade 1000ms ease 3000ms forwards;
+    alego-toast-in 160ms ease-out,
+    alego-toast-fade 1000ms ease 3000ms forwards;
 }
 
 .icon {
@@ -43,7 +43,7 @@
   min-width: 0;
 }
 
-@keyframes dsh-toast-in {
+@keyframes alego-toast-in {
   from {
     opacity: 0;
     transform: translate(-50%, -6px);
@@ -55,7 +55,7 @@
   }
 }
 
-@keyframes dsh-toast-fade {
+@keyframes alego-toast-fade {
   to {
     opacity: 0;
   }
@@ -65,6 +65,6 @@
    not movement) still ends the banner before the timed unmount. */
 @media (prefers-reduced-motion: reduce) {
   .toast {
-    animation: dsh-toast-fade 1000ms ease 3000ms forwards;
+    animation: alego-toast-fade 1000ms ease 3000ms forwards;
   }
 }

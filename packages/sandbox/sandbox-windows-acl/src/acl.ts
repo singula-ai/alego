@@ -9,7 +9,7 @@
  * DACL, and the whole get-merge-set sequence runs under a per-path exclusive
  * LockFileEx lock (see {@link withPathLock}) so concurrent sandbox instances
  * cannot clobber each other's ACEs.
- * @module @deepseek-ai/dsh-sandbox-windows-acl/acl
+ * @module @alego/sandbox-windows-acl/acl
  */
 
 import { createHash } from 'node:crypto'
@@ -44,9 +44,9 @@ export function buildExplicitAccess(sidPtr: NativePtr, mode: number, permissions
 }
 
 /**
- * One lock file per protected path: `<GetTempPathW()>\dsh-acl-locks\<first 16
+ * One lock file per protected path: `<GetTempPathW()>\alego-acl-locks\<first 16
  * hex of sha256(lowercased path)>.lock`. The lock root derives from
- * GetTempPathW (never from runner argv or DSH_HOME), and the lowercasing
+ * GetTempPathW (never from runner argv or ALEGO_HOME), and the lowercasing
  * maps Windows's case-insensitive path spellings onto one lock.
  * @param api - the binding table.
  * @param path - the protected directory (absolute).
@@ -54,7 +54,7 @@ export function buildExplicitAccess(sidPtr: NativePtr, mode: number, permissions
  */
 export function lockFilePath(api: Win32Bindings, path: string): string {
   const digest = createHash('sha256').update(path.toLowerCase()).digest('hex').slice(0, 16)
-  return join(getTempPath(api), 'dsh-acl-locks', `${digest}.lock`)
+  return join(getTempPath(api), 'alego-acl-locks', `${digest}.lock`)
 }
 
 /**

@@ -1,4 +1,4 @@
-import type { Dict } from '@deepseek-ai/cosmokit'
+import type { Dict } from '@alego/cosmokit'
 import { EventsService } from './events.ts'
 import { LoggerService } from './logger.ts'
 import { ReflectService } from './reflect.ts'

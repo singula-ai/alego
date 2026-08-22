@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-client-ui-workspace
+# @alego/client-ui-workspace
 
 [English](README.md) | 中文
 

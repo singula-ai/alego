@@ -42,7 +42,7 @@ Status: implemented
 
 ### 规则住在哪里
 
-`normalizeApiKey` 是 `dsh-llm` Service Definition 的一个模块，与已经承担共享 header 事务的 [attribution.ts](../../../../packages/llm/llm/src/attribution.ts) 并列。两个适配器都依赖该 seam 且都需要这条规则，因此它拥有两个当前消费方而非一个预设消费方。它返回 trim 后的值，或一个原因（`empty`、`illegalCharacters`）。
+`normalizeApiKey` 是 `alego-llm` Service Definition 的一个模块，与已经承担共享 header 事务的 [attribution.ts](../../../../packages/llm/llm/src/attribution.ts) 并列。两个适配器都依赖该 seam 且都需要这条规则，因此它拥有两个当前消费方而非一个预设消费方。它返回 trim 后的值，或一个原因（`empty`、`illegalCharacters`）。
 
 两个适配器同样都需要那句完全相同的「拒绝一个已存储凭据」的诊断，差别仅在包名前缀。`LlmError` 声明在 Service Definition 的 `index.ts` 中，因此 `assertUsableApiKey(raw, pkg, ref)` 就住在它旁边，两个适配器都不再各留一份。断言模块本身保持零依赖：把 `LlmError` 引入 `api-key.ts` 会与 `index.ts` 对它的再导出成环。
 
@@ -52,7 +52,7 @@ Status: implemented
 
 | 位置 | 行为 |
 |---|---|
-| `dsh-llm` | 拥有 `normalizeApiKey`、`assertUsableApiKey` 与 `INVALID_CREDENTIAL_CODE`，后者刻意不进 `DEFAULT_RETRYABLE_CODES`。 |
+| `alego-llm` | 拥有 `normalizeApiKey`、`assertUsableApiKey` 与 `INVALID_CREDENTIAL_CODE`，后者刻意不进 `DEFAULT_RETRYABLE_CODES`。 |
 | `llm-deepseek` `resolveApiKey` | 归一化凭据 seam 或环境返回的值，以 `INVALID_CREDENTIAL` 拒绝，消息指明模型设置页，绝不回显 Key。 |
 | `llm-pi-ai` `resolveApiKey` | 归一化凭据与环境路径。不指定任何凭据的 profile 仍返回 `undefined`，ambient 与 OAuth 路由不受影响。 |
 | `llm-pi-ai` `discoverModels` | 在构造 header 之前归一化，使非法 Key 成为凭据故障而非端点不可达。不带 Key 的探测保持未鉴权。 |

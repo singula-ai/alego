@@ -32,9 +32,9 @@ agent 按 `cordis_mount` 自身文档所述的方式够到 roster 服务：挂�
 
 「某行是否发布服务」改由 `cordis_inspect what:"services"` 回答，它会给出每个存活服务的持有 fiber。
 
-指导保留 `${DSH_HOME:-$HOME/.dsh}/.agent-presets/` 作为「我的 preset 在哪」的答案，同时把 agent 实际读取或编辑的路径改走 `list()` 或 `resolve()`。写出该路径对人讲是对的，喂给文件工具是错的：部署可以配置其他根目录，而 `list()` 无法揭示一个尚且为空的用户根。
+指导保留 `${ALEGO_HOME:-$HOME/.alego}/.agent-presets/` 作为「我的 preset 在哪」的答案，同时把 agent 实际读取或编辑的路径改走 `list()` 或 `resolve()`。写出该路径对人讲是对的，喂给文件工具是错的：部署可以配置其他根目录，而 `list()` 无法揭示一个尚且为空的用户根。
 
-该路径如今是本包的属性，而非某个启动器的属性。除非 `includeUserRoot` 为 false，`AgentPresets` 自行推导 `<dshHome>/.agent-presets` 作为 `user` 根，正如 [`dsh-skill-filesystem`](../../../../packages/skill/skill-filesystem/README.zh.md) 推导 `<dshHome>/skills`；`apps/cli` 只提供**随附**根——那是唯有已安装 app 才能解析的路径。它取代的那种不对称曾付出过代价：两个根都由单一启动器补入时，`dsh run` 启动的 roster 一个根都没有，解析 `standard` 直接失败（当时的修法是让每个启动器都执行该 patch）。推导出的根追加在全部已配置根之后，因此随附 id 仍会遮蔽占用它的家目录目录，而 `writableRoot()` 仍优先选择显式配置的 `user` 根。它在构造时解析一次：若根目录集合在一次 `list()` 与依据其答案执行的 `copy()` 之间发生变化，写入的将是调用方从未见过的目录。
+该路径如今是本包的属性，而非某个启动器的属性。除非 `includeUserRoot` 为 false，`AgentPresets` 自行推导 `<alegoHome>/.agent-presets` 作为 `user` 根，正如 [`alego-skill-filesystem`](../../../../packages/skill/skill-filesystem/README.zh.md) 推导 `<alegoHome>/skills`；`apps/cli` 只提供**随附**根——那是唯有已安装 app 才能解析的路径。它取代的那种不对称曾付出过代价：两个根都由单一启动器补入时，`alego run` 启动的 roster 一个根都没有，解析 `standard` 直接失败（当时的修法是让每个启动器都执行该 patch）。推导出的根追加在全部已配置根之后，因此随附 id 仍会遮蔽占用它的家目录目录，而 `writableRoot()` 仍优先选择显式配置的 `user` 根。它在构造时解析一次：若根目录集合在一次 `list()` 与依据其答案执行的 `copy()` 之间发生变化，写入的将是调用方从未见过的目录。
 
 禁止改动随发布安装的约束，从创作步骤中的一段提升为顶部的 `## Off-limits` 一节，并扩展到禁止改宿主组装绕行。新增的自校验调用不削弱它：`copy()` 拒绝任何根已提供的 id，`remove()` 拒绝随部署发布的 preset。
 
@@ -44,7 +44,7 @@ agent 按 `cordis_mount` 自身文档所述的方式够到 roster 服务：挂�
 
 | 被测组装 | `list()` 的 `broken` | `standingKeyFor()` |
 |---|---|---|
-| 行指向不存在的包 | 空 | `Cannot find package '@deepseek-ai/dsh-does-not-exist'` |
+| 行指向不存在的包 | 空 | `Cannot find package '@alego/does-not-exist'` |
 | 服务行未套 realm，名字宿主已提供 | 空 | `service "tasks" has been registered at <LocalJobRegistry>` |
 | 服务行未套 realm，名字宿主未提供 | 空 | `row(s) published process-global service(s) [workflows]; …` |
 | 同一行置于 `isolate` 内 | 空 | 挂载成功 |

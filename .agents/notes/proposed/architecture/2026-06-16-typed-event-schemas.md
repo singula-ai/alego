@@ -17,7 +17,7 @@ This raises whether the event vocabulary should move to **Zod** or another runti
 
 ## Why this is not a persistence change
 
-It is tempting to read "use Zod for serialization" as a local change to `dsh-session-persistence-jsonl/src/format.ts`. It is not, for one structural reason: **a plugin cannot declaration-merge a Zod schema.** Declaration merging is a TypeScript compile-time mechanism; a Zod schema is a runtime value. To validate events with Zod you need a **runtime registry** that every event-producing package contributes its schema to (e.g. `ctx.sessionEvents.register('compaction/marker', z.object({…}))`), and every consumer reads from. That registry — not the persistence backend — becomes the source of truth for the vocabulary, replacing the merge-extensible interface.
+It is tempting to read "use Zod for serialization" as a local change to `alego-session-persistence-jsonl/src/format.ts`. It is not, for one structural reason: **a plugin cannot declaration-merge a Zod schema.** Declaration merging is a TypeScript compile-time mechanism; a Zod schema is a runtime value. To validate events with Zod you need a **runtime registry** that every event-producing package contributes its schema to (e.g. `ctx.sessionEvents.register('compaction/marker', z.object({…}))`), and every consumer reads from. That registry — not the persistence backend — becomes the source of truth for the vocabulary, replacing the merge-extensible interface.
 
 So the real proposal is: **replace the compile-time merge-extensible-map pattern with a runtime schema registry, repo-wide.** That is a core-vocabulary redesign.
 
@@ -25,11 +25,11 @@ So the real proposal is: **replace the compile-time merge-extensible-map pattern
 
 A migration of the event/vocabulary API to runtime schemas touches, at minimum:
 
-- **Six merge-extensible maps** (~370 LOC of core types): `ContentBlockMap`, `MessageSourceMap`, `FinishReasonMap` (in `dsh-llm`); `TurnTriggerMap`, `TurnEndReasonMap`, `SessionEventMap` (in `dsh-session`).
-- **~10 `declare module` augmentation sites** across `dsh-agent`, `dsh-agent-loop`, `dsh-shell`, `dsh-llm`, `dsh-session`, `dsh-session-persistence`, `dsh-system-prompt`, `dsh-tools` — each would move from declaration merging to a runtime `register()` call.
+- **Six merge-extensible maps** (~370 LOC of core types): `ContentBlockMap`, `MessageSourceMap`, `FinishReasonMap` (in `alego-llm`); `TurnTriggerMap`, `TurnEndReasonMap`, `SessionEventMap` (in `alego-session`).
+- **~10 `declare module` augmentation sites** across `alego-agent`, `alego-agent-loop`, `alego-shell`, `alego-llm`, `alego-session`, `alego-session-persistence`, `alego-system-prompt`, `alego-tools` — each would move from declaration merging to a runtime `register()` call.
 - **The event producers** — 16 `session.append(...)` call sites in the loop — unchanged in shape but now validated at the boundary.
-- **~7 switch-consumers** that branch on these unions: `deriveMessages` and the package-owned invariant companion (`dsh-session`), `BlockAssembler` (`dsh-llm`), both LLM adapters (`dsh-llm-deepseek`, `dsh-llm-pi-ai`), and the tool schema layer (`dsh-tools`). The `assertNever`-on-closed-unions vs fall-through-on-extensible-unions convention (a documented lint rule) would need rethinking — runtime variants are not statically exhaustive.
-- **The `defineTool` `InferArgs` DSL** (`dsh-tools`), which derives zero-cast `execute` arg types from a compile-time schema spec — the showcase of the current approach.
+- **~7 switch-consumers** that branch on these unions: `deriveMessages` and the package-owned invariant companion (`alego-session`), `BlockAssembler` (`alego-llm`), both LLM adapters (`alego-llm-deepseek`, `alego-llm-pi-ai`), and the tool schema layer (`alego-tools`). The `assertNever`-on-closed-unions vs fall-through-on-extensible-unions convention (a documented lint rule) would need rethinking — runtime variants are not statically exhaustive.
+- **The `defineTool` `InferArgs` DSL** (`alego-tools`), which derives zero-cast `execute` arg types from a compile-time schema spec — the showcase of the current approach.
 - **Docs**: architecture.md (the pattern is described as foundational), [dev-mode invariants](../../implemented/architecture/2026-06-11-dev-invariants-over-deep-readonly.md), and any Agent Note that references the pattern.
 
 This is a repository-wide vocabulary redesign, not a persistence implementation detail.

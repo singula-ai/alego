@@ -2,7 +2,7 @@
  * TypeScript project analyzer for the compiler-independent Typert model.
  * Programs, symbols, and syntax nodes remain extraction-only implementation
  * details; callers receive only the model declared in {@link ./model.ts}.
- * @module @deepseek-ai/dsh-typert-generator/analyzer
+ * @module @alego/typert-generator/analyzer
  */
 
 import { existsSync, readFileSync, realpathSync, writeFileSync } from 'node:fs'
@@ -653,7 +653,7 @@ class FaceAnalyzer {
       for (const statement of sourceFile.statements) {
         if (!ts.isModuleDeclaration(statement)
           || !ts.isStringLiteral(statement.name)
-          || statement.name.text !== '@deepseek-ai/cordis'
+          || statement.name.text !== '@alego/cordis'
           || statement.body === undefined
           || !ts.isModuleBlock(statement.body)) continue
         for (const member of statement.body.statements) {
@@ -1348,7 +1348,7 @@ class FaceAnalyzer {
       for (const statement of sourceFile.statements) {
         if (!ts.isModuleDeclaration(statement)
           || !ts.isStringLiteral(statement.name)
-          || statement.name.text !== '@deepseek-ai/dsh-typert-protocol'
+          || statement.name.text !== '@alego/typert-protocol'
           || statement.body === undefined
           || !ts.isModuleBlock(statement.body)) continue
         for (const nested of statement.body.statements) {
@@ -1810,11 +1810,11 @@ class FaceAnalyzer {
     const declaration = preferredDeclaration(resolved)
     if (declaration === undefined) return false
     const registration = this.registrationForFile(declaration.getSourceFile().fileName)
-    if (registration?.name === '@deepseek-ai/dsh-typert-protocol') return true
+    if (registration?.name === '@alego/typert-protocol') return true
     for (let current: ts.Node | undefined = declaration; current !== undefined; current = optionalParent(current)) {
       if (ts.isModuleDeclaration(current)
         && ts.isStringLiteral(current.name)
-        && current.name.text === '@deepseek-ai/dsh-typert-protocol') return true
+        && current.name.text === '@alego/typert-protocol') return true
     }
     return false
   }
@@ -2608,7 +2608,7 @@ function sourceFileHasSurface(sourceFile: ts.SourceFile): boolean {
     }
     if (!ts.isModuleDeclaration(statement)
       || !ts.isStringLiteral(statement.name)
-      || statement.name.text !== '@deepseek-ai/cordis'
+      || statement.name.text !== '@alego/cordis'
       || statement.body === undefined
       || !ts.isModuleBlock(statement.body)) continue
     if (statement.body.statements.some(member => ts.isInterfaceDeclaration(member)
@@ -2627,9 +2627,9 @@ function hasPackageSurface(model: PackageModel): boolean {
 }
 
 function isDualFacePackage(manifest: Record<string, unknown>): boolean {
-  const dsh = manifest.dsh
-  const client = dsh !== null && typeof dsh === 'object'
-    ? (dsh as Record<string, unknown>).client
+  const alego = manifest.alego
+  const client = alego !== null && typeof alego === 'object'
+    ? (alego as Record<string, unknown>).client
     : undefined
   return client !== null
     && typeof client === 'object'
@@ -2887,7 +2887,7 @@ function stringLiteralValue(node: ts.Node | undefined): string | undefined {
 }
 
 function isRemoteSegment(value: string): boolean {
-  // Generation bootstraps workspace artifacts before dsh-typert-protocol is built,
+  // Generation bootstraps workspace artifacts before alego-typert-protocol is built,
   // so this extraction-only copy must mirror isTypertRemoteSegment().
   return value !== '.' && value !== '..' && /^[A-Za-z0-9_$.-]+$/.test(value)
 }

@@ -31,6 +31,6 @@ harness 手写了大量基础设施，而成熟的外部包早已提供同等能
 
 ## 后果
 
-- 巡查简化机会的 agent 与贡献者，现在把「用包 Y 替换手写的 X」视为范围内的产出；[dsh-find-simplifications](../../../skills/dsh-find-simplifications/SKILL.md) 承载相应指引。
+- 巡查简化机会的 agent 与贡献者，现在把「用包 Y 替换手写的 X」视为范围内的产出；[alego-find-simplifications](../../../skills/alego-find-simplifications/SKILL.md) 承载相应指引。
 - 依赖清单会增长，供应链接触面随之扩大；缓解措施记录在[供应链提案](../../proposed/process/2026-06-11-supply-chain-and-vendor-drift.zh.md)中，本政策使该提案更加紧迫。
 - 根 `AGENTS.md` 承载一行规则；论证理由与准入门槛由本 Agent Note 持有。

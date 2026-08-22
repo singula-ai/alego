@@ -20,7 +20,7 @@ Web composer 原本会在 agent（智能体）运行期间把所有 Enter 提交
 
 running 标志位只用于提示交互状态。在同步变更边界上，AgentLoop 的 `acceptsNextStep` 值才是权威依据。如果该窗口已经关闭，操作会保持 Queue 单次入队项不变并返回类型化的 `steer-unavailable` 错误，随后原唤醒单次入队项会经 Queue 继续执行。如果驱动器已经认领该项，则返回现有的 `queue-item-not-found` 错误，且独立轮次投递已经开始。UI 会把两种竞态都视为已收敛的 Queue 投递，不显示失败通知；传输和未知错误仍会显示。
 
-Composer 对新输入采用另一套尽力而为约定。所寻址会话空闲时，Enter 和 Cmd/Ctrl+Enter 都执行普通 Queue 发送。主会话运行期间，General Settings 偏好会把普通 Enter 分配为 Queue（默认值）或 Steer，Cmd/Ctrl+Enter 则执行另一种行为；Shift+Enter 用于换行。已寻址 subagent 会让这两个手势都使用其仅支持 Queue 的继续执行传输。Host settings 文档会在共享同一 DSH home 的 Web origin 之间持久化该偏好，并且它只影响支持 steering 的繁忙态手势对。如果 composer 直接发出的 Steer 错过当前 next-step 窗口，AgentLoop 会自动将其接纳为下一条唤醒 Queue 轮次，Web 不显示失败。
+Composer 对新输入采用另一套尽力而为约定。所寻址会话空闲时，Enter 和 Cmd/Ctrl+Enter 都执行普通 Queue 发送。主会话运行期间，General Settings 偏好会把普通 Enter 分配为 Queue（默认值）或 Steer，Cmd/Ctrl+Enter 则执行另一种行为；Shift+Enter 用于换行。已寻址 subagent 会让这两个手势都使用其仅支持 Queue 的继续执行传输。Host settings 文档会在共享同一 ALEGO home 的 Web origin 之间持久化该偏好，并且它只影响支持 steering 的繁忙态手势对。如果 composer 直接发出的 Steer 错过当前 next-step 窗口，AgentLoop 会自动将其接纳为下一条唤醒 Queue 轮次，Web 不显示失败。
 
 ### Agent 与生命周期边界
 

@@ -23,7 +23,7 @@ export interface CoverageExemptSuite {
  * the exempt suites from every project. CLI `--exclude` cannot express this:
  * it does not reach per-project include resolution.
  */
-export const COVERAGE_EXEMPT_ENV = 'DSH_COVERAGE_EXEMPT_HEAVY'
+export const COVERAGE_EXEMPT_ENV = 'ALEGO_COVERAGE_EXEMPT_HEAVY'
 
 /** Coverage-exempt heavy suites; keep filter and exclude selecting the same files. */
 export const coverageExemptHeavySuites: readonly CoverageExemptSuite[] = [

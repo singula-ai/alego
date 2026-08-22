@@ -8,7 +8,7 @@ Status: implemented
 
 Web 壳在浏览器侧插件树激活前呈现 `Loading plugins…`。ui-theme 的 token 样式随动态客户端 bundle 到达，因此不依赖框架的加载页使用私有的明暗回退配色。如果不提前写入 `color-scheme` 与 `body[data-ds-dark-theme]`，持久化偏好为深色时，该页面仍会先按浅色回退绘制，再在 ui-theme 的 ThemeRuntime 与 ui-layout 的 ThemePresenter 激活后切为深色。
 
-`dshClient.immediately` 只把 bundle 纳入第一阶段预取，不会让插件在 HTML 解析或壳首次渲染前执行。仅调整客户端插件的加载档位无法关闭这段时间窗口。
+`alegoClient.immediately` 只把 bundle 纳入第一阶段预取，不会让插件在 HTML 解析或壳首次渲染前执行。仅调整客户端插件的加载档位无法关闭这段时间窗口。
 
 ## 决策
 

@@ -8,11 +8,11 @@ Status: implemented
 
 想要扇出的模型会把多个 `subagent` 调用合并进同一条 assistant 消息：这个批次本身就是并行意图。委派工具此前没有声明 `isConcurrencySafe` 分类器，按安全侧原则设计的调度器（[并行工具调用 Agent Note](2026-07-10-parallel-tool-call-execution.zh.md)）便把每个前台委派都当作独占屏障：GUI 里显示九张卡片，却只有一个子 agent（智能体）在运行，其余八个要在它的整个运行期间排在其后等待。
 
-最初的保守立场（一元分类器无法证明同级委派的工作区效果互不相交）已经不再保护任何东西：`run_in_background: true` 和可继续委派本来就会与其后的每个调用重叠执行，包括写入；`dsh-workflow-worker-thread` 也早已通过同样的 `ctx.subagents.start()` 提供方在共享工作区上并发运行子 agent，数量可达其并发上限。只有前台形态被串行化。
+最初的保守立场（一元分类器无法证明同级委派的工作区效果互不相交）已经不再保护任何东西：`run_in_background: true` 和可继续委派本来就会与其后的每个调用重叠执行，包括写入；`alego-workflow-worker-thread` 也早已通过同样的 `ctx.subagents.start()` 提供方在共享工作区上并发运行子 agent，数量可达其并发上限。只有前台形态被串行化。
 
 ## 决策
 
-`dsh-tool-subagent` 为每种调用形态（前台、一次性后台、可继续）都声明 `isConcurrencySafe: () => true`，因此同一 assistant 步骤中的同级委派会在循环的滚动池下重叠执行，上限为 `maxParallelToolCalls`，结果仍按模型顺序提交。
+`alego-tool-subagent` 为每种调用形态（前台、一次性后台、可继续）都声明 `isConcurrencySafe: () => true`，因此同一 assistant 步骤中的同级委派会在循环的滚动池下重叠执行，上限为 `maxParallelToolCalls`，结果仍按模型顺序提交。
 
 该声明在结构上满足调度器的安全约定：子 agent 在自己的会话中工作，运行绝不变更父会话（启动时追加的 `sandbox/mode`、`approval/policy`、`subagent/descriptor` 只落在子 agent 自己的日志里），工具把输出返回给循环，由循环按顺序提交。一次性后台形态对父级拥有状态的唯一写入是通过 `tasks.start` 注册一个 Task——这是一次同步、可交换的插入，满足的是调度器 Agent Note 中的共享状态条款，而非更强的「无变更」性质。提供方 seam 要求针对不同子 agent 的并发启动和可继续准备分别隔离操作局部状态、取消、结算和清理。内置提供方满足这项约定：spawn 和 fork 在各次启动之间不保留可变状态，fork 只读取父级已完成轮次的前缀，进程外提供方按每次运行分配状态，继续执行管理器则为每次准备预留唯一的子 agent 身份和锁。
 
@@ -24,7 +24,7 @@ Status: implemented
 
 包测试固定了两种调用形态的分类器。一个门控测试直接驱动注册表，其两个子 agent 各自阻塞，直到两者都已启动，以此证明该声明所依赖的那一半：工具体和提供方启动路径能容忍并发分发——这条栈中任何隐藏的串行化都会造成死锁，而不是静默通过。一个可继续门控测试让两项提供方准备停在同一个 await 上，在发布前取消其中一个调用方，并证明已取消的子 agent 不会留下 agent 或持久会话，而其同级则到达 inbox 接受状态并独立持久化。另一半（分类真正产生重叠执行）由分类器 pin 测试和下述快照负责。
 
-人工编写的 `subagent-parallel` 快照固定了组装后应用的 transcript（文本记录）：一条 assistant 消息携带两个 subagent 调用，父级日志记录为 `tool/call, tool/call, tool/result, tool/result`（串行执行会让调用/结果成对交错出现），两个子 agent 各自作为独立会话完成。其中的孪生委派刻意做成完全相同：`dsh-llm-replay` 按首次调用顺序绑定子脚本，harvester 按 `createdAt` 对子 agent 排序，二者在并发子 agent 之间都不具确定性（即 `XXX(concurrent-subagents)` 标记），因此目前只有可互换的孪生委派才能无竞态地回放。
+人工编写的 `subagent-parallel` 快照固定了组装后应用的 transcript（文本记录）：一条 assistant 消息携带两个 subagent 调用，父级日志记录为 `tool/call, tool/call, tool/result, tool/result`（串行执行会让调用/结果成对交错出现），两个子 agent 各自作为独立会话完成。其中的孪生委派刻意做成完全相同：`alego-llm-replay` 按首次调用顺序绑定子脚本，harvester 按 `createdAt` 对子 agent 排序，二者在并发子 agent 之间都不具确定性（即 `XXX(concurrent-subagents)` 标记），因此目前只有可互换的孪生委派才能无竞态地回放。
 
 ## 备选方案
 

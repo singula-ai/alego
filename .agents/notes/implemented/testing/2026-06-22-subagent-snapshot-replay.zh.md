@@ -6,11 +6,11 @@ Status: implemented
 
 ## 问题
 
-快照层（`pnpm run test:snapshot`）会启动真实 `acp-agent` 子进程，通过 [`dsh-llm-replay`](../../../../packages/test-support/llm-replay) 回放已记录会话，并将规范化后的自动化协议输出 + 重新持久化的会话日志与已提交预期输出进行 diff。大多数场景通过这条真实进程边界测试组装后的后端行为。
+快照层（`pnpm run test:snapshot`）会启动真实 `acp-agent` 子进程，通过 [`alego-llm-replay`](../../../../packages/test-support/llm-replay) 回放已记录会话，并将规范化后的自动化协议输出 + 重新持久化的会话日志与已提交预期输出进行 diff。大多数场景通过这条真实进程边界测试组装后的后端行为。
 
 该层最初为每个进程只有一个会话而构建，这一假设硬编码在两处：
 
-- **`dsh-llm-replay` 没有做任何键控。** 它用一个全局游标，将第 N 次 `llm/stream` 调用对应到单一录制序列的第 N 条。当父 agent（智能体）和一个进程内 subagent 在同一个上下文上同时流式输出时，调用交错，单一游标会把子 agent 的脚本发给父 agent（反之亦然）。
+- **`alego-llm-replay` 没有做任何键控。** 它用一个全局游标，将第 N 次 `llm/stream` 调用对应到单一录制序列的第 N 条。当父 agent（智能体）和一个进程内 subagent 在同一个上下文上同时流式输出时，调用交错，单一游标会把子 agent 的脚本发给父 agent（反之亦然）。
 - **harness 只收集一份日志。** `findSessionLog` 遍历 sessions 根目录，返回找到的第一个 `.jsonl`。subagent 作为第二个 `Session` 运行并拥有自己的日志，因此子 agent 的 transcript（文本记录）被静默丢弃。
 
 这就是 [subagent seam Agent Note](../feature/2026-06-21-subagent-capability-seam.zh.md) 中通过 `TODO(subagent-snapshots)` 推迟的工作：进程内后端落地时已有单元 + e2e 覆盖，但在这套基础设施落地前，完整 transcript 快照层无法表达嵌套 agent 形状。
@@ -21,11 +21,11 @@ Status: implemented
 
 ### 1. 调用方会话 id 附着在模型请求上
 
-`GenerateOptions` 新增可选字段 `sessionId`，在请求组装时从 `agent.session.id` 赋值。适配器忽略它；`llm/stream` 监听器用它按发起会话路由。其类型为 `Branded<'SessionId'>`（来自 `dsh-brand`）而非 `dsh-session` 的 `SessionId`，因为后者所在包导入了 `dsh-llm` 的 `Message`，反向导入会形成循环。两个类型等价，因此会话 id 赋值无需类型转换。将 brand 移到一个专用 ids 包属于独立工作，因为它会影响所有 id 导入。
+`GenerateOptions` 新增可选字段 `sessionId`，在请求组装时从 `agent.session.id` 赋值。适配器忽略它；`llm/stream` 监听器用它按发起会话路由。其类型为 `Branded<'SessionId'>`（来自 `alego-brand`）而非 `alego-session` 的 `SessionId`，因为后者所在包导入了 `alego-llm` 的 `Message`，反向导入会形成循环。两个类型等价，因此会话 id 赋值无需类型转换。将 brand 移到一个专用 ids 包属于独立工作，因为它会影响所有 id 导入。
 
 ### 2. 回放按首次调用顺序将活跃会话绑定到录制脚本
 
-嵌套场景录制多份日志：父会话（`session.jsonl`）加每个 subagent 子会话各一份（`session.1.jsonl`……）。`dsh-llm-replay` 全部加载，为每个录制会话派生一份脚本，并按 header 中的 `createdAt` 排序（父会话先于子会话创建）。
+嵌套场景录制多份日志：父会话（`session.jsonl`）加每个 subagent 子会话各一份（`session.1.jsonl`……）。`alego-llm-replay` 全部加载，为每个录制会话派生一份脚本，并按 header 中的 `createdAt` 排序（父会话先于子会话创建）。
 
 活跃会话 id 每次运行都是全新随机值，永远不等于录制时的 id，因此活跃会话无法通过 id 相等绑定到脚本。取而代之的是**首次调用顺序**绑定：第一个发起任何模型调用的活跃会话认领第一份有序脚本（即父会话：`createdAt` 最早，且必然最先流式输出，因为它必须先运行一个轮次才能委派），下一个新活跃会话认领下一份脚本，依此类推。此后每个会话独立推进自己的游标。
 

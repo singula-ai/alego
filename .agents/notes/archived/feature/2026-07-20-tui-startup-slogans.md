@@ -14,9 +14,9 @@ The TUI header subtitle came from a `welcome` config the demo leaf set to "TUI a
 ## Decision
 
 - `examples/tui-agent/cordis.yml` no longer configures `welcome`; the config key stays for deployments and fixtures that need a fixed, deterministic subtitle (the Code Mode overlay and every snapshot/scripted fixture keep theirs).
-- When `welcome` is unset, `dsh-tui` picks one member of an exported `STARTUP_SLOGANS` bank per boot (`pickStartupSlogan`, injectable random source) and reveals it with a typewriter animation: one character per 40 ms frame, a `▌` block cursor trailing until complete. The reveal starts only after `ui.start()` succeeds and its interval is cleared on dispose alongside the other listeners.
+- When `welcome` is unset, `alego-tui` picks one member of an exported `STARTUP_SLOGANS` bank per boot (`pickStartupSlogan`, injectable random source) and reveals it with a typewriter animation: one character per 40 ms frame, a `▌` block cursor trailing until complete. The reveal starts only after `ui.start()` succeeds and its interval is cleared on dispose alongside the other listeners.
 - The slogan bank is presentation copy, deliberately not config: deployments that want controlled wording already have `welcome`. Slogans are ASCII-only by contract because the reveal slices per character.
-- `dsh-tui-demo` forwards `welcome` only when configured instead of defaulting it, so the app no longer decides the TUI's idle subtitle.
+- `alego-tui-demo` forwards `welcome` only when configured instead of defaulting it, so the app no longer decides the TUI's idle subtitle.
 - The keyless PTY boot scenario now waits for the reveal cursor (`▌` — the only source of that glyph in an empty transcript) instead of the removed welcome text.
 
 The same change restores `packages/ui/tui/src/index.ts` to 100 % per-file coverage, which the color-scheme merge had broken on the integration branch: the editor border-color reassignment inside `applyColorScheme` was dead (the `setStatus` call right after re-derives it) and is removed, and the color-scheme query's `.then`/`.catch` arrows became named, tested handlers (`applyReportedScheme`, `ignoreSchemeQueryFailure` — the latter pinned by a test whose terminal throws on the DSR query write).
@@ -32,7 +32,7 @@ The same change restores `packages/ui/tui/src/index.ts` to 100 % per-file covera
 ## Consequences
 
 - Boot output is no longer byte-deterministic when `welcome` is unset (random slogan, timed frames). Every recorded or snapshot surface pins `welcome` explicitly, so no snapshot changed; the PTY smoke anchors on the reveal cursor and the session-id line instead.
-- The `welcome` schema default disappeared from both `dsh-tui` and `dsh-tui-demo`; a direct caller passing no welcome now gets a slogan, not `'ready.'`.
+- The `welcome` schema default disappeared from both `alego-tui` and `alego-tui-demo`; a direct caller passing no welcome now gets a slogan, not `'ready.'`.
 - Adding a slogan is a one-line bank edit; tests assert membership, not specific text.
 
 ## Testing

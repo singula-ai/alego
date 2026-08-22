@@ -91,7 +91,7 @@ function fixtureRoot(eventsBlock: string): string {
   const root = mkdtempSync(join(tmpdir(), 'cordis-catalog-'))
   writeProject(
     root,
-    `declare module '@deepseek-ai/cordis' {\n  interface Events {\n${eventsBlock}\n  }\n}\n`,
+    `declare module '@alego/cordis' {\n  interface Events {\n${eventsBlock}\n  }\n}\n`,
   )
   return root
 }
@@ -103,7 +103,7 @@ function serviceFixtureRoot(classSource: string): string {
   const root = mkdtempSync(join(tmpdir(), 'cordis-catalog-'))
   writeProject(
     root,
-    `declare module '@deepseek-ai/cordis' {\n  interface Context {\n    fix: FixService\n  }\n}\n\n${classSource}\n`,
+    `declare module '@alego/cordis' {\n  interface Context {\n    fix: FixService\n  }\n}\n\n${classSource}\n`,
   )
   return root
 }

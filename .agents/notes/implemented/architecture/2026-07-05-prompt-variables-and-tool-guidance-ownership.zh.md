@@ -8,13 +8,13 @@ Status: implemented
 
 组装后的系统提示词存在四个缺陷，同属一类：harness 已知的事实在别处被手工重述，然后漂移。
 
-**模型无法知道自己的名字。** `AgentOptions.model` 驱动每个请求，但没有任何提示词文本携带它——也不可能携带：`dsh-system-prompt` 中的 section 是上下文全局的，而模型名称因 agent（智能体）而异，`assemble()` 根本不接受任何 per-agent 输入。
+**模型无法知道自己的名字。** `AgentOptions.model` 驱动每个请求，但没有任何提示词文本携带它——也不可能携带：`alego-system-prompt` 中的 section 是上下文全局的，而模型名称因 agent（智能体）而异，`assemble()` 根本不接受任何 per-agent 输入。
 
-**工具指导是 leaf YAML 中的手写行文。** shell/subagent/todo_write 的使用指导存放在 coding-agent 和 ACP（Agent Client Protocol）的 persona 字符串里——两份漂移的副本（ACP 那份已经被删减）——而 `dsh-tool-fs` 和 `dsh-tool-web` 则通过 `ctx.systemPrompt.section()` 贡献各自的指导。加载或卸载一个工具插件意味着手动编辑每个部署的 persona，旧终端欢迎横幅也手动枚举了工具集。
+**工具指导是 leaf YAML 中的手写行文。** shell/subagent/todo_write 的使用指导存放在 coding-agent 和 ACP（Agent Client Protocol）的 persona 字符串里——两份漂移的副本（ACP 那份已经被删减）——而 `alego-tool-fs` 和 `alego-tool-web` 则通过 `ctx.systemPrompt.section()` 贡献各自的指导。加载或卸载一个工具插件意味着手动编辑每个部署的 persona，旧终端欢迎横幅也手动枚举了工具集。
 
 **Persona 渲染在工具指导之后。** agent loop（智能体循环）将 `agent.options.systemPrompt` 字符串拼接在已组装的 section 之后，于是模型先读到「Use the read tool…」再读到「You are a coding agent」——与 identity-first 约定（Claude Code、Codex）相反，且是 section 流水线之外的第二条组合路径。
 
-**Fork 工具的描述是假的。** `dsh-tool-subagent` 硬编码了一段为 spawn 语义编写的描述——「a separate agent that works in its own context … it does not see this conversation」——而 `subagent_fork` 实例（其子 agent 继承父级已完成的轮次）拿到了同样的措辞；YAML 行文在带外纠正了这个谎言。小问题：`PromptSection.name` 文档标注为「(diagnostics / dedup)」，但重复项被静默接受。
+**Fork 工具的描述是假的。** `alego-tool-subagent` 硬编码了一段为 spawn 语义编写的描述——「a separate agent that works in its own context … it does not see this conversation」——而 `subagent_fork` 实例（其子 agent 继承父级已完成的轮次）拿到了同样的措辞；YAML 行文在带外纠正了这个谎言。小问题：`PromptSection.name` 文档标注为「(diagnostics / dedup)」，但重复项被静默接受。
 
 ## 决策
 
@@ -22,17 +22,17 @@ Status: implemented
 
 ### 组装上下文
 
-`SystemPrompt.assemble(context)` 接受一个可合并扩展的 `AssembleContext`。`dsh-system-prompt` 声明可选的 `scope` 选择器用于 scoped 路由，而 `dsh-agent` 通过声明合并将可选的类型化 `agent` 字段附加到其上（类型层面的 `agent → system-prompt` 边，无运行时依赖循环）。循环在每个步骤调用 `assembleContextFor(agent)`，使两个字段标识同一个 agent；section 文本提供方可以读取该上下文，`system-prompt/assemble` waterfall（瀑布式事件）也接收它，监听器可据此按 agent 过滤或扩展。
+`SystemPrompt.assemble(context)` 接受一个可合并扩展的 `AssembleContext`。`alego-system-prompt` 声明可选的 `scope` 选择器用于 scoped 路由，而 `alego-agent` 通过声明合并将可选的类型化 `agent` 字段附加到其上（类型层面的 `agent → system-prompt` 边，无运行时依赖循环）。循环在每个步骤调用 `assembleContextFor(agent)`，使两个字段标识同一个 agent；section 文本提供方可以读取该上下文，`system-prompt/assemble` waterfall（瀑布式事件）也接收它，监听器可据此按 agent 过滤或扩展。
 
 ### 提示词变量
 
 插件通过 `ctx.systemPrompt.variable(name, provider)` 注册 `{{name}}` 值。组装过程将它们解析到 waterfall 可见的变量映射中。渲染阶段拒绝以下情况：引用未知的自有属性、已注册的提供方返回 `undefined`、格式错误的完整引用、以及仍包含闭合 `}}` 的不平衡引用；孤立的未匹配 `{{` 保留为行文，替换后的值不会被重新扫描。注册阶段拒绝无效或重复的变量名，section 名称也必须唯一。
 
-`dsh-agent-loop` 注册两个内置变量，均为上下文 agent 的纯投影：`model`（= `options.model`）和 `cwd`（= `session.header.cwd`）。示例 persona 写 `powered by the {{model}} model`——模型名称只在 `model:` 配置键中声明一次。`{{cwd}}` 仅在 ACP 示例中演示：每个 ACP 会话携带客户端的 cwd，而配置预创建的 stdio agent 没有 cwd（在那里声称 `{{cwd}}` 的 persona 会导致该轮次失败——这是有意为之）。变量留在 loop 插件上（不同于下面的 section）：它们是本循环驱动的 agent 的运行时事实，替换循环自行提供自己的变量。
+`alego-agent-loop` 注册两个内置变量，均为上下文 agent 的纯投影：`model`（= `options.model`）和 `cwd`（= `session.header.cwd`）。示例 persona 写 `powered by the {{model}} model`——模型名称只在 `model:` 配置键中声明一次。`{{cwd}}` 仅在 ACP 示例中演示：每个 ACP 会话携带客户端的 cwd，而配置预创建的 stdio agent 没有 cwd（在那里声称 `{{cwd}}` 的 persona 会导致该轮次失败——这是有意为之）。变量留在 loop 插件上（不同于下面的 section）：它们是本循环驱动的 agent 的运行时事实，替换循环自行提供自己的变量。
 
 ### Persona 作为 order-0 section
 
-`dsh-system-prompt` 拥有 order 为 `-100` 的 `harness:identity` 和 order 为 0 的配置 `deployment:persona`，因此两者在循环被替换时仍然存活。提示词渲染只有一条路径 `renderPrompt(assembly)`，已路由请求 header 因此会记录准确的提示词，稍后由 `ctx.tokenMeter` 为压缩（compaction）压力回放。agent 作用域的 `deployment:persona` 遮蔽全局默认值，允许 subagent 提供方在发布前安装 persona。约定的 order 区间为：identity `-100`、persona `0`、工具指导 `100–199`。
+`alego-system-prompt` 拥有 order 为 `-100` 的 `harness:identity` 和 order 为 0 的配置 `deployment:persona`，因此两者在循环被替换时仍然存活。提示词渲染只有一条路径 `renderPrompt(assembly)`，已路由请求 header 因此会记录准确的提示词，稍后由 `ctx.tokenMeter` 为压缩（compaction）压力回放。agent 作用域的 `deployment:persona` 遮蔽全局默认值，允许 subagent 提供方在发布前安装 persona。约定的 order 区间为：identity `-100`、persona `0`、工具指导 `100–199`。
 
 ### 工具指导归属
 
@@ -40,11 +40,11 @@ Status: implemented
 
 ### Subagent 对话历史描述符
 
-`SubagentProvider.inheritsParentContext` 描述的是对话历史初始化，而非作用域、服务、工具或权限。spawn 和 ACP 将其设为 `false`；fork 设为 `true`。`dsh-tool-subagent` 根据该标志派生工具描述和提示词参数描述，包括 fork 继承已完成轮次但不继承进行中轮次这一点。提供方生命周期事件使该措辞与响应式提供方注册保持同步；其设计动机见[提供方生命周期事件 Agent Note](2026-07-05-subagent-provider-lifecycle-events.zh.md)。
+`SubagentProvider.inheritsParentContext` 描述的是对话历史初始化，而非作用域、服务、工具或权限。spawn 和 ACP 将其设为 `false`；fork 设为 `true`。`alego-tool-subagent` 根据该标志派生工具描述和提示词参数描述，包括 fork 继承已完成轮次但不继承进行中轮次这一点。提供方生命周期事件使该措辞与响应式提供方注册保持同步；其设计动机见[提供方生命周期事件 Agent Note](2026-07-05-subagent-provider-lifecycle-events.zh.md)。
 
 ## 曾考虑的替代方案
 
-- **循环自行组合一行 identity 文本**：在必须保持精简的那个包（「用插件，不改循环」）中硬编码面向模型的行文，且在 section 流水线之外构成第二条组合路径。（identity 确实以代码字面量交付——但作为 `dsh-system-prompt` 注册的普通 section，其 `system-prompt/assemble` waterfall 仍是部署需要移除它时的逃生阀。）
+- **循环自行组合一行 identity 文本**：在必须保持精简的那个包（「用插件，不改循环」）中硬编码面向模型的行文，且在 section 流水线之外构成第二条组合路径。（identity 确实以代码字面量交付——但作为 `alego-system-prompt` 注册的普通 section，其 `system-prompt/assemble` waterfall 仍是部署需要移除它时的逃生阀。）
 - **通过 `agent/request` waterfall 注入模型名称**：提示词文本会在两处组合，更早渲染的 persona 也可能与最终已路由 header 不一致。拥有延迟路由的请求插件还必须拥有该模型在提示词中更早出现的声明。
 - **在每个 persona 中手写模型名称**：与上方一行的 `model:` 键重复，配置修改后静默失实；正是本决策要治愈的病症。
 - **宽松插值（未知引用保留原样或替换为空）**：一个拼写错误 `{{modle}}`（或一个空洞）会被发送给模型，直到 transcript（文本记录）审查时才会被发现。

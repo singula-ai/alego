@@ -18,7 +18,7 @@ Agent Teams 合理地拥有持久 roster、peer mailbox 与共享任务策略，
 
 Team 服务保留独立的产品职责：持久具名 roster、Lead-log mailbox 与 task DAG。它不会与通用 subagent catalog 或 task service 合并。
 
-在 `@deepseek-ai/dsh-experimental-agent-team` 内，`TeamService` 是面向 Cordis 的 façade 与 disposal 协调者。`TeamJournal` 负责每个 Lead 的 transaction 顺序以及 append-plus-flush 发布；`TeamRoster` 负责 membership 与 provisioning；`TeamMailbox` 负责 target-local dispatch、acknowledgement 与 retry 状态；`TeamTaskBoard` 负责 task 授权、DAG transition 与派生 view；`TeamActivity` 负责当前 waiter；`TeamRuntimeLifecycle` 负责唯一的准入截止与有界 settlement。这些包内 collaborator 共享现有 service capability，不发布额外 Cordis service。
+在 `@alego/experimental-agent-team` 内，`TeamService` 是面向 Cordis 的 façade 与 disposal 协调者。`TeamJournal` 负责每个 Lead 的 transaction 顺序以及 append-plus-flush 发布；`TeamRoster` 负责 membership 与 provisioning；`TeamMailbox` 负责 target-local dispatch、acknowledgement 与 retry 状态；`TeamTaskBoard` 负责 task 授权、DAG transition 与派生 view；`TeamActivity` 负责当前 waiter；`TeamRuntimeLifecycle` 负责唯一的准入截止与有界 settlement。这些包内 collaborator 共享现有 service capability，不发布额外 Cordis service。
 
 删除未使用的 snapshot API 与全局 Team revision。Host 读取只返回 roster 与 task view，不重复已经寻址的 Team id。member failure 只在 `diagnostics` 出现一次。task view 暴露 `ownerName`，把 `ownerId` 留在持久服务实现内部。spawn 只返回 member view，已校验 config 改为私有。
 

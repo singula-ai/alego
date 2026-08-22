@@ -8,7 +8,7 @@ import config from './config.json' with { type: 'json' }
 
 const API_VERSION = '2026-03-10'
 const BODY_LIMIT = 50
-const AUDIT_MARKER = '<!-- dsh-issue-policy -->'
+const AUDIT_MARKER = '<!-- alego-issue-policy -->'
 const OWNER_LINE = /^Owner: @([A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?)$/
 const TYPES = new Set(['Idea', 'Feature', 'Bug', 'Research', 'Task'])
 const PRIORITIES = ['p0', 'p1', 'p2', 'p3']
@@ -392,7 +392,7 @@ async function api(path, options = {}) {
       Accept: 'application/vnd.github+json',
       Authorization: `Bearer ${token()}`,
       'X-GitHub-Api-Version': API_VERSION,
-      'User-Agent': 'dsh-issue-policy',
+      'User-Agent': 'alego-issue-policy',
       ...options.headers,
     },
   })

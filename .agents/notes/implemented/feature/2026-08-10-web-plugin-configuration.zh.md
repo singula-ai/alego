@@ -18,7 +18,7 @@ Status: implemented
 
 **分层不变。** 一个分节按 schema 默认值 → 插件的组装条目 → 用户层解析。每个插件把自己的 `cordis.yml` 条目作为 `base` 传入，并通过 source thunk 读取配置，因此存储的变更会作用于下一次使用，而脱离的 settings 提供方会让组装条目继续运行。schema 无法表达的约束——正有限、`graceMs` 的定时器上界、并行上限必须是正整数——成为分节的校验器，因此错误的值在写入时被拒绝，而不是到下一条命令时才失败。
 
-**shell 命名空间命名的是能力，而非某个实现。** `SHELL_SETTINGS_NAMESPACE` 由 `@deepseek-ai/dsh-shell` 导出，因为一个宿主只组装一个 `ctx.shell` 提供方：win32 层会把 POSIX 行换成 pwsh 行，而同时挂载两者会因服务重复注册在加载期失败。因此两个家族都能用自己的 schema 与条目注册同一个命名空间而永不相撞；在平台间携带的 `settings.yaml` 也能在两边继续解析——schemastery 对象会保留当前 schema 未声明的键。
+**shell 命名空间命名的是能力，而非某个实现。** `SHELL_SETTINGS_NAMESPACE` 由 `@alego/shell` 导出，因为一个宿主只组装一个 `ctx.shell` 提供方：win32 层会把 POSIX 行换成 pwsh 行，而同时挂载两者会因服务重复注册在加载期失败。因此两个家族都能用自己的 schema 与条目注册同一个命名空间而永不相撞；在平台间携带的 `settings.yaml` 也能在两边继续解析——schemastery 对象会保留当前 schema 未声明的键。
 
 **当插件配置大于用户所拥有的部分时，分节就是一个子集。** `agent-loop` 只暴露 `maxParallelToolCalls`；它的 `agents` 数组在服务启动时被消费一次，所以存储在那里的变更只会看起来生效。
 
@@ -26,7 +26,7 @@ Status: implemented
 
 **暴露仍是 Host 的白名单。** 这三个命名空间加入 `WEB_SETTINGS_NAMESPACES`；仅有注册依然不会跨越传输边界，而不在该名单中的命名空间会与未注册的命名空间得到完全相同的 `settings-not-exposed`。
 
-**“可配置”标签页不认识任何命名空间。** `dsh-client-ui-settings-plugins` 拥有“插件”分区，通过 `settings.plugins.tab` 贡献自己的 `configurable` 页面，并在其中声明嵌套的 `settings.plugin.item` slot。它渲染注册进这个嵌套 slot 的卡片，因此带浏览器半侧的插件拥有自己的卡片与控件。每张卡片通过客户端 settings scope 绑定其命名空间，而该 scope 补上了表单所需的两样东西：原始 `user` 层——键的**存在**才标记字段被覆盖——以及把单个字段清回组装层的 `unset`。命名空间不可用时卡片什么都不渲染，因此未组装该插件的部署不会显示它的任何痕迹。
+**“可配置”标签页不认识任何命名空间。** `alego-client-ui-settings-plugins` 拥有“插件”分区，通过 `settings.plugins.tab` 贡献自己的 `configurable` 页面，并在其中声明嵌套的 `settings.plugin.item` slot。它渲染注册进这个嵌套 slot 的卡片，因此带浏览器半侧的插件拥有自己的卡片与控件。每张卡片通过客户端 settings scope 绑定其命名空间，而该 scope 补上了表单所需的两样东西：原始 `user` 层——键的**存在**才标记字段被覆盖——以及把单个字段清回组装层的 `unset`。命名空间不可用时卡片什么都不渲染，因此未组装该插件的部署不会显示它的任何痕迹。
 
 **卡片暂存修改，保存时才写入。** 控件不持有自己的草稿：暂存文本归卡片的表单所有，所有控件渲染的都是它，只有**保存**才把它变成文档变更。settings 写入是持久且带 revision 栅栏的，因此「失焦即提交」的控件会为用户尚未决定存储、也无从预览的值花掉一个 revision；重置同样只是暂存组装默认值。schema 表达不了的约束归 Host 的校验器所有，所以表单在写入后回读分节、报告没有落盘的保存，而不是自行预测结果，并保留这些草稿供用户修改。密钥控件虽然经由 credentials 领域写入，也和其余字段一起暂存，因此一次保存覆盖卡片上的全部内容。
 
@@ -49,4 +49,4 @@ Status: implemented
 
 bash 与 pwsh 执行器现在把 `config` 暴露为 source thunk 之上的 getter，而不再是 readonly 字段。所有读取点本就是按次读取，因此别无变化；但若某个子类在构造期捕获 `this.config`，就会悄然把组装条目钉死。
 
-`verify-cordis-config` 新增一项检查，代价由本分支付过：合并 master 对客户端清单字段的重命名（`dshClient` → `dsh.client`）后，本包仍声明旧名，于是整个分区从浏览器上消失，且任何地方都不报错——行照常组装、空的 node 半侧照常激活，只是浏览器 roster 扫描永远匹配不到它。这一点无从被既有门禁发现，因为组装文件区分不了 surface 插件与 Host 插件：差别在清单里。现在门禁要求 `packages/client` 包的 `./client` 导出与 `dsh.client` 声明双向一致。之所以只限这一组：Host 包的 `./client` 导出是给浏览器消费方 import 的类型化 wire face，不是 roster 要服务的插件。
+`verify-cordis-config` 新增一项检查，代价由本分支付过：合并 master 对客户端清单字段的重命名（`alegoClient` → `alego.client`）后，本包仍声明旧名，于是整个分区从浏览器上消失，且任何地方都不报错——行照常组装、空的 node 半侧照常激活，只是浏览器 roster 扫描永远匹配不到它。这一点无从被既有门禁发现，因为组装文件区分不了 surface 插件与 Host 插件：差别在清单里。现在门禁要求 `packages/client` 包的 `./client` 导出与 `alego.client` 声明双向一致。之所以只限这一组：Host 包的 `./client` 导出是给浏览器消费方 import 的类型化 wire face，不是 roster 要服务的插件。

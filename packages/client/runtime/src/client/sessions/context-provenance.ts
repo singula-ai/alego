@@ -108,7 +108,7 @@ export function contextProvenance(source: unknown): ContextProvenanceView {
 
 /**
  * Context forms this UI version renders with a dedicated presentation. The
- * durable vocabulary (`ContextForm` in `dsh-llm`) may already be wider — an
+ * durable vocabulary (`ContextForm` in `alego-llm`) may already be wider — an
  * unrecognized or absent value degrades to the opaque presentation rather than
  * dropping the row, so a log written by a newer or foreign producer still
  * renders.

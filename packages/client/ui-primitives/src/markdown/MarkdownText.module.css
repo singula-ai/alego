@@ -188,7 +188,7 @@
    already the hover that re-enables `auto`. */
 .tableScroll:global(.md-table-wide) {
   overflow-x: hidden;
-  padding-bottom: var(--dsh-scrollbar-width, 8px);
+  padding-bottom: var(--alego-scrollbar-width, 8px);
 }
 
 .tableScroll:global(.md-table-wide):hover,

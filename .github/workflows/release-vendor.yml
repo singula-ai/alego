@@ -1,6 +1,6 @@
 # Pack the vendored framework sequence: the nine rescoped Cordis packages under
 # vendor/, each on its own version line. This sequence releases independently of
-# dsh and of the native packages.
+# alego and of the native packages.
 #
 # Pack runs without credentials on every pull request and master push.
 # Publication is a manual workflow_dispatch of release-vendor-publish.yml from a
@@ -24,7 +24,7 @@ concurrency:
 
 env:
   PRIMARY_NODE_VERSION: '24'
-  DSH_TELEMETRY_DISABLED: '1'
+  ALEGO_TELEMETRY_DISABLED: '1'
 
 jobs:
   pack:

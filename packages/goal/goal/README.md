@@ -1,4 +1,4 @@
-# @deepseek-ai/dsh-goal
+# @alego/goal
 
 English | [中文](README.zh.md)
 
@@ -8,7 +8,7 @@ Event-sourced same-session goal state. The service retains one current completio
 
 ```yaml
 - id: goal
-  name: '@deepseek-ai/dsh-goal'
+  name: '@alego/goal'
   config:
     defaultMaxGoalRounds: 256
 ```
@@ -31,7 +31,7 @@ The separately published `./invariant` companion maintains an independent fold o
 
 ## Extension points
 
-Policy plugins call the service verbs and react to the scoped `goal/changed` event. A continuation consumer admits rounds as `user/message` events with `GoalMessageSource`; ordinary human turns never increment `roundsStarted`. Consumers use the `Agent` interface and events rather than importing `dsh-agent-loop`.
+Policy plugins call the service verbs and react to the scoped `goal/changed` event. A continuation consumer admits rounds as `user/message` events with `GoalMessageSource`; ordinary human turns never increment `roundsStarted`. Consumers use the `Agent` interface and events rather than importing `alego-agent-loop`.
 
 ## Model Experience
 

@@ -1,11 +1,11 @@
 /**
  * Result-time contextual diff presentation for write and edit. Storage returns before/after
  * text; this model-facing layer derives one three-line-context card per applied hunk.
- * @module @deepseek-ai/dsh-tool-fs/src/diff
+ * @module @alego/tool-fs/src/diff
  */
 
 import { structuredPatch } from 'diff'
-import type { FileDiff } from '@deepseek-ai/dsh-tools'
+import type { FileDiff } from '@alego/tools'
 
 /** Context lines shown on each side of an applied hunk. */
 export const DIFF_CONTEXT = 3

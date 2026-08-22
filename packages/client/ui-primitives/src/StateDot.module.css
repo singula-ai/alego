@@ -2,7 +2,7 @@
  * not this 450) — component-level var pinned to the static scale instead. */
 .dot,
 .matrix {
-  --dsh-state-ongoing: var(--dsw-static-deepseek-450);
+  --alego-state-ongoing: var(--dsw-static-deepseek-450);
 }
 
 /* Solid states: same-color halo via a 0.10-opacity outer layer (::before)
@@ -48,16 +48,16 @@
  * animation-delay (index * -125ms) set inline by the component. */
 .matrix {
   flex: none;
-  color: var(--dsh-state-ongoing);
+  color: var(--alego-state-ongoing);
 }
 
 .cell {
   fill: currentColor;
   opacity: 0.15;
-  animation: dsh-state-dot-chase 1s infinite;
+  animation: alego-state-dot-chase 1s infinite;
 }
 
-@keyframes dsh-state-dot-chase {
+@keyframes alego-state-dot-chase {
   0%, 12.4% { opacity: 1; }
   12.5%, 24.9% { opacity: 0.6; }
   25%, 37.4% { opacity: 0.35; }

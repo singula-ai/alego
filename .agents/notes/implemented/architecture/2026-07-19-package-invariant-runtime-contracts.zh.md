@@ -23,7 +23,7 @@ Status: implemented
 
 空形式是明确的架构结论，不是生成占位符。如果后续包变更引入可变状态或事件协议，就必须用相应检查替换该说明。
 
-中央 `dsh-invariants` 服务只负责配置、注册唯一性、子 fiber 生命周期、回滚、dispose（资源释放）和归属到包的失败。它不暴露通用插件形状、服务形状或启动断言 helper，也不导入产品包。
+中央 `alego-invariants` 服务只负责配置、注册唯一性、子 fiber 生命周期、回滚、dispose（资源释放）和归属到包的失败。它不暴露通用插件形状、服务形状或启动断言 helper，也不导入产品包。
 
 ### 已实施的检查
 
@@ -31,27 +31,27 @@ Status: implemented
 
 | 所有者 | 运行时关系 |
 |---|---|
-| `dsh-session` | 序号严格递增、轮次/步骤包围关系，以及同一步骤内的工具调用/工具结果配对。 |
-| `dsh-agent` | agent（智能体）状态不得重复，并且不能离开终态 disposed。 |
-| `dsh-scope` | 作用域事件必须携带 carrier，且路由 subject 保持一致。 |
-| `dsh-agent-loop` | 从会话事件日志重建带显式标记的冻结 loop 请求。 |
-| `dsh-llm` | 流中块的文法、delta 类型/索引匹配、单次 usage、块闭合和终止 finish。 |
-| `dsh-llm-retry` | 持久化重试记录指向当前打开轮次中最近关闭的步骤；每个步骤的记录保持唯一，重试次数单调递增，并且重试次数和非负的定时器延迟均保持在边界内。 |
-| `dsh-tools` | pre/execute/post 阶段单调推进，以及最终 execution/result 快照不可变。 |
-| `dsh-system-prompt` | 权威 assembly 中 section、工具和 variable 的数据约束。 |
-| `dsh-compaction` | 压缩（compaction）start/summary/end 配对、范围端点、token 数量和成功时必须存在 summary。 |
-| `dsh-hook-protocol` | 钩子 invocation/result 的关联、dialect、身份和 duration 约束。 |
-| `dsh-sandbox-policy` | 持久化 `sandbox/mode` 事件必须使用封闭的 sandbox-mode 词表。 |
-| `dsh-fs` | 文件系统决策/观测事件必须携带可用的 target 和 version 身份。 |
-| `dsh-goal` | 持久化目标快照保持来源归属、渲染内容、修订号、生命周期和时间戳关系，并保证已准入的 Round 连续编号。 |
-| `dsh-goal-round-driver` | 目标来源的继续执行消息必须匹配根据此前持久化目标状态重建的提示词。 |
-| `dsh-subagent` | 提供方 add/remove 和 child start/end 事件必须保持身份与配对。 |
-| `dsh-permission-presets` | 持久化 permission 决策必须引用当前 permission 表中的 preset。 |
-| `dsh-user-approval` | approval asked/decided 记录按 call 配对，并使用有效 outcome 和 policy。 |
-| `dsh-workflow` | 工作流和 child-agent start/end 事件保持 run metadata、身份、outcome、数量和 error 关系。 |
-| `dsh-jobs` | 当前与终态 task 快照保持 id/kind、owner、status 和 timestamp 关系。 |
-| `dsh-tool-todo` | 持久化全量快照使用唯一且已 trim 的条目和封闭 status。 |
-| `dsh-time-context` | 标注插件来源的时钟 reading 必须匹配会话当前打开的轮次、下一个步骤开始前的位置和 elapsed baseline；渲染时间必须可解析，且不得晚于对应事件。 |
+| `alego-session` | 序号严格递增、轮次/步骤包围关系，以及同一步骤内的工具调用/工具结果配对。 |
+| `alego-agent` | agent（智能体）状态不得重复，并且不能离开终态 disposed。 |
+| `alego-scope` | 作用域事件必须携带 carrier，且路由 subject 保持一致。 |
+| `alego-agent-loop` | 从会话事件日志重建带显式标记的冻结 loop 请求。 |
+| `alego-llm` | 流中块的文法、delta 类型/索引匹配、单次 usage、块闭合和终止 finish。 |
+| `alego-llm-retry` | 持久化重试记录指向当前打开轮次中最近关闭的步骤；每个步骤的记录保持唯一，重试次数单调递增，并且重试次数和非负的定时器延迟均保持在边界内。 |
+| `alego-tools` | pre/execute/post 阶段单调推进，以及最终 execution/result 快照不可变。 |
+| `alego-system-prompt` | 权威 assembly 中 section、工具和 variable 的数据约束。 |
+| `alego-compaction` | 压缩（compaction）start/summary/end 配对、范围端点、token 数量和成功时必须存在 summary。 |
+| `alego-hook-protocol` | 钩子 invocation/result 的关联、dialect、身份和 duration 约束。 |
+| `alego-sandbox-policy` | 持久化 `sandbox/mode` 事件必须使用封闭的 sandbox-mode 词表。 |
+| `alego-fs` | 文件系统决策/观测事件必须携带可用的 target 和 version 身份。 |
+| `alego-goal` | 持久化目标快照保持来源归属、渲染内容、修订号、生命周期和时间戳关系，并保证已准入的 Round 连续编号。 |
+| `alego-goal-round-driver` | 目标来源的继续执行消息必须匹配根据此前持久化目标状态重建的提示词。 |
+| `alego-subagent` | 提供方 add/remove 和 child start/end 事件必须保持身份与配对。 |
+| `alego-permission-presets` | 持久化 permission 决策必须引用当前 permission 表中的 preset。 |
+| `alego-user-approval` | approval asked/decided 记录按 call 配对，并使用有效 outcome 和 policy。 |
+| `alego-workflow` | 工作流和 child-agent start/end 事件保持 run metadata、身份、outcome、数量和 error 关系。 |
+| `alego-jobs` | 当前与终态 task 快照保持 id/kind、owner、status 和 timestamp 关系。 |
+| `alego-tool-todo` | 持久化全量快照使用唯一且已 trim 的条目和封闭 status。 |
+| `alego-time-context` | 标注插件来源的时钟 reading 必须匹配会话当前打开的轮次、下一个步骤开始前的位置和 elapsed baseline；渲染时间必须可解析，且不得晚于对应事件。 |
 
 基于会话的 companion 在加载时验证已有持久化事件；关系依赖事件顺序时，会使用每个候选事件之前的事件前缀。其他检查观测权威实时事件边界或可变服务结果。如果接受无效事件会提交错误状态，验证就在发布前执行。
 

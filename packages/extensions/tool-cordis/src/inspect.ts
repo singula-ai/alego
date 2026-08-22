@@ -4,14 +4,14 @@
  * `api-catalog.ts`. This module owns the join of the two plus presentation: which
  * lines a section prints, how compact the default report stays, and what an exact
  * `name` adds.
- * @module @deepseek-ai/dsh-tool-cordis/inspect
+ * @module @alego/tool-cordis/inspect
  */
 
-import type { Context, Fiber } from '@deepseek-ai/cordis'
-import type { ScopeKey } from '@deepseek-ai/dsh-scope'
-import type { Agent } from '@deepseek-ai/dsh-agent'
+import type { Context, Fiber } from '@alego/cordis'
+import type { ScopeKey } from '@alego/scope'
+import type { Agent } from '@alego/agent'
 // Type-only: resolves `ctx.dynamicCordisRunner` (the registry this report reads).
-import type {} from '@deepseek-ai/dsh-cordis-host-runner'
+import type {} from '@alego/cordis-host-runner'
 import { EVENT_API, INHERITED_CTX_API, SERVICE_API, TYPE_API } from './api-catalog.ts'
 import type { EventApiEntry, InheritedApiEntry, ServiceApiEntry, ServiceApiMethod, TypeApiEntry } from './api-catalog.ts'
 import { FiberState, STATE_LABELS } from './fiber-state.ts'
@@ -180,7 +180,7 @@ export function describeTools(ctx: Context, scope?: ScopeKey): string[] {
 export function describeDynamic(ctx: Context, agent?: Agent): string[] {
   const rows = agent === undefined ? [] : ctx.dynamicCordisRunner.snapshot(agent)
   if (rows.length === 0) {
-    return ['No dynamic Plugins are defined in this session. Definitions live only in this process\'s memory, so a DSH restart clears them.']
+    return ['No dynamic Plugins are defined in this session. Definitions live only in this process\'s memory, so an ALEGO restart clears them.']
   }
   return rows.flatMap((row) => {
     const head = `- Plugin ${row.pluginId}; current: ${row.currentPackageId ?? 'none'}; next: ${row.nextPackageId ?? 'none'}`

@@ -7,13 +7,13 @@ English | [中文](2026-07-30-versioned-tui-first-run-welcome.zh.md)
 
 ## Problem
 
-The shipped `dsh` terminal starts directly in the editor and gives first-time internal testers no durable orientation about the product's maturity or feedback channel. The existing one-line `welcome` banner subtitle cannot carry the supplied notice without crowding the normal session header, and putting onboarding in the session log would create a user turn or model-visible context that is unrelated to the user's work.
+The shipped `alego` terminal starts directly in the editor and gives first-time internal testers no durable orientation about the product's maturity or feedback channel. The existing one-line `welcome` banner subtitle cannot carry the supplied notice without crowding the normal session header, and putting onboarding in the session log would create a user turn or model-visible context that is unrelated to the user's work.
 
 The notice also needs a recognizable DeepSeek composition without copying another product's startup art or maintaining a hand-drawn approximation that drifts from the official mark.
 
 ## Decision
 
-The official `dsh` launcher owns one versioned acknowledgement marker under the resolved `DSH_HOME`. It checks the immutable marker before boot, then mounts an effect-owned consumer of `ctx.tui.openOverlay()` only after the real TUI service is available. Enter is the sole acknowledgement action: the plugin creates and synchronizes the fixed per-version marker before closing. Escape and unrecognized input leave the overlay open; Ctrl+C and Ctrl+D use the normal exit path without acknowledging. Disposal waits for an acknowledgement already started by Enter, while disposal or process exit before Enter writes nothing. The version is part of the marker filename, so incrementing the centrally owned notice version presents materially revised copy once without migrating or rewriting an aggregate settings document.
+The official `alego` launcher owns one versioned acknowledgement marker under the resolved `ALEGO_HOME`. It checks the immutable marker before boot, then mounts an effect-owned consumer of `ctx.tui.openOverlay()` only after the real TUI service is available. Enter is the sole acknowledgement action: the plugin creates and synchronizes the fixed per-version marker before closing. Escape and unrecognized input leave the overlay open; Ctrl+C and Ctrl+D use the normal exit path without acknowledging. Disposal waits for an acknowledgement already started by Enter, while disposal or process exit before Enter writes nothing. The version is part of the marker filename, so incrementing the centrally owned notice version presents materially revised copy once without migrating or rewriting an aggregate settings document.
 
 The marker is launcher state rather than session persistence because eligibility spans sessions and workspaces but is scoped to one Harness home. Each Enter syncs a random same-directory file before atomically replacing the fixed marker; concurrent launches publish the same immutable fact, so same-value last-writer-wins replacement has no lost-update shape and needs no lock or dependency on the settings stack. The notice never appends a session event, injects model context, or creates a user turn; resume therefore presents it only when the same Harness home has not acknowledged that version and never replays it from the session log.
 
@@ -23,7 +23,7 @@ The overlay is centered and consumes the available terminal width, while its hei
 
 ## Verification
 
-Focused unit coverage pins the supplied SVG and Chinese copy hashes, version bumps, exclusive concurrent acknowledgement, malformed markers, persistence retry, Escape behavior, ASCII fallback, width-tier selection, bounded rendering, and low-height scrolling. Real Loader/PTY cases cover 60, 80, 120, and 160 columns plus a low-height viewport, emit semantic terminal snapshots, prove first launch then second-launch suppression under one `DSH_HOME`, and prove a resumed session appends no notice-derived user message or turn; ordinary terminal-exit lifecycle events remain unchanged.
+Focused unit coverage pins the supplied SVG and Chinese copy hashes, version bumps, exclusive concurrent acknowledgement, malformed markers, persistence retry, Escape behavior, ASCII fallback, width-tier selection, bounded rendering, and low-height scrolling. Real Loader/PTY cases cover 60, 80, 120, and 160 columns plus a low-height viewport, emit semantic terminal snapshots, prove first launch then second-launch suppression under one `ALEGO_HOME`, and prove a resumed session appends no notice-derived user message or turn; ordinary terminal-exit lifecycle events remain unchanged.
 
 ## Alternatives considered
 

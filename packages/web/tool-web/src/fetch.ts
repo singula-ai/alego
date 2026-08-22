@@ -5,14 +5,14 @@
  * signal. A provider timeout remains a backstop for direct service callers.
  */
 
-import type { Context } from '@deepseek-ai/cordis'
+import type { Context } from '@alego/cordis'
 import TurndownService from 'turndown'
 import { gfm } from '@joplin/turndown-plugin-gfm'
-import { defineTool } from '@deepseek-ai/dsh-tools'
-import type { GenericCallView, JsonValue, ToolResult, WebFetchResultView } from '@deepseek-ai/dsh-tools'
-import type { WebFetchBody, WebFetchResult } from '@deepseek-ai/dsh-web'
-import { assertNever } from '@deepseek-ai/dsh-llm'
-import type {} from '@deepseek-ai/dsh-system-prompt'
+import { defineTool } from '@alego/tools'
+import type { GenericCallView, JsonValue, ToolResult, WebFetchResultView } from '@alego/tools'
+import type { WebFetchBody, WebFetchResult } from '@alego/web'
+import { assertNever } from '@alego/llm'
+import type {} from '@alego/system-prompt'
 
 /**
  * The shared HTML→markdown converter: turndown over its bundled domino DOM,
@@ -80,7 +80,7 @@ turndown.addRule('tableRowWithoutSpanExpansion', {
  * Validate value constraints the schema DSL can't express: a non-blank `url`.
  * Throws a plain `Error` otherwise. No timeout parameter — the tool-call budget
  * is deployment policy declared via `fetchTimeoutMs` config and enforced by
- * `@deepseek-ai/dsh-tool-call-timeout-policy`, not a model argument.
+ * `@alego/tool-call-timeout-policy`, not a model argument.
  *
  * @param args - the schema-validated `web_fetch` arguments.
  * @returns the arguments as the seam's request fields.
@@ -422,7 +422,7 @@ export function presentFetchResult(args: { url: string }, result: ToolResult): W
  * @param ctx - context whose `tools` and `systemPrompt` registries receive the
  *   registrations; both are effect-scoped and unregister on plugin dispose.
  * @param timeoutMs - the cooperative tool-call budget (ms) attached as the tool's
- *   `ToolDefinition.timeoutMs` for `@deepseek-ai/dsh-tool-call-timeout-policy` to enforce.
+ *   `ToolDefinition.timeoutMs` for `@alego/tool-call-timeout-policy` to enforce.
  * @param maxOutputChars - cap on the complete rendered tool output (see
  *   {@link formatFetchOutput}) and on source characters converted synchronously.
  */

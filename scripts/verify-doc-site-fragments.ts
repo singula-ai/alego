@@ -106,7 +106,7 @@ export function inspectSiteFragments(distRoot: string): SiteFragmentReport {
     }
   }
 
-  const origin = 'https://dsh-docs.invalid'
+  const origin = 'https://alego-docs.invalid'
   const broken: BrokenSiteFragment[] = []
   let checked = 0
   for (const page of pages) {

@@ -21,16 +21,16 @@ wheels = [
 ]
 
 [[package]]
-name = "deepseek-harness-runtime-bin"
+name = "alego-runtime-bin"
 version = "0.0.0.dev0"
 source = { editable = "../sdk-runtime" }
 
 [[package]]
-name = "deepseek-harness-sdk"
+name = "alego-sdk"
 version = "0.0.0.dev0"
 source = { editable = "." }
 dependencies = [
-    { name = "deepseek-harness-runtime-bin" },
+    { name = "alego-runtime-bin" },
     { name = "pydantic" },
 ]
 
@@ -41,7 +41,7 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "deepseek-harness-runtime-bin", editable = "../sdk-runtime" },
+    { name = "alego-runtime-bin", editable = "../sdk-runtime" },
     { name = "pydantic", specifier = ">=2.12,<3" },
 ]
 

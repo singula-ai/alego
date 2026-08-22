@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write
-2026-07-21-tui-no-banner.md: bfe78b2ba958193cc7bfe483b17faf5ae27eb4bb
-2026-07-21-tui-no-banner.zh.md: c92ad46d4176ec0444e5db766350c4e74c137645
+2026-07-21-tui-no-banner.md: cc8808f8258f075463db46f10828f7299609adee
+2026-07-21-tui-no-banner.zh.md: 8eae0bd052b863607163c4ece9846f799a4a2d9f

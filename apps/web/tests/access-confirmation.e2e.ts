@@ -28,7 +28,7 @@ describe('web e2e: Full access confirmation', () => {
     // CI uses Playwright's pinned browser. A developer may point this one
     // scenario at an installed Chromium when the matching browser download
     // is temporarily unavailable.
-    const executablePath = process.env.DSH_PLAYWRIGHT_EXECUTABLE_PATH
+    const executablePath = process.env.ALEGO_PLAYWRIGHT_EXECUTABLE_PATH
     browser = await chromium.launch(executablePath === undefined ? {} : { executablePath })
     // Keep the Chinese surface via {@link ZH_BROWSER_LOCALE}: the golden pins
     // the actual registered dictionary rather than a test-local translation

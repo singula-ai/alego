@@ -6,9 +6,9 @@ Status: implemented
 
 ## 问题
 
-`dsh` 交付了两棵完整的配置树，其中有 43 个共享配置项。`apps/cli/cordis.yml` 以 74 个平铺配置项组合 web surface，而 TUI 启动的是 `examples/tui-agent/cordis.yml`——其中单独一行 `@deepseek-ai/dsh-tui-demo` 挂载了十二个插件，并把它们的配置重新声明为自己那份二十个键、仅作透传的 `Config`。
+`alego` 交付了两棵完整的配置树，其中有 43 个共享配置项。`apps/cli/cordis.yml` 以 74 个平铺配置项组合 web surface，而 TUI 启动的是 `examples/tui-agent/cordis.yml`——其中单独一行 `@alego/tui-demo` 挂载了十二个插件，并把它们的配置重新声明为自己那份二十个键、仅作透传的 `Config`。
 
-这两份文件都名不副实。`examples/tui-agent` 并不是示例：`apps/cli/src/tui.ts` 把它硬编码为产品的默认配置；它还拥有 TUI 的 PTY 冒烟测试、八个终端快照场景，以及被 `cordis-agent` 叶节点 import 的 PTY harness。`dsh-tui-demo` 也不是 demo——它就是应用本身，由交付的二进制从 `packages/examples/` 中挂载。
+这两份文件都名不副实。`examples/tui-agent` 并不是示例：`apps/cli/src/tui.ts` 把它硬编码为产品的默认配置；它还拥有 TUI 的 PTY 冒烟测试、八个终端快照场景，以及被 `cordis-agent` 叶节点 import 的 PTY harness。`alego-tui-demo` 也不是 demo——它就是应用本身，由交付的二进制从 `packages/examples/` 中挂载。
 
 真正决定性的问题是重复。43 个共享配置项中，38 个逐字节相同，5 个因各 surface 的正当理由而不同；因此每次能力改动都必须改两处，而且可能无声漂移。该组合包还反转了一个默认值：`composeTuiApp` 读取 `config.goals ?? {}`，于是交付的 TUI 挂载了 goals、`tool-goal`、`goal-round-driver` 和 `/goal`——尽管没有任何配置键要求它们。
 
@@ -18,11 +18,11 @@ Status: implemented
 
 `apps/cli/config/base.cordis.yml` 持有两个 surface 都会挂载的 43 个配置项。`apps/cli/config/tui.cordis.yml` 与 `apps/cli/config/web.cordis.yml` 是 **patch 列表**，不是配置树：各自声明少数取值因 surface 而异的配置项，并 insert 自己的配置项。启动器只 include base 一次，并把每个 overlay 作为**同一** include 层级上的平级 patch 列表应用——因为 include patch 不会跨越 include 边界，把 overlay 堆叠成嵌套 include 会使其静默地无法触达 base 配置项。
 
-优先级即列表顺序，逐配置项后写者胜：base，然后是 surface overlay，接着是 `--config` overlay 或个人 `~/.dsh/config.yaml`，最后是启动器自身的 flag 与 profile patch。
+优先级即列表顺序，逐配置项后写者胜：base，然后是 surface overlay，接着是 `--config` overlay 或个人 `~/.alego/config.yaml`，最后是启动器自身的 flag 与 profile patch。
 
 `--config <path>` 现在应用一个 overlay 来**取代**个人 overlay，因此 demo 或测试用的树绝不会继承用户的提供方与 model。`--config-replace <path>` 则把某个文件作为整棵树启动，同时绕过 base、surface overlay 与个人 overlay；这正是旧 `--config` 的行为，所以像 `examples/web-cordis` 这样的树改用了新 flag。两个 flag 都会在 `/resume` 的 execve 交接中保留，否则恢复时会静默更换 agent（智能体）。
 
-patch 会整体替换目标配置项的 `config` 而不合并。因此，取值因 surface 而异的配置项住在 overlay 中，绝不住在 base 里，从而没有任何配置项会被三层同时 patch。会话身份根本不能经由配置键传递——它迁移到了 `dsh-agent-loop` 的 `CONFIGURED_AGENT_IDENTITIES_KEY`，正如启动器持有身份的记录所述。
+patch 会整体替换目标配置项的 `config` 而不合并。因此，取值因 surface 而异的配置项住在 overlay 中，绝不住在 base 里，从而没有任何配置项会被三层同时 patch。会话身份根本不能经由配置键传递——它迁移到了 `alego-agent-loop` 的 `CONFIGURED_AGENT_IDENTITIES_KEY`，正如启动器持有身份的记录所述。
 
 `examples/tui-agent`、`examples/cordis-agent`、`examples/code-mode` 与 `packages/examples/tui-demo` 均被删除。TUI 测试迁往 `apps/cli/tests/`，cordis 工具集的 e2e 迁入 `packages/extensions/tool-cordis/tests/`，受支持的 Code Mode demo 则保留为 `examples/acp-agent/code-mode.cordis.yml` 中的 ACP（Agent Client Protocol）overlay。
 
@@ -38,11 +38,11 @@ patch 会整体替换目标配置项的 `config` 而不合并。因此，取值�
 
 ## 影响
 
-指名 `@deepseek-ai/dsh-tui-demo` 或 patch `tui-agent` 配置项的 overlay 或 `--config` 树将不再可解析。overlay 现在要 patch 拥有对应键的那一行：模型路由在 `agent-loop`，人设在 `system-prompt`，呈现设置在 `tui`。
+指名 `@alego/tui-demo` 或 patch `tui-agent` 配置项的 overlay 或 `--config` 树将不再可解析。overlay 现在要 patch 拥有对应键的那一行：模型路由在 `agent-loop`，人设在 `system-prompt`，呈现设置在 `tui`。
 
 若某个 patch 的 `id` 不匹配任何配置项，它仍为空操作而不报错。这是有意为之：同一份个人 overlay 会跨 surface 共用，而 `insert` 配置项按设计本就不匹配任何目标，因此仅在 `web` 下存在的配置项不能让 TUI 启动失败。
 
-`dsh web` 新增 `--config`，作为一份额外 overlay 传入 `AppCLIEntry`。Web 保留沙箱化 Bash 与文件系统提供方，以及审批、权限预设、目录选择和浏览器权限界面；覆盖层会禁用共享的本地提供方，因为补丁可以禁用条目但不能删除条目。TUI 查询索引使用每个进程独有的临时数据库，因为 SQLite 后端要求单写入者所有权。该索引是每个进程重新构建的可丢弃派生数据；`/resume` 直接列出底层语料，不依赖索引复用。`AppCLIEntry` 在为自身 patch 合并恢复配置项默认值时会同时读取 base 与其 surface overlay，因为 flag 覆盖必须保留同一配置项上 overlay 的其他字段。
+`alego web` 新增 `--config`，作为一份额外 overlay 传入 `AppCLIEntry`。Web 保留沙箱化 Bash 与文件系统提供方，以及审批、权限预设、目录选择和浏览器权限界面；覆盖层会禁用共享的本地提供方，因为补丁可以禁用条目但不能删除条目。TUI 查询索引使用每个进程独有的临时数据库，因为 SQLite 后端要求单写入者所有权。该索引是每个进程重新构建的可丢弃派生数据；`/resume` 直接列出底层语料，不依赖索引复用。`AppCLIEntry` 在为自身 patch 合并恢复配置项默认值时会同时读取 base 与其 surface overlay，因为 flag 覆盖必须保留同一配置项上 overlay 的其他字段。
 
 ## 验证
 

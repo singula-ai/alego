@@ -35,6 +35,6 @@ A consumer can no longer filter the canonical log for standalone `usage` or step
 
 ## Implementation note
 
-**Format version.** This changes persisted events, but the pre-release session format remains pinned at `0` and rejects any other version without migration. `dsh-session` owns the constant used by writers and load validation. Monotonic format versions begin at the first release.
+**Format version.** This changes persisted events, but the pre-release session format remains pinned at `0` and rejects any other version without migration. `alego-session` owns the constant used by writers and load validation. Monotonic format versions begin at the first release.
 
 Usage is now observed on `assistant/message.usage`; an operational error's step on `turn/end.reason` for `kind: 'error'`. `agent/error` + logging are unchanged for live diagnostics.

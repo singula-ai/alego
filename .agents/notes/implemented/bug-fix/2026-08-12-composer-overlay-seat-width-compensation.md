@@ -12,9 +12,9 @@ The trajectory table made that cost visible: its full-width row divider lines st
 
 ## Decision
 
-The reservation now belongs to Chat alone. The overlay branch declares `scrollbar-gutter: auto`, so the view's content spans the full column; the overlay composer seat (absolutely positioned against the padding box) gives back the bar's width with `right: var(--dsh-scrollbar-width)`, so the input card still measures the same width as Chat's seat and does not move between tabs.
+The reservation now belongs to Chat alone. The overlay branch declares `scrollbar-gutter: auto`, so the view's content spans the full column; the overlay composer seat (absolutely positioned against the padding box) gives back the bar's width with `right: var(--alego-scrollbar-width)`, so the input card still measures the same width as Chat's seat and does not move between tabs.
 
-The compensation value is not a literal: ui-theme's scrollbar.css defines `--dsh-scrollbar-width` (8px on the WebKit path) beside the `::-webkit-scrollbar` rule it mirrors, and the seat reads that variable. The scrollbar-styles spec pairs the variable with the mirrored rule and with the compensation consumer, so a change to the sheet's bar width without the variable — or to the variable without the consumer — fails the gate, not just review.
+The compensation value is not a literal: ui-theme's scrollbar.css defines `--alego-scrollbar-width` (8px on the WebKit path) beside the `::-webkit-scrollbar` rule it mirrors, and the seat reads that variable. The scrollbar-styles spec pairs the variable with the mirrored rule and with the compensation consumer, so a change to the sheet's bar width without the variable — or to the variable without the consumer — fails the gate, not just review.
 
 ## Alternatives considered
 
@@ -32,7 +32,7 @@ The compensation value is not a literal: ui-theme's scrollbar.css defines `--dsh
 - Overlay views (trajectory) span the full column; the trajectory ledger's divider lines reach the pane edge.
 - The input card still holds one horizontal position across the Chat and Trajectory tabs, now by two mechanisms instead of one: Chat reserves, the overlay seat compensates.
 - Chat reserves the engine-resolved width while the overlay seat compensates a fixed 8px. Where the two differ — the Firefox path resolves `scrollbar-width: thin` per platform, and the e2e runs only on Chromium — the card drifts by half the difference on tab switch. Accepted residual cost, recorded here rather than asserted away: no measurement of the Firefox thin width on the target platforms exists in this change.
-- `--dsh-scrollbar-width` becomes a public ui-theme variable read outside ui-theme; the scrollbar-styles spec pairs it with the mirrored `::-webkit-scrollbar` width rule and with the compensation consumer, closing the indirection-gate gap the variable would otherwise leave.
+- `--alego-scrollbar-width` becomes a public ui-theme variable read outside ui-theme; the scrollbar-styles spec pairs it with the mirrored `::-webkit-scrollbar` width rule and with the compensation consumer, closing the indirection-gate gap the variable would otherwise leave.
 
 ## Testing
 

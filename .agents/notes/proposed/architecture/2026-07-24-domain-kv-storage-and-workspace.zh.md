@@ -21,23 +21,23 @@ host 侧唯一的持久化面是 session 事件日志（`packages/session/sessio
 
 | 包 | 路径 | ctx 面 | 本期 |
 | --- | --- | --- | --- |
-| `@deepseek-ai/dsh-storage` | `packages/storage/storage/` | `ctx.storage`（枢纽） | ✓ |
-| `@deepseek-ai/dsh-storage-json` | `packages/storage/storage-json/` | 注册后端 `json` | ✓ |
-| `@deepseek-ai/dsh-storage-sqlite` | `packages/storage/storage-sqlite/` | 注册后端 `sqlite` | ✓ |
-| `@deepseek-ai/dsh-storage-domain` | `packages/storage/storage-domain/` | 挂载 `ctx.storage.domain` | ✓ |
-| `@deepseek-ai/dsh-workspace` | `packages/workspace/workspace/` | `ctx.workspaceRegistry` | ✓ |
+| `@alego/storage` | `packages/storage/storage/` | `ctx.storage`（枢纽） | ✓ |
+| `@alego/storage-json` | `packages/storage/storage-json/` | 注册后端 `json` | ✓ |
+| `@alego/storage-sqlite` | `packages/storage/storage-sqlite/` | 注册后端 `sqlite` | ✓ |
+| `@alego/storage-domain` | `packages/storage/storage-domain/` | 挂载 `ctx.storage.domain` | ✓ |
+| `@alego/workspace` | `packages/workspace/workspace/` | `ctx.workspaceRegistry` | ✓ |
 | `SessionPersistence.delete` 扩面 + 级联删编排 | `packages/session/*` | 既有 seam 新方法 | ✗ future work（本期不动 session 侧） |
 | `workspace.*` / `session.delete` RPC、GUI 接线、boot 组装 | — | — | ✗ 下期 |
 
-（workspace 放独立组不放 `packages/host/`：host 组命名规则要求 `dsh-host-*` 前缀，而包名定为 `dsh-workspace`；且 workspace 实体是领域概念，不绑定 host 装配层。与既有 `agent-instructions` 包无关——那是 AGENTS.md 指令加载器。）
+（workspace 放独立组不放 `packages/host/`：host 组命名规则要求 `alego-host-*` 前缀，而包名定为 `alego-workspace`；且 workspace 实体是领域概念，不绑定 host 装配层。与既有 `agent-instructions` 包无关——那是 AGENTS.md 指令加载器。）
 
-依赖方向：`dsh-workspace` → `dsh-domain` → `dsh-storage` ← 两后端。`dsh-workspace` 另依赖 `ctx.sessionPersistence` 的只读面（attach 的 cwd 校验读 session header；服务缺席时 attach 直接拒绝——无法校验即不写账）。session 删除相关的 `ctx.sessions` 运行中检查随级联删一并归入 future work。
+依赖方向：`alego-workspace` → `alego-domain` → `alego-storage` ← 两后端。`alego-workspace` 另依赖 `ctx.sessionPersistence` 的只读面（attach 的 cwd 校验读 session header；服务缺席时 attach 直接拒绝——无法校验即不写账）。session 删除相关的 `ctx.sessions` 运行中检查随级联删一并归入 future work。
 
-### `dsh-storage`：存储枢纽
+### `alego-storage`：存储枢纽
 
-纯注册枢纽，自身不做 IO，无 Config。`Storage` 服务挂 `ctx.storage`，两个面：`backend`（`BackendRegistry`：`register(name, backend)` 返回 disposer、重名 throw；`get(name)` 未知名 throw `backend-not-found`）与数据形式挂载（`mount(form, facility)` 配 merge-extensible 的 `StorageForms` map，`dsh-domain` merge 进 `domain` 键；未挂载访问 throw `form-not-mounted`）。签名正文见 `packages/storage/storage/src/index.ts` 与 `src/registry.ts`。
+纯注册枢纽，自身不做 IO，无 Config。`Storage` 服务挂 `ctx.storage`，两个面：`backend`（`BackendRegistry`：`register(name, backend)` 返回 disposer、重名 throw；`get(name)` 未知名 throw `backend-not-found`）与数据形式挂载（`mount(form, facility)` 配 merge-extensible 的 `StorageForms` map，`alego-domain` merge 进 `domain` 键；未挂载访问 throw `form-not-mounted`）。签名正文见 `packages/storage/storage/src/index.ts` 与 `src/registry.ts`。
 
-**多后端同时挂载**；域→后端的选择是 `dsh-domain` 的配置（见下），不是全局二选一。disposer 语义 = 从表中摘名；后端自身的 close 由后端包的 effect 闭包负责，顺序先摘名后 close。
+**多后端同时挂载**；域→后端的选择是 `alego-domain` 的配置（见下），不是全局二选一。disposer 语义 = 从表中摘名；后端自身的 close 由后端包的 effect 闭包负责，顺序先摘名后 close。
 
 一个后端是一个**介质 owner**（一棵文件树 root / 一个 db 文件），通过**数据形状 facet** 暴露原语——本期只有 `kv`；session 迁移期加 `log`（见迁移节）。facet 是可选成员，缺席即该后端不支持该形状，解析时 fail loud。`kv` facet 的原语面：`open(descriptor)`（descriptor = 名字/版本/表名清单/有无 global，名字与表名限 `^[a-z][a-z0-9_]*$` 兼作文件名与 SQL 表名段）返回 unit，unit 提供 `loadAll` / `putRecord` / `deleteRecord`（缺 key 为 no-op）/ `setGlobal` / `close`（幂等）；值对后端是不透明 JSON。规范正文（含逐方法 JSDoc）在 `packages/storage/storage/src/backend.ts`。
 
@@ -53,7 +53,7 @@ host 侧唯一的持久化面是 session 事件日志（`packages/session/sessio
 
 错误词汇是带 code 判别的 `StorageError`，码表：`backend-not-found` / `form-not-mounted` / `duplicate-backend` / `duplicate-mount` / `version-mismatch` / `malformed-medium` / `closed`（`packages/storage/storage/src/error.ts`）。
 
-### `dsh-storage-json`
+### `alego-storage-json`
 
 Config 仅 `root`（必填无默认，schemastery）；apply 在 `ctx.effect()` 里注册后端 `json`，disposer 先摘名再 `backend.close()`。
 
@@ -71,7 +71,7 @@ Config 仅 `root`（必填无默认，schemastery）；apply 在 `ctx.effect()` 
 - 写入：任何一次写原语 = 内存态全量序列化 → temp 写 + fsync → rename 原子发布（Windows 变体照抄 session-persistence-jsonl 的 win32 路径）。内存态是权威，盘是投影。
 - `loadAll`：open 时整文件 parse；缺 `unit` 头、tables 非对象等 → `malformed-medium`。文件不存在 = 空单元，首写才落盘。
 
-### `dsh-storage-sqlite`
+### `alego-storage-sqlite`
 
 Config 为 `path`（必填，`':memory:'` 允许）+ `journalMode`（枚举，默认 `wal`）；apply 同 json，注册后端 `sqlite`。
 
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS "u_<unit>_<table>" (
 - unit 版本存 `units` 行，descriptor 不符 → `version-mismatch`。行粒度 document-per-row，保住按 key 精确落盘更新（为 session sidecar 这类高频点更新大表留路）；查询需求出现时 JSON1 直查 value 列。
 - 写原语单语句即原子，无跨语句事务需求（domain 层无跨表事务，见不做清单）。
 
-### `dsh-domain`：领域数据形式
+### `alego-domain`：领域数据形式
 
 单实现不抽象；消费方只依赖这层，不直接触后端。
 
@@ -190,7 +190,7 @@ export abstract class SessionPersistence extends Service {
 | 递归序自底向上（叶→根） | ——中途崩溃只留"子树删一半、祖先在"，重跑收敛，任何时刻无悬空 parent |
 | 级联中某 id 已不在盘上 | 跳过（幂等续删）；其余错误中止 |
 
-### `dsh-workspace`
+### `alego-workspace`
 
 包拥有 `WorkspaceId` brand，暴露 `ctx.workspaceRegistry`。记录 key 为生成的 uuid——path 不做 key：规范化会改写它，引用锚点必须稳定。
 
@@ -256,15 +256,15 @@ export class WorkspaceRegistry extends Service {
 
 ### 复用与 session 后端迁移展望
 
-**长期方向**：session-persistence 的 JSONL/SQLite 后端里"纯介质操作"下沉到 `dsh-storage` 后端（session 包不删，`SessionPersistence` seam 与 coordinator 语义不动；动的只是它们脚下的文件/db 操作层）。复用的动机：介质层全是文件系统操作、数据库调用与跨平台兼容的脏活（Windows 权限与原子发布变体、fsync 语义、独占建文件……），这些只应写一遍；业务语义（session 怎么 append、何时 append、append 什么）留在上层——而"底下这次 append 是否正常完成"（持久性/原子性/平台正确性）是底层的责任，责任界面就是 facet 原语的约定。为此后端接口按**介质 owner + 数据形状 facet** 设计：session 日志是仅追加流，与 KV 形状不同——强行统一进 KV 原语会两头变形，所以按 facet 分开（`kv` 本期、`log` 迁移期），介质与生命周期共享。
+**长期方向**：session-persistence 的 JSONL/SQLite 后端里"纯介质操作"下沉到 `alego-storage` 后端（session 包不删，`SessionPersistence` seam 与 coordinator 语义不动；动的只是它们脚下的文件/db 操作层）。复用的动机：介质层全是文件系统操作、数据库调用与跨平台兼容的脏活（Windows 权限与原子发布变体、fsync 语义、独占建文件……），这些只应写一遍；业务语义（session 怎么 append、何时 append、append 什么）留在上层——而"底下这次 append 是否正常完成"（持久性/原子性/平台正确性）是底层的责任，责任界面就是 facet 原语的约定。为此后端接口按**介质 owner + 数据形状 facet** 设计：session 日志是仅追加流，与 KV 形状不同——强行统一进 KV 原语会两头变形，所以按 facet 分开（`kv` 本期、`log` 迁移期），介质与生命周期共享。
 
 现状复用审计（迁移前就能看清的账）：
 
 | session-persistence 现有逻辑 | 归属 | 处置 |
 | --- | --- | --- |
-| JSONL：temp 写 + fsync + link/unlink 原子发布、0o700/0o600 权限、Windows 变体（win32.ts） | 纯介质 | 本期 `dsh-storage-json` 直接抄用（整文件原子覆写正是同一套）；迁移期成为共享实现 |
+| JSONL：temp 写 + fsync + link/unlink 原子发布、0o700/0o600 权限、Windows 变体（win32.ts） | 纯介质 | 本期 `alego-storage-json` 直接抄用（整文件原子覆写正是同一套）；迁移期成为共享实现 |
 | JSONL：逐行 append、首行 header 快读、zstd 逐帧压缩 | log 形状 | 留在原地；迁移期进 `log` facet |
-| SQLite：openDatabase（mkdir/独占建文件/PRAGMA 序列/user_version 检查） | 纯介质 | 本期 `dsh-storage-sqlite` 抄用——两处 openDatabase 已几乎逐行同构，本组是第三个使用者；先抄后提，提取放迁移期 |
+| SQLite：openDatabase（mkdir/独占建文件/PRAGMA 序列/user_version 检查） | 纯介质 | 本期 `alego-storage-sqlite` 抄用——两处 openDatabase 已几乎逐行同构，本组是第三个使用者；先抄后提，提取放迁移期 |
 | SQLite：events/sessions 表结构、同事务物化 | log 形状 | 留在原地；迁移期进 `log` facet |
 | coordinator（per-id 写链、懒物化、崩溃修复、flush 屏障） | session 语义 | 永不下沉——事件日志的领域逻辑，在 domain 层对应的是写串行链，各归各 |
 | encodeSegment（id 进路径转义） | 介质工具 | domain 侧 key 不进路径用不到；`log` facet（一 session 一文件）迁移时随之下沉 |

@@ -1,8 +1,8 @@
-# @deepseek-ai/dsh-tool-web
+# @alego/tool-web
 
 [English](README.md) | 中文
 
-面向模型的 web 工具套件 `web_search` 与 `web_fetch`，构建于 [web 能力 seam](../web/README.zh.md)（`ctx.web`）之上。它只负责面向模型的事项：工具名称、JSON Schema、snake_case 参数名称、提示词区段、结果数量上限、结果格式、HTML→markdown 呈现，以及 UI 呈现投影——`presentCall`、`presentResult`（以 `kind: 'search' | 'fetch'` 区分的 `card: 'web'` 结果卡片），以及承载有损渲染文本无法携带的结构化搜索来源或抓取摘要的 `output.presentationMeta`（见 [web-result-card Agent Note](../../../.agents/notes/implemented/feature/2026-07-30-web-result-card.zh.md)）。所有 web 访问都通过 `ctx.web`；该包绝不导入具体提供方。两个工具都不公开面向模型的超时：每个工具的协作式工具调用超时预算通过配置在此声明（`fetchTimeoutMs`／`searchTimeoutMs`，附加为 `ToolDefinition.timeoutMs`），由 [`@deepseek-ai/dsh-tool-call-timeout-policy`](../../guard/timeout-policy/README.zh.md)（`tools/execute` 包装层）强制执行。单项操作会转发 `exec.signal`；多查询搜索会把它与批次取消信号融合，使失败查询能够中止其余查询。
+面向模型的 web 工具套件 `web_search` 与 `web_fetch`，构建于 [web 能力 seam](../web/README.zh.md)（`ctx.web`）之上。它只负责面向模型的事项：工具名称、JSON Schema、snake_case 参数名称、提示词区段、结果数量上限、结果格式、HTML→markdown 呈现，以及 UI 呈现投影——`presentCall`、`presentResult`（以 `kind: 'search' | 'fetch'` 区分的 `card: 'web'` 结果卡片），以及承载有损渲染文本无法携带的结构化搜索来源或抓取摘要的 `output.presentationMeta`（见 [web-result-card Agent Note](../../../.agents/notes/implemented/feature/2026-07-30-web-result-card.zh.md)）。所有 web 访问都通过 `ctx.web`；该包绝不导入具体提供方。两个工具都不公开面向模型的超时：每个工具的协作式工具调用超时预算通过配置在此声明（`fetchTimeoutMs`／`searchTimeoutMs`，附加为 `ToolDefinition.timeoutMs`），由 [`@alego/tool-call-timeout-policy`](../../guard/timeout-policy/README.zh.md)（`tools/execute` 包装层）强制执行。单项操作会转发 `exec.signal`；多查询搜索会把它与批次取消信号融合，使失败查询能够中止其余查询。
 
 每个工具独立注册；只需要其中一个工具的产品可以通过配置禁用另一个（`{ search: false }`／`{ fetch: false }`）。仅当抓取也通过配置启用时，搜索指引才会提及 `web_fetch`；仅启用搜索的组合则会要求模型使用返回的 snippet 并引用其 URL。
 
@@ -11,7 +11,7 @@
 | 工具 | 参数 | 行为 |
 |---|---|---|
 | `web_search` | `queries`（必填 string[]） | 用于发现信息。返回可选答案与来源 URL。它会并发执行 1 至 `searchMaxQueries` 个不同搜索，按轮询顺序合并来源，再应用组合后的 `searchMaxResults` 上限。单元素数组执行一次搜索。完全相同的查询只执行一次。任何搜索失败都会中止批次中的其余搜索；批次结算完毕后调用才返回错误。两个上限都不面向模型。 |
-| `web_fetch` | `url`（string） | 获取特定 URL。HTML 主体渲染为 markdown（turndown，带 GFM 表格／删除线）；文本主体原样通过。非 2xx 状态会报告，而非报错。工具调用超时是部署策略（`dsh-tool-call-timeout-policy`），不是模型参数。 |
+| `web_fetch` | `url`（string） | 获取特定 URL。HTML 主体渲染为 markdown（turndown，带 GFM 表格／删除线）；文本主体原样通过。非 2xx 状态会报告，而非报错。工具调用超时是部署策略（`alego-tool-call-timeout-policy`），不是模型参数。 |
 
 两个工具都选择并发调度，因为提供方读取会返回内容，不会修改父 agent（智能体）的状态。
 
@@ -29,11 +29,11 @@
 | `searchTimeoutMs` | `30000` | `web_search` 的协作式工具调用超时预算（ms）。 |
 | `fetchMaxOutputChars` | `200000` | 同步转换的源字符数与单次完整 `web_fetch` 输出的上限（状态头、渲染后的主体与页脚合并计算）；主体被截断时，在能容纳的情况下附带截断提示。 |
 
-`searchMaxQueries` 在完全相同的字符串去重前限制可接受数组、提供方请求扇出与组合后的提供方答案增长；校验会在任何搜索开始前拒绝超限数组，随后分发只保留每个查询第一次出现的位置。该设置与各提供方自己的 `maxUses` 等控制项共同构成产品的搜索预算；通用 seam 不公开提供方内部的原生搜索计数。`fetchTimeoutMs`／`searchTimeoutMs` 声明每个工具的协作式超时预算（附加为 `ToolDefinition.timeoutMs`），由 [`@deepseek-ai/dsh-tool-call-timeout-policy`](../../guard/timeout-policy/README.zh.md) 强制执行；面向模型的 schema 不公开超时参数。`fetchMaxOutputChars` 同时限制同步转换工作量和完整渲染结果：只转换至多该数量的源字符，随后对状态头、转换后的前缀和截断提示合并设限。默认值为本地提供方的 100,000 字符主体上限留出余量，但渲染膨胀仍可能使最终上限截断结果。
+`searchMaxQueries` 在完全相同的字符串去重前限制可接受数组、提供方请求扇出与组合后的提供方答案增长；校验会在任何搜索开始前拒绝超限数组，随后分发只保留每个查询第一次出现的位置。该设置与各提供方自己的 `maxUses` 等控制项共同构成产品的搜索预算；通用 seam 不公开提供方内部的原生搜索计数。`fetchTimeoutMs`／`searchTimeoutMs` 声明每个工具的协作式超时预算（附加为 `ToolDefinition.timeoutMs`），由 [`@alego/tool-call-timeout-policy`](../../guard/timeout-policy/README.zh.md) 强制执行；面向模型的 schema 不公开超时参数。`fetchMaxOutputChars` 同时限制同步转换工作量和完整渲染结果：只转换至多该数量的源字符，随后对状态头、转换后的前缀和截断提示合并设限。默认值为本地提供方的 100,000 字符主体上限留出余量，但渲染膨胀仍可能使最终上限截断结果。
 
 ```yaml
 - id: tool-web
-  name: '@deepseek-ai/dsh-tool-web'
+  name: '@alego/tool-web'
 ```
 
 ## 稳定注册
@@ -80,7 +80,7 @@ Use the web_fetch tool to retrieve the content of a specific HTTP(S) URL (for ex
 
 #### 模型看到的内容
 
-模型会看到生成的 [`web_search` 与 `web_fetch` schema](../../../docs/tool-catalog.zh.md#deepseek-aidsh-tool-web)。结果数量与超时预算属于部署设置，不是模型参数。
+模型会看到生成的 [`web_search` 与 `web_fetch` schema](../../../docs/tool-catalog.zh.md#alegotool-web)。结果数量与超时预算属于部署设置，不是模型参数。
 
 #### Token 影响
 

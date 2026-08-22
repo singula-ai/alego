@@ -355,9 +355,9 @@ const KIND_EXAMPLE: Readonly<Record<string, readonly string[]>> = {
   chain: ['select: owner => null'],
 }
 
-/** Drop the `@deepseek-ai/dsh-` prefix so rows stay readable. */
+/** Drop the `@alego/` prefix so rows stay readable. */
 function shortPackage(name: string): string {
-  return name.replace('@deepseek-ai/dsh-', '')
+  return name.replace('@alego/', '')
 }
 
 /** Truncate an over-long declaration, naming the truncation. */
@@ -416,7 +416,7 @@ export function renderClientCatalog(entries: readonly SlotEntry[]): string {
     ' * mounted for the seat to exist. Data only — this module is the one legitimate',
     ' * meeting point of the two planes, so it carries strings, never client imports.',
     ' *',
-    ' * @module @deepseek-ai/dsh-cordis-client-runner/client/slot-catalog',
+    ' * @module @alego/cordis-client-runner/client/slot-catalog',
     ' */',
     '',
     '/* jscpd:ignore-start */',

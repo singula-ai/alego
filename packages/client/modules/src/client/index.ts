@@ -8,9 +8,9 @@
  * its bootstrap export, which constructs the system and retains the same
  * exports for this package's graph row. The plugin face only enrolls that
  * pre-existing instance by providing it as `ctx.modules`.
- * @module @deepseek-ai/dsh-client-modules/client
+ * @module @alego/client-modules/client
  */
-import type { Context } from '@deepseek-ai/cordis'
+import type { Context } from '@alego/cordis'
 import { ClientModuleSystem } from './system.ts'
 import { parseBootManifest } from './manifest.ts'
 import type {
@@ -22,7 +22,7 @@ export { parseBootManifest, stripClientSuffix } from './manifest.ts'
 export type {
   BootManifest, BootModuleRow, BootPluginRow, ClientBootstrapModule, ClientBundleRegistration,
   ClientModuleCreateOptions, ClientModuleLoader, ClientModuleLoaderTarget, ClientModuleRecord,
-  ClientModuleSystemOptions, DshWindow,
+  ClientModuleSystemOptions, AlegoWindow,
   WebBootEntry, WebBootGraph,
 } from './manifest.ts'
 
