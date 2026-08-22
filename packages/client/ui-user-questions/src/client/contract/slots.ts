@@ -6,12 +6,12 @@
  * cancelled error encoding, receipt checks — lives HERE, with the package
  * that consumes it.
  */
-import type { PropsLocale, PropsRuntime } from '@alego/client-ui-slots'
+import type { PropsLocale, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
 // Also pulls ui-conversation's SlotMap merge (the 'conversation.composer'
 // entry) into every program that sees this contract, so PropsRuntime resolves.
-import type {} from '@alego/client-ui-conversation/client'
-import type { PendingWait } from '@alego/client-runtime/client'
-import type { QuestionResponsePayload } from '@alego/api-remotes/client'
+import type {} from '@singula-ai/alego-client-ui-conversation/client'
+import type { PendingWait } from '@singula-ai/alego-client-runtime/client'
+import type { QuestionResponsePayload } from '@singula-ai/alego-api-remotes/client'
 
 /** The pending question carrier the owner dispatches into the composer slot. */
 export type QuestionWait = PendingWait<'question'>

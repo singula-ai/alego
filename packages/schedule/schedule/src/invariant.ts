@@ -1,14 +1,14 @@
 /**
  * Package-owned strict Schedule stream invariant.
- * @module @alego/schedule/invariant
+ * @module @singula-ai/alego-schedule/invariant
  */
 
-import type { Context } from '@alego/cordis'
-import type { Session, SessionEvent } from '@alego/session'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 import { foldScheduleEvents, ScheduleLogError } from './domain.ts'
 
-const PACKAGE_NAME = '@alego/schedule'
+const PACKAGE_NAME = '@singula-ai/alego-schedule'
 
 /** Cordis invariant-companion plugin name. */
 export const name = 'tool-schedule-invariant'

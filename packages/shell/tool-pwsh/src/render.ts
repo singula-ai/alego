@@ -7,12 +7,12 @@
  * infrastructure failures (spawn errors, aborts) surface as isError
  * results.
  *
- * @module @alego/tool-pwsh/render
+ * @module @singula-ai/alego-tool-pwsh/render
  */
 
-import type { ShellProcessRead, ShellSandboxInfo, CollectedOutput } from '@alego/shell'
-import type { SandboxMode } from '@alego/sandbox'
-import { escalationHintMarker, sandboxDenialMarker } from '@alego/sandbox'
+import type { ShellProcessRead, ShellSandboxInfo, CollectedOutput } from '@singula-ai/alego-shell'
+import type { SandboxMode } from '@singula-ai/alego-sandbox'
+import { escalationHintMarker, sandboxDenialMarker } from '@singula-ai/alego-sandbox'
 
 /* jscpd:ignore-start -- deliberate twin of alego-tool-bash/render.ts (Agent Note). */
 

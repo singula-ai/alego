@@ -1,5 +1,5 @@
-import type { SessionEvent } from '@alego/session/types'
-import type {} from '@alego/tools/types'
+import type { SessionEvent } from '@singula-ai/alego-session/types'
+import type {} from '@singula-ai/alego-tools/types'
 import type {
   ConversationNode, RunningToolCall, ToolCallBlock, ToolResultNode,
 } from './conversation.ts'

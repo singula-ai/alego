@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { SessionId } from '@alego/session'
-import type { SessionEvent, SessionEventMap, SessionEventType } from '@alego/session'
+import { SessionId } from '@singula-ai/alego-session'
+import type { SessionEvent, SessionEventMap, SessionEventType } from '@singula-ai/alego-session'
 import {
   applyTeamEvent,
   emptyTeamFoldState,

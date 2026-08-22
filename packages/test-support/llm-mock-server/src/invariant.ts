@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/llm-mock-server`.
- * @module @alego/llm-mock-server/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-llm-mock-server`.
+ * @module @singula-ai/alego-llm-mock-server/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/llm-mock-server'
+const PACKAGE_NAME = '@singula-ai/alego-llm-mock-server'
 
 /** Cordis companion plugin name. */
 export const name = 'llm-mock-server-invariant'

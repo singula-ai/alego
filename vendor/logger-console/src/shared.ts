@@ -1,6 +1,6 @@
-import { Context, Exporter, Formatter, Logger, Message } from '@alego/cordis'
-import { Time } from '@alego/cosmokit'
-import z from '@alego/schemastery'
+import { Context, Exporter, Formatter, Logger, Message } from '@singula-ai/cordis'
+import { Time } from '@singula-ai/cosmokit'
+import z from '@singula-ai/schemastery'
 
 /** Terminal color support level compatible with supports-color. */
 export type ColorSupportLevel = 0 | 1 | 2 | 3

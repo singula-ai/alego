@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { PROTOCOL_VERSION } from '@agentclientprotocol/sdk'
-import { CallId } from '@alego/llm'
-import type { Agent } from '@alego/agent'
-import { SessionId } from '@alego/session'
-import ApprovalService, { type ApprovalRequest } from '@alego/user-approval'
+import { CallId } from '@singula-ai/alego-llm'
+import type { Agent } from '@singula-ai/alego-agent'
+import { SessionId } from '@singula-ai/alego-session'
+import ApprovalService, { type ApprovalRequest } from '@singula-ai/alego-user-approval'
 import { makeBridgeHarness, type BridgeHarness } from './harness.ts'
 
 describe('ACP machine permission policy', () => {

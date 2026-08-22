@@ -1,4 +1,4 @@
-# @alego/tool-lsp
+# @singula-ai/alego-tool-lsp
 
 English | [中文](README.zh.md)
 
@@ -46,7 +46,7 @@ Prefix-stable while the plugin scope and guidance text are unchanged; activation
 
 #### What the model sees
 
-The model sees the generated [`lsp` schema](../../../docs/tool-catalog.md#alegotool-lsp).
+The model sees the generated [`lsp` schema](../../../docs/tool-catalog.md#singula-aialego-tool-lsp).
 
 #### Token effect
 

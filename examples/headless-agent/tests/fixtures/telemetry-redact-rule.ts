@@ -1,4 +1,4 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 
 /**
  * Deployment-style redaction rule for the telemetry e2e: scrubs the fixture

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import Loader from '@alego/cordis-plugin-loader'
+import Loader from '@singula-ai/cordis-plugin-loader'
 import * as jsonrpc from '../src/index.ts'
 
 /**

@@ -14,13 +14,13 @@
  * armed claim folds with zero delta because bounded state cannot reconstruct
  * the replaced range; this preserves replay at the cost of possible drift.
  *
- * @module @alego/token-meter/surface-projection
+ * @module @singula-ai/alego-token-meter/surface-projection
  */
 
-import { deriveEventMessage, isSurfaceEvent } from '@alego/session'
-import type { SessionEvent } from '@alego/session'
+import { deriveEventMessage, isSurfaceEvent } from '@singula-ai/alego-session'
+import type { SessionEvent } from '@singula-ai/alego-session'
 // Type-only: the `compaction/*` SessionEventMap merges (shadow-price events).
-import type {} from '@alego/compaction'
+import type {} from '@singula-ai/alego-compaction'
 import { estimateMessage } from './estimate.ts'
 
 /**

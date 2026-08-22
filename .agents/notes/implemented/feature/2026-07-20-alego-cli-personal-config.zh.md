@@ -14,9 +14,9 @@ Status: implemented
 
 两个耦合的部分，与 `alego web` PR（#443）提出的 `apps/` 装配层对齐：
 
-**`alego` CLI（命令行界面；`apps/cli`，npm 名 `@alego/cli`）。** `apps/*` 是位于 `packages/*` 库之上的产品组装层。一个 bin 负责分发默认交互式 TUI、`-p`/`--prompt` 无头轮次和 `web` 界面。TUI 以调用目录为 workspace，启动 `examples/tui-agent/cordis.yml`（或 `--config` 指定的配置）。在源码检出中，根目录的 `pnpm alego` 脚本不执行构建，直接使用 tsx 的 ESM hook 运行同一入口；运行方式由[源码启动决策](../architecture/2026-07-29-alego-source-launch-tsx-esm.zh.md)规定，产物生成由[源码启动与构建分离决策](../simplification/2026-08-12-separate-source-launch-from-build.zh.md)规定。
+**`alego` CLI（命令行界面；`apps/cli`，npm 名 `@singula-ai/alego`）。** `apps/*` 是位于 `packages/*` 库之上的产品组装层。一个 bin 负责分发默认交互式 TUI、`-p`/`--prompt` 无头轮次和 `web` 界面。TUI 以调用目录为 workspace，启动 `examples/tui-agent/cordis.yml`（或 `--config` 指定的配置）。在源码检出中，根目录的 `pnpm alego` 脚本不执行构建，直接使用 tsx 的 ESM hook 运行同一入口；运行方式由[源码启动决策](../architecture/2026-07-29-alego-source-launch-tsx-esm.zh.md)规定，产物生成由[源码启动与构建分离决策](../simplification/2026-08-12-separate-source-launch-from-build.zh.md)规定。
 
-**个人配置（`alego-app-boot`）。** 个人 overlay 存放在 Harness home——`$ALEGO_HOME`，否则 `~/.alego`——由共享的 [`resolveAlegoHome`](../architecture/2026-07-24-single-harness-home-resolver.zh.md)（`@alego/home-paths`）解析，与 skill（技能）、AGENTS.md 解析所依据的单一根目录相同。alego 的 TUI、Web 和无头界面使用其中两个可选文件；各示例 bin 仍然逐字节按已提交的配置树启动：
+**个人配置（`alego-app-boot`）。** 个人 overlay 存放在 Harness home——`$ALEGO_HOME`，否则 `~/.alego`——由共享的 [`resolveAlegoHome`](../architecture/2026-07-24-single-harness-home-resolver.zh.md)（`@singula-ai/alego-home-paths`）解析，与 skill（技能）、AGENTS.md 解析所依据的单一根目录相同。alego 的 TUI、Web 和无头界面使用其中两个可选文件；各示例 bin 仍然逐字节按已提交的配置树启动：
 
 - `.env`——在调用目录的 `.env` 之后加载；`process.loadEnvFile` 从不覆盖已有值，因此优先级为环境变量 > 项目 `.env` > 个人 `.env`。
 - `config.yaml`——顶层 YAML 数组，元素为 `@cordisjs/plugin-include` 的 `PatchOptions`，用 include 自己的 `!!js` 方言解析（`loadPersonalPatches`）并传给 `boot()`，由它作为根 include 的 `patches` 转发。补丁语义与交付的 surface overlay 一致：按 id 定位的补丁替换该配置项的整个 `config`，`insert` 追加配置项，未匹配的 id 静默不执行任何操作。外部包作为 [profile 组合包](../simplification/2026-08-09-remove-repository-plugin.zh.md)安装；这个个人层负责配置这些组合包提供的 Loader 配置项。
@@ -43,7 +43,7 @@ TUI 和 Web 启动后通过 Cordis HMR（热模块替换）注册确切的个人
 - 已安装的 `alego` 命令可从任意目录运行，源码用户则从 checkout 调用 `pnpm alego`；两者都无需修改 checkout 即可应用个人提供方、模型、已安装组合包的配置项和其他 Loader 配置项。该行为已针对个人 Anthropic 代理与 Opus 4.8 端到端验证，包括一次 bash 工具往返。
 - 由于按 id 定位的补丁替换整个 `config`，个人覆盖必须复述它保留的基础字段，并可能随基础配置项形态变化而漂移；诊断手段是 loader 的「配置项未找到/名称不匹配」警告和 [`alego --dump-config`](../../../../apps/cli/README.zh.md#profiles)（打印这些补丁合成出的配置树）。
 - 个人补丁只在被启动文件自身的树里解析 id，因此嵌套 include 的 overlay（Code Mode）不会被个性化；这些叶子的实际运行等价性暂缓。
-- `alego-app-boot` 依赖 `js-yaml`，并直接导入 include 的 `!!js` YAML 方言（`entryListSchema`）；与 `apps/cli` 一样依赖 `@alego/home-paths` 以获取 `resolveAlegoHome`。
+- `alego-app-boot` 依赖 `js-yaml`，并直接导入 include 的 `!!js` YAML 方言（`entryListSchema`）；与 `apps/cli` 一样依赖 `@singula-ai/alego-home-paths` 以获取 `resolveAlegoHome`。
 - 只有长时间运行的 TUI 和 Web 进程进行实时监视。无头自动化使用确定性的启动配置，退出时不会保留 watcher。
 
 ## 测试

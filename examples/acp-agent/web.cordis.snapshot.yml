@@ -2,26 +2,26 @@
 # fixture server stay real (the tool call re-executes the actual HTTP fetch and
 # markdown rendering); only the model adapter is replaced by replay.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - insert:
           - id: web
-            name: '@alego/web'
+            name: '@singula-ai/alego-web'
           - id: web-fetch-http
-            name: '@alego/web-fetch-http'
+            name: '@singula-ai/alego-web-fetch-http'
           - id: web-fetch-fixture
             name: './web-fetch-fixture-server.mjs'
           - id: tool-web
-            name: '@alego/tool-web'
+            name: '@singula-ai/alego-tool-web'
             config:
               search: false
           - id: llm-replay
-            name: '@alego/llm-replay'
+            name: '@singula-ai/alego-llm-replay'
             config:
               providers:
                 - id: deepseek-official

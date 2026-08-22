@@ -12,13 +12,13 @@
  * strings, and it models global+shadow named registries — this is a
  * per-session singleton with no global layer to merge.
  */
-import { Service } from '@alego/cordis'
-import type { Context } from '@alego/cordis'
-import type { ConnectionHandle, SessionId } from '@alego/api-remotes/client'
-import type { SessionRuntime } from '@alego/client-runtime/client'
+import { Service } from '@singula-ai/cordis'
+import type { Context } from '@singula-ai/cordis'
+import type { ConnectionHandle, SessionId } from '@singula-ai/alego-api-remotes/client'
+import type { SessionRuntime } from '@singula-ai/alego-client-runtime/client'
 import { ModelDirectory } from './directory.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     modelDirectories: ModelDirectoryResolver
   }

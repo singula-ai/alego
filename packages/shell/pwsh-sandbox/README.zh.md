@@ -1,10 +1,10 @@
-# @alego/pwsh-sandbox
+# @singula-ai/alego-pwsh-sandbox
 
 [English](README.md) | 中文
 
-沙盒消费型的 [`ctx.shell` 执行器 seam](../shell/) 的 PowerShell 实现：每条命令以 `pwsh -NoLogo -NoProfile -NonInteractive -Command <command>` 运行，**经 `ctx.sandbox` 隔离**，选定模式、强制完整性、拒绝事实都盖在每次结算的结果上。它是 [`@alego/bash-sandbox`](../bash-sandbox/) 的 pwsh 孪生，按 [pwsh 执行器与工具决策](../../../.agents/notes/implemented/feature/2026-08-01-pwsh-tool-and-executor.zh.md) 逐调用镜像——隔离实体本身是平台无关的：Windows 上沙盒 seam 解析到 ACL 受限令牌 runner 链（[`@alego/sandbox-windows-acl`](../../sandbox/sandbox-windows-acl/)），Linux/macOS 上解析到 bwrap/Landlock/Seatbelt。
+沙盒消费型的 [`ctx.shell` 执行器 seam](../shell/) 的 PowerShell 实现：每条命令以 `pwsh -NoLogo -NoProfile -NonInteractive -Command <command>` 运行，**经 `ctx.sandbox` 隔离**，选定模式、强制完整性、拒绝事实都盖在每次结算的结果上。它是 [`@singula-ai/alego-bash-sandbox`](../bash-sandbox/) 的 pwsh 孪生，按 [pwsh 执行器与工具决策](../../../.agents/notes/implemented/feature/2026-08-01-pwsh-tool-and-executor.zh.md) 逐调用镜像——隔离实体本身是平台无关的：Windows 上沙盒 seam 解析到 ACL 受限令牌 runner 链（[`@singula-ai/alego-sandbox-windows-acl`](../../sandbox/sandbox-windows-acl/)），Linux/macOS 上解析到 bwrap/Landlock/Seatbelt。
 
-执行器继承 [`@alego/pwsh-local`](../pwsh-local/) 的进程机制，并消费其 argv 级 seam（`argv()` / `runArgv()` / `startArgv()` / `onProcessDone()`）把精确的 pwsh 调用经 provider 包装。沙盒策略（模式 + 工作区根目录）不是本包的配置：每次调用由 `ctx.sandboxPolicy` 随行（工具层传调用会话解析后的策略；直接调用回退到部署策略）。
+执行器继承 [`@singula-ai/alego-pwsh-local`](../pwsh-local/) 的进程机制，并消费其 argv 级 seam（`argv()` / `runArgv()` / `startArgv()` / `onProcessDone()`）把精确的 pwsh 调用经 provider 包装。沙盒策略（模式 + 工作区根目录）不是本包的配置：每次调用由 `ctx.sandboxPolicy` 随行（工具层传调用会话解析后的策略；直接调用回退到部署策略）。
 
 ## 行为
 
@@ -29,6 +29,6 @@
 
 ## 已知限制与后续工作
 
-- **Windows 上读不受限**（ACL runner 只限写）；读边界文档在 `@alego/sandbox-windows-acl`。
+- **Windows 上读不受限**（ACL runner 只限写）；读边界文档在 `@singula-ai/alego-sandbox-windows-acl`。
 - **Windows workspace-write 的临时权限按每个活跃的会话/工作区对私有**；无 agent（智能体）的调用每次都获得一个新的私有目录。环境临时根目录绝不会被授权，runner 会在 spawn 前将 TMP/TEMP 重写为该私有目录。
 - **Windows read-only 不授予任何显式可写根目录，但仍为部分强制执行**，因为受限令牌必须保留 Everyone。DACL 向 Everyone 授予写访问的对象——包括以兼容方式打开的 NUL 设备——仍构成环境权限来源；PowerShell 的 `> $null` 重定向仍可工作，且不会打开 NUL。

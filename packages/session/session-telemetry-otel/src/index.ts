@@ -9,13 +9,13 @@
  * capture mode and an outer shutdown deadline: the SDK's export timeout does
  * not bound its preceding `forceFlush()` wait.
  *
- * @module @alego/session-telemetry-otel
+ * @module @singula-ai/alego-session-telemetry-otel
  */
 
 import { createRequire } from 'node:module'
-import z from '@alego/schemastery'
-import type { Context } from '@alego/cordis'
-import type {} from '@alego/command-feedback'
+import z from '@singula-ai/schemastery'
+import type { Context } from '@singula-ai/cordis'
+import type {} from '@singula-ai/alego-command-feedback'
 import {
   SessionTelemetryBackend,
   SessionTelemetryCoordinator,
@@ -23,9 +23,9 @@ import {
   type SessionTelemetryRecord,
   type SessionTelemetrySeverity,
   type SessionTelemetrySharingStatus,
-} from '@alego/session-telemetry'
-import { APP_IDENTITY } from '@alego/llm'
-import { getOrCreateAnonymousUserId } from '@alego/anonymous-user-id'
+} from '@singula-ai/alego-session-telemetry'
+import { APP_IDENTITY } from '@singula-ai/alego-llm'
+import { getOrCreateAnonymousUserId } from '@singula-ai/alego-anonymous-user-id'
 import {
   BatchLogRecordProcessor,
   LoggerProvider,
@@ -216,8 +216,8 @@ export class OpenTelemetrySessionBackend extends SessionTelemetryBackend {
         }),
       ],
     })
-    const ledger = this.provider.getLogger('@alego/session-telemetry-otel', version)
-    const ops = this.provider.getLogger('@alego/session-telemetry-otel/ops', version)
+    const ledger = this.provider.getLogger('@singula-ai/alego-session-telemetry-otel', version)
+    const ops = this.provider.getLogger('@singula-ai/alego-session-telemetry-otel/ops', version)
     const enqueue: SessionTelemetrySink['emit'] = (record) => {
       const logger: Logger = record.channel === 'ops' ? ops : ledger
       logger.emit({

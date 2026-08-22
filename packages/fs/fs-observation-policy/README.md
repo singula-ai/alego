@@ -1,18 +1,18 @@
-# @alego/fs-observation-policy
+# @singula-ai/alego-fs-observation-policy
 
 English | [中文](README.zh.md)
 
-The **fs-observation-policy plugin**: it records observed presence or absence and adds read-before-edit plus guarded write/edit on top of the `ctx.fs` provider contract ([`@alego/fs`](../fs)) — through the `fs/*` event gate, **NOT** through a method service. This plugin registers **no** `ctx.fsPolicy` service and has no public `read`/`write`/`edit`/`resolve` methods. It is the policy third of the filesystem stack: not a swappable seam, but the policy that does not belong on the `FileSystem` provider base class.
+The **fs-observation-policy plugin**: it records observed presence or absence and adds read-before-edit plus guarded write/edit on top of the `ctx.fs` provider contract ([`@singula-ai/alego-fs`](../fs)) — through the `fs/*` event gate, **NOT** through a method service. This plugin registers **no** `ctx.fsPolicy` service and has no public `read`/`write`/`edit`/`resolve` methods. It is the policy third of the filesystem stack: not a swappable seam, but the policy that does not belong on the `FileSystem` provider base class.
 
 ```ts
-import type { Context } from '@alego/cordis'
-import * as FsPolicy from '@alego/fs-observation-policy'
+import type { Context } from '@singula-ai/cordis'
+import * as FsPolicy from '@singula-ai/alego-fs-observation-policy'
 
 declare const ctx: Context
 
 // No service to inject — this plugin only registers the three fs/* listeners.
-// Load it alongside a ctx.fs provider (e.g. @alego/fs-local) and the
-// @alego/tool-fs tools; the tools dispatch the fs/* events this plugin
+// Load it alongside a ctx.fs provider (e.g. @singula-ai/alego-fs-local) and the
+// @singula-ai/alego-tool-fs tools; the tools dispatch the fs/* events this plugin
 // decides. Order does not matter for resolution (no inject), but the policy
 // listener should be the first decider registered for the fs/*-intent slots.
 await ctx.plugin(FsPolicy)
@@ -22,14 +22,14 @@ await ctx.plugin(FsPolicy)
 
 | Layer | Package | Role |
 |---|---|---|
-| tool / executor | `@alego/tool-fs` | model-facing schemas + read windowing + text rendering; reads/writes/edits via `ctx.fs`, dispatches the `fs/*` events |
-| policy | `@alego/fs-observation-policy` (this) | observed-state + read-before-edit + version-guarded write/edit, contributed through the `fs/*` event gate (no service) |
-| provider contract | `@alego/fs` | `ctx.fs`: text IO + atomic mutation primitives (optional version guard); owns the `fs/*` event vocabulary |
-| provider | `@alego/fs-local` | local implementation of `ctx.fs` |
+| tool / executor | `@singula-ai/alego-tool-fs` | model-facing schemas + read windowing + text rendering; reads/writes/edits via `ctx.fs`, dispatches the `fs/*` events |
+| policy | `@singula-ai/alego-fs-observation-policy` (this) | observed-state + read-before-edit + version-guarded write/edit, contributed through the `fs/*` event gate (no service) |
+| provider contract | `@singula-ai/alego-fs` | `ctx.fs`: text IO + atomic mutation primitives (optional version guard); owns the `fs/*` event vocabulary |
+| provider | `@singula-ai/alego-fs-local` | local implementation of `ctx.fs` |
 
 ## How the gate participates
 
-Three `fs/*` events (declared by `@alego/fs`, dispatched by `@alego/tool-fs`):
+Three `fs/*` events (declared by `@singula-ai/alego-fs`, dispatched by `@singula-ai/alego-tool-fs`):
 
 | Event | This plugin's listener |
 |---|---|
@@ -47,7 +47,7 @@ The `fs/write-intent`/`fs/edit-intent` slots hold exactly one decider — this p
 
 ## No method coupling
 
-Because the plugin influences the world only through events, removing it does not break `@alego/tool-fs` at a service-injection boundary: the tool falls through to the bare `ctx.fs` provider (unconditional write/edit, no observed-state). Loading it back layers the policy on. That graceful add/remove is the whole point of the event gate over a mandatory method service.
+Because the plugin influences the world only through events, removing it does not break `@singula-ai/alego-tool-fs` at a service-injection boundary: the tool falls through to the bare `ctx.fs` provider (unconditional write/edit, no observed-state). Loading it back layers the policy on. That graceful add/remove is the whole point of the event gate over a mandatory method service.
 
 ## Model Experience
 

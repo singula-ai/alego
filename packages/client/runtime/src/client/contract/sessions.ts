@@ -7,11 +7,11 @@
  * [SessionsPort](./sessions-port.ts). Widening this interface is the
  * explicit act of widening what features may do to the sessions domain.
  */
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   RpcResult, SessionId, SubagentAddress,
-} from '@alego/api-remotes/client'
-import type { HostObservable, SessionMaybeProvideInfo } from '@alego/client-ui-slots'
+} from '@singula-ai/alego-api-remotes/client'
+import type { HostObservable, SessionMaybeProvideInfo } from '@singula-ai/alego-client-ui-slots'
 import type { AgentContext } from '../agents/scope.ts'
 import type { SessionSearchResultItem } from '../sessions/manager.ts'
 import type {

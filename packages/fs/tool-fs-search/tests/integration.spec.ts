@@ -14,12 +14,12 @@ import { existsSync } from 'node:fs'
 import { mkdir, mkdtemp, rm, utimes, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@alego/cordis'
-import { CallId } from '@alego/llm'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@alego/tools'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
-import * as ToolFsSearch from '@alego/tool-fs-search'
+import { Context } from '@singula-ai/cordis'
+import { CallId } from '@singula-ai/alego-llm'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@singula-ai/alego-tools'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
+import * as ToolFsSearch from '@singula-ai/alego-tool-fs-search'
 
 const testToolSignal = new AbortController().signal
 

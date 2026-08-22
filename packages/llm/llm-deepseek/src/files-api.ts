@@ -1,7 +1,7 @@
 /** OpenAI-compatible DeepSeek Files API transport. @module alego-llm-deepseek/files-api */
 
-import { attributionHeaders, LlmError } from '@alego/llm'
-import type { ImageMediaType } from '@alego/attachment'
+import { attributionHeaders, LlmError } from '@singula-ai/alego-llm'
+import type { ImageMediaType } from '@singula-ai/alego-attachment'
 import { DeepSeekFileId } from './file-id.ts'
 import type { DeepSeekFileId as DeepSeekFileIdType } from './file-id.ts'
 

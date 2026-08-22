@@ -2,7 +2,7 @@
 
 import { closeSync, openSync, readFileSync, readdirSync, readSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
-import type { SubprocessTerminalSignal } from '@alego/subprocess'
+import type { SubprocessTerminalSignal } from '@singula-ai/alego-subprocess'
 import { createWindowsProcessInspector } from './windows-inspector.ts'
 
 /** PID plus start identity, preventing teardown escalation after PID reuse. */

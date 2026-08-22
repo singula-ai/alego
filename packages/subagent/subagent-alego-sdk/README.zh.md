@@ -1,4 +1,4 @@
-# @alego/subagent-alego-sdk
+# @singula-ai/alego-subagent-alego-sdk
 
 [English](README.md) | 中文
 
@@ -40,7 +40,7 @@ Provider 不宣告任何启动期能力（`outputSchema`/`depthLimit`/`toolFilte
 
 ```yaml
 - id: subagent-alego-sdk
-  name: '@alego/subagent-alego-sdk'
+  name: '@singula-ai/alego-subagent-alego-sdk'
   config:
     providerName: alego-sdk
     command: node
@@ -49,7 +49,7 @@ Provider 不宣告任何启动期能力（`outputSchema`/`depthLimit`/`toolFilte
     env:
       DEEPSEEK_API_KEY: !!js process.env.DEEPSEEK_API_KEY
 - id: tool-subagent
-  name: '@alego/tool-subagent'
+  name: '@singula-ai/alego-tool-subagent'
   config: { provider: alego-sdk, toolName: subagent, maxDepth: 'provider-managed' }
 ```
 

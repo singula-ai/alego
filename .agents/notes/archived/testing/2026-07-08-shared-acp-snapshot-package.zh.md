@@ -13,7 +13,7 @@ ACP（Agent Client Protocol）快照层（[快照 Agent Note（agent 决策记�
 
 ## 决策
 
-这些机制位于 [`packages/support/acp-snapshot`](../../../../packages/support/acp-snapshot/README.md)（`@alego/acp-snapshot`）；示例的 `*.snapshot.ts` 只包含场景表、agent 路径和一次工厂调用，依赖自己的 `snapshots/` fixture 与 `cordis.snapshot.yml` overlay（[单源回放配置](../../archived/testing/2026-07-04-single-source-acp-replay-config.md)）。读取 `ALEGO_SNAPSHOT` 留在边缘层——库接收的是已解析的 `mode`。
+这些机制位于 [`packages/support/acp-snapshot`](../../../../packages/support/acp-snapshot/README.md)（`@singula-ai/alego-acp-snapshot`）；示例的 `*.snapshot.ts` 只包含场景表、agent 路径和一次工厂调用，依赖自己的 `snapshots/` fixture 与 `cordis.snapshot.yml` overlay（[单源回放配置](../../archived/testing/2026-07-04-single-source-acp-replay-config.md)）。读取 `ALEGO_SNAPSHOT` 留在边缘层——库接收的是已解析的 `mode`。
 
 **`src/launcher.ts`**——`launchAcpTestAgent` 拥有通用的未构建进程边界：绝对 tsx loader 解析、`TSX_TSCONFIG_PATH`、隔离的 harness home、stdio 接线、原始字节 stdout tee、stderr 与更新捕获、失败关闭的权限后备、更新 waiter，以及优雅或信号式关闭。快照场景和普通 e2e 套件提供相同的 `AgentUnderTest`（`binScript`、`configPath`、`tsconfigPath`）；扮演用户的测试只提供其权限 handler。ACP 与钩子 e2e 套件以及沙箱/approval e2e 套件都使用该 launcher，而不再重新构建 SDK client 边界。
 

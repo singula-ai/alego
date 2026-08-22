@@ -1,9 +1,9 @@
-/** Local durable attachment backend rooted below `ALEGO_HOME`. @module @alego/attachment-local */
+/** Local durable attachment backend rooted below `ALEGO_HOME`. @module @singula-ai/alego-attachment-local */
 
 import { join, resolve } from 'node:path'
-import { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { AttachmentStore } from '@alego/attachment'
+import { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { AttachmentStore } from '@singula-ai/alego-attachment'
 import type {
   ImageAttachmentLimits,
   ImageAttachmentRef,
@@ -11,8 +11,8 @@ import type {
   RequestImageAttachment,
   SaveImageAttachment,
   StoredImageAttachment,
-} from '@alego/attachment'
-import { resolveAlegoHome } from '@alego/home-paths'
+} from '@singula-ai/alego-attachment'
+import { resolveAlegoHome } from '@singula-ai/alego-home-paths'
 import type { NormalizationPolicy } from './normalization.ts'
 import { CompressionLimiter } from './compression-limiter.ts'
 import { commitPreparedImageFile, prepareImageFile, readImageFile, validateImageFile } from './store.ts'

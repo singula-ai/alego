@@ -1,10 +1,10 @@
-import { createUserMessage, createMessage } from '@alego/llm'
+import { createUserMessage, createMessage } from '@singula-ai/alego-llm'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import SessionStore, { SESSION_FORMAT_VERSION, SessionId } from '@alego/session'
-import type { Session, SessionEvent, SessionHeader, SessionId as SessionIdType } from '@alego/session'
-import SessionPersistence from '@alego/session-persistence'
-import { type SessionQueryErrorCode } from '@alego/session-query'
+import { Context } from '@singula-ai/cordis'
+import SessionStore, { SESSION_FORMAT_VERSION, SessionId } from '@singula-ai/alego-session'
+import type { Session, SessionEvent, SessionHeader, SessionId as SessionIdType } from '@singula-ai/alego-session'
+import SessionPersistence from '@singula-ai/alego-session-persistence'
+import { type SessionQueryErrorCode } from '@singula-ai/alego-session-query'
 import { TestSessionQueryEngine } from './test-service.ts'
 
 type MutableSessionHeader = { -readonly [K in keyof SessionHeader]: SessionHeader[K] }

@@ -1,4 +1,4 @@
-# @alego/client-ui-slots
+# @singula-ai/alego-client-ui-slots
 
 [English](README.md) | 中文
 

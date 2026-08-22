@@ -1,7 +1,7 @@
 /** Durable Session-message acceptance checks shared by provisioning and mailbox recovery. */
 
-import type { UserMessage } from '@alego/llm'
-import type { SessionEvent } from '@alego/session'
+import type { UserMessage } from '@singula-ai/alego-llm'
+import type { SessionEvent } from '@singula-ai/alego-session'
 
 type InboxProjection = Record<'next-turn' | 'next-step', UserMessage[]>
 

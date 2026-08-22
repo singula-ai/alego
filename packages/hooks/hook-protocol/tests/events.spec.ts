@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { Session, SessionId } from '@alego/session'
-import { appendHookInvoked, appendHookResult, summarizeStderr, type HookOutput } from '@alego/hook-protocol'
+import { Session, SessionId } from '@singula-ai/alego-session'
+import { appendHookInvoked, appendHookResult, summarizeStderr, type HookOutput } from '@singula-ai/alego-hook-protocol'
 
 /** A {@link HookOutput} with the required stream fields defaulted. */
 function output(over: Partial<HookOutput> = {}): HookOutput {

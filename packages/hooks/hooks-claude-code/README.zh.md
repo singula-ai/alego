@@ -1,15 +1,15 @@
-# @alego/hooks-claude-code
+# @singula-ai/alego-hooks-claude-code
 
 [English](README.md) | 中文
 
-一个 Cordis 插件，在 harness 的规范拦截点上运行用户现有 **Claude Code** hook 配置（`hooks.json` 或 settings 文件的 `hooks` key）中受支持的 command hook 子集。它是 hooks 子系统的 **CC 方言**部分，负责桥接中 CC 格式的逐事件 stdin payload、CC 的 env 和 `${CLAUDE_PLUGIN_ROOT}`／`${CLAUDE_PROJECT_DIR}` 替换，以及将 hook 的中性结果映射为 harness 的类型化 Decision。方言无关原语（matcher、退出码／stdout codec、`ctx.shell` 执行、最严格合并、`hook/*` 事件）来自 [`@alego/hook-protocol`](../hook-protocol/README.zh.md)。
+一个 Cordis 插件，在 harness 的规范拦截点上运行用户现有 **Claude Code** hook 配置（`hooks.json` 或 settings 文件的 `hooks` key）中受支持的 command hook 子集。它是 hooks 子系统的 **CC 方言**部分，负责桥接中 CC 格式的逐事件 stdin payload、CC 的 env 和 `${CLAUDE_PLUGIN_ROOT}`／`${CLAUDE_PROJECT_DIR}` 替换，以及将 hook 的中性结果映射为 harness 的类型化 Decision。方言无关原语（matcher、退出码／stdout codec、`ctx.shell` 执行、最严格合并、`hook/*` 事件）来自 [`@singula-ai/alego-hook-protocol`](../hook-protocol/README.zh.md)。
 
 原生 Cordis 插件可以完成此桥接的所有工作，功能更强，且具有类型化返回，没有序列化边界。**该桥接只是已映射 CC command hook 子集的兼容路径**；所有定制行为都应当使用相同扩展点上的原生插件（见 [拦截扩展点 Agent Note](../../../.agents/notes/implemented/feature/2026-06-30-interception-extension-points.zh.md)）。
 
 ## 配置
 
 ```ts
-import type { Config } from '@alego/hooks-claude-code'
+import type { Config } from '@singula-ai/alego-hooks-claude-code'
 const config: Config = {
   configPath: '/path/to/hooks.json', // required: a hooks.json or a settings file with a `hooks` key
   pluginRoot: '/path/to/plugin',     // optional: replaces ${CLAUDE_PLUGIN_ROOT} in command strings

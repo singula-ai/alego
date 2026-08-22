@@ -15,7 +15,7 @@ Status: implemented
 
 这还造成了一个真实的用户体验死胡同：窗口化读取记录 `view: partial`，而 partial 视图无法授权 `edit`。一个模型读取了大文件的第 100-150 行，如果想编辑第 120 行，就必须先获取一次 `full` 读取，而对于超过读取上限的文件这可能做不到。字面编辑实际上只需要新鲜度：被匹配的字节仍然来自模型所读取的那个版本即可。
 
-旧 Agent Note 已经推迟了独立的 `@alego/fs-observation-policy` 包。本决策构建该层，使 `ctx.fs` 保持接近 fsspec 风格的存储原语（`info`/`cat`/`open`），但不把它变成完整的 fsspec。
+旧 Agent Note 已经推迟了独立的 `@singula-ai/alego-fs-observation-policy` 包。本决策构建该层，使 `ctx.fs` 保持接近 fsspec 风格的存储原语（`info`/`cat`/`open`），但不把它变成完整的 fsspec。
 
 ## 决策
 
@@ -34,7 +34,7 @@ provider      alego-fs-local      local implementation of ctx.fs
 
 ## 提供方约定
 
-`@alego/fs` 收缩为提供方文本 IO 加受保护的文本变更：
+`@singula-ai/alego-fs` 收缩为提供方文本 IO 加受保护的文本变更：
 
 ```ts ignore-check
 abstract resolve(path: string, opts?: { cwd?: string; signal?: AbortSignal }): Promise<FsTarget>
@@ -69,7 +69,7 @@ type FsWriteIntent =
 
 ## 策略约定
 
-`@alego/fs-observation-policy` 是插件，而非服务：它不注册任何 `ctx.*` 键，也不注入任何内容。它拥有不应位于 `FileSystem` 提供方基类上的写入/编辑新鲜度策略和 observed state（否则沙箱/远程后端会继承不该由其承载的面向模型观察策略）。它通过执行器分派的 `fs/*` 事件门禁贡献该策略。
+`@singula-ai/alego-fs-observation-policy` 是插件，而非服务：它不注册任何 `ctx.*` 键，也不注入任何内容。它拥有不应位于 `FileSystem` 提供方基类上的写入/编辑新鲜度策略和 observed state（否则沙箱/远程后端会继承不该由其承载的面向模型观察策略）。它通过执行器分派的 `fs/*` 事件门禁贡献该策略。
 
 观测状态以 `WeakMap<owner, Map<targetKey, FsVersion>>` 的形式存放于此。当且仅当 owner 读取、写入或编辑过该目标时，条目才存在（每次成功都会发出 `fs/observed`），因此条目的存在*本身就是*先前观测的记录——没有单独的 `hasRead` 标志。owner 从不透明的事件 actor（`{ agent?: { session? } }`）结构化派生，该形状定义在 `alego-fs-observation-policy` 中而非 `alego-fs` 中。
 

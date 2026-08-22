@@ -1,15 +1,15 @@
 # Exercise the model-facing LSP tool through the shipped ACP app and Loader entry path.
 # The scenario workspace supplies the deterministic stdio server used by this test composition.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ../cordis.yml
     patches:
       - insert:
           - id: lsp
-            name: '@alego/lsp'
+            name: '@singula-ai/alego-lsp'
           - id: lsp-stdio
-            name: '@alego/lsp-stdio'
+            name: '@singula-ai/alego-lsp-stdio'
             config:
               servers:
                 fixture:
@@ -18,8 +18,8 @@
                   extensionToLanguage:
                     '.ts': typescript
           - id: timeout-policy
-            name: '@alego/tool-call-timeout-policy'
+            name: '@singula-ai/alego-tool-call-timeout-policy'
           - id: tool-lsp
-            name: '@alego/tool-lsp'
+            name: '@singula-ai/alego-tool-lsp'
             config:
               maxLocations: 1

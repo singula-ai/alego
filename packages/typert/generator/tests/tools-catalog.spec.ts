@@ -2,10 +2,10 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import TypertRegistry from '@alego/typert-registry'
-import type { TypertContribution } from '@alego/typert-registry/types'
-import { EVENT_API, SERVICE_API, TYPE_API } from '@alego/tool-cordis/src/api-catalog.ts'
+import { Context } from '@singula-ai/cordis'
+import TypertRegistry from '@singula-ai/alego-typert-registry'
+import type { TypertContribution } from '@singula-ai/alego-typert-registry/types'
+import { EVENT_API, SERVICE_API, TYPE_API } from '@singula-ai/alego-tool-cordis/src/api-catalog.ts'
 import { WorkspaceAnalyzer } from '../src/analyzer.ts'
 import { FaceModelEmitter } from '../src/emitter.ts'
 
@@ -21,11 +21,11 @@ describe('model-driven alego-tools generation', () => {
     const workspace = new WorkspaceAnalyzer({
       root: workspaceRoot,
       faces: ['host'],
-      packages: ['@alego/tools'],
+      packages: ['@singula-ai/alego-tools'],
     }).analyze()
     const host = workspace.faces.find(candidate => candidate.face === 'host')
     if (host === undefined) throw new Error('alego-tools has no analyzed host face')
-    const artifact = new FaceModelEmitter(host).emit('@alego/tools')
+    const artifact = new FaceModelEmitter(host).emit('@singula-ai/alego-tools')
 
     const root = mkdtempSync(join(import.meta.dirname, '.generated-tools-'))
     temporaryRoots.push(root)
@@ -38,7 +38,7 @@ describe('model-driven alego-tools generation', () => {
     const ctx = new Context()
     await ctx.plugin(TypertRegistry)
     const dispose = ctx.typert.register(generated.TYPERT)
-    const record = ctx.typert.getPackage('@alego/tools', 'host')
+    const record = ctx.typert.getPackage('@singula-ai/alego-tools', 'host')
     const service = record?.model.services.find(candidate => candidate.key === 'tools')
     expect(service).toBeDefined()
     expect({
@@ -71,6 +71,6 @@ describe('model-driven alego-tools generation', () => {
     )
 
     await dispose()
-    expect(ctx.typert.getPackage('@alego/tools', 'host')).toBeUndefined()
+    expect(ctx.typert.getPackage('@singula-ai/alego-tools', 'host')).toBeUndefined()
   })
 })

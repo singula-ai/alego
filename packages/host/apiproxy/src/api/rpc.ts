@@ -7,9 +7,9 @@
 
 import type { z as zCore } from 'zod'
 type ZodIssue = zCore.core.$ZodIssue
-import type { Branded } from '@alego/brand'
-import type { MessageId } from '@alego/llm/brand'
-import type { SessionId } from '@alego/session/types'
+import type { Branded } from '@singula-ai/alego-brand'
+import type { MessageId } from '@singula-ai/alego-llm/brand'
+import type { SessionId } from '@singula-ai/alego-session/types'
 
 /**
  * Message correlation id: the initiator mints it on a request; a response

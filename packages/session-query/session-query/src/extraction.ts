@@ -1,6 +1,6 @@
 /** First-party semantic text extraction for session-query consumers. */
 
-import type { SessionEvent } from '@alego/session'
+import type { SessionEvent } from '@singula-ai/alego-session'
 
 /**
  * Extract searchable semantic text from one first-party session event.

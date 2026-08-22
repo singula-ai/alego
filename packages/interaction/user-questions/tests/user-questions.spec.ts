@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import AgentRegistry, { type Agent } from '@alego/agent'
+import { Context } from '@singula-ai/cordis'
+import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
 import UserQuestionService, {
   UserQuestionError,
   type AskUserQuestionRequest,
   type UserQuestionProvider,
-} from '@alego/user-questions'
+} from '@singula-ai/alego-user-questions'
 
 function provider(answer = 'approved'): UserQuestionProvider & { seen: AskUserQuestionRequest[] } {
   const seen: AskUserQuestionRequest[] = []

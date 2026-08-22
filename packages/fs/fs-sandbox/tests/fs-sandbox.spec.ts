@@ -13,12 +13,12 @@ import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promis
 import { existsSync } from 'node:fs'
 import { homedir, tmpdir } from 'node:os'
 import { join, parse } from 'node:path'
-import { Context } from '@alego/cordis'
-import { FsError, FsTargetKey } from '@alego/fs'
-import type { FsTarget } from '@alego/fs'
-import SandboxPolicyService from '@alego/sandbox-policy'
-import type { SandboxMode } from '@alego/sandbox'
-import { SandboxedFileSystem } from '@alego/fs-sandbox'
+import { Context } from '@singula-ai/cordis'
+import { FsError, FsTargetKey } from '@singula-ai/alego-fs'
+import type { FsTarget } from '@singula-ai/alego-fs'
+import SandboxPolicyService from '@singula-ai/alego-sandbox-policy'
+import type { SandboxMode } from '@singula-ai/alego-sandbox'
+import { SandboxedFileSystem } from '@singula-ai/alego-fs-sandbox'
 
 let base: string
 let workspace: string

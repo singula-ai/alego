@@ -1,10 +1,10 @@
 /**
  * Agent-scoped model selection shared by runtime entry points.
- * @module @alego/agent/model-selection
+ * @module @singula-ai/alego-agent/model-selection
  */
 
-import type { Context } from '@alego/cordis'
-import type { LlmCallConfig, ReasoningEffortId } from '@alego/llm'
+import type { Context } from '@singula-ai/cordis'
+import type { LlmCallConfig, ReasoningEffortId } from '@singula-ai/alego-llm'
 
 /** Complete provider, model, and optional reasoning effort selected for one live Agent. */
 export interface ModelSelection {

@@ -1,12 +1,12 @@
 # Live counterpart for the runner-classification snapshot overlay. It replaces
 # only the sandbox provider; authored scenarios are skipped in record mode.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: sandbox
-        name: '@alego/sandbox-local'
+        name: '@singula-ai/alego-sandbox-local'
         disabled: true
       - insert:
           - id: partial-landlock-sandbox

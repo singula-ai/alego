@@ -2,15 +2,15 @@ import { describe, expect, it, vi } from 'vitest'
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { join, sep } from 'node:path'
 import { tmpdir } from 'node:os'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import { renderPrompt, TOOL_ORDER_REST } from '@alego/system-prompt'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import { renderPrompt, TOOL_ORDER_REST } from '@singula-ai/alego-system-prompt'
 import * as agentCore from '../src/index.ts'
-import { agentEvents, type Agent } from '@alego/agent'
-import { SessionId } from '@alego/session'
-import LocalBashExecutor from '@alego/bash-local'
-import LocalFileSystem from '@alego/fs-local'
-import * as ToolFs from '@alego/tool-fs'
+import { agentEvents, type Agent } from '@singula-ai/alego-agent'
+import { SessionId } from '@singula-ai/alego-session'
+import LocalBashExecutor from '@singula-ai/alego-bash-local'
+import LocalFileSystem from '@singula-ai/alego-fs-local'
+import * as ToolFs from '@singula-ai/alego-tool-fs'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import {
   createUserMessage,
@@ -22,16 +22,16 @@ import {
   type Message,
   type ResolvedRetryPolicy,
   type StreamChunk,
-} from '@alego/llm'
-import type { ToolExecution } from '@alego/tools'
-import * as sessionInvariant from '@alego/session/invariant'
-import * as agentInvariant from '@alego/agent/invariant'
-import * as scopeInvariant from '@alego/scope/invariant'
-import * as agentLoopInvariant from '@alego/agent-loop/invariant'
+} from '@singula-ai/alego-llm'
+import type { ToolExecution } from '@singula-ai/alego-tools'
+import * as sessionInvariant from '@singula-ai/alego-session/invariant'
+import * as agentInvariant from '@singula-ai/alego-agent/invariant'
+import * as scopeInvariant from '@singula-ai/alego-scope/invariant'
+import * as agentLoopInvariant from '@singula-ai/alego-agent-loop/invariant'
 
 const testToolSignal = new AbortController().signal
 
-declare module '@alego/jobs' {
+declare module '@singula-ai/alego-jobs' {
   interface JobKindMap {
     probe: 'probe'
   }
@@ -53,7 +53,7 @@ async function composePrefix(ctx: Context, cwd: string): Promise<Message[]> {
 }
 
 /**
- * Unit coverage for the @alego/agent-spine-demo bundle: mounting it brings
+ * Unit coverage for the @singula-ai/alego-agent-spine-demo bundle: mounting it brings
  * up the whole default spine in one `ctx.plugin`, and the forwarded
  * `agents` config reaches the loop (default `[]`, or a pre-created agent).
  *
@@ -227,8 +227,8 @@ describe('alego-agent-spine-demo bundle', () => {
 
     for (const invariants of [
       { enabled: false },
-      { package_allowlist: ['^@alego/agent$'] },
-      { package_blocklist: ['^@alego/session$'] },
+      { package_allowlist: ['^@singula-ai/alego-agent$'] },
+      { package_blocklist: ['^@singula-ai/alego-session$'] },
     ]) {
       const filtered = await mount({ workspaceContext: false, invariants })
       expect(() => { nestedTurn(filtered) }).not.toThrow()

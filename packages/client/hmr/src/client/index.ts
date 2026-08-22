@@ -61,8 +61,8 @@
  * fiberless (the next rebuilt frame retries from scratch); an apply failure
  * leaves a FAILED fiber for the shell's status projection. Both log loudly.
  */
-import type { Context } from '@alego/cordis'
-import type { Entry, Loader } from '@alego/cordis-plugin-loader'
+import type { Context } from '@singula-ai/cordis'
+import type { Entry, Loader } from '@singula-ai/cordis-plugin-loader'
 import type { PluginsEventFrame } from '../events.ts'
 import { EVENTS_ENDPOINT } from '../events.ts'
 

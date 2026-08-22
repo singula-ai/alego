@@ -1,4 +1,4 @@
-# @alego/jobs
+# @singula-ai/alego-jobs
 
 [English](README.md) | 中文
 

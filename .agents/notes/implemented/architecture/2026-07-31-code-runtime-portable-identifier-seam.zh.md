@@ -12,7 +12,7 @@ code-runtime seam 承诺：在一个后端上有效的绑定命名空间列表�
 
 ## Decision
 
-Service Definition 包（`@alego/code-runtime`）以四个具名常量导出可移植标识符排除约定，每个 Service Provider 导入它们而非重新声明：
+Service Definition 包（`@singula-ai/alego-code-runtime`）以四个具名常量导出可移植标识符排除约定，每个 Service Provider 导入它们而非重新声明：
 
 - `PORTABLE_RESERVED_WORDS`——ECMAScript 与 Python 保留字的联集。任何命名空间 global 或 error-class 名称匹配其中之一，都在所有后端上被拒绝，因此 `lambda` 即便是合法的 JS 参数名也被拒绝。新增一门语言即扩宽此联集，这是对现有绑定名称的一次有意的破坏性复审。
 - `RESERVED_BINDING_GLOBALS`——某个后端在程序命名空间中拥有的 global：`console`（worker 的日志捕获）、`__alego_main__`/`__builtins__`/`__name__`（Python bootstrap 的包装器与预置模块 global），以及 `__debug__`（不是 seed 的槽位，而是 CPython 编译期常量，赋值会被拒，故以该名注入的 global 不可达——同一种可移植性分裂，只是机制不同）。在所有后端上被拒绝，使命名空间列表无法选到一个在某后端能用、在另一后端冲突的名称。

@@ -6,9 +6,9 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import type { SessionId } from '@alego/session'
-import type { ApiProxy, GoalRef, HostFrame, MuxFrame, RpcMessage, RpcRequest, RpcResponse } from '@alego/host-apiproxy'
-import { InProcessApiClient, RpcId, toFetchHandler } from '@alego/host-apiproxy'
+import type { SessionId } from '@singula-ai/alego-session'
+import type { ApiProxy, GoalRef, HostFrame, MuxFrame, RpcMessage, RpcRequest, RpcResponse } from '@singula-ai/alego-host-apiproxy'
+import { InProcessApiClient, RpcId, toFetchHandler } from '@singula-ai/alego-host-apiproxy'
 
 const sid = (id: string): SessionId => id as SessionId
 

@@ -12,7 +12,7 @@ Status: implemented
 
 ## 决策
 
-位于 `packages/feedback/command-feedback/` 的 `@alego/command-feedback` 通过 `ctx.commands` 注册一个全局 `feedback` 命令。`/feedback <text>` 在确认文本中包含接收反馈的会话 id 与 harness home 的共享匿名用户 id；空输入或仅含空白的输入返回直接用法错误。处理器是同步的，只注入 `commands`，且没有任何配置。[共享 id 决策](../architecture/2026-08-07-shared-feedback-telemetry-user-id.zh.md)说明了反馈与 OpenTelemetry 为何使用同一个 `$ALEGO_HOME/.anonymous-user-id` 值。
+位于 `packages/feedback/command-feedback/` 的 `@singula-ai/alego-command-feedback` 通过 `ctx.commands` 注册一个全局 `feedback` 命令。`/feedback <text>` 在确认文本中包含接收反馈的会话 id 与 harness home 的共享匿名用户 id；空输入或仅含空白的输入返回直接用法错误。处理器是同步的，只注入 `commands`，且没有任何配置。[共享 id 决策](../architecture/2026-08-07-shared-feedback-telemetry-user-id.zh.md)说明了反馈与 OpenTelemetry 为何使用同一个 `$ALEGO_HOME/.anonymous-user-id` 值。
 
 本包声明仅写入日志的 `feedback/record { text }` 会话事件，并导出 `recordFeedback(session, text)`，作为不依赖命令的生产方。该生产方丢弃前后空白，拒绝空结果，并且恰好追加一个事件。`/feedback` 委托给它，因此其他 UI、钩子或 host 集成无需构造斜杠命令也能记录同一个领域事实。
 

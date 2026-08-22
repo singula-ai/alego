@@ -29,13 +29,13 @@
 # The preset's own persona, shadowing the deployment default for this agent.
 # `{{model}}` and `{{cwd}}` resolve from the agent's own route and workspace.
 - id: persona
-  name: '@alego/persona'
+  name: '@singula-ai/alego-persona'
   config:
     text: >-
       You are a coding agent powered by the {{model}} model. Your working directory is {{cwd}}.
 
 - id: agent-instructions
-  name: '@alego/agent-instructions'
+  name: '@singula-ai/alego-agent-instructions'
   config:
     maxBytes: 65536
 
@@ -49,11 +49,11 @@
 # registry from here; their executors (`bash-sandbox`/`pwsh-sandbox`) are
 # host-plane too.
 - id: tool-bash
-  name: '@alego/tool-bash'
+  name: '@singula-ai/alego-tool-bash'
   disabled: !!js process.platform === 'win32'
 
 - id: tool-pwsh
-  name: '@alego/tool-pwsh'
+  name: '@singula-ai/alego-tool-pwsh'
   disabled: !!js process.platform !== 'win32'
 
 # ── filesystem ──────────────────────────────────────────────────────────────
@@ -61,10 +61,10 @@
 # Both register into the host `tools` registry and provide nothing, so
 # they need no realm. The `fs` service and its policy stay in the host.
 - id: tool-fs
-  name: '@alego/tool-fs'
+  name: '@singula-ai/alego-tool-fs'
 
 - id: tool-fs-search
-  name: '@alego/tool-fs-search'
+  name: '@singula-ai/alego-tool-fs-search'
   config:
     sampleOverCapGlobResults: false
 
@@ -78,7 +78,7 @@
 # owning agent anyway, so one host instance serves every session. What a preset
 # chooses is whether its agent can collect and stop background work at all.
 - id: tool-jobs
-  name: '@alego/tool-jobs'
+  name: '@singula-ai/alego-tool-jobs'
 
 # ── skills ──────────────────────────────────────────────────────────────────
 
@@ -88,10 +88,10 @@
 # `tool-skill` gives them the catalog and loader; the merged catalog also
 # carries whatever the deployment registered globally (repository plugins).
 - id: skill-filesystem
-  name: '@alego/skill-filesystem'
+  name: '@singula-ai/alego-skill-filesystem'
 
 - id: tool-skill
-  name: '@alego/tool-skill'
+  name: '@singula-ai/alego-tool-skill'
 
 # ── goals ───────────────────────────────────────────────────────────────────
 
@@ -102,7 +102,7 @@
 # registry is keyed by session anyway, so one host instance serves every
 # session. What a preset chooses is whether its agent can call the goal tool.
 - id: tool-goal
-  name: '@alego/tool-goal'
+  name: '@singula-ai/alego-tool-goal'
 
 # ── plan mode ───────────────────────────────────────────────────────────────
 
@@ -115,7 +115,7 @@
     planMode: true
   config:
     - id: plan-mode
-      name: '@alego/plan-mode'
+      name: '@singula-ai/alego-plan-mode'
       config:
         section: |
               You are in plan mode. Stay in plan mode until exit_plan_mode succeeds or the user switches the session mode. Imperative language to implement changes means plan the implementation, not execute it. A user's conversational agreement — including an answer confirming something you asked — approves nothing and does not end plan mode; fold the confirmed decision into the plan and submit it through exit_plan_mode.
@@ -149,13 +149,13 @@
     toolResultPruner: true
   config:
     - id: compaction-basic
-      name: '@alego/compaction-basic'
+      name: '@singula-ai/alego-compaction-basic'
 
     - id: command-compact
-      name: '@alego/command-compact'
+      name: '@singula-ai/alego-command-compact'
 
     - id: tool-result-pruner
-      name: '@alego/compaction-tool-result-pruner'
+      name: '@singula-ai/alego-compaction-tool-result-pruner'
       config:
         thresholdChars: 8192
         headChars: 4096
@@ -179,20 +179,20 @@
     workflowEngine: true
   config:
     - id: tool-subagent-control
-      name: '@alego/tool-subagent-control'
+      name: '@singula-ai/alego-tool-subagent-control'
 
     - id: tool-subagent-list-agents
-      name: '@alego/tool-subagent-control/list-agents'
+      name: '@singula-ai/alego-tool-subagent-control/list-agents'
 
     - id: tool-subagent
-      name: '@alego/tool-subagent'
+      name: '@singula-ai/alego-tool-subagent'
       config:
         provider: spawn
         toolName: subagent
         backgroundMode: continuable
 
     - id: tool-subagent-fork
-      name: '@alego/tool-subagent'
+      name: '@singula-ai/alego-tool-subagent'
       config:
         provider: fork
         toolName: subagent_fork
@@ -203,7 +203,7 @@
     # preset and remove `disabled` from the matching tool row. Host availability
     # alone grants no tool.
     - id: tool-subagent-codex
-      name: '@alego/tool-subagent'
+      name: '@singula-ai/alego-tool-subagent'
       disabled: true
       config:
         provider: codex
@@ -212,7 +212,7 @@
         maxDepth: provider-managed
 
     - id: tool-subagent-claude-code
-      name: '@alego/tool-subagent'
+      name: '@singula-ai/alego-tool-subagent'
       disabled: true
       config:
         provider: claude-code
@@ -221,15 +221,15 @@
         maxDepth: provider-managed
 
     - id: workflow-worker-thread
-      name: '@alego/workflow-worker-thread'
+      name: '@singula-ai/alego-workflow-worker-thread'
       config:
         provider: spawn
 
     - id: tool-workflow
-      name: '@alego/tool-workflow'
+      name: '@singula-ai/alego-tool-workflow'
 
     - id: tool-ralph
-      name: '@alego/tool-ralph'
+      name: '@singula-ai/alego-tool-ralph'
       config:
         subagentProvider: spawn
         maxRounds: 64
@@ -237,17 +237,17 @@
 # ── remaining model-facing rows ─────────────────────────────────────────────
 
 - id: tool-ask-user
-  name: '@alego/tool-ask-user'
+  name: '@singula-ai/alego-tool-ask-user'
 
 - id: tool-todo
-  name: '@alego/tool-todo'
+  name: '@singula-ai/alego-tool-todo'
   config:
     allowParallelInProgress: true
 
 # The `web` service and its search provider stay in the host composition; only
 # the model-facing tool is per-session.
 - id: tool-web
-  name: '@alego/tool-web'
+  name: '@singula-ai/alego-tool-web'
   config:
     fetch: false
     searchTimeoutMs: 60000
@@ -258,6 +258,6 @@
 # rather than assuming it: a deployment that composes no TypeScript runtime
 # fails this preset at mount, naming this id, instead of at the first request.
 - id: tool-presentation
-  name: '@alego/agent-tool-presentation'
+  name: '@singula-ai/alego-agent-tool-presentation'
   config:
     mode: code

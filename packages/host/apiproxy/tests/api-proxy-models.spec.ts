@@ -6,22 +6,22 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import AgentRegistry, { agentEvents } from '@alego/agent'
-import type { Agent } from '@alego/agent'
-import AttachmentStore from '@alego/attachment'
-import LlmRuntime, { LlmAdapter, ReasoningEffortId } from '@alego/llm'
+import { Context } from '@singula-ai/cordis'
+import AgentRegistry, { agentEvents } from '@singula-ai/alego-agent'
+import type { Agent } from '@singula-ai/alego-agent'
+import AttachmentStore from '@singula-ai/alego-attachment'
+import LlmRuntime, { LlmAdapter, ReasoningEffortId } from '@singula-ai/alego-llm'
 import type {
   GenerateOptions, LlmCallConfig, LlmModelInfo, LlmModelReasoningInfo, LlmProviderInfo,
   LlmResolvedModelInfo, StreamChunk,
   UserMessage,
-} from '@alego/llm'
-import SessionStore from '@alego/session'
-import type { SessionId } from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import UserQuestionService from '@alego/user-questions'
-import type { RpcRequest } from '@alego/host-apiproxy/api/rpc'
-import { RpcId } from '@alego/host-apiproxy/api/rpc'
+} from '@singula-ai/alego-llm'
+import SessionStore from '@singula-ai/alego-session'
+import type { SessionId } from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import UserQuestionService from '@singula-ai/alego-user-questions'
+import type { RpcRequest } from '@singula-ai/alego-host-apiproxy/api/rpc'
+import { RpcId } from '@singula-ai/alego-host-apiproxy/api/rpc'
 import { createApiProxy } from '../src/api-proxy.ts'
 
 let nextRpc = 1

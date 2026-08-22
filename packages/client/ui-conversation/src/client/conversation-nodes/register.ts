@@ -1,4 +1,4 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import { registerAssistantConversationNode } from './assistant.ts'
 import { registerChatConversationView } from './chat-snapshot-builder.ts'
 import { registerCommandConversationNode } from './command.ts'

@@ -2,7 +2,7 @@
 # stdout is reserved for JSON-RPC; do not add a console logger or terminal UI.
 
 - id: sdk-jsonrpc-server
-  name: '@alego/sdk-jsonrpc-server'
+  name: '@singula-ai/alego-sdk-jsonrpc-server'
   config:
     maxTokensAsSuccess: !!js "process.env.ALEGO_MAX_TOKENS_AS_SUCCESS === undefined ? true : JSON.parse(process.env.ALEGO_MAX_TOKENS_AS_SUCCESS)"
 
@@ -10,23 +10,23 @@
 # request; exact-model resolution materializes request defaults before logging.
 # The model arrives per session over JSON-RPC, so it is not pinned here.
 - id: llm-deepseek
-  name: '@alego/llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek'
   config:
     thinking: enabled
     reasoningEffort: max
 
 # Managed child-process groups for the bash executor (spawn/kill/output plumbing).
 - id: subprocess
-  name: '@alego/subprocess-local'
+  name: '@singula-ai/alego-subprocess-local'
 
 - id: bash
-  name: '@alego/bash-local'
+  name: '@singula-ai/alego-bash-local'
   config:
     cwd: !!js process.env.ALEGO_CWD ?? process.cwd()
     timeoutMs: 60000
 
 - id: agent-spine
-  name: '@alego/agent-spine-demo'
+  name: '@singula-ai/alego-agent-spine-demo'
   config:
     persona: !!js process.env.ALEGO_SYSTEM_PROMPT ?? 'You are a coding agent.'
     workspaceContext: false
@@ -37,51 +37,51 @@
     toolJobs: false
 
 - id: sessions
-  name: '@alego/session-persistence-jsonl'
+  name: '@singula-ai/alego-session-persistence-jsonl'
   config:
     root: !!js process.env.ALEGO_SESSION_ROOT ?? './.sessions'
     # Snapshot runs read the raw JSONL back; production keeps zstd frames.
     compression: !!js "process.env.ALEGO_SNAPSHOT === undefined ? 'zstd' : 'none'"
 
 - id: session-checkpoints
-  name: '@alego/session-checkpoint-policy'
+  name: '@singula-ai/alego-session-checkpoint-policy'
 
 - id: subagent
-  name: '@alego/subagent'
+  name: '@singula-ai/alego-subagent'
 
 - id: subagent-spawn-in-process
-  name: '@alego/subagent-spawn-in-process'
+  name: '@singula-ai/alego-subagent-spawn-in-process'
   config:
     providerName: spawn
 
 - id: tool-subagent
-  name: '@alego/tool-subagent'
+  name: '@singula-ai/alego-tool-subagent'
   config:
     provider: spawn
     toolName: subagent
     enableRunInBackground: false
 
 - id: tool-todo
-  name: '@alego/tool-todo'
+  name: '@singula-ai/alego-tool-todo'
   config:
     allowParallelInProgress: true
 
 - id: fs-local
-  name: '@alego/fs-local'
+  name: '@singula-ai/alego-fs-local'
   config:
     cwd: !!js process.env.ALEGO_CWD ?? process.cwd()
 
 - id: fs-observation-policy
-  name: '@alego/fs-observation-policy'
+  name: '@singula-ai/alego-fs-observation-policy'
 
 - id: tool-fs
-  name: '@alego/tool-fs'
+  name: '@singula-ai/alego-tool-fs'
 
 - id: token-meter
-  name: '@alego/token-meter'
+  name: '@singula-ai/alego-token-meter'
 
 - id: compaction-basic
-  name: '@alego/compaction-basic'
+  name: '@singula-ai/alego-compaction-basic'
   config:
     thresholdRatio: 0.8
     retainRatio: 0.16

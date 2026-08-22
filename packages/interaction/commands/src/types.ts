@@ -4,7 +4,7 @@
  * reaches a Host-only symbol, so a Client compilation face reads the same
  * `commands/change` signature the Host emits.
  *
- * @module @alego/commands/types
+ * @module @singula-ai/alego-commands/types
  */
 
 import type { CommandId } from './brand.ts'
@@ -69,7 +69,7 @@ export interface CommandSourceMap {
 /** The union over {@link CommandSourceMap} — who issued a command line. */
 export type CommandSource = CommandSourceMap[keyof CommandSourceMap]
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Events {
     /**
      * A command was registered or unregistered. This is an unfiltered registry
@@ -81,7 +81,7 @@ declare module '@alego/cordis' {
   }
 }
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * A resolved slash command entered its handler. Log-only (never model

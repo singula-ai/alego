@@ -1,20 +1,20 @@
 /**
  * Tool operation orchestration over session-query service capabilities.
  *
- * @module @alego/tool-session-query/operations
+ * @module @singula-ai/alego-tool-session-query/operations
  */
 
-import type { Context } from '@alego/cordis'
-import { HarnessError } from '@alego/llm'
-import type { SessionId } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import { HarnessError } from '@singula-ai/alego-llm'
+import type { SessionId } from '@singula-ai/alego-session'
 import {
   SessionQueryError,
   type SessionEventSearchPage,
   type SessionEventSurface,
   type SessionRecord,
   type SessionSearchCursor,
-} from '@alego/session-query'
-import type { ToolRunContext } from '@alego/tools'
+} from '@singula-ai/alego-session-query'
+import type { ToolRunContext } from '@singula-ai/alego-tools'
 import { toolInput } from './input.ts'
 import { presentation } from './presentation.ts'
 import { serviceBoundary } from './service-boundary.ts'

@@ -1,5 +1,5 @@
 {
-  "name": "@alego/workflow-worker-thread",
+  "name": "@singula-ai/alego-workflow-worker-thread",
   "description": "worker-thread workflow engine: executes model-written orchestration scripts off the host event loop, bridging agent() calls back to ctx.subagents",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -37,33 +37,33 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@alego/agent": "workspace:^",
-    "@alego/brand": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/session": "workspace:^",
-    "@alego/subagent": "workspace:^",
-    "@alego/tools": "workspace:^",
-    "@alego/workflow": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-brand": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-subagent": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/alego-workflow": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "dependencies": {
-    "@alego/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:^"
   },
   "devDependencies": {
-    "@alego/agent": "workspace:^",
-    "@alego/agent-loop": "workspace:^",
-    "@alego/agent-loop-testkit": "workspace:^",
-    "@alego/brand": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/session": "workspace:^",
-    "@alego/subagent": "workspace:^",
-    "@alego/subagent-spawn-in-process": "workspace:^",
-    "@alego/system-prompt": "workspace:^",
-    "@alego/tools": "workspace:^",
-    "@alego/workflow": "workspace:^",
-    "@alego/cordis": "workspace:^",
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-agent-loop": "workspace:^",
+    "@singula-ai/alego-agent-loop-testkit": "workspace:^",
+    "@singula-ai/alego-brand": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-subagent": "workspace:^",
+    "@singula-ai/alego-subagent-spawn-in-process": "workspace:^",
+    "@singula-ai/alego-system-prompt": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/alego-workflow": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
     "tsx": "^4.19.2"
   }
 }

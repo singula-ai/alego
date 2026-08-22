@@ -6,15 +6,15 @@
  * and one-shot permission decisions; presentation and human-interaction
  * features stay with the harness's UI modules.
  *
- * @module @alego/acp
+ * @module @singula-ai/alego-acp
  */
 
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import { randomUUID } from 'node:crypto'
 import { isAbsolute } from 'node:path'
 import { Readable, Writable } from 'node:stream'
-import Schema from '@alego/schemastery'
-import { createUserMessage, errorChain } from '@alego/llm'
+import Schema from '@singula-ai/schemastery'
+import { createUserMessage, errorChain } from '@singula-ai/alego-llm'
 import {
   AgentSideConnection,
   ndJsonStream,
@@ -33,10 +33,10 @@ import {
   type StopReason,
   type Stream,
 } from '@agentclientprotocol/sdk'
-import type { Agent } from '@alego/agent'
-import { SessionId, type SessionEvent, type TurnEndReason } from '@alego/session'
+import type { Agent } from '@singula-ai/alego-agent'
+import { SessionId, type SessionEvent, type TurnEndReason } from '@singula-ai/alego-session'
 // Side-effect type import: declaration-merges the approval waterfall answered below.
-import type {} from '@alego/user-approval'
+import type {} from '@singula-ai/alego-user-approval'
 import { AcpContentError, admitAcpPrompt, assistantBlockToAcp, supportsAcpImagePrompts } from './content.ts'
 import { turnEndToStopReason } from './codec.ts'
 
@@ -312,7 +312,7 @@ export function apply(ctx: Context, config: AcpConfig): void {
         // No preset composition: the ACP bundle keeps the model-facing rows in
         // the host plane, so this agent reads them from the global layer. A
         // deployment that configures a roster has to join one here first
-        // (@alego/agent-presets README, "Composing a child agent").
+        // (@singula-ai/alego-agent-presets README, "Composing a child agent").
         const handle = await agents.create({
           sessionId,
           meta: { cwd: params.cwd },

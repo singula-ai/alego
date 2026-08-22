@@ -1,4 +1,4 @@
-import { CallId, createUserMessage } from '@alego/llm'
+import { CallId, createUserMessage } from '@singula-ai/alego-llm'
 /**
  * Tests for the queue-aware `Agent.cancel()` primitive. The default clears
  * queued and steering work, while `keepInbox` preserves pending input for a
@@ -8,13 +8,13 @@ import { CallId, createUserMessage } from '@alego/llm'
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import LlmRuntime from '@alego/llm'
-import SessionStore, { SessionId, TurnEndReason } from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime, { defineContentToolFixture, TOOL_ABORTED_BEFORE_DISPATCH } from '@alego/tools'
-import AgentRegistry, { type Agent } from '@alego/agent'
-import AgentLoop from '@alego/agent-loop'
+import { Context } from '@singula-ai/cordis'
+import LlmRuntime from '@singula-ai/alego-llm'
+import SessionStore, { SessionId, TurnEndReason } from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { defineContentToolFixture, TOOL_ABORTED_BEFORE_DISPATCH } from '@singula-ai/alego-tools'
+import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
+import AgentLoop from '@singula-ai/alego-agent-loop'
 import { MockAdapter, textResponse, toolCallResponse } from './mock-adapter.ts'
 
 function driverDone(agent: Agent): Promise<void> {

@@ -1,8 +1,8 @@
-# @alego/spill-local
+# @singula-ai/alego-spill-local
 
 English | [中文](README.zh.md)
 
-The **local-filesystem** implementation of the [`@alego/spill`](../spill) storage seam. Registers as `ctx.spillStore` and persists a tool's oversized text to a private, session-scoped file; its locator is the file path and its retrieval hint tells the model to use `read` or `grep` on that path.
+The **local-filesystem** implementation of the [`@singula-ai/alego-spill`](../spill) storage seam. Registers as `ctx.spillStore` and persists a tool's oversized text to a private, session-scoped file; its locator is the file path and its retrieval hint tells the model to use `read` or `grep` on that path.
 
 ## Storage layout
 

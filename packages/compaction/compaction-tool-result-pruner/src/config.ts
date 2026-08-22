@@ -1,6 +1,6 @@
 /** Configuration resolution for deterministic tool-result pruning. */
 
-import { deepFreeze } from '@alego/llm'
+import { deepFreeze } from '@singula-ai/alego-llm'
 import type { ResolvedConfig, ToolResultPruneConfig } from './types.ts'
 
 /** Fixed marker substituted for every removed middle span. */

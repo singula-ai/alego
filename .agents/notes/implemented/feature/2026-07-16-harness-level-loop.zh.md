@@ -35,12 +35,12 @@ Status: implemented
 
 | 包 | 仓库类别 | 所属结构与动词 |
 |---|---|---|
-| `@alego/goal` | `packages/goal/goal/`，领域服务 | 拥有 `GoalId`、比较并交换 `GoalRef`、`GoalSnapshot`、四状态 `GoalPhase`、结构化 `GoalBlockReason`、进程本地 `GoalActivation`、重放折叠，以及 `get`、`create`、`edit`、`pause`、`resume`、`complete`、`block`、`clear` 与 `disarm` 动词。 |
-| `@alego/tool-goal` | `packages/goal/tool-goal/`，面向模型消费方 | 注册互斥的 `get_goal`、`create_goal` 与 `update_goal`；要求实时根 agent 轮次中有一条人类直接发送的消息，并把自治 Round 权限收窄到带机器可路由原因代码的完成或阻塞报告。 |
-| `@alego/goal-round-driver` | `packages/goal/goal-round-driver/`，续行策略 | 在不导入具体 loop 的情况下，预留、设围栏、接纳、归属、结算、取消并排空同会话 Goal Round，直至完全停稳。 |
-| `@alego/commands` | `packages/interaction/commands/`，UI 注册表 | 拥有面向人类专用命令的 `CommandDefinition`、发现、作用域注册、直接分发、`CommandResult` 与请求取消。 |
-| `@alego/command-goal` | `packages/goal/command-goal/`，人类命令生产方 | 为 TUI 注册构建在目标领域之上的 `/goal` 状态、创建、编辑、暂停、恢复与清除。 |
-| `@alego/tool-ralph` | `packages/workflow/tool-ralph/`，固定工作流消费方 | 注册 `ralph({ objective, maxRounds? })`，验证全新结构化提供方与有界 `RalphRoundReport`，并返回 `complete`、`blocked` 或 `budget-limited`。 |
+| `@singula-ai/alego-goal` | `packages/goal/goal/`，领域服务 | 拥有 `GoalId`、比较并交换 `GoalRef`、`GoalSnapshot`、四状态 `GoalPhase`、结构化 `GoalBlockReason`、进程本地 `GoalActivation`、重放折叠，以及 `get`、`create`、`edit`、`pause`、`resume`、`complete`、`block`、`clear` 与 `disarm` 动词。 |
+| `@singula-ai/alego-tool-goal` | `packages/goal/tool-goal/`，面向模型消费方 | 注册互斥的 `get_goal`、`create_goal` 与 `update_goal`；要求实时根 agent 轮次中有一条人类直接发送的消息，并把自治 Round 权限收窄到带机器可路由原因代码的完成或阻塞报告。 |
+| `@singula-ai/alego-goal-round-driver` | `packages/goal/goal-round-driver/`，续行策略 | 在不导入具体 loop 的情况下，预留、设围栏、接纳、归属、结算、取消并排空同会话 Goal Round，直至完全停稳。 |
+| `@singula-ai/alego-commands` | `packages/interaction/commands/`，UI 注册表 | 拥有面向人类专用命令的 `CommandDefinition`、发现、作用域注册、直接分发、`CommandResult` 与请求取消。 |
+| `@singula-ai/alego-command-goal` | `packages/goal/command-goal/`，人类命令生产方 | 为 TUI 注册构建在目标领域之上的 `/goal` 状态、创建、编辑、暂停、恢复与清除。 |
+| `@singula-ai/alego-tool-ralph` | `packages/workflow/tool-ralph/`，固定工作流消费方 | 注册 `ralph({ objective, maxRounds? })`，验证全新结构化提供方与有界 `RalphRoundReport`，并返回 `complete`、`blocked` 或 `budget-limited`。 |
 
 详细约定见[目标领域](2026-07-19-persisted-same-session-goal-domain.zh.md)、[目标自有事件](../architecture/2026-07-31-goal-owned-durable-events.zh.md)、[模型目标工具](2026-07-19-model-facing-goal-tools.zh.md)、[Goal Round 驱动器](2026-07-19-same-session-goal-round-driver.zh.md)、[命令注册表](2026-07-19-plugin-command-registration.zh.md)、[人类目标命令](2026-07-19-human-goal-command.zh.md)与 [Ralph 工作流工具](2026-07-19-fresh-agent-ralph-workflow-tool.zh.md) Agent Note。
 

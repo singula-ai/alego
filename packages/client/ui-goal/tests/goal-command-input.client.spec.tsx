@@ -4,13 +4,13 @@ import { afterEach, describe, expect, it } from 'vitest'
 import type {
   ChatConversationViewNode, ChatSnapshot, ConversationEventInput,
   ConversationNodeDefinition, ConversationViewDefinition,
-} from '@alego/client-runtime/client'
-import { ConversationNodeAssembler } from '@alego/client-runtime/client'
-import { makeTranslate } from '@alego/client-test-runtime'
-import { zh as commonZh } from '@alego/client-locale/src/locales/zh.ts'
-import type { SessionEvent } from '@alego/session/types'
-import { commandDefinition } from '@alego/client-ui-conversation/src/client/conversation-nodes/command.ts'
-import { chatViewDefinition } from '@alego/client-ui-conversation/src/client/conversation-nodes/chat-snapshot-builder.ts'
+} from '@singula-ai/alego-client-runtime/client'
+import { ConversationNodeAssembler } from '@singula-ai/alego-client-runtime/client'
+import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
+import type { SessionEvent } from '@singula-ai/alego-session/types'
+import { commandDefinition } from '@singula-ai/alego-client-ui-conversation/src/client/conversation-nodes/command.ts'
+import { chatViewDefinition } from '@singula-ai/alego-client-ui-conversation/src/client/conversation-nodes/chat-snapshot-builder.ts'
 import { GoalCommandInputView } from '../src/client/GoalCommandInputView.tsx'
 import {
   goalCommandInputDefinition, goalCommandText,

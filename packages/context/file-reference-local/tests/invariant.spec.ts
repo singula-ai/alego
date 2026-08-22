@@ -1,6 +1,6 @@
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
-import InvariantService from '@alego/invariants'
+import InvariantService from '@singula-ai/alego-invariants'
 import * as FileReferenceLocalInvariant from '../src/invariant.ts'
 
 describe('invariant companion', () => {

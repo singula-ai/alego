@@ -2,16 +2,16 @@
  * Durable session-persistence Service Definition (`ctx.sessionPersistence`). Backends store
  * {@link SessionEvent}s as the event-sourced log and carry non-replayable
  * {@link SessionHeader} metadata separately.
- * @module @alego/session-persistence
+ * @module @singula-ai/alego-session-persistence
  */
 
-import { Context, Service } from '@alego/cordis'
-import { SessionPreparation } from '@alego/session'
-import type { SessionEvent, SessionId, SessionHeader } from '@alego/session'
+import { Context, Service } from '@singula-ai/cordis'
+import { SessionPreparation } from '@singula-ai/alego-session'
+import type { SessionEvent, SessionId, SessionHeader } from '@singula-ai/alego-session'
 import type { SessionPersistenceRevision } from './revision.ts'
 
 // Re-export the metadata vocabulary so Consumers import it from the Service Definition.
-export type { SessionHeader } from '@alego/session'
+export type { SessionHeader } from '@singula-ai/alego-session'
 export { SessionPersistenceRevision } from './revision.ts'
 
 /** Lightweight immutable source identity returned without loading a full log. */
@@ -57,7 +57,7 @@ export type {
   StoredSuffix,
 } from './coordinator.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     sessionPersistence: SessionPersistence
   }

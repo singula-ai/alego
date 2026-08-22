@@ -8,9 +8,9 @@
  * its bootstrap export, which constructs the system and retains the same
  * exports for this package's graph row. The plugin face only enrolls that
  * pre-existing instance by providing it as `ctx.modules`.
- * @module @alego/client-modules/client
+ * @module @singula-ai/alego-client-modules/client
  */
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import { ClientModuleSystem } from './system.ts'
 import { parseBootManifest } from './manifest.ts'
 import type {

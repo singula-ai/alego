@@ -1,12 +1,12 @@
 /**
  * File-reference discovery seam shared by host-backed user interfaces.
  *
- * @module @alego/file-reference
+ * @module @singula-ai/alego-file-reference
  */
 
-import type { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import { Remote, TypertRemoteService } from '@alego/typert-protocol'
+import type { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import { Remote, TypertRemoteService } from '@singula-ai/alego-typert-protocol'
 
 import type { FileReferenceCandidate } from './types.ts'
 
@@ -17,7 +17,7 @@ export type { FileReferenceCandidate } from './types.ts'
 /** Model guidance for path-only references selected by a user interface. */
 export const FILE_REFERENCE_PROMPT = 'Paths prefixed with @ are files explicitly referenced by the user. Use the read tool when their contents are needed; do not claim to have inspected a file before reading it.'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     fileReferences: FileReferenceService
   }

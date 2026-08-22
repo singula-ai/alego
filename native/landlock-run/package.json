@@ -1,5 +1,5 @@
 {
-  "name": "@alego/node-addon-landlock-run-workspace",
+  "name": "@singula-ai/node-addon-landlock-run-workspace",
   "version": "0.1.1",
   "private": true,
   "type": "module",
@@ -23,7 +23,7 @@
     "release:verify-packed-install": "node ./scripts/verify-packed-install.mjs"
   },
   "devDependencies": {
-    "@alego/node-addon-landlock-run": "workspace:*",
+    "@singula-ai/node-addon-landlock-run": "workspace:*",
     "@types/node": "^26.0.1",
     "tsx": "^4.20.6",
     "typescript": "^6.0.3"

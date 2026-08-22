@@ -1,4 +1,4 @@
-# `@alego/file-reference`
+# `@singula-ai/alego-file-reference`
 
 [English](README.md) | 中文
 
@@ -10,7 +10,7 @@
 
 ## 模型体验
 
-间接影响模型体验：`@alego/file-reference-local` 会按条件贡献本包的稳定文件引用指引。
+间接影响模型体验：`@singula-ai/alego-file-reference-local` 会按条件贡献本包的稳定文件引用指引。
 
 #### KV 缓存影响
 

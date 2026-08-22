@@ -12,7 +12,7 @@ Status: implemented
 
 ## 决策
 
-在 `examples/mcp-memory` 下交付三份默认关闭的 Cordis overlay 示例：Memorix、MCP Reference Memory 和 Engram。每个文件只插入一个 `@alego/mcp-client` 配置项。交付组合不会引用这些文件；CLI（命令行界面）仅声明通用桥接器，使用户显式选择 overlay 时可以解析它。
+在 `examples/mcp-memory` 下交付三份默认关闭的 Cordis overlay 示例：Memorix、MCP Reference Memory 和 Engram。每个文件只插入一个 `@singula-ai/alego-mcp-client` 配置项。交付组合不会引用这些文件；CLI（命令行界面）仅声明通用桥接器，使用户显式选择 overlay 时可以解析它。
 
 这些第三方配置仅作为互操作参考；收录不代表 DeepSeek 的认可、推荐、合作关系或持续支持承诺。系统没有记忆预设注册表、提供方专属 ALEGO 插件、通用记忆服务、安装 UI、迁移层、健康检查器或重连控制器。其他记忆 MCP 服务器可以使用同一份文档中的 stdio 或 Streamable HTTP 配置项。
 
@@ -43,7 +43,7 @@ Status: implemented
 
 ## 模型指导
 
-示例不会修改 `@alego/system-prompt`：配置 patch 会替换某个配置项的完整配置，可能抹除已有 persona。README 改为提供一条可选的附加指令：
+示例不会修改 `@singula-ai/alego-system-prompt`：配置 patch 会替换某个配置项的完整配置，可能抹除已有 persona。README 改为提供一条可选的附加指令：
 
 > 当用户要求你记住某件事时，调用记忆写入工具。当历史信息可能相关时，搜索记忆并使用相关结果。
 

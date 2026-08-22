@@ -28,8 +28,8 @@ import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
 // Type-only: pulls the plan/mode SessionEventMap merge so the discriminant
 // filter below types as the plan-mode event in the host aggregate.
-import type {} from '@alego/plan-mode'
-import type { SessionEvent } from '@alego/session'
+import type {} from '@singula-ai/alego-plan-mode'
+import type { SessionEvent } from '@singula-ai/alego-session'
 import {
   assertFixtureInventory, compareOrRefreshGolden,
   launchWebScaffold, watchConsole, webSnapshotMode, type WebScaffold,

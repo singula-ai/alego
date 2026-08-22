@@ -5,12 +5,12 @@
  * conversation wiring layer alone sees the full SessionInput. InputMachine
  * (machine.ts) is package-private and never exported.
  */
-import type { ClientContext, SnapshotStore } from '@alego/client-runtime/client'
-import type { Branded } from '@alego/brand'
+import type { ClientContext, SnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import type { Branded } from '@singula-ai/alego-brand'
 import type {
   ArbitrateKey, ArbitrateOutcome, CommandClaim, ConsumeTokenRequest, PickOutcome,
   ReferenceInsert, SubmitOutcome, TokenSpan,
-} from '@alego/client-ui-input-trigger/client'
+} from '@singula-ai/alego-client-ui-input-trigger/client'
 import type { QueueRow } from '../contract/queue.ts'
 import type { InputSubmitMode } from '../contract/composer-submission.ts'
 

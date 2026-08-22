@@ -1,6 +1,6 @@
 /**
  * Error vocabulary for the storage hub and its backends.
- * @module @alego/storage/src/error
+ * @module @singula-ai/alego-storage/src/error
  */
 
 /** Discriminant codes carried by every {@link StorageError}. */

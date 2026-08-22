@@ -1,11 +1,11 @@
 /**
  * alego-lsp's owned branded id: {@link LspProviderId}, the opaque identity a provider reserves on
- * `ctx.lsp`. The `Branded<B>` primitive lives in `@alego/brand`; keeping the type and its
+ * `ctx.lsp`. The `Branded<B>` primitive lives in `@singula-ai/alego-brand`; keeping the type and its
  * factory together here lets `index.ts` re-export both under one name.
- * @module @alego/lsp/brand
+ * @module @singula-ai/alego-lsp/brand
  */
 
-import type { Branded } from '@alego/brand'
+import type { Branded } from '@singula-ai/alego-brand'
 
 /** Opaque provider identity, reserved atomically with its extension mappings at registration. */
 export type LspProviderId = Branded<'LspProviderId'>

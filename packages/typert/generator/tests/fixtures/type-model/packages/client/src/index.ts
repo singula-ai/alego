@@ -1,4 +1,4 @@
-import { Service } from '@alego/cordis'
+import { Service } from '@singula-ai/cordis'
 import type HostDefault from '@fixture/host'
 import type * as Host from '@fixture/host'
 import type { AgentPhase } from '@fixture/host'
@@ -30,7 +30,7 @@ export class ClientBridge extends Service {
   }
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     clientBridge: ClientBridge
   }

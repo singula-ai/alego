@@ -1,6 +1,6 @@
 /** Model and UI rendering for persistent terminal tool results. */
 
-import { TextRetainer } from '@alego/output-retention'
+import { TextRetainer } from '@singula-ai/alego-output-retention'
 
 interface RenderedSessionStatusRunning {
   kind: 'running'

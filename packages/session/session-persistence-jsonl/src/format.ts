@@ -9,9 +9,9 @@
  */
 
 import { join } from 'node:path'
-import { decodeStorageRecord, packChunkRuns, SESSION_FORMAT_VERSION } from '@alego/session'
-import type { SessionEvent, SessionHeader, SessionId, StorageRecord } from '@alego/session'
-import { SessionFormatUnsupportedError, sessionFormatVersionRefusal } from '@alego/session-persistence'
+import { decodeStorageRecord, packChunkRuns, SESSION_FORMAT_VERSION } from '@singula-ai/alego-session'
+import type { SessionEvent, SessionHeader, SessionId, StorageRecord } from '@singula-ai/alego-session'
+import { SessionFormatUnsupportedError, sessionFormatVersionRefusal } from '@singula-ai/alego-session-persistence'
 
 /** Physical encoding selected for JSONL session artifacts. */
 export type JsonlCompression = 'zstd' | 'none'

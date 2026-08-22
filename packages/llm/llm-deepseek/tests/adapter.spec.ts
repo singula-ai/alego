@@ -2,10 +2,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@alego/cordis'
-import { AttachmentId, ImageVariantId } from '@alego/attachment'
-import type { AttachmentStore, ImageAttachmentRef, RequestImageAttachment } from '@alego/attachment'
-import { createLaunchEnvironmentSnapshot } from '@alego/launch-environment'
+import { Context } from '@singula-ai/cordis'
+import { AttachmentId, ImageVariantId } from '@singula-ai/alego-attachment'
+import type { AttachmentStore, ImageAttachmentRef, RequestImageAttachment } from '@singula-ai/alego-attachment'
+import { createLaunchEnvironmentSnapshot } from '@singula-ai/alego-launch-environment'
 import LlmRuntime, { CallId, createUserMessage,
   CONTEXT_WINDOW_EXCEEDED_CODE,
   LlmError,
@@ -13,12 +13,12 @@ import LlmRuntime, { CallId, createUserMessage,
   QUOTA_EXCEEDED_CODE,
   ReasoningEffortId,
   userAgent,
-} from '@alego/llm'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
-import { getOrCreateAnonymousUserId, type AnonymousUserId } from '@alego/anonymous-user-id'
-import { SessionId } from '@alego/session'
-import * as LlmDeepSeek from '@alego/llm-deepseek'
-import { DeepSeekAdapter, resolveAdapterOptions } from '@alego/llm-deepseek'
+} from '@singula-ai/alego-llm'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
+import { getOrCreateAnonymousUserId, type AnonymousUserId } from '@singula-ai/alego-anonymous-user-id'
+import { SessionId } from '@singula-ai/alego-session'
+import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek'
+import { DeepSeekAdapter, resolveAdapterOptions } from '@singula-ai/alego-llm-deepseek'
 import { httpErrorCode, resolveRequestImagePolicy } from '../src/adapter.ts'
 import { assemble } from './assemble.ts'
 import { closeMockServers, mockServer, textEvents } from './mock-server.ts'

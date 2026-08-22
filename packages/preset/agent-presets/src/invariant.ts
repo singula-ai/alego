@@ -1,20 +1,20 @@
 /**
- * Package-owned invariant companion for `@alego/agent-presets`.
- * @module @alego/agent-presets/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-agent-presets`.
+ * @module @singula-ai/alego-agent-presets/invariant
  */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 // Type-only: resolves the `system-prompt/assemble` waterfall this companion
 // joins, and the `agent` field `alego-agent` merges into its context.
-import type {} from '@alego/system-prompt'
-import type {} from '@alego/agent'
+import type {} from '@singula-ai/alego-system-prompt'
+import type {} from '@singula-ai/alego-agent'
 // Imported through the package name, not `./mount.ts`: a module shared between
 // the two build entry points becomes a third chunk that the published `files`
 // list does not carry, which `verify-built-package-invariants` rejects.
-import { leakedServices, livePresetMounts } from '@alego/agent-presets'
+import { leakedServices, livePresetMounts } from '@singula-ai/alego-agent-presets'
 
-const PACKAGE_NAME = '@alego/agent-presets'
+const PACKAGE_NAME = '@singula-ai/alego-agent-presets'
 
 /** Cordis companion plugin name. */
 export const name = 'agent-presets-invariant'

@@ -11,7 +11,7 @@
 
 import { spawnSync } from 'node:child_process'
 import koffi from 'koffi'
-import type { SubprocessTerminalSignal } from '@alego/subprocess'
+import type { SubprocessTerminalSignal } from '@singula-ai/alego-subprocess'
 import type { ProcessIdentity, ProcessInspector } from './process-inspector.ts'
 
 /** One Toolhelp32 process-table row. */

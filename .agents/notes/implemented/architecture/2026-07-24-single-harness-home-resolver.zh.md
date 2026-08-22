@@ -8,14 +8,14 @@ Status: implemented
 
 对于"Alego 用户数据存放在哪里"，harness 里存在两套互不一致的约定：
 
-- `@alego/home` 按 `configured ?? $ALEGO_HOME ?? ~/.alego` 解析。
-- `@alego/home-paths` 又提供了**第二个** `resolveAlegoHome`，优先级相同但额外做了波浪号展开——它几乎是 `alego-home` 的重复实现，却没有任何门禁发现，因为两者分属不同的包，而且早已漂移（只有一个会展开波浪号）。
+- `@singula-ai/alego-home` 按 `configured ?? $ALEGO_HOME ?? ~/.alego` 解析。
+- `@singula-ai/alego-home-paths` 又提供了**第二个** `resolveAlegoHome`，优先级相同但额外做了波浪号展开——它几乎是 `alego-home` 的重复实现，却没有任何门禁发现，因为两者分属不同的包，而且早已漂移（只有一个会展开波浪号）。
 
 同一条横切事实有两个解析器，意味着不存在单一的 home 策略。
 
 ## 决策
 
-由一个解析器统一掌管 harness home，落在 `@alego/home-paths`，采用单一根目录：
+由一个解析器统一掌管 harness home，落在 `@singula-ai/alego-home-paths`，采用单一根目录：
 
 ```
 explicit configured path  >  $ALEGO_HOME  >  ~/.alego
@@ -23,7 +23,7 @@ explicit configured path  >  $ALEGO_HOME  >  ~/.alego
 
 空或仅含空白的 `$ALEGO_HOME` 被当作未设置处理；否则，`resolve('')` 会悄悄把 home 落在当前工作目录。harness 把所有用户数据都放在同一个根目录下；不存在 XDG 的 config/data/cache 拆分。`alegoHomePath(...segments)` 将部署负责的子路径拼接到该根目录下，`alego-app-boot` 在挂载条目前向 Loader `!!js` 配置表达式暴露它，因此出厂组合无需复制解析器即可派生 `sessions` 和 `storages`。`alegoHomeDisplay()` 为面向用户的路径以符号形式命名已解析的根目录——默认 home 显示为 `~/.alego`，任何已配置的 home 显示为 `$ALEGO_HOME`——这样用户全局的 `AGENTS.md` 标签就绝不会泄露机器上的绝对路径。它取代了 agent-instructions 中自定义的「默认值 vs `$ALEGO_HOME`」判断。
 
-`@alego/home` 被删除。它的三个引用方（`alego-tool-bash`、`alego-skill-filesystem`、`alego-agent-spine-demo`）从 `alego-home-paths` 导入 `resolveAlegoHome`。
+`@singula-ai/alego-home` 被删除。它的三个引用方（`alego-tool-bash`、`alego-skill-filesystem`、`alego-agent-spine-demo`）从 `alego-home-paths` 导入 `resolveAlegoHome`。
 
 `alego-telemetry` 及其独立 home 策略已随 [SDK 项目工具链移除](../simplification/2026-08-11-remove-sdk-project-toolchain.zh.md)一并消失，因此该解析器是唯一的 home 策略。
 

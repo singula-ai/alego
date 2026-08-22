@@ -9,8 +9,8 @@ This tutorial adds a `greet` tool to the Web UI. Complete [Your first plugin](./
 Replace `scratch-plugin/src/my-plugin.ts` with:
 
 ```ts
-import type { Context } from '@alego/cordis'
-import { defineTool } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import { defineTool } from '@singula-ai/alego-tools'
 
 export const name = 'greet-tool'
 export const inject = ['tools']

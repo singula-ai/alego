@@ -1,12 +1,12 @@
 /**
- * Package-owned invariant companion for `@alego/client-hmr`.
- * @module @alego/client-hmr/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-client-hmr`.
+ * @module @singula-ai/alego-client-hmr/invariant
  */
 
-import type { Context, Fiber } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context, Fiber } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/client-hmr'
+const PACKAGE_NAME = '@singula-ai/alego-client-hmr'
 
 /** Cordis companion plugin name. */
 export const name = 'client-hmr-invariant'

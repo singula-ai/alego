@@ -3,7 +3,7 @@
  * algorithm used by the agent loop to build an assistant message from a chunk
  * stream while logging the raw chunks for replay fidelity.
  *
- * @module @alego/llm/assembler
+ * @module @singula-ai/alego-llm/assembler
  */
 
 import { CallId } from './brand.ts'

@@ -14,11 +14,11 @@ import { useEffect, useState, type ReactNode } from 'react'
 import {
   SlotOwnershipError, StaleAuthorizationError,
   type ActionsDecl, type SlotEntryDef, type SlotSpec, type StoreHandle, type StoredEntry,
-} from '@alego/client-ui-slots'
-import type { SessionMaybeProvideInfo } from '@alego/client-ui-slots'
+} from '@singula-ai/alego-client-ui-slots'
+import type { SessionMaybeProvideInfo } from '@singula-ai/alego-client-ui-slots'
 import type {
   RenderOpts, SessionProvideInfo, SlotRendererHost, StoreInstanceLike,
-} from '@alego/client-ui-renderer/client'
+} from '@singula-ai/alego-client-ui-renderer/client'
 import { createSlotRenderer } from '../src/client/scoped-slots.tsx'
 import { SessionProvider } from '../src/client/session-provider.tsx'
 

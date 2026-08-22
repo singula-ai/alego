@@ -1,10 +1,10 @@
-/** Package-owned invariant companion for `@alego/attachment-local`. @module @alego/attachment-local/invariant */
+/** Package-owned invariant companion for `@singula-ai/alego-attachment-local`. @module @singula-ai/alego-attachment-local/invariant */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/attachment-local'
+const PACKAGE_NAME = '@singula-ai/alego-attachment-local'
 /** Cordis companion plugin name. */
 export const name = 'attachment-local-invariant'
 /** Services required before package ownership can be reserved. */

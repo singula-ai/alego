@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/command-goal`.
- * @module @alego/command-goal/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-command-goal`.
+ * @module @singula-ai/alego-command-goal/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/command-goal'
+const PACKAGE_NAME = '@singula-ai/alego-command-goal'
 
 /** Cordis companion plugin name. */
 export const name = 'command-goal-invariant'

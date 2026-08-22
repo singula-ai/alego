@@ -15,8 +15,8 @@ harness 扩展的参考模式。代码片段省略了 import 和辅助实现，�
 这个权限门禁是钩子插件的一个示例。它从 `tools/pre-execute` 门禁返回一个类型化的决策，用于允许或拒绝一次调用；沙箱、权限和 plan-mode 插件都可以使用该扩展点。钩子插件也可以拦截其他扩展点，本身并不等同于权限门禁。「原生钩子」是在拦截点上运行的普通 Cordis 插件，不需要外部协议。
 
 ```ts
-import type { Context } from '@alego/cordis'
-import type { PreToolDecision, ToolExecution } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import type { PreToolDecision, ToolExecution } from '@singula-ai/alego-tools'
 
 declare function isAllowed(exec: ToolExecution): Promise<boolean>
 
@@ -39,9 +39,9 @@ export function apply(ctx: Context) {
 UI 插件从 `session/event` 事件流渲染（助手 token 流以 `assistant/chunk` 形式到达，加上轮次/步骤边界与工具活动），并通过 `agent.followup()` / `agent.steer()` 将输入驱动回去。如果浏览器插件要向内建 Web Client 贡献业务行，则应注册 `ConversationNodeDefinition` 与 keyed Chat renderer；具体步骤见 [Conversation Node 指南](adding-a-conversation-node.zh.md)。
 
 ```ts
-import type { Context } from '@alego/cordis'
-import { createUserMessage } from '@alego/llm'
-import { SessionId } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
 
 declare function render(text: string): void
 declare function onUserInput(handler: (text: string) => void): void
@@ -69,7 +69,7 @@ export function apply(ctx: Context) {
 [`packages/acp/acp`](../../packages/acp/acp) 是仅面向自动化的完整示例：它通过 ACP（Agent Client Protocol）JSON-RPC stdio 提供全新文本会话，发出已提交的助手文本，并为其拥有的 agent 注册一次性机器权限应答器。其 [README](../../packages/acp/acp/README.zh.md) 定义确切的方法、事件顺序和生命周期约定。
 
 ```ts
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 
 export const name = 'my-protocol-bridge'
 export const inject = ['agents', 'sessions', 'sessionPersistence']
@@ -92,7 +92,7 @@ export function apply(ctx: Context) {
 
 ## 可运行的组装示例
 
-可运行叶子从 `examples/*/cordis.yml` 加载各自的插件树；根目录的 `demo:*` 脚本和这些叶子目录是权威清单。产品 `alego` 启动器负责 Web 和一次性 headless 执行，ACP 叶子使用 [`@alego/acp-demo`](../../packages/examples/acp-demo)，JSON-RPC 叶子使用 [`@alego/sdk-jsonrpc-demo`](../../packages/examples/jsonrpc-demo)。headless 快照叶节点显式挂载 [`@alego/agent-spine-demo`](../../packages/examples/agent-spine-demo) 和 JSONL 持久化，再通过示例自有的测试 fixture（测试前置数据）驱动这些组件，而不是通过已交付的 app 包。
+可运行叶子从 `examples/*/cordis.yml` 加载各自的插件树；根目录的 `demo:*` 脚本和这些叶子目录是权威清单。产品 `alego` 启动器负责 Web 和一次性 headless 执行，ACP 叶子使用 [`@singula-ai/alego-acp-demo`](../../packages/examples/acp-demo)，JSON-RPC 叶子使用 [`@singula-ai/alego-sdk-jsonrpc-demo`](../../packages/examples/jsonrpc-demo)。headless 快照叶节点显式挂载 [`@singula-ai/alego-agent-spine-demo`](../../packages/examples/agent-spine-demo) 和 JSONL 持久化，再通过示例自有的测试 fixture（测试前置数据）驱动这些组件，而不是通过已交付的 app 包。
 
 <a id="the-feature--mechanism-map"></a>
 
@@ -120,7 +120,7 @@ export function apply(ctx: Context) {
 | 单调终端轮次策略 | 从成功的终端工具调用 `ToolExecution.concludeTurn()`；同一响应中后续工具调用仍可由守卫阻止，循环在该步骤后停止 |
 | 子进程沙箱（landlock / sandbox-exec） | 通过 `alego-bash-sandbox` 使用 `ctx.sandbox` 后端；能力级别的拒绝使用 `tools/pre-execute` |
 | 权限系统 / AskUserQuestion | 从 `tools/pre-execute` 返回 `ask` 并通过 `ctx.approval` 应答；为普通用户提问注册一个独立的面向模型的 ask 工具 |
-| Plan mode | [`@alego/plan-mode`](../../packages/plan/plan-mode/README.zh.md)：落日志的 `plan/mode` 状态、`plan:policy` 引导段、`/plan [message]` 入口、`/plan off` 直接退出，以及经用户评审的 `exit_plan_mode` 出口；强制约束留在独立的沙箱/审批轴上 |
+| Plan mode | [`@singula-ai/alego-plan-mode`](../../packages/plan/plan-mode/README.zh.md)：落日志的 `plan/mode` 状态、`plan:policy` 引导段、`/plan [message]` 入口、`/plan off` 直接退出，以及经用户评审的 `exit_plan_mode` 出口；强制约束留在独立的沙箱/审批轴上 |
 | subagent 委派 | `ctx.subagents` 提供方注册表（`alego-subagent-spawn-in-process`/`-fork`/`-acp`/`-codex`/`-claude-code`/`-alego-sdk`）+ `alego-tool-subagent` 向模型暴露一个已配置的提供方 |
 | MCP | 每个服务器一个插件：发现工具 → `ctx.tools.register()` |
 | skill（技能） | section + 工具注册；调用时通过 `inject()` 注入 skill 内容 |

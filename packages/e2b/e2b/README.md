@@ -1,4 +1,4 @@
-# @alego/e2b
+# @singula-ai/alego-e2b
 
 English | [中文](README.zh.md)
 
@@ -8,16 +8,16 @@ Shared lifecycle owner for one E2B sandbox. The filesystem and subprocess adapte
 
 ```yaml
 - id: e2b
-  name: '@alego/e2b'
+  name: '@singula-ai/alego-e2b'
   config:
     cwd: /home/user/workspace
     timeoutMs: 300000
 
 - id: subprocess-e2b
-  name: '@alego/subprocess-e2b'
+  name: '@singula-ai/alego-subprocess-e2b'
 
 - id: fs-e2b
-  name: '@alego/fs-e2b'
+  name: '@singula-ai/alego-fs-e2b'
 ```
 
 `apiKey` is optional and otherwise reads `E2B_API_KEY`; the key configures the host SDK connection and is never installed in the sandbox. `cwd` defaults to `/home/user/workspace` and must be an absolute POSIX path. `timeoutMs` defaults to five minutes and controls the sandbox lifetime; expiry deletes the sandbox.

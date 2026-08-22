@@ -1,12 +1,12 @@
 /**
  * Internal sandbox-result classification helpers.
  *
- * @module @alego/bash-sandbox/helpers
+ * @module @singula-ai/alego-bash-sandbox/helpers
  */
 
 import { accessSync, constants, statSync } from 'node:fs'
-import type { ShellRunResult } from '@alego/shell'
-import type { RunnerFailureRule } from '@alego/sandbox'
+import type { ShellRunResult } from '@singula-ai/alego-shell'
+import type { RunnerFailureRule } from '@singula-ai/alego-sandbox'
 
 /** Node-local spawn codes proven to identify executable resolution or permission failure. */
 const EXECUTABLE_SPAWN_CODES = new Set(['EACCES', 'ENOENT'])

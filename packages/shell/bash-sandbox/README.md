@@ -1,8 +1,8 @@
-# @alego/bash-sandbox
+# @singula-ai/alego-bash-sandbox
 
 English | [中文](README.zh.md)
 
-Sandbox-consuming Service Provider for the [`@alego/shell`](../shell/) executor seam. Load it **instead of** `@alego/bash-local`, together with a [`ctx.sandbox`](../../sandbox/sandbox/) provider (e.g. [`@alego/sandbox-local`](../../sandbox/sandbox-local/)) and a [`ctx.sandboxPolicy`](../../sandbox/sandbox-policy/) (which owns the default mode + workspace root, shared with the sandboxed filesystem) — no alternate tool plugin is needed; `alego-tool-bash` detects the executor's `sandboxMode` capability and adds the escalation fields.
+Sandbox-consuming Service Provider for the [`@singula-ai/alego-shell`](../shell/) executor seam. Load it **instead of** `@singula-ai/alego-bash-local`, together with a [`ctx.sandbox`](../../sandbox/sandbox/) provider (e.g. [`@singula-ai/alego-sandbox-local`](../../sandbox/sandbox-local/)) and a [`ctx.sandboxPolicy`](../../sandbox/sandbox-policy/) (which owns the default mode + workspace root, shared with the sandboxed filesystem) — no alternate tool plugin is needed; `alego-tool-bash` detects the executor's `sandboxMode` capability and adds the escalation fields.
 
 The package root exports the default and named `SandboxBashExecutor` plugin plus its `Config`; result-classification helpers stay internal.
 
@@ -26,14 +26,14 @@ Deny-only at the seam: a denial is a reported fact, and this executor never nego
 
 ```yaml
 - id: sandbox
-  name: '@alego/sandbox-local'
+  name: '@singula-ai/alego-sandbox-local'
 - id: sandbox-policy
-  name: '@alego/sandbox-policy'
+  name: '@singula-ai/alego-sandbox-policy'
   config:
     mode: read-only
     workspaceRoot: !!js process.cwd() # fallback for calls without a session cwd
 - id: bash
-  name: '@alego/bash-sandbox'
+  name: '@singula-ai/alego-bash-sandbox'
 ```
 
 ## Model Experience
@@ -42,7 +42,7 @@ Deny-only at the seam: a denial is a reported fact, and this executor never nego
 
 #### What the model sees
 
-The generated [`alego-tool-bash` schemas](../../../docs/tool-catalog.md#alegotool-bash) are the baseline. By advertising a confining `sandboxMode`, this backend augments `bash` with `sandbox_permissions` using enum `workspace-write` | `danger-full-access` and with `justification`. The policy owner separately contributes the current capability-neutral `sandbox:policy` context.
+The generated [`alego-tool-bash` schemas](../../../docs/tool-catalog.md#singula-aialego-tool-bash) are the baseline. By advertising a confining `sandboxMode`, this backend augments `bash` with `sandbox_permissions` using enum `workspace-write` | `danger-full-access` and with `justification`. The policy owner separately contributes the current capability-neutral `sandbox:policy` context.
 
 #### Token effect
 

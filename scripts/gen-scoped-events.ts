@@ -84,7 +84,7 @@ class ScopedEventGenerator {
       ' * Generated scoped-event routing-subject resolvers for alego-scope invariants.',
       ' * Do not edit by hand; run `pnpm run gen-scoped-events`.',
       ' *',
-      ' * @module @alego/scope/scoped-events.generated',
+      ' * @module @singula-ai/alego-scope/scoped-events.generated',
       ' */',
       '',
       'type ScopedSubjectResolver = (args: readonly unknown[]) => unknown',
@@ -309,14 +309,14 @@ class ScopedEventGenerator {
   }
 }
 
-/** Return whether an Events interface is inside declare module '@alego/cordis'. */
+/** Return whether an Events interface is inside declare module '@singula-ai/cordis'. */
 function isCordisModuleInterface(node: ts.InterfaceDeclaration): boolean {
   const block = node.parent
   const declaration = block.parent
   return ts.isModuleBlock(block)
     && ts.isModuleDeclaration(declaration)
     && ts.isStringLiteral(declaration.name)
-    && declaration.name.text === '@alego/cordis'
+    && declaration.name.text === '@singula-ai/cordis'
 }
 
 /** Return whether a parameter is the explicit TypeScript this receiver. */

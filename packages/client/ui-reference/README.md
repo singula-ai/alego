@@ -1,4 +1,4 @@
-# `@alego/client-ui-reference`
+# `@singula-ai/alego-client-ui-reference`
 
 English | [中文](README.zh.md)
 
@@ -12,7 +12,7 @@ The `/client` export is the plugin body (`apply`/`inject`) only; candidate encod
 
 ## Model Experience
 
-Indirectly, through `@alego/file-reference-local` for path guidance and `@alego/session-reference` for prepared session snapshots.
+Indirectly, through `@singula-ai/alego-file-reference-local` for path guidance and `@singula-ai/alego-session-reference` for prepared session snapshots.
 
 #### KV Cache effect
 

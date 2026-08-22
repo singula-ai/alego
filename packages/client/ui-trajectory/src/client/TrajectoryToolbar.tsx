@@ -1,7 +1,7 @@
 /** Trajectory toolbar: timeline and ledger fold controls. */
 
-import type { TranslateNS } from '@alego/client-ui-slots'
-import { IconSearchOutline16 } from '@alego/client-ui-primitives'
+import type { TranslateNS } from '@singula-ai/alego-client-ui-slots'
+import { IconSearchOutline16 } from '@singula-ai/alego-client-ui-primitives'
 import type { NS } from './locales.ts'
 import css from './TrajectoryToolbar.module.css'
 

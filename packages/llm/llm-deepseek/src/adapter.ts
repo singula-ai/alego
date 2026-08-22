@@ -8,7 +8,7 @@
  * @module alego-llm-deepseek/adapter
  */
 
-import { attributionHeaders, contentHasImage, CONTEXT_WINDOW_EXCEEDED_CODE, isContextWindowExceededError, isQuotaExceededError, LlmAdapter, LlmError, offloadRequestImagesWithPolicy, ProviderRequestId, QUOTA_EXCEEDED_CODE, ReasoningEffortId } from '@alego/llm'
+import { attributionHeaders, contentHasImage, CONTEXT_WINDOW_EXCEEDED_CODE, isContextWindowExceededError, isQuotaExceededError, LlmAdapter, LlmError, offloadRequestImagesWithPolicy, ProviderRequestId, QUOTA_EXCEEDED_CODE, ReasoningEffortId } from '@singula-ai/alego-llm'
 import type {
   ContentBlock,
   GenerateOptions,
@@ -19,17 +19,17 @@ import type {
   ModelModality,
   ResolvedRetryPolicy,
   StreamChunk,
-} from '@alego/llm'
+} from '@singula-ai/alego-llm'
 import type {
   AttachmentId,
   AttachmentStore,
   ImageAttachmentRef,
   ImageRequestPolicy,
   RequestImageAttachment,
-} from '@alego/attachment'
-import type { CredentialRef } from '@alego/credentials'
-import { deadline, idleWatchdog, timeoutOf } from '@alego/timeout'
-import type { AnonymousUserId } from '@alego/anonymous-user-id'
+} from '@singula-ai/alego-attachment'
+import type { CredentialRef } from '@singula-ai/alego-credentials'
+import { deadline, idleWatchdog, timeoutOf } from '@singula-ai/alego-timeout'
+import type { AnonymousUserId } from '@singula-ai/alego-anonymous-user-id'
 import { serializeRequest, serializeRequestWithImages } from './serialize.ts'
 import type { ImageWireLocation, RequestDefaults } from './serialize.ts'
 import { DeepSeekFileStore } from './file-store.ts'

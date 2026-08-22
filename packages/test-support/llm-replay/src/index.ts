@@ -4,14 +4,14 @@
  * compaction calls, then binds fresh live sessions to parent/child scripts by
  * first-call order. Throw and hang cases require an explicit override because
  * a session log cannot reconstruct them alone.
- * @module @alego/llm-replay
+ * @module @singula-ai/alego-llm-replay
  */
 
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { delimiter as pathDelimiter } from 'node:path'
-import type { Context } from '@alego/cordis'
-import type {} from '@alego/compaction'
-import { decodeStorageRecord, type SessionEvent } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import type {} from '@singula-ai/alego-compaction'
+import { decodeStorageRecord, type SessionEvent } from '@singula-ai/alego-session'
 import type {
   ContentBlock,
   GenerateOptions,
@@ -23,8 +23,8 @@ import type {
   RetryPolicyConfig,
   StreamChunk,
   TokenUsage,
-} from '@alego/llm'
-import { LlmAdapter, LlmError, ReasoningEffortId, assertNever, resolveRetryPolicy } from '@alego/llm'
+} from '@singula-ai/alego-llm'
+import { LlmAdapter, LlmError, ReasoningEffortId, assertNever, resolveRetryPolicy } from '@singula-ai/alego-llm'
 
 const PACKED_CHUNK_ROW_TYPES = new Set(['text-chunks', 'reasoning-chunks', 'tool-call-chunks'])
 

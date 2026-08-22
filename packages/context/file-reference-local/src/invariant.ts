@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/file-reference-local`.
- * @module @alego/file-reference-local/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-file-reference-local`.
+ * @module @singula-ai/alego-file-reference-local/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/file-reference-local'
+const PACKAGE_NAME = '@singula-ai/alego-file-reference-local'
 
 /** Cordis companion plugin name. */
 export const name = 'file-reference-local-invariant'

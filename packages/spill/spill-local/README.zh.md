@@ -1,8 +1,8 @@
-# @alego/spill-local
+# @singula-ai/alego-spill-local
 
 [English](README.md) | 中文
 
-[`@alego/spill`](../spill) 存储 seam 的**本地文件系统**实现。它注册为 `ctx.spillStore`，将工具产生的过大文本持久化到私有的会话级文件；定位信息是文件路径，取回指引会告诉模型对该路径使用 `read` 或 `grep`。
+[`@singula-ai/alego-spill`](../spill) 存储 seam 的**本地文件系统**实现。它注册为 `ctx.spillStore`，将工具产生的过大文本持久化到私有的会话级文件；定位信息是文件路径，取回指引会告诉模型对该路径使用 `read` 或 `grep`。
 
 ## 存储布局
 

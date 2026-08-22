@@ -1,15 +1,15 @@
 /**
  * Default one-shot summarization and durable checkpoint framing.
  *
- * @module @alego/compaction-basic/summarizer
+ * @module @singula-ai/alego-compaction-basic/summarizer
  */
 
-import type { Context } from '@alego/cordis'
-import { contentHasImage, createUserMessage, BlockAssembler, LlmError } from '@alego/llm'
+import type { Context } from '@singula-ai/cordis'
+import { contentHasImage, createUserMessage, BlockAssembler, LlmError } from '@singula-ai/alego-llm'
 import type {
   ContentBlock, FinishReason, GenerateOptions, Message, TokenUsage, ToolSchema,
-} from '@alego/llm'
-import type { Agent } from '@alego/agent'
+} from '@singula-ai/alego-llm'
+import type { Agent } from '@singula-ai/alego-agent'
 
 interface SummaryConfig {
   readonly summarizationProvider: string

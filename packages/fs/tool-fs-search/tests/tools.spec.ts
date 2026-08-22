@@ -11,18 +11,18 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { join, sep } from 'node:path'
-import { createUserMessage, CallId } from '@alego/llm'
-import SystemPrompt, { renderPrompt } from '@alego/system-prompt'
-import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH, type ToolExecution, type ToolExecutionToken } from '@alego/tools'
-import { SubprocessRuntime } from '@alego/subprocess'
-import type { SubprocessCollectedOutputs, SubprocessHandle, SubprocessOutcome, SubprocessOutputRead, SubprocessOutputReader, SubprocessSpawnSpec } from '@alego/subprocess'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+import { createUserMessage, CallId } from '@singula-ai/alego-llm'
+import SystemPrompt, { renderPrompt } from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH, type ToolExecution, type ToolExecutionToken } from '@singula-ai/alego-tools'
+import { SubprocessRuntime } from '@singula-ai/alego-subprocess'
+import type { SubprocessCollectedOutputs, SubprocessHandle, SubprocessOutcome, SubprocessOutputRead, SubprocessOutputReader, SubprocessSpawnSpec } from '@singula-ai/alego-subprocess'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 import { rgPath } from '@vscode/ripgrep'
-import { SpillLocator, SpillStore } from '@alego/spill'
-import type { SaveTextSpill, SpillRef } from '@alego/spill'
-import * as ToolFsSearch from '@alego/tool-fs-search'
+import { SpillLocator, SpillStore } from '@singula-ai/alego-spill'
+import type { SaveTextSpill, SpillRef } from '@singula-ai/alego-spill'
+import * as ToolFsSearch from '@singula-ai/alego-tool-fs-search'
 import {
   buildGlobCommand,
   buildGrepCommand,
@@ -37,7 +37,7 @@ import {
   runRipgrep,
   sampleAcrossTopLevel,
   toWorkdirRelative,
-} from '@alego/tool-fs-search'
+} from '@singula-ai/alego-tool-fs-search'
 
 const testToolSignal = new AbortController().signal
 

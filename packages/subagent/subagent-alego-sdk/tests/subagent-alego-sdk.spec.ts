@@ -7,13 +7,13 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { existsSync, mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import SubagentRuntime from '@alego/subagent'
-import type { Agent } from '@alego/agent'
+import SubagentRuntime from '@singula-ai/alego-subagent'
+import type { Agent } from '@singula-ai/alego-agent'
 import * as sdk from '../src/index.ts'
 import {
   DEFAULT_DISPOSE_EOF_GRACE_MS,

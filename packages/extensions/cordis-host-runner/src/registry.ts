@@ -1,10 +1,10 @@
 /**
  * Process-local dynamic Plugin registry and its opaque identity mints.
- * @module @alego/cordis-host-runner/registry
+ * @module @singula-ai/alego-cordis-host-runner/registry
  */
 
-import type { Fiber } from '@alego/cordis'
-import type { SessionId } from '@alego/session/types'
+import type { Fiber } from '@singula-ai/cordis'
+import type { SessionId } from '@singula-ai/alego-session/types'
 import type {
   ApprovalRequestId, CordisDynamicPackageId, CordisDynamicPluginId, CordisDynamicPluginRunId,
   CordisDynamicRunMode, DynamicCordisRenderFailure, DynamicCordisRunAttempt,

@@ -1,21 +1,21 @@
 /**
  * Model argument schemas, normalization, and filter construction.
  *
- * @module @alego/tool-session-query/input
+ * @module @singula-ai/alego-tool-session-query/input
  */
 
 import {
   SessionId,
   type SessionEventType,
   type SessionId as SessionIdValue,
-} from '@alego/session'
+} from '@singula-ai/alego-session'
 import {
   SessionQueryError,
   type SessionAvailability,
   type SessionEventMetadataFilter,
   type SessionEventSurface,
   type SessionResultFilter,
-} from '@alego/session-query'
+} from '@singula-ai/alego-session-query'
 
 interface SessionSearchArgs {
   query: string

@@ -10,9 +10,9 @@
  * @module hello-world
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { defineTool } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { defineTool } from '@singula-ai/alego-tools'
 
 /** Cordis plugin name used by Loader diagnostics. */
 export const name = 'hello-world'

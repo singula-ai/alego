@@ -6,12 +6,12 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
-import WebRuntime from '@alego/web'
-import * as toolWeb from '@alego/tool-web'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
+import WebRuntime from '@singula-ai/alego-web'
+import * as toolWeb from '@singula-ai/alego-tool-web'
 
 describe('alego-tool-web real-load-path guard', () => {
   it('has no default export and keeps name/inject/Config through unwrapExports', () => {

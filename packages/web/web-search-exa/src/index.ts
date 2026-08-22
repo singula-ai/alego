@@ -1,17 +1,17 @@
 /**
- * `@alego/web-search-exa`: registers an Exa-backed `WebSearchProvider`
+ * `@singula-ai/alego-web-search-exa`: registers an Exa-backed `WebSearchProvider`
  * with `ctx.web`. A function/namespace plugin (NOT a default-export service):
  * a search provider does not own the `ctx.web` key — it registers INTO the
- * seam's provider registry, exactly as `@alego/llm-deepseek`
- * registers an adapter into `ctx.llm`. The key is owned by `@alego/web`.
+ * seam's provider registry, exactly as `@singula-ai/alego-llm-deepseek`
+ * registers an adapter into `ctx.llm`. The key is owned by `@singula-ai/alego-web`.
  *
- * @module @alego/web-search-exa
+ * @module @singula-ai/alego-web-search-exa
  */
 
-import type { Context } from '@alego/cordis'
-import { launchEnvironmentOf } from '@alego/launch-environment'
-import z from '@alego/schemastery'
-import type {} from '@alego/web'
+import type { Context } from '@singula-ai/cordis'
+import { launchEnvironmentOf } from '@singula-ai/alego-launch-environment'
+import z from '@singula-ai/schemastery'
+import type {} from '@singula-ai/alego-web'
 import {
   ExaSearchProvider,
   EXA_DEFAULT_BASE_URL,

@@ -1,13 +1,13 @@
 /**
  * E2B provider for the filesystem capability seam. Paths, contents, and
  * atomic staging files remain inside the shared remote sandbox.
- * @module @alego/fs-e2b
+ * @module @singula-ai/alego-fs-e2b
  */
 
 import { createHash, randomUUID } from 'node:crypto'
 import { Buffer } from 'node:buffer'
 import { posix } from 'node:path'
-import { FileSystem, FsError, FsTargetKey, FsVersion } from '@alego/fs'
+import { FileSystem, FsError, FsTargetKey, FsVersion } from '@singula-ai/alego-fs'
 import type {
   FsDirEntry,
   FsEditOutcome,
@@ -17,15 +17,15 @@ import type {
   FsTarget,
   FsWriteIntent,
   FsWriteOutcome,
-} from '@alego/fs'
+} from '@singula-ai/alego-fs'
 import {
   CommandExitError,
   e2bControlEnvs,
   FileNotFoundError,
   FileType,
   quoteE2BShellArg,
-} from '@alego/e2b'
-import type { EntryInfo, Sandbox } from '@alego/e2b'
+} from '@singula-ai/alego-e2b'
+import type { EntryInfo, Sandbox } from '@singula-ai/alego-e2b'
 
 const VERSION_METADATA_KEY = 'alego-version'
 const BINARY_SAMPLE_BYTES = 8192

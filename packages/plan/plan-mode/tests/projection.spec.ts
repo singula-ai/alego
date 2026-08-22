@@ -11,17 +11,17 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import AgentRegistry from '@alego/agent'
-import type { Agent } from '@alego/agent'
-import SessionStore from '@alego/session'
-import type { Session } from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
-import SessionProjectionRegistry from '@alego/session-projection'
-import UserQuestionService from '@alego/user-questions'
-import { CommandId } from '@alego/commands/brand'
-import PlanModeController from '@alego/plan-mode'
+import { Context } from '@singula-ai/cordis'
+import AgentRegistry from '@singula-ai/alego-agent'
+import type { Agent } from '@singula-ai/alego-agent'
+import SessionStore from '@singula-ai/alego-session'
+import type { Session } from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import UserQuestionService from '@singula-ai/alego-user-questions'
+import { CommandId } from '@singula-ai/alego-commands/brand'
+import PlanModeController from '@singula-ai/alego-plan-mode'
 
 interface Bench {
   ctx: Context

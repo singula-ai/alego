@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import SystemPrompt from '@alego/system-prompt'
+import { Context } from '@singula-ai/cordis'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
 import {
   agentEvents,
   installModelSelection,
   type Agent,
   type ModelSelectionRef,
 } from '../src/index.ts'
-import { ReasoningEffortId, type LlmCallConfig } from '@alego/llm'
+import { ReasoningEffortId, type LlmCallConfig } from '@singula-ai/alego-llm'
 
 describe('installModelSelection()', () => {
   it('snapshots prompt variables and request routing together, then disposes both listeners', async () => {

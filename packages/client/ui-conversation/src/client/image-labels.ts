@@ -1,7 +1,7 @@
 /** Attachment error and limit copy owned by the conversation input flow. */
 
-import type { ImageAttachmentLimits } from '@alego/attachment'
-import type { Translate } from '@alego/client-ui-slots'
+import type { ImageAttachmentLimits } from '@singula-ai/alego-attachment'
+import type { Translate } from '@singula-ai/alego-client-ui-slots'
 import type { ConversationKey } from './locales.ts'
 
 /**

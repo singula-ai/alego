@@ -13,7 +13,7 @@ Archived: 2026-07-27
 
 ## 决策
 
-`@alego/session-query` 拥有面向单一逻辑语料库的唯一抽象 `ctx.sessionQuery` 服务。它具体实现 `listSessions()`、提供方无关的 `filterSessions(filters)`、`listEvents(sessionId)`、`filterEvents(sessionId, filters)`、有界的 `readEvent(request)`、`traceSession(sessionId)` 和 `traceEvent(request)`，而具体后端实现其两个全文搜索方法。[统一服务决策](../../archived/architecture/2026-07-23-unified-session-query-service.md)拥有这一拓扑，[SQLite 搜索决策](2026-07-10-sqlite-session-query-provider.md)拥有搜索行为，[追踪决策](2026-07-13-session-query-tracing.md)拥有血缘与事件关系语义。
+`@singula-ai/alego-session-query` 拥有面向单一逻辑语料库的唯一抽象 `ctx.sessionQuery` 服务。它具体实现 `listSessions()`、提供方无关的 `filterSessions(filters)`、`listEvents(sessionId)`、`filterEvents(sessionId, filters)`、有界的 `readEvent(request)`、`traceSession(sessionId)` 和 `traceEvent(request)`，而具体后端实现其两个全文搜索方法。[统一服务决策](../../archived/architecture/2026-07-23-unified-session-query-service.md)拥有这一拓扑，[SQLite 搜索决策](2026-07-10-sqlite-session-query-provider.md)拥有搜索行为，[追踪决策](2026-07-13-session-query-tracing.md)拥有血缘与事件关系语义。
 
 该服务动态观察可选的 `ctx.sessionPersistence` 绑定，但不保留持久化缓存或失效监听器。每次跨语料库列表操作向活跃后端请求权威元数据，然后叠加一份新鲜的活跃 store 列表。id 匹配的条目合并为一条 `SessionRecord`：活跃 header 优先，`live`/`persisted` 各自独立报告来源可用性。不可变 header 不一致时产生 `SESSION_QUERY_SOURCE_CONFLICT`。
 

@@ -2,7 +2,7 @@
  * Generated scoped-event routing-subject resolvers for alego-scope invariants.
  * Do not edit by hand; run `pnpm run gen-scoped-events`.
  *
- * @module @alego/scope/scoped-events.generated
+ * @module @singula-ai/alego-scope/scoped-events.generated
  */
 
 type ScopedSubjectResolver = (args: readonly unknown[]) => unknown

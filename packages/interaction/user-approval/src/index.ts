@@ -1,20 +1,20 @@
 /**
  * Service Definition for the approval capability seam, covering requests, cancellation, audit, and per-session policy. Missing
  * answerers fail closed; grants apply only to the requested action.
- * @module @alego/user-approval
+ * @module @singula-ai/alego-user-approval
  */
 
 import { randomUUID } from 'node:crypto'
-import { Context, Service } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent } from '@alego/agent'
-import { createUserMessage, type CallId } from '@alego/llm'
-import { scopeTarget } from '@alego/scope'
-import type { Scoped } from '@alego/scope'
-import type { Session, SessionEvent } from '@alego/session'
-import type {} from '@alego/system-prompt'
+import { Context, Service } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent } from '@singula-ai/alego-agent'
+import { createUserMessage, type CallId } from '@singula-ai/alego-llm'
+import { scopeTarget } from '@singula-ai/alego-scope'
+import type { Scoped } from '@singula-ai/alego-scope'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import type {} from '@singula-ai/alego-system-prompt'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     approval: ApprovalService
   }
@@ -23,7 +23,7 @@ declare module '@alego/cordis' {
     /**
      * Ask composed answerers for one decision. Return an outcome to claim the
      * request or call `next()`; failure yields the fail-closed default.
-     * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
      * @param req - the pending decision (agent, tool identity, reason, signal).
      * @mode waterfall
      */
@@ -31,7 +31,7 @@ declare module '@alego/cordis' {
   }
 }
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * An approval question was put to the answerer chain — log-only audit

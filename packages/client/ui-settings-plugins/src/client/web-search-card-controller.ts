@@ -9,8 +9,8 @@
  * covers everything the card shows.
  */
 
-import type { IApiClient } from '@alego/client-connection/client'
-import type { SettingsScope, SettingsScopeSnapshot, SnapshotStore } from '@alego/client-runtime/client'
+import type { IApiClient } from '@singula-ai/alego-client-connection/client'
+import type { SettingsScope, SettingsScopeSnapshot, SnapshotStore } from '@singula-ai/alego-client-runtime/client'
 import {
   CardForm, numberField, textField,
   type CardActions, type CardFieldState, type CardShell,

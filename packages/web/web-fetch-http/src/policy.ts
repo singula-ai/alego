@@ -3,10 +3,10 @@
  * provider — the pure, network-free half. The provider's `fetch()` composes
  * these with transport (redirect following, byte caps, decoding).
  *
- * @module @alego/web-fetch-http/policy
+ * @module @singula-ai/alego-web-fetch-http/policy
  */
 
-import { WebError } from '@alego/web'
+import { WebError } from '@singula-ai/alego-web'
 
 /** The body kinds this provider decodes. */
 export type FetchableKind = 'html' | 'text'

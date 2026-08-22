@@ -3,24 +3,24 @@
 # while the session is offline, then resumes through the public agent service.
 
 - id: persistence
-  name: '@alego/session-persistence-jsonl'
+  name: '@singula-ai/alego-session-persistence-jsonl'
   config:
     root: './.sessions'
     compression: none
 
 - id: replay
-  name: '@alego/llm-replay'
+  name: '@singula-ai/alego-llm-replay'
   config:
     file: !!js process.env.ALEGO_SNAPSHOT_FILE
     overrideFile: !!js process.env.ALEGO_SNAPSHOT_OVERRIDE
 
 - id: fs-local
-  name: '@alego/fs-local'
+  name: '@singula-ai/alego-fs-local'
   config:
     cwd: !!js process.cwd()
 
 - id: agent
-  name: '@alego/agent-spine-demo'
+  name: '@singula-ai/alego-agent-spine-demo'
   config:
     agents: []
     workspaceContext:

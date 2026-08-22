@@ -5,12 +5,12 @@
 # authored fixture and the pinned header class are flash), because a config
 # patch replaces the whole app config.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: acp-agent
-        name: '@alego/acp-demo'
+        name: '@singula-ai/alego-acp-demo'
         config:
           provider: deepseek-official
           model: deepseek-v4-flash
@@ -24,4 +24,4 @@
             Verify your work by running the code or tests. Keep answers brief and factual.
       - insert:
           - id: attachment-local
-            name: '@alego/attachment-local'
+            name: '@singula-ai/alego-attachment-local'

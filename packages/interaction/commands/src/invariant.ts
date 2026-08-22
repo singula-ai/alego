@@ -1,14 +1,14 @@
 /**
- * Package-owned invariant companion for `@alego/commands`:
+ * Package-owned invariant companion for `@singula-ai/alego-commands`:
  * command lifecycle events pair by commandId within one session log.
- * @module @alego/commands/invariant
+ * @module @singula-ai/alego-commands/invariant
  */
 
-import type { Context } from '@alego/cordis'
-import type { Session, SessionEvent } from '@alego/session'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/commands'
+const PACKAGE_NAME = '@singula-ai/alego-commands'
 
 /** Cordis companion plugin name. */
 export const name = 'commands-invariant'

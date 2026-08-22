@@ -1,4 +1,4 @@
-import type { MessageImagesProps } from '@alego/client-ui-conversation/client'
+import type { MessageImagesProps } from '@singula-ai/alego-client-ui-conversation/client'
 import { ImageGallery } from '../MessageImage.tsx'
 import { messageImageLabels } from './labels.ts'
 

@@ -10,16 +10,16 @@ import {
   FileNotFoundError,
   SandboxNotFoundError,
   quoteE2BShellArg,
-} from '@alego/e2b'
-import type { CommandHandle, CommandResult, Sandbox } from '@alego/e2b'
+} from '@singula-ai/alego-e2b'
+import type { CommandHandle, CommandResult, Sandbox } from '@singula-ai/alego-e2b'
 import type {
   SubprocessOutcome,
   SubprocessTerminalForeground,
   SubprocessTerminalHandle,
   SubprocessTerminalSignal,
   SubprocessTerminalSpawnSpec,
-} from '@alego/subprocess'
-import type E2BRuntime from '@alego/e2b'
+} from '@singula-ai/alego-subprocess'
+import type E2BRuntime from '@singula-ai/alego-e2b'
 import {
   bootstrapEnvironment,
   readRemoteEnvironment,

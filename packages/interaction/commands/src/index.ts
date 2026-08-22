@@ -1,17 +1,17 @@
 /**
  * Plugin-owned human-command registry shared by interactive UI adapters.
- * @module @alego/commands
+ * @module @singula-ai/alego-commands
  */
 
-import { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import { AttachmentError, admitEncodedImages } from '@alego/attachment'
-import type { EncodedImageAttachment } from '@alego/attachment/types'
-import type { ImageBlock } from '@alego/llm'
-import { NamedEntries, ScopedLayers } from '@alego/scope'
-import type { ScopeKey, ScopeLayer } from '@alego/scope'
-import type { Session, SessionEvent, SessionEventMap } from '@alego/session'
-import { TypertRemoteService, Remote } from '@alego/typert-protocol'
+import { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import { AttachmentError, admitEncodedImages } from '@singula-ai/alego-attachment'
+import type { EncodedImageAttachment } from '@singula-ai/alego-attachment/types'
+import type { ImageBlock } from '@singula-ai/alego-llm'
+import { NamedEntries, ScopedLayers } from '@singula-ai/alego-scope'
+import type { ScopeKey, ScopeLayer } from '@singula-ai/alego-scope'
+import type { Session, SessionEvent, SessionEventMap } from '@singula-ai/alego-session'
+import { TypertRemoteService, Remote } from '@singula-ai/alego-typert-protocol'
 import { CommandId } from './brand.ts'
 import type {
   CommandDescriptor,
@@ -101,7 +101,7 @@ class CommandLayer implements ScopeLayer {
   }
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     commands: CommandRuntime
   }

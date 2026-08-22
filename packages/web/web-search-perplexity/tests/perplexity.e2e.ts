@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { PerplexitySearchProvider, PERPLEXITY_DEFAULT_BASE_URL, PERPLEXITY_DEFAULT_MAX_TOKENS, PERPLEXITY_DEFAULT_MODEL } from '@alego/web-search-perplexity'
+import { PerplexitySearchProvider, PERPLEXITY_DEFAULT_BASE_URL, PERPLEXITY_DEFAULT_MAX_TOKENS, PERPLEXITY_DEFAULT_MODEL } from '@singula-ai/alego-web-search-perplexity'
 
 /**
  * Real-API smoke for the Perplexity search provider. Self-skips without

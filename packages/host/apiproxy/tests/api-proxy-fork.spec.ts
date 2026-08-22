@@ -1,19 +1,19 @@
 /** Session-fork boundaries, lineage, and inherited model routing. */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import AgentRegistry, { agentEvents } from '@alego/agent'
-import type { Agent, AgentHandle, CreateAgentOptions } from '@alego/agent'
-import { createUserMessage, ReasoningEffortId } from '@alego/llm'
-import type { LlmCallConfig } from '@alego/llm'
-import SessionStore from '@alego/session'
-import type { Session, SessionEvent, SessionHeader, SessionId } from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import UserQuestionService from '@alego/user-questions'
-import type { Workspace } from '@alego/workspace'
-import type { RpcRequest } from '@alego/host-apiproxy/api/rpc'
-import { RpcId } from '@alego/host-apiproxy/api/rpc'
-import { createApiProxy } from '@alego/host-apiproxy'
+import { Context } from '@singula-ai/cordis'
+import AgentRegistry, { agentEvents } from '@singula-ai/alego-agent'
+import type { Agent, AgentHandle, CreateAgentOptions } from '@singula-ai/alego-agent'
+import { createUserMessage, ReasoningEffortId } from '@singula-ai/alego-llm'
+import type { LlmCallConfig } from '@singula-ai/alego-llm'
+import SessionStore from '@singula-ai/alego-session'
+import type { Session, SessionEvent, SessionHeader, SessionId } from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import UserQuestionService from '@singula-ai/alego-user-questions'
+import type { Workspace } from '@singula-ai/alego-workspace'
+import type { RpcRequest } from '@singula-ai/alego-host-apiproxy/api/rpc'
+import { RpcId } from '@singula-ai/alego-host-apiproxy/api/rpc'
+import { createApiProxy } from '@singula-ai/alego-host-apiproxy'
 
 const sid = (id: string): SessionId => id as SessionId
 

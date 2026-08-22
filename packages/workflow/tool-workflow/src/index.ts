@@ -2,29 +2,29 @@
  * The model-facing `workflow` tool: run a JavaScript orchestration script that fans out
  * subagents, and return the script's final value. It owns the model-facing schema and run lifecycle; script
  * parsing, execution, caps, and cancellation live behind `ctx.workflowEngine`
- * (`@alego/workflow`), so a hardened engine swaps in without touching what the model
+ * (`@singula-ai/alego-workflow`), so a hardened engine swaps in without touching what the model
  * sees. Execution awaits `run.result` and always disposes the run; non-completed reasons become tool
  * errors, and background collection remains deferred. Presentation is an args-only generic card
  * titled from `meta.name`. Explicit-ask usage guidance is registered as the tool's own prompt
  * section rather than deployment persona prose.
- * @module @alego/tool-workflow
+ * @module @singula-ai/alego-tool-workflow
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { defineTool } from '@alego/tools'
-import type { ToolCallView, ToolResultView } from '@alego/tools'
-import type { ContentBlock } from '@alego/llm'
-import type { JsonValue, Session, SessionEventMap } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { ToolCallView, ToolResultView } from '@singula-ai/alego-tools'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { JsonValue, Session, SessionEventMap } from '@singula-ai/alego-session'
 import type {
   WorkflowResult, WorkflowRun, WorkflowRunId, WorkflowStopReason,
-} from '@alego/workflow'
+} from '@singula-ai/alego-workflow'
 import type {
   ToolWorkflowAgentEndData, ToolWorkflowAgentStartData,
   ToolWorkflowRunEndData, ToolWorkflowRunStartData,
 } from './types.ts'
 // Declaration merge only: makes ctx.systemPrompt visible for the section registration.
-import type {} from '@alego/system-prompt'
+import type {} from '@singula-ai/alego-system-prompt'
 
 export const name = 'tool-workflow'
 export const inject = ['tools', 'workflowEngine', 'systemPrompt']

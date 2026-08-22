@@ -8,13 +8,13 @@ import { act, cleanup, fireEvent, render, waitFor } from '@testing-library/react
 import { useSyncExternalStore } from 'react'
 import {
   EMPTY_CHAT_SNAPSHOT, EMPTY_CONVERSATION_VIEWS,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import type {
   ConversationSnapshot, QueuedMessage, SessionId, SessionListState,
-} from '@alego/client-runtime/client'
-import type { SnapshotSelectorHook } from '@alego/client-ui-slots'
-import { makeTranslate } from '@alego/client-test-runtime'
-import { zh as commonZh } from '@alego/client-locale/src/locales/zh.ts'
+} from '@singula-ai/alego-client-runtime/client'
+import type { SnapshotSelectorHook } from '@singula-ai/alego-client-ui-slots'
+import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
 import type { QueueItemId } from '../src/client/contract/queue.ts'
 import type { InputState } from '../src/client/input/contract.ts'
 import { zh } from '../src/client/locales.ts'

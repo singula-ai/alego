@@ -1,5 +1,5 @@
 {
-  "name": "@alego/subprocess-local",
+  "name": "@singula-ai/alego-subprocess-local",
   "description": "Local-subprocess implementation of the Alego subprocess seam",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -36,20 +36,20 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@alego/invariants": "workspace:^",
-    "@alego/subprocess": "workspace:^",
-    "@alego/timeout": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-subprocess": "workspace:^",
+    "@singula-ai/alego-timeout": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "dependencies": {
     "koffi": "^3.1.0",
     "node-pty": "1.2.0-beta.15"
   },
   "devDependencies": {
-    "@alego/invariants": "workspace:^",
-    "@alego/loader-smoke": "workspace:^",
-    "@alego/subprocess": "workspace:^",
-    "@alego/timeout": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-loader-smoke": "workspace:^",
+    "@singula-ai/alego-subprocess": "workspace:^",
+    "@singula-ai/alego-timeout": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   }
 }

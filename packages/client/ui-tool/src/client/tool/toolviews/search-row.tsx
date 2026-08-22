@@ -11,9 +11,9 @@
 // nested run_code sub-dispatch, a legacy generic result) surfaces its
 // model-facing text through ToolRow's Output section instead.
 
-import type { Context } from '@alego/cordis'
-import { IconSearchOutline16 } from '@alego/client-ui-primitives'
-import type { PropsLocale } from '@alego/client-ui-slots'
+import type { Context } from '@singula-ai/cordis'
+import { IconSearchOutline16 } from '@singula-ai/alego-client-ui-primitives'
+import type { PropsLocale } from '@singula-ai/alego-client-ui-slots'
 import type { ToolCallViewProps } from '../../contract/slots.ts'
 import { searchCardModel } from '../models/search-card-model.ts'
 import { toolRowModel } from '../models/tool-call-model.ts'

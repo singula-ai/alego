@@ -1,4 +1,4 @@
-import { valueMap } from '@alego/cosmokit'
+import { valueMap } from '@singula-ai/cosmokit'
 
 // eslint-disable-next-line no-new-func
 /** Evaluate a JavaScript expression against a loader context scope. */

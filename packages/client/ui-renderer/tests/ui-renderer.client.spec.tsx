@@ -1,11 +1,11 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup } from '@testing-library/react'
-import { Context } from '@alego/cordis'
-import { SlotRegistry } from '@alego/client-runtime/client'
-import { TestSessions, TestWorkspaces } from '@alego/client-test-runtime'
-import type { Stabilizer } from '@alego/client-test-runtime'
-import { apply as nodeApply } from '@alego/client-ui-renderer'
+import { Context } from '@singula-ai/cordis'
+import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import { TestSessions, TestWorkspaces } from '@singula-ai/alego-client-test-runtime'
+import type { Stabilizer } from '@singula-ai/alego-client-test-runtime'
+import { apply as nodeApply } from '@singula-ai/alego-client-ui-renderer'
 import * as UiRenderer from '../src/client/index.ts'
 
 const mounted: (() => void)[] = []

@@ -2,8 +2,8 @@
 
 import type {
   IApiClient, RpcResult, WorkspaceView,
-} from '@alego/api-remotes/client'
-import { transportError } from '@alego/host-apiproxy/api'
+} from '@singula-ai/alego-api-remotes/client'
+import { transportError } from '@singula-ai/alego-host-apiproxy/api'
 import type { ObservableSnapshot } from '../contract/store.ts'
 import { Notifier } from '../sessions/notifier.ts'
 

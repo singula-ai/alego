@@ -1,4 +1,4 @@
-import { createUserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
 /**
  * Shared write-path orchestration contract for backends using {@link PersistenceCoordinator}.
  * Unlike the public storage-semantics suite in `contract.ts`, it covers SessionStore event wiring,
@@ -7,14 +7,14 @@ import { createUserMessage } from '@alego/llm'
  *
  * Each real backend supplies a shared storage scope and optional torn-tail injector; backend specs
  * retain only storage-mechanics tests, while these scenarios run once per backend.
- * @module @alego/session-persistence/tests/coordinator-contract
+ * @module @singula-ai/alego-session-persistence/tests/coordinator-contract
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context, type Fiber } from '@alego/cordis'
-import { scopeTarget } from '@alego/scope'
-import SessionStore, { SESSION_FORMAT_VERSION, Session, SessionId } from '@alego/session'
-import type { SessionEvent } from '@alego/session'
+import { Context, type Fiber } from '@singula-ai/cordis'
+import { scopeTarget } from '@singula-ai/alego-scope'
+import SessionStore, { SESSION_FORMAT_VERSION, Session, SessionId } from '@singula-ai/alego-session'
+import type { SessionEvent } from '@singula-ai/alego-session'
 import { meta, oneTurnLog, appendLog } from './contract.ts'
 
 /**

@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-17-dynamic-client-render-and-attachment-ownership.md
-2026-08-17-dynamic-client-render-and-attachment-ownership.md: 6c76de64b98abbb0e35fef8c389a1d5d78eaa8ed
-2026-08-17-dynamic-client-render-and-attachment-ownership.zh.md: bd540a7c3fa84e4ac09f918db4fd156ba5e69a23
+2026-08-17-dynamic-client-render-and-attachment-ownership.md: 9b142fbff932c5ef74e839e8f41b2902ca2ce50d
+2026-08-17-dynamic-client-render-and-attachment-ownership.zh.md: 5e31938fc8797f6dbd3be095587af770d9375b5d

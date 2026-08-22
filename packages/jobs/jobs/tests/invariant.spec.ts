@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import { SessionId } from '@alego/session'
-import JobRegistry, { JobId } from '@alego/jobs'
-import type { JobDoneListener, JobSnapshot } from '@alego/jobs'
-import * as JobsInvariant from '@alego/jobs/invariant'
-import InvariantRegistry from '@alego/invariants'
+import { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import { SessionId } from '@singula-ai/alego-session'
+import JobRegistry, { JobId } from '@singula-ai/alego-jobs'
+import type { JobDoneListener, JobSnapshot } from '@singula-ai/alego-jobs'
+import * as JobsInvariant from '@singula-ai/alego-jobs/invariant'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 
 const BASE: JobSnapshot = {
   id: JobId('bash-1'),

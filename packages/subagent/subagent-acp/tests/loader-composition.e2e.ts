@@ -3,8 +3,8 @@ import { readFile, readdir } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
-import { type SessionEvent } from '@alego/session'
-import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@alego/loader-smoke'
+import { type SessionEvent } from '@singula-ai/alego-session'
+import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@singula-ai/alego-loader-smoke'
 
 /**
  * Keyless REAL-composition coverage for parent-session cwd inheritance: a

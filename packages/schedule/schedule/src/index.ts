@@ -1,11 +1,11 @@
 /**
  * Agent-scoped durable one-shot and fixed-rate reminders over the session event log.
- * @module @alego/schedule
+ * @module @singula-ai/alego-schedule
  */
 
-import type { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import type {} from '@alego/session-persistence'
+import type { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import type {} from '@singula-ai/alego-session-persistence'
 import { ScheduleRuntime } from './runtime.ts'
 import { registerScheduleTools } from './tools.ts'
 

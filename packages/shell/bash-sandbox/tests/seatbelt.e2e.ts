@@ -4,18 +4,18 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { LocalSandboxProvider } from '@alego/sandbox-local'
-import { SandboxPolicyService } from '@alego/sandbox-policy'
-import { seatbeltProfileArgs } from '@alego/sandbox-local/src/profiles.ts'
-import { SandboxBashExecutor } from '@alego/bash-sandbox'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
+import { Context } from '@singula-ai/cordis'
+import { LocalSandboxProvider } from '@singula-ai/alego-sandbox-local'
+import { SandboxPolicyService } from '@singula-ai/alego-sandbox-policy'
+import { seatbeltProfileArgs } from '@singula-ai/alego-sandbox-local/src/profiles.ts'
+import { SandboxBashExecutor } from '@singula-ai/alego-bash-sandbox'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 
 /**
  * Keyless macOS integration of the real provider and executor through public run/start paths.
  * Linux rungs are forced off so Seatbelt is selected. The tests check world effects and stamped
  * facts, including EPERM classification through the wrap-carried dialect; backend-only
- * confinement is covered by `@alego/sandbox-local`. Skips off macOS or when
+ * confinement is covered by `@singula-ai/alego-sandbox-local`. Skips off macOS or when
  * `sandbox-exec` rejects the profile.
  */
 

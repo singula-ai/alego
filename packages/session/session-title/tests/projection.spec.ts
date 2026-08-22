@@ -10,11 +10,11 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import SessionStore, { SessionId } from '@alego/session'
-import type { Session } from '@alego/session'
-import SessionProjectionRegistry from '@alego/session-projection'
-import SessionTitleService from '@alego/session-title'
+import { Context } from '@singula-ai/cordis'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import type { Session } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import SessionTitleService from '@singula-ai/alego-session-title'
 
 const CONFIG = { fallbackMaxWords: 8, fallbackMaxBytes: 64, maxTitleBytes: 256 }
 

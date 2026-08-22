@@ -1,5 +1,5 @@
 {
-  "name": "@alego/invariants",
+  "name": "@singula-ai/alego-invariants",
   "description": "Registry service for package-owned Alego runtime invariants",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -32,12 +32,12 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:^"
   },
   "dependencies": {
-    "@alego/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:^"
   },
   "devDependencies": {
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:^"
   }
 }

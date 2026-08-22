@@ -11,15 +11,15 @@
  * published a service into the ROOT realm is rejected, because such a service
  * is process-global rather than per-session and the second session mounting the
  * same preset collides with the first.
- * @module @alego/agent-presets/mount
+ * @module @singula-ai/alego-agent-presets/mount
  */
 
 import { isAbsolute } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { Context, type Fiber } from '@alego/cordis'
-import { Include } from '@alego/cordis-plugin-include'
-import type { EntryTree } from '@alego/cordis-plugin-loader'
-import { scopeOf, scopeParentOf, type ScopeKey } from '@alego/scope'
+import { Context, type Fiber } from '@singula-ai/cordis'
+import { Include } from '@singula-ai/cordis-plugin-include'
+import type { EntryTree } from '@singula-ai/cordis-plugin-loader'
+import { scopeOf, scopeParentOf, type ScopeKey } from '@singula-ai/alego-scope'
 import { PresetMountError, type AgentPreset } from './preset.ts'
 
 /** What one mounted subtree publishes about itself for the audit to read. */
@@ -68,7 +68,7 @@ class PresetTree extends Include {
    * relative specifier — a preset's own files travel with it — and wrong for
    * a package name: a locally authored preset lives under the user's home,
    * where Node's upward `node_modules` walk never reaches the harness's own
-   * dependencies, so every `@alego/*` row would fail to import. The
+   * dependencies, so every `@singula-ai/alego-*` row would fail to import. The
    * mount records the host composition's base instead, which is inside the
    * installed harness, and bare names resolve from there. An absolute
    * filesystem path names neither base and becomes a file URL before Node's

@@ -5,8 +5,8 @@
  * RpcReceipt carrier receipt as the HTTP response body; the final outcome arrives in the resolved frame.
  */
 
-import type { ApprovalRequestId } from '@alego/user-approval/types'
-import type { SessionId } from '@alego/session/types'
+import type { ApprovalRequestId } from '@singula-ai/alego-user-approval/types'
+import type { SessionId } from '@singula-ai/alego-session/types'
 
 /**
  * Approval answer payload (the result.value slot of a client-response). outcome accepts only

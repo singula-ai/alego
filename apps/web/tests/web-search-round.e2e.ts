@@ -9,9 +9,9 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import { credentialRef } from '@alego/credentials'
-import type { SessionEvent } from '@alego/session'
-import { WEB_SEARCH_MAX_RESULTS } from '@alego/tool-web'
+import { credentialRef } from '@singula-ai/alego-credentials'
+import type { SessionEvent } from '@singula-ai/alego-session'
+import { WEB_SEARCH_MAX_RESULTS } from '@singula-ai/alego-tool-web'
 import {
   assertFixtureInventory, captureStableAria, compareOrRefreshGolden, fixtureUserPrompts,
   launchWebScaffold, recordFixture, watchConsole, webSnapshotMode, type WebScaffold,

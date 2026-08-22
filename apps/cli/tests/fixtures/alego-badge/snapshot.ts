@@ -1,11 +1,11 @@
 import { fileURLToPath } from 'node:url'
-import { Context } from '@alego/cordis'
-import { agentEvents, Inbox, type Agent } from '@alego/agent'
-import { CallId } from '@alego/llm'
-import { boot, loadOverlayPatches } from '@alego/app-boot'
-import { SessionId } from '@alego/session'
-import type {} from '@alego/skill'
-import type {} from '@alego/tools'
+import { Context } from '@singula-ai/cordis'
+import { agentEvents, Inbox, type Agent } from '@singula-ai/alego-agent'
+import { CallId } from '@singula-ai/alego-llm'
+import { boot, loadOverlayPatches } from '@singula-ai/alego-app-boot'
+import { SessionId } from '@singula-ai/alego-session'
+import type {} from '@singula-ai/alego-skill'
+import type {} from '@singula-ai/alego-tools'
 
 const overlayPath = process.argv[2]
 if (overlayPath === undefined) throw new Error('alego-badge snapshot requires an overlay path')

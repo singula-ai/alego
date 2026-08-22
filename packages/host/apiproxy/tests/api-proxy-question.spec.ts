@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import AgentRegistry, { type Agent } from '@alego/agent'
-import SessionStore from '@alego/session'
-import UserQuestionService from '@alego/user-questions'
-import type { ApiProxy, MuxFrame, RpcRequest } from '@alego/host-apiproxy/api'
-import { RpcId } from '@alego/host-apiproxy/api/rpc'
+import { Context } from '@singula-ai/cordis'
+import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
+import SessionStore from '@singula-ai/alego-session'
+import UserQuestionService from '@singula-ai/alego-user-questions'
+import type { ApiProxy, MuxFrame, RpcRequest } from '@singula-ai/alego-host-apiproxy/api'
+import { RpcId } from '@singula-ai/alego-host-apiproxy/api/rpc'
 import { createApiProxy } from '../src/api-proxy.ts'
 
 async function harness(): Promise<{ ctx: Context; api: ApiProxy }> {

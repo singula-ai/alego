@@ -1,13 +1,13 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { appendFile, mkdir, mkdtemp, open, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises'
 import type { FileHandle } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { performance } from 'node:perf_hooks'
-import SessionStore, { SessionId } from '@alego/session'
-import type { SessionEvent } from '@alego/session'
-import JsonlSessionPersistence from '@alego/session-persistence-jsonl'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import type { SessionEvent } from '@singula-ai/alego-session'
+import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import { logPath, scanLog, sessionDir, toHeaderLine, type JsonlCompression } from '../src/format.ts'
 import {
   compressZstdFrame, createZstdFrameDecoder, decompressZstdFrame, decompressZstdPrefix, scanZstdFrames,

@@ -5,18 +5,18 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { ReactNode } from 'react'
 import { act, cleanup, fireEvent, render } from '@testing-library/react'
-import { bindSnapshotSelector } from '@alego/client-test-runtime'
+import { bindSnapshotSelector } from '@singula-ai/alego-client-test-runtime'
 import {
   createSnapshotStore, EMPTY_CHAT_SNAPSHOT, EMPTY_CONVERSATION_VIEWS,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import type {
   ConversationSnapshot, SessionId, SessionListState, WorkspaceId, WorkspaceListState, WorkspaceView,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import type { ConversationRootProps } from '../src/client/skeleton/ConversationRoot.tsx'
-import type { ClientContext } from '@alego/client-runtime/client'
-import { makeTranslate } from '@alego/client-test-runtime'
-import { en as commonEn } from '@alego/client-locale/src/locales/en.ts'
-import { zh as commonZh } from '@alego/client-locale/src/locales/zh.ts'
+import type { ClientContext } from '@singula-ai/alego-client-runtime/client'
+import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { en as commonEn } from '@singula-ai/alego-client-locale/src/locales/en.ts'
+import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
 import { createChatStore } from '../src/client/stores.ts'
 import { SessionInputShell } from '../src/client/input/facade.ts'
 import { en, zh } from '../src/client/locales.ts'

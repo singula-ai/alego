@@ -73,7 +73,7 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
-        run: pnpm install --filter @alego/node-addon-landlock-run-workspace... --frozen-lockfile
+        run: pnpm install --filter @singula-ai/node-addon-landlock-run-workspace... --frozen-lockfile
 
       - name: Install musl toolchain
         run: |
@@ -124,7 +124,7 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
-        run: pnpm install --filter @alego/node-addon-landlock-run-workspace... --frozen-lockfile
+        run: pnpm install --filter @singula-ai/node-addon-landlock-run-workspace... --frozen-lockfile
 
       - name: Build TypeScript
         run: pnpm build:ts

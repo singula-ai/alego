@@ -3,11 +3,11 @@
  * conversion, workspace-grouped location rendering with `file:`-URI resolution, complete-result
  * capping, and UI presentation. No I/O — a UI may call the presenter on live streaming and on
  * replay, so it depends only on the tool arguments.
- * @module @alego/tool-lsp/render
+ * @module @singula-ai/alego-tool-lsp/render
  */
 
-import type { GenericCallView } from '@alego/tools'
-import type { LspHover, LspLocation, LspOperation, LspPosition } from '@alego/lsp'
+import type { GenericCallView } from '@singula-ai/alego-tools'
+import type { LspHover, LspLocation, LspOperation, LspPosition } from '@singula-ai/alego-lsp'
 import { posix, win32 } from 'node:path'
 import { fileURLToPath } from 'node:url'
 

@@ -1,5 +1,5 @@
 {
-  "name": "@alego/client-ui-user-questions",
+  "name": "@singula-ai/alego-client-ui-user-questions",
   "description": "Web ask_user_question feature: host tool mount plus composer-takeover question UI",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -32,8 +32,8 @@
   "alego": {
     "client": {
       "inject": [
-        "@alego/client-locale",
-        "@alego/client-ui-conversation"
+        "@singula-ai/alego-client-locale",
+        "@singula-ai/alego-client-ui-conversation"
       ],
       "platform": "web"
     }
@@ -47,29 +47,29 @@
     "clsx": "^2.0.0"
   },
   "peerDependencies": {
-    "@alego/cordis": "workspace:^",
-    "@alego/api-remotes": "workspace:^",
-    "@alego/client-locale": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/client-runtime": "workspace:^",
-    "@alego/client-ui-conversation": "workspace:^"
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-api-remotes": "workspace:^",
+    "@singula-ai/alego-client-locale": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-client-runtime": "workspace:^",
+    "@singula-ai/alego-client-ui-conversation": "workspace:^"
   },
   "devDependencies": {
-    "@alego/cordis": "workspace:^",
-    "@alego/agent": "workspace:^",
-    "@alego/api-remotes": "workspace:^",
-    "@alego/client-locale": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/system-prompt": "workspace:^",
-    "@alego/tools": "workspace:^",
-    "@alego/user-questions": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-api-remotes": "workspace:^",
+    "@singula-ai/alego-client-locale": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-system-prompt": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/alego-user-questions": "workspace:^",
     "@types/react": "~18.3.1",
-    "@alego/client-ui-primitives": "workspace:^",
-    "@alego/client-ui-slots": "workspace:^",
+    "@singula-ai/alego-client-ui-primitives": "workspace:^",
+    "@singula-ai/alego-client-ui-slots": "workspace:^",
     "react": "^18.2.0",
-    "@alego/client-runtime": "workspace:^",
-    "@alego/client-ui-conversation": "workspace:^",
-    "@alego/client-connection": "workspace:^"
+    "@singula-ai/alego-client-runtime": "workspace:^",
+    "@singula-ai/alego-client-ui-conversation": "workspace:^",
+    "@singula-ai/alego-client-connection": "workspace:^"
   },
   "files": [
     "lib/index.js",

@@ -4,12 +4,12 @@
  * prompt and settles when the whole agent next becomes idle.
  * Mirrors the Python SDK's `Alego`/`Session` pair.
  *
- * @module @alego/sdk-client/api
+ * @module @singula-ai/alego-sdk-client/api
  */
 
 import { randomUUID } from 'node:crypto'
 import { resolve } from 'node:path'
-import type { SessionEvent } from '@alego/session'
+import type { SessionEvent } from '@singula-ai/alego-session'
 import { HarnessClient, isRecord, SdkProtocolError } from './client.ts'
 import type { ContentBlock, AlegoOptions, HarnessClientOptions, HarnessNotification, RunResult } from './types.ts'
 

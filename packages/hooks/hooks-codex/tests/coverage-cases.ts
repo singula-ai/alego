@@ -1,18 +1,18 @@
-import { createUserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mkdtempSync, rmSync, writeFileSync, chmodSync, existsSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@alego/cordis'
-import { SessionId, type SessionEvent } from '@alego/session'
-import JsonlSessionPersistence from '@alego/session-persistence-jsonl'
-import { defineContentToolFixture } from '@alego/tools'
-import type { Agent } from '@alego/agent'
-import AgentLoop from '@alego/agent-loop'
-import { mountAgentLoopTestDependencies } from '@alego/agent-loop-testkit'
-import { LocalBashExecutor } from '@alego/bash-local'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
-import * as HooksCodex from '@alego/hooks-codex'
+import { Context } from '@singula-ai/cordis'
+import { SessionId, type SessionEvent } from '@singula-ai/alego-session'
+import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import { defineContentToolFixture } from '@singula-ai/alego-tools'
+import type { Agent } from '@singula-ai/alego-agent'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
+import { LocalBashExecutor } from '@singula-ai/alego-bash-local'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
+import * as HooksCodex from '@singula-ai/alego-hooks-codex'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 
 const testToolSignal = new AbortController().signal
@@ -458,7 +458,7 @@ export function defineCoverageCases(groups: CoverageGroup | readonly CoverageGro
       const ctx = await harness(join(d, 'hooks.json'), new MockAdapter([]))
       let ran = false
       ctx.tools.register(defineContentToolFixture({ name: 'Bash', description: 'b', parameters: { command: { type: 'string' } }, async execute() { ran = true; return [{ type: 'text', text: 'x' }] } }))
-      const { CallId } = await import('@alego/llm')
+      const { CallId } = await import('@singula-ai/alego-llm')
       const result = await ctx.tools.execute({ signal: testToolSignal, callId: CallId('c1'), name: 'Bash', arguments: { command: 'x' } })
       expect(ran).toBe(false) // denied
       expect(result.isError).toBe(true)
@@ -469,7 +469,7 @@ export function defineCoverageCases(groups: CoverageGroup | readonly CoverageGro
       hooks(d, { PostToolUse: [{ hooks: [{ type: 'command', command: sh(d, 'pc.sh', '#!/usr/bin/env bash\necho \'{"hookSpecificOutput":{"hookEventName":"PostToolUse","additionalContext":"x"}}\'\n') }] }] })
       const ctx = await harness(join(d, 'hooks.json'), new MockAdapter([]))
       ctx.tools.register(defineContentToolFixture({ name: 'Bash', description: 'b', parameters: { command: { type: 'string' } }, async execute() { return [{ type: 'text', text: 'ok' }] } }))
-      const { CallId } = await import('@alego/llm')
+      const { CallId } = await import('@singula-ai/alego-llm')
       const result = await ctx.tools.execute({ signal: testToolSignal, callId: CallId('c1'), name: 'Bash', arguments: { command: 'x' } })
       expect(result.isError).toBeFalsy()
       expect(result.additionalContexts?.[0]?.content.some(b => b.type === 'text' && b.text === 'x')).toBe(true)
@@ -630,7 +630,7 @@ export function defineCoverageCases(groups: CoverageGroup | readonly CoverageGro
       await ctx.plugin(HooksCodex, { configPath: join(serverDir, 'hooks.json'), model: 'm' })
       ctx.llm.registerAdapter(['mock'], adapter)
       ctx.tools.register(defineContentToolFixture({ name: 'Bash', description: 'b', parameters: { command: { type: 'string' } }, async execute() { return [{ type: 'text', text: 'ok' }] } }))
-      const { SessionId } = await import('@alego/session')
+      const { SessionId } = await import('@singula-ai/alego-session')
       const handle = await ctx.agents.create({ sessionId: SessionId('s1'), meta: { cwd: sessionDir }, agentOptions: { provider: 'mock', model: 'mock' } })
       handle.agent.followup(createUserMessage({ content: [{ type: 'text', text: 'go' }], source: { kind: 'user' } }))
       await waitForIdle(ctx, handle.agent)

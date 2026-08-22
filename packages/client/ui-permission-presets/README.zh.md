@@ -1,4 +1,4 @@
-# @alego/client-ui-permission-presets
+# @singula-ai/alego-client-ui-permission-presets
 
 [English](README.md) | 中文
 

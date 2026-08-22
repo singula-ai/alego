@@ -1,4 +1,4 @@
-# @alego/web
+# @singula-ai/alego-web
 
 English | [中文](README.zh.md)
 
@@ -8,11 +8,11 @@ This package owns the Service Definition role of the web capability. Unlike shel
 
 | Package | Role |
 |---|---|
-| `@alego/web` (this) | Service Definition: the service, provider registries, selection policy, request/result vocabulary, the `WebError` taxonomy |
-| `@alego/web-search-exa` | Search provider: Exa |
-| `@alego/web-search-perplexity` | Search provider: Perplexity |
-| `@alego/web-fetch-http` | Fetch provider: anonymous public HTTP(S) |
-| `@alego/tool-web` | Consumer: the model-facing `web_search` / `web_fetch` tool schemas over `ctx.web` |
+| `@singula-ai/alego-web` (this) | Service Definition: the service, provider registries, selection policy, request/result vocabulary, the `WebError` taxonomy |
+| `@singula-ai/alego-web-search-exa` | Search provider: Exa |
+| `@singula-ai/alego-web-search-perplexity` | Search provider: Perplexity |
+| `@singula-ai/alego-web-fetch-http` | Fetch provider: anonymous public HTTP(S) |
+| `@singula-ai/alego-tool-web` | Consumer: the model-facing `web_search` / `web_fetch` tool schemas over `ctx.web` |
 
 Search and fetch share no request schema and no business logic, but they are deliberately one seam: `ctx.web` is a single web-access middle layer with one provider-selection policy owner, one abort/error vocabulary, and one product-facing "how this harness reaches the web" config surface. The `Search`/`Fetch` method pairs are deliberately parallel.
 

@@ -3,16 +3,16 @@
  * with logged model context without vetoing or rewriting calls. Configuration
  * and chain semantics live in the package README; rationale lives in the
  * repeat-tool-reminder Agent Note.
- * @module @alego/repeat-tool-reminder
+ * @module @singula-ai/alego-repeat-tool-reminder
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent, PreStepDecision } from '@alego/agent'
-import { createUserMessage } from '@alego/llm'
-import type { MessageSource } from '@alego/llm'
-import type { UserMessage } from '@alego/session'
-import type { PostToolDecision, ToolExecution } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent, PreStepDecision } from '@singula-ai/alego-agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type { MessageSource } from '@singula-ai/alego-llm'
+import type { UserMessage } from '@singula-ai/alego-session'
+import type { PostToolDecision, ToolExecution } from '@singula-ai/alego-tools'
 
 export const name = 'repeat-tool-reminder'
 

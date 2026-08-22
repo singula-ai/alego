@@ -8,85 +8,85 @@ The headless snapshot composition combines the real DeepSeek adapter and coding 
 ```mermaid
 flowchart LR
   cfg["examples/headless-agent<br/>cordis.yml"]
-  plugin_headless_settings["settings<br/>@alego/settings-file"]
+  plugin_headless_settings["settings<br/>@singula-ai/alego-settings-file"]
   cfg --> plugin_headless_settings
-  plugin_headless_credentials["credentials<br/>@alego/credentials-local"]
+  plugin_headless_credentials["credentials<br/>@singula-ai/alego-credentials-local"]
   cfg --> plugin_headless_credentials
-  plugin_headless_llm_deepseek["llm-deepseek<br/>@alego/llm-deepseek"]
+  plugin_headless_llm_deepseek["llm-deepseek<br/>@singula-ai/alego-llm-deepseek"]
   cfg --> plugin_headless_llm_deepseek
-  plugin_headless_subprocess["subprocess<br/>@alego/subprocess-local"]
+  plugin_headless_subprocess["subprocess<br/>@singula-ai/alego-subprocess-local"]
   cfg --> plugin_headless_subprocess
-  plugin_headless_bash["bash<br/>@alego/bash-local"]
+  plugin_headless_bash["bash<br/>@singula-ai/alego-bash-local"]
   cfg --> plugin_headless_bash
-  plugin_headless_agent_spine["agent-spine<br/>@alego/agent-spine-demo"]
+  plugin_headless_agent_spine["agent-spine<br/>@singula-ai/alego-agent-spine-demo"]
   cfg --> plugin_headless_agent_spine
-  plugin_headless_persistence["persistence<br/>@alego/session-persistence-jsonl"]
+  plugin_headless_persistence["persistence<br/>@singula-ai/alego-session-persistence-jsonl"]
   cfg --> plugin_headless_persistence
-  plugin_headless_checkpoint_policy["checkpoint-policy<br/>@alego/session-checkpoint-policy"]
+  plugin_headless_checkpoint_policy["checkpoint-policy<br/>@singula-ai/alego-session-checkpoint-policy"]
   cfg --> plugin_headless_checkpoint_policy
-  plugin_headless_token_meter["token-meter<br/>@alego/token-meter"]
+  plugin_headless_token_meter["token-meter<br/>@singula-ai/alego-token-meter"]
   cfg --> plugin_headless_token_meter
-  plugin_headless_compaction_basic["compaction-basic<br/>@alego/compaction-basic"]
+  plugin_headless_compaction_basic["compaction-basic<br/>@singula-ai/alego-compaction-basic"]
   cfg --> plugin_headless_compaction_basic
-  plugin_headless_session_projection["session-projection<br/>@alego/session-projection"]
+  plugin_headless_session_projection["session-projection<br/>@singula-ai/alego-session-projection"]
   cfg --> plugin_headless_session_projection
-  plugin_headless_subagent["subagent<br/>@alego/subagent"]
+  plugin_headless_subagent["subagent<br/>@singula-ai/alego-subagent"]
   cfg --> plugin_headless_subagent
-  plugin_headless_subagent_spawn_in_process["subagent-spawn-in-process<br/>@alego/subagent-spawn-in-process"]
+  plugin_headless_subagent_spawn_in_process["subagent-spawn-in-process<br/>@singula-ai/alego-subagent-spawn-in-process"]
   cfg --> plugin_headless_subagent_spawn_in_process
-  plugin_headless_subagent_fork_in_process["subagent-fork-in-process<br/>@alego/subagent-fork-in-process"]
+  plugin_headless_subagent_fork_in_process["subagent-fork-in-process<br/>@singula-ai/alego-subagent-fork-in-process"]
   cfg --> plugin_headless_subagent_fork_in_process
-  plugin_headless_tool_subagent_control["tool-subagent-control<br/>@alego/tool-subagent-control"]
+  plugin_headless_tool_subagent_control["tool-subagent-control<br/>@singula-ai/alego-tool-subagent-control"]
   cfg --> plugin_headless_tool_subagent_control
-  plugin_headless_tool_subagent_report["tool-subagent-report<br/>@alego/tool-subagent-report"]
+  plugin_headless_tool_subagent_report["tool-subagent-report<br/>@singula-ai/alego-tool-subagent-report"]
   cfg --> plugin_headless_tool_subagent_report
-  plugin_headless_tool_subagent["tool-subagent<br/>@alego/tool-subagent"]
+  plugin_headless_tool_subagent["tool-subagent<br/>@singula-ai/alego-tool-subagent"]
   cfg --> plugin_headless_tool_subagent
-  plugin_headless_tool_subagent_fork["tool-subagent-fork<br/>@alego/tool-subagent"]
+  plugin_headless_tool_subagent_fork["tool-subagent-fork<br/>@singula-ai/alego-tool-subagent"]
   cfg --> plugin_headless_tool_subagent_fork
-  plugin_headless_workflow_worker_thread["workflow-worker-thread<br/>@alego/workflow-worker-thread"]
+  plugin_headless_workflow_worker_thread["workflow-worker-thread<br/>@singula-ai/alego-workflow-worker-thread"]
   cfg --> plugin_headless_workflow_worker_thread
-  plugin_headless_tool_workflow["tool-workflow<br/>@alego/tool-workflow"]
+  plugin_headless_tool_workflow["tool-workflow<br/>@singula-ai/alego-tool-workflow"]
   cfg --> plugin_headless_tool_workflow
-  plugin_headless_tool_ralph["tool-ralph<br/>@alego/tool-ralph"]
+  plugin_headless_tool_ralph["tool-ralph<br/>@singula-ai/alego-tool-ralph"]
   cfg --> plugin_headless_tool_ralph
-  plugin_headless_tool_todo["tool-todo<br/>@alego/tool-todo"]
+  plugin_headless_tool_todo["tool-todo<br/>@singula-ai/alego-tool-todo"]
   cfg --> plugin_headless_tool_todo
-  plugin_headless_fs_local["fs-local<br/>@alego/fs-local"]
+  plugin_headless_fs_local["fs-local<br/>@singula-ai/alego-fs-local"]
   cfg --> plugin_headless_fs_local
-  plugin_headless_fs_observation_policy["fs-observation-policy<br/>@alego/fs-observation-policy"]
+  plugin_headless_fs_observation_policy["fs-observation-policy<br/>@singula-ai/alego-fs-observation-policy"]
   cfg --> plugin_headless_fs_observation_policy
-  plugin_headless_tool_fs["tool-fs<br/>@alego/tool-fs"]
+  plugin_headless_tool_fs["tool-fs<br/>@singula-ai/alego-tool-fs"]
   cfg --> plugin_headless_tool_fs
 ```
 
 | Plugin id | Package / module |
 | --- | --- |
-| `settings` | `@alego/settings-file` |
-| `credentials` | `@alego/credentials-local` |
-| `llm-deepseek` | `@alego/llm-deepseek` |
-| `subprocess` | `@alego/subprocess-local` |
-| `bash` | `@alego/bash-local` |
-| `agent-spine` | `@alego/agent-spine-demo` |
-| `persistence` | `@alego/session-persistence-jsonl` |
-| `checkpoint-policy` | `@alego/session-checkpoint-policy` |
-| `token-meter` | `@alego/token-meter` |
-| `compaction-basic` | `@alego/compaction-basic` |
-| `session-projection` | `@alego/session-projection` |
-| `subagent` | `@alego/subagent` |
-| `subagent-spawn-in-process` | `@alego/subagent-spawn-in-process` |
-| `subagent-fork-in-process` | `@alego/subagent-fork-in-process` |
-| `tool-subagent-control` | `@alego/tool-subagent-control` |
-| `tool-subagent-report` | `@alego/tool-subagent-report` |
-| `tool-subagent` | `@alego/tool-subagent` |
-| `tool-subagent-fork` | `@alego/tool-subagent` |
-| `workflow-worker-thread` | `@alego/workflow-worker-thread` |
-| `tool-workflow` | `@alego/tool-workflow` |
-| `tool-ralph` | `@alego/tool-ralph` |
-| `tool-todo` | `@alego/tool-todo` |
-| `fs-local` | `@alego/fs-local` |
-| `fs-observation-policy` | `@alego/fs-observation-policy` |
-| `tool-fs` | `@alego/tool-fs` |
+| `settings` | `@singula-ai/alego-settings-file` |
+| `credentials` | `@singula-ai/alego-credentials-local` |
+| `llm-deepseek` | `@singula-ai/alego-llm-deepseek` |
+| `subprocess` | `@singula-ai/alego-subprocess-local` |
+| `bash` | `@singula-ai/alego-bash-local` |
+| `agent-spine` | `@singula-ai/alego-agent-spine-demo` |
+| `persistence` | `@singula-ai/alego-session-persistence-jsonl` |
+| `checkpoint-policy` | `@singula-ai/alego-session-checkpoint-policy` |
+| `token-meter` | `@singula-ai/alego-token-meter` |
+| `compaction-basic` | `@singula-ai/alego-compaction-basic` |
+| `session-projection` | `@singula-ai/alego-session-projection` |
+| `subagent` | `@singula-ai/alego-subagent` |
+| `subagent-spawn-in-process` | `@singula-ai/alego-subagent-spawn-in-process` |
+| `subagent-fork-in-process` | `@singula-ai/alego-subagent-fork-in-process` |
+| `tool-subagent-control` | `@singula-ai/alego-tool-subagent-control` |
+| `tool-subagent-report` | `@singula-ai/alego-tool-subagent-report` |
+| `tool-subagent` | `@singula-ai/alego-tool-subagent` |
+| `tool-subagent-fork` | `@singula-ai/alego-tool-subagent` |
+| `workflow-worker-thread` | `@singula-ai/alego-workflow-worker-thread` |
+| `tool-workflow` | `@singula-ai/alego-tool-workflow` |
+| `tool-ralph` | `@singula-ai/alego-tool-ralph` |
+| `tool-todo` | `@singula-ai/alego-tool-todo` |
+| `fs-local` | `@singula-ai/alego-fs-local` |
+| `fs-observation-policy` | `@singula-ai/alego-fs-observation-policy` |
+| `tool-fs` | `@singula-ai/alego-tool-fs` |
 
 Source config: [`examples/headless-agent/cordis.yml`](cordis.yml).
 

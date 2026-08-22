@@ -1,6 +1,6 @@
 /** Pure replay-safe render intents for Cordis tools. */
 
-import type { GenericCallView } from '@alego/tools'
+import type { GenericCallView } from '@singula-ai/alego-tools'
 
 /**
  * Render a runtime-inspection call.

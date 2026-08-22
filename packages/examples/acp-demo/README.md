@@ -1,18 +1,18 @@
-# @alego/acp-demo
+# @singula-ai/alego-acp-demo
 
 English | [中文](README.zh.md)
 
-ACP automation server app: the default agent spine, client-created agents through [`@alego/acp`](../../acp/acp/README.md), JSONL persistence, and semantic checkpointing behind one JSON-RPC stdio bin. Programmatic clients create fresh sessions; this package mounts no human UI.
+ACP automation server app: the default agent spine, client-created agents through [`@singula-ai/alego-acp`](../../acp/acp/README.md), JSONL persistence, and semantic checkpointing behind one JSON-RPC stdio bin. Programmatic clients create fresh sessions; this package mounts no human UI.
 
 ## Composition
 
 | Plugin | Role |
 |---|---|
-| `@alego/agent-spine-demo` | Providerless agent spine with no pre-created agents; `session/new` creates each agent. |
-| `@alego/session-persistence-jsonl` | Durable session logs used by checkpointing, observability, and snapshot replay. |
-| `@alego/session-checkpoint-policy` | Durability barriers before model calls and top-level tool effects, plus completed-step checkpoints. |
-| `@alego/session-query-sqlite` | Derived exact/FTS session-query service, opened before the ACP transport so leaf consumers are ready for the first model request. |
-| `@alego/acp` | Automation-only ACP transport over stdin/stdout. |
+| `@singula-ai/alego-agent-spine-demo` | Providerless agent spine with no pre-created agents; `session/new` creates each agent. |
+| `@singula-ai/alego-session-persistence-jsonl` | Durable session logs used by checkpointing, observability, and snapshot replay. |
+| `@singula-ai/alego-session-checkpoint-policy` | Durability barriers before model calls and top-level tool effects, plus completed-step checkpoints. |
+| `@singula-ai/alego-session-query-sqlite` | Derived exact/FTS session-query service, opened before the ACP transport so leaf consumers are ready for the first model request. |
+| `@singula-ai/alego-acp` | Automation-only ACP transport over stdin/stdout. |
 
 The app does not install commands, user interaction, session navigation, configuration pickers, or a stdout logger. It owns these plugins through one ordered effect so the query service is ready before ACP accepts work and ACP sessions quiesce before checkpointing and persistence detach. Leaf configurations supply LLM, executor, sandbox, approval, filesystem, and model-facing tool plugins.
 

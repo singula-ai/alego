@@ -21,11 +21,11 @@ host 侧唯一的持久化面是 session 事件日志（`packages/session/sessio
 
 | 包 | 路径 | ctx 面 | 本期 |
 | --- | --- | --- | --- |
-| `@alego/storage` | `packages/storage/storage/` | `ctx.storage`（枢纽） | ✓ |
-| `@alego/storage-json` | `packages/storage/storage-json/` | 注册后端 `json` | ✓ |
-| `@alego/storage-sqlite` | `packages/storage/storage-sqlite/` | 注册后端 `sqlite` | ✓ |
-| `@alego/storage-domain` | `packages/storage/storage-domain/` | 挂载 `ctx.storage.domain` | ✓ |
-| `@alego/workspace` | `packages/workspace/workspace/` | `ctx.workspaceRegistry` | ✓ |
+| `@singula-ai/alego-storage` | `packages/storage/storage/` | `ctx.storage`（枢纽） | ✓ |
+| `@singula-ai/alego-storage-json` | `packages/storage/storage-json/` | 注册后端 `json` | ✓ |
+| `@singula-ai/alego-storage-sqlite` | `packages/storage/storage-sqlite/` | 注册后端 `sqlite` | ✓ |
+| `@singula-ai/alego-storage-domain` | `packages/storage/storage-domain/` | 挂载 `ctx.storage.domain` | ✓ |
+| `@singula-ai/alego-workspace` | `packages/workspace/workspace/` | `ctx.workspaceRegistry` | ✓ |
 | `SessionPersistence.delete` 扩面 + 级联删编排 | `packages/session/*` | 既有 seam 新方法 | ✗ future work（本期不动 session 侧） |
 | `workspace.*` / `session.delete` RPC、GUI 接线、boot 组装 | — | — | ✗ 下期 |
 

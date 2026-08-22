@@ -1,4 +1,4 @@
-# @alego/command-compact
+# @singula-ai/alego-command-compact
 
 English | [中文](README.zh.md)
 
@@ -34,11 +34,11 @@ The producer injects `commands` and `compact`. Mount the command registry, one b
 
 ```yaml
 - id: commands
-  name: '@alego/commands'
+  name: '@singula-ai/alego-commands'
 - id: compaction-basic
-  name: '@alego/compaction-basic'
+  name: '@singula-ai/alego-compaction-basic'
 - id: command-compact
-  name: '@alego/command-compact'
+  name: '@singula-ai/alego-command-compact'
 ```
 
 The shipped `alego` base mounts it beside `compaction-basic`, and the Web client provides the command adapter. Automation surfaces that compose no command adapter keep automatic compaction only.

@@ -2,14 +2,14 @@ import { chmod, mkdtemp, mkdir, rm, stat, symlink, utimes, writeFile } from 'nod
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import * as workspaceContext from '@alego/agent-instructions'
-import LlmRuntime, { createUserMessage, CallId, type Message, type StreamChunk } from '@alego/llm'
-import SessionStore, { Session, SessionId, SESSION_FORMAT_VERSION, type SessionEvent, type UserMessage } from '@alego/session'
-import AgentRegistry, { agentEvents, Inbox, type Agent } from '@alego/agent'
-import AgentLoop from '@alego/agent-loop'
-import { FileSystem, FsTargetKey, FsVersion } from '@alego/fs'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import * as workspaceContext from '@singula-ai/alego-agent-instructions'
+import LlmRuntime, { createUserMessage, CallId, type Message, type StreamChunk } from '@singula-ai/alego-llm'
+import SessionStore, { Session, SessionId, SESSION_FORMAT_VERSION, type SessionEvent, type UserMessage } from '@singula-ai/alego-session'
+import AgentRegistry, { agentEvents, Inbox, type Agent } from '@singula-ai/alego-agent'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import { FileSystem, FsTargetKey, FsVersion } from '@singula-ai/alego-fs'
 import type {
   FsDirEntry,
   FsEditOutcome,
@@ -19,20 +19,20 @@ import type {
   FsTarget,
   FsWriteIntent,
   FsWriteOutcome,
-} from '@alego/fs'
-import LocalFileSystem from '@alego/fs-local'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime, { defineContentToolFixture } from '@alego/tools'
+} from '@singula-ai/alego-fs'
+import LocalFileSystem from '@singula-ai/alego-fs-local'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { defineContentToolFixture } from '@singula-ai/alego-tools'
 import type {
   ToolExecution,
   ToolExecutionToken,
-} from '@alego/tools'
-import * as ToolFs from '@alego/tool-fs'
+} from '@singula-ai/alego-tools'
+import * as ToolFs from '@singula-ai/alego-tool-fs'
 import {
   discoverBaselineInstructionFiles,
   loadBaselineInstructions,
   renderWorkspaceContext,
-} from '@alego/agent-instructions'
+} from '@singula-ai/alego-agent-instructions'
 import {
   applyInstructionVersionUpdates,
   baselineInstructionState,
@@ -629,7 +629,7 @@ describe('workspace context instruction discovery', () => {
       vi.stubEnv('ALEGO_HOME', '')
       vi.resetModules()
       vi.doMock('node:os', () => ({ homedir: () => home }))
-      const isolated = await import('@alego/agent-instructions')
+      const isolated = await import('@singula-ai/alego-agent-instructions')
       const files = await isolated.discoverBaselineInstructionFiles({ cwd: root })
 
       expect(files.map(file => file.displayPath)).toEqual(['~/.alego/AGENTS.md'])
@@ -650,7 +650,7 @@ describe('workspace context instruction discovery', () => {
 
       vi.resetModules()
       vi.doMock('node:os', () => ({ homedir: () => home }))
-      const isolated = await import('@alego/agent-instructions')
+      const isolated = await import('@singula-ai/alego-agent-instructions')
       const files = await isolated.discoverBaselineInstructionFiles({ cwd: root, alegoHome: '~/.alego' })
 
       expect(files).toEqual([{ absolutePath: join(home, '.alego/AGENTS.md'), displayPath: '~/.alego/AGENTS.md' }])
@@ -2440,7 +2440,7 @@ describe('workspace context request injection', () => {
           },
         }
       })
-      const isolated = await import('@alego/agent-instructions')
+      const isolated = await import('@singula-ai/alego-agent-instructions')
       await isolated.loadBaselineInstructions({ cwd: root, alegoHome: home, maxBytes: 65536 })
       observedStats.clear()
       await isolated.loadBaselineInstructions({ cwd: root, alegoHome: home, maxBytes: 65536 })
@@ -2473,7 +2473,7 @@ describe('workspace context request injection', () => {
           },
         }
       })
-      const isolated = await import('@alego/agent-instructions')
+      const isolated = await import('@singula-ai/alego-agent-instructions')
 
       const rendered = await isolated.loadBaselineInstructions({ cwd: root, alegoHome: home, maxBytes: 65536 })
 

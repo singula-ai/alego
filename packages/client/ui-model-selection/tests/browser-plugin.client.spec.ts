@@ -8,14 +8,14 @@
  * (and the reverse), the one-shared-state contract of the dual entry.
  * Scope disposal drops the directory (HMR safety).
  */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
-import { createScope } from '@alego/client-runtime/client'
-import type { SessionId } from '@alego/client-runtime/client'
-import { LocaleRuntime } from '@alego/client-locale/client'
-import { TestRemote } from '@alego/client-test-runtime'
-import type { ModelSelection } from '@alego/api-remotes/client'
-import type { CommandContribution, SelectOption } from '@alego/client-ui-commands/client'
+import { createScope } from '@singula-ai/alego-client-runtime/client'
+import type { SessionId } from '@singula-ai/alego-client-runtime/client'
+import { LocaleRuntime } from '@singula-ai/alego-client-locale/client'
+import { TestRemote } from '@singula-ai/alego-client-test-runtime'
+import type { ModelSelection } from '@singula-ai/alego-api-remotes/client'
+import type { CommandContribution, SelectOption } from '@singula-ai/alego-client-ui-commands/client'
 import type { ModelSelectInjected } from '../src/client/slots.ts'
 import { apply, inject } from '../src/client/index.ts'
 import { zh } from '../src/client/locales.ts'

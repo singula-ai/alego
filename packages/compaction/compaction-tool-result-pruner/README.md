@@ -1,4 +1,4 @@
-# @alego/compaction-tool-result-pruner
+# @singula-ai/alego-compaction-tool-result-pruner
 
 English | [中文](README.zh.md)
 
@@ -31,8 +31,8 @@ All values are integers; the threshold is positive and head/tail are non-negativ
 ## Usage
 
 ```ts
-import type { Context } from '@alego/cordis'
-import ToolResultPruner from '@alego/compaction-tool-result-pruner'
+import type { Context } from '@singula-ai/cordis'
+import ToolResultPruner from '@singula-ai/alego-compaction-tool-result-pruner'
 
 export function apply(ctx: Context): void {
   ctx.plugin(ToolResultPruner)

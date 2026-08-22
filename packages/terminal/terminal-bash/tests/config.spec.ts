@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { Config } from '@alego/terminal-bash/src/config.ts'
-import { resolveConfig, validateConfig } from '@alego/terminal-bash/src/config.ts'
+import type { Config } from '@singula-ai/alego-terminal-bash/src/config.ts'
+import { resolveConfig, validateConfig } from '@singula-ai/alego-terminal-bash/src/config.ts'
 
 function config(overrides: Partial<Config> = {}): Config {
   return {

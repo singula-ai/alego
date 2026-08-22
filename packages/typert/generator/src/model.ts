@@ -1,7 +1,7 @@
 /**
  * Compiler-independent Typert analysis model. TypeScript nodes and checker
  * objects are extraction inputs only; emitters consume this graph.
- * @module @alego/typert-generator/model
+ * @module @singula-ai/alego-typert-generator/model
  */
 
 /** One independently compiled side of the workspace. */

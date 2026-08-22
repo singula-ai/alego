@@ -1,13 +1,13 @@
 /**
  * Service Definition for the `ctx.shell` capability seam, covering foreground commands and background process
  * handles. Job ids, ownership, polling, and notices belong to
- * `@alego/jobs`, keeping executors independent of sessions.
- * @module @alego/shell
+ * `@singula-ai/alego-jobs`, keeping executors independent of sessions.
+ * @module @singula-ai/alego-shell
  */
 
-import { Context, Service } from '@alego/cordis'
-import { settingsNamespace } from '@alego/settings'
-import type { SandboxMode } from '@alego/sandbox'
+import { Context, Service } from '@singula-ai/cordis'
+import { settingsNamespace } from '@singula-ai/alego-settings'
+import type { SandboxMode } from '@singula-ai/alego-sandbox'
 import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellRunResult } from './types.ts'
 
 /**
@@ -37,7 +37,7 @@ export type {
 export { parseExitStatus } from './render.ts'
 export type { ParsedExitStatus } from './render.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     shell: ShellExecutor
   }

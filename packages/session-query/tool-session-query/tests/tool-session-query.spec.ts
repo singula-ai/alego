@@ -1,16 +1,16 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context, type Fiber } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import { createUserMessage, CallId, HarnessError , createMessage } from '@alego/llm'
-import { MAX_TIMER_DELAY_MS, TimeoutReason } from '@alego/timeout'
-import * as TimeoutPolicy from '@alego/tool-call-timeout-policy'
+import { Context, type Fiber } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import { createUserMessage, CallId, HarnessError , createMessage } from '@singula-ai/alego-llm'
+import { MAX_TIMER_DELAY_MS, TimeoutReason } from '@singula-ai/alego-timeout'
+import * as TimeoutPolicy from '@singula-ai/alego-tool-call-timeout-policy'
 import SessionStore, {
   SESSION_FORMAT_VERSION,
   SessionId,
   type Session,
   type SessionHeader,
   type SessionId as SessionIdValue,
-} from '@alego/session'
+} from '@singula-ai/alego-session'
 import SessionQueryEngine, {
   SessionQueryError,
   SessionSearchCursor,
@@ -23,10 +23,10 @@ import SessionQueryEngine, {
   type SessionSearchPage,
   type SessionSearchRequest,
   type SessionTitleObservationResult,
-} from '@alego/session-query'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime, { type ToolExecutionResult } from '@alego/tools'
-import * as ToolSessionQuery from '@alego/tool-session-query'
+} from '@singula-ai/alego-session-query'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { type ToolExecutionResult } from '@singula-ai/alego-tools'
+import * as ToolSessionQuery from '@singula-ai/alego-tool-session-query'
 
 const activeContexts: Context[] = []
 

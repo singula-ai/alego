@@ -1,4 +1,4 @@
-# @alego/sandbox-local
+# @singula-ai/alego-sandbox-local
 
 English | [中文](README.zh.md)
 
@@ -16,14 +16,14 @@ The Seatbelt profile is allow-default with `(deny file-write*)` plus write allow
 
 The Windows rung keeps one deterministic write SID and standing ACE per workspace, but gives every live session/workspace pair a random private temp directory with a distinct SID and revocable ACE. Sessions sharing a workspace therefore share its intended write authority without inheriting one another's temp authority. A fresh provider always chooses a new temp path and SID, so crash residue cannot block or authorize a resumed session; agentless calls receive the same per-invocation isolation from the runner. A workspace equal to or containing the platform temp root fails before any ACL mutation because its inheritable workspace ACE would otherwise reach every private temp child.
 
-[`@alego/node-addon-landlock-run`](https://www.npmjs.com/package/@alego/node-addon-landlock-run) supplies the platform launcher, functional probe, and CLI argument vocabulary. This provider owns only mode-to-grant mapping and runner selection. Keeping path resolution and probe parsing with the versioned binary prevents contract drift.
+[`@singula-ai/node-addon-landlock-run`](https://www.npmjs.com/package/@singula-ai/node-addon-landlock-run) supplies the platform launcher, functional probe, and CLI argument vocabulary. This provider owns only mode-to-grant mapping and runner selection. Keeping path resolution and probe parsing with the versioned binary prevents contract drift.
 
 ```yaml
 - id: sandbox
-  name: '@alego/sandbox-local'
+  name: '@singula-ai/alego-sandbox-local'
 ```
 
-Consumers: [`@alego/bash-sandbox`](../../shell/bash-sandbox/); see [the acp-agent example](../../../examples/acp-agent/) for the runnable default composition.
+Consumers: [`@singula-ai/alego-bash-sandbox`](../../shell/bash-sandbox/); see [the acp-agent example](../../../examples/acp-agent/) for the runnable default composition.
 
 ## Model Experience
 

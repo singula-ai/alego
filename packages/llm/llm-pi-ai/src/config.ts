@@ -15,12 +15,12 @@
  */
 
 import type { CacheRetention, ChatTemplateKwargValue, ModelThinkingLevel, Provider, ThinkingBudgets, Transport } from '@earendil-works/pi-ai'
-import z from '@alego/schemastery'
-import { credentialRef } from '@alego/credentials'
-import type { CredentialRef } from '@alego/credentials'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
-import { resolveRetryPolicy, RetryPolicySchema } from '@alego/llm'
-import type { ResolvedRetryPolicy, RetryPolicyConfig } from '@alego/llm'
+import z from '@singula-ai/schemastery'
+import { credentialRef } from '@singula-ai/alego-credentials'
+import type { CredentialRef } from '@singula-ai/alego-credentials'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
+import { resolveRetryPolicy, RetryPolicySchema } from '@singula-ai/alego-llm'
+import type { ResolvedRetryPolicy, RetryPolicyConfig } from '@singula-ai/alego-llm'
 import {
   CACHE_CONTROL_FORMATS,
   CHAT_TEMPLATE_VARS,

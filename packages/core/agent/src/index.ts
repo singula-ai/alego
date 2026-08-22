@@ -2,17 +2,17 @@
  * Agent service: live registry, factory delegation, and process-local
  * initiator scope. Concrete creation and driving belong to the loop.
  *
- * @module @alego/agent
+ * @module @singula-ai/alego-agent
  */
 
-import { Context, FiberState, getTraceable, Service, symbols } from '@alego/cordis'
-import type { Fiber } from '@alego/cordis'
+import { Context, FiberState, getTraceable, Service, symbols } from '@singula-ai/cordis'
+import type { Fiber } from '@singula-ai/cordis'
 import { AsyncLocalStorage } from 'node:async_hooks'
 import { isPromise } from 'node:util/types'
-import { scopeTarget } from '@alego/scope'
-import type { Scoped } from '@alego/scope'
-import type { SessionEvent, SessionId } from '@alego/session'
-import type { TypertContext, TypertLookup } from '@alego/typert-protocol'
+import { scopeTarget } from '@singula-ai/alego-scope'
+import type { Scoped } from '@singula-ai/alego-scope'
+import type { SessionEvent, SessionId } from '@singula-ai/alego-session'
+import type { TypertContext, TypertLookup } from '@singula-ai/alego-typert-protocol'
 import type { Agent, AgentOptions } from './runtime-types.ts'
 
 export * from './runtime-types.ts'
@@ -23,7 +23,7 @@ export * from './model-selection.ts'
 export { agentCarrier, agentEvents, assembleContextFor, emitAgentEvent } from './dispatch.ts'
 export type { AgentEventDispatch, AgentSubjectEvent } from './dispatch.ts'
 
-declare module '@alego/typert-protocol' {
+declare module '@singula-ai/alego-typert-protocol' {
   interface TypertLookupMap {
     agent: TypertLookup<Agent, SessionId>
   }
@@ -33,7 +33,7 @@ declare module '@alego/typert-protocol' {
   }
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     agents: AgentRegistry
     /**
@@ -245,7 +245,7 @@ interface FactorySlot {
  * Agent service (`ctx.agents`): tracks live agents and carries the initiating
  * Agent through one process-local asynchronous driver chain. Agent *creation*
  * is provided by whichever plugin implements the {@link AgentFactory}
- * (`@alego/agent-loop`), registered via {@link setFactory}.
+ * (`@singula-ai/alego-agent-loop`), registered via {@link setFactory}.
  *
  * Initiator methods provide same-process causal attribution only. Ambient
  * presence is neither liveness proof nor authorization; subjects and owners
@@ -269,13 +269,13 @@ export class AgentRegistry extends Service {
       typeCtx.typert.lookups.register('agent', {
         parameter: 'agent',
         wire: 'agentId',
-        hostTypeSymbol: '@alego/agent#Agent',
-        wireTypeSymbol: '@alego/session/types#SessionId',
+        hostTypeSymbol: '@singula-ai/alego-agent#Agent',
+        wireTypeSymbol: '@singula-ai/alego-session/types#SessionId',
         resolve: sessionId => this.get(sessionId),
       })
       typeCtx.typert.contexts.registerHost('agent', {
         wire: 'agentId',
-        wireTypeSymbol: '@alego/session/types#SessionId',
+        wireTypeSymbol: '@singula-ai/alego-session/types#SessionId',
         resolve: sessionId => this.get(sessionId)?.ctx,
       })
     })

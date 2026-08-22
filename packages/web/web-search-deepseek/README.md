@@ -1,10 +1,10 @@
-# @alego/web-search-deepseek
+# @singula-ai/alego-web-search-deepseek
 
 English | [中文](README.zh.md)
 
 A [DeepSeek](https://deepseek.com)-backed `WebSearchProvider` for the harness [web capability seam](../web/README.md) (`ctx.web`). It calls DeepSeek's **Anthropic-compatible Messages API** (`POST {baseURL}/messages`) with the native `web_search_20250305` server tool enabled, and maps the structured `web_search_tool_result` blocks DeepSeek returns into the seam's normalized `WebSearchResult`.
 
-This is an **implementation** package: it registers a provider into `ctx.web`, resolves its credential for each search through the optional `ctx.credentials` seam, records the auxiliary request in the initiating Agent session when one exists, and does not register a model-facing tool. Like `@alego/llm-deepseek`, it is a function/namespace plugin (`inject: ['web']`). The Anthropic wire shape is a provider-private detail — it does **not** make this provider depend on `ctx.llm`.
+This is an **implementation** package: it registers a provider into `ctx.web`, resolves its credential for each search through the optional `ctx.credentials` seam, records the auxiliary request in the initiating Agent session when one exists, and does not register a model-facing tool. Like `@singula-ai/alego-llm-deepseek`, it is a function/namespace plugin (`inject: ['web']`). The Anthropic wire shape is a provider-private detail — it does **not** make this provider depend on `ctx.llm`.
 
 ## How it differs from a dedicated search endpoint
 
@@ -28,7 +28,7 @@ It reuses the `DEEPSEEK_API_KEY` credential reference (no new secret) but **not*
 
 ```yaml
 - id: web-search-deepseek
-  name: '@alego/web-search-deepseek'
+  name: '@singula-ai/alego-web-search-deepseek'
   config:
     apiKeyEnv: DEEPSEEK_API_KEY
     baseURL: https://gateway.internal/anthropic/v1

@@ -1,11 +1,11 @@
-/** Package-owned scoped-dispatch invariants. @module @alego/scope/invariant */
+/** Package-owned scoped-dispatch invariants. @module @singula-ai/alego-scope/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
-import { carrierKeyOf, isScopeCarrier } from '@alego/scope'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
+import { carrierKeyOf, isScopeCarrier } from '@singula-ai/alego-scope'
 import { scopedSubjectResolverFor } from './scoped-events.generated.ts'
 
-const PACKAGE_NAME = '@alego/scope'
+const PACKAGE_NAME = '@singula-ai/alego-scope'
 
 /** Cordis companion plugin name. */
 export const name = 'scope-invariant'

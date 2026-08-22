@@ -29,7 +29,7 @@ Status: implemented
     - **fetch 到达插件包**（`ui-layout`、`ui-sidebar`、`ui-conversation`、`ui-trajectory`）：双入口——根入口是 node 半边（空 `apply`，其存在是为了让 host Loader 管辖生命周期、让 web 插件注册表发现 package.json 的 `alego.client` 声明）；实现住在 `src/client/` 下，经 `./client` 子路径发布（tsdown 闭包工厂 bundle）。跨插件消费 `/client` 只限类型；值层面的协作走 cordis 服务。
 - `apps/` 作为对外导出的应用入口，可以由 Client / Host 混合组装。
     - `apps/web`（`alego-web-frontend`）是 vite 应用：`alego-client-web` 导出的壳 API 之上的一层薄 `main.ts`。
-    - `apps/cli`（`@alego/cli`）分发命令：`alego web` = Host + webserver + 构建出的 `alego-web-frontend` dist；`alego --profile headless` = [直接使用核心 Agent／Session 的入口](2026-08-09-headless-direct-core-entry-point.zh.md)，不含 Host、HTTP 或浏览器层。
+    - `apps/cli`（`@singula-ai/alego`）分发命令：`alego web` = Host + webserver + 构建出的 `alego-web-frontend` dist；`alego --profile headless` = [直接使用核心 Agent／Session 的入口](2026-08-09-headless-direct-core-entry-point.zh.md)，不含 Host、HTTP 或浏览器层。
     - 将来的 Electron 应用经由 IPC fetch 载体复用同一套 web client 包。
 
 ```
@@ -65,7 +65,7 @@ TypeScript 以 solution 根引用的**两个聚合 program** 检查（`tsconfig.
 | 承载层 | `alego-host-webserver` | Web HTTP 与 upgrade：静态服务 + `/api/*`→handler 转发 + WebSocket upgrade route + close 语义；插件 bundle 端点 + `__ALEGO_BOOT__` manifest（元数据清单）注入（由 web 插件注册表供给） | Web（浏览器访问）专用；零 workspace 依赖（注册表经结构注入到达）；Electron 不复用它 |
 | client 库 | `alego-client-ui-slots` / `alego-client-ui-primitives` | slot 约定 / 纯 React 原子组件 | 由壳播种进 loader 模块表 |
 | client 插件 | `alego-client-connection` / `alego-client-runtime` / `alego-client-ui-theme` / `alego-client-ui-renderer` / 功能 UI 包 | 浏览器侧 Cordis 插件树：wire 消费方、核心服务、主题、React 渲染与功能组合——见 Web 客户端架构笔记 | 双入口（node 半边=空 apply；实现在 `src/client/`）；跨插件值协作经服务与 slot 完成 |
-| 应用 | `@alego/cli`（apps/cli）+ `alego-web-frontend`（apps/web，vite 应用） | bin 粗分发 + 每个应用一个拼装模块（web.ts / headless.ts）；vite 应用是 `alego-client-web` 壳表面之上的薄 main | 各应用使用动态 import，因此不会互相加载；dist 定位等 workspace 知识留在 app |
+| 应用 | `@singula-ai/alego`（apps/cli）+ `alego-web-frontend`（apps/web，vite 应用） | bin 粗分发 + 每个应用一个拼装模块（web.ts / headless.ts）；vite 应用是 `alego-client-web` 壳表面之上的薄 main | 各应用使用动态 import，因此不会互相加载；dist 定位等 workspace 知识留在 app |
 
 #### 命名规则
 

@@ -1,8 +1,8 @@
-# @alego/subprocess-e2b
+# @singula-ai/alego-subprocess-e2b
 
 English | [中文](README.zh.md)
 
-E2B implementation of the [`@alego/subprocess`](../../subprocess/subprocess/README.md) seam. Load [`@alego/e2b`](../e2b/README.md) first, then this service in place of `alego-subprocess-local`. Existing Bash, PTY, and LSP consumers then execute in the shared remote sandbox without E2B-specific capability packages.
+E2B implementation of the [`@singula-ai/alego-subprocess`](../../subprocess/subprocess/README.md) seam. Load [`@singula-ai/alego-e2b`](../e2b/README.md) first, then this service in place of `alego-subprocess-local`. Existing Bash, PTY, and LSP consumers then execute in the shared remote sandbox without E2B-specific capability packages.
 
 ## Configuration
 

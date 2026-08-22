@@ -6,8 +6,8 @@ import type { Duplex } from 'node:stream'
 import WebSocket, { WebSocketServer } from 'ws'
 import type {
   ApiProxy, HostFrame, MuxFrame, RpcRequest, ServerRequest,
-} from '@alego/host-apiproxy/api'
-import { RpcId } from '@alego/host-apiproxy/api'
+} from '@singula-ai/alego-host-apiproxy/api'
+import { RpcId } from '@singula-ai/alego-host-apiproxy/api'
 
 type Frame = MuxFrame | HostFrame
 

@@ -1,5 +1,5 @@
 import { once } from 'node:events'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import {
   CommandExitError,
   FileNotFoundError,
@@ -7,14 +7,14 @@ import {
   type CommandHandle,
   type CommandResult,
   type Sandbox,
-} from '@alego/e2b'
-import type E2BRuntime from '@alego/e2b'
-import type { SubprocessSpawnSpec } from '@alego/subprocess'
-import E2BSubprocessRuntime from '@alego/subprocess-e2b'
+} from '@singula-ai/alego-e2b'
+import type E2BRuntime from '@singula-ai/alego-e2b'
+import type { SubprocessSpawnSpec } from '@singula-ai/alego-subprocess'
+import E2BSubprocessRuntime from '@singula-ai/alego-subprocess-e2b'
 import * as E2BSubprocessInvariant from '../src/invariant.ts'
 import { E2BBase64Decoder, E2B_OUTPUT_COMPLETE_FRAME, E2BOutputReader } from '../src/output.ts'
 import { E2BSubprocessHandle } from '../src/process.ts'
-import InvariantRegistry from '@alego/invariants'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 import { describe, expect, it, vi } from 'vitest'
 
 function commandError(exitCode: number): CommandExitError {

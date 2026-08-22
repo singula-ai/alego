@@ -1,4 +1,4 @@
-import type { Branded } from '@alego/brand'
+import type { Branded } from '@singula-ai/alego-brand'
 
 /** Stable identity shared by one compact start/summary/checkpoint/end transaction. */
 export type CompactionId = Branded<'CompactionId'>

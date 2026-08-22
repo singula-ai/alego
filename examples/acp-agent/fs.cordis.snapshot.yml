@@ -5,15 +5,15 @@
 # `deepseek-v4-pro`, but the recorded corpus was captured on flash, and a config
 # patch replaces the whole app config, so the base fields are restated verbatim.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - id: acp-agent
-        name: '@alego/acp-demo'
+        name: '@singula-ai/alego-acp-demo'
         config:
           provider: deepseek-official
           model: deepseek-v4-flash
@@ -27,15 +27,15 @@
             Verify your work by running the code or tests. Keep answers brief and factual.
       - insert:
           - id: spill-local
-            name: '@alego/spill-local'
+            name: '@singula-ai/alego-spill-local'
             config:
               root: !!js process.env.ALEGO_SNAPSHOT_SPILL_ROOT ?? './.spill'
           - id: spill-policy
-            name: '@alego/spill-policy'
+            name: '@singula-ai/alego-spill-policy'
             config:
               maxInlineBytes: 800
           - id: llm-replay
-            name: '@alego/llm-replay'
+            name: '@singula-ai/alego-llm-replay'
             config:
               providers:
                 - id: deepseek-official

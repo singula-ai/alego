@@ -1,4 +1,4 @@
-# @alego/client-modules
+# @singula-ai/alego-client-modules
 
 [English](README.md) | 中文
 
@@ -25,4 +25,4 @@ Node 侧会扫描已启用的 Loader 配置项以发现 web `alego.client` 包�
 ## 已知限制与暂缓事项
 
 - **有意采用扁平模块图**：每个 bundle 是一个模块节点，其边只指向表中的叶节点；接口（`loadCache`/`edges`/`invalidate`）已经支持通用模块图，因此可以改变 externalization 粒度而不更改接口。
-- **自身不维护卸载记录**：样式移除与 fiber 拆卸顺序属于 HMR 驱动器（`@alego/client-hmr`）；loader 只在每条记录中登记其拥有的样式标签 id。
+- **自身不维护卸载记录**：样式移除与 fiber 拆卸顺序属于 HMR 驱动器（`@singula-ai/alego-client-hmr`）；loader 只在每条记录中登记其拥有的样式标签 id。

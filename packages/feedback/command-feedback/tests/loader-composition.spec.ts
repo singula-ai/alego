@@ -3,15 +3,15 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import Include from '@alego/cordis-plugin-include'
-import AgentRegistry, { Inbox } from '@alego/agent'
-import type { Agent, AgentStatus } from '@alego/agent'
-import CommandRuntime from '@alego/commands'
-import SessionStore, { SessionId } from '@alego/session'
-import * as CommandFeedback from '@alego/command-feedback'
-import { getOrCreateAnonymousUserId } from '@alego/anonymous-user-id'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include from '@singula-ai/cordis-plugin-include'
+import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import type { Agent, AgentStatus } from '@singula-ai/alego-agent'
+import CommandRuntime from '@singula-ai/alego-commands'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import * as CommandFeedback from '@singula-ai/alego-command-feedback'
+import { getOrCreateAnonymousUserId } from '@singula-ai/alego-anonymous-user-id'
 
 let root: string | undefined
 let context: Context | undefined
@@ -56,10 +56,10 @@ describe('/feedback real Loader composition through cordis.yml', () => {
     vi.stubEnv('ALEGO_HOME', root)
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@alego/agent'",
-      "- name: '@alego/session'",
-      "- name: '@alego/commands'",
-      "- name: '@alego/command-feedback'",
+      "- name: '@singula-ai/alego-agent'",
+      "- name: '@singula-ai/alego-session'",
+      "- name: '@singula-ai/alego-commands'",
+      "- name: '@singula-ai/alego-command-feedback'",
       '',
     ].join('\n'))
 
@@ -68,10 +68,10 @@ describe('/feedback real Loader composition through cordis.yml', () => {
     await context.plugin(Loader)
     context.loader.builtins.include = Include
     const modules = new Map<string, unknown>([
-      ['@alego/agent', AgentRegistry],
-      ['@alego/session', SessionStore],
-      ['@alego/commands', CommandRuntime],
-      ['@alego/command-feedback', CommandFeedback],
+      ['@singula-ai/alego-agent', AgentRegistry],
+      ['@singula-ai/alego-session', SessionStore],
+      ['@singula-ai/alego-commands', CommandRuntime],
+      ['@singula-ai/alego-command-feedback', CommandFeedback],
     ])
     context.loader.internal = {
       version: 'v2',

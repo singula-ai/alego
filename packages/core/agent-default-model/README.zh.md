@@ -1,4 +1,4 @@
-# @alego/agent-default-model
+# @singula-ai/alego-agent-default-model
 
 [English](README.md) | 中文
 

@@ -1,7 +1,7 @@
 import type {
   AssistantBlock, AssistantMessageNode, ChatConversationViewNode, CommandNode,
   CompactionSummaryNode, ModelRetryNode, RunningToolCall, ToolCallBlock,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 
 /** Merge-extensible payload registry keyed by final Chat renderer kind. */
 export interface ChatNodeDataMap {}

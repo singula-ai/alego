@@ -1,27 +1,27 @@
 # Minimal tool-pwsh composition: real app boot path, real pwsh executor, real
 # foreground + background tool calls; driven by the package's loader.spec.ts.
 - id: system-prompt
-  name: '@alego/system-prompt'
+  name: '@singula-ai/alego-system-prompt'
 
 - id: tools
-  name: '@alego/tools'
+  name: '@singula-ai/alego-tools'
 
 - id: subprocess
-  name: '@alego/subprocess-local'
+  name: '@singula-ai/alego-subprocess-local'
 
 - id: bash
-  name: '@alego/pwsh-local'
+  name: '@singula-ai/alego-pwsh-local'
   config:
     graceMs: 200
 
 - id: shell-env
-  name: '@alego/shell-env'
+  name: '@singula-ai/alego-shell-env'
 
 - id: tasks
-  name: '@alego/jobs-local'
+  name: '@singula-ai/alego-jobs-local'
 
 - id: tool-jobs
-  name: '@alego/tool-jobs'
+  name: '@singula-ai/alego-tool-jobs'
 
 - id: tool-pwsh
-  name: '@alego/tool-pwsh'
+  name: '@singula-ai/alego-tool-pwsh'

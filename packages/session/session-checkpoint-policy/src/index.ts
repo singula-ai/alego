@@ -1,15 +1,15 @@
 /**
  * Semantic durability checkpoints for model requests, top-level tool dispatch,
  * and completed agent steps.
- * @module @alego/session-checkpoint-policy
+ * @module @singula-ai/alego-session-checkpoint-policy
  */
 
-import type { Context } from '@alego/cordis'
-import type { Session } from '@alego/session'
-import type { StreamChunk } from '@alego/llm'
-import { TOOL_ABORTED_BEFORE_DISPATCH, type ToolExecutionResult } from '@alego/tools'
-import type { PreStepDecision } from '@alego/agent'
-import type {} from '@alego/session-persistence'
+import type { Context } from '@singula-ai/cordis'
+import type { Session } from '@singula-ai/alego-session'
+import type { StreamChunk } from '@singula-ai/alego-llm'
+import { TOOL_ABORTED_BEFORE_DISPATCH, type ToolExecutionResult } from '@singula-ai/alego-tools'
+import type { PreStepDecision } from '@singula-ai/alego-agent'
+import type {} from '@singula-ai/alego-session-persistence'
 
 /** Cordis plugin name used by Loader diagnostics. */
 export const name = 'session-checkpoint-policy'

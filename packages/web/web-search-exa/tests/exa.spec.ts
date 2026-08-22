@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import WebRuntime from '@alego/web'
-import { ExaSearchProvider, EXA_PROVIDER_ID } from '@alego/web-search-exa'
-import * as exaPlugin from '@alego/web-search-exa'
+import { Context } from '@singula-ai/cordis'
+import WebRuntime from '@singula-ai/alego-web'
+import { ExaSearchProvider, EXA_PROVIDER_ID } from '@singula-ai/alego-web-search-exa'
+import * as exaPlugin from '@singula-ai/alego-web-search-exa'
 import { mapExaResponse, mapExaResult } from '../src/provider.ts'
 
 const options = { apiKey: 'exa-key', baseURL: 'https://api.exa.test', searchType: 'auto' as const, highlightsPerResult: 1 }

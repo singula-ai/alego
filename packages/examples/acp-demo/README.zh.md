@@ -1,18 +1,18 @@
-# @alego/acp-demo
+# @singula-ai/alego-acp-demo
 
 [English](README.md) | 中文
 
-ACP（Agent Client Protocol）自动化服务器应用：默认 agent（智能体）主干、客户端通过 [`@alego/acp`](../../acp/acp/README.zh.md) 创建的 agent、JSONL 持久化，以及语义检查点机制，并通过一个 JSON-RPC stdio bin 对外提供服务。程序化客户端创建新会话；此包不挂载人工交互 UI。
+ACP（Agent Client Protocol）自动化服务器应用：默认 agent（智能体）主干、客户端通过 [`@singula-ai/alego-acp`](../../acp/acp/README.zh.md) 创建的 agent、JSONL 持久化，以及语义检查点机制，并通过一个 JSON-RPC stdio bin 对外提供服务。程序化客户端创建新会话；此包不挂载人工交互 UI。
 
 ## 组合
 
 | 插件 | 角色 |
 |---|---|
-| `@alego/agent-spine-demo` | 不含提供方且不预创建 agent 的 agent 主干；`session/new` 创建每个 agent。 |
-| `@alego/session-persistence-jsonl` | 检查点、可观测性和快照回放所使用的持久会话日志。 |
-| `@alego/session-checkpoint-policy` | 在模型调用和顶层工具 effect 前建立持久性屏障，并为已完成步骤建立检查点。 |
-| `@alego/session-query-sqlite` | 派生的精确／FTS 会话查询服务；先于 ACP 传输打开，使叶节点消费方在首次模型请求前就绪。 |
-| `@alego/acp` | 通过 stdin／stdout 提供的纯自动化 ACP 传输。 |
+| `@singula-ai/alego-agent-spine-demo` | 不含提供方且不预创建 agent 的 agent 主干；`session/new` 创建每个 agent。 |
+| `@singula-ai/alego-session-persistence-jsonl` | 检查点、可观测性和快照回放所使用的持久会话日志。 |
+| `@singula-ai/alego-session-checkpoint-policy` | 在模型调用和顶层工具 effect 前建立持久性屏障，并为已完成步骤建立检查点。 |
+| `@singula-ai/alego-session-query-sqlite` | 派生的精确／FTS 会话查询服务；先于 ACP 传输打开，使叶节点消费方在首次模型请求前就绪。 |
+| `@singula-ai/alego-acp` | 通过 stdin／stdout 提供的纯自动化 ACP 传输。 |
 
 应用不安装命令、用户交互、会话导航、配置选择器或 stdout logger。它通过一个有序 effect 拥有这些插件，因此查询服务会在 ACP 接受工作前就绪，而 ACP 会话会在检查点与持久化插件卸载前完全停稳。叶节点配置负责提供 LLM（大语言模型）、执行器、沙箱、审批、文件系统和面向模型的工具插件。
 

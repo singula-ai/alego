@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { runNativeCommand } from '@alego/native-command'
+import { runNativeCommand } from '@singula-ai/alego-native-command'
 
 const node = process.execPath
 

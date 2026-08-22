@@ -1,4 +1,4 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import { NS } from '../locales.ts'
 import { AssistantNodeView } from './AssistantNodeView.tsx'
 import { CommandNodeView, ManualCompactionNodeView } from './CommandNodeView.tsx'

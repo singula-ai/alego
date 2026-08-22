@@ -1,4 +1,4 @@
-# @alego/llm-pi-ai
+# @singula-ai/alego-llm-pi-ai
 
 [English](README.md) | 中文
 
@@ -12,7 +12,7 @@
 
 ```yaml
 - id: llm
-  name: '@alego/llm-pi-ai'
+  name: '@singula-ai/alego-llm-pi-ai'
   config:
     providers:
       # Catalog route: endpoint, protocol, and models all come from pi-ai.

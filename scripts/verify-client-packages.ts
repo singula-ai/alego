@@ -16,10 +16,9 @@ const CONFIG_GLOB = 'packages/*/*/tsdown.config.ts'
 const PLATFORM_SOURCE = 'packages/client/web/src/platform.ts'
 const PARSER_PRELOAD_SOURCE = 'packages/client/modules/src/index.ts'
 const STATIC_PRESET_SOURCE = 'packages/client/tsdown.client.ts'
-const CORDIS = '@alego/cordis'
-const ALEGO_PREFIX = '@alego/'
-const VENDOR_MANIFEST_GLOB = 'vendor/*/package.json'
-const CLIENT_WEB = '@alego/client-web'
+const CORDIS = '@singula-ai/cordis'
+const ALEGO_PREFIX = '@singula-ai/alego-'
+const CLIENT_WEB = '@singula-ai/alego-client-web'
 
 /** One workspace package's browser-module declaration. */
 export interface ClientDeclaration {
@@ -866,25 +865,8 @@ function describeOrigins(origins: ReadonlySet<string>): string {
   return rest.length === 0 ? first + ', ' + second : first + ', ' + second + ', and ' + String(rest.length) + ' more'
 }
 
-/**
- * Rescoped upstream packages share the `@alego` scope with the repository's
- * own packages, so the scope alone cannot tell them apart. They are ordinary
- * third-party libraries to a consumer — plain dependencies, not peer-installed
- * relationships — except Cordis, which every package peers on by policy.
- */
-const rescopedVendorNames = new Set<string>(
-  globSync(VENDOR_MANIFEST_GLOB, { cwd: resolve(import.meta.dirname, '..') })
-    .map(path => readFileSync(resolve(import.meta.dirname, '..', path), 'utf8'))
-    .flatMap((text) => {
-      const parsed: unknown = JSON.parse(text)
-      const name = isRecord(parsed) ? parsed.name : undefined
-      return typeof name === 'string' ? [name] : []
-    }),
-)
-
 function isInternalAlego(name: string): boolean {
-  if (name === CORDIS) return true
-  return name.startsWith(ALEGO_PREFIX) && !rescopedVendorNames.has(name)
+  return name === CORDIS || name.startsWith(ALEGO_PREFIX)
 }
 
 function isBareSpecifier(specifier: string): boolean {

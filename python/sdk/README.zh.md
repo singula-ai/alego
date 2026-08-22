@@ -21,7 +21,7 @@ with Alego() as harness:
 
 `Alego` 会保留其按需启动的运行时子进程，以便在多次调用之间复用。请像上例一样将其用作上下文管理器，或在使用完毕后显式调用 `close()`。
 
-默认情况下，SDK 会启动 `alego-runtime-bin` 包内置的单文件可执行程序 `alego-jsonrpc-agent`，并通过 `ALEGO_CORDIS_CONFIG` 注入该包的默认配置，其中包括 stdio JSON-RPC 服务器、agent core（智能体核心）、预载的 DeepSeek 适配器、采用显式组合语义检查点策略的 JSONL 会话持久化，以及本地 bash。要运行自己的插件组合，请在配置中保留 `@alego/sdk-jsonrpc-server` 配置项，并传入 Cordis 配置文件路径。
+默认情况下，SDK 会启动 `alego-runtime-bin` 包内置的单文件可执行程序 `alego-jsonrpc-agent`，并通过 `ALEGO_CORDIS_CONFIG` 注入该包的默认配置，其中包括 stdio JSON-RPC 服务器、agent core（智能体核心）、预载的 DeepSeek 适配器、采用显式组合语义检查点策略的 JSONL 会话持久化，以及本地 bash。要运行自己的插件组合，请在配置中保留 `@singula-ai/alego-sdk-jsonrpc-server` 配置项，并传入 Cordis 配置文件路径。
 
 ```py
 from alego import Alego

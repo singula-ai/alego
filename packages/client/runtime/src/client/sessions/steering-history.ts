@@ -1,7 +1,7 @@
 /** Reconstruct durable steering identity from the event-sourced agent inbox. */
 
-import type { SessionEvent } from '@alego/session/types'
-import type { InboxTarget } from '@alego/agent/types'
+import type { SessionEvent } from '@singula-ai/alego-session/types'
+import type { InboxTarget } from '@singula-ai/alego-agent/types'
 
 /** Minimal pending identity retained while replaying durable inbox splices. */
 interface PendingIdentity {

@@ -1,15 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { scopeTarget } from '@alego/scope'
-import { SessionId } from '@alego/session'
-import SubagentRuntime, { SubagentRunId } from '@alego/subagent'
+import { Context } from '@singula-ai/cordis'
+import { scopeTarget } from '@singula-ai/alego-scope'
+import { SessionId } from '@singula-ai/alego-session'
+import SubagentRuntime, { SubagentRunId } from '@singula-ai/alego-subagent'
 import type {
   SubagentProvider,
   SubagentRunEndInfo,
   SubagentRunInfo,
-} from '@alego/subagent'
-import * as SubagentInvariant from '@alego/subagent/invariant'
-import InvariantRegistry from '@alego/invariants'
+} from '@singula-ai/alego-subagent'
+import * as SubagentInvariant from '@singula-ai/alego-subagent/invariant'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

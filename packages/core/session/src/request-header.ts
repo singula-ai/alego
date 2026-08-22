@@ -7,8 +7,8 @@
  * @module alego-session/request-header
  */
 
-import { callConfigEquals } from '@alego/llm'
-import type { ToolSchema } from '@alego/llm'
+import { callConfigEquals } from '@singula-ai/alego-llm'
+import type { ToolSchema } from '@singula-ai/alego-llm'
 import type { EpochHeader, SessionEvent } from './types.ts'
 
 /**

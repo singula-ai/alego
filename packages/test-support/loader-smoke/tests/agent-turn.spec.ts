@@ -1,5 +1,5 @@
-import type { Context } from '@alego/cordis'
-import type { SessionEvent } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import type { SessionEvent } from '@singula-ai/alego-session'
 import { describe, expect, it, vi } from 'vitest'
 import { runFixtureTurn } from '../src/agent-turn.ts'
 

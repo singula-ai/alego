@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/loader-smoke`.
- * @module @alego/loader-smoke/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-loader-smoke`.
+ * @module @singula-ai/alego-loader-smoke/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/loader-smoke'
+const PACKAGE_NAME = '@singula-ai/alego-loader-smoke'
 
 /** Cordis companion plugin name. */
 export const name = 'loader-smoke-invariant'

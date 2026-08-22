@@ -2,7 +2,7 @@
  * Projection from the shared managed-process handle to the official Claude
  * Agent SDK's custom-spawn process interface.
  *
- * @module @alego/subagent-claude-code/process
+ * @module @singula-ai/alego-subagent-claude-code/process
  */
 
 import { EventEmitter } from 'node:events'
@@ -15,7 +15,7 @@ import {
   type SubprocessHandle,
   type SubprocessOutcome,
   type SubprocessSpawnSpec,
-} from '@alego/subprocess'
+} from '@singula-ai/alego-subprocess'
 
 function thrown(value: unknown): Error {
   /* v8 ignore next -- the subprocess seam rejects with Error. */

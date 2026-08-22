@@ -2,31 +2,31 @@
 
 English | [中文](rescope.zh.md)
 
-The Cordis framework and its foundation libraries are vendored under [`vendor/`](../vendor/README.md) and published under the `@alego` scope, because every harness package declares the framework as a peer dependency: publishing the harness publishes this layer with it, and under the upstream names that publication would squat them on the registry. This page is the name mapping; the decision and its consequences live in the [rescope Agent Note](../.agents/notes/implemented/process/2026-08-10-vendor-package-rescope.md), and the upstream commits in [`vendor/README.md`](../vendor/README.md).
+The Cordis framework and its foundation libraries are vendored under [`vendor/`](../vendor/README.md) and published under the `@singula-ai` scope, because every harness package declares the framework as a peer dependency: publishing the harness publishes this layer with it, and under the upstream names that publication would squat them on the registry. This page is the name mapping; the decision and its consequences live in the [rescope Agent Note](../.agents/notes/implemented/process/2026-08-10-vendor-package-rescope.md), and the upstream commits in [`vendor/README.md`](../vendor/README.md).
 
 ## Name mapping
 
 | Directory | Upstream name | Published name | Version | Role |
 |---|---|---|---|---|
-| `vendor/cordis/` | `cordis` | `@alego/cordis` | 4.0.0-rc.7 | Framework core: `Context`, `Service`, `Fiber`, events |
-| `vendor/cosmokit/` | `cosmokit` | `@alego/cosmokit` | 1.8.1 | Shared utilities the framework and Schemastery build on |
-| `vendor/schemastery/` | `schemastery` | `@alego/schemastery` | 3.18.0 | Config schemas (`Schema`) behind every plugin's `Config` |
-| `vendor/loader/` | `@cordisjs/plugin-loader` | `@alego/cordis-plugin-loader` | 1.0.0-rc.5 | `cordis.yml` loading, plugin resolution, repository cache |
-| `vendor/include/` | `@cordisjs/plugin-include` | `@alego/cordis-plugin-include` | 1.0.4 | Config includes and patch overlays |
-| `vendor/group/` | `@cordisjs/plugin-group` | `@alego/cordis-plugin-group` | 1.0.0 | Nested plugin groups |
-| `vendor/timer/` | `@cordisjs/plugin-timer` | `@alego/cordis-plugin-timer` | 1.1.2 | Disposal-aware timers on `ctx` |
-| `vendor/hmr/` | `@cordisjs/plugin-hmr` | `@alego/cordis-plugin-hmr` | 1.0.15 | Hot module replacement for plugins and config |
-| `vendor/logger-console/` | `@cordisjs/plugin-logger-console` | `@alego/cordis-plugin-logger-console` | 1.0.0 | Console logger exporter |
+| `vendor/cordis/` | `cordis` | `@singula-ai/cordis` | 4.0.0-rc.7 | Framework core: `Context`, `Service`, `Fiber`, events |
+| `vendor/cosmokit/` | `cosmokit` | `@singula-ai/cosmokit` | 1.8.1 | Shared utilities the framework and Schemastery build on |
+| `vendor/schemastery/` | `schemastery` | `@singula-ai/schemastery` | 3.18.0 | Config schemas (`Schema`) behind every plugin's `Config` |
+| `vendor/loader/` | `@cordisjs/plugin-loader` | `@singula-ai/cordis-plugin-loader` | 1.0.0-rc.5 | `cordis.yml` loading, plugin resolution, repository cache |
+| `vendor/include/` | `@cordisjs/plugin-include` | `@singula-ai/cordis-plugin-include` | 1.0.4 | Config includes and patch overlays |
+| `vendor/group/` | `@cordisjs/plugin-group` | `@singula-ai/cordis-plugin-group` | 1.0.0 | Nested plugin groups |
+| `vendor/timer/` | `@cordisjs/plugin-timer` | `@singula-ai/cordis-plugin-timer` | 1.1.2 | Disposal-aware timers on `ctx` |
+| `vendor/hmr/` | `@cordisjs/plugin-hmr` | `@singula-ai/cordis-plugin-hmr` | 1.0.15 | Hot module replacement for plugins and config |
+| `vendor/logger-console/` | `@cordisjs/plugin-logger-console` | `@singula-ai/cordis-plugin-logger-console` | 1.0.0 | Console logger exporter |
 
-Subpath exports keep their path: `@cordisjs/plugin-loader/repository` becomes `@alego/cordis-plugin-loader/repository`.
+Subpath exports keep their path: `@cordisjs/plugin-loader/repository` becomes `@singula-ai/cordis-plugin-loader/repository`.
 
 ## What the rename does not touch
 
 - **Directory names and versions.** `vendor/hmr/` stays `vendor/hmr/`, and every package keeps the upstream version its manifest table row records, so the vendored tree still reads as an upstream snapshot.
-- **Dependency ranges.** A dependency entry changes its key, never its range: `"cordis": "^4.0.0-rc.7"` becomes `"@alego/cordis": "^4.0.0-rc.7"`. `linkWorkspacePackages` resolves those preserved ranges to the pinned workspaces.
+- **Dependency ranges.** A dependency entry changes its key, never its range: `"cordis": "^4.0.0-rc.7"` becomes `"@singula-ai/cordis": "^4.0.0-rc.7"`. `linkWorkspacePackages` resolves those preserved ranges to the pinned workspaces.
 - **The Loader's `cordis:` builtin prefix.** `cordis:include` and `cordis:group` are a protocol prefix, not a package name.
 - **The `cordis.yml` configuration family**, including `*.cordis.yml`, `*.cordis.snapshot.yml`, and `cordis.patch.yml`.
-- **Harness packages whose own names contain the word**, such as `@alego/tool-cordis`.
+- **Harness packages whose own names contain the word**, such as `@singula-ai/alego-tool-cordis`.
 - **Upstream runtime identifiers**, such as Schemastery's `Symbol.for('schemastery')` and its `vendor:` metadata field.
 - **Prose outside `docs/`.** `vendor/*/README.md`, package READMEs, and Agent Notes keep the names they were written with; a bare `cordis` there can also be the Python SDK's option name or an agent-preset id. Inside `docs/`, prose and every Markdown fence follow the rename.
 
@@ -34,10 +34,10 @@ Subpath exports keep their path: `@cordisjs/plugin-loader/repository` becomes `@
 
 | Site | Before | After |
 |---|---|---|
-| Module import | `import { Context } from 'cordis'` | `import { Context } from '@alego/cordis'` |
-| Typed-event merge | `declare module 'cordis'` | `declare module '@alego/cordis'` |
-| `package.json` dependency key | `"@cordisjs/plugin-hmr": "^1.0.15"` | `"@alego/cordis-plugin-hmr": "^1.0.15"` |
-| `cordis.yml` plugin entry | `name: '@cordisjs/plugin-include'` | `name: '@alego/cordis-plugin-include'` |
+| Module import | `import { Context } from 'cordis'` | `import { Context } from '@singula-ai/cordis'` |
+| Typed-event merge | `declare module 'cordis'` | `declare module '@singula-ai/cordis'` |
+| `package.json` dependency key | `"@cordisjs/plugin-hmr": "^1.0.15"` | `"@singula-ai/cordis-plugin-hmr": "^1.0.15"` |
+| `cordis.yml` plugin entry | `name: '@cordisjs/plugin-include'` | `name: '@singula-ai/cordis-plugin-include'` |
 
 ## Applying, verifying, and reverting
 

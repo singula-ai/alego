@@ -7,14 +7,14 @@ import {
   createAssistantMessage,
   createToolResultMessage,
   createUserMessage,
-} from '@alego/llm'
+} from '@singula-ai/alego-llm'
 import {
   SESSION_FORMAT_VERSION,
   Session,
   SessionId,
-} from '@alego/session'
+} from '@singula-ai/alego-session'
 // Carries the session/title event declaration into this fixture builder.
-import type {} from '@alego/session-title'
+import type {} from '@singula-ai/alego-session-title'
 
 /** Options for one deterministic long-chat fixture. */
 export interface ChatScrollFixtureOptions {

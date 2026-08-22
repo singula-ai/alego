@@ -12,8 +12,8 @@ harness 在每个平台只说一种 shell 方言：`bash`。Windows 主机只能
 
 在 `packages/shell/` 下新增两个包：
 
-- **`@alego/pwsh-local`** —— `ctx.shell` 执行器 seam 的本地实现，基于 `ctx.subprocess`，逐调用镜像 `alego-bash-local`：`resolve()` 从配置默认化并设上限，`run()` 通过一个 deadline 融合配置夹取的超时与调用方信号，`start()` 返回消费式后台句柄，其进程归属于 subprocess 服务。命令字符串作为单个 argv 参数传给 `pwsh -NoLogo -NoProfile -NonInteractive -Command`，由 PowerShell 解析，不存在 shell 引号层。可执行文件解析（`resolvePwshPath`）是 `(configured, env, platform)` 的纯函数：先显式配置，再在 Windows 上探测 PowerShell 7 安装位置、PATH 条目（剥离引号）与 Windows PowerShell 5.1，否则返回裸命令名 `pwsh`，交由进程启动时按 PATH 解析。
-- **`@alego/tool-pwsh`** —— 基于 `ctx.shell` 的面向模型工具，约定是 PowerShell 方言，逐调用镜像 `alego-tool-bash`：经通用任务运行时执行前台与 `run_in_background`，经共享 [`alego-shell-env`](../feature/2026-08-02-pwsh-tool-bash-parity.zh.md) 注册表管理 `ALEGO_*` 环境，bash 的 marker/截断渲染机制（干净退出不产生 marker），以及——自 Windows ACL sandbox 决策以来——沙箱拒绝渲染与 `sandbox_permissions` 升级面，外加工具描述中的 Windows 专属 ConstrainedLanguage 与命名管道约定。parity 决策取代了本 Agent Note 的最小画像工具描述。
+- **`@singula-ai/alego-pwsh-local`** —— `ctx.shell` 执行器 seam 的本地实现，基于 `ctx.subprocess`，逐调用镜像 `alego-bash-local`：`resolve()` 从配置默认化并设上限，`run()` 通过一个 deadline 融合配置夹取的超时与调用方信号，`start()` 返回消费式后台句柄，其进程归属于 subprocess 服务。命令字符串作为单个 argv 参数传给 `pwsh -NoLogo -NoProfile -NonInteractive -Command`，由 PowerShell 解析，不存在 shell 引号层。可执行文件解析（`resolvePwshPath`）是 `(configured, env, platform)` 的纯函数：先显式配置，再在 Windows 上探测 PowerShell 7 安装位置、PATH 条目（剥离引号）与 Windows PowerShell 5.1，否则返回裸命令名 `pwsh`，交由进程启动时按 PATH 解析。
+- **`@singula-ai/alego-tool-pwsh`** —— 基于 `ctx.shell` 的面向模型工具，约定是 PowerShell 方言，逐调用镜像 `alego-tool-bash`：经通用任务运行时执行前台与 `run_in_background`，经共享 [`alego-shell-env`](../feature/2026-08-02-pwsh-tool-bash-parity.zh.md) 注册表管理 `ALEGO_*` 环境，bash 的 marker/截断渲染机制（干净退出不产生 marker），以及——自 Windows ACL sandbox 决策以来——沙箱拒绝渲染与 `sandbox_permissions` 升级面，外加工具描述中的 Windows 专属 ConstrainedLanguage 与命名管道约定。parity 决策取代了本 Agent Note 的最小画像工具描述。
 
 Windows vitest 覆盖率刻意不属本次改动：仓库的 Windows CI 通道负责构建/静态门禁，单元覆盖在 Linux 上运行，两个包的套件在那里以真实 `pwsh` 运行（GitHub 托管 runner 预装）或缺失时自行跳过。vitest 的 `windowsUnsupportedPackages` 排除从 `packages/shell/*` 收窄为真正需要 bash 的包，使 pwsh 套件也能在 Windows 开发机上原生运行。
 

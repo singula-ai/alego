@@ -1,10 +1,10 @@
-# @alego/skill-filesystem
+# @singula-ai/alego-skill-filesystem
 
 [English](README.md) | 中文
 
 `ctx.skills` 注册表的本地文件系统提供方。
 
-该包实现一个 skill（技能）来源。它扫描本地项目、自定义和用户 skill 根目录，解析 `SKILL.md` 或平铺 Markdown skill 文件，并将提供方注册到 `ctx.skills`。注册表仍位于 `@alego/skill`；持久化会话目录和面向模型的 loader 工具仍位于 `@alego/tool-skill`。
+该包实现一个 skill（技能）来源。它扫描本地项目、自定义和用户 skill 根目录，解析 `SKILL.md` 或平铺 Markdown skill 文件，并将提供方注册到 `ctx.skills`。注册表仍位于 `@singula-ai/alego-skill`；持久化会话目录和面向模型的 loader 工具仍位于 `@singula-ai/alego-tool-skill`。
 
 ## 插件
 
@@ -16,7 +16,7 @@
 |---|---|---|
 | `providerName` | `filesystem` | 在 `ctx.skills` 上注册该提供方时使用的唯一名称。 |
 | `includeDefaultRoots` | `true` | 在 `customSkillDirs` 周围包含项目根和用户根；设为 false 时仅使用隔离的自定义根。 |
-| `alegoHome` | `$ALEGO_HOME` 或 `~/.alego` | 由 [`@alego/home-paths`](../../util/home-paths/README.zh.md) 解析的 Alego 配置根目录；扫描该目录下的 `skills`。 |
+| `alegoHome` | `$ALEGO_HOME` 或 `~/.alego` | 由 [`@singula-ai/alego-home-paths`](../../util/home-paths/README.zh.md) 解析的 Alego 配置根目录；扫描该目录下的 `skills`。 |
 | `agentsHome` | `$ALEGO_AGENTS_HOME` 或 `~/.agents` | 为兼容 skill 扫描的共享 agent（智能体）配置根目录。 |
 | `customSkillDirs` | `[]` | 在项目根目录之后、用户根目录之前扫描的其他本地 skill 根目录。 |
 | `watch` | `true` | 监视宿主本地根，并在目录成员或 frontmatter 可能发生变化时使本地提供方失效。 |

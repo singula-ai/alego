@@ -1,6 +1,6 @@
 /**
- * Package-owned invariant companion for `@alego/client-runtime`.
- * @module @alego/client-runtime/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-client-runtime`.
+ * @module @singula-ai/alego-client-runtime/invariant
  */
 
 /* jscpd:ignore-start */
@@ -8,11 +8,11 @@
  * `keyof SlotMap & string` is the declare-merge key pattern: SlotMap is empty
  * in this compilation unit (intersection reads `never`) but consumers merge
  * keys in; the rule fires on the empty-map view, not on real redundancy. */
-import type { Context } from '@alego/cordis'
-import type { SlotMap } from '@alego/client-ui-slots'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { SlotMap } from '@singula-ai/alego-client-ui-slots'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/client-runtime'
+const PACKAGE_NAME = '@singula-ai/alego-client-runtime'
 
 /** Cordis companion plugin name. */
 export const name = 'client-runtime-invariant'

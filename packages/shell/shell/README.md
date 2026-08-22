@@ -1,4 +1,4 @@
-# @alego/shell
+# @singula-ai/alego-shell
 
 English | [中文](README.zh.md)
 
@@ -8,10 +8,10 @@ This package owns the Service Definition role of the bash capability, split so e
 
 | Package | Role |
 |---|---|
-| `@alego/shell` (this) | Service Definition: abstract service + vocabulary types |
-| `@alego/bash-local` | Service Provider: local subprocesses |
-| `@alego/bash-sandbox` | Service Provider: `alego-bash-local`'s mechanics with every spawn confined via [`ctx.sandbox`](../../sandbox/sandbox/), denials reported as result facts |
-| `@alego/tool-bash` | the model-facing tool schemas over `ctx.shell` |
+| `@singula-ai/alego-shell` (this) | Service Definition: abstract service + vocabulary types |
+| `@singula-ai/alego-bash-local` | Service Provider: local subprocesses |
+| `@singula-ai/alego-bash-sandbox` | Service Provider: `alego-bash-local`'s mechanics with every spawn confined via [`ctx.sandbox`](../../sandbox/sandbox/), denials reported as result facts |
+| `@singula-ai/alego-tool-bash` | the model-facing tool schemas over `ctx.shell` |
 
 The split is a standard capability seam ([capability-seams Agent Note](../../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)): `alego-bash-sandbox` is a sandboxing executor behind the same Service Definition — the Consumer detects its `sandboxMode` capability and adds escalation fields without importing the provider — and a containerized or remote executor slots in the same way.
 
@@ -33,7 +33,7 @@ Implementations subclass `ShellExecutor` and implement the abstract methods. Dis
 
 `ShellExecRequest` (command, workdir?, timeoutMs?, stdoutMaxBytes?, signal?, stdin?, env?, alegoEnv?, sandboxPolicy?) resolves to `ShellExecSpec` (command, workdir, timeoutMs, stdoutMaxBytes, signal?, stdin?, env?, alegoEnv?, sandboxPolicy) before execution. `stdoutMaxBytes` is a trusted foreground-run capture budget for consumers that must parse complete bounded stdout; the model-facing bash tool does not expose it. `sandboxPolicy` is optional on the request and required-but-nullable on the resolved spec: it carries the complete per-call mode and workspace root. The sandbox tool path resolves it from the calling session through `ctx.sandboxPolicy`; a direct sandbox-executor caller falls back to deployment policy, while a non-sandboxing executor carries the field and confines nothing.
 
-The per-session sandbox-mode override vocabulary (the `'sandbox/mode'` event, the `effectiveSandboxMode(events)` fold, and the `setSandboxMode(session, mode)` write path) is NOT here — it is policy state shared by every enforcing family, owned by [`@alego/sandbox-policy`](../../sandbox/sandbox-policy/). `run()` returns `ShellRunResult`; `start()` returns `ShellProcess`, whose incremental read and kill methods are adapted by `alego-tool-bash` into a generic task registration. A sandboxing executor stamps `ShellSandboxInfo` on foreground results and settled process handles. See `src/types.ts` and [subsystems/shell.md](../../../docs/subsystems/shell.md).
+The per-session sandbox-mode override vocabulary (the `'sandbox/mode'` event, the `effectiveSandboxMode(events)` fold, and the `setSandboxMode(session, mode)` write path) is NOT here — it is policy state shared by every enforcing family, owned by [`@singula-ai/alego-sandbox-policy`](../../sandbox/sandbox-policy/). `run()` returns `ShellRunResult`; `start()` returns `ShellProcess`, whose incremental read and kill methods are adapted by `alego-tool-bash` into a generic task registration. A sandboxing executor stamps `ShellSandboxInfo` on foreground results and settled process handles. See `src/types.ts` and [subsystems/shell.md](../../../docs/subsystems/shell.md).
 
 `stdin` and ordinary `env` are set by in-process plugins (the hooks bridges, native plugins) to feed a hook command its JSON payload and `CLAUDE_PROJECT_DIR`/`CLAUDE_PLUGIN_ROOT` values. `alegoEnv` is a separate trusted overlay restricted by type to managed keys; the exported `ALEGO_ENV_PREFIX` is the single source for that namespace, its `AlegoEnvironmentKey` template type, executor scrubbing, registry validation, derived built-in names, and model guidance. Model bash uses the current snapshot collected by `ctx.shellEnv`. Implementations remove inherited managed keys, then merge `alegoEnv` after ordinary `env`, so an omitted current fact cannot fall back to stale ambient state and an `env` entry cannot displace a managed value. The model-facing tool exposes none of these as parameters. All three remain optional on the resolved spec; absent means no input/overlay. See [the bash-stdin-env Agent Note](../../../.agents/notes/implemented/architecture/2026-06-30-bash-stdin-env-trusted-plugin-api.md) and [the session environment Agent Note](../../../.agents/notes/implemented/feature/2026-07-10-agent-session-identity-and-log-location.md).
 

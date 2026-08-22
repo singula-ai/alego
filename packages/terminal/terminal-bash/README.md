@@ -1,4 +1,4 @@
-# @alego/terminal-bash
+# @singula-ai/alego-terminal-bash
 
 English | [中文](README.zh.md)
 
@@ -20,7 +20,7 @@ Send cancellation marks queued input as canceled before asking the terminal hand
 
 #### What the model sees
 
-The policy owner contributes capability-neutral `sandbox:policy` context. Through `@alego/tool-terminal` or another PTY consumer, the model may also receive bounded MOTD, send deltas, scrollback pages, readiness reasons, and cleanup errors.
+The policy owner contributes capability-neutral `sandbox:policy` context. Through `@singula-ai/alego-tool-terminal` or another PTY consumer, the model may also receive bounded MOTD, send deltas, scrollback pages, readiness reasons, and cleanup errors.
 
 #### Token effect
 

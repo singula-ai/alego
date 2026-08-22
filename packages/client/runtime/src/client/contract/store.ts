@@ -15,13 +15,13 @@ import { shallow } from 'zustand/shallow'
 import { produce } from 'immer'
 import type {
   ActionsDecl, BakedActions, StoreHandle, StoreInstance, StoreSpec,
-} from '@alego/client-ui-slots'
+} from '@singula-ai/alego-client-ui-slots'
 
 // Store contract types are ui-slots authority; re-exported beside the engine
 // so store consumers get one import path.
 export type {
   ActionsDecl, BakedActions, BoundActions, StoreFactory, StoreHandle, StoreInstance, StoreSpec,
-} from '@alego/client-ui-slots'
+} from '@singula-ai/alego-client-ui-slots'
 
 /** Minimal observable snapshot source: Session objects and snapshot stores both satisfy it. */
 export interface ObservableSnapshot<T> { getSnapshot(): T; subscribe(fn: () => void): () => void }

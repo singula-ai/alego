@@ -3,11 +3,11 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import Include from '@alego/cordis-plugin-include'
-import TokenMeter from '@alego/token-meter'
-import ToolResultPruner from '@alego/compaction-tool-result-pruner'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include from '@singula-ai/cordis-plugin-include'
+import TokenMeter from '@singula-ai/alego-token-meter'
+import ToolResultPruner from '@singula-ai/alego-compaction-tool-result-pruner'
 
 let root: string | undefined
 let context: Context | undefined
@@ -24,8 +24,8 @@ describe('compaction-tool-result-pruner real Loader composition', () => {
     root = await mkdtemp(join(tmpdir(), 'alego-compact-tool-result-prune-loader-'))
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@alego/token-meter'",
-      "- name: '@alego/compaction-tool-result-pruner'",
+      "- name: '@singula-ai/alego-token-meter'",
+      "- name: '@singula-ai/alego-compaction-tool-result-pruner'",
       '  config:',
       '    thresholdChars: 100',
       '    headChars: 20',
@@ -40,8 +40,8 @@ describe('compaction-tool-result-pruner real Loader composition', () => {
     context.loader.internal = {
       version: 'v2',
       async import(specifier: string) {
-        if (specifier === '@alego/token-meter') return TokenMeter
-        if (specifier === '@alego/compaction-tool-result-pruner') return ToolResultPruner
+        if (specifier === '@singula-ai/alego-token-meter') return TokenMeter
+        if (specifier === '@singula-ai/alego-compaction-tool-result-pruner') return ToolResultPruner
         throw new Error(`unexpected Loader import: ${specifier}`)
       },
     } as unknown as NonNullable<typeof context.loader.internal>

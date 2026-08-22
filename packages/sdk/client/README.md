@@ -1,4 +1,4 @@
-# @alego/sdk-client
+# @singula-ai/alego-sdk-client
 
 English | [中文](README.zh.md)
 
@@ -9,7 +9,7 @@ Unlike the Python SDK, the launch spec is fully explicit (`command`/`args`): thi
 ## Alego
 
 ```ts
-import { Alego } from '@alego/sdk-client'
+import { Alego } from '@singula-ai/alego-sdk-client'
 
 await using harness = new Alego({
   launch: { command: 'node', args: ['lib/bin.js', 'cordis.yml'] },

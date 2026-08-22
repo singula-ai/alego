@@ -5,12 +5,12 @@
  * `updatedAt` stamping and invalid-account pruning happen exactly once.
  * Not re-exported from the package entrypoint — consumers see only the
  * `Workspace` interface.
- * @module @alego/workspace/src/entity
+ * @module @singula-ai/alego-workspace/src/entity
  */
 
 import { stat } from 'node:fs/promises'
-import type { SessionHeader, SessionId } from '@alego/session'
-import type { KvTable } from '@alego/storage-domain'
+import type { SessionHeader, SessionId } from '@singula-ai/alego-session'
+import type { KvTable } from '@singula-ai/alego-storage-domain'
 import type { WorkspaceRecord } from './spec.ts'
 import type { Workspace, WorkspaceId } from './types.ts'
 import { realpathNormalize } from './paths.ts'

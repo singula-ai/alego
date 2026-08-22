@@ -1,12 +1,12 @@
 /**
- * Package-owned invariant companion for `@alego/cmdline`.
- * @module @alego/cmdline/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-cmdline`.
+ * @module @singula-ai/alego-cmdline/invariant
  */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/cmdline'
+const PACKAGE_NAME = '@singula-ai/alego-cmdline'
 
 /** Cordis companion plugin name. */
 export const name = 'cmdline-invariant'

@@ -2,7 +2,7 @@
 
 English | [中文](adding-a-package.zh.md)
 
-The file-by-file checklist for a new `@alego/<name>` package. This checklist is validated against the bash and adapter packages as templates; if it drifts from them, fix it here.
+The file-by-file checklist for a new `@singula-ai/alego-<name>` package. This checklist is validated against the bash and adapter packages as templates; if it drifts from them, fix it here.
 
 ## 1. Create the package
 
@@ -22,7 +22,7 @@ packages/<group>/<pkg>/
 
 Choose an existing group when one matches the package's role (`core`, `llm`, `bash`, `compact`, `subagent`, `todo`, `session-persistence`, `ui`, `util`, or `support`). A new group is allowed, but it is a pure container: no `package.json`, no source files, and packages still sit exactly one level below it.
 
-package.json invariants (enforced by `pnpm run constraints` / `scripts/check-workspace-constraints.ts`): `private: true`, a `version` matching the root `package.json`, `type: module`, `main: "lib/index.js"`, `types: "lib/types/index.d.ts"`, `exports["."].types: "./lib/types/index.d.ts"`, `exports["."].default: "./lib/index.js"`, `@alego/cordis` in BOTH peerDependencies and devDependencies (same range). Mirror every alego peer dependency in devDependencies. `@alego/schemastery` goes in `dependencies` (it is a runtime validator), matching agent-loop. The `files` list contains exactly `lib/index.js`, `lib/invariant.js`, `lib/types/**/*.d.ts`, and package-specific runtime artifacts recognized by the gate; a package whose runtime export points into the emitted tree also includes `lib/types/**/*.js`. Do not publish `src`, declaration maps, JS maps, or stale root declaration files. CLI app packages with a package `bin` include `lib/bin.js` immediately after `lib/index.js` in `files`.
+package.json invariants (enforced by `pnpm run constraints` / `scripts/check-workspace-constraints.ts`): `private: true`, a `version` matching the root `package.json`, `type: module`, `main: "lib/index.js"`, `types: "lib/types/index.d.ts"`, `exports["."].types: "./lib/types/index.d.ts"`, `exports["."].default: "./lib/index.js"`, `@singula-ai/cordis` in BOTH peerDependencies and devDependencies (same range). Mirror every alego peer dependency in devDependencies. `@singula-ai/schemastery` goes in `dependencies` (it is a runtime validator), matching agent-loop. The `files` list contains exactly `lib/index.js`, `lib/invariant.js`, `lib/types/**/*.d.ts`, and package-specific runtime artifacts recognized by the gate; a package whose runtime export points into the emitted tree also includes `lib/types/**/*.js`. Do not publish `src`, declaration maps, JS maps, or stale root declaration files. CLI app packages with a package `bin` include `lib/bin.js` immediately after `lib/index.js` in `files`.
 
 In-package relative imports use explicit `.ts` specifiers in source (for example, `export * from './types.ts'`). The compiler rewrites those to `.js` in emitted JS and leaves explicit `.ts` specifiers in declarations, which standard NodeNext/Node16 TypeScript consumers resolve to the sibling `.d.ts` files.
 
@@ -30,7 +30,7 @@ In-package relative imports use explicit `.ts` specifiers in source (for example
 
 | File | Change |
 |---|---|
-| `tsconfig.base.json` | no edit for an existing group; for a new group, add a `./packages/<group>/*/src` candidate to the `@alego/*` wildcard |
+| `tsconfig.base.json` | no edit for an existing group; for a new group, add a `./packages/<group>/*/src` candidate to the `@singula-ai/alego-*` wildcard |
 | `tsconfig.host.json` (Host package) or `tsconfig.client.json` (Client package) | add `{ "path": "./packages/<group>/<pkg>" }` to `references` — an ordinary package belongs to exactly one aggregate, never both. `api/remotes` uses a repository-specific split because the Host generates a contract that the Client consumes in a later phase; new packages must not copy it ([layout](../development.md#typescript-project-layout)) |
 | `knip.json` | only if the package has entrypoints that repository discovery does not already cover |
 

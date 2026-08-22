@@ -2,10 +2,10 @@
  * Dialect-neutral vocabulary and log-only events shared by the Claude Code and
  * Codex hook bridges. Payload construction, matching differences, environment,
  * and extension-point-specific decision mapping remain owned by each bridge.
- * @module @alego/hook-protocol/types
+ * @module @singula-ai/alego-hook-protocol/types
  */
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * A hook command was invoked at a hook point — a log-only record (like

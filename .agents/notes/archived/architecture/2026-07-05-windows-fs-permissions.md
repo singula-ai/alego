@@ -9,7 +9,7 @@ The replacement-file decision in this record is superseded by [Windows DACL pres
 
 ## Problem
 
-`writeFileAtomic` in `@alego/fs-local` protects write-in-progress content with POSIX mode bits: the staging directory is created `0o700`, the temp file is opened `0o600`, and new files default to `0o600`. On POSIX this keeps temporary content owner-only regardless of the parent directory's permissions.
+`writeFileAtomic` in `@singula-ai/alego-fs-local` protects write-in-progress content with POSIX mode bits: the staging directory is created `0o700`, the temp file is opened `0o600`, and new files default to `0o600`. On POSIX this keeps temporary content owner-only regardless of the parent directory's permissions.
 
 Windows has no working equivalent behind the same API. Node's `chmod` there drives only the read-only attribute (every mode this package passes carries owner-write, so the calls are benign no-ops), and `stat().mode` reports synthetic `0o666`/`0o444` bits. The real security state is the file's DACL: a newly created file or directory inherits from its parent, while replacement needs the explicit handling owned by the superseding Agent Note.
 

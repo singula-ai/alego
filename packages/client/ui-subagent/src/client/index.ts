@@ -1,16 +1,16 @@
 /** Web subagent catalog, navigation, and addressed-session composer owner. */
 import type {
   ClientContext, SessionId, SubagentAddress,
-} from '@alego/client-runtime/client'
-import type { ComposerChainProps } from '@alego/client-ui-conversation/client'
+} from '@singula-ai/alego-client-runtime/client'
+import type { ComposerChainProps } from '@singula-ai/alego-client-ui-conversation/client'
 import { SubagentHeaderLineage, type SubagentCatalogInjected } from './SubagentHeaderLineage.tsx'
 import {
   SubagentReadOnlyComposer, type SubagentReadOnlyMatch,
 } from './SubagentReadOnlyComposer.tsx'
-import type {} from '@alego/client-locale/client'
+import type {} from '@singula-ai/alego-client-locale/client'
 import { en, NS, zh, type SubagentKey } from './locales.ts'
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Subagent catalog and read-only composer copy. */
     'subagent': SubagentKey

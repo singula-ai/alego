@@ -1,7 +1,7 @@
 /**
  * Model-facing PowerShell Consumer of the `ctx.shell` capability seam. Intended for
  * Windows compositions where a PowerShell executor (e.g.
- * `@alego/pwsh-local`) backs `ctx.shell`; the tool contract is
+ * `@singula-ai/alego-pwsh-local`) backs `ctx.shell`; the tool contract is
  * PowerShell-dialect: native `C:\...` paths and `$env:NAME` variables.
  *
  * Behavior mirrors `alego-tool-bash` call-for-call: foreground and
@@ -14,32 +14,32 @@
  * `ctx.approval`), and the bash marker/truncation rendering story. UI
  * presentation mirrors the bash tool's too: a completed foreground call is
  * a terminal card with the parsed exit-status pill, using the shared
- * exit-status parse from `@alego/shell`.
+ * exit-status parse from `@singula-ai/alego-shell`.
  *
- * @module @alego/tool-pwsh
+ * @module @singula-ai/alego-tool-pwsh
  */
 
 import { isAbsolute, resolve as resolvePath } from 'node:path'
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { defineTool, TOOL_ABORTED } from '@alego/tools'
-import type { GenericCallView, TerminalCallView, ToolExecution, ToolResult, ToolResultView } from '@alego/tools'
-import { HarnessError } from '@alego/llm'
-import type { Agent } from '@alego/agent'
-import type {} from '@alego/system-prompt'
-import type {} from '@alego/jobs'
-import type {} from '@alego/shell-env'
-import type {} from '@alego/user-approval'
-import type { SandboxExecutionPolicy, SandboxMode } from '@alego/sandbox'
-import { ESCALATION_TARGETS, approveEscalation, validateEscalationArgs } from '@alego/sandbox'
-import type { SandboxPolicyService } from '@alego/sandbox-policy'
-import type { ShellRunResult } from '@alego/shell'
-import { parseExitStatus } from '@alego/shell'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { defineTool, TOOL_ABORTED } from '@singula-ai/alego-tools'
+import type { GenericCallView, TerminalCallView, ToolExecution, ToolResult, ToolResultView } from '@singula-ai/alego-tools'
+import { HarnessError } from '@singula-ai/alego-llm'
+import type { Agent } from '@singula-ai/alego-agent'
+import type {} from '@singula-ai/alego-system-prompt'
+import type {} from '@singula-ai/alego-jobs'
+import type {} from '@singula-ai/alego-shell-env'
+import type {} from '@singula-ai/alego-user-approval'
+import type { SandboxExecutionPolicy, SandboxMode } from '@singula-ai/alego-sandbox'
+import { ESCALATION_TARGETS, approveEscalation, validateEscalationArgs } from '@singula-ai/alego-sandbox'
+import type { SandboxPolicyService } from '@singula-ai/alego-sandbox-policy'
+import type { ShellRunResult } from '@singula-ai/alego-shell'
+import { parseExitStatus } from '@singula-ai/alego-shell'
 import { processOutcome } from './background.ts'
 import { renderPwshProcessRead, renderPwshResult } from './render.ts'
 import type { RenderablePwshResult } from './render.ts'
 
-declare module '@alego/jobs' {
+declare module '@singula-ai/alego-jobs' {
   interface JobKindMap {
     pwsh: 'pwsh'
   }
@@ -370,7 +370,7 @@ export function apply(ctx: Context, config: Config = {}): void {
         }
         const jobs = ctx.get('jobs')
         if (jobs === undefined) {
-          throw new Error('background jobs unavailable: load @alego/jobs and @alego/tool-jobs')
+          throw new Error('background jobs unavailable: load @singula-ai/alego-jobs and @singula-ai/alego-tool-jobs')
         }
         // The caller owns cancellation until ctx.jobs commits detached ownership.
         if (exec.signal.aborted) {

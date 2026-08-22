@@ -3,14 +3,14 @@
  * appends one authoritative log-only event and does not start model work. The
  * append is eager but unflushed, so acknowledgement reports that the entry is
  * logged, not that it reached disk.
- * @module @alego/command-feedback
+ * @module @singula-ai/alego-command-feedback
  */
 
-import type { Context } from '@alego/cordis'
-import type { CommandInvocation, CommandResult } from '@alego/commands'
-import type { SessionTelemetryBackend, SessionTelemetrySharingStatus } from '@alego/session-telemetry'
-import type { Session } from '@alego/session'
-import { getOrCreateAnonymousUserId } from '@alego/anonymous-user-id'
+import type { Context } from '@singula-ai/cordis'
+import type { CommandInvocation, CommandResult } from '@singula-ai/alego-commands'
+import type { SessionTelemetryBackend, SessionTelemetrySharingStatus } from '@singula-ai/alego-session-telemetry'
+import type { Session } from '@singula-ai/alego-session'
+import { getOrCreateAnonymousUserId } from '@singula-ai/alego-anonymous-user-id'
 
 export const name = 'command-feedback'
 export const inject = ['commands']
@@ -53,7 +53,7 @@ function sharingDisclosure(telemetry: SessionTelemetryBackend | undefined): stri
   return sharingSentence(telemetry.sharing)
 }
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * One recorded human remark about this session. Log-only and independent

@@ -2,12 +2,12 @@
  * Pure session projections for subagent identity (mode/label) and active-turn
  * duration.
  *
- * @module @alego/subagent/projection
+ * @module @singula-ai/alego-subagent/projection
  */
 
 import { z } from 'zod'
-import type { ProjectionDefinition } from '@alego/session-projection'
-import type { SessionEvent } from '@alego/session'
+import type { ProjectionDefinition } from '@singula-ai/alego-session-projection'
+import type { SessionEvent } from '@singula-ai/alego-session'
 import { foldSubagentDescriptor } from './descriptor.ts'
 import type { SubagentDescriptorData } from './descriptor.ts'
 import type { SubagentIdentityProjection, SubagentTimingProjection } from './projection-types.ts'
@@ -44,7 +44,7 @@ const timingStateSchema: z.ZodType<TimingState> = z.object({
   descriptorSeen: z.boolean(),
 }).strict()
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionStateMap {
     subagentTiming: TimingState
     subagent: IdentityState

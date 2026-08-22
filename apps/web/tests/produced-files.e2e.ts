@@ -7,9 +7,9 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed, vi } from 'vitest'
-import { CallId, createAssistantMessage, createToolResultMessage, createUserMessage } from '@alego/llm'
-import { SESSION_FORMAT_VERSION, Session, SessionId } from '@alego/session'
-import type {} from '@alego/session-title'
+import { CallId, createAssistantMessage, createToolResultMessage, createUserMessage } from '@singula-ai/alego-llm'
+import { SESSION_FORMAT_VERSION, Session, SessionId } from '@singula-ai/alego-session'
+import type {} from '@singula-ai/alego-session-title'
 import {
   launchWebScaffold, seedSession, watchConsole, webSnapshotMode, type WebScaffold,
 } from './scaffold.ts'

@@ -3,4 +3,4 @@
 
 - insert:
     - id: subagent-claude-code
-      name: '@alego/subagent-claude-code'
+      name: '@singula-ai/alego-subagent-claude-code'

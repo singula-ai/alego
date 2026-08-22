@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/hooks-codex`.
- * @module @alego/hooks-codex/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-hooks-codex`.
+ * @module @singula-ai/alego-hooks-codex/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/hooks-codex'
+const PACKAGE_NAME = '@singula-ai/alego-hooks-codex'
 
 /** Cordis companion plugin name. */
 export const name = 'hooks-codex-invariant'

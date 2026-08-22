@@ -1,6 +1,6 @@
 import {
   createSnapshotStore, type SnapshotStore,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 
 /**
  * Create the browser-wide trajectory duration preference source.

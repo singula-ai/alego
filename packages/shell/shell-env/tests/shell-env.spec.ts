@@ -1,5 +1,5 @@
 /**
- * Registry tests for `@alego/shell-env`: built-in facts, contributor
+ * Registry tests for `@singula-ai/alego-shell-env`: built-in facts, contributor
  * ownership and validation, collection ordering, effect-scoped disposal, and
  * the explicit disposer contract.
  */
@@ -7,12 +7,12 @@
 import { homedir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { CallId } from '@alego/llm'
-import type { Agent } from '@alego/agent'
-import type { ToolExecution } from '@alego/tools'
-import { ShellEnvRegistry } from '@alego/shell-env'
-import * as BashEnvPlugin from '@alego/shell-env'
+import { Context } from '@singula-ai/cordis'
+import { CallId } from '@singula-ai/alego-llm'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { ToolExecution } from '@singula-ai/alego-tools'
+import { ShellEnvRegistry } from '@singula-ai/alego-shell-env'
+import * as BashEnvPlugin from '@singula-ai/alego-shell-env'
 
 const testToolSignal = new AbortController().signal
 

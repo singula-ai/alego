@@ -25,8 +25,8 @@
 ## 接口
 
 ```ts
-import type { Context } from '@alego/cordis'
-import { credentialKey, credentialRef } from '@alego/credentials'
+import type { Context } from '@singula-ai/cordis'
+import { credentialKey, credentialRef } from '@singula-ai/alego-credentials'
 
 declare const ctx: Context
 

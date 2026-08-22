@@ -1,4 +1,4 @@
-# @alego/client-ui-user-questions
+# @singula-ai/alego-client-ui-user-questions
 
 [English](README.md) | 中文
 

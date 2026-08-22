@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { WorkflowError } from '@alego/workflow'
+import { WorkflowError } from '@singula-ai/alego-workflow'
 import { validateMeta } from '../src/meta.ts'
 
 /** Assert a META_INVALID throw whose message matches every given fragment. */

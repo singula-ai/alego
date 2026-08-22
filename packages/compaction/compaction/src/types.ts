@@ -4,16 +4,16 @@
  * surface events; a separate replacement `user/message` carries the summary.
  * Backend packages own configuration and retention policy; see
  * `.agents/notes/implemented/feature/2026-06-18-compaction-capability-seam.md`.
- * @module @alego/compaction/types
+ * @module @singula-ai/alego-compaction/types
  */
 
-import type { ContentBlock, TokenUsage } from '@alego/llm'
-import type { CommandId } from '@alego/commands/brand'
+import type { ContentBlock, TokenUsage } from '@singula-ai/alego-llm'
+import type { CommandId } from '@singula-ai/alego-commands/brand'
 import type { CompactionId } from './brand.ts'
 
 export type { CompactionId }
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * Marks the start of a compaction — log-only, holds the lock until

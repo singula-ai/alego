@@ -1,14 +1,14 @@
 /**
- * Package-owned invariant companion for `@alego/session-title`.
- * @module @alego/session-title/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-session-title`.
+ * @module @singula-ai/alego-session-title/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
-import type { SessionEvent } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
+import type { SessionEvent } from '@singula-ai/alego-session'
 
-const PACKAGE_NAME = '@alego/session-title'
+const PACKAGE_NAME = '@singula-ai/alego-session-title'
 
 /** Cordis companion plugin name. */
 export const name = 'session-title-invariant'

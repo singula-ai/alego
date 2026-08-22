@@ -2,12 +2,12 @@
  * The workspace domain declaration: record schema and the `defineDomain` spec
  * the registry opens. The zod schema is the durable-boundary validator today
  * and the direct source of the RPC wire projection in a later phase.
- * @module @alego/workspace/src/spec
+ * @module @singula-ai/alego-workspace/src/spec
  */
 
 import { z } from 'zod'
-import { SessionId } from '@alego/session'
-import { defineDomain, domainTable } from '@alego/storage-domain'
+import { SessionId } from '@singula-ai/alego-session'
+import { defineDomain, domainTable } from '@singula-ai/alego-storage-domain'
 import type { WorkspaceId } from './types.ts'
 
 /** Workspace id schema at the durable boundary; branding has no runtime representation. */

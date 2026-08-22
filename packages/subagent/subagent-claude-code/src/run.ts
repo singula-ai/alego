@@ -3,7 +3,7 @@
  * real CLI process under the shared subprocess owner, map only strict SDK
  * success to completion, and dispose to whole-tree quiescence.
  *
- * @module @alego/subagent-claude-code/run
+ * @module @singula-ai/alego-subagent-claude-code/run
  */
 
 import { randomUUID } from 'node:crypto'
@@ -15,8 +15,8 @@ import {
   type SDKResultMessage,
   type SpawnOptions,
 } from '@anthropic-ai/claude-agent-sdk'
-import type { ContentBlock } from '@alego/llm'
-import { SessionId } from '@alego/session'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
 import {
   settleRunResult,
   subprocessRunHandle,
@@ -24,13 +24,13 @@ import {
   type SubagentRun,
   type SubagentStartRequest,
   type SubagentStopReason,
-} from '@alego/subagent'
+} from '@singula-ai/alego-subagent'
 import {
   scrubbedParentEnv,
   type SubprocessHandle,
   type SubprocessOutcome,
   type SubprocessSpawnSpec,
-} from '@alego/subprocess'
+} from '@singula-ai/alego-subprocess'
 import {
   claudeSpawnSpec,
   ManagedClaudeCodeProcess,

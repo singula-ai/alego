@@ -19,7 +19,7 @@ import { useEffect, useRef, useState } from 'react'
 import clsx from 'clsx'
 import {
   AlegoMark, IconNewChatOutline16, IconPanelLeftOutline16, Tooltip,
-} from '@alego/client-ui-primitives'
+} from '@singula-ai/alego-client-ui-primitives'
 import type { SidebarRootComponentProps } from './contract/slots.ts'
 import css from './SidebarRoot.module.css'
 

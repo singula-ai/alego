@@ -1,5 +1,5 @@
 /** The General section: one column rendering feature-owned item contributions. */
-import type { PropsRenderSlots, PropsRuntime } from '@alego/client-ui-slots'
+import type { PropsRenderSlots, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
 import css from './GeneralSection.module.css'
 
 /** Full component props: section owner share plus item render share. */

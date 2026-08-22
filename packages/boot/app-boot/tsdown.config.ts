@@ -14,6 +14,6 @@ export default defineConfig({
   dts: false,
   clean: false,
   deps: {
-    alwaysBundle: ['@alego/cordis-plugin-include'],
+    alwaysBundle: ['@singula-ai/cordis-plugin-include'],
   },
 })

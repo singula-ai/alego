@@ -1,4 +1,4 @@
-# @alego/session-stats
+# @singula-ai/alego-session-stats
 
 English | [中文](README.zh.md)
 
@@ -18,7 +18,7 @@ Function plugin registering the `sessionStats` projection unit: whole-log conver
 
 ```yaml
 - id: session-stats
-  name: '@alego/session-stats'
+  name: '@singula-ai/alego-session-stats'
 ```
 
 Injects `sessionProjections` — the plugin's whole purpose; in assemblies without the registry the fiber stays pending and nothing registers.

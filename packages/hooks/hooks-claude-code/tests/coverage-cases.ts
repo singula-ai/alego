@@ -1,20 +1,20 @@
-import { createUserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mkdtempSync, rmSync, writeFileSync, chmodSync, existsSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@alego/cordis'
-import { SessionId, type SessionEvent } from '@alego/session'
-import JsonlSessionPersistence from '@alego/session-persistence-jsonl'
-import { defineContentToolFixture } from '@alego/tools'
-import type { Agent } from '@alego/agent'
-import AgentLoop from '@alego/agent-loop'
-import { mountAgentLoopTestDependencies } from '@alego/agent-loop-testkit'
-import { LocalBashExecutor } from '@alego/bash-local'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
-import { scopeTarget } from '@alego/scope'
-import SubagentRuntime, { SubagentRunId } from '@alego/subagent'
-import * as HooksClaude from '@alego/hooks-claude-code'
+import { Context } from '@singula-ai/cordis'
+import { SessionId, type SessionEvent } from '@singula-ai/alego-session'
+import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import { defineContentToolFixture } from '@singula-ai/alego-tools'
+import type { Agent } from '@singula-ai/alego-agent'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
+import { LocalBashExecutor } from '@singula-ai/alego-bash-local'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
+import { scopeTarget } from '@singula-ai/alego-scope'
+import SubagentRuntime, { SubagentRunId } from '@singula-ai/alego-subagent'
+import * as HooksClaude from '@singula-ai/alego-hooks-claude-code'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 
 const testToolSignal = new AbortController().signal
@@ -153,7 +153,7 @@ export function defineCoverageCases(group: CoverageGroup): void {
       const ctx = await harness(path, new MockAdapter([]))
       let ran = false
       ctx.tools.register(defineContentToolFixture({ name: 'echo', description: 'e', parameters: {}, async execute() { ran = true; return [{ type: 'text', text: 'x' }] } }))
-      const { CallId } = await import('@alego/llm')
+      const { CallId } = await import('@singula-ai/alego-llm')
       const result = await ctx.tools.execute({ signal: testToolSignal, callId: CallId('c1'), name: 'echo', arguments: {} })
       expect(ran).toBe(false)
       expect(result.isError).toBe(true)
@@ -479,7 +479,7 @@ export function defineCoverageCases(group: CoverageGroup): void {
       const adapter = new MockAdapter([textResponse('ran')])
       const ctx = await harness(path, adapter) // NB: no projectDir
       // The factory create() path honors meta.cwd (the plain agentLoop.create() does not).
-      const { SessionId } = await import('@alego/session')
+      const { SessionId } = await import('@singula-ai/alego-session')
       const handle = await ctx.agents.create({ sessionId: SessionId('s1'), meta: { cwd: workspace }, agentOptions: { provider: 'mock', model: 'mock' } })
       handle.agent.followup(createUserMessage({ content: [{ type: 'text', text: 'go' }], source: { kind: 'user' } }))
       await waitForIdle(ctx, handle.agent)
@@ -675,7 +675,7 @@ export function defineCoverageCases(group: CoverageGroup): void {
       ctx.llm.registerAdapter(['mock'], adapter)
       ctx.tools.register(defineContentToolFixture({ name: 'echo', description: 'e', parameters: {}, async execute() { return [{ type: 'text', text: 'ok' }] } }))
 
-      const { SessionId } = await import('@alego/session')
+      const { SessionId } = await import('@singula-ai/alego-session')
       const handle = await ctx.agents.create({ sessionId: SessionId('s1'), meta: { cwd: sessionDir }, agentOptions: { provider: 'mock', model: 'mock' } })
       handle.agent.followup(createUserMessage({ content: [{ type: 'text', text: 'go' }], source: { kind: 'user' } }))
       await waitForIdle(ctx, handle.agent)
@@ -703,7 +703,7 @@ export function defineCoverageCases(group: CoverageGroup): void {
       await ctx.plugin(HooksClaude, { configPath: join(serverDir, 'hooks.json') })
       ctx.llm.registerAdapter(['mock'], new MockAdapter([]))
 
-      const { SessionId } = await import('@alego/session')
+      const { SessionId } = await import('@singula-ai/alego-session')
       const childHandle = await ctx.agents.create({ sessionId: SessionId('child-stop-session'), meta: { cwd: childDir }, agentOptions: { provider: 'mock', model: 'mock' } })
       const runId = SubagentRunId('run-stop')
       const identity = { runId, provider: 'inproc', id: childHandle.agent.id, local: true }

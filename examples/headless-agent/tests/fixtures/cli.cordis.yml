@@ -2,15 +2,15 @@
   name: './cli-mock-llm.ts'
 
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ../../cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - id: agent-spine
-        name: '@alego/agent-spine-demo'
+        name: '@singula-ai/alego-agent-spine-demo'
         config:
           agents:
             - id: main
@@ -24,6 +24,6 @@
               agentsHome: './.agents-home'
           persona: 'Keyless headless-agent smoke.'
       - id: persistence
-        name: '@alego/session-persistence-jsonl'
+        name: '@singula-ai/alego-session-persistence-jsonl'
         config:
           root: './.sessions'

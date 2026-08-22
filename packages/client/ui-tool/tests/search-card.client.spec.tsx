@@ -8,22 +8,22 @@
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/react'
-import { bindSnapshotSelector } from '@alego/client-test-runtime'
+import { bindSnapshotSelector } from '@singula-ai/alego-client-test-runtime'
 import {
   createSnapshotStore, EMPTY_CONVERSATION_VIEWS,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import type {
   ConversationSnapshot, RunningToolCall, SessionId, SessionListState, ToolResultNode, WorkspaceListState,
-} from '@alego/client-runtime/client'
-import type { ToolResultView } from '@alego/api-remotes/client'
-import type { SelectionTarget } from '@alego/client-ui-conversation/client'
-import { makeTranslate } from '@alego/client-test-runtime'
-import { zh as commonZh } from '@alego/client-locale/src/locales/zh.ts'
+} from '@singula-ai/alego-client-runtime/client'
+import type { ToolResultView } from '@singula-ai/alego-api-remotes/client'
+import type { SelectionTarget } from '@singula-ai/alego-client-ui-conversation/client'
+import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
 import { CHAT_SEARCH_MAX_LINES, searchCardModel } from '../src/client/tool/models/search-card-model.ts'
-import { zh } from '@alego/client-ui-conversation/src/client/locales.ts'
-import { createChatStore } from '@alego/client-ui-conversation/src/client/stores.ts'
+import { zh } from '@singula-ai/alego-client-ui-conversation/src/client/locales.ts'
+import { createChatStore } from '@singula-ai/alego-client-ui-conversation/src/client/stores.ts'
 import { GenericToolCard, type GenericToolCardProps } from '../src/client/tool/toolviews/GenericToolCard.tsx'
-import { DetailsPanel } from '@alego/client-ui-conversation/src/client/skeleton/DetailsPanel.tsx'
+import { DetailsPanel } from '@singula-ai/alego-client-ui-conversation/src/client/skeleton/DetailsPanel.tsx'
 import { SearchRow, searchToolview } from '../src/client/tool/toolviews/search-row.tsx'
 import { renderToolDetails, SessionProviderStub, toolChatSnapshot } from './tool-details-render.client.tsx'
 

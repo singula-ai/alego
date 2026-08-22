@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import AgentLoop from '@alego/agent-loop'
-import { renderPrompt } from '@alego/system-prompt'
+import { Context } from '@singula-ai/cordis'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import { renderPrompt } from '@singula-ai/alego-system-prompt'
 import { mountAgentLoopTestDependencies } from '../src/index.ts'
 
 describe('alego-agent-loop-testkit', () => {

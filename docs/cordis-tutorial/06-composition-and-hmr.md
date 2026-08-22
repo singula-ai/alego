@@ -22,24 +22,24 @@ Groups nest a sub-list of entries that load and unload as one unit, and `isolate
 
 ## Hot module replacement
 
-Because unloading releases effects ([chapter 2](02-lifecycle-and-effects.md)) and loading follows dependencies ([chapter 3](03-services.md)), HMR can replace a running plugin by unloading and loading it. The `@alego/cordis-plugin-hmr` plugin watches your files and does exactly that on save.
+Because unloading releases effects ([chapter 2](02-lifecycle-and-effects.md)) and loading follows dependencies ([chapter 3](03-services.md)), HMR can replace a running plugin by unloading and loading it. The `@singula-ai/cordis-plugin-hmr` plugin watches your files and does exactly that on save.
 
 In `tmp/cordis-tutorial`, write `cordis.yml`:
 
 ```yaml
 - id: logger
-  name: '@alego/cordis-plugin-logger-console'
+  name: '@singula-ai/cordis-plugin-logger-console'
 - id: timer
-  name: '@alego/cordis-plugin-timer'
+  name: '@singula-ai/cordis-plugin-timer'
 - id: hmr
-  name: '@alego/cordis-plugin-hmr'
+  name: '@singula-ai/cordis-plugin-hmr'
   config:
     root: ['.']
 - id: hello
   name: './hello.ts'
 ```
 
-Two support plugins joined the list: HMR logs through the Cordis logger service, so without a console exporter you would not see its messages, and it `inject`s the `timer` service for debouncing — without `@alego/cordis-plugin-timer` it sits in PENDING forever, silently. That silence is the subject of the next section.
+Two support plugins joined the list: HMR logs through the Cordis logger service, so without a console exporter you would not see its messages, and it `inject`s the `timer` service for debouncing — without `@singula-ai/cordis-plugin-timer` it sits in PENDING forever, silently. That silence is the subject of the next section.
 
 HMR reads Node's loader internals through the Loader's native helper. Run Cordis under tsx:
 
@@ -65,7 +65,7 @@ The flip side of dependency-driven loading: a plugin whose `inject` names a serv
 You can see the states directly. Every context can enumerate the plugin registry; create `diagnose.ts`:
 
 ```ts
-import { FiberState, type Context } from '@alego/cordis'
+import { FiberState, type Context } from '@singula-ai/cordis'
 
 export const name = 'diagnose'
 
@@ -85,7 +85,7 @@ export function apply(ctx: Context) {
 And a plugin with an unsatisfiable dependency, `needs-timer.ts`:
 
 ```ts
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 
 export const name = 'needs-timer'
 export const inject = ['timer']
@@ -106,7 +106,7 @@ Run it (plain `node --import tsx ../../vendor/cordis/bin.js`; stop with Ctrl-C):
 needs-timer is PENDING — a required service is missing
 ```
 
-`inject: ['timer']` has no provider. Add `- name: '@alego/cordis-plugin-timer'` to the list and the plugin loads. When a plugin does nothing and reports nothing, inspect its fiber state. Iterating without the PENDING filter also shows the loader's own plugins (Loader, Include) as ACTIVE fibers because plugins mount the config file itself.
+`inject: ['timer']` has no provider. Add `- name: '@singula-ai/cordis-plugin-timer'` to the list and the plugin loads. When a plugin does nothing and reports nothing, inspect its fiber state. Iterating without the PENDING filter also shows the loader's own plugins (Loader, Include) as ACTIVE fibers because plugins mount the config file itself.
 
 Next: [Into the harness](07-into-the-harness.md) — the same patterns against real harness services.
 

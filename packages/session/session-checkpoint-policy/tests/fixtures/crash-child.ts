@@ -1,10 +1,10 @@
 import { writeFile } from 'node:fs/promises'
-import { Context } from '@alego/cordis'
-import AgentLoop from '@alego/agent-loop'
-import { mountAgentLoopTestDependencies } from '@alego/agent-loop-testkit'
-import { createUserMessage, CallId, type GenerateOptions, LlmAdapter, type StreamChunk  } from '@alego/llm'
-import { SessionId } from '@alego/session'
-import JsonlSessionPersistence from '@alego/session-persistence-jsonl'
+import { Context } from '@singula-ai/cordis'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
+import { createUserMessage, CallId, type GenerateOptions, LlmAdapter, type StreamChunk  } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
+import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import * as checkpointPolicy from '../../src/index.ts'
 
 function waitForCrash(): Promise<never> {

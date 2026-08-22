@@ -16,7 +16,7 @@ interface CssPlugin {
 
 function cssPlugin(name: 'alego-css-modules-inline' | 'alego-css-global-inline' | 'alego-css-text-inline'): CssPlugin {
   const configs = clientBundle(
-    '@alego/client-test',
+    '@singula-ai/alego-client-test',
     ['lib/types/index.js', 'lib/types/invariant.js'],
   )({ env: { ALEGO_BUILD_FACE: 'client' } })
   const client = configs.find(config => config.platform === 'browser')

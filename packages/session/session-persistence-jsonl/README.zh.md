@@ -1,4 +1,4 @@
-# @alego/session-persistence-jsonl
+# @singula-ai/alego-session-persistence-jsonl
 
 [English](README.md) | 中文
 
@@ -15,7 +15,7 @@ JSONL 持久会话存储后端：`SessionPersistence` 的一个具体实现（`a
 ```
 
 - 第一个逻辑行是不可变的 `SessionHeader`，标记为 `{ type: 'session', version, id, cwd?, createdAt, parentSession?, seedLength?, origin?, delegationDepth, agentPreset? }`。`delegationDepth` 在磁盘上必需，顶层会话为 `0`；缺失或无效值会拒绝日志。`agentPreset` 必须持久化，因为它决定了被恢复会话的工具与提示词——恢复成另一套组装，就会回放模型已无法据以行动的历史。后续每个逻辑行是一条存储记录；`assistant/chunk` 事件绝不丢弃，且 `seq` 在解码日志中保持连续（`events[i].seq === i`）。
-- 存储记录是原样 `SessionEvent` JSON，或在 `packChunks` 已启用且连续段符合条件时写入的**打包分片行**（`text-chunks` / `reasoning-chunks` / `tool-call-chunks`；像 header 的 `session` 一样不带斜杠，因此行 tag 不会与事件类型混淆）：一行保存至少 3 个连续同 block `assistant/chunk` delta 事件，`seq0`/`time0` 和各成员的 `dt` 间隔精确重建每个成员的 `seq`/`time`。无损 codec 位于 `@alego/session`（`packChunkRuns`/`decodeStorageRecord`），并使用精确形态 allowlist：任何未识别内容原样存储。读取与布局无关：`load` 始终解码行，因此打包、非打包和混合文件加载结果一致。
+- 存储记录是原样 `SessionEvent` JSON，或在 `packChunks` 已启用且连续段符合条件时写入的**打包分片行**（`text-chunks` / `reasoning-chunks` / `tool-call-chunks`；像 header 的 `session` 一样不带斜杠，因此行 tag 不会与事件类型混淆）：一行保存至少 3 个连续同 block `assistant/chunk` delta 事件，`seq0`/`time0` 和各成员的 `dt` 间隔精确重建每个成员的 `seq`/`time`。无损 codec 位于 `@singula-ai/alego-session`（`packChunkRuns`/`decodeStorageRecord`），并使用精确形态 allowlist：任何未识别内容原样存储。读取与布局无关：`load` 始终解码行，因此打包、非打包和混合文件加载结果一致。
 - 项目目录保留规范化 cwd 的可读形式，便于导航，并限制在文件系统组件上限内。分隔符替换和截断刻意有损，因此规范化相同的 cwd 字符串共享项目目录；会话 id 仍选择不同会话目录。在不区分大小写的文件系统上，只有文件系统规范化将两种写法解析到同一 transcript（文本记录）时，身份验证才接受备选路径写法。配置根仍由部署控制：可以是项目本地、共享、临时或集中式。[项目会话目录决策](../../../.agents/notes/implemented/architecture/2026-07-24-project-session-directories.zh.md) 记录这项取舍。
 - 会话 id 是未验证的带品牌类型的字符串，因此在使用前单射转义为一个安全路径段（无遍历、无冲突）。结果目录保留给其他会话自有产物；发现只读取固定 transcript 文件名。
 

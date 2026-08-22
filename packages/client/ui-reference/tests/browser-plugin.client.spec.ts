@@ -3,15 +3,15 @@
  * deterministic ordering and labels, quoted-path suppression, pick projections, codec
  * round-trip, and registration lifecycle.
  */
-import { Context, Service } from '@alego/cordis'
+import { Context, Service } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import { LocaleRuntime } from '@alego/client-locale/client'
-import type { SessionId } from '@alego/client-runtime/client'
+import { LocaleRuntime } from '@singula-ai/alego-client-locale/client'
+import type { SessionId } from '@singula-ai/alego-client-runtime/client'
 import type {
   CandidateRequest, ClientSessionContext, InputTriggerCandidate, InputTriggerSource,
-} from '@alego/client-ui-input-trigger/client'
-import type { FileReferenceCandidate } from '@alego/file-reference/types'
-import type { SessionReferenceMentionCandidate } from '@alego/session-reference/types'
+} from '@singula-ai/alego-client-ui-input-trigger/client'
+import type { FileReferenceCandidate } from '@singula-ai/alego-file-reference/types'
+import type { SessionReferenceMentionCandidate } from '@singula-ai/alego-session-reference/types'
 import { apply, inject } from '../src/client/index.ts'
 import { apply as nodeApply } from '../src/index.ts'
 

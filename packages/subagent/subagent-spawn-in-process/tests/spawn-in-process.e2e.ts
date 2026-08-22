@@ -1,11 +1,11 @@
-import { createUserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
 import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import { spawnHarness, waitForIdle } from './harness.ts'
-import { SessionId } from '@alego/session'
+import { SessionId } from '@singula-ai/alego-session'
 
 /** Key-gated smoke for a real parent delegating filesystem work to a real child. */
 

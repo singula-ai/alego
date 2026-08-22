@@ -1,4 +1,4 @@
-# @alego/mcp-client
+# @singula-ai/alego-mcp-client
 
 English | [中文](README.zh.md)
 
@@ -10,7 +10,7 @@ One plugin instance per MCP server in `cordis.yml`:
 
 ```yaml
 - id: mcp-github
-  name: '@alego/mcp-client'
+  name: '@singula-ai/alego-mcp-client'
   config:
     serverName: github
     transport: stdio
@@ -20,7 +20,7 @@ One plugin instance per MCP server in `cordis.yml`:
       GITHUB_TOKEN: !!js process.env.GITHUB_TOKEN
 
 - id: mcp-web
-  name: '@alego/mcp-client'
+  name: '@singula-ai/alego-mcp-client'
   config:
     serverName: web
     transport: streamable-http

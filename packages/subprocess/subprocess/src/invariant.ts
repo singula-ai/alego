@@ -1,9 +1,9 @@
-/** Package-owned invariant companion for the subprocess seam. @module @alego/subprocess/invariant */
+/** Package-owned invariant companion for the subprocess seam. @module @singula-ai/alego-subprocess/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/subprocess'
+const PACKAGE_NAME = '@singula-ai/alego-subprocess'
 
 /** Cordis companion plugin name. */
 export const name = 'subprocess-invariant'

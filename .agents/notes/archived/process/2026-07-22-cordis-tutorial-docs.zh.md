@@ -13,7 +13,7 @@ Archived: 2026-07-27
 
 `docs/cordis-tutorial/` 包含一套七章实操教程（第一个插件 → 生命周期与 effect → 服务 → 事件 → 配置 → 组合与 HMR（热模块替换）→ harness 工具）。以下是教程的特性，按重要性从高到低排列：
 
-- **每段 transcript（文本记录）都真实可复现。** 每章文件都通过 `node --import tsx ../../vendor/cordis/bin.js` 在 git 忽略的 `tmp/cordis-tutorial/` 临时目录中运行，展示的输出就是这些命令实际打印的内容。使用 harness 包（package）（`@alego/tools` 和 `@alego/llm`）的章节无需密钥即可运行。
+- **每段 transcript（文本记录）都真实可复现。** 每章文件都通过 `node --import tsx ../../vendor/cordis/bin.js` 在 git 忽略的 `tmp/cordis-tutorial/` 临时目录中运行，展示的输出就是这些命令实际打印的内容。使用 harness 包（package）（`@singula-ai/alego-tools` 和 `@singula-ai/alego-llm`）的章节无需密钥即可运行。
 - **采用 alego 风格，而非纯 Cordis**：后续章节使用真实的 harness 服务和事件（`ctx.tools`、`tools/result`），使读者最终进入本仓库实际采用的组合模型，这遵循了提出请求的用户所作的选择。
 - **仅提供英文版，但发布到网站的两个语言区域**：通过 [website/docs.ts](../../../../website/docs.ts) 中的 `mirroredPages()`，发布到开发侧边栏的 `Cordis 教程` / `Cordis tutorial` 分区。该方式与参考页面采用的模式相同，因此日后可以逐步纳入中文配对，而无需更改路由。
 - 除两个围栏代码块外，其余代码块均通过 `doc-typecheck` 编译；这两个例外分别导入临时目录中的相对路径文件（`./stats.ts`）或有意抛出异常，因此标有 `ignore-check`。

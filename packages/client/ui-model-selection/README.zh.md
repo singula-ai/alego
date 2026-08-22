@@ -1,4 +1,4 @@
-# @alego/client-ui-model-selection
+# @singula-ai/alego-client-ui-model-selection
 
 [English](README.md) | 中文
 

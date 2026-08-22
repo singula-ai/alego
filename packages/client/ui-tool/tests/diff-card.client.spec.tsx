@@ -6,24 +6,24 @@
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/react'
-import { bindSnapshotSelector } from '@alego/client-test-runtime'
+import { bindSnapshotSelector } from '@singula-ai/alego-client-test-runtime'
 import {
   createSnapshotStore, EMPTY_CONVERSATION_VIEWS,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import type {
   ConversationSnapshot, RunningToolCall, SessionId, SessionListState, ToolResultNode, WorkspaceListState,
-} from '@alego/client-runtime/client'
-import type { ToolCallView, ToolResultView } from '@alego/api-remotes/client'
-import type { SelectionTarget } from '@alego/client-ui-conversation/client'
-import { makeTranslate } from '@alego/client-test-runtime'
-import { zh as commonZh } from '@alego/client-locale/src/locales/zh.ts'
+} from '@singula-ai/alego-client-runtime/client'
+import type { ToolCallView, ToolResultView } from '@singula-ai/alego-api-remotes/client'
+import type { SelectionTarget } from '@singula-ai/alego-client-ui-conversation/client'
+import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
 import { CHAT_DIFF_MAX_LINES, diffCardModel } from '../src/client/tool/models/diff-card-model.ts'
-import { createChatStore } from '@alego/client-ui-conversation/src/client/stores.ts'
+import { createChatStore } from '@singula-ai/alego-client-ui-conversation/src/client/stores.ts'
 import { GenericToolCard, type GenericToolCardProps } from '../src/client/tool/toolviews/GenericToolCard.tsx'
-import { DetailsPanel } from '@alego/client-ui-conversation/src/client/skeleton/DetailsPanel.tsx'
+import { DetailsPanel } from '@singula-ai/alego-client-ui-conversation/src/client/skeleton/DetailsPanel.tsx'
 import { FileMutationRow, fileMutationToolview } from '../src/client/tool/toolviews/file-mutation-row.tsx'
 import { renderToolDetails, SessionProviderStub, toolChatSnapshot } from './tool-details-render.client.tsx'
-import { zh } from '@alego/client-ui-conversation/src/client/locales.ts'
+import { zh } from '@singula-ai/alego-client-ui-conversation/src/client/locales.ts'
 
 afterEach(cleanup)
 

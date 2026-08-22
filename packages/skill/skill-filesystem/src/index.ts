@@ -6,20 +6,20 @@
  * user roots, parses YAML frontmatter, and loads bodies through `ctx.fs` when a
  * filesystem service is present.
  *
- * @module @alego/skill-filesystem
+ * @module @singula-ai/alego-skill-filesystem
  */
 
 import { access, lstat, readdir, readFile, stat } from 'node:fs/promises'
 import { unwatchFile, watchFile, type Stats } from 'node:fs'
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path'
 import { homedir } from 'node:os'
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import chokidar from 'chokidar'
-import z from '@alego/schemastery'
-import type Schema from '@alego/schemastery'
+import z from '@singula-ai/schemastery'
+import type Schema from '@singula-ai/schemastery'
 import { parse as parseYaml } from 'yaml'
-import type { FileSystem, FsDirEntry, FsTarget } from '@alego/fs'
-import { canonicalizeWatchPath, resolveAlegoHome } from '@alego/home-paths'
+import type { FileSystem, FsDirEntry, FsTarget } from '@singula-ai/alego-fs'
+import { canonicalizeWatchPath, resolveAlegoHome } from '@singula-ai/alego-home-paths'
 import {
   BUNDLED_SKILL_RANK,
   isSkillName,
@@ -31,7 +31,7 @@ import {
   type SkillProviderControl,
   type SkillProviderObservation,
   type SkillSource,
-} from '@alego/skill'
+} from '@singula-ai/alego-skill'
 
 const PROJECT_ALEGO_RANK = 100
 const PROJECT_AGENTS_RANK = 200

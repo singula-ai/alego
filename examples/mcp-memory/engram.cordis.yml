@@ -2,7 +2,7 @@
 # first; storage and project selection remain Engram-owned.
 - insert:
     - id: memory-engram
-      name: '@alego/mcp-client'
+      name: '@singula-ai/alego-mcp-client'
       config:
         serverName: engram
         transport: stdio

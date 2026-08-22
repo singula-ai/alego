@@ -1,10 +1,10 @@
-/** Package-owned permission-preset event invariants. @module @alego/permission-presets/invariant */
+/** Package-owned permission-preset event invariants. @module @singula-ai/alego-permission-presets/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { Session, SessionEvent } from '@alego/session'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/permission-presets'
+const PACKAGE_NAME = '@singula-ai/alego-permission-presets'
 
 /** Cordis companion plugin name. */
 export const name = 'permission-presets-invariant'

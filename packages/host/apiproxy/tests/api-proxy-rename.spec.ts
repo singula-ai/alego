@@ -8,17 +8,17 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import SessionStore from '@alego/session'
-import AgentRegistry from '@alego/agent'
-import type { Agent, AgentHandle, CreateAgentOptions } from '@alego/agent'
-import { createUserMessage } from '@alego/llm'
-import SessionTitleService from '@alego/session-title'
-import UserQuestionService from '@alego/user-questions'
-import type { Session, SessionId } from '@alego/session'
-import type { RpcRequest } from '@alego/host-apiproxy/api/rpc'
-import { RpcId } from '@alego/host-apiproxy/api/rpc'
-import { createApiProxy } from '@alego/host-apiproxy'
+import { Context } from '@singula-ai/cordis'
+import SessionStore from '@singula-ai/alego-session'
+import AgentRegistry from '@singula-ai/alego-agent'
+import type { Agent, AgentHandle, CreateAgentOptions } from '@singula-ai/alego-agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import SessionTitleService from '@singula-ai/alego-session-title'
+import UserQuestionService from '@singula-ai/alego-user-questions'
+import type { Session, SessionId } from '@singula-ai/alego-session'
+import type { RpcRequest } from '@singula-ai/alego-host-apiproxy/api/rpc'
+import { RpcId } from '@singula-ai/alego-host-apiproxy/api/rpc'
+import { createApiProxy } from '@singula-ai/alego-host-apiproxy'
 
 const sid = (id: string): SessionId => id as SessionId
 

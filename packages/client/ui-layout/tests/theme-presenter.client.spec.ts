@@ -5,8 +5,8 @@
 // retracts everything the presenter wrote.
 
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import type { ThemeSnapshot } from '@alego/client-ui-theme/client'
-import { DARK_ATTRIBUTE, ThemePresenter } from '@alego/client-ui-layout/src/client/theme-presenter.ts'
+import type { ThemeSnapshot } from '@singula-ai/alego-client-ui-theme/client'
+import { DARK_ATTRIBUTE, ThemePresenter } from '@singula-ai/alego-client-ui-layout/src/client/theme-presenter.ts'
 
 const LIGHT_THEME_COLOR = 'rgb(255, 255, 255)'
 const DARK_THEME_COLOR = 'rgb(21, 21, 23)'

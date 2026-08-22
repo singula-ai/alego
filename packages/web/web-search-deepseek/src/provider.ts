@@ -3,18 +3,18 @@
  * `web_search_20250305` server tool. Each search costs a model turn, but returns structured
  * result blocks; absence of those blocks is an error rather than a prose-scraping fallback.
  * The wire format and native `fetch` client are provider-private and do not use `ctx.llm`.
- * @module @alego/web-search-deepseek/provider
+ * @module @singula-ai/alego-web-search-deepseek/provider
  */
 
-import { WebError } from '@alego/web'
+import { WebError } from '@singula-ai/alego-web'
 import type {
   WebSearchProvider,
   WebSearchRequest,
   WebSearchResult,
   WebSearchSource,
-} from '@alego/web'
-import type { CredentialRef } from '@alego/credentials'
-import type {} from '@alego/session'
+} from '@singula-ai/alego-web'
+import type { CredentialRef } from '@singula-ai/alego-credentials'
+import type {} from '@singula-ai/alego-session'
 import type {
   AnthropicError,
   AnthropicResponse,
@@ -29,7 +29,7 @@ export const DEEPSEEK_PROVIDER_ID = 'deepseek-official'
 /**
  * Default endpoint: DeepSeek's Anthropic-compatible API, `/v1` included
  * (`/messages` is appended). This is NOT the chat-completions base
- * (`https://api.deepseek.com`) `@alego/llm-deepseek` uses, so this
+ * (`https://api.deepseek.com`) `@singula-ai/alego-llm-deepseek` uses, so this
  * provider does NOT reuse `$DEEPSEEK_BASE_URL` — only the API key is shared.
  */
 export const DEEPSEEK_DEFAULT_BASE_URL = 'https://api.deepseek.com/anthropic/v1'
@@ -77,7 +77,7 @@ export interface DeepSeekSearchLlmRequest {
   }
 }
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /** Secret-free auxiliary DeepSeek search request recorded before dispatch. */
     'web/deepseek-search-llm-request': DeepSeekSearchLlmRequest

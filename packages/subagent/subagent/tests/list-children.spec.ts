@@ -3,25 +3,25 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { z } from 'zod'
-import { Context } from '@alego/cordis'
-import { createUserMessage } from '@alego/llm'
-import AgentLoop from '@alego/agent-loop'
-import { mountAgentLoopTestDependencies } from '@alego/agent-loop-testkit'
-import SessionStore, { SESSION_FORMAT_VERSION, SessionId } from '@alego/session'
-import type { SessionEvent, SessionHeader } from '@alego/session'
-import JsonlSessionPersistence from '@alego/session-persistence-jsonl'
-import SessionProjectionRegistry from '@alego/session-projection'
-import type { ProjectionDefinition } from '@alego/session-projection'
-import SessionProjectionCache from '@alego/session-projection-cache'
-import Storage from '@alego/storage'
-import { DomainFacility } from '@alego/storage-domain'
+import { Context } from '@singula-ai/cordis'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
+import SessionStore, { SESSION_FORMAT_VERSION, SessionId } from '@singula-ai/alego-session'
+import type { SessionEvent, SessionHeader } from '@singula-ai/alego-session'
+import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import type { ProjectionDefinition } from '@singula-ai/alego-session-projection'
+import SessionProjectionCache from '@singula-ai/alego-session-projection-cache'
+import Storage from '@singula-ai/alego-storage'
+import { DomainFacility } from '@singula-ai/alego-storage-domain'
 import { MemoryMediaPool, MemoryStorageBackend } from '../../../storage/storage-domain/tests/helpers/memory-backend.ts'
 import SubagentRuntime, {
   SUBAGENT_DESCRIPTOR_VERSION,
   SubagentError,
-} from '@alego/subagent'
-import * as SubagentSpawn from '@alego/subagent-spawn-in-process'
-import * as SubagentFork from '@alego/subagent-fork-in-process'
+} from '@singula-ai/alego-subagent'
+import * as SubagentSpawn from '@singula-ai/alego-subagent-spawn-in-process'
+import * as SubagentFork from '@singula-ai/alego-subagent-fork-in-process'
 import { MockAdapter, textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 
 type Script = ConstructorParameters<typeof MockAdapter>[0]
@@ -117,7 +117,7 @@ function descriptorPayload(label: string, version = SUBAGENT_DESCRIPTOR_VERSION)
   return { version, mode: 'continuable' as const, provider: 'spawn', label }
 }
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionStateMap {
     subagentListHostileProbe: { poisoned?: boolean | undefined }
   }

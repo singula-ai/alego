@@ -4,7 +4,7 @@ import {
   memo, useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent,
   type PointerEvent,
 } from 'react'
-import { Tooltip } from '@alego/client-ui-primitives'
+import { Tooltip } from '@singula-ai/alego-client-ui-primitives'
 import type { TrajectoryTurnModel } from './layout.ts'
 import type { AssistantMetricDetail, TrajectoryCellKind, TrajectoryCellProps } from './trajectory-record.ts'
 import {

@@ -1,8 +1,8 @@
-import { createUserMessage, createMessage, createToolResultMessage, CallId } from '@alego/llm'
+import { createUserMessage, createMessage, createToolResultMessage, CallId } from '@singula-ai/alego-llm'
 // Minimal SessionEvent builders for orchestration tests (shape mirrors what the
 // host emits; only the fields the object layer reads).
-import type { ContentBlock } from '@alego/llm/types'
-import type { SessionEvent } from '@alego/session/types'
+import type { ContentBlock } from '@singula-ai/alego-llm/types'
+import type { SessionEvent } from '@singula-ai/alego-session/types'
 
 /** One text content block (local helper). */
 const text = (t: string): ContentBlock[] => [{ type: 'text', text: t }]

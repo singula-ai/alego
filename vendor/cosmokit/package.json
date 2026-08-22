@@ -1,5 +1,5 @@
 {
-  "name": "@alego/cosmokit",
+  "name": "@singula-ai/cosmokit",
   "description": "A collection of common utilities",
   "version": "1.8.2",
   "publishConfig": {

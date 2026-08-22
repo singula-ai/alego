@@ -2,9 +2,9 @@
 
 import {
   IconInspectOutline12, IconStopFill16, IconTrashOutline16, StateDot,
-} from '@alego/client-ui-primitives'
-import type { PropsLocale } from '@alego/client-ui-slots'
-import type { ToolCallViewProps } from '@alego/client-ui-tool/client'
+} from '@singula-ai/alego-client-ui-primitives'
+import type { PropsLocale } from '@singula-ai/alego-client-ui-slots'
+import type { ToolCallViewProps } from '@singula-ai/alego-client-ui-tool/client'
 import { cordisActionCard } from './card-model.ts'
 import css from './CordisRunRow.module.css'
 

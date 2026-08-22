@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import SessionStore, { Session, SessionId } from '@alego/session'
-import type { SandboxMode } from '@alego/sandbox'
-import type { ApprovalPolicy } from '@alego/user-approval'
+import { Context } from '@singula-ai/cordis'
+import SessionStore, { Session, SessionId } from '@singula-ai/alego-session'
+import type { SandboxMode } from '@singula-ai/alego-sandbox'
+import type { ApprovalPolicy } from '@singula-ai/alego-user-approval'
 import PermissionPresetService, {
   CUSTOM_PRESET, effectivePermissionPreset, PERMISSION_SETTINGS_NAMESPACE,
-} from '@alego/permission-presets'
-import type { Config } from '@alego/permission-presets'
-import { SettingsProvider } from '@alego/settings'
-import type { SettingsNamespace } from '@alego/settings'
+} from '@singula-ai/alego-permission-presets'
+import type { Config } from '@singula-ai/alego-permission-presets'
+import { SettingsProvider } from '@singula-ai/alego-settings'
+import type { SettingsNamespace } from '@singula-ai/alego-settings'
 
 /** Writable memory provider for the permission/settings lifecycle specs. */
 class MemorySettings extends SettingsProvider {

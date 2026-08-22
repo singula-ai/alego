@@ -11,7 +11,7 @@ Each example has both:
 - **Keyless:** boot the real `cordis.yml` through the Loader, drive it, and assert output and clean exit. Catches invalid Loader exports that hand-mounted tests miss ([postmortem](../docs/postmortem/0001-acp-default-export-drops-inject.md)).
 - **With-key:** send a live-model prompt and verify external state, not the model's claim. Self-skip without `DEEPSEEK_API_KEY`; see [testing.md](../docs/testing.md).
 
-Keyless process smokes use `@alego/loader-smoke` for Loader launch resolution; terminal tests wrap that launch in a pseudo-terminal. Tests supply paths, environment, input, and assertions. Every checked-in test Cordis config lives under its corresponding `examples/<agent>/` leaf. Map a package-owned config to `examples/<agent>/tests/fixtures/<group>/<package>/cordis.yml`, keep its driver and assertions package-local, and declare every package it names in both root `tsconfig.json` references and `examples/package.json`.
+Keyless process smokes use `@singula-ai/alego-loader-smoke` for Loader launch resolution; terminal tests wrap that launch in a pseudo-terminal. Tests supply paths, environment, input, and assertions. Every checked-in test Cordis config lives under its corresponding `examples/<agent>/` leaf. Map a package-owned config to `examples/<agent>/tests/fixtures/<group>/<package>/cordis.yml`, keep its driver and assertions package-local, and declare every package it names in both root `tsconfig.json` references and `examples/package.json`.
 
 Do not inventory example tests here; the `tests/` trees and root scripts are authoritative.
 

@@ -12,10 +12,10 @@
 - text: Use web_search once with queries ["Alego snapshot search","Alego multi-query search"]. Then reply exactly SEARCH_DONE and stop. {{clock}}
 - button "Copy":
   - img
-- button "Context injection @alego/system-prompt":
+- button "Context injection @singula-ai/alego-system-prompt":
   - img
   - img
-  - text: Context injection @alego/system-prompt
+  - text: Context injection @singula-ai/alego-system-prompt
 - button "Search Alego snapshot search, Alego multi-query search":
   - img
   - img

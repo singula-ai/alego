@@ -1,7 +1,7 @@
 /**
  * Rendering and traversal over the compiler-independent TypeGraph. Emitters
  * use this module instead of reaching back into TypeScript AST nodes.
- * @module @alego/typert-generator/renderer
+ * @module @singula-ai/alego-typert-generator/renderer
  */
 
 import { childTypeNodeIds } from './model.ts'

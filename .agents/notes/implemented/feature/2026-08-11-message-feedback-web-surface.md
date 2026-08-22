@@ -22,7 +22,7 @@ Three seams, each owned where its authority already lives.
 
 `extraActions` is a `ReactNode` prop rather than a second render-slot hole because `MessageIconActions` is shared chrome for user and assistant messages: the assistant caller resolves the slot and passes the result down, so the user path stays unaware of a slot it must never render.
 
-**Per-item CAS in a per-session controller.** `@alego/client-ui-message-feedback` holds one `MessageFeedbackController` per Session, keyed by `MessageId` in a map. A single `list` seeds every control in that Session's transcript. Each mutation sends the version that controller last observed as `ifVersion` — `null` when it knows of no item, which is exactly the Host's "must not exist" precondition.
+**Per-item CAS in a per-session controller.** `@singula-ai/alego-client-ui-message-feedback` holds one `MessageFeedbackController` per Session, keyed by `MessageId` in a map. A single `list` seeds every control in that Session's transcript. Each mutation sends the version that controller last observed as `ifVersion` — `null` when it knows of no item, which is exactly the Host's "must not exist" precondition.
 
 The conflict path is where this diverges most from #1010. `MessageFeedbackVersionConflict` carries the authoritative `current` item (or `null`), so a lost race reconciles from the reply itself; #1010 answered every conflict with a blind full refresh. A conflict reporting `current: null` deletes the local entry, which is how a rating removed in another tab disappears here. Mutations serialize on a per-Session tail so a queued operation always compares against the committed version rather than the version read when the click landed.
 
@@ -30,7 +30,7 @@ The list read is deferred to the first hover or focus, not fired on mount, becau
 
 Toggle semantics keep the two verbs honest: re-clicking the recorded rating calls `delete`, switching sides calls `put` and carries any existing note forward, and clearing a message with no known item returns success without a call because it is already in the requested state.
 
-**Remote mounting.** `@alego/api-remotes` now mounts `messageFeedbackRemote` alongside `goalsRemote` and composes both disposers in reverse order. The generated `./remote` artifact already existed in #2217's package exports, so no codegen change was needed; the client calls `ctx.remote.messageFeedback` and never touches the transport. Business results cross this boundary as the ordinary tagged union — the gateway throws only on transport failure — so the controller pattern-matches `ok` and translates a throw into the same settled result shape the controls already render.
+**Remote mounting.** `@singula-ai/alego-api-remotes` now mounts `messageFeedbackRemote` alongside `goalsRemote` and composes both disposers in reverse order. The generated `./remote` artifact already existed in #2217's package exports, so no codegen change was needed; the client calls `ctx.remote.messageFeedback` and never touches the transport. Business results cross this boundary as the ordinary tagged union — the gateway throws only on transport failure — so the controller pattern-matches `ok` and translates a throw into the same settled result shape the controls already render.
 
 ## Alternatives considered
 

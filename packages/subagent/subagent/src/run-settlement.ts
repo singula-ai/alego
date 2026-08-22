@@ -3,11 +3,11 @@
  * the one-shot background path uses Jobs; continuable children have no Task,
  * no per-message result, and no Task cancellation.
  *
- * @module @alego/subagent/run-settlement
+ * @module @singula-ai/alego-subagent/run-settlement
  */
 
-import type { ContentBlock } from '@alego/llm'
-import type { JobOutcome } from '@alego/jobs'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { JobOutcome } from '@singula-ai/alego-jobs'
 import type { SubagentResult, SubagentRun } from './types.ts'
 
 /** Flatten a child's final output blocks to the task's final text. */

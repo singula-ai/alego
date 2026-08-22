@@ -1,15 +1,15 @@
 /**
  * Durable projection state for dynamic runtime context.
- * @module @alego/agent-loop/runtime-context
+ * @module @singula-ai/alego-agent-loop/runtime-context
  */
 
-import { createUserMessage } from '@alego/llm'
-import type { ContextSnapshotSection } from '@alego/llm'
-import type { Session, UserMessage } from '@alego/session'
-import { isReplacementSurfaceEvent } from '@alego/session'
-import type { Context } from '@alego/cordis'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type { ContextSnapshotSection } from '@singula-ai/alego-llm'
+import type { Session, UserMessage } from '@singula-ai/alego-session'
+import { isReplacementSurfaceEvent } from '@singula-ai/alego-session'
+import type { Context } from '@singula-ai/cordis'
 
-const SOURCE = '@alego/system-prompt'
+const SOURCE = '@singula-ai/alego-system-prompt'
 const CLEARED = 'Current runtime context: none. Earlier runtime-context snapshots no longer apply.'
 
 function isOwned(message: UserMessage): boolean {

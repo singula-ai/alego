@@ -24,7 +24,7 @@ The default policy provides bounded recovery from transient failures of the same
 
 ### Preserve failure facts without embedding policy
 
-`@alego/llm` exports one JSON-serializable `LlmFailure` payload:
+`@singula-ai/alego-llm` exports one JSON-serializable `LlmFailure` payload:
 
 ```ts ignore-check
 type ProviderRequestId = Branded<'ProviderRequestId'>
@@ -50,7 +50,7 @@ The shared transient-code set is intentionally small: adapter mappings for `RATE
 
 ### Put retry policy on the existing failed-step extension point
 
-`@alego/llm-retry` is a function plugin that listens to `agent/request-error`. It introduces no service or new loop branch; the agent-loop package changes only the data carried through its existing failed-step recovery control flow.
+`@singula-ai/alego-llm-retry` is a function plugin that listens to `agent/request-error`. It introduces no service or new loop branch; the agent-loop package changes only the data carried through its existing failed-step recovery control flow.
 
 The `agent/request-error` waterfall carries the current `LlmFailure`, an immutable list of prior failures that authorized retries in the consecutive recovery sequence, and the serving registration's immutable retry policy. The loop transports but does not interpret that policy, owns the consecutive failure history, and clears it after a successful model request. Normal `alego-llm-retry` policy counts durable retry records scheduled by the same exact-provider policy, while `alego-compaction-basic` keeps its own context-overflow budget. Alternating transient and context-overflow failures therefore consume their owning finite budgets independently; the maximum request count is one plus the sum of the loaded finite budgets.
 
@@ -76,7 +76,7 @@ Adapters perform one provider request per `stream()` call. The pi-ai adapter rem
 
 Each adapter exposes a validated `streamIdleTimeoutMs` configuration field with the five-minute prior-art default cited above. The interval is capped at Node's maximum timer delay so it cannot be clamped to one millisecond. It covers each outstanding iterator `next()` from demand to adapter-recognized provider activity; time a consumer spends between `next()` calls is not provider idle time. DeepSeek SSE comments count as transport activity but never become `StreamChunk` values or session-log events.
 
-`@alego/timeout` exposes a rearmable idle-watchdog primitive. One stable local `AbortController` is fused with the caller signal and passed to the transport for the whole adapter call; each outstanding `next()` arms the watchdog, resolution disarms it, and the next demand rearms it. Out-of-band transport activity calls `pulse()` to rearm an outstanding demand without yielding a value. Timeout aborts that stable controller with a capability-owned `TimeoutReason`, and `finally` clears the timer. The adapter classifies its watchdog as `TIMEOUT` and an earlier upstream abort as `ABORTED`. The existing one-shot `deadline()` is not presented as a sliding timer.
+`@singula-ai/alego-timeout` exposes a rearmable idle-watchdog primitive. One stable local `AbortController` is fused with the caller signal and passed to the transport for the whole adapter call; each outstanding `next()` arms the watchdog, resolution disarms it, and the next demand rearms it. Out-of-band transport activity calls `pulse()` to rearm an outstanding demand without yielding a value. Timeout aborts that stable controller with a capability-owned `TimeoutReason`, and `finally` clears the timer. The adapter classifies its watchdog as `TIMEOUT` and an earlier upstream abort as `ABORTED`. The existing one-shot `deadline()` is not presented as a sliding timer.
 
 Boundary tests prove termination at both actual transports. The hand-written adapter aborts its fetch/reader, and the pi-ai adapter maps the stable signal through the SDK and proves the SDK closes the response. A timer that merely rejects a consumer promise while leaving the request running does not satisfy the contract.
 

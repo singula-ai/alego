@@ -13,9 +13,9 @@ pnpm run demo:code-mode       # same protocol with the Code Mode tool transport
 
 ## 协议通道
 
-Stdout 只携带以换行分隔的 ACP JSON-RPC。`@alego/acp-demo` 不安装 stdout logger；该叶节点新增的组件必须使用 stderr 输出诊断信息。
+Stdout 只携带以换行分隔的 ACP JSON-RPC。`@singula-ai/alego-acp-demo` 不安装 stdout logger；该叶节点新增的组件必须使用 stderr 输出诊断信息。
 
-自动化约定（支持的方法、基线提示词内容、已提交文本输出，以及有意缺少的 UI 界面）位于 [`@alego/acp`](../../packages/acp/acp/README.zh.md)。
+自动化约定（支持的方法、基线提示词内容、已提交文本输出，以及有意缺少的 UI 界面）位于 [`@singula-ai/alego-acp`](../../packages/acp/acp/README.zh.md)。
 
 ## 会话 workspace 与权限
 

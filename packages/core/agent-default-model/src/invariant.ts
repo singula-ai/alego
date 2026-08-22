@@ -5,13 +5,13 @@
  * already validates every mutable value before `currentSelection()` can observe it.
  * The empty installer keeps that absence explicit in composed invariant sets.
  *
- * @module @alego/agent-default-model/invariant
+ * @module @singula-ai/alego-agent-default-model/invariant
  */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/agent-default-model'
+const PACKAGE_NAME = '@singula-ai/alego-agent-default-model'
 
 /** Cordis companion plugin name. */
 export const name = 'agent-default-model-invariant'

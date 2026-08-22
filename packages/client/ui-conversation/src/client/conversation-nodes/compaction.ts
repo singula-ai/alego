@@ -1,12 +1,12 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   CompactionSummaryNode, ConversationMatch, ConversationNodeContext, ConversationNodeDefinition,
-} from '@alego/client-runtime/client'
-import type {} from '@alego/compaction/types'
+} from '@singula-ai/alego-client-runtime/client'
+import type {} from '@singula-ai/alego-compaction/types'
 import { chatNode } from './common.ts'
 import { compactSource, compactSummary, updateCompactionState } from './command.ts'
 
-declare module '@alego/client-ui-conversation/client' {
+declare module '@singula-ai/alego-client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Automatic compaction checkpoint marker. */
     compaction: CompactionSummaryNode

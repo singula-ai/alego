@@ -10,7 +10,7 @@ Two integration mistakes broke ACP despite full unit coverage: a default export 
 
 ## Summary
 
-The ACP server (`examples/acp-agent`, `@alego/acp`) crashed the instant a real editor (Zed) connected: the first `session/new` request returned `Internal error: cannot get property "agents" without inject`, and `session/load` returned the same for `sessionPersistence`. The bridge was completely non-functional in production despite 178 green unit tests and 100% line coverage. Two independent bugs were hiding behind the same error string, and the test suite missed both for the same reason: every test mounted the plugin through a path that did not exercise how it actually loads or how its services actually resolve.
+The ACP server (`examples/acp-agent`, `@singula-ai/alego-acp`) crashed the instant a real editor (Zed) connected: the first `session/new` request returned `Internal error: cannot get property "agents" without inject`, and `session/load` returned the same for `sessionPersistence`. The bridge was completely non-functional in production despite 178 green unit tests and 100% line coverage. Two independent bugs were hiding behind the same error string, and the test suite missed both for the same reason: every test mounted the plugin through a path that did not exercise how it actually loads or how its services actually resolve.
 
 ## Impact
 

@@ -1,11 +1,11 @@
 /**
  * Durable Tool event vocabulary shared with type-only consumers.
  *
- * @module @alego/tools/types
+ * @module @singula-ai/alego-tools/types
  */
 
-import type { CallId } from '@alego/llm/brand'
-import type { ContentBlock } from '@alego/llm/types'
+import type { CallId } from '@singula-ai/alego-llm/brand'
+import type { ContentBlock } from '@singula-ai/alego-llm/types'
 
 /** Payload recorded when one nested Code Mode Tool dispatch starts. */
 export interface CodeDispatchStartEventData {
@@ -22,7 +22,7 @@ export interface CodeDispatchEventData extends CodeDispatchStartEventData {
   content: ContentBlock[]
 }
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * One sub-dispatch STARTING inside a `run_code` program: the parent

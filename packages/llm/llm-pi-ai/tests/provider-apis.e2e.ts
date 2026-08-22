@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { AttachmentId, AttachmentStore, ImageVariantId } from '@alego/attachment'
+import { Context } from '@singula-ai/cordis'
+import { AttachmentId, AttachmentStore, ImageVariantId } from '@singula-ai/alego-attachment'
 import type {
   ImageAttachmentLimits,
   ImageAttachmentRef,
@@ -9,10 +9,10 @@ import type {
   RequestImageAttachment,
   SaveImageAttachment,
   StoredImageAttachment,
-} from '@alego/attachment'
-import LlmRuntime, { createUserMessage, CallId } from '@alego/llm'
-import type { Message, ToolSchema } from '@alego/llm'
-import * as LlmPiAi from '@alego/llm-pi-ai'
+} from '@singula-ai/alego-attachment'
+import LlmRuntime, { createUserMessage, CallId } from '@singula-ai/alego-llm'
+import type { Message, ToolSchema } from '@singula-ai/alego-llm'
+import * as LlmPiAi from '@singula-ai/alego-llm-pi-ai'
 import type { PiAiReplayResponse } from '../src/replay.ts'
 import { assemble, type AssembledResult } from './assemble.ts'
 

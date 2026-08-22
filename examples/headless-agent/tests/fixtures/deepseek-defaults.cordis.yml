@@ -1,5 +1,5 @@
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ../../cordis.yml
     patches:

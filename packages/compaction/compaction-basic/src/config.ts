@@ -1,11 +1,11 @@
 /**
  * Load-time validation and routed-model policy resolution for compaction-basic.
  *
- * @module @alego/compaction-basic/config
+ * @module @singula-ai/alego-compaction-basic/config
  */
 
-import { deepFreeze } from '@alego/llm'
-import type { LlmCallConfig } from '@alego/llm'
+import { deepFreeze } from '@singula-ai/alego-llm'
+import type { LlmCallConfig } from '@singula-ai/alego-llm'
 import type {
   BasicCompactionConfig,
   CompactionPolicyConfig,

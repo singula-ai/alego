@@ -1,16 +1,16 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import AgentRegistry, { agentEvents, Inbox } from '@alego/agent'
-import type { Agent } from '@alego/agent'
-import { createUserMessage, HarnessError } from '@alego/llm'
-import SessionStore, { Session, SessionId, type UserMessage } from '@alego/session'
+import { Context } from '@singula-ai/cordis'
+import AgentRegistry, { agentEvents, Inbox } from '@singula-ai/alego-agent'
+import type { Agent } from '@singula-ai/alego-agent'
+import { createUserMessage, HarnessError } from '@singula-ai/alego-llm'
+import SessionStore, { Session, SessionId, type UserMessage } from '@singula-ai/alego-session'
 import GoalService, {
   GoalError,
   GoalId,
   decodeGoalChange,
   foldGoal,
-} from '@alego/goal'
-import type { GoalChangeMeta, GoalRef, GoalSnapshotChangeMeta } from '@alego/goal'
+} from '@singula-ai/alego-goal'
+import type { GoalChangeMeta, GoalRef, GoalSnapshotChangeMeta } from '@singula-ai/alego-goal'
 
 interface StubAgent {
   agent: Agent
@@ -53,7 +53,7 @@ function stubAgentForSession(session: Session): StubAgent {
 }
 
 /** Build a registry-compatible agent around a fresh session. */
-function stubAgent(rawId: string, seed?: readonly import('@alego/session').SessionEvent[]): StubAgent {
+function stubAgent(rawId: string, seed?: readonly import('@singula-ai/alego-session').SessionEvent[]): StubAgent {
   return stubAgentForSession(Session.create(SessionId(rawId), seed))
 }
 

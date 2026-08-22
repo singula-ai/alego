@@ -1,11 +1,11 @@
 /** Tool UI slot declarations and their composed component props. */
-import type { HostDescriptionSource } from '@alego/client-connection/client'
-import type { InjectFace, PropsLocale, PropsRenderSlots, PropsRuntime } from '@alego/client-ui-slots'
-import type { ToolCallBlock } from '@alego/client-runtime/client'
-import type {} from '@alego/client-ui-conversation/client'
-import type {} from '@alego/client-locale/client'
+import type { HostDescriptionSource } from '@singula-ai/alego-client-connection/client'
+import type { InjectFace, PropsLocale, PropsRenderSlots, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
+import type { ToolCallBlock } from '@singula-ai/alego-client-runtime/client'
+import type {} from '@singula-ai/alego-client-ui-conversation/client'
+import type {} from '@singula-ai/alego-client-locale/client'
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface SlotMap {
     /**
      * Keyed atomic Tool call view, dispatched by the wire Tool name. Register

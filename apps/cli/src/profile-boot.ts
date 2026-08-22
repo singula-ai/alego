@@ -8,15 +8,15 @@
  * App flags are not the launcher's business: the invocation's inner arguments
  * are provided to the tree through `ctx.cmdlineArgs`, where any injected app
  * plugin may read the same immutable snapshot.
- * @module @alego/cli/profile-boot
+ * @module @singula-ai/alego/profile-boot
  */
 
 import { writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { FiberState, type Context } from '@alego/cordis'
-import type { PatchOptions } from '@alego/cordis-plugin-include'
-import type { EntryOptions } from '@alego/cordis-plugin-loader'
+import { FiberState, type Context } from '@singula-ai/cordis'
+import type { PatchOptions } from '@singula-ai/cordis-plugin-include'
+import type { EntryOptions } from '@singula-ai/cordis-plugin-loader'
 import {
   boot,
   composeEntries,
@@ -28,14 +28,14 @@ import {
   PROFILE_PATCH_FILENAME,
   watchUserPatches,
   type Profile,
-} from '@alego/app-boot'
-import { resolveAlegoHome } from '@alego/home-paths'
+} from '@singula-ai/alego-app-boot'
+import { resolveAlegoHome } from '@singula-ai/alego-home-paths'
 
 /** Shipped agent-preset root: beside this app's own config, in both source and built layouts. */
 const SHIPPED_PRESET_ROOT = fileURLToPath(new URL('../config/agent-presets/', import.meta.url))
 
-import { ALEGO_LAUNCH_ENVIRONMENT_KEY, type LaunchEnvironmentSnapshot } from '@alego/launch-environment'
-import { provideCmdline } from '@alego/cmdline'
+import { ALEGO_LAUNCH_ENVIRONMENT_KEY, type LaunchEnvironmentSnapshot } from '@singula-ai/alego-launch-environment'
+import { provideCmdline } from '@singula-ai/alego-cmdline'
 import { createProcessShutdown, type ProcessShutdown } from './process-shutdown.ts'
 
 const NAME = 'alego'
@@ -278,9 +278,9 @@ export async function runProfile(options: RunProfileOptions): Promise<{ ctx: Con
       // bare custom profile may not mount either.
       if (ctx.get('hmr') === undefined) {
         if (ctx.get('timer') === undefined) {
-          await ctx.loader.create({ name: '@alego/cordis-plugin-timer' })
+          await ctx.loader.create({ name: '@singula-ai/cordis-plugin-timer' })
         }
-        await ctx.loader.create({ name: '@alego/cordis-plugin-hmr', config: { root: [] } })
+        await ctx.loader.create({ name: '@singula-ai/cordis-plugin-hmr', config: { root: [] } })
       }
       await watchUserPatches(ctx, {
         binName: NAME,

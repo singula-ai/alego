@@ -6,10 +6,10 @@
  * serialize per Session, and a disposed controller stops publishing.
  */
 import { describe, expect, it, vi } from 'vitest'
-import type { MessageId, SessionId } from '@alego/client-connection/client'
+import type { MessageId, SessionId } from '@singula-ai/alego-client-connection/client'
 import type {
   MessageFeedbackItem, MessageFeedbackVersion,
-} from '@alego/message-feedback/types'
+} from '@singula-ai/alego-message-feedback/types'
 import { MessageFeedbackController, type MessageFeedbackRemote } from '../src/client/controller.ts'
 
 const SESSION = 's-1' as SessionId

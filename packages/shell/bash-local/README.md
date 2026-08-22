@@ -1,8 +1,8 @@
-# @alego/bash-local
+# @singula-ai/alego-bash-local
 
 English | [中文](README.zh.md)
 
-Local Service Provider for the `@alego/shell` executor seam over the [`@alego/subprocess`](../../subprocess/subprocess/README.md) service: `LocalBashExecutor` spawns `bash -c <command>` per call as a managed process group through `ctx.subprocess`, and owns everything bash-shaped — command defaulting and caps, timeout/cancel classification, the model-friendly terminal environment, and the model-facing stdout/stderr merge for background reads. Group mechanics (bounded spill-backed output, credential scrub, kill escalation, disposal) are the subprocess service's.
+Local Service Provider for the `@singula-ai/alego-shell` executor seam over the [`@singula-ai/alego-subprocess`](../../subprocess/subprocess/README.md) service: `LocalBashExecutor` spawns `bash -c <command>` per call as a managed process group through `ctx.subprocess`, and owns everything bash-shaped — command defaulting and caps, timeout/cancel classification, the model-friendly terminal environment, and the model-facing stdout/stderr merge for background reads. Group mechanics (bounded spill-backed output, credential scrub, kill escalation, disposal) are the subprocess service's.
 
 The package root exports the default and named `LocalBashExecutor` plugin plus its `Config`.
 
@@ -10,7 +10,7 @@ The package root exports the default and named `LocalBashExecutor` plugin plus i
 
 ```yaml
 - id: bash
-  name: '@alego/bash-local'
+  name: '@singula-ai/alego-bash-local'
   config:
     cwd: /path/to/workspace   # default: process.cwd()
     timeoutMs: 120000          # default foreground timeout

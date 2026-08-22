@@ -14,12 +14,12 @@
 // collapsed summary is the failure's first line in the error color.
 
 import { useState, type KeyboardEvent } from 'react'
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import clsx from 'clsx'
 import {
   IconApiOutline14, IconChevronDownOutline14, IconInspectOutline12, StateDot, TerminalBlock,
-} from '@alego/client-ui-primitives'
-import type { PropsLocale } from '@alego/client-ui-slots'
+} from '@singula-ai/alego-client-ui-primitives'
+import type { PropsLocale } from '@singula-ai/alego-client-ui-slots'
 import type { ToolCallViewProps } from '../../contract/slots.ts'
 import { terminalBlockLabels, terminalCardModel, terminalFailed } from '../models/terminal-card-model.ts'
 import { toolRowModel, type ToolRowState } from '../models/tool-call-model.ts'

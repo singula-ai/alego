@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /** Snapshot-only Loader driver: stream one fixture turn as canonical JSONL. */
 
-import type { Context } from '@alego/cordis'
-import { boot, installFailLoud, loadEnv, resolveConfigPath } from '@alego/app-boot'
-import { runFixtureTurn } from '@alego/loader-smoke'
-import type { SessionEvent } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import { boot, installFailLoud, loadEnv, resolveConfigPath } from '@singula-ai/alego-app-boot'
+import { runFixtureTurn } from '@singula-ai/alego-loader-smoke'
+import type { SessionEvent } from '@singula-ai/alego-session'
 
 const NAME = 'headless-test-driver'
 const [configPath, ...taskParts] = process.argv.slice(2)

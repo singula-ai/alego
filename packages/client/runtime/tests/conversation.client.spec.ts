@@ -1,8 +1,8 @@
 /** Assistant block classifier (moved here with sessions/conversation.ts). */
 
 import { describe, expect, it } from 'vitest'
-import { AttachmentId } from '@alego/attachment'
-import type { ContentBlock } from '@alego/api-remotes/client'
+import { AttachmentId } from '@singula-ai/alego-attachment'
+import type { ContentBlock } from '@singula-ai/alego-api-remotes/client'
 import { toAssistantBlock, toAssistantBlocks } from '../src/client/sessions/conversation.ts'
 
 describe('toAssistantBlock', () => {

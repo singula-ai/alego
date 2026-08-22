@@ -6,11 +6,11 @@
  * real engine instance (same create path as production).
  */
 import { beforeEach, describe, expect, it } from 'vitest'
-import { createLayoutStore } from '@alego/client-ui-layout/src/client/stores.ts'
+import { createLayoutStore } from '@singula-ai/alego-client-ui-layout/src/client/stores.ts'
 import {
   DETAILS_DEFAULT, DETAILS_MAX, DETAILS_MIN,
   SIDEBAR_DEFAULT, SIDEBAR_MAX, SIDEBAR_MIN,
-} from '@alego/client-ui-layout/src/client/columns.ts'
+} from '@singula-ai/alego-client-ui-layout/src/client/columns.ts'
 
 const PERSIST_KEY = 'alego.layout.panels'
 

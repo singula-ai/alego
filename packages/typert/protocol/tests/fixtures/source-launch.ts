@@ -1,10 +1,10 @@
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import {
   TypertRemoteService,
   Remote,
   RemoteScope,
   remoteMethods,
-} from '@alego/typert-protocol'
+} from '@singula-ai/alego-typert-protocol'
 
 class Goals extends TypertRemoteService {
   constructor(ctx: Context) {

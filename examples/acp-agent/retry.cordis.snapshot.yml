@@ -3,15 +3,15 @@
 # 1 ms zero-jitter retry policy as the live sibling. The app patch still
 # restates its whole config for raw JSONL persistence and the recorded model.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - id: acp-agent
-        name: '@alego/acp-demo'
+        name: '@singula-ai/alego-acp-demo'
         config:
           provider: deepseek-official
           model: deepseek-v4-flash
@@ -25,7 +25,7 @@
             Verify your work by running the code or tests. Keep answers brief and factual.
       - insert:
           - id: llm-replay
-            name: '@alego/llm-replay'
+            name: '@singula-ai/alego-llm-replay'
             config:
               providers:
                 - id: deepseek-official

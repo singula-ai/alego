@@ -4,7 +4,7 @@
  * the POC's restricting-SID allowlist. Every API call is checked; any failure
  * throws with the API name and the exact Win32 code — the original POC ignored
  * all of these and silently ran children with the FULL, unrestricted token.
- * @module @alego/sandbox-windows-acl/token
+ * @module @singula-ai/alego-sandbox-windows-acl/token
  */
 
 import { allocBytes, allocPtrSlot, allocUint32, decodePtr, decodePtrAt, decodeUint32, encodeUint32, isNullPtr, ptrAddress, throwLastError, throwWin32 } from './ffi.ts'

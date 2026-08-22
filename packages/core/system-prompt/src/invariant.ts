@@ -1,10 +1,10 @@
-/** Package-owned prompt-assembly invariants. @module @alego/system-prompt/invariant */
+/** Package-owned prompt-assembly invariants. @module @singula-ai/alego-system-prompt/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 import type { PromptAssembly } from './index.ts'
 
-const PACKAGE_NAME = '@alego/system-prompt'
+const PACKAGE_NAME = '@singula-ai/alego-system-prompt'
 const VARIABLE_NAME = /^[a-z][a-z0-9_]*$/
 
 /** Cordis companion plugin name. */

@@ -1,7 +1,7 @@
 /**
  * Pure client-safe subagent projection vocabulary.
  *
- * @module @alego/subagent/projection-types
+ * @module @singula-ai/alego-subagent/projection-types
  */
 
 /** Durable active-turn timing for one descriptor-backed child session. */
@@ -46,7 +46,7 @@ export type SubagentIdentityProjection =
     seq: number
   }
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionMap {
     /** Active-turn duration for a descriptor-backed subagent session. */
     subagentTiming: SubagentTimingProjection

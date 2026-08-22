@@ -1,4 +1,4 @@
-# @alego/client-ui-primitives
+# @singula-ai/alego-client-ui-primitives
 
 [English](README.md) | 中文
 

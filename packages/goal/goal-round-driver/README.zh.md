@@ -1,4 +1,4 @@
-# @alego/goal-round-driver
+# @singula-ai/alego-goal-round-driver
 
 [English](README.md) | 中文
 
@@ -8,13 +8,13 @@
 
 ```yaml
 - id: goal
-  name: '@alego/goal'
+  name: '@singula-ai/alego-goal'
 
 - id: tool-goal
-  name: '@alego/tool-goal'
+  name: '@singula-ai/alego-tool-goal'
 
 - id: goal-round-driver
-  name: '@alego/goal-round-driver'
+  name: '@singula-ai/alego-goal-round-driver'
 ```
 
 该插件没有可调配置。`maxGoalRounds` 属于目标定义，面向模型的阻塞阈值则属于 [`alego-tool-goal`](../tool-goal/README.zh.md)；在驱动器中重复任一数值都可能产生分歧策略。

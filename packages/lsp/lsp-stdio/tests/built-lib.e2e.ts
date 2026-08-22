@@ -7,8 +7,8 @@ import { execa } from 'execa'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
 /**
- * Keyless built-artifact smoke: plain Node imports `@alego/lsp` and
- * `@alego/lsp-stdio` by name through their exports maps, spawns the fixture server, runs
+ * Keyless built-artifact smoke: plain Node imports `@singula-ai/alego-lsp` and
+ * `@singula-ai/alego-lsp-stdio` by name through their exports maps, spawns the fixture server, runs
  * one query (exercising real `Content-Length` framing over `lib/index.js`), and disposes (exercising
  * subprocess cleanup). Unit tests use `src/`; this pins the downstream `lib/` path. Skips when `lib/`
  * is absent; CI runs it after the build.
@@ -40,11 +40,11 @@ describe.skipIf(!built)('built lib real load path (plain node)', () => {
   it('runs a query through lib/index.js and disposes cleanly, framing over the base protocol', async () => {
     const location = JSON.stringify({ uri: pathToFileURL(join(ws, 'a.ts')).href, range: { start: { line: 0, character: 0 }, end: { line: 0, character: 3 } } })
     const script = `
-      const { Context } = await import('@alego/cordis')
-      const { default: Lsp } = await import('@alego/lsp')
-      const LspLocal = await import('@alego/lsp-stdio')
-      const { default: LocalFileSystem } = await import('@alego/fs-local')
-      const { default: LocalSubprocessRuntime } = await import('@alego/subprocess-local')
+      const { Context } = await import('@singula-ai/cordis')
+      const { default: Lsp } = await import('@singula-ai/alego-lsp')
+      const LspLocal = await import('@singula-ai/alego-lsp-stdio')
+      const { default: LocalFileSystem } = await import('@singula-ai/alego-fs-local')
+      const { default: LocalSubprocessRuntime } = await import('@singula-ai/alego-subprocess-local')
       const ctx = new Context()
       await ctx.plugin(Lsp)
       await ctx.plugin(LocalSubprocessRuntime)

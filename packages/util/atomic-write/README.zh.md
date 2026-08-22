@@ -7,7 +7,7 @@
 ## 接口面
 
 ```ts
-import { withFileLock, writeFileAtomic } from '@alego/atomic-write'
+import { withFileLock, writeFileAtomic } from '@singula-ai/alego-atomic-write'
 
 declare const text: string
 declare const render: (previous: string) => string

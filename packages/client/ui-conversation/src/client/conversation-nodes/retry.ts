@@ -1,12 +1,12 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   ConversationLocation, ConversationNodeDefinition, ModelRetryNode,
-} from '@alego/client-runtime/client'
-import type {} from '@alego/llm-retry/types'
+} from '@singula-ai/alego-client-runtime/client'
+import type {} from '@singula-ai/alego-llm-retry/types'
 import type { RetryChatData } from '../contract/chat-nodes.ts'
 import { chatNode } from './common.ts'
 
-declare module '@alego/client-ui-conversation/client' {
+declare module '@singula-ai/alego-client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Producer-correlated model retry chain. */
     'model-retry': RetryChatData

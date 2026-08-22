@@ -13,8 +13,8 @@
 // resolved frame.
 
 import { useMemo, useState } from 'react'
-import { Button } from '@alego/client-ui-primitives'
-import type { RunningToolCall } from '@alego/client-runtime/client'
+import { Button } from '@singula-ai/alego-client-ui-primitives'
+import type { RunningToolCall } from '@singula-ai/alego-client-runtime/client'
 import { PendingApproval, type ApprovalComposerProps } from '../contract/slots.ts'
 import { rootToolCall } from '../chat/tool-node-reader.ts'
 import css from './ApprovalPanel.module.css'

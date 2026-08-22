@@ -1,10 +1,10 @@
-/** Package-owned agent lifecycle invariants. @module @alego/agent/invariant */
+/** Package-owned agent lifecycle invariants. @module @singula-ai/alego-agent/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
-import type { Agent, AgentStatus } from '@alego/agent'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
+import type { Agent, AgentStatus } from '@singula-ai/alego-agent'
 
-const PACKAGE_NAME = '@alego/agent'
+const PACKAGE_NAME = '@singula-ai/alego-agent'
 
 /** Cordis companion plugin name. */
 export const name = 'agent-invariant'

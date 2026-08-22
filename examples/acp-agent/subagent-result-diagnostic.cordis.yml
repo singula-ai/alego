@@ -1,7 +1,7 @@
 # Test-only product-shaped composition: mount a deterministic provider behind
 # the same one-shot tool schema as the public Codex example.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
@@ -9,7 +9,7 @@
           - id: subagent-result-diagnostic
             name: './tests/fixtures/subagent-result-diagnostic.ts'
           - id: tool-subagent-codex
-            name: '@alego/tool-subagent'
+            name: '@singula-ai/alego-tool-subagent'
             config:
               provider: snapshot-diagnostic
               toolName: subagent_codex

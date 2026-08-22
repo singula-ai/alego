@@ -1,21 +1,21 @@
 # Keyless context-overflow composition for the assembled compaction snapshot.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - id: compaction-basic
-        name: '@alego/compaction-basic'
+        name: '@singula-ai/alego-compaction-basic'
         config:
           thresholdRatio: 0.99
           retainTokens: 20
           maxTokens: 32
       - insert:
           - id: llm-replay
-            name: '@alego/llm-replay'
+            name: '@singula-ai/alego-llm-replay'
             config:
               providers:
                 - id: deepseek-official

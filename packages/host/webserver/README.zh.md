@@ -1,4 +1,4 @@
-# @alego/host-webserver
+# @singula-ai/alego-host-webserver
 
 [English](README.md) | 中文
 

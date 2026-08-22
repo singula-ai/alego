@@ -1,4 +1,4 @@
-# @alego/e2b
+# @singula-ai/alego-e2b
 
 [English](README.md) | 中文
 
@@ -8,16 +8,16 @@
 
 ```yaml
 - id: e2b
-  name: '@alego/e2b'
+  name: '@singula-ai/alego-e2b'
   config:
     cwd: /home/user/workspace
     timeoutMs: 300000
 
 - id: subprocess-e2b
-  name: '@alego/subprocess-e2b'
+  name: '@singula-ai/alego-subprocess-e2b'
 
 - id: fs-e2b
-  name: '@alego/fs-e2b'
+  name: '@singula-ai/alego-fs-e2b'
 ```
 
 `apiKey` 可省略；省略时读取 `E2B_API_KEY`。该密钥只配置宿主 SDK 连接，绝不会安装进沙箱。`cwd` 默认为 `/home/user/workspace`，并且必须是绝对 POSIX 路径。`timeoutMs` 默认为 5 分钟并控制沙箱生命周期；超时会删除沙箱。

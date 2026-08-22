@@ -1,17 +1,17 @@
 /**
  * Model-facing `get_goal`, `create_goal`, and `update_goal` tools over the
  * persisted same-session goal domain.
- * @module @alego/tool-goal
+ * @module @singula-ai/alego-tool-goal
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { GoalId } from '@alego/goal'
-import type { GoalRef, GoalView } from '@alego/goal'
-import { boundContextSummary, createUserMessage, HarnessError } from '@alego/llm'
-import { defineTool } from '@alego/tools'
-import type { GenericCallView } from '@alego/tools'
-import type {} from '@alego/system-prompt'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { GoalId } from '@singula-ai/alego-goal'
+import type { GoalRef, GoalView } from '@singula-ai/alego-goal'
+import { boundContextSummary, createUserMessage, HarnessError } from '@singula-ai/alego-llm'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { GenericCallView } from '@singula-ai/alego-tools'
+import type {} from '@singula-ai/alego-system-prompt'
 import {
   completionAuthority,
   goalToolExecution,

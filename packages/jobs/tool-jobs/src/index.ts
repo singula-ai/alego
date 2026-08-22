@@ -4,19 +4,19 @@
  * producers. It also delivers unreported completions to the owning agent:
  * injected into a busy owner's next step, or opening a turn on an idle one
  * under the default `wakeup` delivery, bounded per owner.
- * @module @alego/tool-jobs
+ * @module @singula-ai/alego-tool-jobs
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { boundContextSummary, createUserMessage, type ContentBlock } from '@alego/llm'
-import { TextRetainer } from '@alego/output-retention'
-import { defineTool } from '@alego/tools'
-import type { GenericCallView, ToolDefinition, ToolExecution } from '@alego/tools'
-import { JobId } from '@alego/jobs'
-import type { JobSnapshot } from '@alego/jobs'
-import type {} from '@alego/system-prompt'
-import type { Agent } from '@alego/agent'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { boundContextSummary, createUserMessage, type ContentBlock } from '@singula-ai/alego-llm'
+import { TextRetainer } from '@singula-ai/alego-output-retention'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { GenericCallView, ToolDefinition, ToolExecution } from '@singula-ai/alego-tools'
+import { JobId } from '@singula-ai/alego-jobs'
+import type { JobSnapshot } from '@singula-ai/alego-jobs'
+import type {} from '@singula-ai/alego-system-prompt'
+import type { Agent } from '@singula-ai/alego-agent'
 
 export const name = 'tool-jobs'
 export const inject = ['tools', 'jobs', 'systemPrompt']

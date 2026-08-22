@@ -1,12 +1,12 @@
 /** First-human-message model provider for `ctx.sessionTitle`. */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import {
   registerSessionTitleLlmProvider,
   SessionTitleLlmConfigFields,
-} from '@alego/session-title-llm'
-import type { SessionTitleLlmConfig } from '@alego/session-title-llm'
+} from '@singula-ai/alego-session-title-llm'
+import type { SessionTitleLlmConfig } from '@singula-ai/alego-session-title-llm'
 
 export const name = 'session-title-first-prompt-llm'
 export const inject = ['sessionTitle', 'llm', 'sessions']

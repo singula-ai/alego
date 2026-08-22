@@ -1,5 +1,5 @@
 {
-  "name": "@alego/client-ui-cordis",
+  "name": "@singula-ai/alego-client-ui-cordis",
   "description": "Cordis dynamic-plugin definition card: the keyed cordis_define tool row with its run/stop switch",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -32,14 +32,14 @@
   "alego": {
     "client": {
       "inject": [
-        "@alego/client-runtime",
-        "@alego/client-connection",
-        "@alego/cordis-client-runner",
-        "@alego/api-remotes",
-        "@alego/client-locale",
-        "@alego/client-ui-input-trigger",
-        "@alego/client-ui-tool",
-        "@alego/client-ui-sidebar"
+        "@singula-ai/alego-client-runtime",
+        "@singula-ai/alego-client-connection",
+        "@singula-ai/alego-cordis-client-runner",
+        "@singula-ai/alego-api-remotes",
+        "@singula-ai/alego-client-locale",
+        "@singula-ai/alego-client-ui-input-trigger",
+        "@singula-ai/alego-client-ui-tool",
+        "@singula-ai/alego-client-ui-sidebar"
       ],
       "platform": "web"
     }
@@ -50,31 +50,31 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@alego/api-remotes": "workspace:^",
-    "@alego/client-connection": "workspace:^",
-    "@alego/cordis-client-runner": "workspace:^",
-    "@alego/client-locale": "workspace:^",
-    "@alego/client-runtime": "workspace:^",
-    "@alego/client-ui-sidebar": "workspace:^",
-    "@alego/client-ui-input-trigger": "workspace:^",
-    "@alego/client-ui-tool": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-api-remotes": "workspace:^",
+    "@singula-ai/alego-client-connection": "workspace:^",
+    "@singula-ai/alego-cordis-client-runner": "workspace:^",
+    "@singula-ai/alego-client-locale": "workspace:^",
+    "@singula-ai/alego-client-runtime": "workspace:^",
+    "@singula-ai/alego-client-ui-sidebar": "workspace:^",
+    "@singula-ai/alego-client-ui-input-trigger": "workspace:^",
+    "@singula-ai/alego-client-ui-tool": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
-    "@alego/api-remotes": "workspace:^",
-    "@alego/client-connection": "workspace:^",
-    "@alego/cordis-client-runner": "workspace:^",
-    "@alego/client-locale": "workspace:^",
-    "@alego/client-runtime": "workspace:^",
-    "@alego/client-ui-primitives": "workspace:^",
-    "@alego/client-ui-sidebar": "workspace:^",
-    "@alego/client-ui-input-trigger": "workspace:^",
-    "@alego/client-ui-slots": "workspace:^",
-    "@alego/client-ui-tool": "workspace:^",
-    "@alego/invariants": "workspace:^",
+    "@singula-ai/alego-api-remotes": "workspace:^",
+    "@singula-ai/alego-client-connection": "workspace:^",
+    "@singula-ai/alego-cordis-client-runner": "workspace:^",
+    "@singula-ai/alego-client-locale": "workspace:^",
+    "@singula-ai/alego-client-runtime": "workspace:^",
+    "@singula-ai/alego-client-ui-primitives": "workspace:^",
+    "@singula-ai/alego-client-ui-sidebar": "workspace:^",
+    "@singula-ai/alego-client-ui-input-trigger": "workspace:^",
+    "@singula-ai/alego-client-ui-slots": "workspace:^",
+    "@singula-ai/alego-client-ui-tool": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
     "@types/react": "~18.3.1",
-    "@alego/cordis": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
     "react": "^18.2.0"
   },
   "files": [

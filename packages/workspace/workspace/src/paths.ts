@@ -1,6 +1,6 @@
 /**
  * Path canonicalization for workspace identity.
- * @module @alego/workspace/src/paths
+ * @module @singula-ai/alego-workspace/src/paths
  */
 
 import { realpath } from 'node:fs/promises'

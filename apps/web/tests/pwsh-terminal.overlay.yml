@@ -9,22 +9,22 @@
 # the composition must boot the pwsh executor, so the lane skips on hosts
 # without a usable `pwsh`.
 - id: bash-sandbox
-  name: '@alego/bash-sandbox'
+  name: '@singula-ai/alego-bash-sandbox'
   disabled: true
 - id: pwsh-sandbox
-  name: '@alego/pwsh-sandbox'
+  name: '@singula-ai/alego-pwsh-sandbox'
   disabled: true
 - id: permission
-  name: '@alego/permission-presets'
+  name: '@singula-ai/alego-permission-presets'
   disabled: true
 - insert:
     - id: pwsh-local
-      name: '@alego/pwsh-local'
+      name: '@singula-ai/alego-pwsh-local'
 
 # tool-pwsh already exists in the shipped composition: the base bundle declares
 # it platform-gated on every platform, and the web-app overlay disables it for
 # surfaces that use presets. So this lane enables it by id rather than
 # inserting a second row to the same id.
 - id: tool-pwsh
-  name: '@alego/tool-pwsh'
+  name: '@singula-ai/alego-tool-pwsh'
   disabled: false

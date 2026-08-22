@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { createUserMessage } from '@alego/llm'
-import SessionStore, { SessionId } from '@alego/session'
+import { Context } from '@singula-ai/cordis'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
 import { RuntimeContextProjection } from '../src/runtime-context.ts'
 
-const SOURCE = '@alego/system-prompt'
+const SOURCE = '@singula-ai/alego-system-prompt'
 
 function contextMessage(text: string) {
   return createUserMessage({

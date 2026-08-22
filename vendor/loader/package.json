@@ -1,5 +1,5 @@
 {
-  "name": "@alego/cordis-plugin-loader",
+  "name": "@singula-ai/cordis-plugin-loader",
   "description": "Plugin loader for cordis",
   "version": "1.0.2",
   "publishConfig": {
@@ -30,7 +30,7 @@
   "author": "Shigma <shigma10826@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "@alego/cordis": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
     "node-addon-require-builtin": "^0.1.4"
   },
   "peerDependenciesMeta": {
@@ -39,6 +39,6 @@
     }
   },
   "dependencies": {
-    "@alego/cosmokit": "workspace:^"
+    "@singula-ai/cosmokit": "workspace:^"
   }
 }

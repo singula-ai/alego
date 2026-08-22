@@ -3,11 +3,11 @@
  * record of the child's declared composition before its first request, so a
  * later cold resume can reconstruct it from its own log.
  *
- * @module @alego/subagent/descriptor-seed
+ * @module @singula-ai/alego-subagent/descriptor-seed
  */
 
-import { Session } from '@alego/session'
-import type { SessionEvent, SessionId } from '@alego/session'
+import { Session } from '@singula-ai/alego-session'
+import type { SessionEvent, SessionId } from '@singula-ai/alego-session'
 import type { SubagentDescriptorData } from './descriptor.ts'
 
 /**

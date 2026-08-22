@@ -15,14 +15,14 @@
  * absent `ctx.shell`, or a failed query is a no-op, never an error: an executor
  * rejection is contained and logged as a warning so the turn continues.
  *
- * @module @alego/tmux-context
+ * @module @singula-ai/alego-tmux-context
  */
 
-import type { Context, LoggerService } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent, PreStepDecision } from '@alego/agent'
-import type { ShellExecutor, ShellRunResult } from '@alego/shell'
-import { createUserMessage } from '@alego/llm'
+import type { Context, LoggerService } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent, PreStepDecision } from '@singula-ai/alego-agent'
+import type { ShellExecutor, ShellRunResult } from '@singula-ai/alego-shell'
+import { createUserMessage } from '@singula-ai/alego-llm'
 
 /** Cordis plugin name used by loader diagnostics. */
 export const name = 'tmux-context'

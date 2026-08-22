@@ -5,11 +5,11 @@
  * outcomes into null (admitted) or a user-visible failure line; teardown
  * empties the seat (HMR safety).
  */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import { SlotRegistry } from '@alego/client-runtime/client'
-import type { SessionId } from '@alego/client-runtime/client'
-import { LocaleRuntime } from '@alego/client-locale/client'
+import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import type { SessionId } from '@singula-ai/alego-client-runtime/client'
+import { LocaleRuntime } from '@singula-ai/alego-client-locale/client'
 import { PlanChip } from '../src/client/PlanModeControl.tsx'
 import type { PlanChipInjected } from '../src/client/index.ts'
 import { apply, inject } from '../src/client/index.ts'

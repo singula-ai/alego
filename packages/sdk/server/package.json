@@ -1,5 +1,5 @@
 {
-  "name": "@alego/sdk-jsonrpc-server",
+  "name": "@singula-ai/alego-sdk-jsonrpc-server",
   "description": "Stdio JSON-RPC server plugin for out-of-process Alego SDK clients",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -32,31 +32,31 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@alego/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:^"
   },
   "peerDependencies": {
-    "@alego/agent": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/llm-deepseek": "workspace:^",
-    "@alego/scope": "workspace:^",
-    "@alego/sdk-protocol": "workspace:^",
-    "@alego/session": "workspace:^",
-    "@alego/subagent": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-llm-deepseek": "workspace:^",
+    "@singula-ai/alego-scope": "workspace:^",
+    "@singula-ai/alego-sdk-protocol": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-subagent": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
-    "@alego/cordis-plugin-loader": "workspace:^",
-    "@alego/agent": "workspace:^",
-    "@alego/agent-spine-demo": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/llm-deepseek": "workspace:^",
-    "@alego/scope": "workspace:^",
-    "@alego/sdk-protocol": "workspace:^",
-    "@alego/session": "workspace:^",
-    "@alego/session-persistence-jsonl": "workspace:^",
-    "@alego/subagent": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/cordis-plugin-loader": "workspace:^",
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-agent-spine-demo": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-llm-deepseek": "workspace:^",
+    "@singula-ai/alego-scope": "workspace:^",
+    "@singula-ai/alego-sdk-protocol": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-session-persistence-jsonl": "workspace:^",
+    "@singula-ai/alego-subagent": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   }
 }

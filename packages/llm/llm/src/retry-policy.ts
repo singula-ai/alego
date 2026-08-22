@@ -4,11 +4,11 @@
  * Adapters expose one resolved policy per registered provider route; the
  * optional alego-llm-retry plugin executes it on the agent's failed-step extension point.
  *
- * @module @alego/llm/retry-policy
+ * @module @singula-ai/alego-llm/retry-policy
  */
 
-import z from '@alego/schemastery'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+import z from '@singula-ai/schemastery'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 import { EMPTY_RESPONSE_CODE } from './error.ts'
 
 const DEFAULT_MAX_RETRIES = 5

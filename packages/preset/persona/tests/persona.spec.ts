@@ -1,9 +1,9 @@
-import { Context } from '@alego/cordis'
-import SystemPrompt, { renderPrompt } from '@alego/system-prompt'
-import { createScope, type ScopeKey } from '@alego/scope'
+import { Context } from '@singula-ai/cordis'
+import SystemPrompt, { renderPrompt } from '@singula-ai/alego-system-prompt'
+import { createScope, type ScopeKey } from '@singula-ai/alego-scope'
 import { describe, expect, it } from 'vitest'
-import * as Persona from '@alego/persona'
-import { PERSONA_SECTION } from '@alego/persona'
+import * as Persona from '@singula-ai/alego-persona'
+import { PERSONA_SECTION } from '@singula-ai/alego-persona'
 
 async function harness(deploymentPersona: string): Promise<Context> {
   const ctx = new Context()

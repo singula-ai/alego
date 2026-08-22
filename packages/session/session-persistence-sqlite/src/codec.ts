@@ -1,11 +1,11 @@
 /**
  * Schema-17 physical chunk-row codec. This package owns the durable tags,
  * validation, and row-size limits independently from other persistence formats.
- * @module @alego/session-persistence-sqlite/codec
+ * @module @singula-ai/alego-session-persistence-sqlite/codec
  */
 
-import type { StreamChunk } from '@alego/llm'
-import type { SessionEvent } from '@alego/session'
+import type { StreamChunk } from '@singula-ai/alego-llm'
+import type { SessionEvent } from '@singula-ai/alego-session'
 
 /* jscpd:ignore-start -- schema 17 deliberately owns a frozen physical codec;
  * importing or sharing the JSONL codec would let that format mutate this database interpreter. */

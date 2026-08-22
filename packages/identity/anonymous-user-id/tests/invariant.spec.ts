@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import InvariantRegistry from '@alego/invariants'
-import * as UserIdInvariant from '@alego/anonymous-user-id/invariant'
+import { Context } from '@singula-ai/cordis'
+import InvariantRegistry from '@singula-ai/alego-invariants'
+import * as UserIdInvariant from '@singula-ai/alego-anonymous-user-id/invariant'
 
 describe('invariant companion', () => {
   it('registers the package ownership with an empty installer', async () => {

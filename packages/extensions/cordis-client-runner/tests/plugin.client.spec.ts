@@ -8,17 +8,17 @@
  */
 /* oxlint-disable typescript/no-unsafe-assignment -- Vitest asymmetric matchers are typed as any. */
 
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import InvariantService from '@alego/invariants'
+import InvariantService from '@singula-ai/alego-invariants'
 import type {
   ApprovalRequestId, CordisDynamicPackageId, CordisDynamicPluginId, CordisDynamicPluginRunId,
-} from '@alego/api-remotes/client'
-import type { SessionId } from '@alego/client-connection/client'
-import type { DynamicCordisInvokeResult } from '@alego/api-remotes/client'
+} from '@singula-ai/alego-api-remotes/client'
+import type { SessionId } from '@singula-ai/alego-client-connection/client'
+import type { DynamicCordisInvokeResult } from '@singula-ai/alego-api-remotes/client'
 // Type-only: resolves `ctx.remote` and with it the `$on`/`$dispatch` surface.
-import type {} from '@alego/api-gateway/client'
-import { SlotRegistry } from '@alego/client-runtime/client'
+import type {} from '@singula-ai/alego-api-gateway/client'
+import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
 import * as NodeHalf from '../src/index.ts'
 import * as Invariant from '../src/invariant.ts'
 import * as ClientHalf from '../src/client/index.ts'

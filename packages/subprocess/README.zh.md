@@ -6,8 +6,8 @@
 
 | 包 | ctx 键 | 角色 |
 |---|---|---|
-| [`subprocess`](subprocess/README.zh.md)（`@alego/subprocess`） | `ctx.subprocess` | Service Definition：可执行文件查找、普通受管 spawn、终端进程原语、句柄生命周期，以及共享的环境／输出词汇 |
-| [`subprocess-local`](subprocess-local/README.zh.md)（`@alego/subprocess-local`） | 无 | 本地 Service Provider：detached 进程树、有界收集／spill、`node-pty`、前台／会话检查、进程树信号发送，以及先终止再等待退出的 dispose（资源释放） |
+| [`subprocess`](subprocess/README.zh.md)（`@singula-ai/alego-subprocess`） | `ctx.subprocess` | Service Definition：可执行文件查找、普通受管 spawn、终端进程原语、句柄生命周期，以及共享的环境／输出词汇 |
+| [`subprocess-local`](subprocess-local/README.zh.md)（`@singula-ai/alego-subprocess-local`） | 无 | 本地 Service Provider：detached 进程树、有界收集／spill、`node-pty`、前台／会话检查、进程树信号发送，以及先终止再等待退出的 dispose（资源释放） |
 
 即使消费方重载，进程生命周期仍由服务负责管理；消费方负责定义进程的含义（一条 bash 命令、未来的非 shell 运行器），以及决定塑造该进程的每一项默认值。
 

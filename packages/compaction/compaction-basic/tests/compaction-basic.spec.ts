@@ -1,18 +1,18 @@
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { AttachmentId } from '@alego/attachment'
-import BasicCompactionEngine from '@alego/compaction-basic'
-import type { BasicCompactionConfig } from '@alego/compaction-basic'
-import { selectCompactableRange } from '@alego/compaction-basic/src/region.ts'
-import type { SummarizationInput, SummaryResult } from '@alego/compaction-basic/src/summarizer.ts'
-import { CompactionId, toolPairingBalancedAfter, toolPairingBalancedBefore } from '@alego/compaction'
+import { Context } from '@singula-ai/cordis'
+import { AttachmentId } from '@singula-ai/alego-attachment'
+import BasicCompactionEngine from '@singula-ai/alego-compaction-basic'
+import type { BasicCompactionConfig } from '@singula-ai/alego-compaction-basic'
+import { selectCompactableRange } from '@singula-ai/alego-compaction-basic/src/region.ts'
+import type { SummarizationInput, SummaryResult } from '@singula-ai/alego-compaction-basic/src/summarizer.ts'
+import { CompactionId, toolPairingBalancedAfter, toolPairingBalancedBefore } from '@singula-ai/alego-compaction'
 import {
   resolveCompactSpec,
   resolveConfig,
   resolveTargetPolicy,
-} from '@alego/compaction-basic/src/config.ts'
-import type { CompactionResult } from '@alego/compaction'
-import LlmRuntime, { createUserMessage, CallId, CONTEXT_WINDOW_EXCEEDED_CODE, createToolResultMessage, LlmAdapter , createMessage } from '@alego/llm'
+} from '@singula-ai/alego-compaction-basic/src/config.ts'
+import type { CompactionResult } from '@singula-ai/alego-compaction'
+import LlmRuntime, { createUserMessage, CallId, CONTEXT_WINDOW_EXCEEDED_CODE, createToolResultMessage, LlmAdapter , createMessage } from '@singula-ai/alego-llm'
 import type {
   ContentBlock,
   GenerateOptions,
@@ -21,11 +21,11 @@ import type {
   Message,
   StreamChunk,
   TokenUsage,
-} from '@alego/llm'
-import SessionStore, { Session, SessionId } from '@alego/session'
-import TokenMeter from '@alego/token-meter'
-import { agentEvents, type Agent, type RequestErrorAction } from '@alego/agent'
-import ToolResultPruner from '@alego/compaction-tool-result-pruner'
+} from '@singula-ai/alego-llm'
+import SessionStore, { Session, SessionId } from '@singula-ai/alego-session'
+import TokenMeter from '@singula-ai/alego-token-meter'
+import { agentEvents, type Agent, type RequestErrorAction } from '@singula-ai/alego-agent'
+import ToolResultPruner from '@singula-ai/alego-compaction-tool-result-pruner'
 
 const SIGNAL = new AbortController().signal
 const MODEL = 'test-model'

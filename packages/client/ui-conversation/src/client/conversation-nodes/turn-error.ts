@@ -1,11 +1,11 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   ConversationMatch, ConversationNodeContext, ConversationNodeDefinition, TurnErrorNode,
-} from '@alego/client-runtime/client'
-import { displayFailureMessage } from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
+import { displayFailureMessage } from '@singula-ai/alego-client-runtime/client'
 import { chatNode } from './common.ts'
 
-declare module '@alego/client-ui-conversation/client' {
+declare module '@singula-ai/alego-client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Terminal turn failure recorded on the turn's end reason. */
     'turn-error': TurnErrorNode

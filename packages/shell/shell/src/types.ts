@@ -1,17 +1,17 @@
 /**
  * Execution types for the bash executor seam. Background job semantics belong
- * to `@alego/jobs`; this seam exposes only process handles. The
+ * to `@singula-ai/alego-jobs`; this seam exposes only process handles. The
  * managed-environment and captured-output vocabulary is owned by the
  * subprocess seam and re-exported here so bash consumers keep one import
  * root.
  * @module alego-shell/types
  */
 
-import type { SandboxEnforcement, SandboxExecutionPolicy, SandboxMode } from '@alego/sandbox'
-import type { CollectedOutput, AlegoEnvironment } from '@alego/subprocess'
+import type { SandboxEnforcement, SandboxExecutionPolicy, SandboxMode } from '@singula-ai/alego-sandbox'
+import type { CollectedOutput, AlegoEnvironment } from '@singula-ai/alego-subprocess'
 
-export { ALEGO_ENV_PREFIX } from '@alego/subprocess'
-export type { CollectedOutput, AlegoEnvironment, AlegoEnvironmentKey } from '@alego/subprocess'
+export { ALEGO_ENV_PREFIX } from '@singula-ai/alego-subprocess'
+export type { CollectedOutput, AlegoEnvironment, AlegoEnvironmentKey } from '@singula-ai/alego-subprocess'
 
 /**
  * Sandbox facts for one run, present iff a sandboxing executor handled it.

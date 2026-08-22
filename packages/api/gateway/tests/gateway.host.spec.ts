@@ -1,10 +1,10 @@
 import { createServer } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import { describe, expect, it } from 'vitest'
-import { Context, Service, symbols } from '@alego/cordis'
+import { Context, Service, symbols } from '@singula-ai/cordis'
 import { z } from 'zod'
-import { apply as applyConnection, inject as connectionInject } from '@alego/client-connection'
-import type { WebServer, WebRoute } from '@alego/host-webserver'
+import { apply as applyConnection, inject as connectionInject } from '@singula-ai/alego-client-connection'
+import type { WebServer, WebRoute } from '@singula-ai/alego-host-webserver'
 import {
   bindTypertRemote,
   Remote,
@@ -14,9 +14,9 @@ import {
   type TypertContext,
   type TypertLookup,
   type TypertLookupProvider,
-} from '@alego/typert-protocol'
-import TypertRegistry, { type TypertContribution } from '@alego/typert-registry'
-import TypertGatewayService, { TypertGatewayError } from '@alego/api-gateway'
+} from '@singula-ai/alego-typert-protocol'
+import TypertRegistry, { type TypertContribution } from '@singula-ai/alego-typert-registry'
+import TypertGatewayService, { TypertGatewayError } from '@singula-ai/alego-api-gateway'
 
 interface FixtureAgent {
   readonly id: string
@@ -26,7 +26,7 @@ interface MarkedContext extends Context {
   readonly fixtureScope?: string
 }
 
-declare module '@alego/typert-protocol' {
+declare module '@singula-ai/alego-typert-protocol' {
   interface TypertLookupMap {
     gatewayFixture: TypertLookup<FixtureAgent, string>
     gatewayFixtureAlias: TypertLookup<FixtureAgent, string>

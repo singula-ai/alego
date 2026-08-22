@@ -1,14 +1,14 @@
-# @alego/code-runtime-worker-thread
+# @singula-ai/alego-code-runtime-worker-thread
 
 English | [中文](README.zh.md)
 
-Worker-thread implementation of the [`@alego/code-runtime`](../code-runtime/README.md) seam: `WorkerThreadCodeRuntime` runs each program in ONE fresh Node `worker_threads.Worker` — TypeScript in, type-stripped host-side, bindings bridged over the message port, `{ value, logs, error? }` out. **Containment, not a security boundary**: trust posture is bash-equivalent by design (the [Code Mode Agent Note](../../../.agents/notes/implemented/feature/2026-06-15-code-mode.md) § Trust posture), with containment bash does not have — separate isolate, empty environment, heap cap, hard termination.
+Worker-thread implementation of the [`@singula-ai/alego-code-runtime`](../code-runtime/README.md) seam: `WorkerThreadCodeRuntime` runs each program in ONE fresh Node `worker_threads.Worker` — TypeScript in, type-stripped host-side, bindings bridged over the message port, `{ value, logs, error? }` out. **Containment, not a security boundary**: trust posture is bash-equivalent by design (the [Code Mode Agent Note](../../../.agents/notes/implemented/feature/2026-06-15-code-mode.md) § Trust posture), with containment bash does not have — separate isolate, empty environment, heap cap, hard termination.
 
 ## Config
 
 ```yaml
 - id: code-runtime
-  name: '@alego/code-runtime-worker-thread'
+  name: '@singula-ai/alego-code-runtime-worker-thread'
   config:
     computeMs: 60000              # busy-time budget (measured event-loop active time)
     maxWallMs: 600000             # wall-clock ceiling; never pauses for anything

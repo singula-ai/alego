@@ -2,11 +2,11 @@
  * On-disk JSON unit format: the file is always the current net state, kept
  * human-readable (pretty-printed, stable key order from insertion) — that
  * legibility is this backend's reason to exist.
- * @module @alego/storage-json/src/format
+ * @module @singula-ai/alego-storage-json/src/format
  */
 
-import { StorageError } from '@alego/storage'
-import type { KvUnitDescriptor } from '@alego/storage'
+import { StorageError } from '@singula-ai/alego-storage'
+import type { KvUnitDescriptor } from '@singula-ai/alego-storage'
 
 /** In-memory authoritative state of one unit; the file is its projection. `global` is `null` until first written. */
 export interface UnitState {

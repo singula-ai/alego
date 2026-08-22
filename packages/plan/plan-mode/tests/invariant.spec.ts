@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import SessionStore, { Session, SessionId, type SessionEvent } from '@alego/session'
-import * as PlanModeInvariant from '@alego/plan-mode/invariant'
-import InvariantRegistry from '@alego/invariants'
+import { Context } from '@singula-ai/cordis'
+import SessionStore, { Session, SessionId, type SessionEvent } from '@singula-ai/alego-session'
+import * as PlanModeInvariant from '@singula-ai/alego-plan-mode/invariant'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

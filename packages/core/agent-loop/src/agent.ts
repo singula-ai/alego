@@ -14,9 +14,9 @@ import type {
   InboxTarget,
   PreStepDecision,
   RequestErrorAction,
-} from '@alego/agent'
-import { Inbox, agentEvents, assembleContextFor } from '@alego/agent'
-import type { GenerateOptions, LlmCallConfig, Message, PreparedLlmCall } from '@alego/llm'
+} from '@singula-ai/alego-agent'
+import { Inbox, agentEvents, assembleContextFor } from '@singula-ai/alego-agent'
+import type { GenerateOptions, LlmCallConfig, Message, PreparedLlmCall } from '@singula-ai/alego-llm'
 import {
   BlockAssembler,
   LlmError,
@@ -24,14 +24,14 @@ import {
   deepFreeze,
   errorChain,
   markAgentLoopRequest,
-} from '@alego/llm'
-import type { Scope } from '@alego/scope'
-import { createScope } from '@alego/scope'
-import type { EpochHeader, RequestContext, Session, SessionId, TurnEndReason, UserMessage } from '@alego/session'
-import { canonicalHeader, headerEquals } from '@alego/session'
-import { joinContextSections, renderContextSections, renderPrompt } from '@alego/system-prompt'
-import type { PromptAssembly } from '@alego/system-prompt'
-import type { Context } from '@alego/cordis'
+} from '@singula-ai/alego-llm'
+import type { Scope } from '@singula-ai/alego-scope'
+import { createScope } from '@singula-ai/alego-scope'
+import type { EpochHeader, RequestContext, Session, SessionId, TurnEndReason, UserMessage } from '@singula-ai/alego-session'
+import { canonicalHeader, headerEquals } from '@singula-ai/alego-session'
+import { joinContextSections, renderContextSections, renderPrompt } from '@singula-ai/alego-system-prompt'
+import type { PromptAssembly } from '@singula-ai/alego-system-prompt'
+import type { Context } from '@singula-ai/cordis'
 import { RuntimeContextProjection } from './runtime-context.ts'
 import { executeToolCalls } from './tool-calls.ts'
 

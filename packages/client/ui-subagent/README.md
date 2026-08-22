@@ -1,4 +1,4 @@
-# @alego/client-ui-subagent
+# @singula-ai/alego-client-ui-subagent
 
 English | [中文](README.zh.md)
 

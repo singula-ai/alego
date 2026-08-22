@@ -9,8 +9,8 @@ import {
   spawnSubprocess,
   taskkillProcessTree,
 } from '../src/spawn.ts'
-import type { SubprocessHandle, SubprocessOutputReader } from '@alego/subprocess'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+import type { SubprocessHandle, SubprocessOutputReader } from '@singula-ai/alego-subprocess'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 
 /**
  * Translate the suite's POSIX command strings into node one-liners on Windows,
@@ -754,8 +754,8 @@ describe.skipIf(process.platform === 'win32')('tree-survivor escalation (termina
   })
 
   it('service teardown awaits tree survivors, not just handle settlement', async () => {
-    const { Context } = await import('@alego/cordis')
-    const { default: LocalSubprocessRuntime } = await import('@alego/subprocess-local')
+    const { Context } = await import('@singula-ai/cordis')
+    const { default: LocalSubprocessRuntime } = await import('@singula-ai/alego-subprocess-local')
     const ctx = new Context()
     const fiber = await ctx.plugin(LocalSubprocessRuntime)
     ;(ctx.subprocess as InstanceType<typeof LocalSubprocessRuntime>).internals = { spillDir }

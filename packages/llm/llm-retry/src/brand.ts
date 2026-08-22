@@ -1,4 +1,4 @@
-import type { Branded } from '@alego/brand'
+import type { Branded } from '@singula-ai/alego-brand'
 
 /** Stable identity shared by every attempt in one request-step retry chain. */
 export type RetryId = Branded<'RetryId'>

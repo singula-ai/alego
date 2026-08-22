@@ -1,4 +1,4 @@
-# @alego/experimental-agent-team
+# @singula-ai/alego-experimental-agent-team
 
 English | [中文](README.zh.md)
 
@@ -8,7 +8,7 @@ Implicit-root Agent Teams domain. `ctx.agentTeams` owns a flat Lead/teammate ros
 
 ```yaml
 - id: agent-team
-  name: '@alego/experimental-agent-team'
+  name: '@singula-ai/alego-experimental-agent-team'
   config:
     maxMembers: 8
     maxTasks: 256
@@ -61,7 +61,7 @@ Each delivered peer message is a user-role message. A short first text block nam
 
 #### Token effect
 
-Each peer delivery adds the sender prefix plus message content to the target history. Task and roster mutations add no model tokens; their model-facing representation belongs to `@alego/experimental-tool-agent-team` results.
+Each peer delivery adds the sender prefix plus message content to the target history. Task and roster mutations add no model tokens; their model-facing representation belongs to `@singula-ai/alego-experimental-tool-agent-team` results.
 
 #### KV Cache effect
 

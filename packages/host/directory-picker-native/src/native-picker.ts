@@ -1,6 +1,6 @@
 /** Cross-platform native single-directory chooser behind the native backend's capability. */
 
-import { runNativeCommand, type NativeCommandRunner } from '@alego/native-command'
+import { runNativeCommand, type NativeCommandRunner } from '@singula-ai/alego-native-command'
 import { pickWin32Directory } from './win32-dialog.ts'
 
 /** Testable command boundary; native implementations never invoke a shell. */

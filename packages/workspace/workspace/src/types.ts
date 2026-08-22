@@ -2,11 +2,11 @@
  * Public type vocabulary of the workspace entity: the `WorkspaceId` brand and
  * the `Workspace` consumer interface. Types only — the `WorkspaceId` factory
  * lives in `index.ts` (this file carries no runtime code).
- * @module @alego/workspace/src/types
+ * @module @singula-ai/alego-workspace/src/types
  */
 
-import type { Branded } from '@alego/brand'
-import type { SessionId } from '@alego/session'
+import type { Branded } from '@singula-ai/alego-brand'
+import type { SessionId } from '@singula-ai/alego-session'
 
 /**
  * Identifies one workspace record. A generated uuid, never the path: path

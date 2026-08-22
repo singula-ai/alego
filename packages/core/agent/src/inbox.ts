@@ -1,11 +1,11 @@
 /**
  * Incremental projection of durable agent inbox events.
  *
- * @module @alego/agent/inbox
+ * @module @singula-ai/alego-agent/inbox
  */
 
-import type { MessageId } from '@alego/llm'
-import type { Session, SessionEventMap, UserMessage } from '@alego/session'
+import type { MessageId } from '@singula-ai/alego-llm'
+import type { Session, SessionEventMap, UserMessage } from '@singula-ai/alego-session'
 import type { InboxTarget } from './types.ts'
 
 /** Mutable state privately owned by an {@link Inbox}. */

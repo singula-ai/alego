@@ -2,15 +2,15 @@
 # image-capable replay route. The scenario generates its tiny PNG inside the
 # run_code program, then exercises read_image as a nested dispatch.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - id: acp-agent
-        name: '@alego/acp-demo'
+        name: '@singula-ai/alego-acp-demo'
         config:
           provider: deepseek-official
           model: deepseek-v4-flash-vision-exp
@@ -26,11 +26,11 @@
             Verify your work by running the code or tests. Keep answers brief and factual.
       - insert:
           - id: attachment-local
-            name: '@alego/attachment-local'
+            name: '@singula-ai/alego-attachment-local'
           - id: code-runtime
-            name: '@alego/code-runtime-worker-thread'
+            name: '@singula-ai/alego-code-runtime-worker-thread'
           - id: llm-replay
-            name: '@alego/llm-replay'
+            name: '@singula-ai/alego-llm-replay'
             config:
               providers:
                 - id: deepseek-official

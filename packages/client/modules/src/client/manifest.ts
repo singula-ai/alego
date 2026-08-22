@@ -29,10 +29,10 @@
  * composes the wire.
  */
 
-import type {} from '@alego/cordis'
+import type {} from '@singula-ai/cordis'
 import type { ClientModuleSystem } from './system.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     /** The client module system the web shell builds at boot (provided by the `./client` wrapper plugin). */
     modules: ClientModuleLoader

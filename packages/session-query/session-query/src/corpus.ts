@@ -1,8 +1,8 @@
 /** Live/persisted logical-corpus resolution for session-query. */
 
-import type { Context, Fiber } from '@alego/cordis'
-import type { Session, SessionEvent, SessionHeader, SessionId } from '@alego/session'
-import type SessionPersistence from '@alego/session-persistence'
+import type { Context, Fiber } from '@singula-ai/cordis'
+import type { Session, SessionEvent, SessionHeader, SessionId } from '@singula-ai/alego-session'
+import type SessionPersistence from '@singula-ai/alego-session-persistence'
 import type { SessionRecord } from './types.ts'
 import { SessionQueryError } from './config.ts'
 import { assertSessionHeadersCompatible } from './sources.ts'

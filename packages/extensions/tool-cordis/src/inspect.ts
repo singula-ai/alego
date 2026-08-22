@@ -4,14 +4,14 @@
  * `api-catalog.ts`. This module owns the join of the two plus presentation: which
  * lines a section prints, how compact the default report stays, and what an exact
  * `name` adds.
- * @module @alego/tool-cordis/inspect
+ * @module @singula-ai/alego-tool-cordis/inspect
  */
 
-import type { Context, Fiber } from '@alego/cordis'
-import type { ScopeKey } from '@alego/scope'
-import type { Agent } from '@alego/agent'
+import type { Context, Fiber } from '@singula-ai/cordis'
+import type { ScopeKey } from '@singula-ai/alego-scope'
+import type { Agent } from '@singula-ai/alego-agent'
 // Type-only: resolves `ctx.dynamicCordisRunner` (the registry this report reads).
-import type {} from '@alego/cordis-host-runner'
+import type {} from '@singula-ai/alego-cordis-host-runner'
 import { EVENT_API, INHERITED_CTX_API, SERVICE_API, TYPE_API } from './api-catalog.ts'
 import type { EventApiEntry, InheritedApiEntry, ServiceApiEntry, ServiceApiMethod, TypeApiEntry } from './api-catalog.ts'
 import { FiberState, STATE_LABELS } from './fiber-state.ts'

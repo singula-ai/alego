@@ -10,10 +10,10 @@
 
 ```yaml
 - id: session-persistence
-  name: '@alego/session-persistence-jsonl'
+  name: '@singula-ai/alego-session-persistence-jsonl'
 
 - id: session-checkpoints
-  name: '@alego/session-checkpoint-policy'
+  name: '@singula-ai/alego-session-checkpoint-policy'
 ```
 
 持久化与检查点调度刻意拆分为独立 Cordis 插件。持久化后端会为追加的 `session/event` 启动有界后台批次，并把每个已请求的 `session/flush` 变成即时完全停稳屏障；该策略选择请求、工具分派和下一步骤屏障。不带此策略加载后端是有效的，但崩溃可能丢失仍位于已配置批处理窗口内的事件，或尚未完成的写入。第一方持久化应用和运行时显式挂载两个插件；专用部署可以刻意省略或替换策略。

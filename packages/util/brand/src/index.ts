@@ -18,7 +18,7 @@
  * package can brand its ids without depending on an unrelated capability
  * package.
  *
- * @module @alego/brand
+ * @module @singula-ai/alego-brand
  */
 
 declare const BRAND: unique symbol

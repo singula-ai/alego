@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import SessionStore, { SessionId } from '@alego/session'
-import InvariantRegistry from '@alego/invariants'
-import * as AgentLoopInvariant from '@alego/agent-loop/invariant'
-import { createUserMessage, markAgentLoopRequest, type GenerateOptions  } from '@alego/llm'
+import { Context } from '@singula-ai/cordis'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import InvariantRegistry from '@singula-ai/alego-invariants'
+import * as AgentLoopInvariant from '@singula-ai/alego-agent-loop/invariant'
+import { createUserMessage, markAgentLoopRequest, type GenerateOptions  } from '@singula-ai/alego-llm'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

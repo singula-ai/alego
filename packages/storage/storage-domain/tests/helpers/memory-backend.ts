@@ -15,8 +15,8 @@
  * @module
  */
 
-import { StorageError } from '@alego/storage'
-import type { KvFacet, KvUnit, KvUnitDescriptor, StorageBackend } from '@alego/storage'
+import { StorageError } from '@singula-ai/alego-storage'
+import type { KvFacet, KvUnit, KvUnitDescriptor, StorageBackend } from '@singula-ai/alego-storage'
 
 /** One unit's medium: tables of records plus the global slot (`null` = never written). */
 export interface MemoryMedium {

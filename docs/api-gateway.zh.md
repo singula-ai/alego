@@ -15,9 +15,9 @@
 服务通常继承 `TypertRemoteService`，让 Cordis 服务 key 与默认 Remote namespace 在构造器中显式绑定。已有其他基类的服务可以改为声明 `readonly typertRemote = bindTypertRemote(this, serviceKey)`；两种方式都会留下可检查的公开 binding，不依赖编译器向构造函数注入 symbol。
 
 ```ts
-import type { Agent } from '@alego/agent'
-import { TypertRemoteService, Remote, RemoteScope } from '@alego/typert-protocol'
-import type { Context } from '@alego/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import { TypertRemoteService, Remote, RemoteScope } from '@singula-ai/alego-typert-protocol'
+import type { Context } from '@singula-ai/cordis'
 
 export interface CreateGoalRequest {
   objective: string
@@ -58,10 +58,10 @@ Remote 方法可以同步返回或返回 Promise。若需要协作式取消，Ho
 Client 使用普通对象上的具体函数，不使用 JavaScript Proxy。直接调用与作用域调用分别出现在 `ctx.remote.<namespace>` 和 `agentCtx.remote.<namespace>`。每个 namespace 都是注册为 `remote.<namespace>` 的可追踪 Cordis 子服务；Client assembly 通过 `ctx.remote.$mount()` 挂载贡献，最后一个方法撤回后该 namespace 随即卸载。依赖声明归实际调用方所有：只有读取 `ctx.remote.<namespace>` 或 `agentCtx.remote.<namespace>` 的业务包才在自己的 `inject` 中同时声明 `remote` 与 `remote.<namespace>`；只负责挂载 contribution 的 assembly，以及不调用该 namespace 的上层运行时，不代业务包声明 namespace 依赖。当一个 `@Remote` 方法恰好有一个 lookup 参数、且同名 `TypertContextMap` 使用相同 wire identity 时，生成的作用域签名会省略该 identity 参数。`@RemoteScope` 只生成作用域调用接口。
 
 ```ts ignore-check
-import type { SessionId } from '@alego/session/types'
-import type { AgentContext } from '@alego/client-runtime/client'
-import type { Context } from '@alego/cordis'
-import type {} from '@alego/api-remotes/client'
+import type { SessionId } from '@singula-ai/alego-session/types'
+import type { AgentContext } from '@singula-ai/alego-client-runtime/client'
+import type { Context } from '@singula-ai/cordis'
+import type {} from '@singula-ai/alego-api-remotes/client'
 
 export const inject = ['remote', 'remote.goals']
 
@@ -73,7 +73,7 @@ await ctx.remote.goals.create(agentId, { objective: 'ship it' })
 await agentCtx.remote.goals.create({ objective: 'ship it' })
 ```
 
-Client 应用只装配 `@alego/api-remotes`。该包以运行时值导入被选业务包的 `/remote` 子路径，通过 `ctx.remote.$mount()` 挂载贡献，同时重新导出相同文件中的声明合并。增加一个 Host Remote 包是 Client 组合所有者的显式选择；业务组件不需要分别加载 Typert Gateway 或业务包的 Remote JS。
+Client 应用只装配 `@singula-ai/alego-api-remotes`。该包以运行时值导入被选业务包的 `/remote` 子路径，通过 `ctx.remote.$mount()` 挂载贡献，同时重新导出相同文件中的声明合并。增加一个 Host Remote 包是 Client 组合所有者的显式选择；业务组件不需要分别加载 Typert Gateway 或业务包的 Remote JS。
 
 `api-remotes` 装配与 `ctx.remote` 约定不依赖 React；任何 Client 装配能看到的 Host 方法都只限于生成时选择的 Remote 方法。
 
@@ -81,14 +81,14 @@ Client 应用只装配 `@alego/api-remotes`。该包以运行时值导入被选�
 
 | 位置 | 包或入口 | 职责 |
 |---|---|---|
-| 共享 | `@alego/typert-protocol` | 声明 decorator、Gateway binding、可合并协议映射、调用描述符及提供方类型；不启动 TypeScript 分析，也不注册 Cordis 服务 |
-| 构建 | `@alego/typert-generator` | 从 Host `ts.Program` 严格分析 Remote 签名、类型图、lookup、Context 与源码位置，并生成 Host 和 Host-for-Client 产物 |
-| Host | `@alego/typert-registry` 与 Loader | 把生成的 Host 描述符、schema 及业务包注册项放入 `ctx.typert`，并持有 lookup 与 Context 提供方 |
-| Host | `@alego/api-remotes` | 负责应用的 Agent/Session 身份策略，并配置对应的 Typert lookup |
-| Host | `@alego/api-gateway` | 提供 `ctx.typertGateway`，认领 Remote endpoint，解析对象或 Context，调用实时 Cordis 服务，并校验请求值和返回值 |
-| Client | `@alego/api-gateway/client` | 提供 `ctx.remote` 与 `remote.<namespace>` 子服务，把生成的描述符挂成具体方法，并通过 Connection 发起、校验和取消调用 |
-| Client | `@alego/api-remotes/client` | 显式选择并挂载本应用允许使用的 `/remote` 贡献，向业务代码带入对应的声明合并 |
-| 双侧 | `@alego/client-connection` | 提供 RPC carrier、请求关联、信任边界、取消、响应 envelope 与 `/api` HTTP bridge |
+| 共享 | `@singula-ai/alego-typert-protocol` | 声明 decorator、Gateway binding、可合并协议映射、调用描述符及提供方类型；不启动 TypeScript 分析，也不注册 Cordis 服务 |
+| 构建 | `@singula-ai/alego-typert-generator` | 从 Host `ts.Program` 严格分析 Remote 签名、类型图、lookup、Context 与源码位置，并生成 Host 和 Host-for-Client 产物 |
+| Host | `@singula-ai/alego-typert-registry` 与 Loader | 把生成的 Host 描述符、schema 及业务包注册项放入 `ctx.typert`，并持有 lookup 与 Context 提供方 |
+| Host | `@singula-ai/alego-api-remotes` | 负责应用的 Agent/Session 身份策略，并配置对应的 Typert lookup |
+| Host | `@singula-ai/alego-api-gateway` | 提供 `ctx.typertGateway`，认领 Remote endpoint，解析对象或 Context，调用实时 Cordis 服务，并校验请求值和返回值 |
+| Client | `@singula-ai/alego-api-gateway/client` | 提供 `ctx.remote` 与 `remote.<namespace>` 子服务，把生成的描述符挂成具体方法，并通过 Connection 发起、校验和取消调用 |
+| Client | `@singula-ai/alego-api-remotes/client` | 显式选择并挂载本应用允许使用的 `/remote` 贡献，向业务代码带入对应的声明合并 |
+| 双侧 | `@singula-ai/alego-client-connection` | 提供 RPC carrier、请求关联、信任边界、取消、响应 envelope 与 `/api` HTTP bridge |
 
 API Gateway 包同时拥有 Host dispatcher 与 Client Remote endpoint 两个对等入口，但两侧构建不会进入同一个 `ts.Program`。Host 入口不导入 Client 的 Cordis `Context` 合并，Client 入口也不导入 Host Gateway 服务。
 

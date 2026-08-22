@@ -1,9 +1,9 @@
 import { PassThrough } from 'node:stream'
 import { describe, expect, it, vi } from 'vitest'
 import { basename, dirname, relative, resolve } from 'node:path'
-import { Context } from '@alego/cordis'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
-import type { SubprocessSpawnSpec, SubprocessTerminalHandle, SubprocessTerminalSpawnSpec } from '@alego/subprocess'
+import { Context } from '@singula-ai/cordis'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
+import type { SubprocessSpawnSpec, SubprocessTerminalHandle, SubprocessTerminalSpawnSpec } from '@singula-ai/alego-subprocess'
 import { childEnv } from '../src/spawn.ts'
 
 function spec(command: string, overrides: Partial<SubprocessSpawnSpec> = {}): SubprocessSpawnSpec {

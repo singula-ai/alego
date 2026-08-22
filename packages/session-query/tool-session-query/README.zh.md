@@ -1,4 +1,4 @@
-# @alego/tool-session-query
+# @singula-ai/alego-tool-session-query
 
 [English](README.md) | 中文
 
@@ -17,7 +17,7 @@
 
 每个可信 `ctx.sessionQuery` 调用都会经过一个模型边界净化器。首先检查调用方取消，并精确保留。可获取的语料库诊断信息和提供方诊断信息（包括可安全检查的嵌套原因）会尽力记录到内部日志；不可打印的失败使用固定日志占位符。诊断格式化和错误分类各自独立受保护，因此不可打印的原因无法逃逸，也无法阻止已安全分类的外层错误；不安全的分类或日志记录则回退到固定 `SESSION_QUERY_TOOL_FAILED` 代码和消息。本地参数验证和授权错误保留精确的工具自有消息。
 
-该包刻意不执行字节或字符截断，也不导入 spill 后端。需要限制内联输出的部署应挂载 `@alego/spill-policy`，它可在执行后替换已渲染文本，同时保留完整结果。
+该包刻意不执行字节或字符截断，也不导入 spill 后端。需要限制内联输出的部署应挂载 `@singula-ai/alego-spill-policy`，它可在执行后替换已渲染文本，同时保留完整结果。
 
 ## 模型体验
 
@@ -45,7 +45,7 @@ Use session_search to find relevant work from prior sessions, or session_event_s
 
 #### 模型看到的内容
 
-模型会看到生成的 [`session_search`、`session_event_search`、`session_trace`、`session_event_trace` 和 `session_event_read` schema](../../../docs/tool-catalog.zh.md#alegotool-session-query)。搜索过滤器会增加固定 schema token，而游标、工作区路径、输出分页和模型可控结果上限仍不存在。
+模型会看到生成的 [`session_search`、`session_event_search`、`session_trace`、`session_event_trace` 和 `session_event_read` schema](../../../docs/tool-catalog.zh.md#singula-aialego-tool-session-query)。搜索过滤器会增加固定 schema token，而游标、工作区路径、输出分页和模型可控结果上限仍不存在。
 
 #### Token 影响
 

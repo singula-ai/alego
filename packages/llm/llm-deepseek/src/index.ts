@@ -8,18 +8,18 @@
  * anything, while an in-flight stream keeps the facts it started with. The
  * one registration-captured fact — the retry policy — re-registers the route
  * in place when it changes.
- * @module @alego/llm-deepseek
+ * @module @singula-ai/alego-llm-deepseek
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { assertUsableApiKey, LlmError, resolveRetryPolicy, RetryPolicySchema } from '@alego/llm'
-import type { ModelModality, RetryPolicyConfig } from '@alego/llm'
-import { credentialRef } from '@alego/credentials'
-import { launchEnvironmentOf, type LaunchEnvironmentSnapshot } from '@alego/launch-environment'
-import { deepEqualJson, installSettingsSection, settingsNamespace } from '@alego/settings'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
-import { getOrCreateAnonymousUserId, type AnonymousUserId } from '@alego/anonymous-user-id'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { assertUsableApiKey, LlmError, resolveRetryPolicy, RetryPolicySchema } from '@singula-ai/alego-llm'
+import type { ModelModality, RetryPolicyConfig } from '@singula-ai/alego-llm'
+import { credentialRef } from '@singula-ai/alego-credentials'
+import { launchEnvironmentOf, type LaunchEnvironmentSnapshot } from '@singula-ai/alego-launch-environment'
+import { deepEqualJson, installSettingsSection, settingsNamespace } from '@singula-ai/alego-settings'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
+import { getOrCreateAnonymousUserId, type AnonymousUserId } from '@singula-ai/alego-anonymous-user-id'
 import {
   DEFAULT_CONTEXT_WINDOW,
   DEFAULT_FILE_EXPIRY_SECONDS,

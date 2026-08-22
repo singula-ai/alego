@@ -1,6 +1,6 @@
 /** Agent-scoped serialization for Schedule reads and durable mutations. */
 
-import type { Agent } from '@alego/agent'
+import type { Agent } from '@singula-ai/alego-agent'
 
 const tails = new WeakMap<Agent, Promise<void>>()
 

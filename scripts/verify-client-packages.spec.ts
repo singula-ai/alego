@@ -15,7 +15,7 @@ import {
   type ClientPackageFacts,
 } from './verify-client-packages.ts'
 
-const CORDIS = '@alego/cordis'
+const CORDIS = '@singula-ai/cordis'
 const roots: string[] = []
 
 afterEach(() => {
@@ -27,7 +27,7 @@ function declaration(
   fields: Partial<Omit<ClientDeclaration, 'name' | 'manifest'>> = {},
 ): ClientDeclaration {
   return {
-    name: short.startsWith('@') ? short : '@alego/client-' + short,
+    name: short.startsWith('@') ? short : '@singula-ai/alego-client-' + short,
     manifest: 'packages/client/' + short.replace(/^.*\//, '') + '/package.json',
     dynamic: true,
     external: [],
@@ -73,26 +73,26 @@ function facts(
 describe('source package uses', () => {
   it('counts type imports, module augmentations, dynamic imports, and JSX', () => {
     const uses = collectSourcePackageUses('feature.tsx', [
-      "import type { A } from '@alego/a/subpath'",
-      "declare module '@alego/client-ui-slots' {}",
-      "const load = () => import('@alego/b')",
+      "import type { A } from '@singula-ai/alego-a/subpath'",
+      "declare module '@singula-ai/alego-client-ui-slots' {}",
+      "const load = () => import('@singula-ai/alego-b')",
       'export const view = <div />',
       "export type { Local } from './local.ts'",
     ].join('\n'))
 
     expect([...uses].sort()).toEqual([
-      '@alego/a',
-      '@alego/b',
-      '@alego/client-ui-slots',
+      '@singula-ai/alego-a',
+      '@singula-ai/alego-b',
+      '@singula-ai/alego-client-ui-slots',
       'react',
     ])
     expect([...collectRuntimeSourcePackageUses('feature.tsx', [
-      "import type { A } from '@alego/a/subpath'",
-      "declare module '@alego/client-ui-slots' {}",
-      "const load = () => import('@alego/b')",
+      "import type { A } from '@singula-ai/alego-a/subpath'",
+      "declare module '@singula-ai/alego-client-ui-slots' {}",
+      "const load = () => import('@singula-ai/alego-b')",
       'export const view = <div />',
     ].join('\n'))].sort()).toEqual([
-      '@alego/b',
+      '@singula-ai/alego-b',
       'react',
     ])
   })
@@ -135,7 +135,7 @@ describe('package modes', () => {
       parserPreloadIds: [],
     }))).toEqual([
       'packages/client/web/src/platform.ts: parser-preloaded external '
-      + '"@alego/client-runtime/client" has no matching PARSER_PRELOAD_IDS row in '
+      + '"@singula-ai/alego-client-runtime/client" has no matching PARSER_PRELOAD_IDS row in '
       + 'packages/client/modules/src/index.ts',
     ])
   })
@@ -145,23 +145,23 @@ describe('dependency sections', () => {
   it('accepts dynamic peer plus dev relationships, static dev inputs, and private dependencies', () => {
     const slots = pkg('ui-slots', { dynamic: false, staticLinked: true })
     const runtime = pkg('runtime', {
-      inject: ['@alego/client-feature'],
+      inject: ['@singula-ai/alego-client-feature'],
       sourceUses: {
-        '@alego/agent': ['packages/client/runtime/src/index.ts'],
-        '@alego/client-ui-slots': ['packages/client/runtime/src/client/slots.ts'],
+        '@singula-ai/alego-agent': ['packages/client/runtime/src/index.ts'],
+        '@singula-ai/alego-client-ui-slots': ['packages/client/runtime/src/client/slots.ts'],
         react: ['packages/client/runtime/src/client/view.tsx'],
       },
       dependencies: { immer: '^10.1.1' },
       peerDependencies: {
         [CORDIS]: 'workspace:^',
-        '@alego/agent': 'workspace:^',
-        '@alego/client-feature': 'workspace:^',
+        '@singula-ai/alego-agent': 'workspace:^',
+        '@singula-ai/alego-client-feature': 'workspace:^',
       },
       devDependencies: {
         [CORDIS]: 'workspace:^',
-        '@alego/agent': 'workspace:^',
-        '@alego/client-feature': 'workspace:^',
-        '@alego/client-ui-slots': 'workspace:^',
+        '@singula-ai/alego-agent': 'workspace:^',
+        '@singula-ai/alego-client-feature': 'workspace:^',
+        '@singula-ai/alego-client-ui-slots': 'workspace:^',
         react: '^18.2.0',
       },
     })
@@ -174,10 +174,10 @@ describe('dependency sections', () => {
     const slots = pkg('ui-slots', { dynamic: false, staticLinked: true })
     const subject = pkg('feature', {
       sourceUses: {
-        '@alego/agent': ['packages/client/feature/src/index.ts'],
+        '@singula-ai/alego-agent': ['packages/client/feature/src/index.ts'],
         [slots.name]: ['packages/client/feature/src/view.tsx'],
       },
-      dependencies: { '@alego/agent': 'workspace:^' },
+      dependencies: { '@singula-ai/alego-agent': 'workspace:^' },
       peerDependencies: { [CORDIS]: 'workspace:^', [slots.name]: 'workspace:^' },
       devDependencies: { [CORDIS]: 'workspace:^', [slots.name]: 'workspace:*' },
     })
@@ -189,11 +189,11 @@ describe('dependency sections', () => {
 
   it('requires every peer to have the same development range', () => {
     const subject = pkg('feature', {
-      peerDependencies: { [CORDIS]: 'workspace:^', '@alego/cordis-plugin-loader': 'workspace:^' },
+      peerDependencies: { [CORDIS]: 'workspace:^', '@singula-ai/cordis-plugin-loader': 'workspace:^' },
     })
     expect(collectClientPackageViolations(facts([subject]))).toEqual([
-      'packages/client/feature/package.json: peerDependencies.@alego/cordis-plugin-loader'
-      + ' is workspace:^, so devDependencies.@alego/cordis-plugin-loader must use the same range;'
+      'packages/client/feature/package.json: peerDependencies.@singula-ai/cordis-plugin-loader'
+      + ' is workspace:^, so devDependencies.@singula-ai/cordis-plugin-loader must use the same range;'
       + ' found no declaration',
     ])
   })
@@ -219,12 +219,12 @@ describe('dependency sections', () => {
       dynamic: false,
       staticLinked: true,
       runtimeSourceUses: {
-        '@alego/cordis-plugin-loader': ['packages/client/web/src/boot.ts'],
+        '@singula-ai/cordis-plugin-loader': ['packages/client/web/src/boot.ts'],
         react: ['packages/client/web/src/seed.ts'],
       },
       devDependencies: {
         [CORDIS]: 'workspace:^',
-        '@alego/cordis-plugin-loader': 'workspace:^',
+        '@singula-ai/cordis-plugin-loader': 'workspace:^',
         react: '^18.2.0',
       },
     })
@@ -233,12 +233,12 @@ describe('dependency sections', () => {
 
   it('allows npm dependency cycles', () => {
     const a = pkg('a', {
-      peerDependencies: { [CORDIS]: 'workspace:^', '@alego/client-b': 'workspace:^' },
-      devDependencies: { [CORDIS]: 'workspace:^', '@alego/client-b': 'workspace:^' },
+      peerDependencies: { [CORDIS]: 'workspace:^', '@singula-ai/alego-client-b': 'workspace:^' },
+      devDependencies: { [CORDIS]: 'workspace:^', '@singula-ai/alego-client-b': 'workspace:^' },
     })
     const b = pkg('b', {
-      peerDependencies: { [CORDIS]: 'workspace:^', '@alego/client-a': 'workspace:^' },
-      devDependencies: { [CORDIS]: 'workspace:^', '@alego/client-a': 'workspace:^' },
+      peerDependencies: { [CORDIS]: 'workspace:^', '@singula-ai/alego-client-a': 'workspace:^' },
+      devDependencies: { [CORDIS]: 'workspace:^', '@singula-ai/alego-client-a': 'workspace:^' },
     })
     expect(collectClientPackageViolations(facts([a, b]))).toEqual([])
   })
@@ -246,7 +246,7 @@ describe('dependency sections', () => {
 
 describe('module requests', () => {
   it('accepts a dynamic row supplier and its client subpath', () => {
-    const ui = declaration('ui', { external: ['@alego/client-slots/client'] })
+    const ui = declaration('ui', { external: ['@singula-ai/alego-client-slots/client'] })
     const slots = declaration('slots')
     expect(collectClientPackageViolations(facts([], { declarations: [ui, slots] }))).toEqual([])
   })
@@ -263,8 +263,8 @@ describe('module requests', () => {
 
   it('rejects duplicates, empty values, self-requests, and missing suppliers', () => {
     const ui = declaration('ui', {
-      external: ['', '@alego/client-ui', '@alego/missing', '@alego/missing'],
-      inject: ['', '@alego/a', '@alego/a'],
+      external: ['', '@singula-ai/alego-client-ui', '@singula-ai/alego-missing', '@singula-ai/alego-missing'],
+      inject: ['', '@singula-ai/alego-a', '@singula-ai/alego-a'],
     })
     const found = collectClientPackageViolations(facts([], { declarations: [ui] }))
     expect(found).toHaveLength(6)
@@ -276,12 +276,12 @@ describe('module requests', () => {
 
   it('rejects synchronous module-request cycles but ignores inject cycles', () => {
     const a = declaration('a', {
-      external: ['@alego/client-b'],
-      inject: ['@alego/client-b'],
+      external: ['@singula-ai/alego-client-b'],
+      inject: ['@singula-ai/alego-client-b'],
     })
     const b = declaration('b', {
-      external: ['@alego/client-a'],
-      inject: ['@alego/client-a'],
+      external: ['@singula-ai/alego-client-a'],
+      inject: ['@singula-ai/alego-client-a'],
     })
     const found = collectClientPackageViolations(facts([], { declarations: [a, b] }))
     expect(found).toHaveLength(1)
@@ -316,19 +316,19 @@ describe('manifest declarations', () => {
     const root = mkdtempSync(join(tmpdir(), 'client-packages-fix-'))
     roots.push(root)
     const subject = pkg('feature', {
-      external: ['', 'react', '@alego/client-feature', '@alego/missing'],
-      inject: ['', '@alego/agent', '@alego/agent'],
+      external: ['', 'react', '@singula-ai/alego-client-feature', '@singula-ai/alego-missing'],
+      inject: ['', '@singula-ai/alego-agent', '@singula-ai/alego-agent'],
       sourceUses: {
-        '@alego/agent': ['packages/client/feature/src/index.ts'],
-        '@alego/client-ui-slots': ['packages/client/feature/src/view.tsx'],
+        '@singula-ai/alego-agent': ['packages/client/feature/src/index.ts'],
+        '@singula-ai/alego-client-ui-slots': ['packages/client/feature/src/view.tsx'],
       },
       dependencies: {
         [CORDIS]: 'workspace:^',
-        '@alego/agent': 'workspace:*',
+        '@singula-ai/alego-agent': 'workspace:*',
       },
       peerDependencies: {
-        '@alego/client-ui-slots': 'workspace:^',
-        '@alego/cordis-plugin-loader': 'workspace:^',
+        '@singula-ai/alego-client-ui-slots': 'workspace:^',
+        '@singula-ai/cordis-plugin-loader': 'workspace:^',
       },
       devDependencies: {},
     })
@@ -357,20 +357,20 @@ describe('manifest declarations', () => {
       devDependencies: Record<string, string>
     }
     expect(fixed.alego.client).toMatchObject({
-      external: ['@alego/missing'],
-      inject: ['@alego/agent'],
+      external: ['@singula-ai/alego-missing'],
+      inject: ['@singula-ai/alego-agent'],
     })
     expect(fixed.dependencies).toBeUndefined()
     expect(fixed.peerDependencies).toEqual({
-      '@alego/cordis-plugin-loader': 'workspace:^',
+      '@singula-ai/cordis-plugin-loader': 'workspace:^',
       [CORDIS]: 'workspace:^',
-      '@alego/agent': 'workspace:*',
+      '@singula-ai/alego-agent': 'workspace:*',
     })
     expect(fixed.devDependencies).toEqual({
-      '@alego/client-ui-slots': 'workspace:^',
+      '@singula-ai/alego-client-ui-slots': 'workspace:^',
       [CORDIS]: 'workspace:^',
-      '@alego/agent': 'workspace:*',
-      '@alego/cordis-plugin-loader': 'workspace:^',
+      '@singula-ai/alego-agent': 'workspace:*',
+      '@singula-ai/cordis-plugin-loader': 'workspace:^',
     })
   })
 

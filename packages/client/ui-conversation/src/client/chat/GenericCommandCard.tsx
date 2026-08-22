@@ -6,7 +6,7 @@
 
 import { useState, type ReactNode } from 'react'
 import type { ChatViewSlotProps, CommandRowOwnerProps } from '../contract/slots.ts'
-import { DisclosureRow, IconApiOutline14, StateDot } from '@alego/client-ui-primitives'
+import { DisclosureRow, IconApiOutline14, StateDot } from '@singula-ai/alego-client-ui-primitives'
 import a11yCss from './accessibility.module.css'
 import css from './GenericCommandCard.module.css'
 

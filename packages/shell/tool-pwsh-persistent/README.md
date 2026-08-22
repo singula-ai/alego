@@ -1,4 +1,4 @@
-# @alego/tool-pwsh-persistent
+# @singula-ai/alego-tool-pwsh-persistent
 
 English | [中文](README.zh.md)
 
@@ -19,7 +19,7 @@ Model-facing `pwsh(command)` backed by one owner-scoped `ctx.terminals` shell. T
 
 #### What the model sees
 
-The generated [`pwsh` schema](../../../docs/tool-catalog.md#alegotool-pwsh-persistent), including the configured `description`. The plugin contributes no standalone system-prompt section; the deployment owns persona and environment guidance.
+The generated [`pwsh` schema](../../../docs/tool-catalog.md#singula-aialego-tool-pwsh-persistent), including the configured `description`. The plugin contributes no standalone system-prompt section; the deployment owns persona and environment guidance.
 
 #### Token effect
 

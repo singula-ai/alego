@@ -1,8 +1,8 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   ConversationNodeDefinition, ConversationPreviousContext,
-} from '@alego/client-runtime/client'
-import type { InboxTarget } from '@alego/agent/types'
+} from '@singula-ai/alego-client-runtime/client'
+import type { InboxTarget } from '@singula-ai/alego-agent/types'
 
 interface InboxIdentity {
   readonly id: string

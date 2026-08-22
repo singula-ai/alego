@@ -33,7 +33,7 @@ All five events ride this path, and their dedicated `HostFrame` variants or Clie
 type-meta gains one **shape predicate**, one **selection seat**, and **one** member on `TypertClientRemote`. No runtime code:
 
 ```ts
-import type { Events } from '@alego/cordis'
+import type { Events } from '@singula-ai/cordis'
 
 /** Cordis events shaped for one-way remote delivery: no Scope binding, void return. */
 export type TypertForwardableEvent = {
@@ -83,7 +83,7 @@ export const API_REMOTE_FORWARDED_EVENTS = [
 // types.ts — the type face, derived
 export type ApiRemoteForwardedEvent = typeof API_REMOTE_FORWARDED_EVENTS[number]
 
-declare module '@alego/typert-protocol' {
+declare module '@singula-ai/alego-typert-protocol' {
   interface TypertRemoteEventSelection extends Record<ApiRemoteForwardedEvent, true> {}
 }
 ```
@@ -112,13 +112,13 @@ The zod branch keeps `args: z.array(z.unknown())`: the frame arrives from `JSON.
 
 `events.host()` subscribes by allowlist when the stream opens. Each stream owns its disposers, so no broadcast set or derived invalidation listener is needed.
 
-`api/events.ts` is a wire contract file the browser side also compiles, so every type it references must come from an owner package's **client-safe, type-only subpath**, never the package root. Evidence: importing one type from `@alego/session` root drags the root's `declare module 'cordis' { interface Context { sessions: SessionStore } }` into the Client compilation face and overrides the Client's `ctx.sessions: ISessions`, producing 18 errors in the unrelated `ui-input-trigger` and `ui-conversation`. `JsonValue` therefore needs a re-export from `alego-session/src/types.ts`.
+`api/events.ts` is a wire contract file the browser side also compiles, so every type it references must come from an owner package's **client-safe, type-only subpath**, never the package root. Evidence: importing one type from `@singula-ai/alego-session` root drags the root's `declare module 'cordis' { interface Context { sessions: SessionStore } }` into the Client compilation face and overrides the Client's `ctx.sessions: ISessions`, producing 18 errors in the unrelated `ui-input-trigger` and `ui-conversation`. `JsonValue` therefore needs a re-export from `alego-session/src/types.ts`.
 
 ### The apps/web browser e2e belong to the Host face
 
 The `apps/web/tests/**` e2e type-check in the root **`tsconfig.host.json`**: they boot a real harness in-process and read `ctx.apiProxy`, the Host `SessionStore`'s `get`/`create`/`flush`, and `ctx.sessionProjectionCache`. **Driving a browser at runtime does not make a file part of the Client program** — moving them into the Client aggregate immediately produces 21 errors, because one program cannot hold both faces' merges for the same Context key.
 
-That yields a discipline this design depends on: **when those tests import a value or a type from a Client package, they pull that package's whole project — and every project it references — into the Host build graph**. Four consumers (`ui-settings-general`, `ui-settings-models`, `ui-permission`, `ui-commands`) reference `api/remotes`' Client face, and that face cannot compile until Host tsdown has generated `@alego/goal/remote`. The result is a build-order deadlock: Host tsc needs the Client face, which needs the generated artifact, which Host tsdown produces after Host tsc.
+That yields a discipline this design depends on: **when those tests import a value or a type from a Client package, they pull that package's whole project — and every project it references — into the Host build graph**. Four consumers (`ui-settings-general`, `ui-settings-models`, `ui-permission`, `ui-commands`) reference `api/remotes`' Client face, and that face cannot compile until Host tsdown has generated `@singula-ai/alego-goal/remote`. The result is a build-order deadlock: Host tsc needs the Client face, which needs the generated artifact, which Host tsdown produces after Host tsc.
 
 The few Client-owned symbols are therefore **mirrored** on the test side (`scaffold.ts` exports the mirrored welcome-notice constants; the two chat e2e keep importing `alego-client-runtime/client` because the `runtime` project is already in the Host graph), which lets those four consumers leave the Host graph. The 15 Client project references in `apps/cli/tsconfig.json` lost their owner-map role and are gone. Each mirrored value matches its source verbatim; a drift shows up as a missed selector or an unsuppressed notice, both loud failures.
 
@@ -128,7 +128,7 @@ The few Client-owned symbols are therefore **mirrored** on the test side (`scaff
 |---|---|
 | `alego-typert-protocol` | `src/types.ts` gains `TypertForwardableEvent`, `TypertRemoteEventSelection`, and `TypertRemoteEvent`; `TypertClientRemote` gains `$on` and `$dispatch`. Types only, no runtime |
 | `api/gateway` Client half | `ClientRemoteService` implements `$on` (subscriptions addressed by registration, `ctx.effect` ownership for the calling fiber) and `$dispatch` (snapshot delivery in registration order, containing a listener that throws or rejects) |
-| `api/remotes` | New `src/remote-events.ts` (the allowlist value) and `src/types.ts` (type projection, selection seat), both listed in both faces' `files`; a `./types` export with `lib/types/**/*.js` added to `files`; the Host face adds the shape assertion and `import type {}` for the five owner `./types`; the Client half re-exports those five plus `@alego/api-gateway/client` |
+| `api/remotes` | New `src/remote-events.ts` (the allowlist value) and `src/types.ts` (type projection, selection seat), both listed in both faces' `files`; a `./types` export with `lib/types/**/*.js` added to `files`; the Host face adds the shape assertion and `import type {}` for the five owner `./types`; the Client half re-exports those five plus `@singula-ai/alego-api-gateway/client` |
 | Root `tsconfig.base.json` | Client-safe `paths` entries for settings, credentials, llm, agent-presets, and api-remotes types point at the **source** plane |
 | `alego-commands` / `alego-settings` / `alego-credentials` / `alego-llm` / `alego-agent-presets` | Each forwarded `interface Events` member lives in the owner's client-safe `./types`; agent-presets moves its previous domain vocabulary to `preset.ts` so the exported file itself remains `types.ts` |
 | `host/apiproxy` | `HostFrame` gains `host/remote-event` and loses the five dedicated passthrough or invalidation variants with their zod branches; `events.host()` subscribes by allowlist and validates through `assertJsonArgs` |

@@ -1,4 +1,4 @@
-# @alego/tool-lsp
+# @singula-ai/alego-tool-lsp
 
 [English](README.md) | 中文
 
@@ -46,7 +46,7 @@ Use search/read for ordinary navigation. Use lsp when textual matches are ambigu
 
 #### 模型看到的内容
 
-模型会看到生成的 [`lsp` schema](../../../docs/tool-catalog.zh.md#alegotool-lsp)。
+模型会看到生成的 [`lsp` schema](../../../docs/tool-catalog.zh.md#singula-aialego-tool-lsp)。
 
 #### Token 影响
 

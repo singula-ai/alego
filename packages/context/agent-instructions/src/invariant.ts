@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/agent-instructions`.
- * @module @alego/agent-instructions/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-agent-instructions`.
+ * @module @singula-ai/alego-agent-instructions/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/agent-instructions'
+const PACKAGE_NAME = '@singula-ai/alego-agent-instructions'
 
 /** Cordis companion plugin name. */
 export const name = 'workspace-context-invariant'

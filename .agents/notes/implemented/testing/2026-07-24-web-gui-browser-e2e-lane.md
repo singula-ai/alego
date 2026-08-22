@@ -10,7 +10,7 @@ The web GUI ships as a real assembled chain — chromium page → client plugin 
 
 ## Decision
 
-`pnpm run test:web` carries a keyless, deterministic browser e2e lane under `apps/web/tests/`: recorded session-log fixtures replay through `@alego/llm-replay` against the real in-process web composition, with normalized aria goldens for user-visible states and in-process assertions for durable world state. The supporting product contracts are `alego-llm-replay` pacing, consumption checks, and validated indexed override patches; cross-package `alego-llm` failures retain validated provider facts through own data properties; and the shipped web composition mounts `llm-retry` for transient model failures.
+`pnpm run test:web` carries a keyless, deterministic browser e2e lane under `apps/web/tests/`: recorded session-log fixtures replay through `@singula-ai/alego-llm-replay` against the real in-process web composition, with normalized aria goldens for user-visible states and in-process assertions for durable world state. The supporting product contracts are `alego-llm-replay` pacing, consumption checks, and validated indexed override patches; cross-package `alego-llm` failures retain validated provider facts through own data properties; and the shipped web composition mounts `llm-retry` for transient model failures.
 
 ### Scaffold: `apps/web/tests/scaffold.ts`
 

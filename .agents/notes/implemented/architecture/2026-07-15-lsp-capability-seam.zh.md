@@ -16,9 +16,9 @@ harness 已具备文本搜索与文件读取能力，但二者都无法识别程
 
 将 LSP 建成由三个包组成的能力 seam，其中包含一个只读模型工具和一个通用本地提供方实现：
 
-1. `packages/lsp/lsp` 下的 `@alego/lsp` 负责 `ctx.lsp`、提供方注册与选择、标准化请求与结果、执行控制，以及结构化 LSP 错误。
-2. `packages/lsp/lsp-stdio` 下的 `@alego/lsp-stdio` 将配置的 stdio 语言服务器适配到该 seam。一个插件实例接收具名服务器表，并为每组命令及扩展名到语言 id 的映射注册一个隔离的提供方。
-3. `packages/lsp/tool-lsp` 下的 `@alego/tool-lsp` 负责面向模型的 `lsp` schema、提示词指导、参数校验、结果限制与格式化，以及与传输方式无关的 UI 展示。
+1. `packages/lsp/lsp` 下的 `@singula-ai/alego-lsp` 负责 `ctx.lsp`、提供方注册与选择、标准化请求与结果、执行控制，以及结构化 LSP 错误。
+2. `packages/lsp/lsp-stdio` 下的 `@singula-ai/alego-lsp-stdio` 将配置的 stdio 语言服务器适配到该 seam。一个插件实例接收具名服务器表，并为每组命令及扩展名到语言 id 的映射注册一个隔离的提供方。
+3. `packages/lsp/tool-lsp` 下的 `@singula-ai/alego-tool-lsp` 负责面向模型的 `lsp` schema、提示词指导、参数校验、结果限制与格式化，以及与传输方式无关的 UI 展示。
 
 `alego-lsp-stdio` 是通用 host，不是语言服务器目录或安装器。部署显式配置命令与映射；未来 preset 属于组合插件或 `cordis.yml` overlay。
 
@@ -35,7 +35,7 @@ seam 只公开 `query(request, signal?)`，因为没有字段需要实现层填�
 约定如下：
 
 ```ts
-import type { Branded } from '@alego/brand'
+import type { Branded } from '@singula-ai/alego-brand'
 
 type LspOperation = 'goToDefinition' | 'findReferences' | 'goToImplementation' | 'hover'
 type LspProviderId = Branded<'LspProviderId'>

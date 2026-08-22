@@ -10,9 +10,9 @@ Web 输入框已有可复用的斜杠命令／引用触发流水线，但它的 
 
 ## 决策
 
-Web 通过 `@alego/client-ui-reference` 暴露一个合并的 `@file` 与 `@session` 菜单。每次处理未加引号的查询时，它会并发启动两项 Remote 发现调用，以确定性顺序把文件排在会话之前，并使用注册在 locale 字典中的标签；不可选择的文件与会话分组标题会区分两个连续的候选分组，且不会进入键盘选择索引。该 source 在加载和已结算状态下都会隐藏原始组标题，因为可见分组由这些分组标题拥有。尚未闭合的带引号 token 只搜索文件。任一候选领域都可以独立失败，不会隐藏另一领域成功返回的行。
+Web 通过 `@singula-ai/alego-client-ui-reference` 暴露一个合并的 `@file` 与 `@session` 菜单。每次处理未加引号的查询时，它会并发启动两项 Remote 发现调用，以确定性顺序把文件排在会话之前，并使用注册在 locale 字典中的标签；不可选择的文件与会话分组标题会区分两个连续的候选分组，且不会进入键盘选择索引。该 source 在加载和已结算状态下都会隐藏原始组标题，因为可见分组由这些分组标题拥有。尚未闭合的带引号 token 只搜索文件。任一候选领域都可以独立失败，不会隐藏另一领域成功返回的行。
 
-文件功能遵循由三个包构成的 seam：`@alego/file-reference` 拥有 `ctx.fileReferences`、共享 `@path` token 语法、候选形状和稳定的模型指引；`@alego/file-reference-local` 拥有每个 agent（智能体）有界的宿主文件系统索引、失效处理和作用域内的提示词安装；`alego-client-ui-reference` 消费生成的 Remote 命名空间与共享语法。选择文件会创建带文件图标与文件名的原子输入框引用，其序列化形式仍只是路径提示词文本。目录保持为带文件夹图标的可编辑路径文本，并在尾部斜杠后重新触发补全。
+文件功能遵循由三个包构成的 seam：`@singula-ai/alego-file-reference` 拥有 `ctx.fileReferences`、共享 `@path` token 语法、候选形状和稳定的模型指引；`@singula-ai/alego-file-reference-local` 拥有每个 agent（智能体）有界的宿主文件系统索引、失效处理和作用域内的提示词安装；`alego-client-ui-reference` 消费生成的 Remote 命名空间与共享语法。选择文件会创建带文件图标与文件名的原子输入框引用，其序列化形式仍只是路径提示词文本。目录保持为带文件夹图标的可编辑路径文本，并在尾部斜杠后重新触发补全。
 
 选择会话会创建一个结构化输入框引用。可见形式使用聊天气泡图标与业务色会话标题，不使用胶囊容器；剪贴板和模型形式则是宿主生成的规范 `@[label](alego-session:…)` mention。完整的 `@label` 展示文本会保留在透明 textarea 中，同尺寸 backdrop 会为这段范围着色，并把开头的 marker 替换为对应领域图标。因此宽度、换行、选择区与光标位置都由原生字形度量决定，不会截断。occurrence 范围会保留引用身份以供序列化；在边界按 Backspace 或 Delete 会整段删除引用，在范围内部编辑则会把剩余字符转为普通文本。普通 `session.prompt` 投递会原样携带规范 mention。session-reference 服务会在 `agent/pre-step` 解析已接受的直接用户消息，捕获每个源，在保留直接消息 id 的同时把规范 mention 替换为可读文本，并把冻结快照插入到该消息紧后。召回上下文行使用同一个聊天图标，其他上下文保留文档图标。API Proxy 不包含引用专用路由、依赖或错误码。
 

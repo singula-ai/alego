@@ -1,4 +1,4 @@
-# @alego/goal-round-driver
+# @singula-ai/alego-goal-round-driver
 
 English | [中文](README.zh.md)
 
@@ -8,13 +8,13 @@ Same-session continuation driver for [`ctx.goals`](../goal/README.md). It turns 
 
 ```yaml
 - id: goal
-  name: '@alego/goal'
+  name: '@singula-ai/alego-goal'
 
 - id: tool-goal
-  name: '@alego/tool-goal'
+  name: '@singula-ai/alego-tool-goal'
 
 - id: goal-round-driver
-  name: '@alego/goal-round-driver'
+  name: '@singula-ai/alego-goal-round-driver'
 ```
 
 The plugin has no tunable configuration. `maxGoalRounds` belongs to the goal definition, while the model-facing blocked threshold belongs to [`alego-tool-goal`](../tool-goal/README.md); duplicating either value in the driver could produce divergent policy.

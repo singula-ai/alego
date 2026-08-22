@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/output-retention`.
- * @module @alego/output-retention/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-output-retention`.
+ * @module @singula-ai/alego-output-retention/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/output-retention'
+const PACKAGE_NAME = '@singula-ai/alego-output-retention'
 
 /** Cordis companion plugin name. */
 export const name = 'output-retention-invariant'

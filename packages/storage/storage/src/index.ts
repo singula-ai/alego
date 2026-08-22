@@ -2,10 +2,10 @@
  * Storage hub (`ctx.storage`): a named backend registry plus mounted
  * data-form facilities. The hub itself performs no IO — backends own media,
  * data forms (the domain layer first) own semantics.
- * @module @alego/storage
+ * @module @singula-ai/alego-storage
  */
 
-import { Context, Service } from '@alego/cordis'
+import { Context, Service } from '@singula-ai/cordis'
 import { StorageError } from './error.ts'
 import { BackendRegistry } from './registry.ts'
 
@@ -27,7 +27,7 @@ export function storageBackendServiceKey(name: string): string {
   return `storage.backend.${name}`
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     storage: Storage
   }

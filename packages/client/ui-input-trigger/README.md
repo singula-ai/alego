@@ -1,4 +1,4 @@
-# @alego/client-ui-input-trigger
+# @singula-ai/alego-client-ui-input-trigger
 
 English | [中文](README.zh.md)
 

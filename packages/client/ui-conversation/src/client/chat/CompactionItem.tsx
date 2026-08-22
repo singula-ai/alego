@@ -7,13 +7,13 @@
 // non-expandable rather than empty.
 
 import { memo, useState } from 'react'
-import type { CompactionSummaryNode } from '@alego/client-runtime/client'
+import type { CompactionSummaryNode } from '@singula-ai/alego-client-runtime/client'
 import {
   IconApiOutline14,
   IconChevronDownOutline14,
   IconChevronRightOutline14,
   MarkdownText,
-} from '@alego/client-ui-primitives'
+} from '@singula-ai/alego-client-ui-primitives'
 import type { ChatViewSlotProps } from '../contract/slots.ts'
 import css from './MessageItem.module.css'
 

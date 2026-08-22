@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import type { Agent } from '@alego/agent'
-import CommandRuntime, { type CommandResult } from '@alego/commands'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import type { Agent } from '@singula-ai/alego-agent'
+import CommandRuntime, { type CommandResult } from '@singula-ai/alego-commands'
 import {
   CompactionId,
   CompactionEngine,
@@ -11,9 +11,9 @@ import {
   type CompactionResult,
   type CompactionTrigger,
   type ManualCompactAgentContext,
-} from '@alego/compaction'
-import { Session, SessionId } from '@alego/session'
-import * as commandCompact from '@alego/command-compact'
+} from '@singula-ai/alego-compaction'
+import { Session, SessionId } from '@singula-ai/alego-session'
+import * as commandCompact from '@singula-ai/alego-command-compact'
 
 const COMPACTION_ID = CompactionId('command-compact-test')
 
@@ -153,7 +153,7 @@ function expectLastLifecycle(
   return runEvent.data.commandId
 }
 
-describe('@alego/command-compact registration', () => {
+describe('@singula-ai/alego-command-compact registration', () => {
   it('registers one argument-free command with Loader-safe exports and disposes it', async () => {
     const test = await harness()
     expect(commandCompact.name).toBe('command-compact')

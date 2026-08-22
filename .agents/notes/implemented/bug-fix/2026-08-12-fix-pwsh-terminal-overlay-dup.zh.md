@@ -13,9 +13,9 @@ web E2E scaffold 在已发布的 Web 表面与 base patches 之后应用 `extraO
 ```yaml
 - insert:
     - id: pwsh-local
-      name: '@alego/pwsh-local'
+      name: '@singula-ai/alego-pwsh-local'
     - id: tool-pwsh
-      name: '@alego/tool-pwsh'
+      name: '@singula-ai/alego-tool-pwsh'
 ```
 
 `insert` 仅在组合中不存在 `tool-pwsh` 时才正确。该 id 存在是因为 `86b6979bdc`（refactor(bundle): fold the Windows shell platform layer into the base rows）把两套 shell 栈以互逆的平台门移进了 base bundle —— `packages/bundle/base/cordis.patch.yml` 声明 `tool-pwsh` 且 `disabled: !!js process.platform !== 'win32'`，于是该行在每个平台都存在于组合中。随后 `42fc7c5ffb`（refactor(preset): gate tool-pwsh by platform alongside tool-bash）往 web-app patch 里加了一行对使用 preset 的表面禁用 `tool-pwsh` 的行；patch 不能引入 id，因此它不是冲突来源。overlay 的 `insert` 于是在同一个 loader 组里再送一个同 id 的行，loader 在启动时拒绝这对重复。
@@ -26,7 +26,7 @@ web E2E scaffold 在已发布的 Web 表面与 base patches 之后应用 `extraO
 
 ```yaml
 - id: tool-pwsh
-  name: '@alego/tool-pwsh'
+  name: '@singula-ai/alego-tool-pwsh'
   disabled: false
 ```
 

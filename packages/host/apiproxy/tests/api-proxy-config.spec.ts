@@ -6,18 +6,18 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import AgentRegistry from '@alego/agent'
-import SessionStore from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
-import UserQuestionService from '@alego/user-questions'
-import LlmRuntime, { LlmAdapter } from '@alego/llm'
-import type { GenerateOptions, LlmModelInfo, LlmProviderInfo, StreamChunk } from '@alego/llm'
-import { SettingsProvider, settingsNamespace } from '@alego/settings'
-import type { SettingsNamespace } from '@alego/settings'
-import { CredentialProvider } from '@alego/credentials'
+import { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import AgentRegistry from '@singula-ai/alego-agent'
+import SessionStore from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
+import UserQuestionService from '@singula-ai/alego-user-questions'
+import LlmRuntime, { LlmAdapter } from '@singula-ai/alego-llm'
+import type { GenerateOptions, LlmModelInfo, LlmProviderInfo, StreamChunk } from '@singula-ai/alego-llm'
+import { SettingsProvider, settingsNamespace } from '@singula-ai/alego-settings'
+import type { SettingsNamespace } from '@singula-ai/alego-settings'
+import { CredentialProvider } from '@singula-ai/alego-credentials'
 import type {
   CredentialInfo,
   CredentialKey,
@@ -26,11 +26,11 @@ import type {
   CredentialRecordInfo,
   CredentialRef,
   ResolvedCredential,
-} from '@alego/credentials'
+} from '@singula-ai/alego-credentials'
 import type { HostFrame } from '../src/api/index.ts'
 import type { RpcRequest, RpcResponse } from '../src/api/rpc.ts'
 import { RpcId } from '../src/api/rpc.ts'
-import { AGENT_DEFAULT_MODEL_SETTINGS_NAMESPACE } from '@alego/agent-default-model'
+import { AGENT_DEFAULT_MODEL_SETTINGS_NAMESPACE } from '@singula-ai/alego-agent-default-model'
 import { createApiProxy } from '../src/api-proxy.ts'
 
 const DEFAULTS = { defaultModelSelection: () => ({ provider: 'p', model: 'm' }), cwd: '/tmp' }
@@ -273,7 +273,7 @@ describe('settings domain', () => {
     const api = createApiProxy(ctx, DEFAULTS)
     const error = expectErr(await api.settings.describe(request({})))
     expect(error.code).toBe('internal')
-    expect(error.message).toContain('@alego/settings-file')
+    expect(error.message).toContain('@singula-ai/alego-settings-file')
   })
 
   it('describes layered redacted namespaces with their secret slots', async () => {
@@ -616,7 +616,7 @@ describe('credentials domain', () => {
     const api = createApiProxy(ctx, DEFAULTS)
     const error = expectErr(await api.credentials.describe(request({ refs: ['A'] })))
     expect(error.code).toBe('internal')
-    expect(error.message).toContain('@alego/credentials-local')
+    expect(error.message).toContain('@singula-ai/alego-credentials-local')
   })
 
   it('describes value-free views and flips state through set/unset with frames', async () => {

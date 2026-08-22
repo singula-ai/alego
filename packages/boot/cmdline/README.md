@@ -1,4 +1,4 @@
-# `@alego/cmdline`
+# `@singula-ai/alego-cmdline`
 
 English | [中文](README.zh.md)
 
@@ -32,14 +32,14 @@ Its Loader row carries no launcher marker or special kind:
 
 ```yaml
 - id: web-startup
-  name: '@alego/web-app/startup'
+  name: '@singula-ai/alego-web-app/startup'
 ```
 
 Every row configured from those values uses ordinary service injection and direct lazy config access:
 
 ```yaml
 - id: webserver
-  name: '@alego/host-webserver'
+  name: '@singula-ai/alego-host-webserver'
   inject: [webStartup]
   config:
     host: !!js ctx.webStartup.host ?? '127.0.0.1'

@@ -6,16 +6,16 @@
  * classification, the model-friendly terminal environment, and the model-facing
  * stdout/stderr merge for background reads. Execution policy belongs in
  * `tools/pre-execute` or a sandboxing executor.
- * @module @alego/bash-local
+ * @module @singula-ai/alego-bash-local
  */
 
-import { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { SHELL_SETTINGS_NAMESPACE, ShellExecutor } from '@alego/shell'
-import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellProcessRead, ShellRunResult, CollectedOutput } from '@alego/shell'
-import type { SubprocessCollect, SubprocessHandle, SubprocessOutputReader, SubprocessSpawnSpec } from '@alego/subprocess'
-import { installSettingsSection } from '@alego/settings'
-import { clampTimeout, deadline, MAX_TIMER_DELAY_MS, timeoutOf } from '@alego/timeout'
+import { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { SHELL_SETTINGS_NAMESPACE, ShellExecutor } from '@singula-ai/alego-shell'
+import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellProcessRead, ShellRunResult, CollectedOutput } from '@singula-ai/alego-shell'
+import type { SubprocessCollect, SubprocessHandle, SubprocessOutputReader, SubprocessSpawnSpec } from '@singula-ai/alego-subprocess'
+import { installSettingsSection } from '@singula-ai/alego-settings'
+import { clampTimeout, deadline, MAX_TIMER_DELAY_MS, timeoutOf } from '@singula-ai/alego-timeout'
 
 /**
  * Model-friendly environment overrides: disable colors, pagers, and

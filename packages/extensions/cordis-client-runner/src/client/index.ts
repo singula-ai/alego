@@ -10,13 +10,13 @@
  * it until asked again.
  */
 
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   ApprovalRequestId, CordisDynamicPluginId, DynamicCordisInvokeResult, JsonValue,
   DynamicCordisInventoryRow,
-} from '@alego/api-remotes/client'
-import type { ClientModuleSystem } from '@alego/client-modules/client'
-import type { SlotRegistry } from '@alego/client-runtime/client'
+} from '@singula-ai/alego-api-remotes/client'
+import type { ClientModuleSystem } from '@singula-ai/alego-client-modules/client'
+import type { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
 // The Client Remote assembly is the one place the two planes meet: it mounts the
 // `dynamicCordisRunner` namespace and re-exports its payload vocabulary, so this
 // package names what it sends without importing a Host package.
@@ -54,7 +54,7 @@ export { ClientTimerService } from './timer.ts'
 export type {
   ApprovalRequestId, CordisDynamicPackageId, CordisDynamicPluginId, CordisDynamicPluginRunId,
   DynamicCordisPackage,
-} from '@alego/api-remotes/client'
+} from '@singula-ai/alego-api-remotes/client'
 
 
 /**
@@ -122,7 +122,7 @@ export interface CordisRunnerFace {
   isLoaded(pluginId: CordisDynamicPluginId): boolean
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     /** Run orchestration and page-local load state: what run surfaces read and call. */
     dynamicCordisRunner: CordisRunnerFace

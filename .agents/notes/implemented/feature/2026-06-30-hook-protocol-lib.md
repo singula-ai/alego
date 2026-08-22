@@ -8,7 +8,7 @@ English | [中文](2026-06-30-hook-protocol-lib.zh.md)
 
 The hooks subsystem ships two bridge plugins: one that runs a user's existing Claude Code (CC) hooks, one for Codex hooks. The reference implementations (`~/repos/refs/claude-code`, `~/repos/refs/codex`) show a decisive fact: **Codex deliberately reimplements a SUBSET of the CC hook protocol.** Its engine reads the same `hooks.json`, uses the same matcher-group shape, the same exit-code/structured-stdout output contract, and the same command-hook execution model — Codex's source even names the engine after Claude's and comments where it "intentionally diverges." So the two bridges would otherwise duplicate the bulk of the protocol.
 
-This Agent Note introduces `@alego/hook-protocol`, a **library** (not a plugin — it registers and injects nothing) holding the genuinely-identical primitives both bridges build on. The split between shared and per-dialect is the design's center of gravity.
+This Agent Note introduces `@singula-ai/alego-hook-protocol`, a **library** (not a plugin — it registers and injects nothing) holding the genuinely-identical primitives both bridges build on. The split between shared and per-dialect is the design's center of gravity.
 
 ## Decision
 

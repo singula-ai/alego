@@ -10,7 +10,7 @@ Web users need to bring relevant work from another conversation into one new mes
 
 ## Decision
 
-`@alego/session-reference` is one context consumer service at `ctx.sessionReferenceResolver`. Its outer `agent/pre-step` listener parses canonical mentions in accepted direct user messages and calls `prepare()` without adding reference behavior to a host gateway. The service returns detached readable content plus an optional identified, frozen `UserMessage` snapshot; core agent packages do not parse session URIs or read another log.
+`@singula-ai/alego-session-reference` is one context consumer service at `ctx.sessionReferenceResolver`. Its outer `agent/pre-step` listener parses canonical mentions in accepted direct user messages and calls `prepare()` without adding reference behavior to a host gateway. The service returns detached readable content plus an optional identified, frozen `UserMessage` snapshot; core agent packages do not parse session URIs or read another log.
 
 `alego-session:<base64url(JSON.stringify(sessionId))>` is the canonical host-independent identifier. JSON string encoding precedes base64url so quotes, slashes, backslashes, Unicode, newlines, and every other JavaScript string value round-trip without delimiter ambiguity. Web receives that URI inside the Host-produced `@[label](uri)` mention and keeps it behind an atomic session chip; text-only clients may use the same inline mention. Explicit Markdown mentions reject malformed URIs. Bare text becomes a reference only for a non-empty base64url-shaped payload, whose decode must still be canonical; empty or punctuation-only uses remain ordinary discussion text.
 

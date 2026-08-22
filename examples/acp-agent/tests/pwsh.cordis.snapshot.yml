@@ -1,6 +1,6 @@
 # Minimal keyless composition: real app, pwsh executor, and pwsh tool; replayed model.
 - id: llm-replay
-  name: '@alego/llm-replay'
+  name: '@singula-ai/alego-llm-replay'
   config:
     providers:
       - id: deepseek-official
@@ -9,16 +9,16 @@
           - id: deepseek-v4-pro
 
 - id: subprocess
-  name: '@alego/subprocess-local'
+  name: '@singula-ai/alego-subprocess-local'
 
 - id: bash
-  name: '@alego/pwsh-local'
+  name: '@singula-ai/alego-pwsh-local'
 
 - id: shell-env
-  name: '@alego/shell-env'
+  name: '@singula-ai/alego-shell-env'
 
 - id: acp-agent
-  name: '@alego/acp-demo'
+  name: '@singula-ai/alego-acp-demo'
   config:
     provider: deepseek-official
     model: deepseek-v4-pro
@@ -35,4 +35,4 @@
     persona: You are a concise snapshot agent working in {{cwd}}.
 
 - id: tool-pwsh
-  name: '@alego/tool-pwsh'
+  name: '@singula-ai/alego-tool-pwsh'

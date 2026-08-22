@@ -6,7 +6,7 @@ import {
   createUserMessage,
   freezeMessage,
   MessageId,
-} from '@alego/llm'
+} from '@singula-ai/alego-llm'
 
 describe('message construction', () => {
   it('assigns identity immediately and returns a detached deep-frozen message', () => {

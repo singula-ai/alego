@@ -1,11 +1,11 @@
 /** Browser registry for read-only Cordis capability providers. */
 
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   CordisInspectProviderManifest, CordisInspectQueryRequest, CordisInspectQueryResolution,
   CordisInspectRequestId, JsonValue,
-} from '@alego/api-remotes/client'
-import type { SessionId } from '@alego/client-connection/client'
+} from '@singula-ai/alego-api-remotes/client'
+import type { SessionId } from '@singula-ai/alego-client-connection/client'
 
 /** Context supplied to a Client inspect provider query. */
 export interface ClientCordisInspectQueryContext {
@@ -133,7 +133,7 @@ export class ClientCordisInspectRegistry {
   }
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     /** Browser registry for pre-definition Cordis capability discovery. */
     cordisInspect: ClientCordisInspectRegistry

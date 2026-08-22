@@ -4,7 +4,7 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import type { SessionId, SessionSummary } from '@alego/api-remotes/client'
+import type { SessionId, SessionSummary } from '@singula-ai/alego-api-remotes/client'
 import { flattenLineage } from '../src/client/sessions/lineage.ts'
 
 const s = (id: string, updatedAt: number, parent?: string): SessionSummary => ({

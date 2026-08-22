@@ -2,12 +2,12 @@
  * The background-job Service Definition (`ctx.jobs`). It owns the contract for
  * job ids, session-scoped access, lifecycle state, completion listeners, and
  * owner cleanup while producers retain their execution resources. The
- * process-local registry lives in `@alego/jobs-local`.
- * @module @alego/jobs
+ * process-local registry lives in `@singula-ai/alego-jobs-local`.
+ * @module @singula-ai/alego-jobs
  */
 
-import { Context, Service } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
+import { Context, Service } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
 import type {
   JobDoneListener, JobId, JobRead, JobSnapshot, JobStart, JobsChangedListener,
 } from './types.ts'
@@ -26,7 +26,7 @@ export type {
   JobsChangedListener,
 } from './types.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     jobs: JobRegistry
   }
@@ -65,7 +65,7 @@ export abstract class JobRegistry extends Service {
     // would register a ctx.jobs with no method implementations and fail far
     // from the misconfiguration. Fail loud at load instead.
     if (new.target === JobRegistry) {
-      throw new Error('@alego/jobs is the abstract job registry seam; load an implementation such as @alego/jobs-local instead')
+      throw new Error('@singula-ai/alego-jobs is the abstract job registry seam; load an implementation such as @singula-ai/alego-jobs-local instead')
     }
     super(ctx, 'jobs')
   }

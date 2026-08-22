@@ -1,30 +1,30 @@
 # Minimal live counterpart for the persistent-pwsh-tool-turn snapshot composition.
 - id: llm-deepseek
-  name: '@alego/llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek'
   config:
     models:
       - id: deepseek-v4-pro
 
 - id: sandbox-policy
-  name: '@alego/sandbox-policy'
+  name: '@singula-ai/alego-sandbox-policy'
   config:
     mode: danger-full-access
     workspaceRoot: !!js process.cwd()
 
 - id: subprocess
-  name: '@alego/subprocess-local'
+  name: '@singula-ai/alego-subprocess-local'
 
 - id: terminal
-  name: '@alego/terminal'
+  name: '@singula-ai/alego-terminal'
 
 - id: terminal-pwsh
-  name: '@alego/terminal-bash'
+  name: '@singula-ai/alego-terminal-bash'
   config:
     shellDialect: pwsh
     timeoutMs: 30000
 
 - id: acp-agent
-  name: '@alego/acp-demo'
+  name: '@singula-ai/alego-acp-demo'
   config:
     provider: deepseek-official
     model: deepseek-v4-pro
@@ -39,4 +39,4 @@
     persona: You are a concise snapshot agent working in {{cwd}}.
 
 - id: tool-pwsh-persistent
-  name: '@alego/tool-pwsh-persistent'
+  name: '@singula-ai/alego-tool-pwsh-persistent'

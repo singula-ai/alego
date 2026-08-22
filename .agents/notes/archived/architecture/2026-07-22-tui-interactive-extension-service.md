@@ -11,7 +11,7 @@ Cordis plugins can register human commands through `ctx.commands`, but a command
 
 ## Decision
 
-A mounted `@alego/tui` provides `ctx.tui` after terminal startup succeeds. The service belongs to that exact terminal and agent, disappears before terminal teardown, and causes plugins that inject it to unload and reload with provider availability. Other front doors do not emulate it.
+A mounted `@singula-ai/alego-tui` provides `ctx.tui` after terminal startup succeeds. The service belongs to that exact terminal and agent, disappears before terminal teardown, and causes plugins that inject it to unload and reload with provider availability. Other front doors do not emulate it.
 
 `ctx.tui.openOverlay()` is the first and only interactive extension primitive. It accepts a component factory, constrained layout options, and an optional abort signal. The factory receives a frozen host with the current viewport, semantic theme functions, display-text escaping, redraw, close, and a lifetime signal. It does not receive the pi-tui `TUI`, overlay handle, editor, transcript tree, focus controller, or terminal object.
 

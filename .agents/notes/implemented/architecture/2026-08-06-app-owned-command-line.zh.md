@@ -12,7 +12,7 @@ profile 落地之后，组合可以安装，命令行却不能。`apps/cli` 仍�
 
 启动器只解析属于自己的部分（`--profile`、`--patch`、配置 dump），并把**自己 flag 之后的一切**原样交给引导起来的配置树。切分按位置进行：启动器不认识的第一个 token 就是应用参数的起点（依靠 commander 的 `passThroughOptions` + `allowUnknownOption` + `helpOption(false)`）。裸的 `alego -h` 没有可交付的应用，仍然打印启动器自己的 help。
 
-新包 `@alego/cmdline` 持有这次交接。启动器在任何条目挂载之前调用 `provideCmdline(ctx, host)`，提供 `ctx.cmdlineArgs`（其全部接口就是 `get(): readonly string[]`）与 `ctx.appExit`。任何普通应用插件都可以注入 `cmdlineArgs`，用自己的 commander program 调用 `parseCmdline(ctx, program)`，再在 program 自己的 action 中把解析出的取值作为应用自有服务提供出去。它的 Loader 行不携带启动器标记或特殊类型，启动器也不会检查组合中的所有者。多个插件可以读取同一份不可变快照；没有读取方的 profile 会忽略自己的应用参数。由提供方配置的行注入其服务，并在惰性配置表达式中直接读取它（`port: !!js ctx.webStartup.port ?? 3080`），因此 flag 胜过写在它旁边的值，也没有任何东西被写回任何一行。
+新包 `@singula-ai/alego-cmdline` 持有这次交接。启动器在任何条目挂载之前调用 `provideCmdline(ctx, host)`，提供 `ctx.cmdlineArgs`（其全部接口就是 `get(): readonly string[]`）与 `ctx.appExit`。任何普通应用插件都可以注入 `cmdlineArgs`，用自己的 commander program 调用 `parseCmdline(ctx, program)`，再在 program 自己的 action 中把解析出的取值作为应用自有服务提供出去。它的 Loader 行不携带启动器标记或特殊类型，启动器也不会检查组合中的所有者。多个插件可以读取同一份不可变快照；没有读取方的 profile 会忽略自己的应用参数。由提供方配置的行注入其服务，并在惰性配置表达式中直接读取它（`port: !!js ctx.webStartup.port ?? 3080`），因此 flag 胜过写在它旁边的值，也没有任何东西被写回任何一行。
 
 boot 只挂载一次整套组合。Cordis 让每一行等待其注入激活；Loader 随后在激活前一刻，基于已注入就绪的插件上下文插值该行的 `!!js`。Include 会保留嵌套的行表达式，直到目标行到达这一时点。`--help` 会让提供方服务保持缺失，因此依赖行永不激活；活动 patch 重载会针对仍然在线的服务再次插值，所以已经服务中的端口不会被悄悄重置。
 

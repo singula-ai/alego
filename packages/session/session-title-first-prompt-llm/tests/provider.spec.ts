@@ -1,10 +1,10 @@
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import LlmRuntime, { createUserMessage, LlmAdapter  } from '@alego/llm'
-import type { GenerateOptions, StreamChunk } from '@alego/llm'
-import SessionStore, { Session, SessionId } from '@alego/session'
-import SessionTitleService, { type SessionTitleProvider } from '@alego/session-title'
-import * as providerPlugin from '@alego/session-title-first-prompt-llm'
+import LlmRuntime, { createUserMessage, LlmAdapter  } from '@singula-ai/alego-llm'
+import type { GenerateOptions, StreamChunk } from '@singula-ai/alego-llm'
+import SessionStore, { Session, SessionId } from '@singula-ai/alego-session'
+import SessionTitleService, { type SessionTitleProvider } from '@singula-ai/alego-session-title'
+import * as providerPlugin from '@singula-ai/alego-session-title-first-prompt-llm'
 
 class RecordingAdapter extends LlmAdapter {
   readonly requests: GenerateOptions[] = []

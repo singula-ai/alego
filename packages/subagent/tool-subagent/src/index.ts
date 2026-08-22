@@ -5,19 +5,19 @@
  * Background policy is selected by this plugin's configuration: one-shot
  * calls own a plain Task, while continuable calls use
  * `ctx.subagents.startContinuable()`.
- * @module @alego/tool-subagent
+ * @module @singula-ai/alego-tool-subagent
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { defineTool } from '@alego/tools'
-import type { AgentOptions } from '@alego/agent'
-import type { ContentBlock } from '@alego/llm'
-import type { JsonValue } from '@alego/session'
-import { assertSubagentMaxDepth, settleRun } from '@alego/subagent'
-import type { SubagentProvider, SubagentResult, SubagentRun } from '@alego/subagent'
-import type { JobOutcome } from '@alego/jobs'
-import type {} from '@alego/system-prompt'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { AgentOptions } from '@singula-ai/alego-agent'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { JsonValue } from '@singula-ai/alego-session'
+import { assertSubagentMaxDepth, settleRun } from '@singula-ai/alego-subagent'
+import type { SubagentProvider, SubagentResult, SubagentRun } from '@singula-ai/alego-subagent'
+import type { JobOutcome } from '@singula-ai/alego-jobs'
+import type {} from '@singula-ai/alego-system-prompt'
 
 export const name = 'tool-subagent'
 export const inject = ['tools', 'subagents', 'systemPrompt']
@@ -408,7 +408,7 @@ export function apply(ctx: Context, config: Config): void {
           }
           const jobs = ctx.get('jobs')
           if (jobs === undefined) {
-            throw new Error('background jobs unavailable: load @alego/jobs and @alego/tool-jobs')
+            throw new Error('background jobs unavailable: load @singula-ai/alego-jobs and @singula-ai/alego-tool-jobs')
           }
           // One-shot background child: job preflight finishes before the
           // starter can spawn, and the task-owned signal covers startup.

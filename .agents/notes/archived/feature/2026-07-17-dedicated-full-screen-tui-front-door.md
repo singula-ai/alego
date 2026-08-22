@@ -15,9 +15,9 @@ The interactive channel must remain a Cordis plugin over the same agent, session
 
 ## Decision
 
-Alego ships [`@alego/tui`](../../../../packages/ui/tui/README.md) as a dedicated Cordis plugin. It owns terminal input and presentation only; agent lifecycle, session persistence, tool execution, and the model-facing question tool remain separate composition entries. The plugin requires both stdin and stdout to be TTYs and fails instead of silently changing to line-oriented behavior.
+Alego ships [`@singula-ai/alego-tui`](../../../../packages/ui/tui/README.md) as a dedicated Cordis plugin. It owns terminal input and presentation only; agent lifecycle, session persistence, tool execution, and the model-facing question tool remain separate composition entries. The plugin requires both stdin and stdout to be TTYs and fails instead of silently changing to line-oriented behavior.
 
-The package is a terminal front door, not a complete application. A host mounts `@alego/tui` before its configured agent and composes the backends, tools, and policies around it. The product CLI currently ships no terminal composition; non-interactive tasks use headless mode, Web owns the installed human surface, and ACP remains a separate automation protocol.
+The package is a terminal front door, not a complete application. A host mounts `@singula-ai/alego-tui` before its configured agent and composes the backends, tools, and policies around it. The product CLI currently ships no terminal composition; non-interactive tasks use headless mode, Web owns the installed human surface, and ACP remains a separate automation protocol.
 
 The host supplies the exact generated or resumed `SessionId` used by its pre-created agent. The TUI waits for the matching root agent and enters full-screen mode only after that agent exists. A matching `agent-loop/config-start-failed` event is therefore reported before screen takeover.
 
@@ -41,7 +41,7 @@ The implemented [TUI terminal-state snapshot Agent Note](../testing/2026-07-18-t
 
 ## Alternatives considered
 
-- **Keep readline and full-screen modes inside `@alego/stdio`** — rejected because line-oriented output and differential TTY rendering have different dependencies, input rules, logging ownership, and teardown obligations. Separate packages keep the pipe-safe contract small and explicit.
+- **Keep readline and full-screen modes inside `@singula-ai/alego-stdio`** — rejected because line-oriented output and differential TTY rendering have different dependencies, input rules, logging ownership, and teardown obligations. Separate packages keep the pipe-safe contract small and explicit.
 - **Let the TUI plugin silently downgrade when either stream is not a TTY** — rejected because a fallback hides deployment mistakes and changes interaction semantics. A host may select a different front door; an explicitly mounted TUI fails loud.
 - **Keep TUI wiring and tests under the readline `repl-agent` leaf** — rejected at the time because one leaf would represent two distinct front doors. The later product-entrypoint removal deleted that application wiring while retaining the package boundary.
 - **Mutate `agent.options` when `/model` runs** — rejected because creation options do not provide an atomic boundary between asynchronous prompt assembly and request routing. Agent-scoped waterfalls preserve immutable creation input and snapshot the selected pair for each step.

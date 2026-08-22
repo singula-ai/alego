@@ -6,13 +6,13 @@ English | [中文](2026-07-19-fold-compaction-package-split.zh.md)
 
 ## Problem
 
-Compaction is split between `@alego/compaction`, which owns an abstract two-method service and shared types, and `@alego/compaction-basic`, which owns the only complete provider. Shipped configurations load only the basic package, and no production package independently consumes the Service Definition package except that provider.
+Compaction is split between `@singula-ai/alego-compaction`, which owns an abstract two-method service and shared types, and `@singula-ai/alego-compaction-basic`, which owns the only complete provider. Shipped configurations load only the basic package, and no production package independently consumes the Service Definition package except that provider.
 
 The split adds a package manifest, README, project boundary, dependency edge, abstract forwarding class, generated catalog entries, and composition wiring without demonstrating backend substitution. The [capability-seam decision](../../implemented/architecture/2026-06-13-capability-seams.md) requires a real interface, implementation, and consumer rather than a preemptive split; the [compaction decision](../../implemented/feature/2026-06-18-compaction-capability-seam.md) records that its independent consumer was deferred.
 
 ## Proposal
 
-Move the basic implementation into `@alego/compaction` and remove `@alego/compaction-basic`. Keep `ctx.compaction`, `CompactionResult`, the shared transcript and tool-pairing helpers, the existing configuration, and the concrete compaction algorithm in one package.
+Move the basic implementation into `@singula-ai/alego-compaction` and remove `@singula-ai/alego-compaction-basic`. Keep `ctx.compaction`, `CompactionResult`, the shared transcript and tool-pairing helpers, the existing configuration, and the concrete compaction algorithm in one package.
 
 Preserve `summarize()` as a protected customization hook. A deployment-specific summarizer can subclass or intercept the existing LLM call without requiring a second capability package. Reintroduce a separate Service Definition package only when a second complete backend and an independent Consumer need substitution.
 
@@ -26,12 +26,12 @@ Amend the implemented compaction decision and the [recallable-compaction proposa
 
 ## Acceptance criteria
 
-- `@alego/compaction-basic` and its workspace/package metadata are removed.
-- `@alego/compaction` owns the current configuration, plugin class, algorithm, types, events, and shared helpers.
+- `@singula-ai/alego-compaction-basic` and its workspace/package metadata are removed.
+- `@singula-ai/alego-compaction` owns the current configuration, plugin class, algorithm, types, events, and shared helpers.
 - Existing deployments can load the surviving package with equivalent configuration and model-visible behavior.
 - Automatic and manual compaction preserve cancellation, locking, token accounting, tool pairing, durable events, cited source-event seqs, retry convergence, and transcript rendering.
 - Loader composition, unit, runaway-turn, cancellation, snapshot, and real-model compaction tests pass; generated catalogs and module graphs are current.
 
 ## Risks
 
-This is an intentional pre-release package-name contraction. Embedders loading `@alego/compaction-basic` must switch packages, and future backend substitution would require extracting a boundary again. The cost is acceptable only while one complete implementation exists; acceptance should be revisited if a second backend lands first.
+This is an intentional pre-release package-name contraction. Embedders loading `@singula-ai/alego-compaction-basic` must switch packages, and future backend substitution would require extracting a boundary again. The cost is acceptable only while one complete implementation exists; acceptance should be revisited if a second backend lands first.

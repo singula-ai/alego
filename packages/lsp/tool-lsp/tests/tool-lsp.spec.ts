@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { Context } from '@alego/cordis'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
-import Lsp, { LspProviderId, type LspProvider, type LspProviderQuery, type LspQueryResult } from '@alego/lsp'
-import * as ToolLsp from '@alego/tool-lsp'
-import { DEFAULT_LSP_TOOL_TIMEOUT_MS, LSP_PROMPT_TEXT } from '@alego/tool-lsp'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+import { Context } from '@singula-ai/cordis'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
+import Lsp, { LspProviderId, type LspProvider, type LspProviderQuery, type LspQueryResult } from '@singula-ai/alego-lsp'
+import * as ToolLsp from '@singula-ai/alego-tool-lsp'
+import { DEFAULT_LSP_TOOL_TIMEOUT_MS, LSP_PROMPT_TEXT } from '@singula-ai/alego-tool-lsp'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 
 /** A scripted provider recording queries; `respond` yields the result or throws. */
 function stubProvider(

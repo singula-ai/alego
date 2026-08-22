@@ -1,5 +1,5 @@
 {
-  "name": "@alego/client-ui-brand-official",
+  "name": "@singula-ai/alego-client-ui-brand-official",
   "description": "Official Alego brand occupants for the Web client's sidebar and conversation Hero slots",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -32,9 +32,9 @@
   "alego": {
     "client": {
       "inject": [
-        "@alego/client-runtime",
-        "@alego/client-ui-conversation",
-        "@alego/client-ui-sidebar"
+        "@singula-ai/alego-client-runtime",
+        "@singula-ai/alego-client-ui-conversation",
+        "@singula-ai/alego-client-ui-sidebar"
       ],
       "platform": "web"
     }
@@ -45,19 +45,19 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@alego/client-runtime": "workspace:^",
-    "@alego/client-ui-conversation": "workspace:^",
-    "@alego/client-ui-sidebar": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-client-runtime": "workspace:^",
+    "@singula-ai/alego-client-ui-conversation": "workspace:^",
+    "@singula-ai/alego-client-ui-sidebar": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
-    "@alego/client-runtime": "workspace:^",
-    "@alego/client-ui-conversation": "workspace:^",
-    "@alego/client-ui-primitives": "workspace:^",
-    "@alego/client-ui-sidebar": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/cordis": "workspace:^",
+    "@singula-ai/alego-client-runtime": "workspace:^",
+    "@singula-ai/alego-client-ui-conversation": "workspace:^",
+    "@singula-ai/alego-client-ui-primitives": "workspace:^",
+    "@singula-ai/alego-client-ui-sidebar": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
     "@testing-library/react": "^16.1.0",
     "@types/react": "~18.3.1",
     "react": "^18.2.0",

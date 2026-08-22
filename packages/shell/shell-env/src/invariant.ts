@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/shell-env`.
- * @module @alego/shell-env/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-shell-env`.
+ * @module @singula-ai/alego-shell-env/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/shell-env'
+const PACKAGE_NAME = '@singula-ai/alego-shell-env'
 
 /** Cordis companion plugin name. */
 export const name = 'shell-env-invariant'

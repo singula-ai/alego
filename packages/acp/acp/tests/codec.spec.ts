@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { TurnEndReason } from '@alego/session'
+import type { TurnEndReason } from '@singula-ai/alego-session'
 import { turnEndToStopReason } from '../src/codec.ts'
 
 describe('ACP codec', () => {

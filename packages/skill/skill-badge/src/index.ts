@@ -1,18 +1,18 @@
 /**
  * Bundled `alego-badge` skill provider.
  *
- * @module @alego/skill-badge
+ * @module @singula-ai/alego-skill-badge
  */
 
 import { readFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import {
   BUNDLED_SKILL_RANK,
   type SkillCandidate,
   type SkillDefinition,
   type SkillProvider,
-} from '@alego/skill'
+} from '@singula-ai/alego-skill'
 
 const PROVIDER_NAME = 'alego-badge'
 const SKILL_BODY_URL = new URL('../assets/alego-badge.md', import.meta.url)

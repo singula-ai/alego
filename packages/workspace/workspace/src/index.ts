@@ -2,16 +2,16 @@
  * Workspace entity registry (`ctx.workspaceRegistry`): durable workspace records,
  * stable registry order, and header-validated session membership over the
  * domain data form.
- * @module @alego/workspace
+ * @module @singula-ai/alego-workspace
  */
 
 import { randomUUID } from 'node:crypto'
 import { stat } from 'node:fs/promises'
 import { basename } from 'node:path'
-import { Context, Service } from '@alego/cordis'
-import type { SessionHeader, SessionId } from '@alego/session'
-import type {} from '@alego/session-persistence'
-import type { DomainGlobal, KvTable } from '@alego/storage-domain'
+import { Context, Service } from '@singula-ai/cordis'
+import type { SessionHeader, SessionId } from '@singula-ai/alego-session'
+import type {} from '@singula-ai/alego-session-persistence'
+import type { DomainGlobal, KvTable } from '@singula-ai/alego-storage-domain'
 import { WorkspaceEntity } from './entity.ts'
 import type { WorkspaceEntityHost } from './entity.ts'
 
@@ -64,7 +64,7 @@ export class WorkspaceOrderInvalidError extends Error {
 }
 
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     workspaceRegistry: WorkspaceRegistry
   }

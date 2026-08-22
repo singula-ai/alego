@@ -1,9 +1,9 @@
 /** Agent Teams service façade over roster, mailbox, task, and runtime lifecycle owners. */
 
-import { Context, Service } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent } from '@alego/agent'
-import type {} from '@alego/session-persistence'
+import { Context, Service } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent } from '@singula-ai/alego-agent'
+import type {} from '@singula-ai/alego-session-persistence'
 import { TeamActivity } from './activity.ts'
 import { errorMessage, TeamError } from './error.ts'
 import { TeamJournal } from './journal.ts'
@@ -32,7 +32,7 @@ export { TeamId, TeamMessageId, TeamTaskId } from './types.ts'
 export { TeamError } from './error.ts'
 export { foldTeam } from './fold.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     agentTeams: TeamService
   }

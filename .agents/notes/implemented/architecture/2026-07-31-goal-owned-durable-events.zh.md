@@ -12,9 +12,9 @@ Goal 领域需要持久状态，但不需要拥有待处理的模型输入。继
 
 ## 决策
 
-`@alego/goal` 拥有持久的 `goal/change` 会话事件。每个事件携带变更后的完整 goal 快照，或带修订号的清除墓碑。`GoalService` 同步追加该事件，再发出 `goal/changed`；严格回放与 `goal` 会话投影只折叠 `goal/change` 来获得生命周期状态。
+`@singula-ai/alego-goal` 拥有持久的 `goal/change` 会话事件。每个事件携带变更后的完整 goal 快照，或带修订号的清除墓碑。`GoalService` 同步追加该事件，再发出 `goal/changed`；严格回放与 `goal` 会话投影只折叠 `goal/change` 来获得生命周期状态。
 
-`GoalMessageSource` 只标识已准入且为正数的继续执行 Round。匹配的 `user/message` 会推进 `roundsStarted`；普通用户消息与 inbox splice 事件不会改变 goal 状态。Goal 包不会插入、领取、移除或检查 inbox 消息。`@alego/goal-round-driver` 仍通过公开 inbox 生命周期负责排队和跟踪自己的继续执行提示词。
+`GoalMessageSource` 只标识已准入且为正数的继续执行 Round。匹配的 `user/message` 会推进 `roundsStarted`；普通用户消息与 inbox splice 事件不会改变 goal 状态。Goal 包不会插入、领取、移除或检查 inbox 消息。`@singula-ai/alego-goal-round-driver` 仍通过公开 inbox 生命周期负责排队和跟踪自己的继续执行提示词。
 
 激活态仍只存在于进程中。服务在缓存观察事件时，将同步追加的事件序号与所请求的激活状态关联；回放或外部追加的变更默认处于 disarmed 状态。会话日志仍是唯一的持久权威。
 

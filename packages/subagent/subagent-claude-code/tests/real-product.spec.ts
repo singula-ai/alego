@@ -17,16 +17,16 @@ import type {
   SDKMessage,
   SDKSystemMessage,
 } from '@anthropic-ai/claude-agent-sdk'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
-import type { Agent } from '@alego/agent'
-import SubagentRuntime from '@alego/subagent'
+import type { Agent } from '@singula-ai/alego-agent'
+import SubagentRuntime from '@singula-ai/alego-subagent'
 import type {
   SubprocessHandle,
   SubprocessOutcome,
   SubprocessSpawnSpec,
-} from '@alego/subprocess'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
+} from '@singula-ai/alego-subprocess'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 import * as claudeCode from '../src/index.ts'
 import type { ClaudeCodePermissionMode } from '../src/run.ts'
 import {

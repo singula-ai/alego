@@ -1,13 +1,13 @@
 /**
  * Human-facing `/goal` command over the persisted same-session goal domain.
- * @module @alego/command-goal
+ * @module @singula-ai/alego-command-goal
  */
 
-import type { Context } from '@alego/cordis'
-import type { CommandInvocation, CommandResult } from '@alego/commands'
-import { GoalError } from '@alego/goal'
-import type { GoalPhase, GoalRef, GoalView } from '@alego/goal'
-import { createUserMessage } from '@alego/llm'
+import type { Context } from '@singula-ai/cordis'
+import type { CommandInvocation, CommandResult } from '@singula-ai/alego-commands'
+import { GoalError } from '@singula-ai/alego-goal'
+import type { GoalPhase, GoalRef, GoalView } from '@singula-ai/alego-goal'
+import { createUserMessage } from '@singula-ai/alego-llm'
 
 export const name = 'command-goal'
 export const inject = ['commands', 'goals']

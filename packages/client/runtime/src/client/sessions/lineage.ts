@@ -2,8 +2,8 @@
 // The input order is authoritative; lineage only makes each child adjacent to its parent.
 // Orphaned lineage degrades to root level; cycles fail soft and emit as roots.
 
-import type { SessionId, SessionSummary } from '@alego/api-remotes/client'
-import type { SessionProjectionMap } from '@alego/session-projection/types'
+import type { SessionId, SessionSummary } from '@singula-ai/alego-api-remotes/client'
+import type { SessionProjectionMap } from '@singula-ai/alego-session-projection/types'
 import type { PendingInteractionStatus } from './pending.ts'
 
 /** Host list summary enriched with the latest mux-projected durable title. */

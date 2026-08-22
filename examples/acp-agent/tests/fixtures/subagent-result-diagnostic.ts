@@ -1,12 +1,12 @@
 /** Deterministic provider for model-visible foreground and Job diagnostic snapshots. */
 
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import {
   NO_START_CAPABILITIES,
   type ResolvedSubagentStartRequest,
   type SubagentProvider,
-} from '@alego/subagent'
-import { SessionId } from '@alego/session'
+} from '@singula-ai/alego-subagent'
+import { SessionId } from '@singula-ai/alego-session'
 
 export const name = 'subagent-result-diagnostic'
 export const inject = ['subagents']

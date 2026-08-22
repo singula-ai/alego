@@ -1,14 +1,14 @@
-# @alego/session-telemetry-otel
+# @singula-ai/alego-session-telemetry-otel
 
 [English](README.md) | 中文
 
-[遥测（telemetry）seam](../session-telemetry/) 的 OpenTelemetry 后端，也是部署方唯一要加载的条目。其 `mode` 决定 seam 是实时跟随会话事件、仅在记录反馈时回放权威日志，还是将遥测留在本地。上传模式会原样组合 OTel JS SDK（`LoggerProvider` → `BatchLogRecordProcessor` → OTLP/HTTP 日志导出器），把每条已交接记录映射到 `logger.emit()`，并使用两个插桩作用域（instrumentation scope）：ledger 记录挂在 `@alego/session-sessionTelemetry-otel` 下，运维记录挂在 `@alego/session-sessionTelemetry-otel/ops` 下。资源身份包含 `service.name`/`service.version`（来自 `alego-llm` 的 `APP_IDENTITY`），以及本包的匿名 `user.id`（`$ALEGO_HOME/.anonymous-user-id`；首次使用时创建的随机 UUID，删除该文件可重置）；这些身份随每个导出批次携带一次，而非逐条记录携带。
+[遥测（telemetry）seam](../session-telemetry/) 的 OpenTelemetry 后端，也是部署方唯一要加载的条目。其 `mode` 决定 seam 是实时跟随会话事件、仅在记录反馈时回放权威日志，还是将遥测留在本地。上传模式会原样组合 OTel JS SDK（`LoggerProvider` → `BatchLogRecordProcessor` → OTLP/HTTP 日志导出器），把每条已交接记录映射到 `logger.emit()`，并使用两个插桩作用域（instrumentation scope）：ledger 记录挂在 `@singula-ai/alego-session-sessionTelemetry-otel` 下，运维记录挂在 `@singula-ai/alego-session-sessionTelemetry-otel/ops` 下。资源身份包含 `service.name`/`service.version`（来自 `alego-llm` 的 `APP_IDENTITY`），以及本包的匿名 `user.id`（`$ALEGO_HOME/.anonymous-user-id`；首次使用时创建的随机 UUID，删除该文件可重置）；这些身份随每个导出批次携带一次，而非逐条记录携带。
 
 ## 配置
 
 ```yaml
 - id: sessionTelemetry-otel
-  name: '@alego/session-sessionTelemetry-otel'
+  name: '@singula-ai/alego-session-sessionTelemetry-otel'
   config:
     mode: FULL                # explicit opt-in; default: DISABLED
     shutdownTimeoutMillis: 3000 # optional; defaults to 3000

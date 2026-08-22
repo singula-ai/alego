@@ -1,5 +1,5 @@
-import type { Context } from '@alego/cordis'
-import { LlmAdapter, type StreamChunk } from '@alego/llm'
+import type { Context } from '@singula-ai/cordis'
+import { LlmAdapter, type StreamChunk } from '@singula-ai/alego-llm'
 
 /** Deterministic one-step adapter for the time-context Loader fixture. */
 class TimeContextMockAdapter extends LlmAdapter {

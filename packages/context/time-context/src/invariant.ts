@@ -1,15 +1,15 @@
-/** Package-owned durable clock-context invariants. @module @alego/time-context/invariant */
+/** Package-owned durable clock-context invariants. @module @singula-ai/alego-time-context/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { Session, SessionEvent } from '@alego/session'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 import {
   deriveBrowserTimeZoneContext,
   renderBrowserTimeZoneContext,
 } from './request-zone.ts'
 import { createTimestampFormatter, formatTimestamp } from './timestamp.ts'
 
-const PACKAGE_NAME = '@alego/time-context'
+const PACKAGE_NAME = '@singula-ai/alego-time-context'
 const SOURCE_NAME = 'time-context'
 const READING = new RegExp(
   '^Time sampled while preparing turn (\\d+), step (\\d+): '

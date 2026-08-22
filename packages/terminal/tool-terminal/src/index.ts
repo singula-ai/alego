@@ -1,21 +1,21 @@
 /**
  * Six model-facing persistent terminal tools. Owner identity comes from the exact
  * tool execution Agent; generic `ctx.jobs` owns background ids and collection.
- * @module @alego/tool-terminal
+ * @module @singula-ai/alego-tool-terminal
  */
 
-import { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent } from '@alego/agent'
-import type { ContentBlock } from '@alego/llm'
-import { TerminalSessionId } from '@alego/terminal'
-import type { TerminalSendResult, TerminalSessionId as TerminalSessionIdType, TerminalSignal } from '@alego/terminal'
-import type {} from '@alego/jobs'
-import { defineTool } from '@alego/tools'
-import type { ToolDefinition } from '@alego/tools'
+import { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import { TerminalSessionId } from '@singula-ai/alego-terminal'
+import type { TerminalSendResult, TerminalSessionId as TerminalSessionIdType, TerminalSignal } from '@singula-ai/alego-terminal'
+import type {} from '@singula-ai/alego-jobs'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { ToolDefinition } from '@singula-ai/alego-tools'
 import { boundTerminalText, renderList, renderRead, renderSend, renderSendRead, renderSpawn } from './render.ts'
 
-declare module '@alego/jobs' {
+declare module '@singula-ai/alego-jobs' {
   interface JobKindMap {
     'pty-send': 'pty-send'
   }
@@ -250,7 +250,7 @@ export function apply(ctx: Context, config: Config = {}): void {
       if (args.run_in_background === true) {
         if (!enableRunInBackground) throw new Error('background terminal sends are disabled by tool-terminal configuration')
         const jobs = ctx.get('jobs')
-        if (jobs === undefined) throw new Error('background terminal sends require @alego/jobs and @alego/tool-jobs')
+        if (jobs === undefined) throw new Error('background terminal sends require @singula-ai/alego-jobs and @singula-ai/alego-tool-jobs')
         let cancelRequested = false
         const jobId = jobs.start({
           kind: 'pty-send',

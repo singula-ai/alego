@@ -8,10 +8,10 @@
  * can reach). Consumers switch on `capability().kind`; the union is
  * merge-extensible, and the documented default for an unknown kind is to
  * hide the picking affordance rather than fail.
- * @module @alego/host-directory-picker
+ * @module @singula-ai/alego-host-directory-picker
  */
 
-import { Context, Service } from '@alego/cordis'
+import { Context, Service } from '@singula-ai/cordis'
 
 /** The native interaction: one OS directory chooser on the host display. */
 export interface DirectoryPickerNativeCapability {
@@ -115,7 +115,7 @@ export class DirectoryPickerError extends Error {
   }
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     directoryPicker: DirectoryPicker
   }

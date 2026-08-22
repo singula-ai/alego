@@ -9,9 +9,9 @@
  * Input side owns the span/bare-token CAS guard) and focuses the composer;
  * the controller never touches the input machine.
  */
-import { createSnapshotStore } from '@alego/client-runtime/client'
-import type { SnapshotStore } from '@alego/client-runtime/client'
-import type { TokenSpan } from '@alego/client-ui-input-trigger/client'
+import { createSnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import type { SnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import type { TokenSpan } from '@singula-ai/alego-client-ui-input-trigger/client'
 import type { SelectOption } from './contract.ts'
 
 /**

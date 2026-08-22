@@ -2,12 +2,12 @@
  * Public session-reference request, candidate, and preparation records.
  * Imports stay on type-only subpaths so generated Remote clients can consume
  * this module without Host runtime code.
- * @module @alego/session-reference/types
+ * @module @singula-ai/alego-session-reference/types
  */
 
-import type { UserMessage } from '@alego/llm/message'
-import type { ContentBlock } from '@alego/llm/types'
-import type { SessionId } from '@alego/session/types'
+import type { UserMessage } from '@singula-ai/alego-llm/message'
+import type { ContentBlock } from '@singula-ai/alego-llm/types'
+import type { SessionId } from '@singula-ai/alego-session/types'
 
 /** Durable source session, cited event seqs, and snapshot facts for prepared cross-session context. */
 export interface SessionReferenceSource {
@@ -29,7 +29,7 @@ export interface SessionReferenceSource {
   }[]
 }
 
-declare module '@alego/llm' {
+declare module '@singula-ai/alego-llm' {
   interface MessageSourceMap {
     'session-reference': SessionReferenceSource
   }

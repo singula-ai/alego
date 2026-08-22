@@ -2,17 +2,17 @@
  * Shared mounting for the services required before tests load the concrete
  * agent loop. The caller retains ownership of the context, loop, adapters,
  * optional plugins, and teardown.
- * @module @alego/agent-loop-testkit
+ * @module @singula-ai/alego-agent-loop-testkit
  */
 
-import type { Context } from '@alego/cordis'
-import AgentRegistry from '@alego/agent'
-import LlmRuntime from '@alego/llm'
-import SessionStore from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import type { Config as SystemPromptConfig } from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
-import type { Config as ToolRuntimeConfig } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import AgentRegistry from '@singula-ai/alego-agent'
+import LlmRuntime from '@singula-ai/alego-llm'
+import SessionStore from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import type { Config as SystemPromptConfig } from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
+import type { Config as ToolRuntimeConfig } from '@singula-ai/alego-tools'
 
 /** Configuration forwarded to the prerequisite service plugins. */
 export interface AgentLoopTestDependenciesOptions {

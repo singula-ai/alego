@@ -20,22 +20,22 @@
  * Agent Note:
  * - .agents/notes/implemented/simplification/2026-07-22-plan-specific-collaboration-state.md
  *
- * @module @alego/plan-mode
+ * @module @singula-ai/alego-plan-mode
  */
 
-import { Context, Service } from '@alego/cordis'
+import { Context, Service } from '@singula-ai/cordis'
 import { z as zod } from 'zod'
 import type { ZodType } from 'zod'
-import type { Agent, PreStepDecision } from '@alego/agent'
-import { createUserMessage } from '@alego/llm'
-import type { Session, SessionEvent, UserMessage } from '@alego/session'
-import { defineTool } from '@alego/tools'
-import type {} from '@alego/system-prompt'
-import { UserQuestionError } from '@alego/user-questions'
+import type { Agent, PreStepDecision } from '@singula-ai/alego-agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type { Session, SessionEvent, UserMessage } from '@singula-ai/alego-session'
+import { defineTool } from '@singula-ai/alego-tools'
+import type {} from '@singula-ai/alego-system-prompt'
+import { UserQuestionError } from '@singula-ai/alego-user-questions'
 // Type-only edge: resolves `ctx.commands` for the optional command child.
-import type { CommandId } from '@alego/commands'
+import type { CommandId } from '@singula-ai/alego-commands'
 // Type-only: resolves ctx.sessionProjections for the optional unit child.
-import type {} from '@alego/session-projection'
+import type {} from '@singula-ai/alego-session-projection'
 import type { PlanProjection } from './types.ts'
 // The `plan` projection-key declaration lives in src/types.ts (its one home);
 // this re-export projects the type face onto the package root AND keeps the
@@ -43,7 +43,7 @@ import type { PlanProjection } from './types.ts'
 // declarations still receive the SessionProjectionMap merge.
 export type * from './types.ts'
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * Whether plan mode is in force from this point on: log-only, non-surface,
@@ -54,7 +54,7 @@ declare module '@alego/session/types' {
   }
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     planMode: PlanModeController
   }
@@ -151,7 +151,7 @@ interface PlanUnitState {
   running: { commandId: CommandId; wanted: boolean } | null
 }
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionStateMap {
     plan: PlanUnitState
   }

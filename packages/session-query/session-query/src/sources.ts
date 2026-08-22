@@ -1,6 +1,6 @@
 /** Shared immutable-header checks for logical session source observers. */
 
-import type { SessionHeader } from '@alego/session'
+import type { SessionHeader } from '@singula-ai/alego-session'
 import { SessionQueryError } from './config.ts'
 
 /**

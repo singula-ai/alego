@@ -3,12 +3,12 @@
  * connection handle, stream-loop sink wiring into the object layer, and the
  * fiber-scoped loop teardown.
  */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import type { ConnectionHandle } from '@alego/api-remotes/client'
-import type { ConnectionSinks } from '@alego/api-remotes/client'
-import { SESSION_SEARCH_RESULT_LIMIT } from '@alego/host-apiproxy/api'
-import TypertRegistry from '@alego/typert-registry'
+import type { ConnectionHandle } from '@singula-ai/alego-api-remotes/client'
+import type { ConnectionSinks } from '@singula-ai/alego-api-remotes/client'
+import { SESSION_SEARCH_RESULT_LIMIT } from '@singula-ai/alego-host-apiproxy/api'
+import TypertRegistry from '@singula-ai/alego-typert-registry'
 import * as RuntimeClient from '../src/client/index.ts'
 import type { ConversationNodeDefinition } from '../src/client/contract/conversation.ts'
 import { Session } from '../src/client/sessions/session.ts'

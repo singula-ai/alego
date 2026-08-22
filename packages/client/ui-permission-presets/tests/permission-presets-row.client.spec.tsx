@@ -1,13 +1,13 @@
 // @vitest-environment jsdom
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { bindSnapshotSelector } from '@alego/client-test-runtime'
-import type { SettingsNamespaceView } from '@alego/api-remotes/client'
-import { SettingsSchemaService } from '@alego/client-ui-settings/src/client/schema.ts'
+import { bindSnapshotSelector } from '@singula-ai/alego-client-test-runtime'
+import type { SettingsNamespaceView } from '@singula-ai/alego-api-remotes/client'
+import { SettingsSchemaService } from '@singula-ai/alego-client-ui-settings/src/client/schema.ts'
 import { PermissionRow, type PermissionRowProps } from '../src/client/PermissionRow.tsx'
 import { en } from '../src/client/locales.ts'
-import { SettingsDescribeMirror } from '@alego/client-ui-settings/src/client/settings-mirror.ts'
+import { SettingsDescribeMirror } from '@singula-ai/alego-client-ui-settings/src/client/settings-mirror.ts'
 import { PermissionPresetSettingsController } from '../src/client/settings-store.ts'
 
 const schema = new SettingsSchemaService(new Context())

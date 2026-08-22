@@ -16,7 +16,7 @@ Each new external-process or network tool re-derived the same four things — cl
 
 ## Decision
 
-`@alego/timeout` lives under `packages/util/` (peer to `alego-brand`) and owns the *timing and classification* half of timeout; the *termination* half — the hard kill — stays in each capability's implementation. It is a library of pure functions, **not** a cordis service or plugin: it takes no `ctx`, registers nothing, holds no cross-call state, and emits no events. There is deliberately no central "timeout service" that would have to know how to stop every capability's work — that knowledge is exactly what a microkernel keeps out of shared layers, and what Codex's exec-only `ExecExpiration` scope demonstrates.
+`@singula-ai/alego-timeout` lives under `packages/util/` (peer to `alego-brand`) and owns the *timing and classification* half of timeout; the *termination* half — the hard kill — stays in each capability's implementation. It is a library of pure functions, **not** a cordis service or plugin: it takes no `ctx`, registers nothing, holds no cross-call state, and emits no events. There is deliberately no central "timeout service" that would have to know how to stop every capability's work — that knowledge is exactly what a microkernel keeps out of shared layers, and what Codex's exec-only `ExecExpiration` scope demonstrates.
 
 ### The library API
 

@@ -2,8 +2,8 @@
 
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
-import { projectCordisCatalog } from '@alego/typert-generator'
-import type { CordisCatalogModel, ServiceMethodEntry } from '@alego/typert-generator'
+import { projectCordisCatalog } from '@singula-ai/alego-typert-generator'
+import type { CordisCatalogModel, ServiceMethodEntry } from '@singula-ai/alego-typert-generator'
 import { CORDIS_CATALOG_POLICY } from './gen-cordis-catalog.ts'
 
 const root = resolve(import.meta.dirname, '..')
@@ -48,7 +48,7 @@ function main(): void {
   const { projector, model } = projectCordisCatalog(root, CORDIS_CATALOG_POLICY, 'client')
   const destination = resolve(root, CLIENT_OUT)
   const source = projector.renderRuntimeApi(clientModel(model))
-    .replaceAll('@alego/tool-cordis/api-catalog', '@alego/cordis-client-runner/client/api-catalog')
+    .replaceAll('@singula-ai/alego-tool-cordis/api-catalog', '@singula-ai/alego-cordis-client-runner/client/api-catalog')
   mkdirSync(dirname(destination), { recursive: true })
   writeFileSync(destination, source)
   console.log(`gen-cordis-inspect-catalog: wrote ${CLIENT_OUT}`)

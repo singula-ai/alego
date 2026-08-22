@@ -11,10 +11,10 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import Include from '@alego/cordis-plugin-include'
-import HttpServer from '@alego/host-webserver'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include from '@singula-ai/cordis-plugin-include'
+import HttpServer from '@singula-ai/alego-host-webserver'
 import * as FrontendStatic from '../src/index.ts'
 
 let root: string | undefined
@@ -40,12 +40,12 @@ async function loadComposition(): Promise<Context> {
   await mkdir(join(dist, 'empty'))
   const configPath = join(root, 'cordis.yml')
   await writeFile(configPath, [
-    "- name: '@alego/host-webserver'",
+    "- name: '@singula-ai/alego-host-webserver'",
     '  config:',
     "    host: '127.0.0.1'",
     '    port: 0',
     '- id: frontend',
-    "  name: '@alego/host-frontend-static'",
+    "  name: '@singula-ai/alego-host-frontend-static'",
     '  config:',
     `    distIndex: '${distIndex}'`,
     '',
@@ -56,8 +56,8 @@ async function loadComposition(): Promise<Context> {
   await context.plugin(Loader)
   context.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@alego/host-webserver', HttpServer],
-    ['@alego/host-frontend-static', FrontendStatic],
+    ['@singula-ai/alego-host-webserver', HttpServer],
+    ['@singula-ai/alego-host-frontend-static', FrontendStatic],
   ])
   context.loader.internal = {
     version: 'v2',

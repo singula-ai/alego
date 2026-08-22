@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { ContentBlock } from '@alego/llm'
-import type { SessionEvent } from '@alego/session'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { SessionEvent } from '@singula-ai/alego-session'
 import { AssistantOutputFold, finalAssistantOutput } from '../src/assistant-output.ts'
 
 function message(content: ContentBlock[]): SessionEvent {

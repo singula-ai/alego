@@ -12,7 +12,7 @@ Context occupancy needs a numerator and a denominator that no existing surface c
 
 ## Decision
 
-Both values are ordinary durable session-projection state. `@alego/token-meter` registers two units when `ctx.sessionProjections` is present.
+Both values are ordinary durable session-projection state. `@singula-ai/alego-token-meter` registers two units when `ctx.sessionProjections` is present.
 
 `tokenUsage` folds the complete durable log into uncached input, output, cache-read, and cache-write buckets. An `assistant/chunk` usage sample survives a later failed request; an `assistant/message` usage value for the same `(turn, step)` replaces the earlier sample instead of double-counting it. Reasoning stays an output subdivision. Compaction and surface replacement do not erase earlier billing.
 

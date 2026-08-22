@@ -5,9 +5,9 @@ import {
 import {
   DisclosureRow, IconChevronRightOutline14, StateDot,
   type DisclosureRowProps, type StateDotState,
-} from '@alego/client-ui-primitives'
-import type { PropsLocale, PropsRuntime } from '@alego/client-ui-slots'
-import { shallowEqual, type SessionId, type SessionListState } from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-ui-primitives'
+import type { PropsLocale, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
+import { shallowEqual, type SessionId, type SessionListState } from '@singula-ai/alego-client-runtime/client'
 import type { WorkflowRunKey } from './locales.ts'
 import type {
   WorkflowRunMemberData, WorkflowRunPhaseData, WorkflowRunStatus,

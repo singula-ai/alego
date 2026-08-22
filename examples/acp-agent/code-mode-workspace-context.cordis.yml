@@ -1,12 +1,12 @@
 # Code Mode agent-instructions snapshot recording overlay. The default filesystem
 # tools trigger nested instruction discovery after a read.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: acp-agent
-        name: '@alego/acp-demo'
+        name: '@singula-ai/alego-acp-demo'
         config:
           provider: deepseek-official
           model: deepseek-v4-pro
@@ -22,4 +22,4 @@
             Verify your work by running the code or tests. Keep answers brief and factual.
       - insert:
           - id: code-runtime
-            name: '@alego/code-runtime-worker-thread'
+            name: '@singula-ai/alego-code-runtime-worker-thread'

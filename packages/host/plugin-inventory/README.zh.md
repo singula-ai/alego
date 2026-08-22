@@ -1,4 +1,4 @@
-# @alego/host-plugin-inventory
+# @singula-ai/alego-host-plugin-inventory
 
 [English](README.md) | 中文
 

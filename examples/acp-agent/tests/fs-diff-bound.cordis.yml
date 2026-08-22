@@ -5,12 +5,12 @@
 # verbatim, and the acp-agent restatement re-pins `deepseek-v4-flash` to match
 # the recorded corpus and its pinned request headers.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ../cordis.yml
     patches:
       - id: acp-agent
-        name: '@alego/acp-demo'
+        name: '@singula-ai/alego-acp-demo'
         config:
           provider: deepseek-official
           model: deepseek-v4-flash
@@ -23,7 +23,7 @@
 
             Verify your work by running the code or tests. Keep answers brief and factual.
       - id: fs-sandbox
-        name: '@alego/fs-sandbox'
+        name: '@singula-ai/alego-fs-sandbox'
         config:
           cwd: !!js process.cwd()
           diffBasisMaxBytes: 64

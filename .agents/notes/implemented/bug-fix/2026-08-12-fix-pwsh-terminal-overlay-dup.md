@@ -13,9 +13,9 @@ The web E2E scaffold applies an `extraOverlayPath` after the shipped Web surface
 ```yaml
 - insert:
     - id: pwsh-local
-      name: '@alego/pwsh-local'
+      name: '@singula-ai/alego-pwsh-local'
     - id: tool-pwsh
-      name: '@alego/tool-pwsh'
+      name: '@singula-ai/alego-tool-pwsh'
 ```
 
 `insert` is correct only while `tool-pwsh` is absent from the composition. The id exists because `86b6979bdc` (refactor(bundle): fold the Windows shell platform layer into the base rows) moved both shell stacks into the base bundle with inverted platform gates — `packages/bundle/base/cordis.patch.yml` declares `tool-pwsh` with `disabled: !!js process.platform !== 'win32'`, so the row is present in the composition on every platform. Later, `42fc7c5ffb` (refactor(preset): gate tool-pwsh by platform alongside tool-bash) added a web-app patch row that disables `tool-pwsh` for surfaces that use presets; a patch row cannot introduce an id, so it is not the source of the collision. The overlay's `insert` delivers a second row with the same id in the same loader group, and the loader rejects the pair at boot.
@@ -26,7 +26,7 @@ Replace the overlay's `insert` of `tool-pwsh` with a top-level id-targeted overr
 
 ```yaml
 - id: tool-pwsh
-  name: '@alego/tool-pwsh'
+  name: '@singula-ai/alego-tool-pwsh'
   disabled: false
 ```
 

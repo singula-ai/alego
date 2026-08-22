@@ -11,13 +11,13 @@ import { existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import Include from '@alego/cordis-plugin-include'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include from '@singula-ai/cordis-plugin-include'
 import { beforeEach, describe, expect, it } from 'vitest'
 import AgentPresets, {
   COMPOSITION_FILE, copyComposition, METADATA_FILE,
-} from '@alego/agent-presets'
+} from '@singula-ai/alego-agent-presets'
 
 const FIXTURES = join(dirname(fileURLToPath(import.meta.url)), 'fixtures')
 const VALID = '- id: tool-alpha\n  name: ../../plugins/contribute.js\n  config:\n    tool: alpha\n'

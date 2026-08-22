@@ -1,6 +1,6 @@
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import type { SessionId, WorkspaceId, WorkspaceView } from '@alego/api-remotes/client'
+import type { SessionId, WorkspaceId, WorkspaceView } from '@singula-ai/alego-api-remotes/client'
 import { SessionRuntime } from '../src/client/sessions/service.ts'
 import { WorkspaceManager } from '../src/client/workspaces/manager.ts'
 import { DirectoryBrowseError, WorkspaceCreateError, WorkspaceRuntime } from '../src/client/workspaces/service.ts'

@@ -2,25 +2,25 @@ import { mkdtempSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { CallId } from '@alego/llm'
-import { ShellExecutor } from '@alego/shell'
-import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellProcessRead, ShellRunResult } from '@alego/shell'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime, { TOOL_ABORTED, TOOL_ABORTED_BEFORE_DISPATCH } from '@alego/tools'
-import AgentRegistry from '@alego/agent'
-import type { Agent } from '@alego/agent'
-import SessionStore, { SessionId } from '@alego/session'
-import JsonlSessionPersistence from '@alego/session-persistence-jsonl'
-import LocalJobRegistry from '@alego/jobs-local'
-import * as ToolTasks from '@alego/tool-jobs'
-import ApprovalService from '@alego/user-approval'
-import type { ApprovalOutcome } from '@alego/user-approval'
-import { LocalBashExecutor } from '@alego/bash-local'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
-import SandboxPolicyService from '@alego/sandbox-policy'
-import * as ToolBash from '@alego/tool-bash'
-import * as BashEnvPlugin from '@alego/shell-env'
+import { Context } from '@singula-ai/cordis'
+import { CallId } from '@singula-ai/alego-llm'
+import { ShellExecutor } from '@singula-ai/alego-shell'
+import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellProcessRead, ShellRunResult } from '@singula-ai/alego-shell'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { TOOL_ABORTED, TOOL_ABORTED_BEFORE_DISPATCH } from '@singula-ai/alego-tools'
+import AgentRegistry from '@singula-ai/alego-agent'
+import type { Agent } from '@singula-ai/alego-agent'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import LocalJobRegistry from '@singula-ai/alego-jobs-local'
+import * as ToolTasks from '@singula-ai/alego-tool-jobs'
+import ApprovalService from '@singula-ai/alego-user-approval'
+import type { ApprovalOutcome } from '@singula-ai/alego-user-approval'
+import { LocalBashExecutor } from '@singula-ai/alego-bash-local'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
+import SandboxPolicyService from '@singula-ai/alego-sandbox-policy'
+import * as ToolBash from '@singula-ai/alego-tool-bash'
+import * as BashEnvPlugin from '@singula-ai/alego-shell-env'
 import { processOutcome } from '../src/background.ts'
 import { renderProcessRead, renderResult } from '../src/render.ts'
 
@@ -492,7 +492,7 @@ describe('background execution through the job runtime', () => {
     const ctx = await setup() // no LocalJobRegistry / ToolTasks
     const result = await call(ctx, 'bash', { command: 'sleep 60', description: 'test command', run_in_background: true })
     expect(result.isError).toBe(true)
-    expect(text(result)).toContain('background jobs unavailable: load @alego/jobs and @alego/tool-jobs')
+    expect(text(result)).toContain('background jobs unavailable: load @singula-ai/alego-jobs and @singula-ai/alego-tool-jobs')
   })
 
   it('a pre-aborted call is skipped before the process starts', async () => {

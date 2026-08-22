@@ -14,7 +14,7 @@ The Windows directory picker's primary tier was a spawned PowerShell script arou
 
 ## Alternatives considered
 
-- **A prebuilt native helper (`native/` family like `@alego/node-addon-landlock-run`).** Rejected: another npm package family, MSVC provisioning, and a Windows build/release lane — all to ship ~150 lines of C the repository cannot currently exercise on CI (no real-Windows lane); koffi delivers the same COM surface with zero new supply chain.
+- **A prebuilt native helper (`native/` family like `@singula-ai/node-addon-landlock-run`).** Rejected: another npm package family, MSVC provisioning, and a Windows build/release lane — all to ship ~150 lines of C the repository cannot currently exercise on CI (no real-Windows lane); koffi delivers the same COM surface with zero new supply chain.
 - **An N-API in-process addon.** Rejected for the same CI/toolchain reasons plus owned C++ for STA threading and message pumping that a child process + koffi express in TypeScript.
 - **Keep PowerShell primary and probe versions.** Rejected: the picker stays hostage to shell packaging (6 vs 7, Store aliases, profiles), and 5.1's legacy dialog remains the floor wherever pwsh is absent; the fallback-trigger widening alone was accepted into the fallback tier instead.
 - **Blocking the main thread for the modal call.** Rejected outright: the web host must keep serving RPC while the dialog is open.

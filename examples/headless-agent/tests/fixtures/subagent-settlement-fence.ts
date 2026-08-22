@@ -3,9 +3,9 @@
  * @module subagent-settlement-fence
  */
 
-import type { Context } from '@alego/cordis'
-import type {} from '@alego/agent-loop'
-import type {} from '@alego/subagent'
+import type { Context } from '@singula-ai/cordis'
+import type {} from '@singula-ai/alego-agent-loop'
+import type {} from '@singula-ai/alego-subagent'
 
 /** Fixture plugin name. */
 export const name = 'subagent-settlement-fence'

@@ -1,6 +1,6 @@
-import type { ContentBlock } from '@alego/llm/types'
-import type { MuxFrame } from '@alego/api-remotes/client'
-import type { SessionEvent } from '@alego/session/types'
+import type { ContentBlock } from '@singula-ai/alego-llm/types'
+import type { MuxFrame } from '@singula-ai/alego-api-remotes/client'
+import type { SessionEvent } from '@singula-ai/alego-session/types'
 import type { QueuedMessage } from './conversation.ts'
 
 const QUEUE_PREVIEW_CHARS = 200

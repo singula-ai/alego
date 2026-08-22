@@ -6,8 +6,8 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import type { IApiClient } from '@alego/api-remotes/client'
-import { SettingsDescribeMirror } from '@alego/client-ui-settings/src/client/settings-mirror.ts'
+import type { IApiClient } from '@singula-ai/alego-api-remotes/client'
+import { SettingsDescribeMirror } from '@singula-ai/alego-client-ui-settings/src/client/settings-mirror.ts'
 import {
   AGENT_PRESET_SETTINGS_NS, AgentPresetSettingsController, messageOf,
 } from '../src/client/settings-store.ts'

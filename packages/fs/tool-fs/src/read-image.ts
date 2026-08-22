@@ -5,17 +5,17 @@
  * image-reading tool is useful only when the exact calling route can inspect
  * its result, so unknown capability refuses instead of relying on an adapter
  * failure after filesystem and attachment work.
- * @module @alego/tool-fs/src/read-image
+ * @module @singula-ai/alego-tool-fs/src/read-image
  */
 
 import { basename, extname } from 'node:path'
-import type { Context } from '@alego/cordis'
-import { AttachmentError, AttachmentId } from '@alego/attachment'
-import type { ImageAttachmentRef, ImageMediaType } from '@alego/attachment'
-import type { ContentBlock } from '@alego/llm'
-import { defineTool } from '@alego/tools'
-import type { GenericCallView, ToolExecution } from '@alego/tools'
-import type {} from '@alego/fs'
+import type { Context } from '@singula-ai/cordis'
+import { AttachmentError, AttachmentId } from '@singula-ai/alego-attachment'
+import type { ImageAttachmentRef, ImageMediaType } from '@singula-ai/alego-attachment'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { GenericCallView, ToolExecution } from '@singula-ai/alego-tools'
+import type {} from '@singula-ai/alego-fs'
 import { resolveRegularReadTarget } from './read-target.ts'
 
 /** Extensions `read_image` accepts; magic-byte validation at the attachment service stays authoritative. */

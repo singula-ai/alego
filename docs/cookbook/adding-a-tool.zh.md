@@ -8,8 +8,8 @@
 
 ```ts
 import { readFile } from 'node:fs/promises'
-import type { Context } from '@alego/cordis'
-import { defineTool } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import { defineTool } from '@singula-ai/alego-tools'
 
 export const name = 'my-tool'
 export const inject = ['tools']

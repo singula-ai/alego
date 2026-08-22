@@ -14,8 +14,8 @@ import {
   escalationHintMarker,
   sandboxDenialMarker,
   validateEscalationArgs,
-} from '@alego/sandbox'
-import type { EscalationApprover, EscalationOutcome } from '@alego/sandbox'
+} from '@singula-ai/alego-sandbox'
+import type { EscalationApprover, EscalationOutcome } from '@singula-ai/alego-sandbox'
 
 describe('the strictly-wider ladder', () => {
   it('read-only escalates to either wider mode; workspace-write only to full access', () => {

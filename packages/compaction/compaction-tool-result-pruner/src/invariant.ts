@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/compaction-tool-result-pruner`.
- * @module @alego/compaction-tool-result-pruner/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-compaction-tool-result-pruner`.
+ * @module @singula-ai/alego-compaction-tool-result-pruner/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/compaction-tool-result-pruner'
+const PACKAGE_NAME = '@singula-ai/alego-compaction-tool-result-pruner'
 
 /** Cordis companion plugin name. */
 export const name = 'compaction-tool-result-pruner-invariant'

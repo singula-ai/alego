@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { createUserMessage, CallId , createMessage } from '@alego/llm'
-import SessionStore, { Session, SessionForkError, SessionId } from '@alego/session'
-import type { SessionEvent, TurnEndReason } from '@alego/session'
+import { Context } from '@singula-ai/cordis'
+import { createUserMessage, CallId , createMessage } from '@singula-ai/alego-llm'
+import SessionStore, { Session, SessionForkError, SessionId } from '@singula-ai/alego-session'
+import type { SessionEvent, TurnEndReason } from '@singula-ai/alego-session'
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     'test/log-only': { value: string }
     /** Stands in for a plugin's open/close bracket (`compaction/start`). */

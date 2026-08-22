@@ -2,25 +2,25 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import { CallId } from '@alego/llm'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@alego/tools'
-import { assembleContextFor, type Agent } from '@alego/agent'
-import AgentRegistry from '@alego/agent'
-import AgentLoop from '@alego/agent-loop'
-import { mountAgentLoopTestDependencies } from '@alego/agent-loop-testkit'
-import JsonlSessionPersistence from '@alego/session-persistence-jsonl'
-import SubagentRuntime from '@alego/subagent'
-import type { SubagentStartRequest } from '@alego/subagent'
-import LocalJobRegistry from '@alego/jobs-local'
-import * as SubagentSpawn from '@alego/subagent-spawn-in-process'
-import * as ToolTasks from '@alego/tool-jobs'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import { CallId } from '@singula-ai/alego-llm'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@singula-ai/alego-tools'
+import { assembleContextFor, type Agent } from '@singula-ai/alego-agent'
+import AgentRegistry from '@singula-ai/alego-agent'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
+import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import SubagentRuntime from '@singula-ai/alego-subagent'
+import type { SubagentStartRequest } from '@singula-ai/alego-subagent'
+import LocalJobRegistry from '@singula-ai/alego-jobs-local'
+import * as SubagentSpawn from '@singula-ai/alego-subagent-spawn-in-process'
+import * as ToolTasks from '@singula-ai/alego-tool-jobs'
 import { MockAdapter, textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import * as mock from './scripted-provider.ts'
 import * as tool from '../src/index.ts'
-import { SessionId } from '@alego/session'
+import { SessionId } from '@singula-ai/alego-session'
 
 const testToolSignal = new AbortController().signal
 
@@ -902,7 +902,7 @@ describe('alego-tool-subagent background mode', () => {
     const ctx = await setup({ provider: 'mock' })
     const result = await callSubagent(ctx, { description: 'd', prompt: 'p', run_in_background: true })
     expect(result.isError).toBe(true)
-    expect(text(result)).toContain('background jobs unavailable: load @alego/jobs')
+    expect(text(result)).toContain('background jobs unavailable: load @singula-ai/alego-jobs')
   })
 
   it('skips background startup when the tool signal is already aborted', async () => {

@@ -1,4 +1,4 @@
-import type { ConversationNodeContext } from '@alego/client-runtime/client'
+import type { ConversationNodeContext } from '@singula-ai/alego-client-runtime/client'
 import type {
   TrajectoryContribution, TrajectoryConversationViewNode,
 } from './trajectory-contract.ts'

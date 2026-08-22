@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/tool-str-replace-editor`.
- * @module @alego/tool-str-replace-editor/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-tool-str-replace-editor`.
+ * @module @singula-ai/alego-tool-str-replace-editor/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/tool-str-replace-editor'
+const PACKAGE_NAME = '@singula-ai/alego-tool-str-replace-editor'
 
 /** Cordis companion plugin name. */
 export const name = 'tool-str-replace-editor-invariant'

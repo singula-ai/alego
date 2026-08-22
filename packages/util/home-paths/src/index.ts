@@ -1,7 +1,7 @@
 /**
  * Shared filesystem path helpers for Alego user data.
  *
- * @module @alego/home-paths
+ * @module @singula-ai/alego-home-paths
  */
 
 import { opendir, realpath } from 'node:fs/promises'

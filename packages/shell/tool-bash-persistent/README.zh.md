@@ -1,4 +1,4 @@
-# @alego/tool-bash-persistent
+# @singula-ai/alego-tool-bash-persistent
 
 [English](README.md) | 中文
 
@@ -19,7 +19,7 @@
 
 #### 模型所见
 
-生成的 [`bash` schema](../../../docs/tool-catalog.zh.md#alegotool-bash-persistent)，其中包含配置的 `description`。本插件不贡献独立系统提示词段；persona 与环境指导由部署负责。
+生成的 [`bash` schema](../../../docs/tool-catalog.zh.md#singula-aialego-tool-bash-persistent)，其中包含配置的 `description`。本插件不贡献独立系统提示词段；persona 与环境指导由部署负责。
 
 #### Token 影响
 

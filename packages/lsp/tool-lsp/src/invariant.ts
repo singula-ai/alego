@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/tool-lsp`.
- * @module @alego/tool-lsp/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-tool-lsp`.
+ * @module @singula-ai/alego-tool-lsp/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/tool-lsp'
+const PACKAGE_NAME = '@singula-ai/alego-tool-lsp'
 
 /** Cordis companion plugin name. */
 export const name = 'tool-lsp-invariant'

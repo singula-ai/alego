@@ -2,20 +2,20 @@
  * The sandbox-escalation API shared by the `write` and `edit` tools: the
  * per-call policy resolution, the advertised escalation fields, and the denial-marker
  * mapping — all delegating the vocabulary and the fail-closed approval
- * sequence to `@alego/sandbox` (the same pieces `@alego/tool-bash`
+ * sequence to `@singula-ai/alego-sandbox` (the same pieces `@singula-ai/alego-tool-bash`
  * uses), so bash and fs escalate identically. Built ONCE per plugin from
  * `ctx.fs.sandboxMode` (the capability fact — is a confining backend mounted?)
  * and shared by both mutating tools.
  *
- * @module @alego/tool-fs/sandbox
+ * @module @singula-ai/alego-tool-fs/sandbox
  */
 
-import type { Context } from '@alego/cordis'
-import type { ToolExecution } from '@alego/tools'
-import type { SandboxExecutionPolicy, SandboxMode } from '@alego/sandbox'
-import { ESCALATION_TARGETS, approveEscalation, escalationHintMarker, sandboxDenialMarker, validateEscalationArgs } from '@alego/sandbox'
-import type { SandboxPolicyService } from '@alego/sandbox-policy'
-import { FsError } from '@alego/fs'
+import type { Context } from '@singula-ai/cordis'
+import type { ToolExecution } from '@singula-ai/alego-tools'
+import type { SandboxExecutionPolicy, SandboxMode } from '@singula-ai/alego-sandbox'
+import { ESCALATION_TARGETS, approveEscalation, escalationHintMarker, sandboxDenialMarker, validateEscalationArgs } from '@singula-ai/alego-sandbox'
+import type { SandboxPolicyService } from '@singula-ai/alego-sandbox-policy'
+import { FsError } from '@singula-ai/alego-fs'
 
 /** The two escalation arguments a mutating tool may carry (advertised only under a confining backend). */
 export interface FsEscalationArgs {

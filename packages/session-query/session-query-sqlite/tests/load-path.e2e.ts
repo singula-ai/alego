@@ -1,17 +1,17 @@
-import { createUserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
 /**
  * Keyless real-Loader-path smoke for the combined SQLite session-query service.
  *
- * @module @alego/session-query-sqlite/tests/load-path
+ * @module @singula-ai/alego-session-query-sqlite/tests/load-path
  */
 
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import { SESSION_FORMAT_VERSION, SessionId } from '@alego/session'
-import SessionStore from '@alego/session'
-import SqliteSessionPersistence from '@alego/session-persistence-sqlite'
-import SqliteSessionQueryEngine, * as queryModule from '@alego/session-query-sqlite'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import { SESSION_FORMAT_VERSION, SessionId } from '@singula-ai/alego-session'
+import SessionStore from '@singula-ai/alego-session'
+import SqliteSessionPersistence from '@singula-ai/alego-session-persistence-sqlite'
+import SqliteSessionQueryEngine, * as queryModule from '@singula-ai/alego-session-query-sqlite'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'

@@ -1,15 +1,15 @@
 /** Covers fail-closed per-call classification and model-schema isolation. */
 
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { CallId } from '@alego/llm'
-import SystemPrompt from '@alego/system-prompt'
+import { Context } from '@singula-ai/cordis'
+import { CallId } from '@singula-ai/alego-llm'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime, {
   defineContentToolFixture,
   type ToolDefinition,
   type ToolExecutionInput,
   type ToolExecutionMode,
-} from '@alego/tools'
+} from '@singula-ai/alego-tools'
 
 const testToolSignal = new AbortController().signal
 

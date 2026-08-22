@@ -15,14 +15,14 @@
  * This row therefore waits for it rather than assuming it: a preset selecting
  * Code Mode against a deployment that composes no runtime fails at mount, named
  * in the preset's own activation audit, instead of at the first prompt.
- * @module @alego/agent-tool-presentation
+ * @module @singula-ai/alego-agent-tool-presentation
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { ToolPresentationMode } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { ToolPresentationMode } from '@singula-ai/alego-tools'
 // Type-only: brings the `ctx.tools` Context merge into this program.
-import type {} from '@alego/tools'
+import type {} from '@singula-ai/alego-tools'
 
 /** Cordis plugin name. */
 export const name = 'tool-presentation'

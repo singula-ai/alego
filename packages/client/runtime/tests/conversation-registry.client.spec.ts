@@ -1,6 +1,6 @@
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import type { SessionId } from '@alego/api-remotes/client'
+import type { SessionId } from '@singula-ai/alego-api-remotes/client'
 import { ConversationEventRegistry } from '../src/client/conversation/event-registry.ts'
 import { ConversationViewRegistry } from '../src/client/conversation/view-registry.ts'
 import type {

@@ -11,10 +11,10 @@
  * @module alego-agent-loop/tool-calls
  */
 
-import type { Context } from '@alego/cordis'
-import { assertNever, createToolResultMessage, type ToolCallBlock } from '@alego/llm'
-import type { Session, UserMessage } from '@alego/session'
-import { TOOL_ABORTED_BEFORE_DISPATCH, TOOL_RUNTIME_SCHEDULER, type ToolExecutionInput, type ToolExecutionMode, type ToolExecutionResult, type ToolRunContext } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import { assertNever, createToolResultMessage, type ToolCallBlock } from '@singula-ai/alego-llm'
+import type { Session, UserMessage } from '@singula-ai/alego-session'
+import { TOOL_ABORTED_BEFORE_DISPATCH, TOOL_RUNTIME_SCHEDULER, type ToolExecutionInput, type ToolExecutionMode, type ToolExecutionResult, type ToolRunContext } from '@singula-ai/alego-tools'
 
 /** One tool call after argument parsing, ready to schedule. */
 interface PlannedCall {

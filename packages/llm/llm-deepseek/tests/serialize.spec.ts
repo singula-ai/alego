@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
-import { AttachmentId, ImageVariantId } from '@alego/attachment'
-import type { ImageAttachmentRef, ImageMediaType, RequestImageAttachment } from '@alego/attachment'
-import { createUserMessage, CallId, ReasoningEffortId, createMessage } from '@alego/llm'
-import type { ContentBlock, GenerateOptions, Message } from '@alego/llm'
+import { AttachmentId, ImageVariantId } from '@singula-ai/alego-attachment'
+import type { ImageAttachmentRef, ImageMediaType, RequestImageAttachment } from '@singula-ai/alego-attachment'
+import { createUserMessage, CallId, ReasoningEffortId, createMessage } from '@singula-ai/alego-llm'
+import type { ContentBlock, GenerateOptions, Message } from '@singula-ai/alego-llm'
 import {
   serializeMessages,
   serializeMessagesWithImages,

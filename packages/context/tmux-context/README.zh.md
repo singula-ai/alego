@@ -1,4 +1,4 @@
-# @alego/tmux-context
+# @singula-ai/alego-tmux-context
 
 [English](README.md) | 中文
 
@@ -8,7 +8,7 @@
 
 ```yaml
 - id: tmux-context
-  name: '@alego/tmux-context'
+  name: '@singula-ai/alego-tmux-context'
   config:
     refreshIntervalMs: 60000 # optional; omit or set to 0 to inject on every changed turn
 ```

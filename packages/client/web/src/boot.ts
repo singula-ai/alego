@@ -2,14 +2,14 @@
  * Web boot kernel. It owns only the module system, Cordis loader, and a
  * framework-free boot page. The dynamic UI renderer receives the mount
  * point after every client entry activates.
- * @module @alego/client-web/src/boot
+ * @module @singula-ai/alego-client-web/src/boot
  */
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
 import type {
   BootManifest, ClientModuleCreateOptions, ClientModuleSystem, AlegoWindow,
-} from '@alego/client-modules/client'
-import type {} from '@alego/client-ui-renderer/client'
+} from '@singula-ai/alego-client-modules/client'
+import type {} from '@singula-ai/alego-client-ui-renderer/client'
 import { BootPage } from './boot-page.ts'
 import { getStaticModules } from './seed.ts'
 import { STATE_LABELS } from './loader-status.ts'
@@ -52,7 +52,7 @@ export class AppWebEntry {
       }
       // A pre-injected transport (the worker preview page) owns bundle bytes;
       // its loadBundle is the default and explicit seams still win. The global
-      // is `ClientTransportHooks`, owned by @alego/client-connection;
+      // is `ClientTransportHooks`, owned by @singula-ai/alego-client-connection;
       // this structural slice reads one optional member without adding a
       // package edge.
       const transport = (globalThis as {

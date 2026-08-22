@@ -1,6 +1,6 @@
 /** In-memory ACP transport fixture over the real agent factory and loop. */
 
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { createHash } from 'node:crypto'
 import {
   ClientSideConnection,
@@ -12,11 +12,11 @@ import {
   type SessionNotification,
   type Stream,
 } from '@agentclientprotocol/sdk'
-import AttachmentStore, { AttachmentError, AttachmentId } from '@alego/attachment'
-import type { ImageAttachmentLimits, ImageAttachmentRef, SaveImageAttachment, StoredImageAttachment } from '@alego/attachment'
-import { type GenerateOptions, LlmAdapter, type LlmResolvedModelInfo, type StreamChunk } from '@alego/llm'
-import AgentLoop from '@alego/agent-loop'
-import { mountAgentLoopTestDependencies } from '@alego/agent-loop-testkit'
+import AttachmentStore, { AttachmentError, AttachmentId } from '@singula-ai/alego-attachment'
+import type { ImageAttachmentLimits, ImageAttachmentRef, SaveImageAttachment, StoredImageAttachment } from '@singula-ai/alego-attachment'
+import { type GenerateOptions, LlmAdapter, type LlmResolvedModelInfo, type StreamChunk } from '@singula-ai/alego-llm'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
 import * as AcpPlugin from '../src/index.ts'
 import type { AcpConfig } from '../src/index.ts'
 

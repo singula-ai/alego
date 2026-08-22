@@ -1,4 +1,4 @@
-# @alego/session-projection-cache
+# @singula-ai/alego-session-projection-cache
 
 English | [中文](README.zh.md)
 
@@ -40,7 +40,7 @@ The read ladder, zero full-log load on the happy path: cached rows → `sessionP
 
 ```yaml
 - id: session-projection-cache
-  name: '@alego/session-projection-cache'
+  name: '@singula-ai/alego-session-projection-cache'
   config:
     writeEveryEvents: 200
     writeIntervalMs: 5000

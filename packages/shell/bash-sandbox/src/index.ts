@@ -5,12 +5,12 @@
  * the command never ran: foreground calls throw `SANDBOX_UNAVAILABLE`, while
  * background processes carry `runnerFailed`; other spawn rejections retain
  * local-executor semantics. The tool owns approval and passes a complete per-call policy.
- * @module @alego/bash-sandbox
+ * @module @singula-ai/alego-bash-sandbox
  */
 
-import { Context } from '@alego/cordis'
-import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellRunResult } from '@alego/shell'
-import { SandboxUnavailableError } from '@alego/sandbox'
+import { Context } from '@singula-ai/cordis'
+import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellRunResult } from '@singula-ai/alego-shell'
+import { SandboxUnavailableError } from '@singula-ai/alego-sandbox'
 import type {
   ConfinedArgv,
   ConfinedSandboxMode,
@@ -19,16 +19,16 @@ import type {
   SandboxExecutionPolicy,
   SandboxMode,
   SandboxPolicy,
-} from '@alego/sandbox'
-import type {} from '@alego/sandbox-policy'
-import { LocalBashExecutor } from '@alego/bash-local'
-import type { Config as LocalConfig } from '@alego/bash-local'
+} from '@singula-ai/alego-sandbox'
+import type {} from '@singula-ai/alego-sandbox-policy'
+import { LocalBashExecutor } from '@singula-ai/alego-bash-local'
+import type { Config as LocalConfig } from '@singula-ai/alego-bash-local'
 import { classifyDenial, classifyRunnerFailure, isRunnerSpawnFailure, matchesSignature } from './helpers.ts'
 
 /**
  * Plugin config: the local executor's knobs, verbatim. The sandbox policy —
  * the default mode and fallback `workspace-write` root — is NOT here: it lives
- * on `ctx.sandboxPolicy` (`@alego/sandbox-policy`), which resolves
+ * on `ctx.sandboxPolicy` (`@singula-ai/alego-sandbox-policy`), which resolves
  * each calling session's mode and cwd for every enforcing capability. The runner
  * choice is likewise the `ctx.sandbox` provider's config, not this executor's.
  */

@@ -20,12 +20,12 @@ One `cordis.yml` entry mounts the seam. Not loading it is the fail-closed opt-ou
 
 ```yaml
 - id: approval
-  name: '@alego/user-approval'
+  name: '@singula-ai/alego-user-approval'
   # config:
   #   policy: never   # deployment default for sessions without an override; 'ask' when omitted
 ```
 
-The entry alone provides mechanism, not a channel: with no answerer composed, every ask resolves `unavailable` and the asking tool call denies — fail-closed needs no configuration. Composing the ACP app (`@alego/acp-demo`, as in [the acp-agent example's default tree](../../../../examples/acp-agent/README.md)) completes the loop: its [automation-only bridge](../simplification/2026-07-23-acp-automation-only-protocol.md) registers an answerer that sends `session/request_permission` to the owning client with the exact tool-call id and one-shot allow/reject options. `policy: never` is the unattended stance — every ask auto-rejects deterministically, and the current value joins the runtime-context snapshot. `policy` is validated against the closed list at plugin load; anything else throws.
+The entry alone provides mechanism, not a channel: with no answerer composed, every ask resolves `unavailable` and the asking tool call denies — fail-closed needs no configuration. Composing the ACP app (`@singula-ai/alego-acp-demo`, as in [the acp-agent example's default tree](../../../../examples/acp-agent/README.md)) completes the loop: its [automation-only bridge](../simplification/2026-07-23-acp-automation-only-protocol.md) registers an answerer that sends `session/request_permission` to the owning client with the exact tool-call id and one-shot allow/reject options. `policy: never` is the unattended stance — every ask auto-rejects deterministically, and the current value joins the runtime-context snapshot. `policy` is validated against the closed list at plugin load; anything else throws.
 
 What a composed deployment observes: `allowed-once` lets exactly that call proceed; rejection, dismissal, and channel absence deny with three distinct reasons the model can tell apart; a successful in-turn request lands a durable `approval/asked`/`approval/decided` pair on the asking agent's session log; nothing about a grant persists past the call that asked. An idle request or audit append failure rejects instead of returning an unaudited decision.
 

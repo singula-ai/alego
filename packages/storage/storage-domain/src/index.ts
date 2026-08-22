@@ -4,12 +4,12 @@
  * layer — consumers depend on this package and never touch backends directly.
  * Plugin `Config` is schemastery; record schemas inside domain specs are zod
  * (see `src/spec.ts` for the split rationale).
- * @module @alego/storage-domain
+ * @module @singula-ai/alego-storage-domain
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { storageBackendServiceKey } from '@alego/storage'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { storageBackendServiceKey } from '@singula-ai/alego-storage'
 import { DomainError } from './error.ts'
 import { descriptorOf } from './spec.ts'
 import type { DomainSpec } from './spec.ts'
@@ -26,13 +26,13 @@ export type {
 export type { DomainChanged } from './events.ts'
 export type { Domain, DomainGlobal, DomainGlobalHandleOf, KvTable } from './domain.ts'
 
-declare module '@alego/storage' {
+declare module '@singula-ai/alego-storage' {
   interface StorageForms {
     domain: DomainFacility
   }
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     storageDomain: DomainFacility
   }

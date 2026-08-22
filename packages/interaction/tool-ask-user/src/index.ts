@@ -3,12 +3,12 @@
  * The tool pauses until a UI provider returns a human answer, then feeds that
  * answer back into the agent loop as an ordinary tool result.
  *
- * @module @alego/tool-ask-user
+ * @module @singula-ai/alego-tool-ask-user
  */
 
-import type { Context } from '@alego/cordis'
-import { defineTool } from '@alego/tools'
-import '@alego/user-questions'
+import type { Context } from '@singula-ai/cordis'
+import { defineTool } from '@singula-ai/alego-tools'
+import '@singula-ai/alego-user-questions'
 
 export const name = 'tool-ask-user'
 export const inject = ['tools', 'userQuestions']

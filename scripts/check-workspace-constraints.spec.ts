@@ -9,16 +9,16 @@ import {
 
 const experimental: WorkspaceManifest = {
   dir: 'packages/experimental/prototype',
-  manifest: { name: '@alego/experimental-prototype', private: true },
+  manifest: { name: '@singula-ai/alego-experimental-prototype', private: true },
 }
 
 describe('experimental workspace constraints', () => {
   it('requires the experimental package-name prefix', () => {
     expect(checkExperimentalManifest({
       ...experimental,
-      manifest: { ...experimental.manifest, name: '@alego/prototype' },
+      manifest: { ...experimental.manifest, name: '@singula-ai/alego-prototype' },
     })).toEqual([
-      '@alego/prototype: experimental package name must start with "@alego/experimental-"',
+      '@singula-ai/alego-prototype: experimental package name must start with "@singula-ai/alego-experimental-"',
     ])
   })
 
@@ -28,8 +28,8 @@ describe('experimental workspace constraints', () => {
       ...experimental,
       manifest: { ...experimental.manifest, private: false, publishConfig: { access: 'public' } },
     })).toEqual([
-      '@alego/experimental-prototype: experimental package must set "private": true',
-      '@alego/experimental-prototype: experimental package must omit publishConfig',
+      '@singula-ai/alego-experimental-prototype: experimental package must set "private": true',
+      '@singula-ai/alego-experimental-prototype: experimental package must omit publishConfig',
     ])
   })
 
@@ -39,11 +39,11 @@ describe('experimental workspace constraints', () => {
       expect(checkExperimentalDependencyIsolation([experimental, {
         dir: 'packages/core/consumer',
         manifest: {
-          name: '@alego/consumer',
-          [section]: { '@alego/experimental-prototype': 'workspace:^' },
+          name: '@singula-ai/alego-consumer',
+          [section]: { '@singula-ai/alego-experimental-prototype': 'workspace:^' },
         },
       }])).toEqual([
-        `@alego/consumer: ${section}.@alego/experimental-prototype must not reference an experimental package`,
+        `@singula-ai/alego-consumer: ${section}.@singula-ai/alego-experimental-prototype must not reference an experimental package`,
       ])
     },
   )
@@ -52,25 +52,25 @@ describe('experimental workspace constraints', () => {
     const manifests: WorkspaceManifest[] = [experimental, {
       dir: 'packages/core/test-only',
       manifest: {
-        name: '@alego/test-only',
-        devDependencies: { '@alego/experimental-prototype': 'workspace:^' },
+        name: '@singula-ai/alego-test-only',
+        devDependencies: { '@singula-ai/alego-experimental-prototype': 'workspace:^' },
       },
     }, {
       dir: 'packages/experimental/consumer',
       manifest: {
-        name: '@alego/experimental-consumer',
-        dependencies: { '@alego/experimental-prototype': 'workspace:^' },
+        name: '@singula-ai/alego-experimental-consumer',
+        dependencies: { '@singula-ai/alego-experimental-prototype': 'workspace:^' },
       },
     }, {
       dir: 'python/sdk-runtime',
       manifest: {
-        name: '@alego/python-runtime',
-        dependencies: { '@alego/experimental-prototype': 'workspace:^' },
+        name: '@singula-ai/alego-python-runtime',
+        dependencies: { '@singula-ai/alego-experimental-prototype': 'workspace:^' },
       },
     }]
 
     expect(checkExperimentalDependencyIsolation(manifests)).toEqual([
-      '@alego/python-runtime: dependencies.@alego/experimental-prototype must not reference an experimental package',
+      '@singula-ai/alego-python-runtime: dependencies.@singula-ai/alego-experimental-prototype must not reference an experimental package',
     ])
   })
 })

@@ -3,19 +3,19 @@
  * the cancellable generated Remote namespaces in parallel with deterministic
  * ordering and labels.
  *
- * @module @alego/client-ui-reference/client
+ * @module @singula-ai/alego-client-ui-reference/client
  */
 // Type-only: pulls the generated Remote API and ctx.remote merge through the Client assembly boundary.
-import type {} from '@alego/api-remotes/client'
+import type {} from '@singula-ai/alego-api-remotes/client'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
-import type {} from '@alego/client-locale/client'
-import type { ClientContext } from '@alego/client-runtime/client'
+import type {} from '@singula-ai/alego-client-locale/client'
+import type { ClientContext } from '@singula-ai/alego-client-runtime/client'
 import type {
   ClientSessionContext, InputTriggerServiceContract, InputTriggerSource,
-} from '@alego/client-ui-input-trigger/client'
-import { formatFileMention } from '@alego/file-reference/grammar'
-import type { FileReferenceCandidate } from '@alego/file-reference/types'
-import type { SessionReferenceMentionCandidate } from '@alego/session-reference/types'
+} from '@singula-ai/alego-client-ui-input-trigger/client'
+import { formatFileMention } from '@singula-ai/alego-file-reference/grammar'
+import type { FileReferenceCandidate } from '@singula-ai/alego-file-reference/types'
+import type { SessionReferenceMentionCandidate } from '@singula-ai/alego-session-reference/types'
 import { en, NS, zh, type ReferenceKey } from './locales.ts'
 
 /** Required services: the trigger registry, the Remote namespaces, and the copy. */

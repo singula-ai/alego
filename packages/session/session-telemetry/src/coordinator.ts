@@ -11,12 +11,12 @@
  * stop-on-throw) or touch the agent loop. Composed by a backend in its
  * constructor.
  *
- * @module @alego/session-telemetry/coordinator
+ * @module @singula-ai/alego-session-telemetry/coordinator
  */
 
-import type { Context } from '@alego/cordis'
-import type { Session, SessionEvent } from '@alego/session'
-import type { Agent } from '@alego/agent'
+import type { Context } from '@singula-ai/cordis'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import type { Agent } from '@singula-ai/alego-agent'
 import type { SessionTelemetrySink, SessionTelemetryRecord, SessionTelemetrySeverity } from './index.ts'
 
 /** Whether capture follows live events or reads the canonical log only when requested. */

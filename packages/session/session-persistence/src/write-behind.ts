@@ -1,9 +1,9 @@
 /**
  * Bounded per-session write batching for the shared persistence coordinator.
- * @module @alego/session-persistence/write-behind
+ * @module @singula-ai/alego-session-persistence/write-behind
  */
 
-import type { SessionEvent } from '@alego/session'
+import type { SessionEvent } from '@singula-ai/alego-session'
 
 /** Dependencies and scheduling policy for one live session's write controller. */
 export interface SessionWriteBehindOptions {

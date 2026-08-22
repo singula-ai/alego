@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { SessionId } from '@alego/session'
+import { SessionId } from '@singula-ai/alego-session'
 import {
   settleRun,
   settleRunResult,

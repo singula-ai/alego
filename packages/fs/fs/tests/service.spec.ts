@@ -6,8 +6,8 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { FileSystem, FsError, FsTargetKey, FsVersion } from '@alego/fs'
+import { Context } from '@singula-ai/cordis'
+import { FileSystem, FsError, FsTargetKey, FsVersion } from '@singula-ai/alego-fs'
 import type {
   FsDirEntry,
   FsEditOutcome,
@@ -17,7 +17,7 @@ import type {
   FsTarget,
   FsWriteIntent,
   FsWriteOutcome,
-} from '@alego/fs'
+} from '@singula-ai/alego-fs'
 
 /** A minimal in-memory fake implementing the provider primitives. */
 class FakeFileSystem extends FileSystem {

@@ -5,9 +5,9 @@ The package family uses the same layout as native packages such as esbuild: one 
 ## Published packages
 
 ```text
-@alego/node-addon-landlock-run
-@alego/node-addon-landlock-run-linux-x64
-@alego/node-addon-landlock-run-linux-arm64
+@singula-ai/node-addon-landlock-run
+@singula-ai/node-addon-landlock-run-linux-x64
+@singula-ai/node-addon-landlock-run-linux-arm64
 ```
 
 Unsupported platforms are intentionally absent from `optionalDependencies` — see [support-matrix.md](support-matrix.md).

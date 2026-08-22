@@ -1,14 +1,14 @@
-/** Package-owned durable retry-event invariants. @module @alego/llm-retry/invariant */
+/** Package-owned durable retry-event invariants. @module @singula-ai/alego-llm-retry/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { Session, SessionEvent } from '@alego/session'
-import type { LlmFailure } from '@alego/llm'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import type { LlmFailure } from '@singula-ai/alego-llm'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 import { providerForOpenStep } from './history.ts'
 import type {} from './index.ts'
 
-const PACKAGE_NAME = '@alego/llm-retry'
+const PACKAGE_NAME = '@singula-ai/alego-llm-retry'
 
 /** Cordis companion plugin name. */
 export const name = 'llm-retry-invariant'

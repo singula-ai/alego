@@ -12,7 +12,7 @@ Client 运行时已经按 `callId` 配对工具调用/结果事件，并能从 C
 
 ## 决策
 
-工具是 Client UI 的一级展示概念，由 `@alego/client-ui-tool` 统一拥有 root/subcall 编排、按 wire 工具名称的原子 renderer 分发、Generic fallback、card model 和 details output。业务插件只注册自己的原子工具 renderer，不修改 conversation 或会话。
+工具是 Client UI 的一级展示概念，由 `@singula-ai/alego-client-ui-tool` 统一拥有 root/subcall 编排、按 wire 工具名称的原子 renderer 分发、Generic fallback、card model 和 details output。业务插件只注册自己的原子工具 renderer，不修改 conversation 或会话。
 
 Conversation 数据组装遵循后续的 [Conversation 业务节点决策](2026-08-09-client-conversation-node-assembly.zh.md)。`ui-conversation` 的工具 Definition 从会话事件配对 root call/result，把 Code Dispatch edge fold 成递归 `ToolCallBlock.subCalls`，并生成一个稳定的 `tool-call` Chat Node；这里的数据职责只处理官方工具 identity 和拓扑，不解释具体工具名称的展示。
 

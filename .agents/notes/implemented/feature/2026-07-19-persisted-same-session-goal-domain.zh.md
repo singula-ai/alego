@@ -12,7 +12,7 @@ Status: implemented
 
 ## 决策
 
-位于 `packages/goal/goal/` 的 `@alego/goal` 通过 `ctx.goals` 管理一个当前的同会话目标。目标包含带品牌的 id、目标描述、持久化阶段、比较并交换修订号和 `maxGoalRounds`。`defaultMaxGoalRounds` 是经过校验的部署配置，默认值为 `256`；`create()` 在变更前于内部将其解析为完整值，而不会把解析过程暴露为额外的服务动词。
+位于 `packages/goal/goal/` 的 `@singula-ai/alego-goal` 通过 `ctx.goals` 管理一个当前的同会话目标。目标包含带品牌的 id、目标描述、持久化阶段、比较并交换修订号和 `maxGoalRounds`。`defaultMaxGoalRounds` 是经过校验的部署配置，默认值为 `256`；`create()` 在变更前于内部将其解析为完整值，而不会把解析过程暴露为额外的服务动词。
 
 持久阶段包括 `active`、`paused`、`blocked` 和 `complete`。阻塞快照包含由策略定义的全小写 kebab-case 代码和规范化自由文本消息，因此用量限制、Goal Round 上限、执行失败和等待人工输入可以共享一个生命周期状态而不丢失原因。独立的实时激活态为 `armed` 或 `disarmed`。创建与显式恢复会激活目标；暂停、完成、阻塞和清除都会解除激活。编辑保留激活态及阻塞原因；恢复和完成会清除该原因。持久快照绝不包含激活态。
 

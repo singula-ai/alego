@@ -3,12 +3,12 @@
 // edit, byte for byte, while everything the recognizer cannot prove flat
 // keeps the loud rejection local.spec exercises.
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { credentialRef } from '@alego/credentials'
-import { withFileLock } from '@alego/atomic-write'
+import { credentialRef } from '@singula-ai/alego-credentials'
+import { withFileLock } from '@singula-ai/alego-atomic-write'
 import { LocalCredentialProvider, renderFlatLayoutMigration } from '../src/index.ts'
 
 /** Credential documents are seeded owner-only, exactly as the provider creates them. */

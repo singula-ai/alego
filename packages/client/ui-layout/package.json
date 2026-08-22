@@ -1,5 +1,5 @@
 {
-  "name": "@alego/client-ui-layout",
+  "name": "@singula-ai/alego-client-ui-layout",
   "description": "Shell plugin: three-column AppFrame with drag handles, ctx.layout viewing-state service (navigation + panels)",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -32,8 +32,8 @@
   "alego": {
     "client": {
       "inject": [
-        "@alego/client-runtime",
-        "@alego/client-ui-theme"
+        "@singula-ai/alego-client-runtime",
+        "@singula-ai/alego-client-ui-theme"
       ],
       "platform": "web"
     }
@@ -44,19 +44,19 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@alego/client-runtime": "workspace:^",
-    "@alego/client-ui-theme": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-client-runtime": "workspace:^",
+    "@singula-ai/alego-client-ui-theme": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
-    "@alego/client-locale": "workspace:^",
-    "@alego/client-runtime": "workspace:^",
-    "@alego/client-ui-slots": "workspace:^",
-    "@alego/client-ui-theme": "workspace:^",
-    "@alego/invariants": "workspace:^",
+    "@singula-ai/alego-client-locale": "workspace:^",
+    "@singula-ai/alego-client-runtime": "workspace:^",
+    "@singula-ai/alego-client-ui-slots": "workspace:^",
+    "@singula-ai/alego-client-ui-theme": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
     "@types/react": "~18.3.1",
-    "@alego/cordis": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
     "react": "^18.2.0"
   },
   "files": [

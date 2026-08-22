@@ -6,20 +6,20 @@
  * serves remote clients the dialog backend cannot. Policy decisions (hidden
  * entries flagged but returned, symlinks followed, whole-filesystem scope) are
  * recorded in the directory-picker seam Agent Note.
- * @module @alego/host-directory-picker-browse
+ * @module @singula-ai/alego-host-directory-picker-browse
  */
 
 import { mkdir, opendir, stat } from 'node:fs/promises'
 import { homedir } from 'node:os'
 import { basename, dirname, join, posix, resolve, win32 } from 'node:path'
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import {
   DirectoryPicker, DirectoryPickerError,
-} from '@alego/host-directory-picker'
+} from '@singula-ai/alego-host-directory-picker'
 import type {
   DirectoryEntry, DirectoryListing, DirectoryPickerCapability,
-} from '@alego/host-directory-picker'
+} from '@singula-ai/alego-host-directory-picker'
 
 /**
  * Ancestor chain from the filesystem root to `target` inclusive — the

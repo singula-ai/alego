@@ -39,7 +39,7 @@ export type SubagentIdentityProjection =
   | { mode: 'one-shot'; label?: string; seq: number }
   | { mode: 'continuable'; label: string; seq: number }
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionMap {
     subagent: SubagentIdentityProjection | null
   }

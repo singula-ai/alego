@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { jsonSchemaToPy, renderToolsSdkPy } from '@alego/tools/src/py-types.ts'
-import { parameterSchemaSpecToJsonSchema } from '@alego/tools'
-import type { ToolSdkSchema } from '@alego/tools/src/ts-types.ts'
+import { jsonSchemaToPy, renderToolsSdkPy } from '@singula-ai/alego-tools/src/py-types.ts'
+import { parameterSchemaSpecToJsonSchema } from '@singula-ai/alego-tools'
+import type { ToolSdkSchema } from '@singula-ai/alego-tools/src/ts-types.ts'
 
 describe('jsonSchemaToPy', () => {
   it('maps the defineTool DSL subset', () => {

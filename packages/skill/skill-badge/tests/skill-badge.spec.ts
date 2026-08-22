@@ -1,10 +1,10 @@
 import { createHash } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
-import SkillRegistry from '@alego/skill'
-import * as SkillBadge from '@alego/skill-badge'
+import SkillRegistry from '@singula-ai/alego-skill'
+import * as SkillBadge from '@singula-ai/alego-skill-badge'
 
 describe('alego-skill-badge', () => {
   it('registers and disposes the bundled badge skill', async () => {

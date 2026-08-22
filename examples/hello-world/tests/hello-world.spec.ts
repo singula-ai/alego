@@ -13,8 +13,8 @@ import { cpSync, mkdtempSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { afterAll, describe, expect, it } from 'vitest'
-import { boot } from '@alego/app-boot'
-import type {} from '@alego/tools'
+import { boot } from '@singula-ai/alego-app-boot'
+import type {} from '@singula-ai/alego-tools'
 
 const leaf = fileURLToPath(new URL('..', import.meta.url))
 const examplesRoot = fileURLToPath(new URL('../..', import.meta.url))
@@ -23,7 +23,7 @@ const staged: string[] = []
 /**
  * Copy the leaf to a disposable sibling and return its bootable config path.
  * The copy stays under `examples/` because that directory is the module
- * resolution root for example configs: outside it, the `@alego/*` entries and
+ * resolution root for example configs: outside it, the `@singula-ai/alego-*` entries and
  * the plugin's own imports do not resolve.
  * @returns absolute path of the staged `cordis.yml`.
  */

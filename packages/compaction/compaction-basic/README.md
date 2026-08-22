@@ -1,8 +1,8 @@
-# @alego/compaction-basic
+# @singula-ai/alego-compaction-basic
 
 English | [中文](README.zh.md)
 
-The **basic compaction backend**: a `BasicCompactionEngine` implementing the `@alego/compaction` Service Definition with reusable `ctx.tokenMeter` pressure, token-budget retention, and summarization as a direct one-shot `ctx.llm.stream()` call that replays the conversation prefix to reuse the provider's KV cache (interceptable at `llm/stream`).
+The **basic compaction backend**: a `BasicCompactionEngine` implementing the `@singula-ai/alego-compaction` Service Definition with reusable `ctx.tokenMeter` pressure, token-budget retention, and summarization as a direct one-shot `ctx.llm.stream()` call that replays the conversation prefix to reuse the provider's KV cache (interceptable at `llm/stream`).
 
 This package owns the Service Provider role of the compaction capability — see the [Service Definition package](../compaction/README.md) for its contract and the [capability-seam Agent Note](../../../.agents/notes/implemented/feature/2026-06-18-compaction-capability-seam.md) for the design.
 
@@ -49,10 +49,10 @@ An adapter may return no capacity for a valid dynamic route, and resolved capaci
 `BasicCompactionEngine` requires `ctx.llm`, `ctx.tokenMeter`, and `ctx.sessions`. The composition below receives `ctx.llm` from its host and installs the other two services:
 
 ```ts
-import type { Context } from '@alego/cordis'
-import { BasicCompactionEngine } from '@alego/compaction-basic'
-import SessionStore from '@alego/session'
-import TokenMeter from '@alego/token-meter'
+import type { Context } from '@singula-ai/cordis'
+import { BasicCompactionEngine } from '@singula-ai/alego-compaction-basic'
+import SessionStore from '@singula-ai/alego-session'
+import TokenMeter from '@singula-ai/alego-token-meter'
 
 export const name = 'compaction-basic'
 export const inject = ['llm']
@@ -69,7 +69,7 @@ Loading the plugin registers `ctx.compaction`. Add [`alego-compaction-tool-resul
 For example, the same compact plugin can safely serve models with different capacities and one target-specific policy:
 
 ```yaml
-- name: '@alego/compaction-basic'
+- name: '@singula-ai/alego-compaction-basic'
   config:
     thresholdRatio: 0.8
     retainRatio: 0.16

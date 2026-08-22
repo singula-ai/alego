@@ -1,4 +1,4 @@
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import type { BuildFailure } from 'esbuild'
 import { codeFrameColumns } from '@babel/code-frame'
 import { readFileSync } from 'node:fs'

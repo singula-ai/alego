@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-07-22-plan-specific-collaboration-state.md
-2026-07-22-plan-specific-collaboration-state.md: 402b23a9bbd6c759a9259e519191c8acc4baef31
-2026-07-22-plan-specific-collaboration-state.zh.md: 5c53c7fb645f6e93dd91e628094db7d9f31a61d2
+2026-07-22-plan-specific-collaboration-state.md: 6fbf86b81504c27d74943e63d437d79eed50b3a1
+2026-07-22-plan-specific-collaboration-state.zh.md: 5881d0b20792b2602b9fd8d417a9fc82f67a089a

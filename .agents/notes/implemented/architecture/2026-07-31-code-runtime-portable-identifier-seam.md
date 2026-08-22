@@ -12,7 +12,7 @@ A second backend written against a different language (CPython) would either re-
 
 ## Decision
 
-The Service Definition package (`@alego/code-runtime`) exports the portable-identifier exclusion contract as four named constants, and every Service Provider imports them rather than re-declaring:
+The Service Definition package (`@singula-ai/alego-code-runtime`) exports the portable-identifier exclusion contract as four named constants, and every Service Provider imports them rather than re-declaring:
 
 - `PORTABLE_RESERVED_WORDS` — the union of ECMAScript and Python reserved words. A namespace global or error-class name matching any is refused on all backends, so `lambda` is refused even though it is a legal JS parameter name. Adding a language widens this union, which is a deliberate breaking review of existing binding names.
 - `RESERVED_BINDING_GLOBALS` — globals some backend owns in the program's namespace: `console` (the worker's log capture), `__alego_main__`/`__builtins__`/`__name__` (the Python bootstrap's wrapper and seeded module globals), and `__debug__` (not a seeded slot but a CPython compile-time constant that rejects assignment, so an injected global under that name is unreachable — the same portability split by a different mechanism). Refused everywhere so a namespace list cannot pick a name that works on one backend and collides on another.

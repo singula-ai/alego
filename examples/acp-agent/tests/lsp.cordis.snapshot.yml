@@ -1,17 +1,17 @@
 # Keyless replay keeps the LSP composition intact and replaces only the model adapter.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ../cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - insert:
           - id: lsp
-            name: '@alego/lsp'
+            name: '@singula-ai/alego-lsp'
           - id: lsp-stdio
-            name: '@alego/lsp-stdio'
+            name: '@singula-ai/alego-lsp-stdio'
             config:
               servers:
                 fixture:
@@ -20,10 +20,10 @@
                   extensionToLanguage:
                     '.ts': typescript
           - id: timeout-policy
-            name: '@alego/tool-call-timeout-policy'
+            name: '@singula-ai/alego-tool-call-timeout-policy'
           - id: tool-lsp
-            name: '@alego/tool-lsp'
+            name: '@singula-ai/alego-tool-lsp'
             config:
               maxLocations: 1
           - id: llm-replay
-            name: '@alego/llm-replay'
+            name: '@singula-ai/alego-llm-replay'

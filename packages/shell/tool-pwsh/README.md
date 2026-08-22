@@ -1,8 +1,8 @@
-# @alego/tool-pwsh
+# @singula-ai/alego-tool-pwsh
 
 English | [中文](README.zh.md)
 
-The model-facing `pwsh` tool registered over the `ctx.shell` executor seam. Intended for Windows compositions where a PowerShell executor (e.g. `@alego/pwsh-local`) backs `ctx.shell`; the tool contract is PowerShell-dialect: native `C:\...` paths and `$env:NAME` variables. Behavior mirrors `alego-tool-bash` call-for-call — foreground and `run_in_background` execution through the generic job runtime, the managed `ALEGO_*` environment through the shared `shell-env` registry, the sandbox denial rendering with the same-turn `sandbox_permissions` escalation surface, and the bash marker/truncation rendering story (a clean exit produces no marker).
+The model-facing `pwsh` tool registered over the `ctx.shell` executor seam. Intended for Windows compositions where a PowerShell executor (e.g. `@singula-ai/alego-pwsh-local`) backs `ctx.shell`; the tool contract is PowerShell-dialect: native `C:\...` paths and `$env:NAME` variables. Behavior mirrors `alego-tool-bash` call-for-call — foreground and `run_in_background` execution through the generic job runtime, the managed `ALEGO_*` environment through the shared `shell-env` registry, the sandbox denial rendering with the same-turn `sandbox_permissions` escalation surface, and the bash marker/truncation rendering story (a clean exit produces no marker).
 
 Requires a loaded executor implementation and the `shell-env` plugin; the tool stays pending until both exist (`inject: ['tools', 'bash', 'systemPrompt', 'bashEnv']`).
 
@@ -38,7 +38,7 @@ When `run_in_background` is true, this plugin preflights `ctx.jobs.start()` befo
 
 ## UI presentation
 
-The tool owns its `presentCall`/`presentResult` render intent. A foreground call is a `terminal` card carrying command, description, and optional cwd; a `run_in_background` call is a `generic` card with the raw command, mirroring the bash tool's background presentation. A completed foreground result is a `terminal` card too: the exit marker becomes the card's exit-status pill (`exitCode`/`signal`), and the marker-free body is the card's output — exactly the bash tool's terminal-card story, via the shared exit-status parse from `@alego/shell`. Background acks and execution errors stay `generic` cards with the rendered output in a `console` fence. These presenters are pure and replay-safe.
+The tool owns its `presentCall`/`presentResult` render intent. A foreground call is a `terminal` card carrying command, description, and optional cwd; a `run_in_background` call is a `generic` card with the raw command, mirroring the bash tool's background presentation. A completed foreground result is a `terminal` card too: the exit marker becomes the card's exit-status pill (`exitCode`/`signal`), and the marker-free body is the card's output — exactly the bash tool's terminal-card story, via the shared exit-status parse from `@singula-ai/alego-shell`. Background acks and execution errors stay `generic` cards with the rendered output in a `console` fence. These presenters are pure and replay-safe.
 
 ## Model Experience
 
@@ -66,7 +66,7 @@ Prefix-stable while the registration scope and prompt text are unchanged. Plugin
 
 #### What the model sees
 
-The model sees the generated [`pwsh` schema](../../../docs/tool-catalog.md#alegotool-pwsh). Agent-scoped tool restrictions can remove the definition for that agent.
+The model sees the generated [`pwsh` schema](../../../docs/tool-catalog.md#singula-aialego-tool-pwsh). Agent-scoped tool restrictions can remove the definition for that agent.
 
 #### Token effect
 
@@ -108,7 +108,7 @@ Append-only; newly visible content follows the reusable request prefix and does 
 
 #### What the model sees
 
-Validation and infrastructure failures are normalized as `Error: <message>`. This package's stable messages are `invalid command: expected a non-empty string`, `invalid description: expected a non-empty string`, `invalid timeoutMs: expected a positive number, got <value>`, `invalid escalation: sandbox_permissions requires a justification`, `invalid escalation: justification is only valid together with sandbox_permissions`, `invalid justification: expected a non-empty sentence`, `sandbox_permissions is not available in this composition (no sandboxing executor to escalate)`, the shared escalation failures (not strictly wider / no approval service / no agent to route / no approval channel / user rejected / was cancelled), `run_in_background is disabled for this deployment (enableRunInBackground: false)`, `background jobs unavailable: load @alego/jobs and @alego/tool-jobs`, and `tool call aborted`.
+Validation and infrastructure failures are normalized as `Error: <message>`. This package's stable messages are `invalid command: expected a non-empty string`, `invalid description: expected a non-empty string`, `invalid timeoutMs: expected a positive number, got <value>`, `invalid escalation: sandbox_permissions requires a justification`, `invalid escalation: justification is only valid together with sandbox_permissions`, `invalid justification: expected a non-empty sentence`, `sandbox_permissions is not available in this composition (no sandboxing executor to escalate)`, the shared escalation failures (not strictly wider / no approval service / no agent to route / no approval channel / user rejected / was cancelled), `run_in_background is disabled for this deployment (enableRunInBackground: false)`, `background jobs unavailable: load @singula-ai/alego-jobs and @singula-ai/alego-tool-jobs`, and `tool call aborted`.
 
 #### Token effect
 
@@ -121,6 +121,6 @@ Append-only; newly visible content follows the reusable request prefix and does 
 ## Known Limitations and Deferred Work
 
 - **Language mode and named-pipe capture under the Windows sandbox** — under the [Windows ACL sandbox](../../sandbox/sandbox-windows-acl/README.md), read-only pwsh starts in ConstrainedLanguage because its temp write denial makes PowerShell's AppLocker probe fail closed: `Add-Type`, non-core .NET statics (`[System.IO.*]::`, `[math]::`), COM objects, and reflection fail with "only core types" errors, and the mode cannot be lifted from inside. Workspace-write's private temp lets the probe complete, so it stays in FullLanguage unless host policy says otherwise. Both confined modes deny named-pipe opens, so a piped-stdio spawn inside a confined command fails with EPERM. The tool description teaches both contracts to the model; the backend README owns the full limitations.
-- **No persistent shell** — every call starts a fresh `pwsh -Command`; the persistent-shell counterpart is [`@alego/tool-pwsh-persistent`](../tool-pwsh-persistent/README.md), which keeps one owner-scoped pwsh alive across calls on Windows (ConPTY) and POSIX hosts with pwsh.
+- **No persistent shell** — every call starts a fresh `pwsh -Command`; the persistent-shell counterpart is [`@singula-ai/alego-tool-pwsh-persistent`](../tool-pwsh-persistent/README.md), which keeps one owner-scoped pwsh alive across calls on Windows (ConPTY) and POSIX hosts with pwsh.
 - **PowerShell-dialect contract** — the model must write PowerShell (native paths, `$env:` variables), not bash; there is no dialect translation.
 - **Session-cwd identity is not canonicalized** — the workdir base is the session header cwd as-is, unlike the bash tool's sandbox-root-canonicalized identity. Under a confining executor the policy's workspace root IS canonicalized (by the shared policy service), so the workdir and the confinement root can diverge when the raw session cwd differs from its canonical form — a parity gap deferred to the shared shell-tool base extraction.

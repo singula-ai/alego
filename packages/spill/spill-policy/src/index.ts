@@ -7,7 +7,7 @@
  * locator and retrieval guidance.
  *
  * It registers NO service and owns NO storage or preview mechanics: preview is
- * `@alego/output-retention` (`TextRetainer`), storage is `ctx.spillStore`.
+ * `@singula-ai/alego-output-retention` (`TextRetainer`), storage is `ctx.spillStore`.
  * The policy only decides WHEN to spill and composes the notice.
  *
  * A second arm applies the SAME cap to the durable log: the
@@ -40,18 +40,18 @@
  * replaced content still has its replacement bounded, and value replacements
  * and `block` decisions pass through unchanged.
  *
- * @module @alego/spill-policy
+ * @module @singula-ai/alego-spill-policy
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { ContentBlock } from '@alego/llm'
-import { TextRetainer, describeOmitted } from '@alego/output-retention'
-import type { Omitted } from '@alego/output-retention'
-import type { SaveTextSpill, SpillRef } from '@alego/spill'
-import type { SessionId } from '@alego/session'
-import type { CallId } from '@alego/llm'
-import type { PostToolDecision, ToolExecution } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import { TextRetainer, describeOmitted } from '@singula-ai/alego-output-retention'
+import type { Omitted } from '@singula-ai/alego-output-retention'
+import type { SaveTextSpill, SpillRef } from '@singula-ai/alego-spill'
+import type { SessionId } from '@singula-ai/alego-session'
+import type { CallId } from '@singula-ai/alego-llm'
+import type { PostToolDecision, ToolExecution } from '@singula-ai/alego-tools'
 import type { SpillPolicyExec } from './types.ts'
 
 export type { SpillPolicyExec } from './types.ts'

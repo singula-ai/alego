@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { bindScopeParent, createScope, scopeOf } from '@alego/scope'
+import { Context } from '@singula-ai/cordis'
+import { bindScopeParent, createScope, scopeOf } from '@singula-ai/alego-scope'
 import SkillRegistry, {
   isModelInvocable,
   isUserInvocable,
@@ -11,7 +11,7 @@ import SkillRegistry, {
   type SkillLookupOptions,
   type SkillProvider,
   type SkillProviderObservation,
-} from '@alego/skill'
+} from '@singula-ai/alego-skill'
 
 function memorySkill(name: string, description: string, rank: number, body = `${name} body.`): SkillCandidate {
   return {

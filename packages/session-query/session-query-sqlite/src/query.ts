@@ -4,7 +4,7 @@ import {
   SessionQueryError,
   materializeSessionEventResultFilters,
   materializeSessionResultFilters,
-} from '@alego/session-query'
+} from '@singula-ai/alego-session-query'
 import type {
   SessionAvailability,
   SessionEventMetadataFilter,
@@ -13,7 +13,7 @@ import type {
   SessionResultFilter,
   SessionSearchCursor,
   SessionSearchRequest,
-} from '@alego/session-query'
+} from '@singula-ai/alego-session-query'
 
 /** Collision-free marker inserted before an FTS5 match by `highlight()`. */
 export const FTS_HIGHLIGHT_START = '\uFDD0'

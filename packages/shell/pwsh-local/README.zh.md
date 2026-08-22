@@ -1,8 +1,8 @@
-# @alego/pwsh-local
+# @singula-ai/alego-pwsh-local
 
 [English](README.md) | 中文
 
-`@alego/shell` 执行器 seam 的本地 PowerShell Service Provider，基于 [`@alego/subprocess`](../../subprocess/subprocess/README.zh.md) 服务：`PwshLocalExecutor` 每次调用以受管进程的方式通过 `ctx.subprocess` spawn `pwsh -NoLogo -NoProfile -NonInteractive -Command <command>`，并负责所有 PowerShell 相关事项——可执行文件解析、命令默认化与上限、超时/取消分类、面向模型的终端环境，以及后台读取的 stdout/stderr 合并。进程组机制（有界 spill 输出、凭据清理、终止升级、dispose（资源释放））属于 subprocess 服务。
+`@singula-ai/alego-shell` 执行器 seam 的本地 PowerShell Service Provider，基于 [`@singula-ai/alego-subprocess`](../../subprocess/subprocess/README.zh.md) 服务：`PwshLocalExecutor` 每次调用以受管进程的方式通过 `ctx.subprocess` spawn `pwsh -NoLogo -NoProfile -NonInteractive -Command <command>`，并负责所有 PowerShell 相关事项——可执行文件解析、命令默认化与上限、超时/取消分类、面向模型的终端环境，以及后台读取的 stdout/stderr 合并。进程组机制（有界 spill 输出、凭据清理、终止升级、dispose（资源释放））属于 subprocess 服务。
 
 命令字符串作为单个 argv 元素传给 `-Command`：由 PowerShell 自己解析文本，不存在中间 shell，因此没有需要转义的 shell 引号层（这里不存在与 `bash -c` 字符串域对应的层）。原生 Win32 路径（`C:\...`）原样通过。
 
@@ -12,7 +12,7 @@
 
 ```yaml
 - id: bash
-  name: '@alego/pwsh-local'
+  name: '@singula-ai/alego-pwsh-local'
   config:
     cwd: C:\path\to\workspace   # default: process.cwd()
     timeoutMs: 120000           # default foreground timeout

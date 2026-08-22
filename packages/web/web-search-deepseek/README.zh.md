@@ -1,10 +1,10 @@
-# @alego/web-search-deepseek
+# @singula-ai/alego-web-search-deepseek
 
 [English](README.md) | 中文
 
 由 [DeepSeek](https://deepseek.com) 支持的 `WebSearchProvider`，用于 harness [web 能力 seam](../web/README.zh.md)（`ctx.web`）。它调用 DeepSeek 的 **Anthropic 兼容 Messages API**（`POST {baseURL}/messages`），启用原生 `web_search_20250305` 服务器工具，并把 DeepSeek 返回的结构化 `web_search_tool_result` 块映射为 seam 规范化的 `WebSearchResult`。
 
-这是一个**实现**包：它向 `ctx.web` 注册提供方，通过可选的 `ctx.credentials` seam 为每次搜索解析凭据，若存在发起请求的 agent（智能体）会话，还会在其中记录该辅助请求，且不注册面向模型的工具。与 `@alego/llm-deepseek` 一样，它是函数／命名空间插件（`inject: ['web']`）。Anthropic 协议格式（wire format）是提供方私有细节，并**不**使该提供方依赖 `ctx.llm`。
+这是一个**实现**包：它向 `ctx.web` 注册提供方，通过可选的 `ctx.credentials` seam 为每次搜索解析凭据，若存在发起请求的 agent（智能体）会话，还会在其中记录该辅助请求，且不注册面向模型的工具。与 `@singula-ai/alego-llm-deepseek` 一样，它是函数／命名空间插件（`inject: ['web']`）。Anthropic 协议格式（wire format）是提供方私有细节，并**不**使该提供方依赖 `ctx.llm`。
 
 ## 与专用搜索端点的区别
 
@@ -28,7 +28,7 @@ Exa 和 Perplexity 提供专用搜索端点，DeepSeek 则没有。该提供方�
 
 ```yaml
 - id: web-search-deepseek
-  name: '@alego/web-search-deepseek'
+  name: '@singula-ai/alego-web-search-deepseek'
   config:
     apiKeyEnv: DEEPSEEK_API_KEY
     baseURL: https://gateway.internal/anthropic/v1

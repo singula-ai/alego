@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { ShellExecutor } from '@alego/shell'
-import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellProcessRead, ShellRunResult } from '@alego/shell'
+import { Context } from '@singula-ai/cordis'
+import { ShellExecutor } from '@singula-ai/alego-shell'
+import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellProcessRead, ShellRunResult } from '@singula-ai/alego-shell'
 
 /**
  * Minimal concrete executor: canned foreground results, a hand-built process

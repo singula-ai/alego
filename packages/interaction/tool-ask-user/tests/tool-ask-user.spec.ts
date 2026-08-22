@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { CallId } from '@alego/llm'
-import AgentRegistry, { type Agent } from '@alego/agent'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
-import UserQuestionService, { type AskUserQuestionRequest } from '@alego/user-questions'
-import * as toolAskUser from '@alego/tool-ask-user'
+import { Context } from '@singula-ai/cordis'
+import { CallId } from '@singula-ai/alego-llm'
+import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
+import UserQuestionService, { type AskUserQuestionRequest } from '@singula-ai/alego-user-questions'
+import * as toolAskUser from '@singula-ai/alego-tool-ask-user'
 
 const testToolSignal = new AbortController().signal
 

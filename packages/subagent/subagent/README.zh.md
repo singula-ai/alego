@@ -1,4 +1,4 @@
-# @alego/subagent
+# @singula-ai/alego-subagent
 
 [English](README.md) | 中文
 

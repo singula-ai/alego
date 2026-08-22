@@ -1,11 +1,11 @@
-import { freezeMessage, MessageId } from '@alego/llm'
+import { freezeMessage, MessageId } from '@singula-ai/alego-llm'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { Events } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import { scopeTarget } from '@alego/scope'
-import * as ScopeInvariant from '@alego/scope/invariant'
-import InvariantRegistry from '@alego/invariants'
+import { Context } from '@singula-ai/cordis'
+import type { Events } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import { scopeTarget } from '@singula-ai/alego-scope'
+import * as ScopeInvariant from '@singula-ai/alego-scope/invariant'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

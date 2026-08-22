@@ -1,6 +1,6 @@
 /** Public configuration and typed failures for the combined session-query service. */
 
-import { HarnessError } from '@alego/llm'
+import { HarnessError } from '@singula-ai/alego-llm'
 
 /** Default maximum `before`/`after` raw-event window. */
 export const SESSION_QUERY_READ_WINDOW_MAX = 50

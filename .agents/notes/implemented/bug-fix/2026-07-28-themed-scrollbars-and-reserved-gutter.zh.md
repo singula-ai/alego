@@ -79,6 +79,6 @@ headless chromium 绘制的是覆盖式滚动条，而这恰好就是被报告�
 
 两者都要断言，因为各自捕捉的是不同的回归；这一点通过每次只改动一条声明、并把同一个测试里的其余断言静音来确定。只删掉空位声明时 `timeCoveredBy` 仍为 0——此时滚动条是 8px，而行的右内边距也是 8px，于是它紧贴时间戳但并未盖住——失败的是条带那条断言。再把伪元素宽度也删掉（这才是 master 的真实状态）才会产生重叠，此时 `timeCoveredBy` 以 7 变红。在 xvfb 下的有头运行无论哪种状态都看不到这个症状，因为 chromium 在那里画的是经典占位滚动条，`clientWidth` 本来就已经把它排除了。
 
-验证浏览器可见的插件 CSS 需要一次 `pnpm run build:web` 并不执行的重建。`WorkspaceBrowser.module.css` 从不进入 `apps/web/dist`：ui-workspace 以运行时插件方式加载，其 CSS 内联进 `packages/client/ui-workspace/lib/client.js`，由该包自己的 `bundle` 脚本构建。因此只重跑 `build:web` 的反向对照实际测的是旧产物，去掉声明后仍会通过，看起来像测试无效，实际是对照无效。正确做法是先 `pnpm --filter @alego/client-ui-workspace run bundle`，用 grep 在 `lib/client.js` 中确认该声明确实存在或消失，然后再 `build:web`。
+验证浏览器可见的插件 CSS 需要一次 `pnpm run build:web` 并不执行的重建。`WorkspaceBrowser.module.css` 从不进入 `apps/web/dist`：ui-workspace 以运行时插件方式加载，其 CSS 内联进 `packages/client/ui-workspace/lib/client.js`，由该包自己的 `bundle` 脚本构建。因此只重跑 `build:web` 的反向对照实际测的是旧产物，去掉声明后仍会通过，看起来像测试无效，实际是对照无效。正确做法是先 `pnpm --filter @singula-ai/alego-client-ui-workspace run bundle`，用 grep 在 `lib/client.js` 中确认该声明确实存在或消失，然后再 `build:web`。
 
 `test:web` 原先只运行 `build:web`，因此任何滚动区域或插件 CSS 的改动都会碰到这个陷阱；现在它先运行 `build`，而 `build` 覆盖 `packages/*/*`，从而会重建各插件产物。`check-all` 本来就把 `build` 排在 `build:web` 之前，所以 CI 从未受影响——受影响的只有本地脚本，而这恰恰是「产物过期却通过」最容易被当真的地方。

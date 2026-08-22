@@ -13,10 +13,10 @@ import {
   type InputScript,
   type Scenario,
   type SnapshotSuiteOptions,
-} from '@alego/acp-snapshot'
-import { resolvePwshPath } from '@alego/pwsh-local'
-import { parseSessionLog } from '@alego/llm-replay'
-import { OFFLOADED_IMAGE_TEXT } from '@alego/llm'
+} from '@singula-ai/alego-acp-snapshot'
+import { resolvePwshPath } from '@singula-ai/alego-pwsh-local'
+import { parseSessionLog } from '@singula-ai/alego-llm-replay'
+import { OFFLOADED_IMAGE_TEXT } from '@singula-ai/alego-llm'
 
 /**
  * The acp-agent example's snapshot suite: the scenario table for

@@ -9,9 +9,9 @@
 
 import { describe, expect, it } from 'vitest'
 import fc from 'fast-check'
-import { createUserMessage, CallId , createMessage, createToolResultMessage } from '@alego/llm'
-import { Session, SessionId } from '@alego/session'
-import type { SessionEventMap, SessionEventType, SurfaceIntent } from '@alego/session'
+import { createUserMessage, CallId , createMessage, createToolResultMessage } from '@singula-ai/alego-llm'
+import { Session, SessionId } from '@singula-ai/alego-session'
+import type { SessionEventMap, SessionEventType, SurfaceIntent } from '@singula-ai/alego-session'
 
 // Each arbitrary supplies its own surface intent; `build` must not synthesize
 // one or the property would fail to exercise malformed fixture choices.

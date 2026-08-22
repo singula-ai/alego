@@ -1,18 +1,18 @@
 /**
  * Replay-safe, model-free tool-result pruning service.
  *
- * @module @alego/compaction-tool-result-pruner
+ * @module @singula-ai/alego-compaction-tool-result-pruner
  */
 
-import { Context, Service } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { freezeMessage } from '@alego/llm'
-import type { ContentBlock } from '@alego/llm'
-import type { Session, SessionEvent, ToolResultMessage } from '@alego/session'
+import { Context, Service } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { freezeMessage } from '@singula-ai/alego-llm'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { Session, SessionEvent, ToolResultMessage } from '@singula-ai/alego-session'
 // Type-only: the `compaction/*` SessionEventMap merges (the shadow-price event).
-import type {} from '@alego/compaction'
+import type {} from '@singula-ai/alego-compaction'
 // Type-only: the `ctx.tokenMeter` Context merge for the declared injection.
-import type {} from '@alego/token-meter'
+import type {} from '@singula-ai/alego-token-meter'
 import { codePointLength, DEFAULTS, PRUNE_MARKER, resolveConfig } from './config.ts'
 import type {
   PrunedEntry,
@@ -29,7 +29,7 @@ export type {
   ToolResultPruneConfig,
 } from './types.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     toolResultPruner: ToolResultPruner
   }

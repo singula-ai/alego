@@ -6,11 +6,11 @@ Status: implemented
 
 ## 问题
 
-`apps/cli/config/tui.cordis.yml` 新增了 `@alego/tui/prompt` 配置项，却没有对应的 tsconfig `paths` 映射。通用的 `@alego/*` 通配符会把 `tui/prompt` 整体代入其 `<group>/*/src` 候选路径，而这些路径全都不存在，因此 [tsx 源码启动](../architecture/2026-07-29-alego-source-launch-tsx-esm.zh.md) 会回退到包的 `exports`，解析出产物面文件 `lib/prompt.js`。任何带有已构建 `lib/` 的环境（开发者目录树运行 `pnpm build` 后）都能正常启动，而 e2e 工作流以 `lib` 模式（`ALEGO_EXAMPLE_MODE=lib`，构建产物 bin 在普通 Node 下运行）执行无密钥 TUI PTY 冒烟测试，因此 CI 根本不会经过源码启动向量——与此同时，所有干净检出环境中的 `pnpm alego` 都会在启动时失败，并报错 `plugin(s) failed to load: @alego/tui/prompt`。当时没有门禁检查源码面，因此该故障未被发现便进入发布版本，仅在新的 worktree 中暴露。
+`apps/cli/config/tui.cordis.yml` 新增了 `@singula-ai/alego-tui/prompt` 配置项，却没有对应的 tsconfig `paths` 映射。通用的 `@singula-ai/alego-*` 通配符会把 `tui/prompt` 整体代入其 `<group>/*/src` 候选路径，而这些路径全都不存在，因此 [tsx 源码启动](../architecture/2026-07-29-alego-source-launch-tsx-esm.zh.md) 会回退到包的 `exports`，解析出产物面文件 `lib/prompt.js`。任何带有已构建 `lib/` 的环境（开发者目录树运行 `pnpm build` 后）都能正常启动，而 e2e 工作流以 `lib` 模式（`ALEGO_EXAMPLE_MODE=lib`，构建产物 bin 在普通 Node 下运行）执行无密钥 TUI PTY 冒烟测试，因此 CI 根本不会经过源码启动向量——与此同时，所有干净检出环境中的 `pnpm alego` 都会在启动时失败，并报错 `plugin(s) failed to load: @singula-ai/alego-tui/prompt`。当时没有门禁检查源码面，因此该故障未被发现便进入发布版本，仅在新的 worktree 中暴露。
 
 ## 决策
 
-`scripts/verify-cordis-config.ts`（`validateSourcePlaneResolution`）要求配置中凡是引用本地 workspace 包的模块说明符（包括 harness 包与纳入 vendor 的 Cordis）都必须通过 `tsconfig.base.json` 的 `paths` 外观层（facade）解析到 `.ts`/`.tsx` 源文件；解析以仓库根目录为起点，调用 `ts.resolveModuleName` 完成。解析失败或命中 `.d.ts`（即经 `exports` 回退到构建出的 `lib/types`）都会使 `verify-cordis-config` 失败，并列出配置文件与模块说明符。缺失的 `@alego/tui/prompt` 映射已添加在其他显式子路径条目旁；删除该映射即可复现门禁失败。
+`scripts/verify-cordis-config.ts`（`validateSourcePlaneResolution`）要求配置中凡是引用本地 workspace 包的模块说明符（包括 harness 包与纳入 vendor 的 Cordis）都必须通过 `tsconfig.base.json` 的 `paths` 外观层（facade）解析到 `.ts`/`.tsx` 源文件；解析以仓库根目录为起点，调用 `ts.resolveModuleName` 完成。解析失败或命中 `.d.ts`（即经 `exports` 回退到构建出的 `lib/types`）都会使 `verify-cordis-config` 失败，并列出配置文件与模块说明符。缺失的 `@singula-ai/alego-tui/prompt` 映射已添加在其他显式子路径条目旁；删除该映射即可复现门禁失败。
 
 ## 备选方案
 
@@ -18,7 +18,7 @@ Status: implemented
 
 **将 `alego-source-launch-smoke` 兼容性测试扩展为完整启动。** node-compat 冒烟测试只断言 TTY 拒绝，而该拒绝发生在插件加载之前。每条矩阵版本线都执行一次完整的无密钥启动，会以更高成本重复 PTY 冒烟测试，而且同样只能验证一种组合，无法覆盖所有随产品发布的配置与示例配置。
 
-**使用类似 `@alego/*/prompt` 的通配符映射。** 这能修复当前子路径，却不能杜绝这一类问题；下一个单文件子路径导出（`/surface`、`/message` 等）仍会以同样方式复发。静态门禁覆盖当前及未来配置中引用的所有模块说明符。
+**使用类似 `@singula-ai/alego-*/prompt` 的通配符映射。** 这能修复当前子路径，却不能杜绝这一类问题；下一个单文件子路径导出（`/surface`、`/message` 等）仍会以同样方式复发。静态门禁覆盖当前及未来配置中引用的所有模块说明符。
 
 ## 结果
 

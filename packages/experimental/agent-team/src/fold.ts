@@ -1,9 +1,9 @@
 /** Strict replay fold for Agent Teams log-only events. */
 
 import { z } from 'zod'
-import type { ContentBlock } from '@alego/llm'
-import { SessionId } from '@alego/session'
-import type { SessionEvent, SessionEventMap } from '@alego/session'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
+import type { SessionEvent, SessionEventMap } from '@singula-ai/alego-session'
 import type {
   TeamId,
   TeamMemberSnapshot,

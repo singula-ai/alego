@@ -1,11 +1,11 @@
 /** Cordis dynamic-plugin cards, inventory panel, business-view host, and `@pluginId` source. */
 
-import type { ClientContext, SessionId } from '@alego/client-runtime/client'
-import type {} from '@alego/client-ui-tool/client'
-import type {} from '@alego/client-locale/client'
-import type {} from '@alego/client-ui-sidebar/client'
-import type {} from '@alego/api-remotes/client'
-import type { InputTriggerService, InputTriggerSource } from '@alego/client-ui-input-trigger/client'
+import type { ClientContext, SessionId } from '@singula-ai/alego-client-runtime/client'
+import type {} from '@singula-ai/alego-client-ui-tool/client'
+import type {} from '@singula-ai/alego-client-locale/client'
+import type {} from '@singula-ai/alego-client-ui-sidebar/client'
+import type {} from '@singula-ai/alego-api-remotes/client'
+import type { InputTriggerService, InputTriggerSource } from '@singula-ai/alego-client-ui-input-trigger/client'
 import type {} from './events.ts'
 import { CordisActionRow } from './CordisActionRow.tsx'
 import { CordisDefineRow } from './CordisDefineRow.tsx'

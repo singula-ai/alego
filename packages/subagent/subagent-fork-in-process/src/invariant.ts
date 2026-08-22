@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/subagent-fork-in-process`.
- * @module @alego/subagent-fork-in-process/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-subagent-fork-in-process`.
+ * @module @singula-ai/alego-subagent-fork-in-process/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/subagent-fork-in-process'
+const PACKAGE_NAME = '@singula-ai/alego-subagent-fork-in-process'
 
 /** Cordis companion plugin name. */
 export const name = 'subagent-fork-in-process-invariant'

@@ -1,5 +1,5 @@
-import { Context, Fiber, Inject } from '@alego/cordis'
-import { deepEqual, isNullable } from '@alego/cosmokit'
+import { Context, Fiber, Inject } from '@singula-ai/cordis'
+import { deepEqual, isNullable } from '@singula-ai/cosmokit'
 import { Loader } from '../index.ts'
 import { EntryGroup } from './group.ts'
 import { EntryTree } from './tree.ts'

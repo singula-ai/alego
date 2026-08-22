@@ -11,11 +11,11 @@ import {
   JsonTree,
   MarkdownText,
   Tooltip,
-} from '@alego/client-ui-primitives'
+} from '@singula-ai/alego-client-ui-primitives'
 import { structuredPatch } from 'diff'
 import type {
   AssistantRequestConfig, ConversationPromptSnapshot,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import type {
   AssistantMetricDetail, TrajectoryCellKind, TrajectoryCellProps, TrajectorySourceBlock,
 } from './trajectory-record.ts'

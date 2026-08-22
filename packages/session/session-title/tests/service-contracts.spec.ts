@@ -1,14 +1,14 @@
-import { createUserMessage } from '@alego/llm'
-import { Context, type Fiber } from '@alego/cordis'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import { Context, type Fiber } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import SessionStore, { Session, SessionId } from '@alego/session'
+import SessionStore, { Session, SessionId } from '@singula-ai/alego-session'
 import SessionTitleService, {
   SessionTitleProviderId,
   type Config,
   type SessionTitleProvider,
   type SessionTitleProviderRequest,
   type SessionTitleProviderResult,
-} from '@alego/session-title'
+} from '@singula-ai/alego-session-title'
 
 const CONFIG = {
   fallbackMaxWords: 5,

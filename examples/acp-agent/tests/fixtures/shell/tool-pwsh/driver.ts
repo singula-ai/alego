@@ -7,8 +7,8 @@
  */
 
 import { writeFile } from 'node:fs/promises'
-import { boot, resolveConfigPath } from '@alego/app-boot'
-import { CallId } from '@alego/llm'
+import { boot, resolveConfigPath } from '@singula-ai/alego-app-boot'
+import { CallId } from '@singula-ai/alego-llm'
 
 const configPath = process.argv[2]
 if (configPath === undefined) throw new Error('tool-pwsh driver requires a config path')

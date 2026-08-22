@@ -1,4 +1,4 @@
-# @alego/subagent-claude-code
+# @singula-ai/alego-subagent-claude-code
 
 [English](README.md) | 中文
 
@@ -44,18 +44,18 @@ SDK 接收由文本块原样拼接成的任务。提供方会完整迭代 SDK �
 本包是可选的 Profile Bundle。将它安装进目标 Profile 后重启该 Profile；安装会把锁定的 Agent SDK 与一个兼容的平台 CLI 载荷带入该 Profile，而包所声明的 `cordis.patch.yml` 层只注册休眠的 `claude-code` Host provider，不会启动 Claude 进程。移除该包后，下一次 Profile 启动会撤回这一 provider 及其私有运行时闭包。
 
 ```sh
-alego plugin --profile <name> add @alego/subagent-claude-code
-alego plugin --profile <name> remove @alego/subagent-claude-code
+alego plugin --profile <name> add @singula-ai/alego-subagent-claude-code
+alego plugin --profile <name> remove @singula-ai/alego-subagent-claude-code
 alego --profile <name>
 ```
 
 安装决定 Host 可用性，而不是模型权限。Bundle 会提供休眠的默认 `claude-code` 配置项；Profile 可以替换该配置项的完整 config，也可以挂载更多具有不同 `providerName`、`permissionMode` 与 `env` 的配置项。加载实例本身不会在绑定工具调用前启动 Claude 进程。每个 `alego-tool-subagent` 配置项指定一个提供方，并需要独立的 `toolName`，因此模型看到的是静态工具，而不是动态提供方选择器。完整 Agent Preset 携带对应的默认产品工具行并设置 `disabled: true`；复制一个 preset 后删除该字段，即可只向由该副本组装的 agent 暴露 `subagent_claude_code`。其 `one-shot` 策略会让省略 `run_in_background` 或传入 `false` 的调用继续在前台等待，而显式传入 `true` 会返回由父 agent 拥有的 Job ID，供 `job_output` 或 `job_kill` 使用。base host（基础宿主）与完整 preset 已提供通用作业注册表和控制工具。
 
-下列独立组装展示完整的显式能力。基于 `@alego/base` 的 Profile 保留已有 Job 配置项，新增产品提供方与工具配置项，而且不重复挂载 Job 服务。
+下列独立组装展示完整的显式能力。基于 `@singula-ai/alego-base` 的 Profile 保留已有 Job 配置项，新增产品提供方与工具配置项，而且不重复挂载 Job 服务。
 
 ```yaml
 - id: subagent-claude-safe
-  name: '@alego/subagent-claude-code'
+  name: '@singula-ai/alego-subagent-claude-code'
   config:
     providerName: claude-safe
     permissionMode: dontAsk
@@ -63,7 +63,7 @@ alego --profile <name>
       ANTHROPIC_API_KEY: !!js process.env.ANTHROPIC_API_KEY
 
 - id: subagent-claude-bypass
-  name: '@alego/subagent-claude-code'
+  name: '@singula-ai/alego-subagent-claude-code'
   config:
     providerName: claude-bypass
     permissionMode: bypassPermissions
@@ -73,13 +73,13 @@ alego --profile <name>
 
 ```yaml
 - id: jobs
-  name: '@alego/jobs-local'
+  name: '@singula-ai/alego-jobs-local'
 
 - id: tool-jobs
-  name: '@alego/tool-jobs'
+  name: '@singula-ai/alego-tool-jobs'
 
 - id: tool-subagent-claude-safe
-  name: '@alego/tool-subagent'
+  name: '@singula-ai/alego-tool-subagent'
   disabled: true
   config:
     provider: claude-safe
@@ -88,7 +88,7 @@ alego --profile <name>
     maxDepth: provider-managed
 
 - id: tool-subagent-claude-bypass
-  name: '@alego/tool-subagent'
+  name: '@singula-ai/alego-tool-subagent'
   config:
     provider: claude-bypass
     toolName: subagent_claude_bypass

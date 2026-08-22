@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-20-alego-cli-personal-config.md
-2026-07-20-alego-cli-personal-config.md: 51cc0e697dc81dd311fdf7d0a66beedb5488e67a
-2026-07-20-alego-cli-personal-config.zh.md: 0cb7612fac7cef8bbd7b33105d38efef5ab5f28d
+2026-07-20-alego-cli-personal-config.md: 7ea14bad79dfce6d1db7bb5766811c862061d7c6
+2026-07-20-alego-cli-personal-config.zh.md: 4902d4f018f892d99e43a3fdbdc6298fea61e41a

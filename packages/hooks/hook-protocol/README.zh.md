@@ -1,8 +1,8 @@
-# @alego/hook-protocol
+# @singula-ai/alego-hook-protocol
 
 [English](README.md) | 中文
 
-Claude Code／Codex hook 协议格式（wire format）的**共享核心**。它不是 Cordis 插件：不注册也不注入任何内容。它是一个**库**，提供两个桥接插件（`@alego/hooks-claude-code`、`@alego/hooks-codex`）导入的方言无关原语，使两者都无需重复实现协议中相同的部分。
+Claude Code／Codex hook 协议格式（wire format）的**共享核心**。它不是 Cordis 插件：不注册也不注入任何内容。它是一个**库**，提供两个桥接插件（`@singula-ai/alego-hooks-claude-code`、`@singula-ai/alego-hooks-codex`）导入的方言无关原语，使两者都无需重复实现协议中相同的部分。
 
 Codex 有意重新实现了 Claude Code hook 协议的一个*子集*，包括相同的 `hooks.json` matcher group 结构、相同的退出码／stdout 输出约定以及相同的 command hook 执行模式。真正共享的部分位于此处；每个桥接只负责不同的部分。
 

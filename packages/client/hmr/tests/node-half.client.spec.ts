@@ -5,10 +5,10 @@
 import { mkdtempSync, rmSync, statSync, unlinkSync, utimesSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { WebBootGraph, ClientModuleRegistry } from '@alego/client-modules'
-import type { WebRoute, WebServer } from '@alego/host-webserver'
+import type { WebBootGraph, ClientModuleRegistry } from '@singula-ai/alego-client-modules'
+import type { WebRoute, WebServer } from '@singula-ai/alego-host-webserver'
 import { apply, Config, EVENTS_ENDPOINT, inject } from '../src/index.ts'
 
 const POLL_MS = 20

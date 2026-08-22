@@ -20,7 +20,7 @@
 - `NamedEntries<V>`：按插入顺序排列的具名存储，调用方拥有重复项诊断、查找，以及一个非空表世代内的实时迭代。表清空后，现有迭代器与后续插入项脱离；`insert()` 返回幂等的精确条目撤销函数。
 - `AnonymousEntries<V>`：按插入顺序排列的匿名存储；唯一内部键使相同值仍作为独立注册存在。它使用相同的清空世代迭代器边界；`append()` 返回幂等的精确条目撤销函数。
 
-可选配套包 `@alego/scope/invariant` 拥有该运行时断言。它使用生成的 `scoped-events.generated.ts` 解析器映射，要求每个已声明的带作用域事件都携带载体；当 payload 公开路由主体时，还要求路由主体与载体键严格相等。基于 Program 的生成器根据事件声明和真实的 `scopeTarget(base, key)` 调用生成该映射。
+可选配套包 `@singula-ai/alego-scope/invariant` 拥有该运行时断言。它使用生成的 `scoped-events.generated.ts` 解析器映射，要求每个已声明的带作用域事件都携带载体；当 payload 公开路由主体时，还要求路由主体与载体键严格相等。基于 Program 的生成器根据事件声明和真实的 `scopeTarget(base, key)` 调用生成该映射。
 
 ## 设计约定
 

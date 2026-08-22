@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { PROTOCOL_VERSION } from '@agentclientprotocol/sdk'
-import { AttachmentError } from '@alego/attachment'
-import { SessionId } from '@alego/session'
+import { AttachmentError } from '@singula-ai/alego-attachment'
+import { SessionId } from '@singula-ai/alego-session'
 import { makeBridgeHarness, textResponse, type BridgeHarness } from './harness.ts'
 
 describe('automation-only ACP bridge', () => {

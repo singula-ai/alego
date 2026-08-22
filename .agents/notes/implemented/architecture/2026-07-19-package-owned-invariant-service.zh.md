@@ -16,7 +16,7 @@ Status: implemented
 
 ### 一个注册表服务，贡献归包所有
 
-`@alego/invariants` 是与产品无关的 Cordis 服务插件，注册 `ctx.invariants`。它只负责配置、注册唯一性、子 fiber 生命周期和带包归属的失败；不导入 session、agent、scope 或 agent-loop 包，也不包含这些包的检查。
+`@singula-ai/alego-invariants` 是与产品无关的 Cordis 服务插件，注册 `ctx.invariants`。它只负责配置、注册唯一性、子 fiber 生命周期和带包归属的失败；不导入 session、agent、scope 或 agent-loop 包，也不包含这些包的检查。
 
 工作区内的每个包都发布 `./invariant` 伴随插件，注册自己完整且准确的 npm 包名。如果所有者具备有意义的事件或可变数据关系，companion 就检查该关系；否则空 installer 必须携带该所有者专属的说明。后续的[运行时约定 Agent Note](2026-07-19-package-invariant-runtime-contracts.zh.md) 禁止生成的所有权占位符和合成 API 形状断言。包的根入口不会隐式导入或注册诊断，因此加载根包不会改变运行时检查，也不要求不变式服务存在。
 
@@ -59,10 +59,10 @@ blocklist 匹配优先于 allowlist 匹配。每个条目都是区分大小写�
 
 | 伴随入口 | 注册名 | 所属检查 |
 |---|---|---|
-| `@alego/session/invariant` | `@alego/session` | 会话序列、轮次/步骤包围关系和同一步骤的调用/结果轨迹 |
-| `@alego/agent/invariant` | `@alego/agent` | agent 状态转换 |
-| `@alego/scope/invariant` | `@alego/scope` | 作用域事件载体的存在性与主体一致性 |
-| `@alego/agent-loop/invariant` | `@alego/agent-loop` | 模型请求重建 |
+| `@singula-ai/alego-session/invariant` | `@singula-ai/alego-session` | 会话序列、轮次/步骤包围关系和同一步骤的调用/结果轨迹 |
+| `@singula-ai/alego-agent/invariant` | `@singula-ai/alego-agent` | agent 状态转换 |
+| `@singula-ai/alego-scope/invariant` | `@singula-ai/alego-scope` | 作用域事件载体的存在性与主体一致性 |
+| `@singula-ai/alego-agent-loop/invariant` | `@singula-ai/alego-agent-loop` | 模型请求重建 |
 
 这四个所有者提供了首批有状态检查。后续运行时约定决策为另外十七个确有事件或可变数据关系的所有者增加检查，并为其余包记录有理由的空 companion。每个伴随入口都是单独打包的 `./invariant` export，具有独立声明和对 Loader 安全的命名空间插件形态；服务包自身的伴随插件导入本地服务类型，避免形成自依赖。
 

@@ -1,4 +1,4 @@
-import { Service } from '@alego/cordis'
+import { Service } from '@singula-ai/cordis'
 
 /** Service whose public annotations are intentionally absent. */
 export class WritableService extends Service {
@@ -9,7 +9,7 @@ export class WritableService extends Service {
   }
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     writable: WritableService
   }

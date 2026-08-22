@@ -1,6 +1,6 @@
-import { AlegoMark, BrandWordmark } from '@alego/client-ui-primitives'
-import type { HeroBrandMarkOwnerProps } from '@alego/client-ui-conversation/client'
-import type { SidebarBrandMarkOwnerProps } from '@alego/client-ui-sidebar/client'
+import { AlegoMark, BrandWordmark } from '@singula-ai/alego-client-ui-primitives'
+import type { HeroBrandMarkOwnerProps } from '@singula-ai/alego-client-ui-conversation/client'
+import type { SidebarBrandMarkOwnerProps } from '@singula-ai/alego-client-ui-sidebar/client'
 
 type OfficialBrandMarkProps = HeroBrandMarkOwnerProps & SidebarBrandMarkOwnerProps
 

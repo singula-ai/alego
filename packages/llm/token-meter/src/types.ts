@@ -1,10 +1,10 @@
 /**
  * Public configuration and measurement vocabulary for replay token metering.
  *
- * @module @alego/token-meter/types
+ * @module @singula-ai/alego-token-meter/types
  */
 
-import type { TokenUsage } from '@alego/llm'
+import type { TokenUsage } from '@singula-ai/alego-llm'
 
 export type { ContextBreakdownProjection, ContextPressureProjection, TokenUsageProjection } from './projection.ts'
 

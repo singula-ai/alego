@@ -2,8 +2,8 @@
 
 import type {
   HostFrame, IApiClient, RpcError, RpcRequest, RpcResult, SessionId, WorkspaceId, WorkspaceView,
-} from '@alego/api-remotes/client'
-import { transportError } from '@alego/host-apiproxy/api'
+} from '@singula-ai/alego-api-remotes/client'
+import { transportError } from '@singula-ai/alego-host-apiproxy/api'
 import { Notifier } from '../sessions/notifier.ts'
 import { Workspace, type WorkspaceCreateInput } from './workspace.ts'
 

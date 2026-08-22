@@ -3,10 +3,10 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { Context } from '@alego/cordis'
-import Include from '@alego/cordis-plugin-include'
-import Loader from '@alego/cordis-plugin-loader'
-import LocalJobRegistry from '@alego/jobs-local'
+import { Context } from '@singula-ai/cordis'
+import Include from '@singula-ai/cordis-plugin-include'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import LocalJobRegistry from '@singula-ai/alego-jobs-local'
 
 let root: string | undefined
 let context: Context | undefined
@@ -23,7 +23,7 @@ describe('jobs-local through a real Loader composition', () => {
     root = await mkdtemp(join(tmpdir(), 'alego-jobs-local-loader-'))
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@alego/jobs-local'",
+      "- name: '@singula-ai/alego-jobs-local'",
       '  config:',
       '    maxConcurrentJobsPerOwner: 1',
       '',
@@ -36,7 +36,7 @@ describe('jobs-local through a real Loader composition', () => {
     context.loader.internal = {
       version: 'v2',
       async import(specifier: string) {
-        if (specifier === '@alego/jobs-local') return LocalJobRegistry
+        if (specifier === '@singula-ai/alego-jobs-local') return LocalJobRegistry
         throw new Error(`unexpected Loader import: ${specifier}`)
       },
     } as unknown as NonNullable<typeof context.loader.internal>

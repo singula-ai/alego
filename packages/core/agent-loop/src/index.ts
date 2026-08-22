@@ -2,13 +2,13 @@
  * Concrete agent-loop plugin: creates scoped ReactLoopAgents, publishes them
  * through the agent/session registries, and owns their ordered teardown.
  *
- * @module @alego/agent-loop
+ * @module @singula-ai/alego-agent-loop
  */
 
-import { Context, FiberState, Service } from '@alego/cordis'
+import { Context, FiberState, Service } from '@singula-ai/cordis'
 import { randomUUID } from 'node:crypto'
-import z from '@alego/schemastery'
-import { emitAgentEvent } from '@alego/agent'
+import z from '@singula-ai/schemastery'
+import { emitAgentEvent } from '@singula-ai/alego-agent'
 import type {
   Agent,
   AgentFactory,
@@ -18,14 +18,14 @@ import type {
   CreateAgentOptions,
   ResumeAgentOptions,
   SessionStartSource,
-} from '@alego/agent'
-import { errorChain } from '@alego/llm'
-import { installSettingsSection, settingsNamespace } from '@alego/settings'
-import { SessionId, SessionPreparation } from '@alego/session'
-import type { Session, SessionHeader } from '@alego/session'
-import type {} from '@alego/system-prompt'
-import type {} from '@alego/tools'
-import type { SessionPersistence } from '@alego/session-persistence'
+} from '@singula-ai/alego-agent'
+import { errorChain } from '@singula-ai/alego-llm'
+import { installSettingsSection, settingsNamespace } from '@singula-ai/alego-settings'
+import { SessionId, SessionPreparation } from '@singula-ai/alego-session'
+import type { Session, SessionHeader } from '@singula-ai/alego-session'
+import type {} from '@singula-ai/alego-system-prompt'
+import type {} from '@singula-ai/alego-tools'
+import type { SessionPersistence } from '@singula-ai/alego-session-persistence'
 import { ReactLoopAgent } from './agent.ts'
 import { DEFAULT_MAX_PARALLEL_TOOL_CALLS } from './constants.ts'
 
@@ -157,7 +157,7 @@ interface PreparedAgent {
   dispose(): Promise<void>
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     agentLoop: AgentLoop
     /**

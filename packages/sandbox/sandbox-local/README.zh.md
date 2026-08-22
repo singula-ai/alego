@@ -1,4 +1,4 @@
-# @alego/sandbox-local
+# @singula-ai/alego-sandbox-local
 
 [English](README.md) | 中文
 
@@ -16,14 +16,14 @@ Seatbelt profile 默认允许，但带 `(deny file-write*)` 和写入 allow-list
 
 Windows 档为每个工作区保留一个确定性写入 SID 和常驻 ACE，但为每个活跃的会话/工作区对分配一个随机私有临时目录，以及不同的 SID 和可撤销 ACE。因此，共享工作区的会话会共享预期的写权限，却不会继承彼此的临时目录权限。新的提供方总会选择新的临时路径和 SID，因此崩溃残留既无法阻止恢复的会话，也无法向其授权；runner 会为无 agent（智能体）的调用提供同样的逐调用隔离。如果工作区等于或包含平台临时根目录，调用会在任何 ACL 改动发生前失败，因为否则其可继承的工作区 ACE 会延伸到每个私有临时子目录。
 
-[`@alego/node-addon-landlock-run`](https://www.npmjs.com/package/@alego/node-addon-landlock-run) 提供平台 launcher、功能探测和 CLI 参数词汇。该提供方只负责模式到授权的映射与 runner 选择。把路径解析和探测解析保留在带版本的 binary 中，可防止约定漂移。
+[`@singula-ai/node-addon-landlock-run`](https://www.npmjs.com/package/@singula-ai/node-addon-landlock-run) 提供平台 launcher、功能探测和 CLI 参数词汇。该提供方只负责模式到授权的映射与 runner 选择。把路径解析和探测解析保留在带版本的 binary 中，可防止约定漂移。
 
 ```yaml
 - id: sandbox
-  name: '@alego/sandbox-local'
+  name: '@singula-ai/alego-sandbox-local'
 ```
 
-消费方：[`@alego/bash-sandbox`](../../shell/bash-sandbox/)；可运行的默认组合见 [acp-agent 示例](../../../examples/acp-agent/)。
+消费方：[`@singula-ai/alego-bash-sandbox`](../../shell/bash-sandbox/)；可运行的默认组合见 [acp-agent 示例](../../../examples/acp-agent/)。
 
 ## 模型体验
 

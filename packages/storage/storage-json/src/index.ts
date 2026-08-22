@@ -2,15 +2,15 @@
  * JSON storage backend: one human-readable file per unit under a configured
  * root, published by atomic whole-file rewrite. Registers as backend `json`
  * on the storage hub.
- * @module @alego/storage-json
+ * @module @singula-ai/alego-storage-json
  */
 
 import { mkdir } from 'node:fs/promises'
 import { join } from 'node:path'
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { StorageError, UNIT_NAME_RE, storageBackendServiceKey } from '@alego/storage'
-import type { KvFacet, KvUnit, KvUnitDescriptor, StorageBackend } from '@alego/storage'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { StorageError, UNIT_NAME_RE, storageBackendServiceKey } from '@singula-ai/alego-storage'
+import type { KvFacet, KvUnit, KvUnitDescriptor, StorageBackend } from '@singula-ai/alego-storage'
 import { openJsonUnit } from './unit.ts'
 
 /** Cordis plugin name. */

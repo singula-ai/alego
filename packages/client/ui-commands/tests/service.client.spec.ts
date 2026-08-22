@@ -7,12 +7,12 @@
  * payload, the scoped consume-token dispatch, per-session popupFor
  * lifecycle, and the directory invalidation event subscriptions.
  */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import type { CommandResult } from '@alego/commands/types'
-import { createScope, scopeOf } from '@alego/client-runtime/client'
-import type { SessionId } from '@alego/client-runtime/client'
-import type { ClientSessionContext, ConsumeTokenRequest, InputTriggerPick, InputTriggerSource, SubmitImageAttachment } from '@alego/client-ui-input-trigger/client'
+import type { CommandResult } from '@singula-ai/alego-commands/types'
+import { createScope, scopeOf } from '@singula-ai/alego-client-runtime/client'
+import type { SessionId } from '@singula-ai/alego-client-runtime/client'
+import type { ClientSessionContext, ConsumeTokenRequest, InputTriggerPick, InputTriggerSource, SubmitImageAttachment } from '@singula-ai/alego-client-ui-input-trigger/client'
 import type { CommandContribution, CommandDecoration, CommandUiSpec, SelectOption } from '../src/client/contract.ts'
 import type { CommandDescriptor } from '../src/client/directory.ts'
 import { CommandUiRuntime } from '../src/client/service.ts'

@@ -2,11 +2,11 @@
 
 English | [中文](README.zh.md)
 
-npm scope: `@alego/*`; Cordis `Service` subclasses and function plugins contribute through `ctx.effect()`, `ctx.on()`, or `ctx.waterfall()`. Rules: [package](AGENTS.md), [root](../AGENTS.md#conventions).
+npm scope: `@singula-ai/alego-*`; Cordis `Service` subclasses and function plugins contribute through `ctx.effect()`, `ctx.on()`, or `ctx.waterfall()`. Rules: [package](AGENTS.md), [root](../AGENTS.md#conventions).
 
 ## Hierarchy
 
-Groups hold `packages/<group>/<pkg>/`; names stay `@alego/<pkg>`. **Group READMEs own package/ctx-key maps.**
+Groups hold `packages/<group>/<pkg>/`; names stay `@singula-ai/alego-<pkg>`. **Group READMEs own package/ctx-key maps.**
 
 | Group | Role | Release expectation |
 |---|---|---|

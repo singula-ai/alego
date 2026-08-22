@@ -3,16 +3,16 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import Include from '@alego/cordis-plugin-include'
-import AgentRegistry from '@alego/agent'
-import AgentLoop from '@alego/agent-loop'
-import LlmRuntime, { createUserMessage, LlmAdapter, LlmError, resolveRetryPolicy  } from '@alego/llm'
-import type { GenerateOptions, ResolvedRetryPolicy, StreamChunk } from '@alego/llm'
-import SessionStore, { SessionId } from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include from '@singula-ai/cordis-plugin-include'
+import AgentRegistry from '@singula-ai/alego-agent'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import LlmRuntime, { createUserMessage, LlmAdapter, LlmError, resolveRetryPolicy  } from '@singula-ai/alego-llm'
+import type { GenerateOptions, ResolvedRetryPolicy, StreamChunk } from '@singula-ai/alego-llm'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
 import * as retry from '../src/index.ts'
 
 let root: string | undefined
@@ -58,13 +58,13 @@ async function loadYaml(lines: readonly string[]): Promise<Context> {
   await context.plugin(Loader)
   context.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@alego/llm', LlmRuntime],
-    ['@alego/session', SessionStore],
-    ['@alego/system-prompt', SystemPrompt],
-    ['@alego/tools', ToolRuntime],
-    ['@alego/agent', AgentRegistry],
-    ['@alego/llm-retry', retry],
-    ['@alego/agent-loop', AgentLoop],
+    ['@singula-ai/alego-llm', LlmRuntime],
+    ['@singula-ai/alego-session', SessionStore],
+    ['@singula-ai/alego-system-prompt', SystemPrompt],
+    ['@singula-ai/alego-tools', ToolRuntime],
+    ['@singula-ai/alego-agent', AgentRegistry],
+    ['@singula-ai/alego-llm-retry', retry],
+    ['@singula-ai/alego-agent-loop', AgentLoop],
   ])
   context.loader.internal = {
     version: 'v2',
@@ -87,13 +87,13 @@ describe('real Loader composition', () => {
   // to trip the default 5s budget on cold caches.
   it('loads provider-supplied policy and records recovery through the shipping loop', { timeout: 60_000 }, async () => {
     const loaded = await loadYaml([
-      "- name: '@alego/llm'",
-      "- name: '@alego/session'",
-      "- name: '@alego/system-prompt'",
-      "- name: '@alego/tools'",
-      "- name: '@alego/agent'",
-      "- name: '@alego/llm-retry'",
-      "- name: '@alego/agent-loop'",
+      "- name: '@singula-ai/alego-llm'",
+      "- name: '@singula-ai/alego-session'",
+      "- name: '@singula-ai/alego-system-prompt'",
+      "- name: '@singula-ai/alego-tools'",
+      "- name: '@singula-ai/alego-agent'",
+      "- name: '@singula-ai/alego-llm-retry'",
+      "- name: '@singula-ai/alego-agent-loop'",
     ])
 
     const unloaded = [...loaded.loader.entries()]

@@ -1,15 +1,15 @@
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { Events } from '@alego/cordis'
-import { bindScopeParent, createScope } from '@alego/scope'
-import type { Scope } from '@alego/scope'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
-import type { PreToolDecision, ToolDefinition, ToolExecution, ToolExecutionInput, ToolExecutionToken } from '@alego/tools'
-import type { Agent } from '@alego/agent'
+import { Context } from '@singula-ai/cordis'
+import type { Events } from '@singula-ai/cordis'
+import { bindScopeParent, createScope } from '@singula-ai/alego-scope'
+import type { Scope } from '@singula-ai/alego-scope'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
+import type { PreToolDecision, ToolDefinition, ToolExecution, ToolExecutionInput, ToolExecutionToken } from '@singula-ai/alego-tools'
+import type { Agent } from '@singula-ai/alego-agent'
 
-import { CallId } from '@alego/llm'
-import type { SessionId } from '@alego/session'
+import { CallId } from '@singula-ai/alego-llm'
+import type { SessionId } from '@singula-ai/alego-session'
 
 const testToolSignal = new AbortController().signal
 

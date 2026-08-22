@@ -1,9 +1,9 @@
-import type { LlmFailure } from '@alego/llm/types'
+import type { LlmFailure } from '@singula-ai/alego-llm/types'
 import type { RetryId } from './brand.ts'
 
 export type { RetryId }
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /** Durable, non-surface record of one provider-routed retry scheduled after a failed request attempt. */
     'llm/retry': LlmRetryEventData

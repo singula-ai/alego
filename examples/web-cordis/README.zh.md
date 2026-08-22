@@ -2,7 +2,7 @@
 
 [English](README.md) | 中文
 
-[`@alego/tool-cordis`](../../packages/extensions/tool-cordis/README.zh.md) 的自指示例。agent（智能体）可以检查当前 Cordis 进程，并在内存中挂载或卸载模型编写的插件。临时插件会在卸载或进程退出时消失，并可能影响同一进程中的其他会话。
+[`@singula-ai/alego-tool-cordis`](../../packages/extensions/tool-cordis/README.zh.md) 的自指示例。agent（智能体）可以检查当前 Cordis 进程，并在内存中挂载或卸载模型编写的插件。临时插件会在卸载或进程退出时消失，并可能影响同一进程中的其他会话。
 
 ## 运行
 

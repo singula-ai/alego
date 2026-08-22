@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/subagent-codex`.
- * @module @alego/subagent-codex/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-subagent-codex`.
+ * @module @singula-ai/alego-subagent-codex/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/subagent-codex'
+const PACKAGE_NAME = '@singula-ai/alego-subagent-codex'
 
 /** Cordis companion plugin name. */
 export const name = 'subagent-codex-invariant'

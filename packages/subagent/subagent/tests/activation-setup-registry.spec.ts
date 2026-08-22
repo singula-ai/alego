@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import SubagentActivationSetupRegistry from '../src/activation-setup-registry.ts'
 
 /** A child-like scoped context with observable disposal. */

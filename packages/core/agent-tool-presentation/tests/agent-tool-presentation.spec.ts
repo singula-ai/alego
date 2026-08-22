@@ -7,15 +7,15 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { createScope } from '@alego/scope'
-import SystemPrompt from '@alego/system-prompt'
-import { CodeRuntime } from '@alego/code-runtime'
-import type { CodeRunRequest, CodeRunResult } from '@alego/code-runtime'
-import ToolRuntime, { RUN_CODE_NAME, defineTool } from '@alego/tools'
-import type { Agent } from '@alego/agent'
-import { SessionId } from '@alego/session'
-import { apply, Config, inject, name } from '@alego/agent-tool-presentation'
+import { Context } from '@singula-ai/cordis'
+import { createScope } from '@singula-ai/alego-scope'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import { CodeRuntime } from '@singula-ai/alego-code-runtime'
+import type { CodeRunRequest, CodeRunResult } from '@singula-ai/alego-code-runtime'
+import ToolRuntime, { RUN_CODE_NAME, defineTool } from '@singula-ai/alego-tools'
+import type { Agent } from '@singula-ai/alego-agent'
+import { SessionId } from '@singula-ai/alego-session'
+import { apply, Config, inject, name } from '@singula-ai/alego-agent-tool-presentation'
 
 /** A runtime that never runs anything: presentation never dispatches. */
 class StubRuntime extends CodeRuntime {

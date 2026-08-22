@@ -1,15 +1,15 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { createUserMessage, CallId, HarnessError, type ContentBlock  } from '@alego/llm'
-import SystemPrompt from '@alego/system-prompt'
-import type { Agent } from '@alego/agent'
-import ApprovalService, { type ApprovalOutcome, type ApprovalRequest } from '@alego/user-approval'
+import { Context } from '@singula-ai/cordis'
+import { createUserMessage, CallId, HarnessError, type ContentBlock  } from '@singula-ai/alego-llm'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import type { Agent } from '@singula-ai/alego-agent'
+import ApprovalService, { type ApprovalOutcome, type ApprovalRequest } from '@singula-ai/alego-user-approval'
 import ToolRuntime, {
   defineContentToolFixture, defineTool, JsonSchemaError, parameterSchemaSpecToJsonSchema, validateArgs, ToolArgsError, ToolNotFoundError,
   TOOL_ABORTED, TOOL_ABORTED_BEFORE_DISPATCH,
   type InferArgs, type JsonValue, type ParameterSchemaSpec, type PreToolDecision, type PostToolDecision,
   type JsonSchemaNode, type ToolDefinition, type ToolDispatchExecution, type ToolExecutionResult, type ToolExecutionToken,
-} from '@alego/tools'
+} from '@singula-ai/alego-tools'
 
 const testToolSignal = new AbortController().signal
 
@@ -665,7 +665,7 @@ describe('ToolRuntime', () => {
   })
 
   it('ToolNotFoundError carries a stable message and code', async () => {
-    const { HarnessError } = await import('@alego/llm')
+    const { HarnessError } = await import('@singula-ai/alego-llm')
     const err = new ToolNotFoundError('ghost')
     expect(err).toBeInstanceOf(HarnessError)
     expect(err.name).toBe('ToolNotFoundError')
@@ -2631,7 +2631,7 @@ describe('defineTool validation (the runtime-validation Agent Note, part 1)', ()
   })
 
   it('a tool throwing a HarnessError surfaces its name and code', async () => {
-    const { HarnessError } = await import('@alego/llm')
+    const { HarnessError } = await import('@singula-ai/alego-llm')
     const ctx = await setup()
     ctx.tools.register({
       ...echoTool,

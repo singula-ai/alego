@@ -12,9 +12,9 @@ Status: implemented
 
 ## 决策
 
-`@alego/session-query` 声明一个抽象的 `ctx.sessionQuery` 服务，其精确读取、过滤与追踪均有具体实现，仅有两项全文方法为抽象方法。`searchSessions(request, exec?)` 返回按游标分页的 `SessionSearchHit`，每个会话以其中匹配度最高的事件作为命中结果；`searchEvents(request, exec?)` 返回一个逻辑会话内的 `SessionEventSearchHit`。两种请求都必须提供 `query`，可以接受 `limit` 和由服务拥有的品牌化 `SessionSearchCursor`，并支持可选的中止信号。会话搜索接受 `sessionFilters` 与事件元数据过滤器，事件搜索接受事件元数据过滤器。结果会公开有界的纯文本摘要片段，但不公开提供方标识符或数值相关性分数。单一键拓扑由[统一服务决策](../../archived/architecture/2026-07-23-unified-session-query-service.md)定义。
+`@singula-ai/alego-session-query` 声明一个抽象的 `ctx.sessionQuery` 服务，其精确读取、过滤与追踪均有具体实现，仅有两项全文方法为抽象方法。`searchSessions(request, exec?)` 返回按游标分页的 `SessionSearchHit`，每个会话以其中匹配度最高的事件作为命中结果；`searchEvents(request, exec?)` 返回一个逻辑会话内的 `SessionEventSearchHit`。两种请求都必须提供 `query`，可以接受 `limit` 和由服务拥有的品牌化 `SessionSearchCursor`，并支持可选的中止信号。会话搜索接受 `sessionFilters` 与事件元数据过滤器，事件搜索接受事件元数据过滤器。结果会公开有界的纯文本摘要片段，但不公开提供方标识符或数值相关性分数。单一键拓扑由[统一服务决策](../../archived/architecture/2026-07-23-unified-session-query-service.md)定义。
 
-`@alego/session-query-sqlite` 扩展接口服务，并且是 `ctx.sessionQuery` 唯一的具体所有者。它依赖实时的 `ctx.sessions`，动态观察可选的 `ctx.sessionPersistence`，并拥有一个专用的派生 SQLite 数据库。系统没有搜索提供方注册表、协调器、持久化事件或 agent loop（智能体循环）集成。
+`@singula-ai/alego-session-query-sqlite` 扩展接口服务，并且是 `ctx.sessionQuery` 唯一的具体所有者。它依赖实时的 `ctx.sessions`，动态观察可选的 `ctx.sessionPersistence`，并拥有一个专用的派生 SQLite 数据库。系统没有搜索提供方注册表、协调器、持久化事件或 agent loop（智能体循环）集成。
 
 Service Definition 包还拥有共享的第一方语义提取与提供方无关的过滤。`SessionResultFilter` 涵盖 id、可空的 cwd、创建时间范围、可空的父会话与可用性；`ctx.sessionQuery.filterSessions()` 无需 FTS 提供方即可应用这些过滤器。`SessionEventResultFilter` 涵盖 seq/时间范围、事件类型、surface 与字面语义文本。过滤器数组内各项按逻辑与（AND）组合，列表值按逻辑或（OR）组合。文本子句会将调用方输入转义为不区分大小写的 Unicode 正则表达式，其中每段连续空白都匹配一个或多个空白字符；该子句通过 `ctx.sessionQuery.filterEvents()` 提供，不会委托给 FTS 提供方。
 

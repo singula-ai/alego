@@ -2,24 +2,24 @@ import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import Include from '@alego/cordis-plugin-include'
-import LlmRuntime from '@alego/llm'
-import SessionStore, { SessionId } from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
-import AgentRegistry, { assembleContextFor, type Agent } from '@alego/agent'
-import AgentLoop from '@alego/agent-loop'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include from '@singula-ai/cordis-plugin-include'
+import LlmRuntime from '@singula-ai/alego-llm'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
+import AgentRegistry, { assembleContextFor, type Agent } from '@singula-ai/alego-agent'
+import AgentLoop from '@singula-ai/alego-agent-loop'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import AgentPresets, {
   COMPOSITION_FILE, leakedServices, livePresetMounts, mountPreset, PresetMountError, serviceForAgent,
-} from '@alego/agent-presets'
-import type { Config } from '@alego/agent-presets'
-import type {} from '@alego/agent-presets/types'
-import { bindScopeParent, createScope, scopeOf } from '@alego/scope'
+} from '@singula-ai/alego-agent-presets'
+import type { Config } from '@singula-ai/alego-agent-presets'
+import type {} from '@singula-ai/alego-agent-presets/types'
+import { bindScopeParent, createScope, scopeOf } from '@singula-ai/alego-scope'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     /** Published by the `isolated` fixture preset behind an entry-local realm. */
     fixtureIsolatedSvc: { label: string }

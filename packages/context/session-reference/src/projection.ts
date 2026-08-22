@@ -1,9 +1,9 @@
 /** Current-surface projection and byte-bounded rendering. */
 
-import { isCompactCheckpointSource } from '@alego/compaction'
-import type { SessionSurfaceSnapshot } from '@alego/session-query'
-import { assertNever } from '@alego/llm'
-import { TextRetainer } from '@alego/output-retention'
+import { isCompactCheckpointSource } from '@singula-ai/alego-compaction'
+import type { SessionSurfaceSnapshot } from '@singula-ai/alego-session-query'
+import { assertNever } from '@singula-ai/alego-llm'
+import { TextRetainer } from '@singula-ai/alego-output-retention'
 import { stringifyTagSafeJson } from './serialization.ts'
 import type { ReferencedConversationItem } from './types.ts'
 

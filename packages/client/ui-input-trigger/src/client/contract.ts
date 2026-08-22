@@ -4,7 +4,7 @@
  * see registerSource alone, the conversation wiring layer resolves its
  * per-session controller through sessionOf.
  */
-import type { ClientContext } from '@alego/client-runtime/client'
+import type { ClientContext } from '@singula-ai/alego-client-runtime/client'
 import type { InputTriggerSource } from '../types.ts'
 import type { InputTriggerController } from './controller.ts'
 

@@ -1,4 +1,4 @@
-# `@alego/acp-snapshot`
+# `@singula-ai/alego-acp-snapshot`
 
 [English](README.md) | 中文
 
@@ -22,7 +22,7 @@ import {
   defineAcpSnapshotSuite,
   type Scenario,
   type SnapshotSuiteOptions,
-} from '@alego/acp-snapshot'
+} from '@singula-ai/alego-acp-snapshot'
 
 function snapshotMode(value: string | undefined): SnapshotSuiteOptions['mode'] {
   switch (value) {

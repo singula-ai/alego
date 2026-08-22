@@ -1,13 +1,13 @@
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import LlmRuntime, { createUserMessage, deepFreeze, markAgentLoopRequest  } from '@alego/llm'
-import SessionStore, { SessionId } from '@alego/session'
+import LlmRuntime, { createUserMessage, deepFreeze, markAgentLoopRequest  } from '@singula-ai/alego-llm'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
 import SessionTitleService, {
   SessionTitleProviderId,
   type SessionTitleProvider,
   type SessionTitleProviderRequest,
   type SessionTitleProviderResult,
-} from '@alego/session-title'
+} from '@singula-ai/alego-session-title'
 
 const CONFIG = {
   fallbackMaxWords: 5,

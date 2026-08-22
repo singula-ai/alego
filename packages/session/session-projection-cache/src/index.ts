@@ -9,25 +9,25 @@
  * `ver` mismatch discards the row instead of migrating it. Design
  * authority: the session-projection RFC
  * (.agents/notes/proposed/architecture/2026-07-27-session-projection-and-command-log.md).
- * @module @alego/session-projection-cache
+ * @module @singula-ai/alego-session-projection-cache
  */
 
-import { Context, Service } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { snapshotJsonValue } from '@alego/session'
-import type { Session, SessionEvent, SessionHeader, SessionId } from '@alego/session'
+import { Context, Service } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { snapshotJsonValue } from '@singula-ai/alego-session'
+import type { Session, SessionEvent, SessionHeader, SessionId } from '@singula-ai/alego-session'
 // Empty type import: applies the package's cordis Context merge
 // (`ctx.sessionPersistence`), which this service reads on the cold path.
-import type {} from '@alego/session-persistence'
-import type { ProjectionCheckpoint, ProjectionSnapshot } from '@alego/session-projection'
-import type { KvTable } from '@alego/storage-domain'
+import type {} from '@singula-ai/alego-session-persistence'
+import type { ProjectionCheckpoint, ProjectionSnapshot } from '@singula-ai/alego-session-projection'
+import type { KvTable } from '@singula-ai/alego-storage-domain'
 import { projectionCacheDomainSpec } from './spec.ts'
 import type { CheckpointIdentity, CheckpointRecord } from './spec.ts'
 
 export { checkpointIdentity, checkpointRecord, checkpointRow, projectionCacheDomainSpec } from './spec.ts'
 export type { CheckpointIdentity, CheckpointRecord } from './spec.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     sessionProjectionCache: SessionProjectionCache
   }

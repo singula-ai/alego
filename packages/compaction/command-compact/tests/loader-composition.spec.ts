@@ -3,11 +3,11 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import Include from '@alego/cordis-plugin-include'
-import type { Agent } from '@alego/agent'
-import CommandRuntime from '@alego/commands'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include from '@singula-ai/cordis-plugin-include'
+import type { Agent } from '@singula-ai/alego-agent'
+import CommandRuntime from '@singula-ai/alego-commands'
 import {
   CompactionId,
   CompactionEngine,
@@ -15,9 +15,9 @@ import {
   type CompactionResult,
   type CompactionTrigger,
   type ManualCompactAgentContext,
-} from '@alego/compaction'
-import * as commandCompact from '@alego/command-compact'
-import { Session, SessionId } from '@alego/session'
+} from '@singula-ai/alego-compaction'
+import * as commandCompact from '@singula-ai/alego-command-compact'
+import { Session, SessionId } from '@singula-ai/alego-session'
 
 const COMPACTION_ID = CompactionId('loader-command-compact-test')
 
@@ -84,9 +84,9 @@ describe('command-compact real Loader composition', () => {
     root = await mkdtemp(join(tmpdir(), 'alego-command-compact-loader-'))
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@alego/commands'",
+      "- name: '@singula-ai/alego-commands'",
       "- name: '@test/compact-backend'",
-      "- name: '@alego/command-compact'",
+      "- name: '@singula-ai/alego-command-compact'",
       '',
     ].join('\n'))
 
@@ -95,9 +95,9 @@ describe('command-compact real Loader composition', () => {
     await context.plugin(Loader)
     context.loader.builtins.include = Include
     const modules = new Map<string, unknown>([
-      ['@alego/commands', CommandRuntime],
+      ['@singula-ai/alego-commands', CommandRuntime],
       ['@test/compact-backend', LoaderCompactionEngine],
-      ['@alego/command-compact', commandCompact],
+      ['@singula-ai/alego-command-compact', commandCompact],
     ])
     context.loader.internal = {
       version: 'v2',

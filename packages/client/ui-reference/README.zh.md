@@ -1,4 +1,4 @@
-# `@alego/client-ui-reference`
+# `@singula-ai/alego-client-ui-reference`
 
 [English](README.md) | 中文
 
@@ -12,7 +12,7 @@
 
 ## 模型体验
 
-间接影响模型体验：路径指引由 `@alego/file-reference-local` 提供，准备后的会话快照由 `@alego/session-reference` 提供。
+间接影响模型体验：路径指引由 `@singula-ai/alego-file-reference-local` 提供，准备后的会话快照由 `@singula-ai/alego-session-reference` 提供。
 
 #### KV 缓存影响
 

@@ -9,8 +9,8 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import { canonicalPath } from '@alego/sandbox'
-import type { SessionEvent } from '@alego/session'
+import { canonicalPath } from '@singula-ai/alego-sandbox'
+import type { SessionEvent } from '@singula-ai/alego-session'
 import {
   assertFixtureInventory, fixtureUserPrompts, launchWebScaffold, recordFixture,
   watchConsole, webSnapshotMode, type WebScaffold,
@@ -41,7 +41,7 @@ function runtimeContexts(events: readonly SessionEvent[]): string[] {
   return events.flatMap((event) => {
     if (event.type !== 'user/message'
       || event.data.source.kind !== 'plugin'
-      || event.data.source.plugin !== '@alego/system-prompt') return []
+      || event.data.source.plugin !== '@singula-ai/alego-system-prompt') return []
     return event.data.content.flatMap(block => block.type === 'text' ? [block.text] : [])
   })
 }

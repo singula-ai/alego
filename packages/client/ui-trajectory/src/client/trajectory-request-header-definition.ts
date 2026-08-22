@@ -1,8 +1,8 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   ConversationMatch, ConversationNodeDefinition, ConversationPromptSnapshot,
   RequestPromptChange,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import { trajectoryNode } from './trajectory-definition-common.ts'
 import type { TrajectoryRequestHeaderState } from './trajectory-contract.ts'
 

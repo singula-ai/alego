@@ -11,7 +11,7 @@
  *
  * ```yaml
  * - id: llm
- *   name: '@alego/llm-pi-ai'
+ *   name: '@singula-ai/alego-llm-pi-ai'
  *   config:
  *     providers:
  *       # Catalog route: everything but the credential comes from pi-ai.
@@ -52,14 +52,14 @@
  *               max: ultra
  * ```
  *
- * @module @alego/llm-pi-ai
+ * @module @singula-ai/alego-llm-pi-ai
  */
 
-import type { Context } from '@alego/cordis'
-import { launchEnvironmentOf } from '@alego/launch-environment'
-import { assertUsableApiKey, LlmError } from '@alego/llm'
-import type { AdapterRegistrationHandle, DirectoryRegistrationHandle, LlmConfigurableProvider } from '@alego/llm'
-import { deepEqualJson, installSettingsSection, settingsNamespace } from '@alego/settings'
+import type { Context } from '@singula-ai/cordis'
+import { launchEnvironmentOf } from '@singula-ai/alego-launch-environment'
+import { assertUsableApiKey, LlmError } from '@singula-ai/alego-llm'
+import type { AdapterRegistrationHandle, DirectoryRegistrationHandle, LlmConfigurableProvider } from '@singula-ai/alego-llm'
+import { deepEqualJson, installSettingsSection, settingsNamespace } from '@singula-ai/alego-settings'
 import { PiAiAdapter } from './adapter.ts'
 import { authContextFrom, credentialStoreFrom } from './auth.ts'
 import { catalogProviderIds } from './catalog.ts'

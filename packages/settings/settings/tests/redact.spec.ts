@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
+import { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import { redactSecrets, settingsNamespace } from '../src/index.ts'
 import { MemorySettings } from './memory.ts'
 

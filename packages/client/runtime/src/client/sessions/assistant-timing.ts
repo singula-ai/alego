@@ -2,13 +2,13 @@
 // history fold derive AssistantTiming from the same step/start -> first token
 // delta -> assistant/message sequence.
 
-import { isTokenDelta } from '@alego/llm/message'
-import type { SessionEvent } from '@alego/session/types'
+import { isTokenDelta } from '@singula-ai/alego-llm/message'
+import type { SessionEvent } from '@singula-ai/alego-session/types'
 import type { AssistantTiming } from './conversation.ts'
 
 // The first-token predicate lives beside the StreamChunk type in alego-llm;
 // re-exported here so Chat Definitions keep their client-runtime import.
-export { isTokenDelta } from '@alego/llm/message'
+export { isTokenDelta } from '@singula-ai/alego-llm/message'
 
 /** Pre-finalize timing boundaries for one assistant step (start + first token). */
 export interface AssistantStepMetadata {

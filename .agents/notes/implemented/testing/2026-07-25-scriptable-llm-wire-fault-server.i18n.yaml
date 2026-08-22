@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/testing/2026-07-25-scriptable-llm-wire-fault-server.md
-2026-07-25-scriptable-llm-wire-fault-server.md: ef8af900846477defad68237fce639fa6e218e59
-2026-07-25-scriptable-llm-wire-fault-server.zh.md: 1883d9387f681978d61ae078685da4cf6493391d
+2026-07-25-scriptable-llm-wire-fault-server.md: 1ef576242a1a4c67fb02c4b9c851851fdae9a82c
+2026-07-25-scriptable-llm-wire-fault-server.zh.md: 839c9929f10b86dd4d8dec944fb81537bc08df91

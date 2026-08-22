@@ -1,10 +1,10 @@
 /**
  * Durable and model-facing Schedule value types.
- * @module @alego/schedule
+ * @module @singula-ai/alego-schedule
  */
 
-import type { Branded } from '@alego/brand'
-import type {} from '@alego/session/types'
+import type { Branded } from '@singula-ai/alego-brand'
+import type {} from '@singula-ai/alego-session/types'
 
 /** Stable reminder identity that is unique and never reused within one session. */
 export type ScheduleId = Branded<'ScheduleId'>
@@ -210,7 +210,7 @@ export type ScheduleDeleteResult =
 /** Canonical `schedule_delete` value. */
 export type ScheduleDeleteValue = ScheduleDeleteResult | ScheduleToolError
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * Versioned Schedule mutation. The owning package validates the complete

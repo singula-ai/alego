@@ -59,15 +59,15 @@ describe('initProfile', () => {
   it('creates manifest, user patch layer, and pnpm workspace once, never overwriting', () => {
     const home = tmp()
     const dir = resolveProfileDir('tui', home)
-    initProfile(dir, ['@alego/base'])
+    initProfile(dir, ['@singula-ai/alego-base'])
     const manifest = readProfileManifest('t', dir)
-    expect(manifest.alego?.profile?.bundles).toEqual(['@alego/base'])
+    expect(manifest.alego?.profile?.bundles).toEqual(['@singula-ai/alego-base'])
     expect(readFileSync(join(dir, PROFILE_PATCH_FILENAME), 'utf8')).toContain('[]')
     expect(readFileSync(join(dir, 'pnpm-workspace.yaml'), 'utf8')).toContain('nodeLinker: hoisted')
     // Re-init keeps user edits.
     writeFileSync(join(dir, PROFILE_PATCH_FILENAME), '- id: x\n  config: {}\n')
     initProfile(dir, ['other'])
-    expect(readProfileManifest('t', dir).alego?.profile?.bundles).toEqual(['@alego/base'])
+    expect(readProfileManifest('t', dir).alego?.profile?.bundles).toEqual(['@singula-ai/alego-base'])
     expect(readFileSync(join(dir, PROFILE_PATCH_FILENAME), 'utf8')).toContain('- id: x')
   })
 })
@@ -150,8 +150,8 @@ describe('loadProfile', () => {
       .toThrow('profile "custom" does not exist')
     // The web template auto-initializes on first load. Bundle resolution
     // cannot be asserted to fail here: the source-plane test runner resolves
-    // @alego/* through tsconfig paths regardless of the staged anchor.
-    expect(PROFILE_TEMPLATES.web).toContain('@alego/base')
+    // @singula-ai/alego-* through tsconfig paths regardless of the staged anchor.
+    expect(PROFILE_TEMPLATES.web).toContain('@singula-ai/alego-base')
     try {
       loadProfile('t', 'web', anchor, home)
     } catch {
@@ -163,28 +163,28 @@ describe('loadProfile', () => {
 
   it('normalizes only the exact installation-owned headless bundle tuple', () => {
     const anchor = stageInstallation({
-      '@alego/base': { patch: '[]\n' },
-      '@alego/web-app': { patch: '[]\n' },
-      '@alego/headless': { patch: '[]\n' },
+      '@singula-ai/alego-base': { patch: '[]\n' },
+      '@singula-ai/alego-web-app': { patch: '[]\n' },
+      '@singula-ai/alego-headless': { patch: '[]\n' },
       'custom-bundle': { patch: '[]\n' },
     })
     const home = tmp()
     const stock = resolveProfileDir('headless', home)
     initProfile(stock, [
-      '@alego/base', '@alego/web-app', '@alego/headless',
+      '@singula-ai/alego-base', '@singula-ai/alego-web-app', '@singula-ai/alego-headless',
     ])
     loadProfile('t', 'headless', anchor, home)
     expect(readProfileManifest('t', stock).alego?.profile?.bundles)
-      .toEqual(['@alego/base', '@alego/headless'])
+      .toEqual(['@singula-ai/alego-base', '@singula-ai/alego-headless'])
 
     const customHome = tmp()
     const custom = resolveProfileDir('headless', customHome)
     initProfile(custom, [
-      '@alego/base', '@alego/web-app', '@alego/headless', 'custom-bundle',
+      '@singula-ai/alego-base', '@singula-ai/alego-web-app', '@singula-ai/alego-headless', 'custom-bundle',
     ])
     loadProfile('t', 'headless', anchor, customHome)
     expect(readProfileManifest('t', custom).alego?.profile?.bundles).toEqual([
-      '@alego/base', '@alego/web-app', '@alego/headless', 'custom-bundle',
+      '@singula-ai/alego-base', '@singula-ai/alego-web-app', '@singula-ai/alego-headless', 'custom-bundle',
     ])
   })
 

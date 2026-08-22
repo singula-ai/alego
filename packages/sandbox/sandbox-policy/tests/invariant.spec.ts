@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import SessionStore, { type Session, type SessionEvent } from '@alego/session'
-import InvariantRegistry, { InvariantError } from '@alego/invariants'
-import * as SandboxPolicyInvariant from '@alego/sandbox-policy/invariant'
+import { Context } from '@singula-ai/cordis'
+import SessionStore, { type Session, type SessionEvent } from '@singula-ai/alego-session'
+import InvariantRegistry, { InvariantError } from '@singula-ai/alego-invariants'
+import * as SandboxPolicyInvariant from '@singula-ai/alego-sandbox-policy/invariant'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()
@@ -36,7 +36,7 @@ describe('sandbox-policy invariants', () => {
   it('rejects and attributes an unknown durable sandbox mode', async () => {
     const ctx = await setup()
     expect(() => { ctx.emit('session/event', {} as Session, modeEvent('host-root')) })
-      .toThrow(new InvariantError('@alego/sandbox-policy', 'sandbox/mode carries unknown mode "host-root"'))
+      .toThrow(new InvariantError('@singula-ai/alego-sandbox-policy', 'sandbox/mode carries unknown mode "host-root"'))
   })
 
   it('rejects an unknown mode already present on late registration', async () => {
@@ -47,7 +47,7 @@ describe('sandbox-policy invariants', () => {
 
     await expect(ctx.plugin(SandboxPolicyInvariant).then(() => undefined)).rejects.toMatchObject({
       code: 'INVARIANT',
-      packageName: '@alego/sandbox-policy',
+      packageName: '@singula-ai/alego-sandbox-policy',
     })
   })
 })

@@ -5,7 +5,7 @@
  * packages may declare-merge through either the package root or this outlet —
  * re-export preserves symbol identity, so both land on the same table.
  *
- * @module @alego/session-projection/types
+ * @module @singula-ai/alego-session-projection/types
  */
 
 /**

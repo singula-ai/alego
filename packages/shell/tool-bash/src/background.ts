@@ -1,10 +1,10 @@
 /**
  * Generic-task adaptation for background bash process handles.
  *
- * @module @alego/tool-bash/background
+ * @module @singula-ai/alego-tool-bash/background
  */
 
-import type { ShellProcess } from '@alego/shell'
+import type { ShellProcess } from '@singula-ai/alego-shell'
 
 /**
  * Map a settled background process onto the generic task-outcome vocabulary:

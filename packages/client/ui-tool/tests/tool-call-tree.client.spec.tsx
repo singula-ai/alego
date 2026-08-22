@@ -2,13 +2,13 @@
 /** ToolCallTree-owned root/subcall markers and selection projection. */
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
-import type { HostDescription } from '@alego/client-connection/client'
-import type { ConversationSnapshot, ToolResultNode } from '@alego/client-runtime/client'
-import { makeTranslate } from '@alego/client-test-runtime'
-import { zh as commonZh } from '@alego/client-locale/src/locales/zh.ts'
+import type { HostDescription } from '@singula-ai/alego-client-connection/client'
+import type { ConversationSnapshot, ToolResultNode } from '@singula-ai/alego-client-runtime/client'
+import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
 import type { ToolTreeProps } from '../src/client/contract/slots.ts'
 import { ToolCallTree } from '../src/client/tool/ToolCallTree.tsx'
-import { zh } from '@alego/client-ui-conversation/src/client/locales.ts'
+import { zh } from '@singula-ai/alego-client-ui-conversation/src/client/locales.ts'
 
 afterEach(cleanup)
 

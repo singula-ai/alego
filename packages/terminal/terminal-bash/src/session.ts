@@ -5,8 +5,8 @@ import type {
   SubprocessOutcome,
   SubprocessTerminalForeground,
   SubprocessTerminalHandle,
-} from '@alego/subprocess'
-import { TerminalError } from '@alego/terminal'
+} from '@singula-ai/alego-subprocess'
+import { TerminalError } from '@singula-ai/alego-terminal'
 import type {
   TerminalBackendSession,
   TerminalReadRequest,
@@ -19,7 +19,7 @@ import type {
   TerminalSignal,
   TerminalSignalResult,
   TerminalWaitReason,
-} from '@alego/terminal'
+} from '@singula-ai/alego-terminal'
 import type { ResolvedConfig } from './config.ts'
 import { CONTROLLED_PROMPT, TerminalSanitizer } from './sanitize.ts'
 

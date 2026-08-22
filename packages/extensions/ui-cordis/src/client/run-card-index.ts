@@ -1,7 +1,7 @@
 /** Session-local ownership index for Package business views on `cordis_run` cards. */
 
-import type { SessionId } from '@alego/client-connection/client'
-import type { HostObservable } from '@alego/client-ui-slots'
+import type { SessionId } from '@singula-ai/alego-client-connection/client'
+import type { HostObservable } from '@singula-ai/alego-client-ui-slots'
 import type {
   CordisDynamicPackageId, CordisDynamicPluginId, CordisDynamicPluginRunId,
 } from './events.ts'

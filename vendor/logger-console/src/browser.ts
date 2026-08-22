@@ -1,4 +1,4 @@
-import { Message } from '@alego/cordis'
+import { Message } from '@singula-ai/cordis'
 import { ConsoleExporter as Base } from './shared.ts'
 
 /** Re-export shared console exporter config and base implementation. */

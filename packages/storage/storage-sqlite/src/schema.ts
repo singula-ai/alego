@@ -3,13 +3,13 @@
  * layout version, the database open/configure sequence (permissions, pragmas,
  * version stamp/reject), and the unit metadata tables. Unit record tables are
  * created per descriptor in `unit.ts`.
- * @module @alego/storage-sqlite/schema
+ * @module @singula-ai/alego-storage-sqlite/schema
  */
 
 import { DatabaseSync } from 'node:sqlite'
 import { mkdir, open } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
-import { StorageError } from '@alego/storage'
+import { StorageError } from '@singula-ai/alego-storage'
 
 /**
  * The on-disk physical layout version, stored in `PRAGMA user_version`.

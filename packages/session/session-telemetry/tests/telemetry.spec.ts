@@ -1,4 +1,4 @@
-import { createToolResultMessage, createUserMessage } from '@alego/llm'
+import { createToolResultMessage, createUserMessage } from '@singula-ai/alego-llm'
 /**
  * Coordinator semantics against a bare fake backend — the RFC's named unit
  * tier for the seam: adoption (fresh, seeded, re-adoption via the handoff
@@ -7,9 +7,9 @@ import { createToolResultMessage, createUserMessage } from '@alego/llm'
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import SessionStore, { SessionId, type Session, type SessionEvent } from '@alego/session'
-import type { Agent } from '@alego/agent'
+import { Context } from '@singula-ai/cordis'
+import SessionStore, { SessionId, type Session, type SessionEvent } from '@singula-ai/alego-session'
+import type { Agent } from '@singula-ai/alego-agent'
 import {
   SessionTelemetryCoordinator,
   type SessionTelemetrySink,
@@ -17,7 +17,7 @@ import {
   type SessionTelemetryRecord,
 } from '../src/index.ts'
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * Test-only merged event proving unknown types flow through unchanged.

@@ -46,12 +46,12 @@ describe('tierExternalDeps', () => {
     const { manifests, names } = workspace({
       // Root tooling and test infrastructure never ship, whichever section declares them.
       'package.json': { dependencies: { 'root-runtime-looking': '^1' }, devDependencies: { 'lint-tool': '^1' } },
-      'packages/test-support/loader-smoke/package.json': { name: '@alego/loader-smoke', dependencies: { 'smoke-helper': '^1' } },
-      'packages/test-support/client-runtime/package.json': { name: '@alego/client-test-runtime', dependencies: { 'test-lib': '^1' } },
+      'packages/test-support/loader-smoke/package.json': { name: '@singula-ai/alego-loader-smoke', dependencies: { 'smoke-helper': '^1' } },
+      'packages/test-support/client-runtime/package.json': { name: '@singula-ai/alego-client-test-runtime', dependencies: { 'test-lib': '^1' } },
       'website/package.json': { devDependencies: { 'site-tool': '^1' } },
       // A plugin package's runtime dependency ships even when no app mounts it by default.
-      'packages/mcp/mcp-client/package.json': { name: '@alego/mcp-client', dependencies: { 'protocol-sdk': '^1' }, devDependencies: { 'protocol-fixture-server': '^1' } },
-      'apps/cli/package.json': { name: '@alego/cli', dependencies: { 'cli-lib': '^1', '@alego/mcp-client': 'workspace:^' } },
+      'packages/mcp/mcp-client/package.json': { name: '@singula-ai/alego-mcp-client', dependencies: { 'protocol-sdk': '^1' }, devDependencies: { 'protocol-fixture-server': '^1' } },
+      'apps/cli/package.json': { name: '@singula-ai/alego', dependencies: { 'cli-lib': '^1', '@singula-ai/alego-mcp-client': 'workspace:^' } },
     })
 
     expect(tierExternalDeps(manifests, names)).toEqual(new Map([
@@ -70,12 +70,12 @@ describe('tierExternalDeps', () => {
   it('keeps a package runtime when any shipping area declares it, and excludes workspace links', () => {
     const { manifests, names } = workspace({
       'package.json': { devDependencies: { shared: '^1' } },
-      'packages/interaction/tui/package.json': { name: '@alego/tui', dependencies: { shared: '^1', '@alego/cli': 'workspace:^' } },
-      'apps/cli/package.json': { name: '@alego/cli' },
+      'packages/interaction/tui/package.json': { name: '@singula-ai/alego-tui', dependencies: { shared: '^1', '@singula-ai/alego': 'workspace:^' } },
+      'apps/cli/package.json': { name: '@singula-ai/alego' },
     })
 
     expect(tierExternalDeps(manifests, names).get('shared')).toBe(true)
-    expect(tierExternalDeps(manifests, names).has('@alego/cli')).toBe(false)
+    expect(tierExternalDeps(manifests, names).has('@singula-ai/alego')).toBe(false)
   })
 })
 
@@ -135,7 +135,7 @@ describe('parseVendoredRows', () => {
 
     expect(rows.length).toBeGreaterThan(0)
     expect(rows).toContainEqual({
-      npmName: '@alego/cordis',
+      npmName: '@singula-ai/cordis',
       upstreamName: 'cordis',
       upstream: 'https://github.com/cordiverse/cordis',
     })
@@ -144,7 +144,7 @@ describe('parseVendoredRows', () => {
   })
 
   it('yields nothing when the table columns change, so the generator fails loud', () => {
-    expect(parseVendoredRows('| `cordis/` | `@alego/cordis` | cordis | 4.0.0 | https://example.com | `abc123` |\n')).toEqual([])
+    expect(parseVendoredRows('| `cordis/` | `@singula-ai/cordis` | cordis | 4.0.0 | https://example.com | `abc123` |\n')).toEqual([])
   })
 
   it('covers every vendored directory, so no package can drop out of the notices', () => {

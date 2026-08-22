@@ -1,6 +1,6 @@
 /** Deterministic keyless Agent Teams adapter for the real headless Loader snapshot. */
 
-import { CallId, LlmAdapter } from '@alego/llm'
+import { CallId, LlmAdapter } from '@singula-ai/alego-llm'
 
 let nextCall = 0
 

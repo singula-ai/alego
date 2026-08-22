@@ -393,7 +393,7 @@ History-path tests cover complete replace, non-overlapping prepend, overlapping-
 
 A new business node can register its matcher, State transitions, optional Location data, final target Node, and renderer locally without changing Session's business switch. `ChatNodeDataMap` and the Location data maps let a business package merge strongly typed data into the contract; every related Event must still expose a stable ID derivable from that Event alone.
 
-Host business packages declaration-merge their durable Event members into `@alego/session/types`, while Client Definitions type-only import the corresponding business package `/types` subpaths. Augmenting the declaring interface rather than a re-export barrel gives the independent Host and Client TypeScript programs the same Event narrowing without pulling Host runtime into the Client graph.
+Host business packages declaration-merge their durable Event members into `@singula-ai/alego-session/types`, while Client Definitions type-only import the corresponding business package `/types` subpaths. Augmenting the declaring interface rather than a re-export barrel gives the independent Host and Client TypeScript programs the same Event narrowing without pulling Host runtime into the Client graph.
 
 Initial tail, older prepend, and live append share one set of Context invariants. Missing starts, Reader window gaps, unknown Locations, and high-frequency deltas are explicit engine states and require no direction-specific business cache.
 

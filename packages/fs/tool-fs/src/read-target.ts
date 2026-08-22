@@ -1,12 +1,12 @@
 /**
  * Shared path resolution and regular-file validation for model-facing read tools.
- * @module @alego/tool-fs/src/read-target
+ * @module @singula-ai/alego-tool-fs/src/read-target
  */
 
-import type { Context } from '@alego/cordis'
-import { FsError } from '@alego/fs'
-import type { FsInfo, FsTarget } from '@alego/fs'
-import type { ToolExecution } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import { FsError } from '@singula-ai/alego-fs'
+import type { FsInfo, FsTarget } from '@singula-ai/alego-fs'
+import type { ToolExecution } from '@singula-ai/alego-tools'
 import { sessionResolveOptions } from './session-cwd.ts'
 
 /**

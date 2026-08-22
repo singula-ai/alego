@@ -1,7 +1,7 @@
 /** Host registry and HTTP adapter for generic Connection RPC channels. */
 
-import { Context, Service } from '@alego/cordis'
-import type { WebRoute } from '@alego/host-webserver'
+import { Context, Service } from '@singula-ai/cordis'
+import type { WebRoute } from '@singula-ai/alego-host-webserver'
 import {
   clientRequestSchema,
   RpcId,
@@ -10,7 +10,7 @@ import {
   type RpcErrorDetailsMap,
   type RpcId as RpcIdType,
   type ServerResponse as RpcServerResponse,
-} from '@alego/host-apiproxy/api'
+} from '@singula-ai/alego-host-apiproxy/api'
 import { bridge, type FetchHandler } from './http-bridge.ts'
 import { isTrustedApiRequest } from './api-request-trust.ts'
 import { API_PATH } from './api-path.ts'
@@ -32,7 +32,7 @@ interface ConnectionRpcInterceptor {
   readonly options: ConnectionRpcHandlerOptions
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     /** Host Connection transport and RPC registrations. */
     connection: HostConnectionHandle

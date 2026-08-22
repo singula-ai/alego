@@ -4,17 +4,17 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { createUserMessage, CallId, StreamChunk  } from '@alego/llm'
-import SessionStore, { SessionEvent, SessionId } from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import LlmRuntime from '@alego/llm'
-import ToolRuntime, { defineContentToolFixture, TOOL_ABORTED_BEFORE_DISPATCH, TOOL_RUNTIME_SCHEDULER, type PostToolDecision, type PreToolDecision } from '@alego/tools'
-import AgentRegistry, { type Agent } from '@alego/agent'
-import AgentLoop, { DEFAULT_MAX_PARALLEL_TOOL_CALLS } from '@alego/agent-loop'
+import { Context } from '@singula-ai/cordis'
+import { createUserMessage, CallId, StreamChunk  } from '@singula-ai/alego-llm'
+import SessionStore, { SessionEvent, SessionId } from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import LlmRuntime from '@singula-ai/alego-llm'
+import ToolRuntime, { defineContentToolFixture, TOOL_ABORTED_BEFORE_DISPATCH, TOOL_RUNTIME_SCHEDULER, type PostToolDecision, type PreToolDecision } from '@singula-ai/alego-tools'
+import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
+import AgentLoop, { DEFAULT_MAX_PARALLEL_TOOL_CALLS } from '@singula-ai/alego-agent-loop'
 import { MockAdapter, textResponse } from './mock-adapter.ts'
-import { CodeRuntime } from '@alego/code-runtime'
-import type { CodeRunRequest, CodeRunResult } from '@alego/code-runtime'
+import { CodeRuntime } from '@singula-ai/alego-code-runtime'
+import type { CodeRunRequest, CodeRunResult } from '@singula-ai/alego-code-runtime'
 
 async function harness(adapter: MockAdapter, maxParallelToolCalls?: number) {
   const ctx = new Context()

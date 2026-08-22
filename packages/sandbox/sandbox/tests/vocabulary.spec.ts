@@ -7,7 +7,7 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { SANDBOX_UNAVAILABLE, SandboxUnavailableError } from '@alego/sandbox'
+import { SANDBOX_UNAVAILABLE, SandboxUnavailableError } from '@singula-ai/alego-sandbox'
 
 describe('SandboxUnavailableError', () => {
   it('carries the structured { name, code } identity consumers key on', () => {

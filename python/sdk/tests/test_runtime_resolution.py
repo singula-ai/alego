@@ -19,9 +19,9 @@ def test_default_config_is_shipped_with_the_package() -> None:
     path = bundled_default_config_path()
     assert path == bundled_package_dir() / "runtime" / "cordis.yml"
     config = path.read_text()
-    assert "@alego/agent-spine-demo" in config
-    assert "@alego/session-persistence-jsonl" in config
-    assert "@alego/session-checkpoint-policy" in config
+    assert "@singula-ai/alego-agent-spine-demo" in config
+    assert "@singula-ai/alego-session-persistence-jsonl" in config
+    assert "@singula-ai/alego-session-checkpoint-policy" in config
 
 
 def test_unknown_explicit_mode_fails_loud() -> None:

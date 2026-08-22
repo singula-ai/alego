@@ -6,15 +6,15 @@ English | [中文](2026-08-08-remove-cli-demo.zh.md)
 
 ## Problem
 
-After [`alego --profile headless`](../architecture/2026-08-06-app-owned-command-line.md) became the product one-shot command, `@alego/cli-demo` remained a second application package for the same job. It carried another executable, argument grammar, app composition, cancellation lifecycle, text/JSON/stream-JSON output contract, built artifact, documentation surface, and test suite. The two entry points also assembled different trees, so a successful demo did not prove the shipped `headless` profile and users had to choose between overlapping commands.
+After [`alego --profile headless`](../architecture/2026-08-06-app-owned-command-line.md) became the product one-shot command, `@singula-ai/alego-cli-demo` remained a second application package for the same job. It carried another executable, argument grammar, app composition, cancellation lifecycle, text/JSON/stream-JSON output contract, built artifact, documentation surface, and test suite. The two entry points also assembled different trees, so a successful demo did not prove the shipped `headless` profile and users had to choose between overlapping commands.
 
 The replay suites still need canonical session events to pin assembled backend behavior. That testing need does not require a published command or compatibility contract.
 
 ## Decision
 
-Delete `@alego/cli-demo` completely: its package, bin, parser, app plugin, output formats, tests, workspace references, generated-catalog entries, and active documentation. No alias or compatibility package remains. Source users invoke the product command through `pnpm alego --profile headless`; it owns final-text stdout, failure diagnostics on stderr, persistence, exit status, and shutdown.
+Delete `@singula-ai/alego-cli-demo` completely: its package, bin, parser, app plugin, output formats, tests, workspace references, generated-catalog entries, and active documentation. No alias or compatibility package remains. Source users invoke the product command through `pnpm alego --profile headless`; it owns final-text stdout, failure diagnostics on stderr, persistence, exit status, and shutdown.
 
-`examples/headless-agent` becomes an explicit test composition. Its Loader configs mount `@alego/agent-spine-demo`, one root agent, JSONL persistence, and checkpoint policy as separate rows instead of hiding them behind an app bundle. The support-tier `@alego/loader-smoke` package owns the shared direct-agent turn helper; unexported example-local drivers select their Loader configuration and render canonical events as JSONL. They are launched only by tests, have no bin, and do not define a supported product output format.
+`examples/headless-agent` becomes an explicit test composition. Its Loader configs mount `@singula-ai/alego-agent-spine-demo`, one root agent, JSONL persistence, and checkpoint policy as separate rows instead of hiding them behind an app bundle. The support-tier `@singula-ai/alego-loader-smoke` package owns the shared direct-agent turn helper; unexported example-local drivers select their Loader configuration and render canonical events as JSONL. They are launched only by tests, have no bin, and do not define a supported product output format.
 
 ## Alternatives considered
 
@@ -25,7 +25,7 @@ Delete `@alego/cli-demo` completely: its package, bin, parser, app plugin, outpu
 
 ## Consequences
 
-This is intentionally breaking. `alego-cli-demo`, its `--output-format` choices, and imports from `@alego/cli-demo/src/cli.ts` no longer resolve. There is no public event-stream replacement in this change; callers use `alego --profile headless` for one-shot execution and must choose an existing protocol API when they need structured automation.
+This is intentionally breaking. `alego-cli-demo`, its `--output-format` choices, and imports from `@singula-ai/alego-cli-demo/src/cli.ts` no longer resolve. There is no public event-stream replacement in this change; callers use `alego --profile headless` for one-shot execution and must choose an existing protocol API when they need structured automation.
 
 The repository retains backend replay coverage through test-only infrastructure, while product smoke and built-bin acceptance exercise `alego --profile headless`. A separate one-shot package may return only if it owns a genuinely independent, versioned protocol that cannot belong to the product launcher; a second spelling or output shim is not enough.
 

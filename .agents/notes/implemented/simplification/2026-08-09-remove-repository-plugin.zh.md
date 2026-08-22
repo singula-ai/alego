@@ -14,9 +14,9 @@ repository 插件路径与 profile 组合包路径重复实现了第三方包的
 
 Alego 只保留一种独立的外部插件分发路径：可安装的 profile 组合包。`alego plugin --profile <name> add <package-or-git-spec>` 将依赖记录到 profile 包中，安装的包通过声明 `alego.bundle.patch` 提供自己的 patch 层。包管理器负责获取源、管理版本和依赖、运行构建生命周期，并维护锁文件。组合包 patch 负责选择 Cordis 插件并提供完整的插件配置。
 
-移除 `@alego/repository-plugin` 包、`.alego-plugin` 编写格式、`alego-plugin-prepare` 可执行文件、生成的包装层、不可变 repository 缓存、base 中的 `repository-plugins` 配置项，以及专用 GitHub 验收流水线。vendor 中未再使用的 `@cordisjs/plugin-loader/repository` 子路径及其随附的 pnpm 依赖，也随唯一消费方一并移除。现有 repository 缓存目录只是不会再产生作用的用户数据；ALEGO 既不会读取，也不会删除这些目录。
+移除 `@singula-ai/alego-repository-plugin` 包、`.alego-plugin` 编写格式、`alego-plugin-prepare` 可执行文件、生成的包装层、不可变 repository 缓存、base 中的 `repository-plugins` 配置项，以及专用 GitHub 验收流水线。vendor 中未再使用的 `@cordisjs/plugin-loader/repository` 子路径及其随附的 pnpm 依赖，也随唯一消费方一并移除。现有 repository 缓存目录只是不会再产生作用的用户数据；ALEGO 既不会读取，也不会删除这些目录。
 
-组合包直接组合现有归属方。提供 skill 的组合包挂载 `@alego/skill-filesystem`；提供 MCP 服务器的组合包挂载 `@alego/mcp-client`；原生行为则挂载普通的已编译 Cordis 插件。这些包继续保有各自的校验、生命周期、注册和 teardown 契约。根据预发布兼容政策，不保留针对 `.alego-plugin` 的兼容解析器或迁移机制。
+组合包直接组合现有归属方。提供 skill 的组合包挂载 `@singula-ai/alego-skill-filesystem`；提供 MCP 服务器的组合包挂载 `@singula-ai/alego-mcp-client`；原生行为则挂载普通的已编译 Cordis 插件。这些包继续保有各自的校验、生命周期、注册和 teardown 契约。根据预发布兼容政策，不保留针对 `.alego-plugin` 的兼容解析器或迁移机制。
 
 本说明整合了已移除的 repository 缓存、静态格式、纯配置集成、由 npm 支持的准备流程和受信任代码入口决策。其原始动机保留于此：独立用户需要由包管理器负责的外部组合方式；Git 和 npm 依赖可以执行受信任的生命周期代码；静态 skill 与 MCP 贡献应复用现有归属方；来源标识应位于 profile 的依赖说明符和锁文件中。相应实现特有的包装层、缓存 generation 和准备协议不再约束产品。
 

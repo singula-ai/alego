@@ -1,7 +1,7 @@
-import { createUserMessage, type StreamChunk } from '@alego/llm'
+import { createUserMessage, type StreamChunk } from '@singula-ai/alego-llm'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { PROTOCOL_VERSION } from '@agentclientprotocol/sdk'
-import { SessionId } from '@alego/session'
+import { SessionId } from '@singula-ai/alego-session'
 import {
   errorResponse,
   makeBridgeHarness,

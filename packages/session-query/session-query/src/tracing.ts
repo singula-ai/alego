@@ -1,7 +1,7 @@
 /** One-shot session-lineage and event-relationship tracing helpers. */
 
-import { foldSurface, isSurfaceEvent, snapshotSessionEvent } from '@alego/session'
-import type { SessionEvent, SessionId, SurfaceEvent, SurfaceEventType } from '@alego/session'
+import { foldSurface, isSurfaceEvent, snapshotSessionEvent } from '@singula-ai/alego-session'
+import type { SessionEvent, SessionId, SurfaceEvent, SurfaceEventType } from '@singula-ai/alego-session'
 import { SessionQueryError } from './config.ts'
 import type {
   SessionEventRecord,

@@ -7,7 +7,7 @@
  * writers of one file through a `wx`-created `<file>.lock` sibling, so a
  * read-modify-write cycle can never resurrect a state another writer just
  * replaced; readers stay lock-free because the rename commit is atomic.
- * @module @alego/atomic-write
+ * @module @singula-ai/alego-atomic-write
  */
 
 import { randomBytes } from 'node:crypto'

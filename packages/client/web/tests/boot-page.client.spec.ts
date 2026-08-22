@@ -35,11 +35,11 @@ describe('BootPage', () => {
 
   it('lists failed entries', () => {
     const { el, page } = mount()
-    page.setState('@alego/client-ui-layout', 'failed')
+    page.setState('@singula-ai/alego-client-ui-layout', 'failed')
     page.setState('ok', 'active')
-    page.setState('@alego/client-ui-tool', 'failed')
-    expect(el.textContent).toContain('@alego/client-ui-layout')
-    expect(el.textContent).toContain('@alego/client-ui-tool')
+    page.setState('@singula-ai/alego-client-ui-tool', 'failed')
+    expect(el.textContent).toContain('@singula-ai/alego-client-ui-layout')
+    expect(el.textContent).toContain('@singula-ai/alego-client-ui-tool')
     expect(el.textContent).not.toContain('ok')
     expect(el.textContent).not.toContain('Loading plugins…')
   })

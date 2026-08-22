@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import { PassThrough } from 'node:stream'
-import { Context } from '@alego/cordis'
-import { scrubbedParentEnv, SubprocessRuntime } from '@alego/subprocess'
+import { Context } from '@singula-ai/cordis'
+import { scrubbedParentEnv, SubprocessRuntime } from '@singula-ai/alego-subprocess'
 import type {
   SubprocessHandle,
   SubprocessOutputRead,
   SubprocessSpawnSpec,
   SubprocessTerminalHandle,
   SubprocessTerminalSpawnSpec,
-} from '@alego/subprocess'
+} from '@singula-ai/alego-subprocess'
 
 /**
  * Minimal concrete service: a hand-built handle. The seam is spawn-only —

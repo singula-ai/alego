@@ -13,17 +13,17 @@ harness 需要面向模型的 `glob` 和 `grep` 工具，但如果将它们实�
 
 ## 决策
 
-`glob` 和 `grep` 是 `@alego/tool-fs-search` 中的条件式面向模型工具，由 bash seam 支持，不会成为新的 `ctx.fs` 提供方方法。加载插件时，该包（package）执行 `command -v rg >/dev/null 2>&1`：先通过 `ctx.bash.resolve(request)` 解析请求，再通过 `ctx.bash.run(spec)` 运行；如果命令以非零状态退出，该包会记录警告，并且既不注册工具，也不注册提示词章节。如果探针无法启动、超时、中止、被终止，或没有产生退出码，插件加载会明确失败，因为这意味着 bash 执行器损坏，而不是可选二进制文件缺失。注册后，执行流程同样依次调用 `ctx.bash.resolve(request)` 与 `ctx.bash.run(spec)`，并使用工具组装的固定 `rg` 命令模板。工具层负责 schema、参数验证、shell 引用、结果解析、结果格式化、保留、格式化结果落盘交接，以及超时声明。bash 执行器负责请求默认值解析与上限控制、子进程执行、进程组终止、环境清理、原始输出捕获，以及在本地、沙箱或远程 bash 实现之间替换后端。
+`glob` 和 `grep` 是 `@singula-ai/alego-tool-fs-search` 中的条件式面向模型工具，由 bash seam 支持，不会成为新的 `ctx.fs` 提供方方法。加载插件时，该包（package）执行 `command -v rg >/dev/null 2>&1`：先通过 `ctx.bash.resolve(request)` 解析请求，再通过 `ctx.bash.run(spec)` 运行；如果命令以非零状态退出，该包会记录警告，并且既不注册工具，也不注册提示词章节。如果探针无法启动、超时、中止、被终止，或没有产生退出码，插件加载会明确失败，因为这意味着 bash 执行器损坏，而不是可选二进制文件缺失。注册后，执行流程同样依次调用 `ctx.bash.resolve(request)` 与 `ctx.bash.run(spec)`，并使用工具组装的固定 `rg` 命令模板。工具层负责 schema、参数验证、shell 引用、结果解析、结果格式化、保留、格式化结果落盘交接，以及超时声明。bash 执行器负责请求默认值解析与上限控制、子进程执行、进程组终止、环境清理、原始输出捕获，以及在本地、沙箱或远程 bash 实现之间替换后端。
 
-这些工具不使用 `ctx.bash.start()`，也不创建模型可见的后台任务。从 agent loop（智能体循环）的视角看，它们是普通前台工具：只有当 `rg` 命令退出、超时、中止或失败后，工具调用才返回。`defineTool({ timeoutMs })` 声明协作式工具调用预算，`@alego/timeout-policy` 通过 `exec.signal` 强制执行；工具会在 `resolve()`／`run()` 前将该信号转发给 bash 请求。bash 后端自身的超时仍作为第二层安全上限；先触发的中止生效。
+这些工具不使用 `ctx.bash.start()`，也不创建模型可见的后台任务。从 agent loop（智能体循环）的视角看，它们是普通前台工具：只有当 `rg` 命令退出、超时、中止或失败后，工具调用才返回。`defineTool({ timeoutMs })` 声明协作式工具调用预算，`@singula-ai/alego-timeout-policy` 通过 `exec.signal` 强制执行；工具会在 `resolve()`／`run()` 前将该信号转发给 bash 请求。bash 后端自身的超时仍作为第二层安全上限；先触发的中止生效。
 
 这些工具使 `path` 与 Claude Code 的搜索工具保持一致，但将解析绑定到 bash workdir，而不是 `ctx.fs`。工具从 `exec.agent?.session.header.cwd` 派生 bash 请求 workdir，与 `alego-tool-bash` 和 `alego-tool-fs` 一致；如果会话没有 cwd，它会省略 `request.workdir`，由 bash 实现通过 `resolve()` 应用其配置的 cwd 或进程 cwd。对于 `grep`，`path` 是可选的 ripgrep 目标，可以是文件或目录；省略时使用已解析的 bash workdir。对于 `glob`，`path` 是可选的目录搜索根；省略时同样使用已解析的 bash workdir。相对 `path` 值基于该 workdir 解析。只要可行，返回路径就会显示为相对于已解析 bash workdir 的形式；只有在共置部署中，bash workdir 与文件系统 `read` 根指向同一个工作区时，这些路径才保证可以继续读取。v1 会记录这项部署要求，但不执行跨服务运行时验证。在形成共享工作区／根契约或提供方专用搜索后端之前，远程或虚拟文件系统搜索保持暂缓。
 
-该包不注入 `fs`，而是注入 `tools`、`systemPrompt` 和 `bash`；它有意读取 `spillStore` 时使用 `ctx.get('spillStore')`，而不使用静态注入，因为格式化结果落盘是可选功能。现有 `@alego/tool-fs` 部署若只需要 `read`／`write`／`edit`，则无需加载 bash。加载搜索功能的部署则必须让 bash 执行器环境可以使用 `rg`，这些工具才会进入模型可见 schema。
+该包不注入 `fs`，而是注入 `tools`、`systemPrompt` 和 `bash`；它有意读取 `spillStore` 时使用 `ctx.get('spillStore')`，而不使用静态注入，因为格式化结果落盘是可选功能。现有 `@singula-ai/alego-tool-fs` 部署若只需要 `read`／`write`／`edit`，则无需加载 bash。加载搜索功能的部署则必须让 bash 执行器环境可以使用 `rg`，这些工具才会进入模型可见 schema。
 
 ### 包结构
 
-v1 包保持精简。`@alego/tool-fs-search` 内部的源代码布局如下：
+v1 包保持精简。`@singula-ai/alego-tool-fs-search` 内部的源代码布局如下：
 
 ```text
 src/index.ts
@@ -56,7 +56,7 @@ interface GrepArgs {
 }
 ```
 
-常规预算不会进入面向模型的 schema。`@alego/tool-fs-search` 拥有以下带默认值并经过验证的配置字段：
+常规预算不会进入面向模型的 schema。`@singula-ai/alego-tool-fs-search` 拥有以下带默认值并经过验证的配置字段：
 
 | 字段 | 默认值 | 作用 |
 |---|---:|---|
@@ -64,7 +64,7 @@ interface GrepArgs {
 | `grepMaxMatches` | `250` | 内联保留的最大扁平匹配数；与 Claude Code 的默认 `GrepTool` `head_limit` 一致。 |
 | `grepMaxLineBytes` | `2000` | 每条匹配行预览保留的最大字节数，通过 `TextRetainer({ kind: 'head', maxBytes: grepMaxLineBytes })` 应用。 |
 | `rawOutputMaxBytes` | `20000000` | 工具会解析的完整原始 `rg` stdout 最大字节数；与 Claude Code 的 ripgrep 原始缓冲区一致。 |
-| `timeoutMs` | `30000` | 附加到两个工具定义并由 `@alego/timeout-policy` 强制执行的工具调用超时。 |
+| `timeoutMs` | `30000` | 附加到两个工具定义并由 `@singula-ai/alego-timeout-policy` 强制执行的工具调用超时。 |
 
 `globMaxResults` 和 `grepMaxMatches` 使用 `ItemRetainer({ kind: 'head' })`。`grepMaxLineBytes` 针对每条匹配行使用 `TextRetainer({ kind: 'head', maxBytes: grepMaxLineBytes })`，使预览截断保留 UTF-8 边界。这遵循[工具结果保留库](../architecture/2026-07-06-tool-result-retention-library.md)对发现条目的映射：收集完整结果，在内联结果中保留头部条目，并将路径映射、分组和逐行预览放在保留器外部。v1 的 `grep` 不公开 `case_insensitive`、`head_limit`、`offset`、`count`、多行、上下文行、输出模式或文件类型过滤器。模型如需周边上下文，可使用 `read` 读取匹配文件；如需后续结果，则遵循返回的落盘定位符所给出的检索提示。
 
@@ -153,7 +153,7 @@ Line 12: ...
 
 ## 后果
 
-- `glob` 和 `grep` 是 `@alego/tool-fs-search` 中的条件式面向模型工具，不是 `ctx.fs` 提供方方法，也不属于现有 `@alego/tool-fs` 根插件。只有 bash 执行器能找到 `rg` 时才会注册；该包注入 `tools`、`systemPrompt` 和 `bash`，不注入 `fs`，并使 `ctx.spillStore` 保持可选，读取时使用 `ctx.get('spillStore')`。
+- `glob` 和 `grep` 是 `@singula-ai/alego-tool-fs-search` 中的条件式面向模型工具，不是 `ctx.fs` 提供方方法，也不属于现有 `@singula-ai/alego-tool-fs` 根插件。只有 bash 执行器能找到 `rg` 时才会注册；该包注入 `tools`、`systemPrompt` 和 `bash`，不注入 `fs`，并使 `ctx.spillStore` 保持可选，读取时使用 `ctx.get('spillStore')`。
 - Schema 严格为 `glob(pattern, path?)` 和 `grep(pattern, path?, include?)`；搜索上限与超时是带默认值并经过验证的 Config 字段（`globMaxResults`、`grepMaxMatches`、`grepMaxLineBytes`、`rawOutputMaxBytes`、`timeoutMs`）。
 - 工具通过 `ctx.bash.resolve(request)` → `ctx.bash.run(spec)` 执行，转发 `exec.signal`，绝不调用 `ctx.bash.start()`，也绝不公开 bash task id。如果存在 `exec.agent?.session.header.cwd`，bash 请求 workdir 来自该值；解析后的 `spec.workdir` 决定执行与相对路径显示。
 - 工具向 bash seam 请求 `stdoutMaxBytes: rawOutputMaxBytes`，只解析上限内未截断的 stdout，并将超限或仍被截断的原始输出视为明确的搜索失败；绝不向模型公开原始 `rg` 输出。

@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
 import { act, cleanup, render } from '@testing-library/react'
 import { afterEach } from 'vitest'
-import { SlotRegistry } from '@alego/client-runtime/client'
-import type { DirectoryFlowOwnerProps } from '@alego/client-ui-workspace/client'
+import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import type { DirectoryFlowOwnerProps } from '@singula-ai/alego-client-ui-workspace/client'
 import { apply, inject } from '../src/client/index.ts'
 import { NativeDirectoryFlow } from '../src/client/flow.ts'
 import { apply as nodeApply } from '../src/index.ts'

@@ -3,15 +3,15 @@
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
-import { createSnapshotStore } from '@alego/client-runtime/client'
-import { bindSnapshotSelector } from '@alego/client-test-runtime'
-import type { RunningToolCall, SessionId, SessionListState, ToolResultNode } from '@alego/client-runtime/client'
-import { makeTranslate } from '@alego/client-test-runtime'
-import { zh as commonZh } from '@alego/client-locale/src/locales/zh.ts'
+import { createSnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import { bindSnapshotSelector } from '@singula-ai/alego-client-test-runtime'
+import type { RunningToolCall, SessionId, SessionListState, ToolResultNode } from '@singula-ai/alego-client-runtime/client'
+import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
 import { GenericToolCard, type GenericToolCardProps } from '../src/client/tool/toolviews/GenericToolCard.tsx'
 import { ToolRow } from '../src/client/tool/components/ToolRow.tsx'
 import { BashRow } from '../src/client/tool/toolviews/bash-sample.tsx'
-import { zh } from '@alego/client-ui-conversation/src/client/locales.ts'
+import { zh } from '@singula-ai/alego-client-ui-conversation/src/client/locales.ts'
 
 type BashRowProps = Parameters<typeof BashRow>[0]
 

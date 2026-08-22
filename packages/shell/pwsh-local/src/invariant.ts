@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/pwsh-local`.
- * @module @alego/pwsh-local/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-pwsh-local`.
+ * @module @singula-ai/alego-pwsh-local/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/pwsh-local'
+const PACKAGE_NAME = '@singula-ai/alego-pwsh-local'
 
 /** Cordis companion plugin name. */
 export const name = 'pwsh-local-invariant'

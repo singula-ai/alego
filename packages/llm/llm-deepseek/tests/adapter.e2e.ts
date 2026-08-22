@@ -4,10 +4,10 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { randomBytes } from 'node:crypto'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import LlmRuntime, { createUserMessage, CallId, ReasoningEffortId, createMessage } from '@alego/llm'
-import type { Message, ToolSchema } from '@alego/llm'
-import AttachmentStore, { AttachmentId, ImageVariantId } from '@alego/attachment'
+import { Context } from '@singula-ai/cordis'
+import LlmRuntime, { createUserMessage, CallId, ReasoningEffortId, createMessage } from '@singula-ai/alego-llm'
+import type { Message, ToolSchema } from '@singula-ai/alego-llm'
+import AttachmentStore, { AttachmentId, ImageVariantId } from '@singula-ai/alego-attachment'
 import type {
   ImageAttachmentLimits,
   ImageAttachmentRef,
@@ -15,10 +15,10 @@ import type {
   RequestImageAttachment,
   SaveImageAttachment,
   StoredImageAttachment,
-} from '@alego/attachment'
-import { LocalCredentialProvider } from '@alego/credentials-local'
-import * as LlmDeepSeek from '@alego/llm-deepseek'
-import type { Config } from '@alego/llm-deepseek'
+} from '@singula-ai/alego-attachment'
+import { LocalCredentialProvider } from '@singula-ai/alego-credentials-local'
+import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek'
+import type { Config } from '@singula-ai/alego-llm-deepseek'
 import { assemble, type AssembledResult } from './assemble.ts'
 
 /**

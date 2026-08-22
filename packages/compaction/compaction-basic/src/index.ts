@@ -1,21 +1,21 @@
 /**
  * Basic replay-aware compaction backend.
  *
- * @module @alego/compaction-basic
+ * @module @singula-ai/alego-compaction-basic
  */
 
-import { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { CompactionEngine, ManualCompactionError } from '@alego/compaction'
-import type { CompactionResult, CompactionTrigger } from '@alego/compaction'
-import type { TokenMeter } from '@alego/token-meter'
-import type { Session } from '@alego/session'
-import { CONTEXT_WINDOW_EXCEEDED_CODE, assertNever } from '@alego/llm'
-import type { LlmCallConfig } from '@alego/llm'
-import type { Agent, PreStepDecision } from '@alego/agent'
-import type { CommandId } from '@alego/commands/brand'
+import { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { CompactionEngine, ManualCompactionError } from '@singula-ai/alego-compaction'
+import type { CompactionResult, CompactionTrigger } from '@singula-ai/alego-compaction'
+import type { TokenMeter } from '@singula-ai/alego-token-meter'
+import type { Session } from '@singula-ai/alego-session'
+import { CONTEXT_WINDOW_EXCEEDED_CODE, assertNever } from '@singula-ai/alego-llm'
+import type { LlmCallConfig } from '@singula-ai/alego-llm'
+import type { Agent, PreStepDecision } from '@singula-ai/alego-agent'
+import type { CommandId } from '@singula-ai/alego-commands/brand'
 // Type-only: makes the optional sibling service available to `ctx.get()`.
-import type {} from '@alego/compaction-tool-result-pruner'
+import type {} from '@singula-ai/alego-compaction-tool-result-pruner'
 import {
   resolveCompactSpec,
   resolveConfig,

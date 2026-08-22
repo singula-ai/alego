@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/tool-fs-search`.
- * @module @alego/tool-fs-search/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-tool-fs-search`.
+ * @module @singula-ai/alego-tool-fs-search/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/tool-fs-search'
+const PACKAGE_NAME = '@singula-ai/alego-tool-fs-search'
 
 /** Cordis companion plugin name. */
 export const name = 'tool-fs-search-invariant'

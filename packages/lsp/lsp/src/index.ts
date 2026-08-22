@@ -8,11 +8,11 @@
  * invalid or conflicting registration publishes nothing, and its disposer releases every
  * reservation together. Selection routes a query by the file's final extension; it never depends on
  * registration order. The seam exposes exactly the four operations and no JSON-RPC escape hatch.
- * @module @alego/lsp
+ * @module @singula-ai/alego-lsp
  */
 
-import { Context, Service } from '@alego/cordis'
-import { HarnessError } from '@alego/llm'
+import { Context, Service } from '@singula-ai/cordis'
+import { HarnessError } from '@singula-ai/alego-llm'
 import type { LspProviderId } from './brand.ts'
 import type {
   LspProvider,
@@ -35,7 +35,7 @@ export type {
   LspService,
 } from './types.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     lsp: LspService
   }

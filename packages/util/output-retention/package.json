@@ -1,5 +1,5 @@
 {
-  "name": "@alego/output-retention",
+  "name": "@singula-ai/alego-output-retention",
   "description": "Zero-dependency bounded-retention primitive: ItemRetainer/TextRetainer + neutral notice helpers (what did we keep, what did we omit)",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -32,11 +32,11 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@alego/invariants": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
-    "@alego/invariants": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   }
 }

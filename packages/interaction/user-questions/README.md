@@ -1,4 +1,4 @@
-# @alego/user-questions
+# @singula-ai/alego-user-questions
 
 English | [中文](README.zh.md)
 
@@ -30,7 +30,7 @@ When a request carries an agent, `ask()` authenticates its exact identity throug
 
 ## Role
 
-This is the Service Definition package. Consumers such as `@alego/tool-ask-user` depend on this service; the Web host runtime supplies the shipped Service Provider. The loop stays unchanged: a tool call awaits a promise, and the tool result resumes the normal agent loop.
+This is the Service Definition package. Consumers such as `@singula-ai/alego-tool-ask-user` depend on this service; the Web host runtime supplies the shipped Service Provider. The loop stays unchanged: a tool call awaits a promise, and the tool result resumes the normal agent loop.
 
 ## Model Experience
 

@@ -10,12 +10,12 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import Include from '@alego/cordis-plugin-include'
-import SessionStore, { SessionId } from '@alego/session'
-import SessionProjectionRegistry from '@alego/session-projection'
-import * as SessionStatsPlugin from '@alego/session-stats'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include from '@singula-ai/cordis-plugin-include'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import * as SessionStatsPlugin from '@singula-ai/alego-session-stats'
 
 let root: string | undefined
 let context: Context | undefined
@@ -37,9 +37,9 @@ async function loadYaml(lines: readonly string[]): Promise<Context> {
   await context.plugin(Loader)
   context.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@alego/session', SessionStore],
-    ['@alego/session-projection', SessionProjectionRegistry],
-    ['@alego/session-stats', SessionStatsPlugin],
+    ['@singula-ai/alego-session', SessionStore],
+    ['@singula-ai/alego-session-projection', SessionProjectionRegistry],
+    ['@singula-ai/alego-session-stats', SessionStatsPlugin],
   ])
   context.loader.internal = {
     version: 'v2',
@@ -59,9 +59,9 @@ async function loadYaml(lines: readonly string[]): Promise<Context> {
 describe('real Loader composition', () => {
   it('loads the shipped session-stats YAML shape and serves whole-log counts', async () => {
     const loaded = await loadYaml([
-      "- name: '@alego/session'",
-      "- name: '@alego/session-projection'",
-      "- name: '@alego/session-stats'",
+      "- name: '@singula-ai/alego-session'",
+      "- name: '@singula-ai/alego-session-projection'",
+      "- name: '@singula-ai/alego-session-stats'",
     ])
 
     const unloaded = [...loaded.loader.entries()]

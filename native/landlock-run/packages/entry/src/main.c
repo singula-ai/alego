@@ -31,7 +31,7 @@
  * linked statically), so the whole audit surface is this file plus the
  * kernel's stable syscall contract. Built natively per architecture by
  * `scripts/build.ts` into the per-platform npm packages
- * (`@alego/node-addon-landlock-run-linux-{x64,arm64}`); the argv grammar,
+ * (`@singula-ai/node-addon-landlock-run-linux-{x64,arm64}`); the argv grammar,
  * exit codes, and report lines are pinned in `docs/cli-contract.md`.
  */
 

@@ -1,15 +1,15 @@
 /**
  * Session-query service error containment and model-safe translation.
  *
- * @module @alego/tool-session-query/service-boundary
+ * @module @singula-ai/alego-tool-session-query/service-boundary
  */
 
-import type { Context } from '@alego/cordis'
-import { HarnessError } from '@alego/llm'
+import type { Context } from '@singula-ai/cordis'
+import { HarnessError } from '@singula-ai/alego-llm'
 import {
   SessionQueryError,
   type SessionQueryErrorCode,
-} from '@alego/session-query'
+} from '@singula-ai/alego-session-query'
 
 interface ModelSafeServiceFailure {
   readonly code: SessionQueryErrorCode | 'SESSION_QUERY_TOOL_FAILED'

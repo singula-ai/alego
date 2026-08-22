@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import InvariantRegistry from '@alego/invariants'
+import { Context } from '@singula-ai/cordis'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 import { credentialRef } from '../src/index.ts'
 import * as CredentialsInvariant from '../src/invariant.ts'
 import { MemoryCredentials } from './memory.ts'
@@ -22,7 +22,7 @@ describe('credentials invariant companion', () => {
     await ctx.plugin(InvariantRegistry)
     await ctx.plugin(CredentialsInvariant)
 
-    expect(() => { ctx.emit('credentials/reference-updated', REF) }).toThrow(/invariant violated by "@alego\/credentials"/)
+    expect(() => { ctx.emit('credentials/reference-updated', REF) }).toThrow(/invariant violated by "@singula-ai\/alego-credentials"/)
   })
 
   it('reserves the package name against duplicate registration', async () => {
@@ -31,7 +31,7 @@ describe('credentials invariant companion', () => {
     await ctx.plugin(CredentialsInvariant)
 
     expect(() => {
-      ctx.invariants.register('@alego/credentials', () => {})
+      ctx.invariants.register('@singula-ai/alego-credentials', () => {})
     }).toThrow(/already registered/)
   })
 })

@@ -7,7 +7,7 @@
  * viewport, and an inline element pushed the branch action and clock out of the
  * conversation column. Portaling out of the column also escapes its `overflow`
  * clip, so the panel cannot be cropped or detached from the message it annotates.
- * @module @alego/client-ui-message-feedback/client/MessageFeedbackActions
+ * @module @singula-ai/alego-client-ui-message-feedback/client/MessageFeedbackActions
  */
 
 import {
@@ -17,8 +17,8 @@ import {
 import { createPortal } from 'react-dom'
 import {
   IconDislikeOutline16, IconLikeOutline16, Tooltip, useAnchoredPosition,
-} from '@alego/client-ui-primitives'
-import type { MessageFeedbackRating } from '@alego/message-feedback/types'
+} from '@singula-ai/alego-client-ui-primitives'
+import type { MessageFeedbackRating } from '@singula-ai/alego-message-feedback/types'
 import type { MessageFeedbackActionProps } from './slots.ts'
 import css from './MessageFeedbackActions.module.css'
 

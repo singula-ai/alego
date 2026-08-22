@@ -1,4 +1,4 @@
-# `@alego/session-reference`
+# `@singula-ai/alego-session-reference`
 
 [English](README.md) | 中文
 

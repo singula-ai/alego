@@ -4,7 +4,7 @@ English | [中文](README.zh.md)
 
 Agent interface, registry, process-local initiator scope, and `agent/*` event vocabulary. Every plugin (UI, hooks, orchestrators) programs against the `Agent` handle defined here — it has zero loop dependency, so the loop is swappable.
 
-The optional `@alego/agent/invariant` companion registers this package's agent-status transition checks with `ctx.invariants`. The root agent service does not load diagnostics implicitly.
+The optional `@singula-ai/alego-agent/invariant` companion registers this package's agent-status transition checks with `ctx.invariants`. The root agent service does not load diagnostics implicitly.
 
 ## Service: `AgentRegistry` (ctx key: `agents`)
 

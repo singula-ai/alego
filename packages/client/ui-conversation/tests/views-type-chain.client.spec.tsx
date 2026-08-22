@@ -1,10 +1,10 @@
 // View-ring type-chain samples. This spec pins the conversation-owned SlotMap
 // row, list-kind registration shape, composed view props, and the runtime
 // ledger projection consumed by ConversationRoot.
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
 import type { ReactNode } from 'react'
-import { SlotRegistry } from '@alego/client-runtime/client'
+import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
 import type { ChatViewSlotProps, ConvViewProps } from '../src/client/contract/slots.ts'
 
 describe('view-ring type negatives (compile-time; body never runs)', () => {

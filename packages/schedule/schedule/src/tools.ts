@@ -1,13 +1,13 @@
 /**
  * Agent-scoped Schedule management tools over the durable session fold.
- * @module @alego/schedule
+ * @module @singula-ai/alego-schedule
  */
 
-import type { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import type { ContentBlock } from '@alego/llm'
-import { defineTool } from '@alego/tools'
-import type { GenericCallView } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { GenericCallView } from '@singula-ai/alego-tools'
 import {
   allocateScheduleId,
   createAfterScheduleRecord,

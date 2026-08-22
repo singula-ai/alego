@@ -1,13 +1,13 @@
 import { describe, expectTypeOf, it } from 'vitest'
-import type { Context } from '@alego/cordis'
-import { CallId } from '@alego/llm'
-import { defineTool } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import { CallId } from '@singula-ai/alego-llm'
+import { defineTool } from '@singula-ai/alego-tools'
 import type {
   ToolDispatchExecution,
   ToolExecution,
   ToolExecutionInput,
   ToolRunContext,
-} from '@alego/tools'
+} from '@singula-ai/alego-tools'
 
 function inputAndExecutionContracts(
   input: ToolExecutionInput,

@@ -1,5 +1,5 @@
 {
-  "name": "@alego/node-addon-landlock-run",
+  "name": "@singula-ai/node-addon-landlock-run",
   "version": "0.1.1",
   "type": "module",
   "description": "Landlock self-restrict-then-exec launcher for sandboxing subprocesses on Linux: per-platform prebuilt static binaries plus the JS seam that resolves, probes, and speaks their CLI contract",
@@ -35,7 +35,7 @@
     "access": "public"
   },
   "optionalDependencies": {
-    "@alego/node-addon-landlock-run-linux-arm64": "workspace:*",
-    "@alego/node-addon-landlock-run-linux-x64": "workspace:*"
+    "@singula-ai/node-addon-landlock-run-linux-arm64": "workspace:*",
+    "@singula-ai/node-addon-landlock-run-linux-x64": "workspace:*"
   }
 }

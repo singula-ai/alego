@@ -1,4 +1,4 @@
-# @alego/shell
+# @singula-ai/alego-shell
 
 [English](README.md) | 中文
 
@@ -8,10 +8,10 @@
 
 | 包 | 职责 |
 |---|---|
-| `@alego/shell`（本包） | Service Definition：抽象服务 + 词汇类型 |
-| `@alego/bash-local` | Service Provider：本地子进程 |
-| `@alego/bash-sandbox` | Service Provider：沿用 `alego-bash-local` 的机制，但通过 [`ctx.sandbox`](../../sandbox/sandbox/) 限制每次 spawn，并将拒绝报告为结果事实 |
-| `@alego/tool-bash` | 基于 `ctx.shell`、面向模型的工具 schema |
+| `@singula-ai/alego-shell`（本包） | Service Definition：抽象服务 + 词汇类型 |
+| `@singula-ai/alego-bash-local` | Service Provider：本地子进程 |
+| `@singula-ai/alego-bash-sandbox` | Service Provider：沿用 `alego-bash-local` 的机制，但通过 [`ctx.sandbox`](../../sandbox/sandbox/) 限制每次 spawn，并将拒绝报告为结果事实 |
+| `@singula-ai/alego-tool-bash` | 基于 `ctx.shell`、面向模型的工具 schema |
 
 该拆分是一个标准的能力 seam（[capability-seams Agent Note](../../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.zh.md)）：`alego-bash-sandbox` 是位于同一 Service Definition 之后的沙箱执行器——Consumer 检测其 `sandboxMode` 能力并添加升权字段，无需导入提供方——容器化或远程执行器也可以同样接入。
 
@@ -33,7 +33,7 @@
 
 `ShellExecRequest`（command、workdir?、timeoutMs?、stdoutMaxBytes?、signal?、stdin?、env?、alegoEnv?、sandboxPolicy?）在执行前解析为 `ShellExecSpec`（command、workdir、timeoutMs、stdoutMaxBytes、signal?、stdin?、env?、alegoEnv?、sandboxPolicy）。`stdoutMaxBytes` 是受信任前台运行的捕获预算，用于必须解析完整有界 stdout 的消费方；面向模型的 bash 工具不公开该字段。`sandboxPolicy` 在请求上可选，在已解析 spec 上必填但可为 null：它携带完整的每次调用模式与工作区根目录。沙箱工具路径通过 `ctx.sandboxPolicy` 从调用会话解析它；沙箱执行器的直接调用方回退到部署策略，非沙箱执行器则携带该字段但不作限制。
 
-每会话沙箱模式覆盖词汇（`'sandbox/mode'` 事件、`effectiveSandboxMode(events)` fold 以及 `setSandboxMode(session, mode)` 写入路径）不位于此处。它是所有强制执行家族共享的策略状态，属于 [`@alego/sandbox-policy`](../../sandbox/sandbox-policy/)。`run()` 返回 `ShellRunResult`；`start()` 返回 `ShellProcess`，其增量读取与终止方法由 `alego-tool-bash` 适配为通用任务注册。沙箱执行器会在前台结果与已结算进程句柄上标记 `ShellSandboxInfo`。详见 `src/types.ts` 与 [subsystems/shell.md](../../../docs/subsystems/shell.zh.md)。
+每会话沙箱模式覆盖词汇（`'sandbox/mode'` 事件、`effectiveSandboxMode(events)` fold 以及 `setSandboxMode(session, mode)` 写入路径）不位于此处。它是所有强制执行家族共享的策略状态，属于 [`@singula-ai/alego-sandbox-policy`](../../sandbox/sandbox-policy/)。`run()` 返回 `ShellRunResult`；`start()` 返回 `ShellProcess`，其增量读取与终止方法由 `alego-tool-bash` 适配为通用任务注册。沙箱执行器会在前台结果与已结算进程句柄上标记 `ShellSandboxInfo`。详见 `src/types.ts` 与 [subsystems/shell.md](../../../docs/subsystems/shell.zh.md)。
 
 `stdin` 与普通 `env` 由同进程插件（hooks 桥接、原生插件）设置，用于向 hook 命令提供其 JSON payload 和 `CLAUDE_PROJECT_DIR`／`CLAUDE_PLUGIN_ROOT` 值。`alegoEnv` 是受类型限制、仅允许受管 key 的独立受信任 overlay；导出的 `ALEGO_ENV_PREFIX` 是该 namespace、其 `AlegoEnvironmentKey` 模板类型、执行器清理、注册表验证、派生内置名称与模型指引的统一来源。模型 bash 使用 `ctx.shellEnv` 收集的当前快照。实现会移除继承的受管 key，再在普通 `env` 之后合并 `alegoEnv`，因此省略的当前事实不会回退到陈旧环境状态，`env` 条目也无法顶掉受管值。面向模型的工具不将这三者中的任何一个公开为参数。这三者在已解析 spec 上仍然可选；缺失表示没有输入／overlay。详见 [bash-stdin-env Agent Note](../../../.agents/notes/implemented/architecture/2026-06-30-bash-stdin-env-trusted-plugin-api.zh.md) 与 [会话环境 Agent Note](../../../.agents/notes/implemented/feature/2026-07-10-agent-session-identity-and-log-location.zh.md)。
 

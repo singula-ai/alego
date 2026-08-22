@@ -2,10 +2,10 @@
  * Runtime registry for generated Typert reflection, Remote invocations, and
  * dependency-inverted lookup/Context providers. It performs no TypeScript
  * analysis or schema generation.
- * @module @alego/typert-registry
+ * @module @singula-ai/alego-typert-registry
  */
 
-import { Context, Service } from '@alego/cordis'
+import { Context, Service } from '@singula-ai/cordis'
 import { z } from 'zod'
 import type {
   InvocationDescriptor,
@@ -29,7 +29,7 @@ import type {
   TypertRegistryChange,
   TypertRegistryListener,
   TypertRegistryContract,
-} from '@alego/typert-protocol'
+} from '@singula-ai/alego-typert-protocol'
 import type {
   TypertContribution,
   TypertFace,

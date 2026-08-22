@@ -1,4 +1,4 @@
-# @alego/cordis-client-runner
+# @singula-ai/alego-cordis-client-runner
 
 [English](README.md) | 中文
 

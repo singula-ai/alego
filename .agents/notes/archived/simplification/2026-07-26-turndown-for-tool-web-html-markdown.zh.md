@@ -13,7 +13,7 @@ Archived: 2026-08-07
 
 `packages/web/tool-web/src/fetch.ts` 持有一个模块级 [`turndown`](https://github.com/mixmark-io/turndown) 实例（`headingStyle: 'atx'`、`codeBlockStyle: 'fenced'`、`bulletListMarker: '-'`——固定的面向模型呈现方式，不是部署可调项），配合 `@joplin/turndown-plugin-gfm` 的组合 `gfm` 插件提供表格／删除线支持，并用 `remove(['script', 'style', 'noscript'])` 替代旧实现的整体剥离。`formatFetchOutput` 通过 `fetchMaxOutputChars`（默认 200,000）同时限制同步转换的源前缀和完整渲染输出，因此自定义提供方无法在输出上限生效前造成无界的转换工作。随后，HTML 分支对转换做双重防护：保守的线性词法扫描会保守处理注释内容，跳过原始文本元素的内容，正确处理标签内的引号文本，并在栈深超过 512 层时将主体作为原始 HTML 直接透传；当 turndown 拒绝守卫无法建模的标记时，try/catch 同样回退为原始 HTML。GFM 单元格规则被覆写为忽略 `colspan`；Markdown 无法表示它，这也避免了不受信任的数值属性凭空合成任意数量的空单元格。`html.ts` 及其转换测试已删除；源／输出上限、回退以及状态头／截断页脚格式化均在 `tests/tool-web.spec.ts` 中有测试覆盖，README 的 Known Limitations 用有界降级情形替换了正则转换器警示。gfm 插件不带类型声明；`src/turndown-plugin-gfm.d.ts` 基于 `@types/turndown`（devDependency）声明了唯一被导入的导出。
 
-提案标记的依赖体积问题的裁决结果支持替换：`@alego/tool-web` 在单文件可执行文件闭包内（[single-exe 决策记录](../architecture/2026-07-10-single-file-executable-sdk-runtime-distribution.md)），可执行文件的资产 glob 会把这三个包按发布原样打入约 7.9 MB——但其中约 6 MB 是 `@mixmark-io/domino` 的测试语料（`test/**`），运行时 `lib/` 仅约 550 KB，相对约 174 MB 的产物，两种口径都不到 0.5%。
+提案标记的依赖体积问题的裁决结果支持替换：`@singula-ai/alego-tool-web` 在单文件可执行文件闭包内（[single-exe 决策记录](../architecture/2026-07-10-single-file-executable-sdk-runtime-distribution.md)），可执行文件的资产 glob 会把这三个包按发布原样打入约 7.9 MB——但其中约 6 MB 是 `@mixmark-io/domino` 的测试语料（`test/**`），运行时 `lib/` 仅约 550 KB，相对约 174 MB 的产物，两种口径都不到 0.5%。
 
 ## 快照覆盖
 

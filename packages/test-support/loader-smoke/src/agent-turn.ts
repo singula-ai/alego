@@ -1,12 +1,12 @@
 /**
  * Test-only direct-agent turn driver shared by assembled Loader fixtures.
- * @module @alego/loader-smoke/agent-turn
+ * @module @singula-ai/alego-loader-smoke/agent-turn
  */
 
-import type { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import { createUserMessage, type TokenUsage } from '@alego/llm'
-import type { SessionEvent } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import { createUserMessage, type TokenUsage } from '@singula-ai/alego-llm'
+import type { SessionEvent } from '@singula-ai/alego-session'
 
 /** Result envelope consumed only by snapshot and composition tests. */
 export interface FixtureTurnResult {

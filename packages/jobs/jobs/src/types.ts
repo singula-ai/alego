@@ -1,11 +1,11 @@
 /**
  * Types shared by job producers, the registry, and controllers. The
  * service implementation lives in `./index.ts`.
- * @module @alego/jobs/types
+ * @module @singula-ai/alego-jobs/types
  */
 
-import type { Agent } from '@alego/agent'
-import type { SessionId } from '@alego/session'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { SessionId } from '@singula-ai/alego-session'
 import type { JobId } from './brand.ts'
 
 export { JobId } from './brand.ts'

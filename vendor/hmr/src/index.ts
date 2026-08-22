@@ -1,18 +1,18 @@
-import { Context, Service, type Plugin } from '@alego/cordis'
-import type { Dict } from '@alego/cosmokit'
-import { ModuleLoader, type ModuleJob, type ResolveResult } from '@alego/cordis-plugin-loader'
-import type { Include } from '@alego/cordis-plugin-include'
+import { Context, Service, type Plugin } from '@singula-ai/cordis'
+import type { Dict } from '@singula-ai/cosmokit'
+import { ModuleLoader, type ModuleJob, type ResolveResult } from '@singula-ai/cordis-plugin-loader'
+import type { Include } from '@singula-ai/cordis-plugin-include'
 import { FSWatcher, watch, type ChokidarOptions } from 'chokidar'
 import { dirname, relative, resolve } from 'node:path'
 import { realpath, stat } from 'node:fs/promises'
 import { handleError } from './error.ts'
-import type {} from '@alego/cordis-plugin-timer'
+import type {} from '@singula-ai/cordis-plugin-timer'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { createRequire } from 'node:module'
 import picomatch from 'picomatch'
-import z from '@alego/schemastery'
+import z from '@singula-ai/schemastery'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     hmr: Hmr
   }

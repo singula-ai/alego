@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
-import { Context } from '@alego/cordis'
-import { SlotTestRuntime } from '@alego/client-test-runtime'
-import type { SessionId } from '@alego/client-runtime/client'
+import { Context } from '@singula-ai/cordis'
+import { SlotTestRuntime } from '@singula-ai/alego-client-test-runtime'
+import type { SessionId } from '@singula-ai/alego-client-runtime/client'
 import { buildRenderApp } from '../src/client/app.tsx'
 
 let runtime: SlotTestRuntime | undefined

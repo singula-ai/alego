@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { createUserMessage } from '@alego/llm'
-import { Session, SessionId } from '@alego/session'
-import type { TurnEndReason } from '@alego/session'
-import { foldConsumedWork } from '@alego/agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import { Session, SessionId } from '@singula-ai/alego-session'
+import type { TurnEndReason } from '@singula-ai/alego-session'
+import { foldConsumedWork } from '@singula-ai/alego-agent'
 
 /** One pending message, as the inbox records it. */
 function message(text: string) {

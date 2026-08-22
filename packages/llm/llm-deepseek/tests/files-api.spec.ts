@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { userAgent } from '@alego/llm'
+import { userAgent } from '@singula-ai/alego-llm'
 import { DeepSeekFileId } from '../src/file-id.ts'
 import {
   DeepSeekFilesClient,

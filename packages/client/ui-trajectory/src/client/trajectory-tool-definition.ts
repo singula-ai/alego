@@ -1,9 +1,9 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   ConversationMatch, ConversationNodeContext, ConversationNodeDefinition,
   RunningToolCall, ToolCallBlock, ToolResultNode,
-} from '@alego/client-runtime/client'
-import type {} from '@alego/tools/types'
+} from '@singula-ai/alego-client-runtime/client'
+import type {} from '@singula-ai/alego-tools/types'
 import { trajectoryNode } from './trajectory-definition-common.ts'
 
 /* jscpd:ignore-start -- Target-owned Definitions intentionally keep their event

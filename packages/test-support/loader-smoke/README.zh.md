@@ -1,4 +1,4 @@
-# `@alego/loader-smoke`
+# `@singula-ai/alego-loader-smoke`
 
 [English](README.md) | 中文
 

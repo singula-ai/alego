@@ -6,15 +6,15 @@ import { describe, expect, it } from 'vitest'
 import type { ReactNode } from 'react'
 import type {
   BoundActions, DefineStore, PropsRenderSlots, PropsRuntime, PropsStore, SlotComponent, SlotHookFactory,
-} from '@alego/client-ui-slots'
-import { SlotCore } from '@alego/client-ui-slots'
+} from '@singula-ai/alego-client-ui-slots'
+import { SlotCore } from '@singula-ai/alego-client-ui-slots'
 
 // Only package-unique SlotMap keys are merged here. The standard-kit
 // interfaces (SessionStandardProps/GlobalStandardProps) are NOT re-merged:
 // the runtime package owns the real members, and in the client aggregate
 // program a toy merge would collide with them — samples below stay
 // shape-agnostic about kit member payloads for the same reason.
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface SlotMap {
     'chain.frame': { kind: 'single'; scope: 'root' }
     'chain.side': { kind: 'single'; scope: 'root'; owner: { collapsed: boolean; width: number } }

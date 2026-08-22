@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-harness 在 Windows 上没有持久 shell。持久 `bash` 栈按构造就是 POSIX-only：`@alego/subprocess-local` 在终端分配时直接抛错（`createProcessInspector()` 拒绝 win32），`@alego/terminal-bash` 是 bash 形态（`/bin/bash` 默认值、`PS1`/`PROMPT_COMMAND` 环境标记），`@alego/tool-bash-persistent` 用 bash 语法包装命令，pty 测试全部在 win32 上 skip。一次性 `pwsh` 工具（`@alego/tool-pwsh` + `@alego/pwsh-local`）已经能在 Windows 运行，但每次调用都是全新的 `pwsh -Command` 进程：cwd、`$env:` 变量、函数和交互式子进程都随调用结束，其 README 把 "No persistent shell or PTY" 记为 deferred work。
+harness 在 Windows 上没有持久 shell。持久 `bash` 栈按构造就是 POSIX-only：`@singula-ai/alego-subprocess-local` 在终端分配时直接抛错（`createProcessInspector()` 拒绝 win32），`@singula-ai/alego-terminal-bash` 是 bash 形态（`/bin/bash` 默认值、`PS1`/`PROMPT_COMMAND` 环境标记），`@singula-ai/alego-tool-bash-persistent` 用 bash 语法包装命令，pty 测试全部在 win32 上 skip。一次性 `pwsh` 工具（`@singula-ai/alego-tool-pwsh` + `@singula-ai/alego-pwsh-local`）已经能在 Windows 运行，但每次调用都是全新的 `pwsh -Command` 进程：cwd、`$env:` 变量、函数和交互式子进程都随调用结束，其 README 把 "No persistent shell or PTY" 记为 deferred work。
 
 这个缺口排除了状态驻留在终端里的 Windows 工作流：单步调试、在 Python 或 Node REPL 中探索、中断前台命令后回到原 shell —— 正是持久 bash pty 在 POSIX 上服务的同一类工作。
 
@@ -16,17 +16,17 @@ harness 在 Windows 上没有持久 shell。持久 `bash` 栈按构造就是 POS
 
 模型侧持久 `pwsh` 工具在 Windows 上交付，契约与 `tool-bash-persistent` 逐项对齐：每个 Agent 一个 owner 作用域的持久 shell、标记检测的命令完成、精确的原生退出码、有界输出，以及超时/取消/`exit` 时重置 shell 并告知模型的语义。三块交付：`subprocess-local` 的 Windows 基座、`terminal-bash` 的 shell 方言选项、新的 `tool-pwsh-persistent` 包加 minimal 预设组合行。
 
-### `@alego/subprocess-local` 的 Windows 基座
+### `@singula-ai/alego-subprocess-local` 的 Windows 基座
 
 `createProcessInspector()` 在 win32 返回 `WindowsProcessInspector` 而不是抛错。基于 koffi 的检查器通过 Toolhelp32 枚举进程表，把 GetProcessTimes 创建身份与进程句柄零时等待结合起来（同时防止 PID 复用并识别已终止的进程对象），把 **shell pid 作为伪前台进程组**（Windows 没有 POSIX 进程组；这个稳定值让 prompt-marker 就绪快路径在一个轮询间隔内结算），不报告 stdin-wait 证据（就绪与 macOS 同档），信号走 `taskkill /T` 升级（仅 SIGKILL 加 `/F`）。koffi（`^3.1.0`，`sandbox-windows-acl` 已固定的版本）仅在 win32 惰性加载。
 
 `LocalTerminalHandle` 为 win32 分支，因为 node-pty 的 `kill(signal)` 会抛错（"Signals not supported on windows"），其无参 kill 委托的 console-list agent 在没有父控制台时失败。拆卸经 taskkill 升级并以 shell 的启动身份作栅栏；由于被外部 taskkill 的 shell 可能永远不会触发 node-pty 的退出通知，句柄从 inspector 验证的消失状态结算 `done`（`settleExitIfGone`）。`signalForeground` 把 SIGINT 映射为 `\x03` Ctrl-C 输入写入（conhost 转为控制台级 CTRL_C 事件的投递方式；实测可中断运行中的命令），SIGTERM/SIGKILL 路由到 taskkill，SIGTSTP/SIGHUP 以 Windows 不可用为由拒绝。公共 `PtySignal` 集合与 seam 类型不变；映射全部留在 backend。
 
-### `@alego/terminal-bash` 的 shell 方言
+### `@singula-ai/alego-terminal-bash` 的 shell 方言
 
 一个 backend、两种方言：`shellDialect: 'bash' | 'pwsh'`（默认 `'bash'`，存量部署逐字节不变）。有效 `shellPath`/`shellArgs` 按方言解析（bash `/bin/bash --noprofile --norc -i`；pwsh 经共享的 `alego-pwsh-local` 解析器取 `-NoLogo -NoProfile`，保留交互宿主供子 REPL）。子环境去掉 bash 专属 `PS1`/`PROMPT_COMMAND` 标记并为 pwsh 加 `NO_COLOR`。pwsh 无法从环境安装提示符，因此 backend 在启动时通过会话写入 prompt 函数，并等待受控提示符真正可见——因为 pwsh 从横幅到提示符的间隙可能超过静默上限，所以会在后续 send 上循环等待；`session_exit` 或 `timeout` 结算拒绝 spawn。两种方言发出相同的 BEL 终结 OSC `133;D;` 标记，因此 sanitizer、`PROMPT_MARKER_PREFIX`、`CONTROLLED_PROMPT` 与精确尾部就绪逻辑原样复用——标记仍只是就绪信号、载荷不被消费，与 bash 路径完全一致，且没有新增模型通知通道（与当前实现对齐；延后的 BEL 事件通道保持延后）。
 
-### `@alego/tool-pwsh-persistent`
+### `@singula-ai/alego-tool-pwsh-persistent`
 
 新包镜像 `tool-bash-persistent`：同样的 `Config`（`backendType` 默认 `shell`、`timeoutMs`、`maxOutputChars`、`description`）、同样的 owner 作用域 shell 注册表与每 owner 串行队列、同样的超时/中止/退出/重置路径。工具名是 `pwsh`；它与一次性 `tool-pwsh` 永不共挂，因为预设行按平台互斥。
 

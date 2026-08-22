@@ -1,4 +1,4 @@
-# @alego/session-title-first-prompt-llm
+# @singula-ai/alego-session-title-first-prompt-llm
 
 [English](README.md) | 中文
 

@@ -1,10 +1,10 @@
-/** Package-owned subagent registry and lifecycle invariants. @module @alego/subagent/invariant */
+/** Package-owned subagent registry and lifecycle invariants. @module @singula-ai/alego-subagent/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 import type { SubagentProvider, SubagentRunEndInfo, SubagentRunInfo } from './types.ts'
 
-const PACKAGE_NAME = '@alego/subagent'
+const PACKAGE_NAME = '@singula-ai/alego-subagent'
 
 /** Cordis companion plugin name. */
 export const name = 'subagent-invariant'

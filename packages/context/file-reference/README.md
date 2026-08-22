@@ -1,4 +1,4 @@
-# `@alego/file-reference`
+# `@singula-ai/alego-file-reference`
 
 English | [中文](README.zh.md)
 
@@ -10,7 +10,7 @@ Selecting a candidate does not read or attach file contents. The exported `FILE_
 
 ## Model Experience
 
-Indirectly, through `@alego/file-reference-local`, which conditionally contributes this package's stable file-reference guidance.
+Indirectly, through `@singula-ai/alego-file-reference-local`, which conditionally contributes this package's stable file-reference guidance.
 
 #### KV Cache effect
 

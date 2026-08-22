@@ -7,7 +7,7 @@ Archived: 2026-07-26
 
 ## 问题
 
-`@alego/fs` 是文件系统访问的提供方 seam，本地后端与未来的非本地后端共享同一个 `ctx.fs` 契约。在本次变更之前，它能解析路径、stat 目标、读取文本、流式读取文本、写入文本和编辑文本。这对面向模型的文件工具已经足够，但对于需要枚举目录而又不想直接导入 `node:fs` 的非模型侧消费方来说还不够。
+`@singula-ai/alego-fs` 是文件系统访问的提供方 seam，本地后端与未来的非本地后端共享同一个 `ctx.fs` 契约。在本次变更之前，它能解析路径、stat 目标、读取文本、流式读取文本、写入文本和编辑文本。这对面向模型的文件工具已经足够，但对于需要枚举目录而又不想直接导入 `node:fs` 的非模型侧消费方来说还不够。
 
 直接的压力来自 skill（技能）加载：读取单个 `SKILL.md` 已经可以走 `ctx.get('fs')`，但发现哪些 skill 根目录包含 `<name>/SKILL.md` 或 `<name>.md` 仍需要目录枚举。如果仅在 `alego-skill` 中添加目录列举，要么保留对 Node 的直接依赖，要么在文件系统提供方栈之外发明一个一次性的本地辅助函数。
 
@@ -15,7 +15,7 @@ Archived: 2026-07-26
 
 ## 决策
 
-在 `@alego/fs` 中添加 `FileSystem.listDir(target, signal?)`。
+在 `@singula-ai/alego-fs` 中添加 `FileSystem.listDir(target, signal?)`。
 
 `listDir` 仅列举一层目录。它以稳定的名称顺序返回直接子项，包含以下字段：
 

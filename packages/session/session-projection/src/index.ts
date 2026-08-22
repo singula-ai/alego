@@ -14,14 +14,14 @@
  * carry the complete post-change state, never a bare delta — it keeps every
  * unit's transition trivially cheap and every served value self-describing.
  *
- * @module @alego/session-projection
+ * @module @singula-ai/alego-session-projection
  */
 
-import { Context, Service } from '@alego/cordis'
+import { Context, Service } from '@singula-ai/cordis'
 import type { ZodType } from 'zod'
-import type { Session, SessionEvent } from '@alego/session'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     sessionProjections: SessionProjectionRegistry
   }

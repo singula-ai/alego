@@ -14,7 +14,7 @@ Windows 目录选择器的主层此前是围绕 WinForms `FolderBrowserDialog` s
 
 ## 考虑过的替代方案
 
-- **预编译原生辅助程序（`native/` 家族，如 `@alego/node-addon-landlock-run`）。** 否决：再增加一个 npm 包家族、MSVC 环境配置和 Windows 构建／发布通道——只为交付约 150 行仓库目前无法通过 CI 检验的 C 代码（现有 CI 没有真 Windows 通道）；koffi 以零新增供应链提供同一 COM 接口。
+- **预编译原生辅助程序（`native/` 家族，如 `@singula-ai/node-addon-landlock-run`）。** 否决：再增加一个 npm 包家族、MSVC 环境配置和 Windows 构建／发布通道——只为交付约 150 行仓库目前无法通过 CI 检验的 C 代码（现有 CI 没有真 Windows 通道）；koffi 以零新增供应链提供同一 COM 接口。
 - **N-API 进程内插件。** 否决：同样的 CI／工具链原因，还需自行维护处理 STA 线程与消息泵的 C++ 代码，而子进程 + koffi 用 TypeScript 就能表达。
 - **保留 PowerShell 为主层并探测版本。** 否决：选择器仍被 shell 打包形态挟持（6 与 7、Store 别名、profile），且没有 pwsh 的机器仍只能使用 5.1 的旧版对话框；只有拓宽回退触发条件这一项改动被纳入了回退层。
 - **在主线程上阻塞模态调用。** 直接否决：对话框打开期间 web 宿主必须继续服务 RPC。

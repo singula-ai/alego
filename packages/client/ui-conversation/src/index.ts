@@ -1,7 +1,7 @@
 /** Host registration for browser conversation preferences. */
 
-import type { Context } from '@alego/cordis'
-import { settingsNamespace } from '@alego/settings'
+import type { Context } from '@singula-ai/cordis'
+import { settingsNamespace } from '@singula-ai/alego-settings'
 import { CONVERSATION_SETTINGS_NAMESPACE, ConversationSettingsSchema } from './submission-settings.ts'
 
 export {

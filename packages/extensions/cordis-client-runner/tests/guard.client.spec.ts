@@ -7,7 +7,7 @@
  * dynamic package from reaching a foreign context. Registrations ride the
  * CALLING fiber, so disposing it must remove them (HMR safety).
  */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
 import type { FC } from 'react'
 import type {
@@ -15,8 +15,8 @@ import type {
   CordisDynamicPluginId,
   CordisDynamicPluginRunId,
   DynamicCordisPackage,
-} from '@alego/api-remotes/client'
-import { SlotRegistry } from '@alego/client-runtime/client'
+} from '@singula-ai/alego-api-remotes/client'
+import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
 import { dynamicCordisContext } from '../src/client/guard.ts'
 import type { DynamicCordisSlotLedgerRow } from '../src/client/guard.ts'
 

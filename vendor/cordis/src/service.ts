@@ -1,4 +1,4 @@
-import { defineProperty } from '@alego/cosmokit'
+import { defineProperty } from '@singula-ai/cosmokit'
 import { Context } from './context.ts'
 import { createCallable, joinPrototype, symbols, type Tracker } from './utils.ts'
 

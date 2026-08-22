@@ -12,7 +12,7 @@ That bridge has concurrency and durability obligations. Human input, cancellatio
 
 ## Decision
 
-`@alego/goal-round-driver` in `packages/goal/goal-round-driver/` is a policy plugin over `ctx.goals`, the public `Agent` interface, and durable session events. It imports no concrete agent-loop implementation. For each exact live `Agent`, it owns process-local scheduling state and may reserve at most one automatic round.
+`@singula-ai/alego-goal-round-driver` in `packages/goal/goal-round-driver/` is a policy plugin over `ctx.goals`, the public `Agent` interface, and durable session events. It imports no concrete agent-loop implementation. For each exact live `Agent`, it owns process-local scheduling state and may reserve at most one automatic round.
 
 The hierarchy is Goal → Goal Round → Turn → Step. A goal round is the outer continuation policy iteration; it becomes one goal-sourced session turn, and that turn can contain any number of ordinary model/tool steps. Human turns in the same session are not goal rounds and never increment `roundsStarted`.
 

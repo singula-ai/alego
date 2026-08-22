@@ -20,7 +20,7 @@ export const zh = {
 /** The feedback namespace key union. */
 export type MessageFeedbackKey = keyof typeof zh
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface LocaleNamespaceMap {
     /** The per-message feedback controls' copy. */
     feedback: MessageFeedbackKey

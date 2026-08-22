@@ -1,10 +1,10 @@
-# @alego/spill-policy
+# @singula-ai/alego-spill-policy
 
 English | [中文](README.zh.md)
 
 The **tool-result spill policy**: a `tools/post-execute` transformer that keeps oversized plain-text tool results out of the model's context. When a final result exceeds `maxInlineBytes`, it saves the FULL text through [`ctx.spillStore`](../spill) and replaces the model-facing result with a bounded head/tail preview plus the backend's locator and retrieval hint.
 
-This plugin registers **no service** and owns no storage or preview mechanics: preview is [`@alego/output-retention`](../../util/output-retention) (`TextRetainer`), storage is `ctx.spillStore`. It only decides WHEN to spill and composes the notice.
+This plugin registers **no service** and owns no storage or preview mechanics: preview is [`@singula-ai/alego-output-retention`](../../util/output-retention) (`TextRetainer`), storage is `ctx.spillStore`. It only decides WHEN to spill and composes the notice.
 
 ## Config
 

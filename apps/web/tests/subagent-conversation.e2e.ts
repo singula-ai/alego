@@ -7,9 +7,9 @@ import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
 import {
   SESSION_FORMAT_VERSION, SessionId as sessionId, type SessionEvent, type SessionId,
-} from '@alego/session'
-import type {} from '@alego/agent'
-import { snapshotSubagentDescriptor } from '@alego/subagent'
+} from '@singula-ai/alego-session'
+import type {} from '@singula-ai/alego-agent'
+import { snapshotSubagentDescriptor } from '@singula-ai/alego-subagent'
 import {
   acknowledgeReloadConnectionLoss, captureStableAria, compareOrRefreshGolden,
   launchWebScaffold, watchConsole,

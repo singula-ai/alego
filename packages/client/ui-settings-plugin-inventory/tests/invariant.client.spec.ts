@@ -1,6 +1,6 @@
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
-import InvariantRegistry from '@alego/invariants'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 import * as PluginsInvariant from '../src/invariant.ts'
 
 describe('ui-settings-plugin-inventory invariant companion', () => {

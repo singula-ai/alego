@@ -12,7 +12,7 @@ import type {
   RequestView,
   ToolCallBlock,
   ToolResultNode,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import type {
   TrajectoryCellProps,
   TrajectorySourceBlock,

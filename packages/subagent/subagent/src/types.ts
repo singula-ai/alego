@@ -6,14 +6,14 @@
  * continuation host in `./continuation.ts` — so this module stays the published
  * surface rather than a bag of everything type-shaped.
  *
- * @module @alego/subagent/types
+ * @module @singula-ai/alego-subagent/types
  */
 
-import type { Agent, AgentOptions } from '@alego/agent'
-import type { Branded } from '@alego/brand'
-import type { ContentBlock } from '@alego/llm'
-import type { SessionEvent, SessionId } from '@alego/session'
-import type { ObjectJsonSchema, ToolRestriction } from '@alego/tools'
+import type { Agent, AgentOptions } from '@singula-ai/alego-agent'
+import type { Branded } from '@singula-ai/alego-brand'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { SessionEvent, SessionId } from '@singula-ai/alego-session'
+import type { ObjectJsonSchema, ToolRestriction } from '@singula-ai/alego-tools'
 import type { SubagentDescriptorData } from './descriptor.ts'
 
 /** Identifies one accepted subagent run across its lifecycle event pair. */

@@ -1,4 +1,4 @@
-# `@alego/host-frontend-static`
+# `@singula-ai/alego-host-frontend-static`
 
 English | [中文](README.zh.md)
 

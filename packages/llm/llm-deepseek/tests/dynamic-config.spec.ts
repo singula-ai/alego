@@ -1,10 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { access, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import LlmRuntime, { createUserMessage, INVALID_CREDENTIAL_CODE } from '@alego/llm'
-import AttachmentStore, { AttachmentId, ImageVariantId } from '@alego/attachment'
+import LlmRuntime, { createUserMessage, INVALID_CREDENTIAL_CODE } from '@singula-ai/alego-llm'
+import AttachmentStore, { AttachmentId, ImageVariantId } from '@singula-ai/alego-attachment'
 import type {
   ImageAttachmentLimits,
   ImageAttachmentRef,
@@ -12,12 +12,12 @@ import type {
   RequestImageAttachment,
   SaveImageAttachment,
   StoredImageAttachment,
-} from '@alego/attachment'
-import { credentialRef } from '@alego/credentials'
-import { LocalCredentialProvider } from '@alego/credentials-local'
-import { settingsNamespace } from '@alego/settings'
-import { FileSettingsProvider } from '@alego/settings-file'
-import * as LlmDeepSeek from '@alego/llm-deepseek'
+} from '@singula-ai/alego-attachment'
+import { credentialRef } from '@singula-ai/alego-credentials'
+import { LocalCredentialProvider } from '@singula-ai/alego-credentials-local'
+import { settingsNamespace } from '@singula-ai/alego-settings'
+import { FileSettingsProvider } from '@singula-ai/alego-settings-file'
+import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek'
 import { assemble } from './assemble.ts'
 import { closeMockServers, mockServer, textEvents } from './mock-server.ts'
 

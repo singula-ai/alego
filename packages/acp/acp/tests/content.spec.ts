@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { Context } from '@alego/cordis'
-import { AttachmentError, AttachmentId } from '@alego/attachment'
-import type { ImageAttachmentRef, SaveImageAttachment } from '@alego/attachment'
-import type { Agent } from '@alego/agent'
+import type { Context } from '@singula-ai/cordis'
+import { AttachmentError, AttachmentId } from '@singula-ai/alego-attachment'
+import type { ImageAttachmentRef, SaveImageAttachment } from '@singula-ai/alego-attachment'
+import type { Agent } from '@singula-ai/alego-agent'
 import {
   AcpContentError,
   admitAcpPrompt,

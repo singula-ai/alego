@@ -6,16 +6,16 @@
  */
 
 import { expect } from 'vitest'
-import { FiberState, Inject, RegistryService, ValidationError } from '@alego/cordis'
-import type { Context, Plugin } from '@alego/cordis'
-import { AttachmentStore } from '@alego/attachment'
+import { FiberState, Inject, RegistryService, ValidationError } from '@singula-ai/cordis'
+import type { Context, Plugin } from '@singula-ai/cordis'
+import { AttachmentStore } from '@singula-ai/alego-attachment'
 import type {
   ImageAttachmentLimits,
   ImageAttachmentRef,
   SaveImageAttachment,
   StoredImageAttachment,
-} from '@alego/attachment'
-import InvariantRegistry from '@alego/invariants'
+} from '@singula-ai/alego-attachment'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 
 declare global {
   interface ImportMeta {

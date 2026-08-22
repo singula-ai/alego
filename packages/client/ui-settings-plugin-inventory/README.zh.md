@@ -1,4 +1,4 @@
-# @alego/client-ui-settings-plugin-inventory
+# @singula-ai/alego-client-ui-settings-plugin-inventory
 
 [English](README.md) | 中文
 

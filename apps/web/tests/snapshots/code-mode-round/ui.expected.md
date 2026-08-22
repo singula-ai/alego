@@ -12,10 +12,10 @@
 - text: "Using ONE run_code program: run bash `echo CODE_ROUND_OK`, then read the file missing.txt catching its error in the program. Return an object with both outcomes. Then reply DONE and stop. {{clock}}"
 - button "Copy":
   - img
-- button "Context injection @alego/system-prompt":
+- button "Context injection @singula-ai/alego-system-prompt":
   - img
   - img
-  - text: Context injection @alego/system-prompt
+  - text: Context injection @singula-ai/alego-system-prompt
 - 'button "Think The user wants me to write a single `run_code` program that:"':
   - img
   - img

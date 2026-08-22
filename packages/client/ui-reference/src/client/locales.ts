@@ -1,6 +1,6 @@
 /** `reference` namespace dictionaries for the unified `@` source. */
 
-import type {} from '@alego/client-ui-slots'
+import type {} from '@singula-ai/alego-client-ui-slots'
 
 /** Dictionary namespace owned by this plugin. */
 export const NS = 'reference'
@@ -18,7 +18,7 @@ export const zh = {
 /** The reference namespace key union. */
 export type ReferenceKey = keyof typeof zh
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface LocaleNamespaceMap {
     /** The unified `@` reference menu's copy. */
     reference: ReferenceKey

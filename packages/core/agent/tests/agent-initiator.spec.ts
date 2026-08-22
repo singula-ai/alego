@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { runInNewContext } from 'node:vm'
-import AgentRegistry from '@alego/agent'
-import type { Agent } from '@alego/agent'
-import { SessionId } from '@alego/session'
+import AgentRegistry from '@singula-ai/alego-agent'
+import type { Agent } from '@singula-ai/alego-agent'
+import { SessionId } from '@singula-ai/alego-session'
 
 function agent(id: string): Agent {
   return { id: SessionId(id) } as Agent

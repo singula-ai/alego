@@ -1,7 +1,7 @@
 /** DeepSeek Files API upload reuse, invalidation, and quota recovery. @module alego-llm-deepseek/file-store */
 
-import type { RequestImageAttachment } from '@alego/attachment'
-import { LlmError } from '@alego/llm'
+import type { RequestImageAttachment } from '@singula-ai/alego-attachment'
+import { LlmError } from '@singula-ai/alego-llm'
 import { DeepSeekFilesClient, isFilesQuotaError } from './files-api.ts'
 import type { DeepSeekFileId } from './file-id.ts'
 import { deepSeekFileScope, DeepSeekUploadIndex } from './upload-index.ts'

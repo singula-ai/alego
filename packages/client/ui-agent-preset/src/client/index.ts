@@ -11,15 +11,15 @@
  * before-the-fact, while the header only reports what a session already runs.
  */
 
-import type { ConnectionHandle } from '@alego/api-remotes/client'
+import type { ConnectionHandle } from '@singula-ai/alego-api-remotes/client'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
-import type {} from '@alego/client-locale/client'
+import type {} from '@singula-ai/alego-client-locale/client'
 // Type-only: pulls the ctx.remote merge and the forwarded-event key face
 // (the settings invalidation rides the allowlist) into this program.
-import type {} from '@alego/api-remotes/client'
+import type {} from '@singula-ai/alego-api-remotes/client'
 // Type-only: pulls the settings shell's SlotMap merge (the 'settings.section' entry).
-import type {} from '@alego/client-ui-settings/client'
-import type { ClientContext } from '@alego/client-runtime/client'
+import type {} from '@singula-ai/alego-client-ui-settings/client'
+import type { ClientContext } from '@singula-ai/alego-client-runtime/client'
 import { AgentPresetLabel } from './AgentPresetLabel.tsx'
 import type { AgentPresetLabelInjected } from './AgentPresetLabel.tsx'
 import { AgentPresetRow } from './AgentPresetRow.tsx'

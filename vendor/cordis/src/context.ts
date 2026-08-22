@@ -1,4 +1,4 @@
-import type { Dict } from '@alego/cosmokit'
+import type { Dict } from '@singula-ai/cosmokit'
 import { EventsService } from './events.ts'
 import { LoggerService } from './logger.ts'
 import { ReflectService } from './reflect.ts'

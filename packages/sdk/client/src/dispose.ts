@@ -5,7 +5,7 @@
  * cannot ride the `alego-subprocess` service — this module is the seam's
  * documented exception for SDK-managed transports.
  *
- * @module @alego/sdk-client/dispose
+ * @module @singula-ai/alego-sdk-client/dispose
  */
 
 import type { ChildProcess } from 'node:child_process'

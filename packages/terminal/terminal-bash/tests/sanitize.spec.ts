@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { normalizeTerminalText, TerminalSanitizer } from '@alego/terminal-bash/src/sanitize.ts'
+import { normalizeTerminalText, TerminalSanitizer } from '@singula-ai/alego-terminal-bash/src/sanitize.ts'
 
 describe('TerminalSanitizer', () => {
   it('removes split CSI and owned OSC prompt markers', () => {

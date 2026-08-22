@@ -1,9 +1,9 @@
 /**
  * Lossless-JSON snapshots for the dependency-free source worker closure.
- * @module @alego/code-runtime-worker-thread/worker-json
+ * @module @singula-ai/alego-code-runtime-worker-thread/worker-json
  */
 
-import type { CodeJsonValue } from '@alego/code-runtime'
+import type { CodeJsonValue } from '@singula-ai/alego-code-runtime'
 
 /* jscpd:ignore-start -- the source worker mirrors session JSON helpers without workspace runtime imports */
 type IntrinsicCallable = (this: unknown, ...args: unknown[]) => unknown

@@ -1,9 +1,9 @@
 /**
  * Strict Schedule decoding, replay, time validation, and framing.
- * @module @alego/schedule
+ * @module @singula-ai/alego-schedule
  */
 
-import type { SessionEvent } from '@alego/session'
+import type { SessionEvent } from '@singula-ai/alego-session'
 import type {
   AfterScheduleRecord,
   AtInput,

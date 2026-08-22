@@ -10,9 +10,9 @@ Status: implemented
 
 ## 决策
 
-`@alego/client-ui-settings-plugins` 拥有唯一一个 id 为 `plugins` 的 `settings.section` 贡献。它渲染共享标题和紧凑标签栏，声明根级列表 slot `settings.plugins.tab`，并把该记录中的 id、order 与跟随语言的 label 投影成标签页。该 slot 的规范类型位于 `ui-settings`，因此标签页贡献方依赖设置领域约定，而不是依赖另一个功能插件。
+`@singula-ai/alego-client-ui-settings-plugins` 拥有唯一一个 id 为 `plugins` 的 `settings.section` 贡献。它渲染共享标题和紧凑标签栏，声明根级列表 slot `settings.plugins.tab`，并把该记录中的 id、order 与跟随语言的 label 投影成标签页。该 slot 的规范类型位于 `ui-settings`，因此标签页贡献方依赖设置领域约定，而不是依赖另一个功能插件。
 
-分区拥有方贡献 `configurable` 标签页，由它声明既有的嵌套 `settings.plugin.item` 列表。配置卡片原有的命名空间绑定、草稿状态、校验与写入均保持不变。`@alego/client-ui-settings-plugin-inventory` 向 `settings.plugins.tab` 贡献 `all` 标签页；它的 Host Loader 观察器、生成的 Remote 命名空间、DTO 与搜索语义保持不变。已停用的清单条目会在摘要和详情中省略重复的“未挂载”运行状态，已启用条目仍显示其 Cordis 阶段。
+分区拥有方贡献 `configurable` 标签页，由它声明既有的嵌套 `settings.plugin.item` 列表。配置卡片原有的命名空间绑定、草稿状态、校验与写入均保持不变。`@singula-ai/alego-client-ui-settings-plugin-inventory` 向 `settings.plugins.tab` 贡献 `all` 标签页；它的 Host Loader 观察器、生成的 Remote 命名空间、DTO 与搜索语义保持不变。已停用的清单条目会在摘要和详情中省略重复的“未挂载”运行状态，已启用条目仍显示其 Cordis 阶段。
 
 默认选择顺序中的第一个标签页。某个标签页只有首次被选择时才挂载，之后在“插件”分区保持挂载期间只隐藏而不卸载。这样会把清单 RPC 延迟到用户打开**插件列表**时，并在切换标签页时保留草稿、搜索文本、折叠状态和已读取的快照。关闭 Settings 会卸载该分区，因此再次打开后，重新选择该标签页时会取得新的清单快照。
 

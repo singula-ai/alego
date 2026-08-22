@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-08-12-production-alego-excludes-product-subagent-providers.md
-2026-08-12-production-alego-excludes-product-subagent-providers.md: e98a3d58152c936e6eaa5c58df663cc0c1171c34
-2026-08-12-production-alego-excludes-product-subagent-providers.zh.md: 0094f3d4b4206e524049895e3f8073b00db85722
+2026-08-12-production-alego-excludes-product-subagent-providers.md: 866b6430f97af4667e90936eb856d1e9584008e3
+2026-08-12-production-alego-excludes-product-subagent-providers.zh.md: 21e07e20938067c427d206a3fb6d0a02edcc729a

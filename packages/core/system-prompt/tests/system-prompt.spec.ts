@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import SystemPrompt, { AssembleContext, PromptAssembly, renderContextSnapshot, renderPrompt } from '@alego/system-prompt'
+import { Context } from '@singula-ai/cordis'
+import SystemPrompt, { AssembleContext, PromptAssembly, renderContextSnapshot, renderPrompt } from '@singula-ai/alego-system-prompt'
 
 /**
  * Every assembly carries the plugin's own built-ins — `harness:identity`

@@ -9,11 +9,11 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import Hmr from '@alego/cordis-plugin-hmr'
-import Include, { type PatchOptions } from '@alego/cordis-plugin-include'
-import Loader from '@alego/cordis-plugin-loader'
-import Timer from '@alego/cordis-plugin-timer'
+import { Context } from '@singula-ai/cordis'
+import Hmr from '@singula-ai/cordis-plugin-hmr'
+import Include, { type PatchOptions } from '@singula-ai/cordis-plugin-include'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Timer from '@singula-ai/cordis-plugin-timer'
 import {
   boot,
   loadOptionalPatches,
@@ -48,12 +48,12 @@ describe('loadOptionalPatches', () => {
     const dir = tmp()
     writeFileSync(join(dir, PROFILE_PATCH_FILENAME), [
       '- id: agent-loop',
-      "  name: '@alego/agent-loop'",
+      "  name: '@singula-ai/alego-agent-loop'",
       '  config:',
       '    model: !!js process.env.ALEGO_SPEC_MODEL',
       '- insert:',
       '    - id: llm',
-      "      name: '@alego/llm-pi-ai'",
+      "      name: '@singula-ai/alego-llm-pi-ai'",
       '',
     ].join('\n'))
     const patches = loadOptionalPatches(NAME, join(dir, PROFILE_PATCH_FILENAME))

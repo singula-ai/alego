@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/token-meter`.
- * @module @alego/token-meter/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-token-meter`.
+ * @module @singula-ai/alego-token-meter/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/token-meter'
+const PACKAGE_NAME = '@singula-ai/alego-token-meter'
 
 /** Cordis companion plugin name. */
 export const name = 'token-meter-invariant'

@@ -1,5 +1,5 @@
 {
-  "name": "@alego/schemastery",
+  "name": "@singula-ai/schemastery",
   "description": "Type driven schema validator",
   "version": "3.18.1",
   "publishConfig": {
@@ -34,6 +34,6 @@
   "license": "MIT",
   "dependencies": {
     "@standard-schema/spec": "^1.1.0",
-    "@alego/cosmokit": "workspace:^"
+    "@singula-ai/cosmokit": "workspace:^"
   }
 }

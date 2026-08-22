@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import InvariantRegistry from '@alego/invariants'
+import { Context } from '@singula-ai/cordis'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 import * as MockServerInvariant from '../src/invariant.ts'
 
 describe('mock LLM server invariant companion', () => {
@@ -10,7 +10,7 @@ describe('mock LLM server invariant companion', () => {
     const fiber = await ctx.plugin(MockServerInvariant)
 
     expect(() => {
-      ctx.invariants.register('@alego/llm-mock-server', () => {})
+      ctx.invariants.register('@singula-ai/alego-llm-mock-server', () => {})
     }).toThrow(/already registered/)
     await fiber.dispose()
     await ctx.fiber.dispose()

@@ -4,16 +4,16 @@
  * instance owns one `(provider id, canonical workspace)` process. Queries serialize through a single
  * queue so a cancellation that fails to stop the server can terminate it without killing unrelated
  * work; distinct instances run in parallel.
- * @module @alego/lsp-stdio/instance
+ * @module @singula-ai/alego-lsp-stdio/instance
  */
 
-import { LspError } from '@alego/lsp'
+import { LspError } from '@singula-ai/alego-lsp'
 import type {
   LspOperation,
   LspProviderQuery,
   LspQueryResult,
-} from '@alego/lsp'
-import { deadline } from '@alego/timeout'
+} from '@singula-ai/alego-lsp'
+import { deadline } from '@singula-ai/alego-timeout'
 import { abortable, abortError } from './abort.ts'
 import { LspConnection } from './connection.ts'
 import type { ConnectionSpawner, ConnectionSpec, ConnectionWriter } from './connection.ts'

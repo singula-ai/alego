@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/tool-ralph`.
- * @module @alego/tool-ralph/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-tool-ralph`.
+ * @module @singula-ai/alego-tool-ralph/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/tool-ralph'
+const PACKAGE_NAME = '@singula-ai/alego-tool-ralph'
 
 /** Cordis companion plugin name. */
 export const name = 'tool-ralph-invariant'

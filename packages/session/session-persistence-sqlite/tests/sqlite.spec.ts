@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { spawn } from 'node:child_process'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { once } from 'node:events'
 import { chmod, mkdir, mkdtemp, rm, stat, symlink, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
@@ -8,13 +8,13 @@ import { join } from 'node:path'
 import { performance } from 'node:perf_hooks'
 import { pathToFileURL } from 'node:url'
 import { DatabaseSync } from 'node:sqlite'
-import Loader from '@alego/cordis-plugin-loader'
-import Include from '@alego/cordis-plugin-include'
-import SessionStore, { SessionId, type SessionEvent } from '@alego/session'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include from '@singula-ai/cordis-plugin-include'
+import SessionStore, { SessionId, type SessionEvent } from '@singula-ai/alego-session'
 import SessionPersistenceSqlite, {
   DEFAULT_BUSY_TIMEOUT_MS,
   SCHEMA_VERSION,
-} from '@alego/session-persistence-sqlite'
+} from '@singula-ai/alego-session-persistence-sqlite'
 import {
   runCoordinatorContract,
   type CoordinatorFixture,
@@ -235,8 +235,8 @@ describe('SessionPersistenceSqlite physical packing', () => {
     const path = await freshDbPath('alego-sqlite-loader-')
     const configPath = join(path, '..', 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@alego/session'",
-      "- name: '@alego/session-persistence-sqlite'",
+      "- name: '@singula-ai/alego-session'",
+      "- name: '@singula-ai/alego-session-persistence-sqlite'",
       '  config:',
       `    path: ${JSON.stringify(path)}`,
       '',
@@ -249,8 +249,8 @@ describe('SessionPersistenceSqlite physical packing', () => {
     ctx.loader.internal = {
       version: 'sqlite',
       async import(specifier: string) {
-        if (specifier === '@alego/session') return SessionStore
-        if (specifier === '@alego/session-persistence-sqlite') {
+        if (specifier === '@singula-ai/alego-session') return SessionStore
+        if (specifier === '@singula-ai/alego-session-persistence-sqlite') {
           return SessionPersistenceSqlite
         }
         throw new Error(`unexpected Loader import: ${specifier}`)

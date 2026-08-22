@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { createScope } from '@alego/scope'
-import type { Scope } from '@alego/scope'
-import type { Agent } from '@alego/agent'
-import SessionStore, { SessionId } from '@alego/session'
-import CommandRuntime, { parseCommand, type CommandDefinition } from '@alego/commands'
-import { AttachmentStore } from '@alego/attachment'
+import { Context } from '@singula-ai/cordis'
+import { createScope } from '@singula-ai/alego-scope'
+import type { Scope } from '@singula-ai/alego-scope'
+import type { Agent } from '@singula-ai/alego-agent'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import CommandRuntime, { parseCommand, type CommandDefinition } from '@singula-ai/alego-commands'
+import { AttachmentStore } from '@singula-ai/alego-attachment'
 
 function command(name: string, text = `ran:${name}`): CommandDefinition {
   return {

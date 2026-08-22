@@ -18,7 +18,7 @@ Status: implemented
 
 **分层不变。** 一个分节按 schema 默认值 → 插件的组装条目 → 用户层解析。每个插件把自己的 `cordis.yml` 条目作为 `base` 传入，并通过 source thunk 读取配置，因此存储的变更会作用于下一次使用，而脱离的 settings 提供方会让组装条目继续运行。schema 无法表达的约束——正有限、`graceMs` 的定时器上界、并行上限必须是正整数——成为分节的校验器，因此错误的值在写入时被拒绝，而不是到下一条命令时才失败。
 
-**shell 命名空间命名的是能力，而非某个实现。** `SHELL_SETTINGS_NAMESPACE` 由 `@alego/shell` 导出，因为一个宿主只组装一个 `ctx.shell` 提供方：win32 层会把 POSIX 行换成 pwsh 行，而同时挂载两者会因服务重复注册在加载期失败。因此两个家族都能用自己的 schema 与条目注册同一个命名空间而永不相撞；在平台间携带的 `settings.yaml` 也能在两边继续解析——schemastery 对象会保留当前 schema 未声明的键。
+**shell 命名空间命名的是能力，而非某个实现。** `SHELL_SETTINGS_NAMESPACE` 由 `@singula-ai/alego-shell` 导出，因为一个宿主只组装一个 `ctx.shell` 提供方：win32 层会把 POSIX 行换成 pwsh 行，而同时挂载两者会因服务重复注册在加载期失败。因此两个家族都能用自己的 schema 与条目注册同一个命名空间而永不相撞；在平台间携带的 `settings.yaml` 也能在两边继续解析——schemastery 对象会保留当前 schema 未声明的键。
 
 **当插件配置大于用户所拥有的部分时，分节就是一个子集。** `agent-loop` 只暴露 `maxParallelToolCalls`；它的 `agents` 数组在服务启动时被消费一次，所以存储在那里的变更只会看起来生效。
 

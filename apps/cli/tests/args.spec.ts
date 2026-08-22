@@ -50,8 +50,8 @@ describe('parseAlegoArgs', () => {
       .toEqual({ mode: 'plugin', profile: 'tui', args: ['add', 'turtle-ui'] })
     expect(parse(['plugin', '--profile', 'tui', 'remove', 'turtle-ui']))
       .toEqual({ mode: 'plugin', profile: 'tui', args: ['remove', 'turtle-ui'] })
-    expect(parse(['plugin', '--profile', 'tui', 'why', '@alego/cordis']))
-      .toEqual({ mode: 'plugin', profile: 'tui', args: ['why', '@alego/cordis'] })
+    expect(parse(['plugin', '--profile', 'tui', 'why', '@singula-ai/cordis']))
+      .toEqual({ mode: 'plugin', profile: 'tui', args: ['why', '@singula-ai/cordis'] })
     // Unknown pnpm flags forward verbatim.
     expect(parse(['plugin', '--profile', 'tui', 'add', '--save-dev', 'x']))
       .toEqual({ mode: 'plugin', profile: 'tui', args: ['add', '--save-dev', 'x'] })

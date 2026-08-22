@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import * as invariant from '@alego/command-compact/invariant'
+import * as invariant from '@singula-ai/alego-command-compact/invariant'
 
 describe('command-compact invariant companion', () => {
   it('registers the package-owned no-op installer', async () => {
@@ -8,7 +8,7 @@ describe('command-compact invariant companion', () => {
     const dispose = await invariant.apply(ctx)
     expect(invariant.name).toBe('command-compact-invariant')
     expect(invariant.inject).toEqual(['invariants'])
-    expect(register).toHaveBeenCalledWith('@alego/command-compact', expect.any(Function))
+    expect(register).toHaveBeenCalledWith('@singula-ai/alego-command-compact', expect.any(Function))
     expect(() => {
       const install = register.mock.calls[0]![1] as () => void
       install()

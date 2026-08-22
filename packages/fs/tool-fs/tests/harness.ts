@@ -1,11 +1,11 @@
-import { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import AgentLoop from '@alego/agent-loop'
-import { mountAgentLoopTestDependencies } from '@alego/agent-loop-testkit'
-import LocalFileSystem from '@alego/fs-local'
-import * as FsPolicy from '@alego/fs-observation-policy'
-import * as ToolFs from '@alego/tool-fs'
-import * as LlmDeepSeek from '@alego/llm-deepseek'
+import { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
+import LocalFileSystem from '@singula-ai/alego-fs-local'
+import * as FsPolicy from '@singula-ai/alego-fs-observation-policy'
+import * as ToolFs from '@singula-ai/alego-tool-fs'
+import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek'
 
 /**
  * Build the real fs-tool stack for with-key e2e tests. Agents have no session

@@ -12,9 +12,9 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import Include from '@alego/cordis-plugin-include'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include from '@singula-ai/cordis-plugin-include'
 import HttpServer, { renderIndexInjections } from '../src/index.ts'
 
 let root: string | undefined
@@ -32,7 +32,7 @@ async function loadComposition(port = 0): Promise<Context> {
   root = await mkdtemp(join(tmpdir(), 'alego-webserver-loader-'))
   const configPath = join(root, 'cordis.yml')
   await writeFile(configPath, [
-    "- name: '@alego/host-webserver'",
+    "- name: '@singula-ai/alego-host-webserver'",
     '  config:',
     "    host: '127.0.0.1'",
     `    port: ${String(port)}`,
@@ -44,7 +44,7 @@ async function loadComposition(port = 0): Promise<Context> {
   await context.plugin(Loader)
   context.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@alego/host-webserver', HttpServer],
+    ['@singula-ai/alego-host-webserver', HttpServer],
   ])
   context.loader.internal = {
     version: 'v2',

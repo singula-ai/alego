@@ -22,13 +22,13 @@ The filesystem tools must land in the same capability-seam shape as bash before 
 
 Filesystem access is a first-class capability seam following [the capability-seam Agent Note](2026-06-13-capability-seams.md):
 
-1. `@alego/fs` (`packages/fs/fs`) owns the abstract `ctx.fs` service, the filesystem vocabulary types, and the `fs/*` policy event vocabulary.
-2. `@alego/fs-local` (`packages/fs/fs-local`) provides the first implementation, backed by the local filesystem.
-3. `@alego/tool-fs` (`packages/fs/tool-fs`) provides the model-facing `read`, `write`, and `edit` tools over `ctx.fs`, and is the executor that dispatches the `fs/*` events.
+1. `@singula-ai/alego-fs` (`packages/fs/fs`) owns the abstract `ctx.fs` service, the filesystem vocabulary types, and the `fs/*` policy event vocabulary.
+2. `@singula-ai/alego-fs-local` (`packages/fs/fs-local`) provides the first implementation, backed by the local filesystem.
+3. `@singula-ai/alego-tool-fs` (`packages/fs/tool-fs`) provides the model-facing `read`, `write`, and `edit` tools over `ctx.fs`, and is the executor that dispatches the `fs/*` events.
 
 The Consumer package depends only on the Service Definition package, never on `alego-fs-local`. A deployment that wants a different backend loads a different provider for `ctx.fs` without changing the tool schemas or model-facing prompt guidance.
 
-The read-before-write/edit and observed-state policy is a fourth package, `@alego/fs-observation-policy` (`packages/fs/fs-observation-policy`), contributed through the `fs/*` event gate rather than living on `ctx.fs`; a deployment loading `alego-tool-fs` also loads `alego-fs-observation-policy` to get read-before-write/edit. This decision established the three-package boundary; the split of policy off the provider base class is decided by [the split-fs-seam Agent Note](../simplification/2026-06-26-fsspec-style-fs-seam.md), and its realization as an event-gate plugin (not a method service) by [the event-gate Agent Note](2026-06-26-file-context-as-event-gate.md).
+The read-before-write/edit and observed-state policy is a fourth package, `@singula-ai/alego-fs-observation-policy` (`packages/fs/fs-observation-policy`), contributed through the `fs/*` event gate rather than living on `ctx.fs`; a deployment loading `alego-tool-fs` also loads `alego-fs-observation-policy` to get read-before-write/edit. This decision established the three-package boundary; the split of policy off the provider base class is decided by [the split-fs-seam Agent Note](../simplification/2026-06-26-fsspec-style-fs-seam.md), and its realization as an event-gate plugin (not a method service) by [the event-gate Agent Note](2026-06-26-file-context-as-event-gate.md).
 
 The first backend is deliberately local-only: `alego-fs-local` implements `ctx.fs` against the host filesystem. Future sibling backends can provide sandboxed, remote, virtual, or project-scoped filesystems behind the same interface.
 
@@ -43,21 +43,21 @@ Read-before-write/edit and observed state belong to `alego-fs-observation-policy
 The filesystem seam uses the same dependency direction as the bash trio:
 
 ```text
-@alego/tool-fs  --depends on-->  @alego/fs  <--depends on--  @alego/fs-local
+@singula-ai/alego-tool-fs  --depends on-->  @singula-ai/alego-fs  <--depends on--  @singula-ai/alego-fs-local
         consumer                                interface                         implementation
 ```
 
-`@alego/fs` depends only on `cordis` plus the repo-wide `HarnessError` base from `@alego/llm`. It declares the `ctx.fs` key, the abstract `FileSystem` service, the vocabulary types shared by backends and consumers, the filesystem error vocabulary, and the `fs/*` policy event vocabulary. It carries no observed-state store and no owner-derivation shape; the events pass an opaque `object` actor that the provider never reads, and the `alego-fs-observation-policy` plugin owns the owner-derivation shape and the observed-state store on top of those events.
+`@singula-ai/alego-fs` depends only on `cordis` plus the repo-wide `HarnessError` base from `@singula-ai/alego-llm`. It declares the `ctx.fs` key, the abstract `FileSystem` service, the vocabulary types shared by backends and consumers, the filesystem error vocabulary, and the `fs/*` policy event vocabulary. It carries no observed-state store and no owner-derivation shape; the events pass an opaque `object` actor that the provider never reads, and the `alego-fs-observation-policy` plugin owns the owner-derivation shape and the observed-state store on top of those events.
 
-`@alego/fs-local` depends on `@alego/fs` and `cordis`. It subclasses `FileSystem`, registers itself as `ctx.fs`, owns local-backend configuration such as the base directory, and contains all direct `node:fs` / `node:path` access. It holds no observed-state store — freshness is a version token the backend mints and the policy plugin records.
+`@singula-ai/alego-fs-local` depends on `@singula-ai/alego-fs` and `cordis`. It subclasses `FileSystem`, registers itself as `ctx.fs`, owns local-backend configuration such as the base directory, and contains all direct `node:fs` / `node:path` access. It holds no observed-state store — freshness is a version token the backend mints and the policy plugin records.
 
-`@alego/tool-fs` depends on `@alego/fs`, `@alego/tools`, `@alego/system-prompt`, and `cordis`. It registers model-facing tools and prompt sections. It must not import `node:fs`, `node:path`, or `@alego/fs-local`; filesystem execution always goes through `ctx.fs`. If the implementation needs concrete agent or session helper types, those dependencies belong in `tool-fs`; they must not leak back into `alego-fs`.
+`@singula-ai/alego-tool-fs` depends on `@singula-ai/alego-fs`, `@singula-ai/alego-tools`, `@singula-ai/alego-system-prompt`, and `cordis`. It registers model-facing tools and prompt sections. It must not import `node:fs`, `node:path`, or `@singula-ai/alego-fs-local`; filesystem execution always goes through `ctx.fs`. If the implementation needs concrete agent or session helper types, those dependencies belong in `tool-fs`; they must not leak back into `alego-fs`.
 
 The root `tool-fs` plugin registers the full filesystem tool suite (`read`, `write`, and `edit`) by composing the per-tool registration helpers. It injects `fs` and never imports a Service Provider package.
 
 ## `ctx.fs` contract
 
-`@alego/fs` owns a semantic filesystem service. It is higher-level than `readFile` / `writeFile` so `tool-fs` does not reimplement path resolution, versioning, text decoding, binary rejection, pagination, atomic replacement, symlink behavior, or literal edit semantics.
+`@singula-ai/alego-fs` owns a semantic filesystem service. It is higher-level than `readFile` / `writeFile` so `tool-fs` does not reimplement path resolution, versioning, text decoding, binary rejection, pagination, atomic replacement, symlink behavior, or literal edit semantics.
 
 The interface covers these semantic operations:
 
@@ -102,7 +102,7 @@ Filesystem contract failures are thrown as `FsError extends HarnessError`, and t
 
 ## Tool consumer behavior
 
-`@alego/tool-fs` is the model-facing consumer. It owns tool names, JSON schemas, argument validation at the model boundary, prompt sections, and result formatting. It does not own filesystem execution.
+`@singula-ai/alego-tool-fs` is the model-facing consumer. It owns tool names, JSON schemas, argument validation at the model boundary, prompt sections, and result formatting. It does not own filesystem execution.
 
 The first tool suite contains:
 

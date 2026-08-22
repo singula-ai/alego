@@ -3,13 +3,13 @@
  * Every workspace package registers checks from a `./invariant` companion;
  * ordinary package entrypoints stay independent of diagnostics.
  *
- * @module @alego/invariants
+ * @module @singula-ai/alego-invariants
  */
 
-import { Context, Service } from '@alego/cordis'
-import type { Inject } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type Schema from '@alego/schemastery'
+import { Context, Service } from '@singula-ai/cordis'
+import type { Inject } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type Schema from '@singula-ai/schemastery'
 
 /** Runtime invariant selection configured on the service plugin. */
 export interface Config {
@@ -65,7 +65,7 @@ export class InvariantError extends Error {
   }
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     invariants: InvariantRegistry
   }

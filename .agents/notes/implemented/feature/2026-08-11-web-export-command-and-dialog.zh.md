@@ -10,7 +10,7 @@ Session 导出需要一个稳定的 Session 级外显入口，以及语义等价
 
 ## Decision
 
-`@alego/session-log-export` 注册 Web 专用的 `/export` 用户命令，并提供浏览器 `ctx.sessionLogDownload` 控制器。该命令记录普通的 `command/run` 和 `command/done`；`command.execute` 返回成功结果后，`alego-client-ui-commands` 会发布本地确认，请求当前浏览器的控制器下载 ApiProxy 现有的 `GET /api/session.export` ZIP。其他客户端会渲染广播的命令节点，但不会重复执行浏览器副作用。Session Header 中 111×32 的 `Session log` 胶囊按钮会直接调用该控制器。两种入口通过 `HEAD` 预检获得准备阶段错误，再把 GET URL 交给浏览器下载管理器，因此 JavaScript 不会缓冲 ZIP；两种入口共用进行中状态和 Modal。
+`@singula-ai/alego-session-log-export` 注册 Web 专用的 `/export` 用户命令，并提供浏览器 `ctx.sessionLogDownload` 控制器。该命令记录普通的 `command/run` 和 `command/done`；`command.execute` 返回成功结果后，`alego-client-ui-commands` 会发布本地确认，请求当前浏览器的控制器下载 ApiProxy 现有的 `GET /api/session.export` ZIP。其他客户端会渲染广播的命令节点，但不会重复执行浏览器副作用。Session Header 中 111×32 的 `Session log` 胶囊按钮会直接调用该控制器。两种入口通过 `HEAD` 预检获得准备阶段错误，再把 GET URL 交给浏览器下载管理器，因此 JavaScript 不会缓冲 ZIP；两种入口共用进行中状态和 Modal。
 
 Header 贡献占用最右侧的 `conversation.session.header.utilities` 列表，渲染带尾部下载图标的 `Session log` 文字 capsule 和共享 Modal。标题旁的 `conversation.session.header.actions` 列表继续承载模式、Subagent 和 Task 配置项，挂载 Session export 不会改变它们的顺序或位置。导出贡献不观察 Session 历史。逐 Session 控制器会折叠并发操作，在插件释放时取消活动预检，忽略释放后的迟到请求，并在请求后来完成时保留用户已经关闭弹窗的状态。
 

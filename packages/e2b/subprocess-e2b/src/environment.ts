@@ -2,9 +2,9 @@
 
 import { Buffer } from 'node:buffer'
 import { posix } from 'node:path'
-import { e2bControlEnvs } from '@alego/e2b'
-import type { Sandbox } from '@alego/e2b'
-import { SENSITIVE_ENV_PATTERN } from '@alego/subprocess'
+import { e2bControlEnvs } from '@singula-ai/alego-e2b'
+import type { Sandbox } from '@singula-ai/alego-e2b'
+import { SENSITIVE_ENV_PATTERN } from '@singula-ai/alego-subprocess'
 
 const BASE64 = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/
 

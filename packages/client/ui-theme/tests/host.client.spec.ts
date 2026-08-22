@@ -1,10 +1,10 @@
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
-import type { IndexInjection } from '@alego/host-webserver'
-import { SettingsProvider, settingsNamespace, type SettingsNamespace } from '@alego/settings'
+import type { IndexInjection } from '@singula-ai/alego-host-webserver'
+import { SettingsProvider, settingsNamespace, type SettingsNamespace } from '@singula-ai/alego-settings'
 import {
   DEFAULT_PREFERENCE, THEME_SETTINGS_NAMESPACE, apply,
-} from '@alego/client-ui-theme'
+} from '@singula-ai/alego-client-ui-theme'
 
 class MemorySettings extends SettingsProvider {
   readonly writable = true

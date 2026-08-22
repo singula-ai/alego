@@ -1,7 +1,7 @@
 /** Bounded host-side projection of a complete output file retained in E2B. */
 
 import { Buffer } from 'node:buffer'
-import type { SubprocessOutputRead, SubprocessOutputReader } from '@alego/subprocess'
+import type { SubprocessOutputRead, SubprocessOutputReader } from '@singula-ai/alego-subprocess'
 
 const BASE64_TEXT = /^[A-Za-z0-9+/]+={0,2}$/u
 

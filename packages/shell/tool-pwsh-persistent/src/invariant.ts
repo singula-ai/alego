@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/tool-pwsh-persistent`.
- * @module @alego/tool-pwsh-persistent/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-tool-pwsh-persistent`.
+ * @module @singula-ai/alego-tool-pwsh-persistent/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/tool-pwsh-persistent'
+const PACKAGE_NAME = '@singula-ai/alego-tool-pwsh-persistent'
 
 /** Cordis companion plugin name. */
 export const name = 'tool-pwsh-persistent-invariant'

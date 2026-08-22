@@ -41,7 +41,7 @@ An inflation guard bounds the whole pass: if the post-compaction size is not str
 
 ### The recall tools
 
-A new package `@alego/tool-recall` (consumer-only, over the `alego-session` and `alego-compaction` vocabularies) registers two model-facing tools:
+A new package `@singula-ai/alego-tool-recall` (consumer-only, over the `alego-session` and `alego-compaction` vocabularies) registers two model-facing tools:
 
 - `history_read(checkpoint, offset?)` — renders the shadowed span of any checkpoint in the log, including superseded ones, as `User:`/`Assistant:`/`Tool result:` transcript, paginated by a configured budget with a continuation cursor.
 - `history_search(query, checkpoint?, limit?)` — case-insensitive literal scan over every shadowed span; returns snippets with checkpoint ids and coverage metadata (`scanned`/`matched`/`truncated`). The zero-match hint notes the scan is literal and points at direct `history_read` of a plausible checkpoint.

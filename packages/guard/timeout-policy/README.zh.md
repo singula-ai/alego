@@ -10,7 +10,7 @@
 
 ```yaml
 - id: timeout-policy
-  name: '@alego/tool-call-timeout-policy'
+  name: '@singula-ai/alego-tool-call-timeout-policy'
 ```
 
 每工具预算由工具插件声明（例如 `alego-tool-web` 的 `fetchTimeoutMs`／`searchTimeoutMs` 配置，会附加为 `ToolDefinition.timeoutMs`）；此插件只负责强制执行，因此不可能拼错工具名。
@@ -19,7 +19,7 @@
 
 对 **声明了 `timeoutMs` 的工具**，监听器会：
 
-1. 从注册表中的工具自身声明（`ctx.tools.get(exec.name)?.timeoutMs`）读取预算，并设置 `deadline(exec.signal, timeoutMs, 'TOOL_TIMEOUT')`：一个将调用方中止与此插件计时器融合的信号（`@alego/timeout`）。
+1. 从注册表中的工具自身声明（`ctx.tools.get(exec.name)?.timeoutMs`）读取预算，并设置 `deadline(exec.signal, timeoutMs, 'TOOL_TIMEOUT')`：一个将调用方中止与此插件计时器融合的信号（`@singula-ai/alego-timeout`）。
 2. 将该派生信号替换到 `exec` 上用于下游分发，然后恢复调用方自身的信号（Cordis `next()` 忽略传入的参数，因此包装层会原地修改共享 `exec`；恢复可使 `tools/post-execute` 看到调用方的信号）。
 3. 分发后，如果 `timeoutOf(d.signal, 'TOOL_TIMEOUT')` 检测到此插件自身的计时器已触发，则将结果替换为结构化 `TOOL_TIMEOUT` 工具结果：`{ isError: true, error: { message, info: { name: 'ToolTimeoutError', code: 'TOOL_TIMEOUT' } }, content: 'Error: tool call timed out after <ms>ms' }`。
 

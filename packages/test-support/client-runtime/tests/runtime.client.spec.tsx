@@ -9,12 +9,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { stubSettingsScope } from '../src/settings-scope.ts'
 import { cleanup } from '@testing-library/react'
-import { defineStore } from '@alego/client-runtime/client'
-import type { SessionId, WorkspaceId } from '@alego/client-runtime/client'
-import type { PropsRenderSlots, SessionStandardProps } from '@alego/client-ui-slots'
-import { SlotTestRuntime } from '@alego/client-test-runtime'
+import { defineStore } from '@singula-ai/alego-client-runtime/client'
+import type { SessionId, WorkspaceId } from '@singula-ai/alego-client-runtime/client'
+import type { PropsRenderSlots, SessionStandardProps } from '@singula-ai/alego-client-ui-slots'
+import { SlotTestRuntime } from '@singula-ai/alego-client-test-runtime'
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface SlotMap {
     'trt.panel': { kind: 'single'; scope: 'root'; owner: { label?: string } }
     'trt.chat': { kind: 'single'; scope: 'session' }

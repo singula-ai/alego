@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/lsp-stdio`.
- * @module @alego/lsp-stdio/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-lsp-stdio`.
+ * @module @singula-ai/alego-lsp-stdio/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/lsp-stdio'
+const PACKAGE_NAME = '@singula-ai/alego-lsp-stdio'
 
 /** Cordis companion plugin name. */
 export const name = 'lsp-stdio-invariant'

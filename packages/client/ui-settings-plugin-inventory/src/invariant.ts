@@ -1,10 +1,10 @@
-/** Package-owned invariant companion. @module @alego/client-ui-settings-plugin-inventory/invariant */
+/** Package-owned invariant companion. @module @singula-ai/alego-client-ui-settings-plugin-inventory/invariant */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/client-ui-settings-plugin-inventory'
+const PACKAGE_NAME = '@singula-ai/alego-client-ui-settings-plugin-inventory'
 
 /** Cordis companion plugin name. */
 export const name = 'client-ui-settings-plugin-inventory-invariant'

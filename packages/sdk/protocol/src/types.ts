@@ -2,15 +2,15 @@
  * Named wire types for the Alego SDK runtime protocol: the three
  * request/result pairs and the four server-to-client notification payloads
  * exchanged over the newline-delimited JSON-RPC stdio transport. The server
- * plugin (`@alego/sdk-jsonrpc-server`) and SDK clients share these shapes;
+ * plugin (`@singula-ai/alego-sdk-jsonrpc-server`) and SDK clients share these shapes;
  * `serverInfo.name` stays the wire-stable `alego-sdk-runtime`.
  *
- * @module @alego/sdk-protocol/types
+ * @module @singula-ai/alego-sdk-protocol/types
  */
 
-import type { ContentBlock } from '@alego/llm'
-import type { SessionEvent } from '@alego/session'
-import type { SubagentStopReason } from '@alego/subagent'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { SessionEvent } from '@singula-ai/alego-session'
+import type { SubagentStopReason } from '@singula-ai/alego-subagent'
 
 /** Parameters for the process-wide SDK handshake. */
 export interface InitializeParams {

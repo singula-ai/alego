@@ -11,7 +11,7 @@ It is a **library, not a service or plugin**: no `ctx`, registers nothing, holds
 ## Surface
 
 ```ts
-import { runNativeCommand, type NativeCommandRunner } from '@alego/native-command'
+import { runNativeCommand, type NativeCommandRunner } from '@singula-ai/alego-native-command'
 ```
 
 ## Model Experience

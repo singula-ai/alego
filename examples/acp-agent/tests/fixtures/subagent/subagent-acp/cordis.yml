@@ -8,14 +8,14 @@
   name: './mock-delegating-llm.ts'
 
 - id: subagent
-  name: '@alego/subagent'
+  name: '@singula-ai/alego-subagent'
 
 # The out-of-process ACP backend spawns its child through the subprocess seam.
 - id: subprocess
-  name: '@alego/subprocess-local'
+  name: '@singula-ai/alego-subprocess-local'
 
 - id: subagent-acp
-  name: '@alego/subagent-acp'
+  name: '@singula-ai/alego-subagent-acp'
   config:
     providerName: acp
     command: !!js process.execPath
@@ -26,7 +26,7 @@
       MOCK_ECHO_CWD: '1'
 
 - id: tool-subagent
-  name: '@alego/tool-subagent'
+  name: '@singula-ai/alego-tool-subagent'
   config:
     provider: acp
     toolName: subagent
@@ -35,7 +35,7 @@
     maxDepth: 'provider-managed'
 
 - id: agent-spine
-  name: '@alego/agent-spine-demo'
+  name: '@singula-ai/alego-agent-spine-demo'
   config:
     agents:
       - id: main
@@ -46,10 +46,10 @@
     workspaceContext: false
 
 - id: persistence
-  name: '@alego/session-persistence-jsonl'
+  name: '@singula-ai/alego-session-persistence-jsonl'
   config:
     root: './.sessions'
     compression: 'none'
 
 - id: checkpoint-policy
-  name: '@alego/session-checkpoint-policy'
+  name: '@singula-ai/alego-session-checkpoint-policy'

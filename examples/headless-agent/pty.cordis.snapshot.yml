@@ -1,24 +1,24 @@
 # Keyless opt-in PTY composition for the headless stream-json snapshot.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - insert:
           - id: sandbox-policy
-            name: '@alego/sandbox-policy'
+            name: '@singula-ai/alego-sandbox-policy'
             config:
               mode: danger-full-access
           - id: pty
-            name: '@alego/terminal'
+            name: '@singula-ai/alego-terminal'
           - id: pty-snapshot-backend
             name: '../acp-agent/pty-snapshot-backend.mjs'
           - id: tool-terminal
-            name: '@alego/tool-terminal'
+            name: '@singula-ai/alego-tool-terminal'
             config:
               maxResultBytes: 64
           - id: llm-replay
-            name: '@alego/llm-replay'
+            name: '@singula-ai/alego-llm-replay'

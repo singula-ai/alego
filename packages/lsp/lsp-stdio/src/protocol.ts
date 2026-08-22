@@ -3,7 +3,7 @@
  * request results (`Location`, `LocationLink`, `Hover`), and the `textDocumentSync` shapes used to
  * decide transient-open support. Types only. Fields absent from a real server payload stay optional;
  * the translation layer normalizes them into the seam's closed unions.
- * @module @alego/lsp-stdio/protocol
+ * @module @singula-ai/alego-lsp-stdio/protocol
  */
 
 /** A zero-based UTF-16 position on the wire (the protocol's `Position`). */

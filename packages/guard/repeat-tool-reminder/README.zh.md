@@ -1,4 +1,4 @@
-# @alego/repeat-tool-reminder
+# @singula-ai/alego-repeat-tool-reminder
 
 [English](README.md) | 中文
 
@@ -8,7 +8,7 @@
 
 ```yaml
 - id: repeat-tool-reminder
-  name: '@alego/repeat-tool-reminder'
+  name: '@singula-ai/alego-repeat-tool-reminder'
   config:
     thresholds: [3, 5, 8]        # default; consecutive counts that trigger a reminder
     include: []                  # tool-name patterns to track; empty ⇒ all tools

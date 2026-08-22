@@ -1,4 +1,4 @@
-# @alego/code-runtime
+# @singula-ai/alego-code-runtime
 
 [English](README.md) | 中文
 

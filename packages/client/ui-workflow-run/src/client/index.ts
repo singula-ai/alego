@@ -1,13 +1,13 @@
 /** Browser plugin for durable workflow-run Conversation Nodes. */
 
-import type { ClientContext, SessionId } from '@alego/client-runtime/client'
-import type {} from '@alego/client-locale/client'
-import type {} from '@alego/client-ui-conversation/client'
+import type { ClientContext, SessionId } from '@singula-ai/alego-client-runtime/client'
+import type {} from '@singula-ai/alego-client-locale/client'
+import type {} from '@singula-ai/alego-client-ui-conversation/client'
 import { WorkflowRunPanel, type WorkflowRunInjected } from './WorkflowRunPanel.tsx'
 import { en, NS, type WorkflowRunKey, zh } from './locales.ts'
 import { workflowRunDefinition } from './workflow-definition.ts'
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Durable workflow-run node copy. */
     workflowRun: WorkflowRunKey

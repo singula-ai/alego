@@ -2,18 +2,18 @@
  * JSON-RPC methods and notifications for out-of-process harness SDKs.
  * The surrounding context owns plugins, persistence, and configured adapters.
  *
- * @module @alego/sdk-jsonrpc-server/server
+ * @module @singula-ai/alego-sdk-jsonrpc-server/server
  */
 
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import { resolve } from 'node:path'
-import type { Agent, AgentHandle } from '@alego/agent'
-import { createUserMessage } from '@alego/llm'
-import { carrierKeyOf, type Scoped } from '@alego/scope'
-import { SessionId } from '@alego/session'
-import type SubagentRuntime from '@alego/subagent'
-import type { SubagentRunEndInfo } from '@alego/subagent'
-import * as LlmDeepSeek from '@alego/llm-deepseek'
+import type { Agent, AgentHandle } from '@singula-ai/alego-agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import { carrierKeyOf, type Scoped } from '@singula-ai/alego-scope'
+import { SessionId } from '@singula-ai/alego-session'
+import type SubagentRuntime from '@singula-ai/alego-subagent'
+import type { SubagentRunEndInfo } from '@singula-ai/alego-subagent'
+import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek'
 import type {
   InitializeParams,
   InitializeResult,
@@ -23,7 +23,7 @@ import type {
   SessionPromptResult,
   SubagentFinishedNotification,
   SubagentStartedNotification,
-} from '@alego/sdk-protocol'
+} from '@singula-ai/alego-sdk-protocol'
 
 interface SessionRecord {
   handle: AgentHandle
@@ -219,7 +219,7 @@ export class HarnessSdkJsonRpcServer {
     // No preset composition: this server's compositions keep the model-facing
     // rows in the host plane, so this agent reads them from the global layer. A
     // deployment that configures a roster has to join one here first
-    // (@alego/agent-presets README, "Composing a child agent").
+    // (@singula-ai/alego-agent-presets README, "Composing a child agent").
     const handle = await this.ctx.agents.create({
       sessionId: SessionId(sessionId),
       meta: { cwd: this.cwd },

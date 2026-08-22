@@ -1,10 +1,10 @@
-# @alego/spill-policy
+# @singula-ai/alego-spill-policy
 
 [English](README.md) | 中文
 
 **工具结果 spill 策略**：一个 `tools/post-execute` 转换器，用于防止过大的纯文本工具结果进入模型上下文。当最终结果超过 `maxInlineBytes` 时，它会通过 [`ctx.spillStore`](../spill) 保存完整文本，并将面向模型的结果替换为有界的首尾预览、后端定位信息与取回指引。
 
-该插件**不注册任何服务**，也不负责存储或预览机制：预览由 [`@alego/output-retention`](../../util/output-retention)（`TextRetainer`）负责，存储由 `ctx.spillStore` 负责。它只决定何时 spill，并组合通知。
+该插件**不注册任何服务**，也不负责存储或预览机制：预览由 [`@singula-ai/alego-output-retention`](../../util/output-retention)（`TextRetainer`）负责，存储由 `ctx.spillStore` 负责。它只决定何时 spill，并组合通知。
 
 ## 配置
 

@@ -6,7 +6,7 @@ English | [中文](2026-07-07-tool-call-timeout-policy.zh.md)
 
 ## Problem
 
-The [timeout/deadline Agent Note](2026-07-06-timeout-deadline-library.md) extracted the timing-and-classification primitive into `@alego/timeout`, but timeout policy was still attached to individual capabilities and model-facing schemas. `bash` exposed `timeoutMs`; `web_fetch` exposed `timeout_ms`; `web_search` had no model-facing timeout even though providers already honor `exec.signal`; a future grep/glob tool would either import the timeout library directly or invent its own timeout policy. That is the wrong authoring shape for a plugin SDK: a tool author should normally forward `exec.signal` to the implementation it calls, and deployment policy should decide the budget.
+The [timeout/deadline Agent Note](2026-07-06-timeout-deadline-library.md) extracted the timing-and-classification primitive into `@singula-ai/alego-timeout`, but timeout policy was still attached to individual capabilities and model-facing schemas. `bash` exposed `timeoutMs`; `web_fetch` exposed `timeout_ms`; `web_search` had no model-facing timeout even though providers already honor `exec.signal`; a future grep/glob tool would either import the timeout library directly or invent its own timeout policy. That is the wrong authoring shape for a plugin SDK: a tool author should normally forward `exec.signal` to the implementation it calls, and deployment policy should decide the budget.
 
 At the same time, not every timeout in the repo is a model-facing tool-call budget. Hooks execute command hooks by calling `ctx.shell` directly, not through `ctx.tools.execute()`, and the `bash` model tool multiplexes foreground execution, background start, background polling, and hook reuse through the same backend. Moving every timeout into a tool plugin in one step would conflate those paths and risk breaking hook timeout semantics.
 
@@ -14,9 +14,9 @@ At the same time, not every timeout in the repo is a model-facing tool-call budg
 
 Tool-call timeout is a policy that applies only to model-facing tool execution, in three parts:
 
-- `@alego/timeout` remains the shared library that owns `deadline()` and `timeoutOf()`.
-- `@alego/tools` has an around-dispatch waterfall, `tools/execute`, between `tools/pre-execute` and `tools/post-execute`.
-- The [repository naming contract](2026-08-11-repository-naming-contract-and-rename-ledger.md) names `@alego/tool-call-timeout-policy` for the exact operation it limits. The plugin reads each tool's declared `timeoutMs` from the runtime and wraps a call that has one by deriving a new `exec.signal`.
+- `@singula-ai/alego-timeout` remains the shared library that owns `deadline()` and `timeoutOf()`.
+- `@singula-ai/alego-tools` has an around-dispatch waterfall, `tools/execute`, between `tools/pre-execute` and `tools/post-execute`.
+- The [repository naming contract](2026-08-11-repository-naming-contract-and-rename-ledger.md) names `@singula-ai/alego-tool-call-timeout-policy` for the exact operation it limits. The plugin reads each tool's declared `timeoutMs` from the runtime and wraps a call that has one by deriving a new `exec.signal`.
 
 The execution pipeline is:
 
@@ -34,19 +34,19 @@ The default behavior is conservative: a tool that declares no `timeoutMs` receiv
 
 ### The `tools/execute` around-dispatch extension point
 
-`@alego/tools` declares a `tools/execute` waterfall whose base `next()` is the dispatch-with-normalization thunk — the same inner `try`/`catch` that turns a thrown tool (or unknown tool) into an `isError` `ToolExecutionResult`. A listener receives `(exec, next)`: it calls `next()` to delegate to dispatch (returning its result, optionally wrapped) or returns a replacement result to short-circuit dispatch. The whole pipeline still sits inside `execute`'s outer try/catch, so a throwing listener becomes an `isError` result, never a turn failure.
+`@singula-ai/alego-tools` declares a `tools/execute` waterfall whose base `next()` is the dispatch-with-normalization thunk — the same inner `try`/`catch` that turns a thrown tool (or unknown tool) into an `isError` `ToolExecutionResult`. A listener receives `(exec, next)`: it calls `next()` to delegate to dispatch (returning its result, optionally wrapped) or returns a replacement result to short-circuit dispatch. The whole pipeline still sits inside `execute`'s outer try/catch, so a throwing listener becomes an `isError` result, never a turn failure.
 
 That the catch is the base `next` — not something outside the waterfall — is load-bearing: when a provider sees the timeout signal and throws its own upstream-abort error, registry dispatch first converts it to a normal error result, and only then can `timeout-policy` replace the final result with `TOOL_TIMEOUT`.
 
 ### The `timeout-policy` plugin
 
-The plugin is `@alego/tool-call-timeout-policy`, a zero-config function/namespace plugin (`name` / `inject` / `apply`) in the `packages/guard/` group (originally its own `timeout/` group). The per-tool budget is DECLARED on the tool, not on this plugin: a `ToolDefinition` carries an optional `timeoutMs`, which the owning tool plugin sets from its own config. `alego-tool-web`, for example, resolves `fetchTimeoutMs` / `searchTimeoutMs` (default 30000) onto the `web_fetch` / `web_search` definitions:
+The plugin is `@singula-ai/alego-tool-call-timeout-policy`, a zero-config function/namespace plugin (`name` / `inject` / `apply`) in the `packages/guard/` group (originally its own `timeout/` group). The per-tool budget is DECLARED on the tool, not on this plugin: a `ToolDefinition` carries an optional `timeoutMs`, which the owning tool plugin sets from its own config. `alego-tool-web`, for example, resolves `fetchTimeoutMs` / `searchTimeoutMs` (default 30000) onto the `web_fetch` / `web_search` definitions:
 
 ```yaml
 - id: timeout-policy
-  name: '@alego/tool-call-timeout-policy'
+  name: '@singula-ai/alego-tool-call-timeout-policy'
 - id: tool-web
-  name: '@alego/tool-web'
+  name: '@singula-ai/alego-tool-web'
   config:
     fetchTimeoutMs: 30000
     searchTimeoutMs: 30000
@@ -77,19 +77,19 @@ No new session event is needed for reconstructability: `TOOL_TIMEOUT` is the fin
 
 ### Existing tool adaptation
 
-`web_fetch` and `web_search` are migrated. `alego-tool-web` keeps ownership of their model-facing schemas, and those schemas expose no timeout knob: `web_fetch` has no `timeout_ms` parameter, while `web_search` accepts a required `queries` array without a timeout argument. The tool bodies do not import `@alego/timeout`; they forward `exec.signal` to `ctx.web`.
+`web_fetch` and `web_search` are migrated. `alego-tool-web` keeps ownership of their model-facing schemas, and those schemas expose no timeout knob: `web_fetch` has no `timeout_ms` parameter, while `web_search` accepts a required `queries` array without a timeout argument. The tool bodies do not import `@singula-ai/alego-timeout`; they forward `exec.signal` to `ctx.web`.
 
 `alego-web-fetch-http` keeps one configured provider-level `timeoutMs` as a large resource backstop for direct `ctx.web.fetch()` callers and misconfigured deployments; it owns no model-facing timeout. When a `TOOL_TIMEOUT` signal reaches the fetch provider first, provider-scoped classification treats it as upstream `WEB_ABORTED`, and the outer `tools/execute` wrapper replaces the final tool result with `TOOL_TIMEOUT`. A shipped web-tool deployment configures the provider backstop above the `timeout-policy` budget so the tool-call policy normally wins for model calls.
 
-`bash` stays on the current backend timeout path. `alego-tool-bash` continues to expose `timeoutMs` and `run_in_background`; `alego-bash-local` continues to use `@alego/timeout` for `BASH_TIMEOUT`; hook bridges continue to call `runHook()` and pass `timeoutMs` through `ctx.shell`. This keeps foreground/background/hook behavior stable.
+`bash` stays on the current backend timeout path. `alego-tool-bash` continues to expose `timeoutMs` and `run_in_background`; `alego-bash-local` continues to use `@singula-ai/alego-timeout` for `BASH_TIMEOUT`; hook bridges continue to call `runHook()` and pass `timeoutMs` through `ctx.shell`. This keeps foreground/background/hook behavior stable.
 
 `read`, `write`, `edit`, `todo_write`, `job_list`, and `job_kill` do not opt into tool-call timeout. `job_output` owns its bounded wait because a wait timeout is a successful live-status result, not a tool failure.
 
-A future model-facing grep/glob tool can be implemented on top of `ctx.shell` without importing `@alego/timeout`: it forwards `exec.signal` to `ctx.shell`, and declares its own `timeoutMs` (from its plugin's config) for the enforcer to apply. If bash-local's backend timeout becomes a problem for such a tool, the bash seam can later add a caller-owned-deadline mode; that is a separate decision.
+A future model-facing grep/glob tool can be implemented on top of `ctx.shell` without importing `@singula-ai/alego-timeout`: it forwards `exec.signal` to `ctx.shell`, and declares its own `timeoutMs` (from its plugin's config) for the enforcer to apply. If bash-local's backend timeout becomes a problem for such a tool, the bash seam can later add a caller-owned-deadline mode; that is a separate decision.
 
 ## Alternatives considered
 
-**Name the plugin `tool-timeout`.** The literal Agent Note name matched the `gen-tool-catalog` completeness guard's `packages/*/tool-*` glob, which requires every match to register a model-facing tool. This plugin registers none — it is a `tools/execute` wrapper — so a `tool-*` name would either fail `verify-tool-catalog` or force a misleading boot entry. The package is `@alego/tool-call-timeout-policy` in what was then a new `timeout/` group, since folded into `packages/guard/`; the cordis.yml `id` can still be `timeout-policy`.
+**Name the plugin `tool-timeout`.** The literal Agent Note name matched the `gen-tool-catalog` completeness guard's `packages/*/tool-*` glob, which requires every match to register a model-facing tool. This plugin registers none — it is a `tools/execute` wrapper — so a `tool-*` name would either fail `verify-tool-catalog` or force a misleading boot entry. The package is `@singula-ai/alego-tool-call-timeout-policy` in what was then a new `timeout/` group, since folded into `packages/guard/`; the cordis.yml `id` can still be `timeout-policy`.
 
 **Keep per-tool timeout handling only.** This was the shape for `bash` and `web_fetch`, and it matches Claude Code and Codex for shell commands. It loses for web-style tools because every new timeout-capable tool must choose validation, cap semantics, docs, snapshots, and classification. The plugin centralizes policy and classification while leaving each tool's schema focused on business input.
 
@@ -107,7 +107,7 @@ A future model-facing grep/glob tool can be implemented on top of `ctx.shell` wi
 
 ## Consequences
 
-- `@alego/tools` gains an around-dispatch surface after the interception points deliberately split pre/post tool hooks. Its contract is narrow — wrap registry dispatch, not replace the pre-gate or post-result policy — and the base `next()` is dispatch-with-normalization so a wrapper never sees a raw tool throw.
+- `@singula-ai/alego-tools` gains an around-dispatch surface after the interception points deliberately split pre/post tool hooks. Its contract is narrow — wrap registry dispatch, not replace the pre-gate or post-result policy — and the base `next()` is dispatch-with-normalization so a wrapper never sees a raw tool throw.
 - Multiple `tools/execute` listeners compose by ordinary Cordis waterfall order: a listener that calls `next()` wraps downstream listeners plus dispatch; one that returns without `next()` short-circuits them. A deployment combining timeout with a future retry/sandbox/metrics wrapper chooses semantics by registration order ("timeout covers the whole retry" vs "timeout covers each attempt").
 - Opt-in by declaration is a deliberate misconfiguration risk: a tool can declare a `timeoutMs` without honoring `exec.signal`, and that tool will not stop on timeout. The registry awaits that non-quiescent body rather than racing it, while the plugin contract states that declaring a budget means cooperative; the web tools prove the pattern on tools that already forward the signal.
 - During the transition `bash` and the migrated web tools use different timeout paths on purpose: `TOOL_TIMEOUT` is the model-facing tool-call budget, while `BASH_TIMEOUT` remains the bash backend timeout used by bash and hooks.

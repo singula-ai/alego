@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import SessionStore, { Session, SessionId, isJsonValue } from '@alego/session'
-import type { SessionEvent, SessionHeader } from '@alego/session'
+import { Context } from '@singula-ai/cordis'
+import SessionStore, { Session, SessionId, isJsonValue } from '@singula-ai/alego-session'
+import type { SessionEvent, SessionHeader } from '@singula-ai/alego-session'
 import {
   DEFAULT_PREPARED_SESSION_CACHE_SIZE, DEFAULT_WRITE_BATCH_MAX_DELAY_MS, MAX_WRITE_BATCH_DELAY_MS,
   SessionPersistence, SessionPersistenceRevision, PersistenceCoordinator,

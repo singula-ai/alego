@@ -1,4 +1,4 @@
-# @alego/web
+# @singula-ai/alego-web
 
 [English](README.md) | 中文
 
@@ -8,11 +8,11 @@
 
 | 包 | 职责 |
 |---|---|
-| `@alego/web`（本包） | Service Definition：服务、提供方注册表、选择策略、请求／结果词汇、`WebError` 分类体系 |
-| `@alego/web-search-exa` | 搜索提供方：Exa |
-| `@alego/web-search-perplexity` | 搜索提供方：Perplexity |
-| `@alego/web-fetch-http` | 抓取提供方：匿名公共 HTTP(S) |
-| `@alego/tool-web` | Consumer：面向模型的 `web_search`／`web_fetch` 工具 schema，构建于 `ctx.web` 之上 |
+| `@singula-ai/alego-web`（本包） | Service Definition：服务、提供方注册表、选择策略、请求／结果词汇、`WebError` 分类体系 |
+| `@singula-ai/alego-web-search-exa` | 搜索提供方：Exa |
+| `@singula-ai/alego-web-search-perplexity` | 搜索提供方：Perplexity |
+| `@singula-ai/alego-web-fetch-http` | 抓取提供方：匿名公共 HTTP(S) |
+| `@singula-ai/alego-tool-web` | Consumer：面向模型的 `web_search`／`web_fetch` 工具 schema，构建于 `ctx.web` 之上 |
 
 搜索与抓取没有共享请求 schema 或业务逻辑，但有意共用一个 seam：`ctx.web` 是单一 web 访问中间层，拥有一项提供方选择策略、一套中止／错误词汇和一个面向产品的「该 harness 如何访问 web」配置接口。成对的 `Search`／`Fetch` 方法保持并行是有意为之。
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { SessionId, SessionSummary } from '@alego/client-runtime/client'
-import { indexSubagentDescendants } from '@alego/client-runtime/client'
+import type { SessionId, SessionSummary } from '@singula-ai/alego-client-runtime/client'
+import { indexSubagentDescendants } from '@singula-ai/alego-client-runtime/client'
 
 const sid = (id: string) => id as SessionId
 

@@ -1,5 +1,5 @@
-import { defineProperty } from '@alego/cosmokit'
-import type { Promisify } from '@alego/cosmokit'
+import { defineProperty } from '@singula-ai/cosmokit'
+import type { Promisify } from '@singula-ai/cosmokit'
 import { Context } from './context.ts'
 import { Fiber, FiberState } from './fiber.ts'
 import { DisposableList, symbols } from './utils.ts'

@@ -6,15 +6,15 @@
  * argument validation, argv construction, result parsing, inline sampling,
  * and formatting; process concerns (spawn execution, tree termination,
  * environment scrubbing, output capture) stay behind `ctx.subprocess`.
- * @module @alego/tool-fs-search/glob
+ * @module @singula-ai/alego-tool-fs-search/glob
  */
 
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import { sep } from 'node:path'
-import { defineTool } from '@alego/tools'
-import type { GenericCallView, SearchResultView, ToolResult } from '@alego/tools'
-import type { SpillRef } from '@alego/spill'
-import type {} from '@alego/system-prompt'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { GenericCallView, SearchResultView, ToolResult } from '@singula-ai/alego-tools'
+import type { SpillRef } from '@singula-ai/alego-spill'
+import type {} from '@singula-ai/alego-system-prompt'
 import { runRipgrep, toWorkdirRelative, trySaveFormattedResult } from './search-core.ts'
 import { globSearchMeta, searchViewFromMeta } from './presentation.ts'
 import { acceptedDirectCallValue } from './direct-call.ts'

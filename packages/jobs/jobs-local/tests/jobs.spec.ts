@@ -1,15 +1,15 @@
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { Session, SessionId } from '@alego/session'
-import AgentRegistry, { Inbox } from '@alego/agent'
-import type { Agent } from '@alego/agent'
-import { bindScopeParent, createScope, scopeOf } from '@alego/scope'
-import type { ScopeKey } from '@alego/scope'
-import { JobId } from '@alego/jobs'
-import type { JobHooks, JobKind, JobOutcome, JobSnapshot, JobStart } from '@alego/jobs'
-import LocalJobRegistry, { type Config as JobsConfig } from '@alego/jobs-local'
+import { Context } from '@singula-ai/cordis'
+import { Session, SessionId } from '@singula-ai/alego-session'
+import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import type { Agent } from '@singula-ai/alego-agent'
+import { bindScopeParent, createScope, scopeOf } from '@singula-ai/alego-scope'
+import type { ScopeKey } from '@singula-ai/alego-scope'
+import { JobId } from '@singula-ai/alego-jobs'
+import type { JobHooks, JobKind, JobOutcome, JobSnapshot, JobStart } from '@singula-ai/alego-jobs'
+import LocalJobRegistry, { type Config as JobsConfig } from '@singula-ai/alego-jobs-local'
 
-declare module '@alego/jobs' {
+declare module '@singula-ai/alego-jobs' {
   interface JobKindMap {
     workflow: 'workflow'
   }
@@ -119,7 +119,7 @@ describe('LocalJobRegistry.start', () => {
     const ctx = new Context()
     await ctx.plugin(LocalJobRegistry)
     expect(() => ctx.jobs.start(producer().spec))
-      .toThrow('background jobs unavailable: no job controller serves this agent (load @alego/tool-jobs in its composition)')
+      .toThrow('background jobs unavailable: no job controller serves this agent (load @singula-ai/alego-tool-jobs in its composition)')
   })
 
   it('refuses an owner whose own composition attaches no controller', async () => {

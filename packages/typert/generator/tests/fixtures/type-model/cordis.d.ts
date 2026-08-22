@@ -1,4 +1,4 @@
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   export class Service { protected readonly __service?: never }
 
   export interface Context {}

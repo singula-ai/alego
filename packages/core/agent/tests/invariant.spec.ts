@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import * as AgentInvariant from '@alego/agent/invariant'
-import { scopeTarget } from '@alego/scope'
-import InvariantRegistry from '@alego/invariants'
+import { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import * as AgentInvariant from '@singula-ai/alego-agent/invariant'
+import { scopeTarget } from '@singula-ai/alego-scope'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

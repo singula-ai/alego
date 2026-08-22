@@ -1,8 +1,8 @@
 /** Package-local scripted child boundary for deterministic tool-subagent tests. */
 
-import type { Context } from '@alego/cordis'
-import type { ContentBlock } from '@alego/llm'
-import { SessionId } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
 import type {
   SubagentCapabilities,
   SubagentProvider,
@@ -10,7 +10,7 @@ import type {
   SubagentRun,
   SubagentStartRequest,
   SubagentStopReason,
-} from '@alego/subagent'
+} from '@singula-ai/alego-subagent'
 
 const DEFAULT_CAPABILITIES: SubagentCapabilities = {
   outputSchema: true,

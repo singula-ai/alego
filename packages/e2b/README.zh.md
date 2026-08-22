@@ -6,9 +6,9 @@
 
 | 包（package） | ctx 键 | 职责 |
 |---|---|---|
-| [`e2b`](e2b/README.zh.md)（`@alego/e2b`） | `ctx.e2b` | 创建一个沙箱，准备其工作目录与运行时目录，公开共享 SDK 句柄，并在超时或资源释放时将其删除 |
-| [`fs-e2b`](fs-e2b/README.zh.md)（`@alego/fs-e2b`） | `ctx.fs` | 通过 E2B Filesystem API 实现文件系统 seam |
-| [`subprocess-e2b`](subprocess-e2b/README.zh.md)（`@alego/subprocess-e2b`） | `ctx.subprocess` | 通过 E2B Commands 与 PTY API 实现可执行文件查找、受管进程组与 stdio、远程 spill 文件及终端会话 |
+| [`e2b`](e2b/README.zh.md)（`@singula-ai/alego-e2b`） | `ctx.e2b` | 创建一个沙箱，准备其工作目录与运行时目录，公开共享 SDK 句柄，并在超时或资源释放时将其删除 |
+| [`fs-e2b`](fs-e2b/README.zh.md)（`@singula-ai/alego-fs-e2b`） | `ctx.fs` | 通过 E2B Filesystem API 实现文件系统 seam |
+| [`subprocess-e2b`](subprocess-e2b/README.zh.md)（`@singula-ai/alego-subprocess-e2b`） | `ctx.subprocess` | 通过 E2B Commands 与 PTY API 实现可执行文件查找、受管进程组与 stdio、远程 spill 文件及终端会话 |
 
 现有的 [`alego-bash-local`](../shell/bash-local/README.zh.md)、[`alego-terminal-bash`](../terminal/terminal-bash/README.zh.md) 和 [`alego-lsp-stdio`](../lsp/lsp-stdio/README.zh.md) 无需 E2B 专用 fork。它们把执行环境中的所有操作委托给 `ctx.fs` 和 `ctx.subprocess`，因此挂载这两个 E2B 适配器后，它们所有涉及可变状态的工作都发生在同一个沙箱内。
 

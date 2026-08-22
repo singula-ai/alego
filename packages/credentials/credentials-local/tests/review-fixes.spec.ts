@@ -3,11 +3,11 @@
 // broken observer never fails a committed write), and the YAML document
 // editor's isolation between entries.
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { credentialKey, credentialRef } from '@alego/credentials'
+import { credentialKey, credentialRef } from '@singula-ai/alego-credentials'
 import { LocalCredentialProvider } from '../src/index.ts'
 
 /** Credential documents are seeded owner-only, exactly as the provider creates them. */

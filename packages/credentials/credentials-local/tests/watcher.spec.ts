@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { chmod, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { credentialRef } from '@alego/credentials'
+import { credentialRef } from '@singula-ai/alego-credentials'
 import { LocalCredentialProvider } from '../src/index.ts'
 
 const fsHarness = vi.hoisted(() => ({

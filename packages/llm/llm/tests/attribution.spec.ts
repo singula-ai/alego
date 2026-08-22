@@ -1,7 +1,7 @@
 import { createRequire } from 'node:module'
 import { describe, expect, it } from 'vitest'
-import { APP_IDENTITY, attributionHeaders, userAgent } from '@alego/llm'
-import type { AppIdentity } from '@alego/llm'
+import { APP_IDENTITY, attributionHeaders, userAgent } from '@singula-ai/alego-llm'
+import type { AppIdentity } from '@singula-ai/alego-llm'
 
 const manifest = createRequire(import.meta.url)('../package.json') as { version: string }
 

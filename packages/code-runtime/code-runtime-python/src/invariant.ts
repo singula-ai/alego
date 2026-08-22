@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/code-runtime-python`.
- * @module @alego/code-runtime-python/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-code-runtime-python`.
+ * @module @singula-ai/alego-code-runtime-python/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/code-runtime-python'
+const PACKAGE_NAME = '@singula-ai/alego-code-runtime-python'
 
 /** Cordis companion plugin name. */
 export const name = 'code-runtime-python-invariant'

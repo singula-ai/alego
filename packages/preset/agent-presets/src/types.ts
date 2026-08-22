@@ -1,7 +1,7 @@
 /** Client-safe event declarations owned by the agent-preset domain. */
-import type { SessionId } from '@alego/session/types'
+import type { SessionId } from '@singula-ai/alego-session/types'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Events {
     /**
      * One session committed a different agent preset to its durable log.

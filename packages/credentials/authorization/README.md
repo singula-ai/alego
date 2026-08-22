@@ -13,9 +13,9 @@ Authorization Service Definition (`ctx.authorization`). Some credentials cannot 
 ## Surface
 
 ```ts
-import type { Context } from '@alego/cordis'
-import { AuthorizationDeclinedError, type AuthorizationSession } from '@alego/authorization'
-import { credentialKey } from '@alego/credentials'
+import type { Context } from '@singula-ai/cordis'
+import { AuthorizationDeclinedError, type AuthorizationSession } from '@singula-ai/alego-authorization'
+import { credentialKey } from '@singula-ai/alego-credentials'
 
 declare const ctx: Context
 declare const exchange: (signal: AbortSignal) => Promise<void>

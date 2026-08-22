@@ -8,8 +8,8 @@ import { join } from 'node:path'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { StreamChunk } from '@alego/llm'
-import type { ReplayEntry } from '@alego/llm-replay'
+import type { StreamChunk } from '@singula-ai/alego-llm'
+import type { ReplayEntry } from '@singula-ai/alego-llm-replay'
 import { createChatScrollFixture } from './chat-scroll-fixture.ts'
 import {
   captureStableAria,

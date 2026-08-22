@@ -3,14 +3,14 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import Include from '@alego/cordis-plugin-include'
-import LlmRuntime from '@alego/llm'
-import SessionStore from '@alego/session'
-import TokenMeter from '@alego/token-meter'
-import BasicCompactionEngine from '@alego/compaction-basic'
-import ToolResultPruner from '@alego/compaction-tool-result-pruner'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include from '@singula-ai/cordis-plugin-include'
+import LlmRuntime from '@singula-ai/alego-llm'
+import SessionStore from '@singula-ai/alego-session'
+import TokenMeter from '@singula-ai/alego-token-meter'
+import BasicCompactionEngine from '@singula-ai/alego-compaction-basic'
+import ToolResultPruner from '@singula-ai/alego-compaction-tool-result-pruner'
 
 let root: string | undefined
 let context: Context | undefined
@@ -32,11 +32,11 @@ async function loadYaml(lines: readonly string[]): Promise<Context> {
   await context.plugin(Loader)
   context.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@alego/llm', LlmRuntime],
-    ['@alego/session', SessionStore],
-    ['@alego/token-meter', TokenMeter],
-    ['@alego/compaction-tool-result-pruner', ToolResultPruner],
-    ['@alego/compaction-basic', BasicCompactionEngine],
+    ['@singula-ai/alego-llm', LlmRuntime],
+    ['@singula-ai/alego-session', SessionStore],
+    ['@singula-ai/alego-token-meter', TokenMeter],
+    ['@singula-ai/alego-compaction-tool-result-pruner', ToolResultPruner],
+    ['@singula-ai/alego-compaction-basic', BasicCompactionEngine],
   ])
   context.loader.internal = {
     version: 'v2',
@@ -56,15 +56,15 @@ async function loadYaml(lines: readonly string[]): Promise<Context> {
 describe('real Loader composition', () => {
   it('loads the shipped token-meter, pruning, and compaction-basic YAML order', async () => {
     const loaded = await loadYaml([
-      "- name: '@alego/llm'",
-      "- name: '@alego/session'",
-      "- name: '@alego/token-meter'",
-      "- name: '@alego/compaction-tool-result-pruner'",
+      "- name: '@singula-ai/alego-llm'",
+      "- name: '@singula-ai/alego-session'",
+      "- name: '@singula-ai/alego-token-meter'",
+      "- name: '@singula-ai/alego-compaction-tool-result-pruner'",
       '  config:',
       '    thresholdChars: 100',
       '    headChars: 20',
       '    tailChars: 10',
-      "- name: '@alego/compaction-basic'",
+      "- name: '@singula-ai/alego-compaction-basic'",
       '  config:',
       '    thresholdRatio: 0.5',
       '    retainRatio: 0.125',

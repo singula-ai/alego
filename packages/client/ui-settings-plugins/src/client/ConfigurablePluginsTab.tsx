@@ -8,7 +8,7 @@
  */
 
 import { Fragment } from 'react'
-import type { InjectFace, PropsLocale, PropsRenderSlots, PropsRuntime } from '@alego/client-ui-slots'
+import type { InjectFace, PropsLocale, PropsRenderSlots, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
 import type {} from './slot-contract.ts'
 import type { ConfigurablePluginsTabFace } from './tab-store.ts'
 import css from './PluginsSettingsSection.module.css'

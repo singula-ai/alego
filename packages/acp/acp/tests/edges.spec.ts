@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { PROTOCOL_VERSION } from '@agentclientprotocol/sdk'
-import { createUserMessage, CallId, type StreamChunk  } from '@alego/llm'
-import { SessionId } from '@alego/session'
-import { defineContentToolFixture } from '@alego/tools'
+import { createUserMessage, CallId, type StreamChunk  } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
+import { defineContentToolFixture } from '@singula-ai/alego-tools'
 import { makeBridgeHarness, textResponse, type BridgeHarness } from './harness.ts'
 
 function toolCallResponse(): StreamChunk[] {

@@ -3,23 +3,23 @@ import { mkdir, mkdtemp, readFile, stat, symlink, writeFile } from 'node:fs/prom
 import { tmpdir } from 'node:os'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
-import { Context } from '@alego/cordis'
-import { boot, healProfilesModuleFallback, loadOverlayPatches, loadProfile } from '@alego/app-boot'
-import { provideCmdline } from '@alego/cmdline'
-import { SessionId } from '@alego/session'
-import type { Agent } from '@alego/agent'
-import type { PatchOptions } from '@alego/cordis-plugin-include'
+import { Context } from '@singula-ai/cordis'
+import { boot, healProfilesModuleFallback, loadOverlayPatches, loadProfile } from '@singula-ai/alego-app-boot'
+import { provideCmdline } from '@singula-ai/alego-cmdline'
+import { SessionId } from '@singula-ai/alego-session'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { PatchOptions } from '@singula-ai/cordis-plugin-include'
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
-import { settingsNamespace } from '@alego/settings'
-import { resolveSessionPreset, SETTINGS_NAMESPACE } from '@alego/agent-presets'
-import { applyChildComposition, childSessionMeta } from '@alego/subagent'
-import { CallId } from '@alego/llm'
-import type {} from '@alego/compaction-basic'
-import type {} from '@alego/skill'
-import type {} from '@alego/tools'
+import { settingsNamespace } from '@singula-ai/alego-settings'
+import { resolveSessionPreset, SETTINGS_NAMESPACE } from '@singula-ai/alego-agent-presets'
+import { applyChildComposition, childSessionMeta } from '@singula-ai/alego-subagent'
+import { CallId } from '@singula-ai/alego-llm'
+import type {} from '@singula-ai/alego-compaction-basic'
+import type {} from '@singula-ai/alego-skill'
+import type {} from '@singula-ai/alego-tools'
 // Type-only: resolves `ctx.get('sessionProjections')` and `ctx.get('tokenMeter')`.
-import type {} from '@alego/session-projection'
-import type {} from '@alego/token-meter'
+import type {} from '@singula-ai/alego-session-projection'
+import type {} from '@singula-ai/alego-token-meter'
 
 const CONFIG_DIR = fileURLToPath(new URL('../config/', import.meta.url))
 const REPO_ROOT = fileURLToPath(new URL('../../..', import.meta.url))
@@ -92,8 +92,8 @@ async function bootWeb(
     // supplies `directoryPicker` without one.
     { id: 'directory-picker', disabled: true },
     { insert: [
-      { id: 'directory-picker-browse', name: '@alego/host-directory-picker-browse' },
-      { id: 'ui-directory-picker-browse', name: '@alego/client-ui-directory-picker-browse' },
+      { id: 'directory-picker-browse', name: '@singula-ai/alego-host-directory-picker-browse' },
+      { id: 'ui-directory-picker-browse', name: '@singula-ai/alego-client-ui-directory-picker-browse' },
     ] },
     // The roster AppCLIEntry would patch in; only the shipped root, so a
     // developer's own `~/.alego/.preset` cannot change this test's outcome.
@@ -484,8 +484,8 @@ describe('product Bundle and user-preset intersection', () => {
     )
     const packageName = (product: Product): string => (
       product === 'codex'
-        ? '@alego/subagent-codex'
-        : '@alego/subagent-claude-code'
+        ? '@singula-ai/alego-subagent-codex'
+        : '@singula-ai/alego-subagent-claude-code'
     )
     return await bootWeb(settingsFile, [
       {
@@ -500,8 +500,8 @@ describe('product Bundle and user-preset intersection', () => {
         },
       },
     ], installed.map(packageDir), [
-      '@alego/base',
-      '@alego/web-app',
+      '@singula-ai/alego-base',
+      '@singula-ai/alego-web-app',
       ...installed.map(packageName),
     ])
   }
@@ -726,7 +726,7 @@ describe('a launcher that configures no writable root', () => {
     await mkdir(join(home, '.agent-presets', 'derived-mine'), { recursive: true })
     await writeFile(
       join(home, '.agent-presets', 'derived-mine', 'agent.cordis.yml'),
-      '- id: tool-todo\n  name: \'@alego/tool-todo\'\n  config:\n    allowParallelInProgress: true\n',
+      '- id: tool-todo\n  name: \'@singula-ai/alego-tool-todo\'\n  config:\n    allowParallelInProgress: true\n',
     )
     const settingsFile = join(await mkdtemp(join(tmpdir(), 'alego-preset-derived-settings-')), 'settings.yaml')
     await writeFile(settingsFile, '{}\n')

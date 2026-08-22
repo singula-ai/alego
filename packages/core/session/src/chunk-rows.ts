@@ -15,11 +15,11 @@
  * data. The decoder validates before expanding and fails loud on a malformed
  * row-tagged value instead of silently dropping a whole run.
  *
- * @module @alego/session/chunk-rows
+ * @module @singula-ai/alego-session/chunk-rows
  */
 
-import { CallId, assertNever } from '@alego/llm'
-import type { StreamChunk } from '@alego/llm'
+import { CallId, assertNever } from '@singula-ai/alego-llm'
+import type { StreamChunk } from '@singula-ai/alego-llm'
 import type { SessionEvent } from './types.ts'
 
 /** The chunk kinds that may pack; block boundaries, usage, and finish chunks always stay one event per line. */

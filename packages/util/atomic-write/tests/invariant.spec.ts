@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import InvariantRegistry from '@alego/invariants'
+import { Context } from '@singula-ai/cordis'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 import * as AtomicWriteInvariant from '../src/invariant.ts'
 
 describe('atomic-write invariant companion', () => {
@@ -10,7 +10,7 @@ describe('atomic-write invariant companion', () => {
     const fiber = await ctx.plugin(AtomicWriteInvariant)
 
     expect(() => {
-      ctx.invariants.register('@alego/atomic-write', () => {})
+      ctx.invariants.register('@singula-ai/alego-atomic-write', () => {})
     }).toThrow(/already registered/)
     await fiber.dispose()
     await ctx.fiber.dispose()

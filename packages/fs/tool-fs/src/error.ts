@@ -4,11 +4,11 @@
  * not the only correct recovery (re-read / read the file), so this package
  * appends the remedy at the model boundary; provider messages stay
  * machine-oriented and unchanged.
- * @module @alego/tool-fs/src/error
+ * @module @singula-ai/alego-tool-fs/src/error
  */
 
-import { FsError } from '@alego/fs'
-import type { FsErrorCode } from '@alego/fs'
+import { FsError } from '@singula-ai/alego-fs'
+import type { FsErrorCode } from '@singula-ai/alego-fs'
 
 /** The remedy appended to each remediable failure code's message. */
 const REMEDIES: Partial<Record<FsErrorCode, string>> = {

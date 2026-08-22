@@ -12,7 +12,7 @@ Status: implemented
 
 ## 决策
 
-`alego-llm-deepseek` 在凭据解析成功后发出的每个提供方请求上发送 `x-alego-user-id`。该值来自 `@alego/anonymous-user-id`，因此与同一 `$ALEGO_HOME` 的 OpenTelemetry Resource `user.id` 及 `/feedback` 确认一致。适配器继续仅在存在 `GenerateOptions.sessionId` 时发送 `x-alego-session-id`；普通 agent、标题生成与压缩请求由 agent loop 提供当前持久化 `Session.id`。
+`alego-llm-deepseek` 在凭据解析成功后发出的每个提供方请求上发送 `x-alego-user-id`。该值来自 `@singula-ai/alego-anonymous-user-id`，因此与同一 `$ALEGO_HOME` 的 OpenTelemetry Resource `user.id` 及 `/feedback` 确认一致。适配器继续仅在存在 `GenerateOptions.sessionId` 时发送 `x-alego-session-id`；普通 agent、标题生成与压缩请求由 agent loop 提供当前持久化 `Session.id`。
 
 插件在凭据解析成功后惰性获取用户 id，并在该插件实例内缓存。缺少凭据不会创建 `.anonymous-user-id`；即使设置了 `ALEGO_TELEMETRY_DISABLED`，首个已授权的提供方请求仍可能创建它。直连适配器构造函数接收 `resolveUserId` 依赖，使线路行为可在单元测试中保持确定性。
 

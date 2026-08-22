@@ -1,4 +1,4 @@
-# @alego/session-log-export
+# @singula-ai/alego-session-log-export
 
 [English](README.md) | 中文
 
@@ -21,7 +21,7 @@ Host 下载端点会在 `readRaw` 前 flush 活动的根 Session，因此斜杠�
 
 ```yaml
 - id: session-log-download
-  name: '@alego/session-log-export'
+  name: '@singula-ai/alego-session-log-export'
 ```
 
 Web bundle 将本包与 `alego-host-apiproxy`、`alego-commands`、`alego-client-ui-commands` 和 `alego-client-ui-conversation` 一起挂载。本包把按钮和弹窗贡献到最右侧的 `conversation.session.header.utilities` 列表，与标题旁 `conversation.session.header.actions` 中的模式、Subagent 和 Task 配置项相互独立；Trajectory 不包含导出入口。

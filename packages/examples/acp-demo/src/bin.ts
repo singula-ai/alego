@@ -7,11 +7,11 @@
  * `cordis.snapshot.yml` so a stray key cannot trigger a model call. EOF disposes
  * and flushes snapshot runs; the calling automation owns process lifetime. Stdout is
  * reserved for JSON-RPC, so diagnostics go only to stderr.
- * @module @alego/acp-demo/bin
+ * @module @singula-ai/alego-acp-demo/bin
  */
 
 import { parseArgs } from 'node:util'
-import { boot, installFailLoud, loadEnv, resolveConfigPath } from '@alego/app-boot'
+import { boot, installFailLoud, loadEnv, resolveConfigPath } from '@singula-ai/alego-app-boot'
 
 const NAME = 'alego-acp-demo'
 

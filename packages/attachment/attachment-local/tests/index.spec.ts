@@ -1,4 +1,4 @@
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { existsSync } from 'node:fs'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'

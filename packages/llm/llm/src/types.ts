@@ -4,12 +4,12 @@
  * mapped interfaces make the content, source, and finish unions extensible.
  */
 
-import type { Branded } from '@alego/brand'
-import type { ImageAttachmentRef } from '@alego/attachment'
+import type { Branded } from '@singula-ai/alego-brand'
+import type { ImageAttachmentRef } from '@singula-ai/alego-attachment'
 import type { CallId, ProviderRequestId, ReasoningEffortId } from './brand.ts'
 import type { Message } from './message.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Events {
     /**
      * The provider topology changed: an adapter registered or unregistered

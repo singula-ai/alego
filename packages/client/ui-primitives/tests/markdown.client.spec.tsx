@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
-import { JsonBlock, MarkdownText, MessageText } from '@alego/client-ui-primitives'
+import { JsonBlock, MarkdownText, MessageText } from '@singula-ai/alego-client-ui-primitives'
 import { cjkFriendlyStrong } from '../src/markdown/cjkFriendlyStrong.ts'
 import { mathCompatibility } from '../src/markdown/mathCompatibility.ts'
 

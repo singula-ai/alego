@@ -3,15 +3,15 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import Include from '@alego/cordis-plugin-include'
-import Loader from '@alego/cordis-plugin-loader'
-import SessionStore, { SessionId } from '@alego/session'
-import JsonlSessionPersistence from '@alego/session-persistence-jsonl'
-import Storage from '@alego/storage'
-import * as StorageDomain from '@alego/storage-domain'
-import * as StorageJson from '@alego/storage-json'
-import { remoteMethods } from '@alego/typert-protocol'
+import { Context } from '@singula-ai/cordis'
+import Include from '@singula-ai/cordis-plugin-include'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import Storage from '@singula-ai/alego-storage'
+import * as StorageDomain from '@singula-ai/alego-storage-domain'
+import * as StorageJson from '@singula-ai/alego-storage-json'
+import { remoteMethods } from '@singula-ai/alego-typert-protocol'
 import MessageFeedbackService from '../src/index.ts'
 import { appendMessageFixture } from './helpers.ts'
 
@@ -30,12 +30,12 @@ async function loadComposition(configPath: string): Promise<Context> {
   await ctx.plugin(Loader)
   ctx.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@alego/session', SessionStore],
-    ['@alego/session-persistence-jsonl', JsonlSessionPersistence],
-    ['@alego/storage', Storage],
-    ['@alego/storage-json', StorageJson],
-    ['@alego/storage-domain', StorageDomain],
-    ['@alego/message-feedback', MessageFeedbackService],
+    ['@singula-ai/alego-session', SessionStore],
+    ['@singula-ai/alego-session-persistence-jsonl', JsonlSessionPersistence],
+    ['@singula-ai/alego-storage', Storage],
+    ['@singula-ai/alego-storage-json', StorageJson],
+    ['@singula-ai/alego-storage-domain', StorageDomain],
+    ['@singula-ai/alego-message-feedback', MessageFeedbackService],
   ])
   ctx.loader.internal = {
     version: 'v2',
@@ -61,20 +61,20 @@ describe('message feedback through a real Loader composition', () => {
     root = await mkdtemp(join(tmpdir(), 'alego-message-feedback-loader-'))
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@alego/session'",
-      "- name: '@alego/session-persistence-jsonl'",
+      "- name: '@singula-ai/alego-session'",
+      "- name: '@singula-ai/alego-session-persistence-jsonl'",
       '  config:',
       `    root: ${JSON.stringify(join(root, 'sessions'))}`,
       '    compression: none',
       '    writeBatchMaxDelayMs: 1',
-      "- name: '@alego/storage'",
-      "- name: '@alego/storage-json'",
+      "- name: '@singula-ai/alego-storage'",
+      "- name: '@singula-ai/alego-storage-json'",
       '  config:',
       `    root: ${JSON.stringify(join(root, 'storage'))}`,
-      "- name: '@alego/storage-domain'",
+      "- name: '@singula-ai/alego-storage-domain'",
       '  config:',
       '    backend: json',
-      "- name: '@alego/message-feedback'",
+      "- name: '@singula-ai/alego-message-feedback'",
       '  config:',
       '    maxNoteBytes: 32',
       '',

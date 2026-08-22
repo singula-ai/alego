@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-harness 使用 `Branded<B> = string & { readonly [BRAND]: B }` 机制，为 `CallId`（`packages/llm/llm/src/brand.ts`）和 agent（智能体）/会话共享的 `SessionId`（`packages/core/session/src/types.ts`）做 brand 处理；该机制由纯类型包 `@alego/brand` 拥有，位于 `packages/util/brand/`，见其 [README](../../../../packages/util/brand/README.zh.md)，并为每个类型提供零开销的 cast 工厂。`alego-brand` 还声明了治理策略：*「Branding 用于跨包边界且可能被混淆的 id；不是每个 string 都需要 brand。」* 这条策略是正确的；问题在于它只落实了一半。两处缺口使得结构相同但语义错误的 string 今天仍能通过类型检查器。
+harness 使用 `Branded<B> = string & { readonly [BRAND]: B }` 机制，为 `CallId`（`packages/llm/llm/src/brand.ts`）和 agent（智能体）/会话共享的 `SessionId`（`packages/core/session/src/types.ts`）做 brand 处理；该机制由纯类型包 `@singula-ai/alego-brand` 拥有，位于 `packages/util/brand/`，见其 [README](../../../../packages/util/brand/README.zh.md)，并为每个类型提供零开销的 cast 工厂。`alego-brand` 还声明了治理策略：*「Branding 用于跨包边界且可能被混淆的 id；不是每个 string 都需要 brand。」* 这条策略是正确的；问题在于它只落实了一半。两处缺口使得结构相同但语义错误的 string 今天仍能通过类型检查器。
 
 **缺口 1：bash seam 中未 brand 的跨边界 ID。** 后台 job id 是普通 `string`：`BashTask.id: string`（`packages/shell/shell/src/types.ts`），作为 `string` 贯穿整个执行器 seam（`packages/shell/shell/src/index.ts` 中的 `ShellExecutor.get`/`ownerOf`/`readOutput`/`kill(id: string)`），再由面向模型的工具以 `string` 校验并传递（`validateJobId`、`assertTaskAccess`、`packages/shell/tool-bash/src/index.ts` 中 `job_id` 的 schema 参数）。它由每执行器计数器生成——`packages/shell/bash-local/src/index.ts` 中的 `` `bash-${this.nextTaskId++}` ``——其形状与 `SessionId` 的默认值**完全相同，都是 `name-N`**（`packages/core/session/src/index.ts` 中的 `` `session-${++counter}` ``）。bash job id 和会话 id 在调用点轻易就能互换，而编译器毫无反应。它是面向模型的 id（模型会把 `job_id` 传回 `bash_output`/`bash_kill`），所以该混淆可由不受信任的输入触达。
 
@@ -18,7 +18,7 @@ bash **owner token** 是相关的子情形：`ShellExecRequest.owner?: string` �
 
 纯类型变更。Brand 是零开销 cast；运行时行为、序列化、比较和协议格式（wire format）均不变。该决策分三部分，全部遵循既有的「不是每个 string 都需要」策略。
 
-- **为 bash job id 加 brand。** 在 `packages/shell/shell/src/types.ts`（*拥有*该 id 的包）中添加 `BashTaskId = Branded<'BashTaskId'>` 及其同名工厂，从 `@alego/brand` 导入 `Branded`，方式与 `SessionId` 完全一致。brand 原语位于无依赖的 `alego-brand` 工具包中，正是为了让 `alego-shell` 仅依赖它就能为自己的 id 加 brand，而无需引入 `alego-llm`（或 `alego-session`）来获取 `Branded`。将其贯穿 `BashTask.id`、`ShellExecutor` Service Definition 方法（`get`/`ownerOf`/`readOutput`/`kill`）、`alego-bash-local` 中的生成点（在创建时对计数器输出做一次 brand），以及 `alego-tool-bash` 的校验/访问面（`validateJobId` 返回 `BashTaskId`；`job_id` 在模型 string 到达的工具边界处被 brand）。
+- **为 bash job id 加 brand。** 在 `packages/shell/shell/src/types.ts`（*拥有*该 id 的包）中添加 `BashTaskId = Branded<'BashTaskId'>` 及其同名工厂，从 `@singula-ai/alego-brand` 导入 `Branded`，方式与 `SessionId` 完全一致。brand 原语位于无依赖的 `alego-brand` 工具包中，正是为了让 `alego-shell` 仅依赖它就能为自己的 id 加 brand，而无需引入 `alego-llm`（或 `alego-session`）来获取 `Branded`。将其贯穿 `BashTask.id`、`ShellExecutor` Service Definition 方法（`get`/`ownerOf`/`readOutput`/`kill`）、`alego-bash-local` 中的生成点（在创建时对计数器输出做一次 brand），以及 `alego-tool-bash` 的校验/访问面（`validateJobId` 返回 `BashTaskId`；`job_id` 在模型 string 到达的工具边界处被 brand）。
 
 - **铸造独立的 `OwnerToken` brand。** 在 `packages/shell/shell/src/types.ts` 中添加 `OwnerToken = Branded<'OwnerToken'>`；将 `ShellExecRequest.owner` / `ShellExecSpec.owner` / `ShellExecutor.ownerOf` 的类型标注为 `OwnerToken | undefined`。`alego-tool-bash` 消费方在边界处将 agent 共享的 `id`（`SessionId`）cast 为 `OwnerToken`——这是两套词汇唯一交汇的地方。bash Service Definition 从不导入 `alego-session`。（理由见下一节。）
 
@@ -27,7 +27,7 @@ bash **owner token** 是相关的子情形：`ShellExecRequest.owner?: string` �
 示意形状（工厂模式与已有的三个 brand 完全一致）：
 
 ```ts ignore-check
-import type { Branded } from '@alego/brand'
+import type { Branded } from '@singula-ai/alego-brand'
 
 /** A background bash task handle (generated `bash-N` by the local executor). */
 export type BashTaskId = Branded<'BashTaskId'>

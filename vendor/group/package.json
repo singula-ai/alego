@@ -1,5 +1,5 @@
 {
-  "name": "@alego/cordis-plugin-group",
+  "name": "@singula-ai/cordis-plugin-group",
   "description": "Nested plugin group for cordis",
   "version": "1.0.1",
   "publishConfig": {
@@ -30,7 +30,7 @@
   "author": "Shigma <shigma10826@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "@alego/cordis-plugin-loader": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/cordis-plugin-loader": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   }
 }

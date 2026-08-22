@@ -4,7 +4,7 @@
  * namespace (repo discipline), so `./client` projects the same single-source
  * content `./types` serves to host consumers — zero duplication.
  *
- * @module @alego/session-stats/client
+ * @module @singula-ai/alego-session-stats/client
  */
 
 export type * from './types.ts'

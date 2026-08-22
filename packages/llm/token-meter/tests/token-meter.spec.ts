@@ -1,12 +1,12 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { createUserMessage, CallId, createMessage } from '@alego/llm'
-import type { ContentBlock, Message, TokenUsage } from '@alego/llm'
-import SessionStore, { Session, SessionId, canonicalHeader } from '@alego/session'
-import type { EpochHeader, SessionEvent } from '@alego/session'
-import SessionProjectionRegistry from '@alego/session-projection'
-import TokenMeter from '@alego/token-meter'
-import type { TokenMeasurement, TokenMeterConfig } from '@alego/token-meter'
+import { Context } from '@singula-ai/cordis'
+import { createUserMessage, CallId, createMessage } from '@singula-ai/alego-llm'
+import type { ContentBlock, Message, TokenUsage } from '@singula-ai/alego-llm'
+import SessionStore, { Session, SessionId, canonicalHeader } from '@singula-ai/alego-session'
+import type { EpochHeader, SessionEvent } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import TokenMeter from '@singula-ai/alego-token-meter'
+import type { TokenMeasurement, TokenMeterConfig } from '@singula-ai/alego-token-meter'
 
 function header(model: string, extras: Omit<EpochHeader, 'config'> = {}): EpochHeader {
   return canonicalHeader({ config: { provider: 'mock', model }, ...extras })

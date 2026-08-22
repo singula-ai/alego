@@ -1,6 +1,6 @@
 /**
  * Dependency-free CLI parsing for the standalone mock LLM server.
- * @module @alego/llm-mock-server/cli
+ * @module @singula-ai/alego-llm-mock-server/cli
  */
 
 import { parseArgs } from 'node:util'

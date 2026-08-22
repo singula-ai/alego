@@ -1,6 +1,6 @@
 import { join } from 'node:path'
-import type { ConfinedArgv, SandboxPolicy } from '@alego/sandbox'
-import { SandboxProvider } from '@alego/sandbox'
+import type { ConfinedArgv, SandboxPolicy } from '@singula-ai/alego-sandbox'
+import { SandboxProvider } from '@singula-ai/alego-sandbox'
 
 const NOTICE = 'landlock-run: partial enforcement (older Landlock ABI)'
 const MISSING_RUNNER_ENV = 'ALEGO_SNAPSHOT_MISSING_SANDBOX_RUNNER'

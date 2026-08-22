@@ -4,10 +4,10 @@
  * unions derived from them. Payloads are plain JSON by construction for structured clone. Both
  * directions are closed engine protocols whose receivers use `assertNever`; generic typed senders
  * make tag/payload mismatches compile-time errors rather than silently skipped messages.
- * @module @alego/workflow-worker-thread/protocol
+ * @module @singula-ai/alego-workflow-worker-thread/protocol
  */
 
-import type { WorkflowAgentEndInfo, WorkflowAgentInfo, WorkflowResult } from '@alego/workflow'
+import type { WorkflowAgentEndInfo, WorkflowAgentInfo, WorkflowResult } from '@singula-ai/alego-workflow'
 import type { ChildResult, ChildStartRequest } from './types.ts'
 
 /** Message tags the worker sends the host (the wire values are the tag strings). */

@@ -9,9 +9,9 @@ import { join } from 'node:path'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import { CallId, type StreamChunk } from '@alego/llm'
-import type { ReplayEntry, ReplayOverrideDoc } from '@alego/llm-replay'
-import type { SessionEvent, SessionId } from '@alego/session'
+import { CallId, type StreamChunk } from '@singula-ai/alego-llm'
+import type { ReplayEntry, ReplayOverrideDoc } from '@singula-ai/alego-llm-replay'
+import type { SessionEvent, SessionId } from '@singula-ai/alego-session'
 import {
   launchWebScaffold,
   watchConsole,

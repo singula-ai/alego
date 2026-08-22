@@ -1,7 +1,7 @@
 /**
  * The one definition of a well-formed provider API key, shared by every
  * adapter that puts one in an HTTP header.
- * @module @alego/llm/api-key
+ * @module @singula-ai/alego-llm/api-key
  */
 
 /**

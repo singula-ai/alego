@@ -1,4 +1,4 @@
-# @alego/workflow-worker-thread
+# @singula-ai/alego-workflow-worker-thread
 
 [English](README.md) | 中文
 

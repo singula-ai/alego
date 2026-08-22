@@ -12,10 +12,10 @@
 - text: Reply with a one-sentence description of event sourcing, then stop. {{clock}}
 - button "Copy":
   - img
-- button "Context injection @alego/system-prompt":
+- button "Context injection @singula-ai/alego-system-prompt":
   - img
   - img
-  - text: Context injection @alego/system-prompt
+  - text: Context injection @singula-ai/alego-system-prompt
 - paragraph: partial
 - status: Deep diving...
 - button "2 queued messages" [disabled] [expanded]

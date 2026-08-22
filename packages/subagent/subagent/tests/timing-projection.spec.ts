@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import SessionStore from '@alego/session'
-import type { SessionEvent } from '@alego/session'
-import SessionProjectionRegistry from '@alego/session-projection'
+import { Context } from '@singula-ai/cordis'
+import SessionStore from '@singula-ai/alego-session'
+import type { SessionEvent } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import SubagentRuntime from '../src/index.ts'
 import { subagentTimingProjectionDefinition, type TimingState } from '../src/projection.ts'
 

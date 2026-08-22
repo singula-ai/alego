@@ -1,11 +1,11 @@
 # Keyless provider-retry composition for the headless stream-json snapshot.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - insert:
           - id: retry-snapshot-backend

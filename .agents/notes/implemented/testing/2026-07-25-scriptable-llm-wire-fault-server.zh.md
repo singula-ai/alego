@@ -12,7 +12,7 @@ Status: implemented
 
 ## 决策
 
-`@alego/llm-mock-server` 是一个私有支持包，提供可导入的 Node HTTP 服务器。仓库内的 `pnpm run mock:llm` 源码入口提供一个用于手动故障注入的独立进程；该包不公开可安装的二进制命令。它接受兼容 OpenAI 的根路径和 `/v1` chat-completions 路径，校验可选的 bearer token，捕获请求，并对每个已接受请求消耗一个显式行为。脚本耗尽时会明确报错；只有设置 `repeatLast` 才会重复最后一个行为。
+`@singula-ai/alego-llm-mock-server` 是一个私有支持包，提供可导入的 Node HTTP 服务器。仓库内的 `pnpm run mock:llm` 源码入口提供一个用于手动故障注入的独立进程；该包不公开可安装的二进制命令。它接受兼容 OpenAI 的根路径和 `/v1` chat-completions 路径，校验可选的 bearer token，捕获请求，并对每个已接受请求消耗一个显式行为。脚本耗尽时会明确报错；只有设置 `repeatLast` 才会重复最后一个行为。
 
 请求行为覆盖 socket 重置、发送 header 后断开、发送部分内容后断开、停滞、合法空完成、正常关闭但被截断的流、畸形 payload、典型 HTTP 故障、完整的文本/推理/工具调用响应、慢速流式输出以及达到 token 上限的完成。真正的 `connection_refused` 由 CLI（命令行界面）的监听器生命周期阶段实现，因为已经绑定端口的请求处理器无法拒绝自身的 TCP 连接。
 

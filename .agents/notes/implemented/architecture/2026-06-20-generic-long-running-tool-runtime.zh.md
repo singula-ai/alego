@@ -14,12 +14,12 @@ Status: implemented
 
 `jobs/` 包组拥有后台任务语义：
 
-- `@alego/jobs` 将运行中的工作注册为 `ctx.jobs`，并拥有 job id、授权、快照、读取、取消、等待、完成监听器与清理。
-- `@alego/tool-jobs` 暴露 `job_output`、`job_list` 和 `job_kill`，注入完成通知，并提供后台任务的系统提示词指导。
+- `@singula-ai/alego-jobs` 将运行中的工作注册为 `ctx.jobs`，并拥有 job id、授权、快照、读取、取消、等待、完成监听器与清理。
+- `@singula-ai/alego-tool-jobs` 暴露 `job_output`、`job_list` 和 `job_kill`，注入完成通知，并提供后台任务的系统提示词指导。
 
 长时间运行工具是生产方。`alego-tool-bash` 将 `ShellProcess` 适配为增量输出与进程取消；`alego-tool-subagent` 将子运行适配为最终输出与子运行释放。bash 与 subagent 能力 seam 保持独立，不依赖会话或任务注册表。
 
-`JobRegistry` 是 `@alego/jobs` 中的 Service Definition；进程内 Service Provider 是 `@alego/jobs-local` 中的 `LocalJobRegistry`（该拆分记录在[任务注册表约定 Agent Note](2026-07-26-job-registry-seam.zh.md)中）。
+`JobRegistry` 是 `@singula-ai/alego-jobs` 中的 Service Definition；进程内 Service Provider 是 `@singula-ai/alego-jobs-local` 中的 `LocalJobRegistry`（该拆分记录在[任务注册表约定 Agent Note](2026-07-26-job-registry-seam.zh.md)中）。
 
 ## 运行时约定
 

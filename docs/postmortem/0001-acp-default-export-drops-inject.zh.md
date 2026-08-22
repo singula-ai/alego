@@ -10,7 +10,7 @@
 
 ## 概述
 
-ACP 服务器（`examples/acp-agent`、`@alego/acp`）在真实编辑器（Zed）连接的瞬间崩溃：第一个 `session/new` 请求返回 `Internal error: cannot get property "agents" without inject`，`session/load` 对 `sessionPersistence` 返回同样的错误。尽管有 178 个绿色单元测试和 100% 行覆盖率，bridge 在生产环境中完全无法工作。两个独立的 bug 隐藏在同一个错误字符串背后，测试套件之所以两个都没捕获，原因也相同：所有测试都通过一条不会触及插件真实加载方式和服务真实解析方式的路径来挂载插件。
+ACP 服务器（`examples/acp-agent`、`@singula-ai/alego-acp`）在真实编辑器（Zed）连接的瞬间崩溃：第一个 `session/new` 请求返回 `Internal error: cannot get property "agents" without inject`，`session/load` 对 `sessionPersistence` 返回同样的错误。尽管有 178 个绿色单元测试和 100% 行覆盖率，bridge 在生产环境中完全无法工作。两个独立的 bug 隐藏在同一个错误字符串背后，测试套件之所以两个都没捕获，原因也相同：所有测试都通过一条不会触及插件真实加载方式和服务真实解析方式的路径来挂载插件。
 
 ## 影响
 

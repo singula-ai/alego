@@ -8,11 +8,11 @@
 import clsx from 'clsx'
 import {
   IconDarkOutline16, IconFollowsystemOutline16, IconLightOutline16,
-} from '@alego/client-ui-primitives'
-import type { PropsLocale, PropsRuntime, PropsStore } from '@alego/client-ui-slots'
+} from '@singula-ai/alego-client-ui-primitives'
+import type { PropsLocale, PropsRuntime, PropsStore } from '@singula-ai/alego-client-ui-slots'
 import type { ThemePreference } from '../theme-settings.ts'
 import type { ThemeKey } from './locales.ts'
-import type {} from '@alego/client-ui-settings/client'
+import type {} from '@singula-ai/alego-client-ui-settings/client'
 import type { createAppearanceRowStore } from './settings-store.ts'
 import css from './AppearanceRow.module.css'
 

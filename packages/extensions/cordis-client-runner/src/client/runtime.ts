@@ -14,14 +14,14 @@
  * serialization keeps a second request from interleaving with one in flight.
  */
 
-import type { Context } from '@alego/cordis'
-import type { Loader } from '@alego/cordis-plugin-loader'
+import type { Context } from '@singula-ai/cordis'
+import type { Loader } from '@singula-ai/cordis-plugin-loader'
 import type {
   CordisDynamicPackageId, CordisDynamicPluginId, CordisDynamicPluginRunId, DynamicCordisPackage,
-} from '@alego/api-remotes/client'
-import type { SessionId } from '@alego/client-connection/client'
-import type { ClientModuleSystem } from '@alego/client-modules/client'
-import type { SlotRegistry } from '@alego/client-runtime/client'
+} from '@singula-ai/alego-api-remotes/client'
+import type { SessionId } from '@singula-ai/alego-client-connection/client'
+import type { ClientModuleSystem } from '@singula-ai/alego-client-modules/client'
+import type { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
 import { DynamicCordisStyles, evaluateClientHalf, DYNAMIC_CLIENT_REDIRECTS } from './evaluator.ts'
 import type { DynamicCordisEvaluatedPlugin } from './evaluator.ts'
 import { dynamicCordisContext } from './guard.ts'

@@ -1,4 +1,4 @@
-# @alego/client-ui-goal
+# @singula-ai/alego-client-ui-goal
 
 [English](README.md) | 中文
 

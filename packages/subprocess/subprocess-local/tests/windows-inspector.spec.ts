@@ -4,13 +4,13 @@ import {
   isInvalidHandle,
   windowsProcessTree,
   WindowsProcessInspector,
-} from '@alego/subprocess-local/src/windows-inspector.ts'
+} from '@singula-ai/alego-subprocess-local/src/windows-inspector.ts'
 import type {
   NativePtr,
   ProcessEntry,
   WindowsProcessInspectorInternals,
   WindowsProcessState,
-} from '@alego/subprocess-local/src/windows-inspector.ts'
+} from '@singula-ai/alego-subprocess-local/src/windows-inspector.ts'
 
 function fakeInternals() {
   const entries: ProcessEntry[] = []

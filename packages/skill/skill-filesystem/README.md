@@ -1,10 +1,10 @@
-# @alego/skill-filesystem
+# @singula-ai/alego-skill-filesystem
 
 English | [中文](README.zh.md)
 
 Local filesystem provider for the `ctx.skills` registry.
 
-This package implements one skill source. It scans local project, custom, and user skill roots, parses `SKILL.md` or flat Markdown skill files, and registers the provider on `ctx.skills`. The registry remains in `@alego/skill`; the durable session catalogs and model-facing loader tool remain in `@alego/tool-skill`.
+This package implements one skill source. It scans local project, custom, and user skill roots, parses `SKILL.md` or flat Markdown skill files, and registers the provider on `ctx.skills`. The registry remains in `@singula-ai/alego-skill`; the durable session catalogs and model-facing loader tool remain in `@singula-ai/alego-tool-skill`.
 
 ## Plugin
 
@@ -16,7 +16,7 @@ Requires `ctx.skills` (`inject: ['skills']`).
 |---|---|---|
 | `providerName` | `filesystem` | Unique name used to register this provider on `ctx.skills`. |
 | `includeDefaultRoots` | `true` | Include project and user roots around `customSkillDirs`; set false for an isolated custom-root provider. |
-| `alegoHome` | `$ALEGO_HOME` or `~/.alego` | Alego config root resolved by [`@alego/home-paths`](../../util/home-paths/README.md); scans `skills` under this directory. |
+| `alegoHome` | `$ALEGO_HOME` or `~/.alego` | Alego config root resolved by [`@singula-ai/alego-home-paths`](../../util/home-paths/README.md); scans `skills` under this directory. |
 | `agentsHome` | `$ALEGO_AGENTS_HOME` or `~/.agents` | Shared agent config root scanned for compatible skills. |
 | `customSkillDirs` | `[]` | Additional local skill roots scanned after project roots and before user roots. |
 | `watch` | `true` | Watch host-local roots and invalidate the local provider when catalog membership or frontmatter may have changed. |

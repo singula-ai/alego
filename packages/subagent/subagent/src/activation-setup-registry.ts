@@ -8,12 +8,12 @@
  * Activation disposal, so no installation outlives either owner and no removed
  * contribution can be installed after revocation reports completion.
  *
- * @module @alego/subagent/activation-setup-registry
+ * @module @singula-ai/alego-subagent/activation-setup-registry
  */
 
-import type { Context } from '@alego/cordis'
-import type { AgentSetupCommit } from '@alego/agent'
-import { errorChain } from '@alego/llm'
+import type { Context } from '@singula-ai/cordis'
+import type { AgentSetupCommit } from '@singula-ai/alego-agent'
+import { errorChain } from '@singula-ai/alego-llm'
 import { SubagentError } from './error.ts'
 
 /**

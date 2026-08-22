@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context, Service } from '@alego/cordis'
-import SessionStore, { type Session, type SessionEvent } from '@alego/session'
-import * as PermissionInvariant from '@alego/permission-presets/invariant'
-import InvariantRegistry from '@alego/invariants'
+import { Context, Service } from '@singula-ai/cordis'
+import SessionStore, { type Session, type SessionEvent } from '@singula-ai/alego-session'
+import * as PermissionInvariant from '@singula-ai/alego-permission-presets/invariant'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 
 class PermissionProbe extends Service {
   readonly names = ['safe', 'trusted']

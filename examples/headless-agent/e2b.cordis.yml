@@ -8,41 +8,41 @@
 # falls back to /home/user/workspace while Bash and PTY keep targeting the
 # host path, so every tool call fails with a remote spawn error.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./advanced.cordis.yml
     patches:
       - id: subprocess
-        name: '@alego/subprocess-local'
+        name: '@singula-ai/alego-subprocess-local'
         disabled: true
       - id: fs-local
-        name: '@alego/fs-local'
+        name: '@singula-ai/alego-fs-local'
         disabled: true
       - insert:
           - id: e2b
-            name: '@alego/e2b'
+            name: '@singula-ai/alego-e2b'
             config:
               cwd: !!js process.cwd()
               timeoutMs: 300000
           - id: subprocess-e2b
-            name: '@alego/subprocess-e2b'
+            name: '@singula-ai/alego-subprocess-e2b'
           - id: fs-e2b
-            name: '@alego/fs-e2b'
+            name: '@singula-ai/alego-fs-e2b'
           - id: sandbox-policy
-            name: '@alego/sandbox-policy'
+            name: '@singula-ai/alego-sandbox-policy'
             config:
               mode: danger-full-access
               workspaceRoot: !!js process.cwd()
           - id: pty
-            name: '@alego/terminal'
+            name: '@singula-ai/alego-terminal'
           - id: terminal-bash
-            name: '@alego/terminal-bash'
+            name: '@singula-ai/alego-terminal-bash'
           - id: tool-terminal
-            name: '@alego/tool-terminal'
+            name: '@singula-ai/alego-tool-terminal'
           - id: lsp
-            name: '@alego/lsp'
+            name: '@singula-ai/alego-lsp'
           - id: lsp-stdio
-            name: '@alego/lsp-stdio'
+            name: '@singula-ai/alego-lsp-stdio'
             config:
               servers:
                 typescript:
@@ -54,4 +54,4 @@
                     .js: javascript
                     .jsx: javascriptreact
           - id: tool-lsp
-            name: '@alego/tool-lsp'
+            name: '@singula-ai/alego-tool-lsp'

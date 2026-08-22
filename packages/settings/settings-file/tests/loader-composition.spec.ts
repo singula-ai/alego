@@ -11,11 +11,11 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import Include from '@alego/cordis-plugin-include'
-import z from '@alego/schemastery'
-import { settingsNamespace, type SettingsScope } from '@alego/settings'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include from '@singula-ai/cordis-plugin-include'
+import z from '@singula-ai/schemastery'
+import { settingsNamespace, type SettingsScope } from '@singula-ai/alego-settings'
 import FileSettingsProvider from '../src/index.ts'
 
 interface ThemeConfig {
@@ -79,7 +79,7 @@ async function loadComposition(
     ...withSettings
       ? [
         '- id: settings',
-        "  name: '@alego/settings-file'",
+        "  name: '@singula-ai/alego-settings-file'",
         '  config:',
         `    path: ${JSON.stringify(settingsPath)}`,
         '    debounceMs: 10',
@@ -96,7 +96,7 @@ async function loadComposition(
   await ctx.plugin(Loader)
   ctx.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@alego/settings-file', FileSettingsProvider],
+    ['@singula-ai/alego-settings-file', FileSettingsProvider],
     ['test-settings-consumer', consumer],
   ])
   ctx.loader.internal = {

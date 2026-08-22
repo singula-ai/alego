@@ -15,7 +15,7 @@ harness 已经具备 pi 扩展所使用的全部 seam，而且更好：[拦截 s
 
 该守卫是一个循环卫生插件，而非面向模型的工具。它统计对同一工具以相同规范化参数发起的连续调用次数，并在配置的阈值处注入建议性提醒。它从不延迟、阻止或改写调用；模型自行决定是换种方式重试还是结束。
 
-插件为 `@alego/repeat-tool-guard`，位于 `packages/guard/repeat-tool-guard/`，开辟 `guard/` 分组用于循环卫生插件（单包（package）分组有先例：[todo-write Agent Note](2026-06-29-todo-write-tool.md)发布了 `todo/tool-todo`）。它注册两个监听器，将状态保存在以存活 `Agent` 对象为键的 `WeakMap` 中——工具注册表是上下文级别的单例，其 waterfall（瀑布式事件）交错所有 agent（智能体）的调用（subagent 运行在同一个上下文上），因此按 agent 分键是正确性要求，而非锦上添花；弱对象键还使得纯清理用途的 disposal 监听器不再必要。
+插件为 `@singula-ai/alego-repeat-tool-guard`，位于 `packages/guard/repeat-tool-guard/`，开辟 `guard/` 分组用于循环卫生插件（单包（package）分组有先例：[todo-write Agent Note](2026-06-29-todo-write-tool.md)发布了 `todo/tool-todo`）。它注册两个监听器，将状态保存在以存活 `Agent` 对象为键的 `WeakMap` 中——工具注册表是上下文级别的单例，其 waterfall（瀑布式事件）交错所有 agent（智能体）的调用（subagent 运行在同一个上下文上），因此按 agent 分键是正确性要求，而非锦上添花；弱对象键还使得纯清理用途的 disposal 监听器不再必要。
 
 - **`tools/post-execute`（waterfall）**——唯一的检测点。监听器同时接收 `(exec, result)`，因此计数和提醒投递无需跨事件的 pending map（pi 扩展需要它，仅因为其 `tool_call`/`tool_result` 钩子是分开的事件）。它始终通过 `next()` 委托，当命中阈值时，将提醒前置到下游决策的 `additionalContexts`——这正是[钩子桥接](2026-06-30-hook-bridges.md)已采用的「观察并丰富」姿态，遵守 waterfall 契约。计数放在此处而非 `tools/pre-execute`，因为 post-execute 也会为被拒绝的调用触发（`ToolRegistry.execute` 将 deny 路由到同一条流水线），而模型反复敲击一个被拒绝的调用恰恰是值得打破的循环。
 - **`agent/prompt-submit`（waterfall）**——纯重置钩子：通过 `next()` 委托，清除提交 agent 的链。用户介入改变了上下文；跨越介入的重复不是循环。
@@ -37,7 +37,7 @@ harness 已经具备 pi 扩展所使用的全部 seam，而且更好：[拦截 s
 
 ```yaml
 - id: repeat-tool-guard
-  name: '@alego/repeat-tool-guard'
+  name: '@singula-ai/alego-repeat-tool-guard'
   config:
     thresholds: [3, 5, 8]        # default; consecutive counts that trigger a reminder
     include: []                  # tool-name patterns to track; empty ⇒ all tools

@@ -1,5 +1,5 @@
 {
-  "name": "@alego/storage",
+  "name": "@singula-ai/alego-storage",
   "description": "Storage hub (ctx.storage): named backend registry plus mounted data-form facilities for the Alego",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -32,11 +32,11 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@alego/invariants": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
-    "@alego/invariants": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   }
 }

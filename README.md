@@ -19,7 +19,7 @@ Alego is currently in _developer preview_ and is iterating rapidly. **THERE WILL
 Install `Node.js`, then run:
 
 ```sh
-npx @alego/cli web
+npx @singula-ai/alego web
 ```
 
 The command starts the Web UI at `http://127.0.0.1:3080` by default and opens it in the default browser for a local launch. An SSH launch only prints the host URL because the SSH client or editor owns the local forwarded address. Pass `--no-open` to run the server without opening a browser. See [Web UI guide](docs/user/guide/index.md).

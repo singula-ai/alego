@@ -1,6 +1,6 @@
-/** Durable attachment storage seam (`ctx.attachments`). @module @alego/attachment */
+/** Durable attachment storage seam (`ctx.attachments`). @module @singula-ai/alego-attachment */
 
-import { Context, Service } from '@alego/cordis'
+import { Context, Service } from '@singula-ai/cordis'
 import { AttachmentError } from './error.ts'
 import type {
   ImageAttachmentLimits,
@@ -27,7 +27,7 @@ export type {
   StoredImageAttachment,
 } from './types.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     attachments: AttachmentStore
   }

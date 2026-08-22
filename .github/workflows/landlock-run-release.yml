@@ -1,4 +1,4 @@
-# Build and publish the @alego/node-addon-landlock-run package family from the
+# Build and publish the @singula-ai/node-addon-landlock-run package family from the
 # harness source of record. Rehearsal and publication consume the same packed
 # tarballs; each native binary is built on its matching architecture.
 name: Landlock Run Release
@@ -58,7 +58,7 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
-        run: pnpm install --filter @alego/node-addon-landlock-run-workspace... --frozen-lockfile
+        run: pnpm install --filter @singula-ai/node-addon-landlock-run-workspace... --frozen-lockfile
 
       - name: Install musl toolchain
         run: |
@@ -97,7 +97,7 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
-        run: pnpm install --filter @alego/node-addon-landlock-run-workspace... --frozen-lockfile
+        run: pnpm install --filter @singula-ai/node-addon-landlock-run-workspace... --frozen-lockfile
 
       - name: Build TypeScript
         run: pnpm build:ts

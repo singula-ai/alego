@@ -1,10 +1,10 @@
-/** Package-owned durable plan-mode invariants. @module @alego/plan-mode/invariant */
+/** Package-owned durable plan-mode invariants. @module @singula-ai/alego-plan-mode/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { Session, SessionEvent } from '@alego/session'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/plan-mode'
+const PACKAGE_NAME = '@singula-ai/alego-plan-mode'
 
 /** Cordis companion plugin name. */
 export const name = 'plan-mode-invariant'

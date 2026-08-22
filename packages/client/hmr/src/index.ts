@@ -10,11 +10,11 @@
  */
 import { statSync } from 'node:fs'
 import type { ServerResponse } from 'node:http'
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 // Empty type imports carry the clientModuleHost/webServer Context merges.
-import type {} from '@alego/client-modules'
-import type {} from '@alego/host-webserver'
+import type {} from '@singula-ai/alego-client-modules'
+import type {} from '@singula-ai/alego-host-webserver'
 import type { PluginsEventFrame } from './events.ts'
 import { EVENTS_ENDPOINT } from './events.ts'
 

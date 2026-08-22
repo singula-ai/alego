@@ -8,244 +8,244 @@ The alego-base bundle patch every profile applies first; mode bundles (alego-web
 ```mermaid
 flowchart LR
   cfg["packages/bundle/base/cordis.patch.yml<br/>cordis.yml"]
-  plugin_alego_base_timer["timer<br/>@alego/cordis-plugin-timer"]
+  plugin_alego_base_timer["timer<br/>@singula-ai/cordis-plugin-timer"]
   cfg --> plugin_alego_base_timer
-  plugin_alego_base_hmr["hmr<br/>@alego/cordis-plugin-hmr"]
+  plugin_alego_base_hmr["hmr<br/>@singula-ai/cordis-plugin-hmr"]
   cfg --> plugin_alego_base_hmr
-  plugin_alego_base_llm["llm<br/>@alego/llm"]
+  plugin_alego_base_llm["llm<br/>@singula-ai/alego-llm"]
   cfg --> plugin_alego_base_llm
-  plugin_alego_base_session["session<br/>@alego/session"]
+  plugin_alego_base_session["session<br/>@singula-ai/alego-session"]
   cfg --> plugin_alego_base_session
-  plugin_alego_base_typert["typert<br/>@alego/typert-registry"]
+  plugin_alego_base_typert["typert<br/>@singula-ai/alego-typert-registry"]
   cfg --> plugin_alego_base_typert
-  plugin_alego_base_typert_loader["typert-loader<br/>@alego/typert-loader"]
+  plugin_alego_base_typert_loader["typert-loader<br/>@singula-ai/alego-typert-loader"]
   cfg --> plugin_alego_base_typert_loader
-  plugin_alego_base_typert_gateway["typert-gateway<br/>@alego/api-gateway"]
+  plugin_alego_base_typert_gateway["typert-gateway<br/>@singula-ai/alego-api-gateway"]
   cfg --> plugin_alego_base_typert_gateway
-  plugin_alego_base_session_title["session-title<br/>@alego/session-title"]
+  plugin_alego_base_session_title["session-title<br/>@singula-ai/alego-session-title"]
   cfg --> plugin_alego_base_session_title
-  plugin_alego_base_session_title_llm["session-title-llm<br/>@alego/session-title-first-prompt-llm"]
+  plugin_alego_base_session_title_llm["session-title-llm<br/>@singula-ai/alego-session-title-first-prompt-llm"]
   cfg --> plugin_alego_base_session_title_llm
-  plugin_alego_base_user_questions["user-questions<br/>@alego/user-questions"]
+  plugin_alego_base_user_questions["user-questions<br/>@singula-ai/alego-user-questions"]
   cfg --> plugin_alego_base_user_questions
-  plugin_alego_base_agent["agent<br/>@alego/agent"]
+  plugin_alego_base_agent["agent<br/>@singula-ai/alego-agent"]
   cfg --> plugin_alego_base_agent
-  plugin_alego_base_agent_default_model["agent-default-model<br/>@alego/agent-default-model"]
+  plugin_alego_base_agent_default_model["agent-default-model<br/>@singula-ai/alego-agent-default-model"]
   cfg --> plugin_alego_base_agent_default_model
-  plugin_alego_base_jobs["jobs<br/>@alego/jobs-local"]
+  plugin_alego_base_jobs["jobs<br/>@singula-ai/alego-jobs-local"]
   cfg --> plugin_alego_base_jobs
-  plugin_alego_base_llm_retry["llm-retry<br/>@alego/llm-retry"]
+  plugin_alego_base_llm_retry["llm-retry<br/>@singula-ai/alego-llm-retry"]
   cfg --> plugin_alego_base_llm_retry
-  plugin_alego_base_settings["settings<br/>@alego/settings-file"]
+  plugin_alego_base_settings["settings<br/>@singula-ai/alego-settings-file"]
   cfg --> plugin_alego_base_settings
-  plugin_alego_base_credentials["credentials<br/>@alego/credentials-local"]
+  plugin_alego_base_credentials["credentials<br/>@singula-ai/alego-credentials-local"]
   cfg --> plugin_alego_base_credentials
-  plugin_alego_base_llm_pi_ai["llm-pi-ai<br/>@alego/llm-pi-ai"]
+  plugin_alego_base_llm_pi_ai["llm-pi-ai<br/>@singula-ai/alego-llm-pi-ai"]
   cfg --> plugin_alego_base_llm_pi_ai
-  plugin_alego_base_session_persistence_jsonl["session-persistence-jsonl<br/>@alego/session-persistence-jsonl"]
+  plugin_alego_base_session_persistence_jsonl["session-persistence-jsonl<br/>@singula-ai/alego-session-persistence-jsonl"]
   cfg --> plugin_alego_base_session_persistence_jsonl
-  plugin_alego_base_attachment_local["attachment-local<br/>@alego/attachment-local"]
+  plugin_alego_base_attachment_local["attachment-local<br/>@singula-ai/alego-attachment-local"]
   cfg --> plugin_alego_base_attachment_local
-  plugin_alego_base_session_query_sqlite["session-query-sqlite<br/>@alego/session-query-sqlite"]
+  plugin_alego_base_session_query_sqlite["session-query-sqlite<br/>@singula-ai/alego-session-query-sqlite"]
   cfg --> plugin_alego_base_session_query_sqlite
-  plugin_alego_base_session_projection["session-projection<br/>@alego/session-projection"]
+  plugin_alego_base_session_projection["session-projection<br/>@singula-ai/alego-session-projection"]
   cfg --> plugin_alego_base_session_projection
-  plugin_alego_base_session_telemetry_otel["session-telemetry-otel<br/>@alego/session-telemetry-otel"]
+  plugin_alego_base_session_telemetry_otel["session-telemetry-otel<br/>@singula-ai/alego-session-telemetry-otel"]
   cfg --> plugin_alego_base_session_telemetry_otel
-  plugin_alego_base_subprocess["subprocess<br/>@alego/subprocess-local"]
+  plugin_alego_base_subprocess["subprocess<br/>@singula-ai/alego-subprocess-local"]
   cfg --> plugin_alego_base_subprocess
-  plugin_alego_base_sandbox["sandbox<br/>@alego/sandbox-local"]
+  plugin_alego_base_sandbox["sandbox<br/>@singula-ai/alego-sandbox-local"]
   cfg --> plugin_alego_base_sandbox
-  plugin_alego_base_sandbox_policy["sandbox-policy<br/>@alego/sandbox-policy"]
+  plugin_alego_base_sandbox_policy["sandbox-policy<br/>@singula-ai/alego-sandbox-policy"]
   cfg --> plugin_alego_base_sandbox_policy
-  plugin_alego_base_bash_sandbox["bash-sandbox<br/>@alego/bash-sandbox"]
+  plugin_alego_base_bash_sandbox["bash-sandbox<br/>@singula-ai/alego-bash-sandbox"]
   cfg --> plugin_alego_base_bash_sandbox
-  plugin_alego_base_pwsh_sandbox["pwsh-sandbox<br/>@alego/pwsh-sandbox"]
+  plugin_alego_base_pwsh_sandbox["pwsh-sandbox<br/>@singula-ai/alego-pwsh-sandbox"]
   cfg --> plugin_alego_base_pwsh_sandbox
-  plugin_alego_base_approval["approval<br/>@alego/user-approval"]
+  plugin_alego_base_approval["approval<br/>@singula-ai/alego-user-approval"]
   cfg --> plugin_alego_base_approval
-  plugin_alego_base_permission["permission<br/>@alego/permission-presets"]
+  plugin_alego_base_permission["permission<br/>@singula-ai/alego-permission-presets"]
   cfg --> plugin_alego_base_permission
-  plugin_alego_base_shell_env["shell-env<br/>@alego/shell-env"]
+  plugin_alego_base_shell_env["shell-env<br/>@singula-ai/alego-shell-env"]
   cfg --> plugin_alego_base_shell_env
-  plugin_alego_base_tool_bash["tool-bash<br/>@alego/tool-bash"]
+  plugin_alego_base_tool_bash["tool-bash<br/>@singula-ai/alego-tool-bash"]
   cfg --> plugin_alego_base_tool_bash
-  plugin_alego_base_tool_pwsh["tool-pwsh<br/>@alego/tool-pwsh"]
+  plugin_alego_base_tool_pwsh["tool-pwsh<br/>@singula-ai/alego-tool-pwsh"]
   cfg --> plugin_alego_base_tool_pwsh
-  plugin_alego_base_tool_jobs["tool-jobs<br/>@alego/tool-jobs"]
+  plugin_alego_base_tool_jobs["tool-jobs<br/>@singula-ai/alego-tool-jobs"]
   cfg --> plugin_alego_base_tool_jobs
-  plugin_alego_base_fs_observation_policy["fs-observation-policy<br/>@alego/fs-observation-policy"]
+  plugin_alego_base_fs_observation_policy["fs-observation-policy<br/>@singula-ai/alego-fs-observation-policy"]
   cfg --> plugin_alego_base_fs_observation_policy
-  plugin_alego_base_tool_fs["tool-fs<br/>@alego/tool-fs"]
+  plugin_alego_base_tool_fs["tool-fs<br/>@singula-ai/alego-tool-fs"]
   cfg --> plugin_alego_base_tool_fs
-  plugin_alego_base_tool_fs_search["tool-fs-search<br/>@alego/tool-fs-search"]
+  plugin_alego_base_tool_fs_search["tool-fs-search<br/>@singula-ai/alego-tool-fs-search"]
   cfg --> plugin_alego_base_tool_fs_search
-  plugin_alego_base_agent_instructions["agent-instructions<br/>@alego/agent-instructions"]
+  plugin_alego_base_agent_instructions["agent-instructions<br/>@singula-ai/alego-agent-instructions"]
   cfg --> plugin_alego_base_agent_instructions
-  plugin_alego_base_skill["skill<br/>@alego/skill"]
+  plugin_alego_base_skill["skill<br/>@singula-ai/alego-skill"]
   cfg --> plugin_alego_base_skill
-  plugin_alego_base_skill_filesystem["skill-filesystem<br/>@alego/skill-filesystem"]
+  plugin_alego_base_skill_filesystem["skill-filesystem<br/>@singula-ai/alego-skill-filesystem"]
   cfg --> plugin_alego_base_skill_filesystem
-  plugin_alego_base_skill_badge["skill-badge<br/>@alego/skill-badge"]
+  plugin_alego_base_skill_badge["skill-badge<br/>@singula-ai/alego-skill-badge"]
   cfg --> plugin_alego_base_skill_badge
-  plugin_alego_base_tool_skill["tool-skill<br/>@alego/tool-skill"]
+  plugin_alego_base_tool_skill["tool-skill<br/>@singula-ai/alego-tool-skill"]
   cfg --> plugin_alego_base_tool_skill
-  plugin_alego_base_commands["commands<br/>@alego/commands"]
+  plugin_alego_base_commands["commands<br/>@singula-ai/alego-commands"]
   cfg --> plugin_alego_base_commands
-  plugin_alego_base_command_feedback["command-feedback<br/>@alego/command-feedback"]
+  plugin_alego_base_command_feedback["command-feedback<br/>@singula-ai/alego-command-feedback"]
   cfg --> plugin_alego_base_command_feedback
-  plugin_alego_base_goal["goal<br/>@alego/goal"]
+  plugin_alego_base_goal["goal<br/>@singula-ai/alego-goal"]
   cfg --> plugin_alego_base_goal
-  plugin_alego_base_goal_round_driver["goal-round-driver<br/>@alego/goal-round-driver"]
+  plugin_alego_base_goal_round_driver["goal-round-driver<br/>@singula-ai/alego-goal-round-driver"]
   cfg --> plugin_alego_base_goal_round_driver
-  plugin_alego_base_command_goal["command-goal<br/>@alego/command-goal"]
+  plugin_alego_base_command_goal["command-goal<br/>@singula-ai/alego-command-goal"]
   cfg --> plugin_alego_base_command_goal
-  plugin_alego_base_plan_mode["plan-mode<br/>@alego/plan-mode"]
+  plugin_alego_base_plan_mode["plan-mode<br/>@singula-ai/alego-plan-mode"]
   cfg --> plugin_alego_base_plan_mode
-  plugin_alego_base_token_meter["token-meter<br/>@alego/token-meter"]
+  plugin_alego_base_token_meter["token-meter<br/>@singula-ai/alego-token-meter"]
   cfg --> plugin_alego_base_token_meter
-  plugin_alego_base_compaction_basic["compaction-basic<br/>@alego/compaction-basic"]
+  plugin_alego_base_compaction_basic["compaction-basic<br/>@singula-ai/alego-compaction-basic"]
   cfg --> plugin_alego_base_compaction_basic
-  plugin_alego_base_command_compact["command-compact<br/>@alego/command-compact"]
+  plugin_alego_base_command_compact["command-compact<br/>@singula-ai/alego-command-compact"]
   cfg --> plugin_alego_base_command_compact
-  plugin_alego_base_subagent["subagent<br/>@alego/subagent"]
+  plugin_alego_base_subagent["subagent<br/>@singula-ai/alego-subagent"]
   cfg --> plugin_alego_base_subagent
-  plugin_alego_base_subagent_spawn_in_process["subagent-spawn-in-process<br/>@alego/subagent-spawn-in-process"]
+  plugin_alego_base_subagent_spawn_in_process["subagent-spawn-in-process<br/>@singula-ai/alego-subagent-spawn-in-process"]
   cfg --> plugin_alego_base_subagent_spawn_in_process
-  plugin_alego_base_subagent_fork_in_process["subagent-fork-in-process<br/>@alego/subagent-fork-in-process"]
+  plugin_alego_base_subagent_fork_in_process["subagent-fork-in-process<br/>@singula-ai/alego-subagent-fork-in-process"]
   cfg --> plugin_alego_base_subagent_fork_in_process
-  plugin_alego_base_tool_subagent_control["tool-subagent-control<br/>@alego/tool-subagent-control"]
+  plugin_alego_base_tool_subagent_control["tool-subagent-control<br/>@singula-ai/alego-tool-subagent-control"]
   cfg --> plugin_alego_base_tool_subagent_control
-  plugin_alego_base_tool_subagent_list_agents["tool-subagent-list-agents<br/>@alego/tool-subagent-control/list-agents"]
+  plugin_alego_base_tool_subagent_list_agents["tool-subagent-list-agents<br/>@singula-ai/alego-tool-subagent-control/list-agents"]
   cfg --> plugin_alego_base_tool_subagent_list_agents
-  plugin_alego_base_tool_subagent["tool-subagent<br/>@alego/tool-subagent"]
+  plugin_alego_base_tool_subagent["tool-subagent<br/>@singula-ai/alego-tool-subagent"]
   cfg --> plugin_alego_base_tool_subagent
-  plugin_alego_base_tool_subagent_fork["tool-subagent-fork<br/>@alego/tool-subagent"]
+  plugin_alego_base_tool_subagent_fork["tool-subagent-fork<br/>@singula-ai/alego-tool-subagent"]
   cfg --> plugin_alego_base_tool_subagent_fork
-  plugin_alego_base_tool_subagent_report["tool-subagent-report<br/>@alego/tool-subagent-report"]
+  plugin_alego_base_tool_subagent_report["tool-subagent-report<br/>@singula-ai/alego-tool-subagent-report"]
   cfg --> plugin_alego_base_tool_subagent_report
-  plugin_alego_base_workflow_worker_thread["workflow-worker-thread<br/>@alego/workflow-worker-thread"]
+  plugin_alego_base_workflow_worker_thread["workflow-worker-thread<br/>@singula-ai/alego-workflow-worker-thread"]
   cfg --> plugin_alego_base_workflow_worker_thread
-  plugin_alego_base_tool_workflow["tool-workflow<br/>@alego/tool-workflow"]
+  plugin_alego_base_tool_workflow["tool-workflow<br/>@singula-ai/alego-tool-workflow"]
   cfg --> plugin_alego_base_tool_workflow
-  plugin_alego_base_timeout_policy["timeout-policy<br/>@alego/tool-call-timeout-policy"]
+  plugin_alego_base_timeout_policy["timeout-policy<br/>@singula-ai/alego-tool-call-timeout-policy"]
   cfg --> plugin_alego_base_timeout_policy
-  plugin_alego_base_spill_local["spill-local<br/>@alego/spill-local"]
+  plugin_alego_base_spill_local["spill-local<br/>@singula-ai/alego-spill-local"]
   cfg --> plugin_alego_base_spill_local
-  plugin_alego_base_spill_policy["spill-policy<br/>@alego/spill-policy"]
+  plugin_alego_base_spill_policy["spill-policy<br/>@singula-ai/alego-spill-policy"]
   cfg --> plugin_alego_base_spill_policy
-  plugin_alego_base_session_checkpoint_policy["session-checkpoint-policy<br/>@alego/session-checkpoint-policy"]
+  plugin_alego_base_session_checkpoint_policy["session-checkpoint-policy<br/>@singula-ai/alego-session-checkpoint-policy"]
   cfg --> plugin_alego_base_session_checkpoint_policy
-  plugin_alego_base_tool_result_pruner["tool-result-pruner<br/>@alego/compaction-tool-result-pruner"]
+  plugin_alego_base_tool_result_pruner["tool-result-pruner<br/>@singula-ai/alego-compaction-tool-result-pruner"]
   cfg --> plugin_alego_base_tool_result_pruner
-  plugin_alego_base_tool_todo["tool-todo<br/>@alego/tool-todo"]
+  plugin_alego_base_tool_todo["tool-todo<br/>@singula-ai/alego-tool-todo"]
   cfg --> plugin_alego_base_tool_todo
-  plugin_alego_base_tool_goal["tool-goal<br/>@alego/tool-goal"]
+  plugin_alego_base_tool_goal["tool-goal<br/>@singula-ai/alego-tool-goal"]
   cfg --> plugin_alego_base_tool_goal
-  plugin_alego_base_tool_ralph["tool-ralph<br/>@alego/tool-ralph"]
+  plugin_alego_base_tool_ralph["tool-ralph<br/>@singula-ai/alego-tool-ralph"]
   cfg --> plugin_alego_base_tool_ralph
-  plugin_alego_base_tool_str_replace_editor["tool-str-replace-editor<br/>@alego/tool-str-replace-editor"]
+  plugin_alego_base_tool_str_replace_editor["tool-str-replace-editor<br/>@singula-ai/alego-tool-str-replace-editor"]
   cfg --> plugin_alego_base_tool_str_replace_editor
-  plugin_alego_base_repeat_tool_reminder["repeat-tool-reminder<br/>@alego/repeat-tool-reminder"]
+  plugin_alego_base_repeat_tool_reminder["repeat-tool-reminder<br/>@singula-ai/alego-repeat-tool-reminder"]
   cfg --> plugin_alego_base_repeat_tool_reminder
-  plugin_alego_base_web["web<br/>@alego/web"]
+  plugin_alego_base_web["web<br/>@singula-ai/alego-web"]
   cfg --> plugin_alego_base_web
-  plugin_alego_base_web_search_deepseek["web-search-deepseek<br/>@alego/web-search-deepseek"]
+  plugin_alego_base_web_search_deepseek["web-search-deepseek<br/>@singula-ai/alego-web-search-deepseek"]
   cfg --> plugin_alego_base_web_search_deepseek
-  plugin_alego_base_tool_web["tool-web<br/>@alego/tool-web"]
+  plugin_alego_base_tool_web["tool-web<br/>@singula-ai/alego-tool-web"]
   cfg --> plugin_alego_base_tool_web
-  plugin_alego_base_tools["tools<br/>@alego/tools"]
+  plugin_alego_base_tools["tools<br/>@singula-ai/alego-tools"]
   cfg --> plugin_alego_base_tools
-  plugin_alego_base_system_prompt["system-prompt<br/>@alego/system-prompt"]
+  plugin_alego_base_system_prompt["system-prompt<br/>@singula-ai/alego-system-prompt"]
   cfg --> plugin_alego_base_system_prompt
-  plugin_alego_base_agent_loop["agent-loop<br/>@alego/agent-loop"]
+  plugin_alego_base_agent_loop["agent-loop<br/>@singula-ai/alego-agent-loop"]
   cfg --> plugin_alego_base_agent_loop
-  plugin_alego_base_fs_sandbox["fs-sandbox<br/>@alego/fs-sandbox"]
+  plugin_alego_base_fs_sandbox["fs-sandbox<br/>@singula-ai/alego-fs-sandbox"]
   cfg --> plugin_alego_base_fs_sandbox
-  plugin_alego_base_llm_deepseek["llm-deepseek<br/>@alego/llm-deepseek"]
+  plugin_alego_base_llm_deepseek["llm-deepseek<br/>@singula-ai/alego-llm-deepseek"]
   cfg --> plugin_alego_base_llm_deepseek
 ```
 
 | Plugin id | Package / module |
 | --- | --- |
-| `timer` | `@alego/cordis-plugin-timer` |
-| `hmr` | `@alego/cordis-plugin-hmr` |
-| `llm` | `@alego/llm` |
-| `session` | `@alego/session` |
-| `typert` | `@alego/typert-registry` |
-| `typert-loader` | `@alego/typert-loader` |
-| `typert-gateway` | `@alego/api-gateway` |
-| `session-title` | `@alego/session-title` |
-| `session-title-llm` | `@alego/session-title-first-prompt-llm` |
-| `user-questions` | `@alego/user-questions` |
-| `agent` | `@alego/agent` |
-| `agent-default-model` | `@alego/agent-default-model` |
-| `jobs` | `@alego/jobs-local` |
-| `llm-retry` | `@alego/llm-retry` |
-| `settings` | `@alego/settings-file` |
-| `credentials` | `@alego/credentials-local` |
-| `llm-pi-ai` | `@alego/llm-pi-ai` |
-| `session-persistence-jsonl` | `@alego/session-persistence-jsonl` |
-| `attachment-local` | `@alego/attachment-local` |
-| `session-query-sqlite` | `@alego/session-query-sqlite` |
-| `session-projection` | `@alego/session-projection` |
-| `session-telemetry-otel` | `@alego/session-telemetry-otel` |
-| `subprocess` | `@alego/subprocess-local` |
-| `sandbox` | `@alego/sandbox-local` |
-| `sandbox-policy` | `@alego/sandbox-policy` |
-| `bash-sandbox` | `@alego/bash-sandbox` |
-| `pwsh-sandbox` | `@alego/pwsh-sandbox` |
-| `approval` | `@alego/user-approval` |
-| `permission` | `@alego/permission-presets` |
-| `shell-env` | `@alego/shell-env` |
-| `tool-bash` | `@alego/tool-bash` |
-| `tool-pwsh` | `@alego/tool-pwsh` |
-| `tool-jobs` | `@alego/tool-jobs` |
-| `fs-observation-policy` | `@alego/fs-observation-policy` |
-| `tool-fs` | `@alego/tool-fs` |
-| `tool-fs-search` | `@alego/tool-fs-search` |
-| `agent-instructions` | `@alego/agent-instructions` |
-| `skill` | `@alego/skill` |
-| `skill-filesystem` | `@alego/skill-filesystem` |
-| `skill-badge` | `@alego/skill-badge` |
-| `tool-skill` | `@alego/tool-skill` |
-| `commands` | `@alego/commands` |
-| `command-feedback` | `@alego/command-feedback` |
-| `goal` | `@alego/goal` |
-| `goal-round-driver` | `@alego/goal-round-driver` |
-| `command-goal` | `@alego/command-goal` |
-| `plan-mode` | `@alego/plan-mode` |
-| `token-meter` | `@alego/token-meter` |
-| `compaction-basic` | `@alego/compaction-basic` |
-| `command-compact` | `@alego/command-compact` |
-| `subagent` | `@alego/subagent` |
-| `subagent-spawn-in-process` | `@alego/subagent-spawn-in-process` |
-| `subagent-fork-in-process` | `@alego/subagent-fork-in-process` |
-| `tool-subagent-control` | `@alego/tool-subagent-control` |
-| `tool-subagent-list-agents` | `@alego/tool-subagent-control/list-agents` |
-| `tool-subagent` | `@alego/tool-subagent` |
-| `tool-subagent-fork` | `@alego/tool-subagent` |
-| `tool-subagent-report` | `@alego/tool-subagent-report` |
-| `workflow-worker-thread` | `@alego/workflow-worker-thread` |
-| `tool-workflow` | `@alego/tool-workflow` |
-| `timeout-policy` | `@alego/tool-call-timeout-policy` |
-| `spill-local` | `@alego/spill-local` |
-| `spill-policy` | `@alego/spill-policy` |
-| `session-checkpoint-policy` | `@alego/session-checkpoint-policy` |
-| `tool-result-pruner` | `@alego/compaction-tool-result-pruner` |
-| `tool-todo` | `@alego/tool-todo` |
-| `tool-goal` | `@alego/tool-goal` |
-| `tool-ralph` | `@alego/tool-ralph` |
-| `tool-str-replace-editor` | `@alego/tool-str-replace-editor` |
-| `repeat-tool-reminder` | `@alego/repeat-tool-reminder` |
-| `web` | `@alego/web` |
-| `web-search-deepseek` | `@alego/web-search-deepseek` |
-| `tool-web` | `@alego/tool-web` |
-| `tools` | `@alego/tools` |
-| `system-prompt` | `@alego/system-prompt` |
-| `agent-loop` | `@alego/agent-loop` |
-| `fs-sandbox` | `@alego/fs-sandbox` |
-| `llm-deepseek` | `@alego/llm-deepseek` |
+| `timer` | `@singula-ai/cordis-plugin-timer` |
+| `hmr` | `@singula-ai/cordis-plugin-hmr` |
+| `llm` | `@singula-ai/alego-llm` |
+| `session` | `@singula-ai/alego-session` |
+| `typert` | `@singula-ai/alego-typert-registry` |
+| `typert-loader` | `@singula-ai/alego-typert-loader` |
+| `typert-gateway` | `@singula-ai/alego-api-gateway` |
+| `session-title` | `@singula-ai/alego-session-title` |
+| `session-title-llm` | `@singula-ai/alego-session-title-first-prompt-llm` |
+| `user-questions` | `@singula-ai/alego-user-questions` |
+| `agent` | `@singula-ai/alego-agent` |
+| `agent-default-model` | `@singula-ai/alego-agent-default-model` |
+| `jobs` | `@singula-ai/alego-jobs-local` |
+| `llm-retry` | `@singula-ai/alego-llm-retry` |
+| `settings` | `@singula-ai/alego-settings-file` |
+| `credentials` | `@singula-ai/alego-credentials-local` |
+| `llm-pi-ai` | `@singula-ai/alego-llm-pi-ai` |
+| `session-persistence-jsonl` | `@singula-ai/alego-session-persistence-jsonl` |
+| `attachment-local` | `@singula-ai/alego-attachment-local` |
+| `session-query-sqlite` | `@singula-ai/alego-session-query-sqlite` |
+| `session-projection` | `@singula-ai/alego-session-projection` |
+| `session-telemetry-otel` | `@singula-ai/alego-session-telemetry-otel` |
+| `subprocess` | `@singula-ai/alego-subprocess-local` |
+| `sandbox` | `@singula-ai/alego-sandbox-local` |
+| `sandbox-policy` | `@singula-ai/alego-sandbox-policy` |
+| `bash-sandbox` | `@singula-ai/alego-bash-sandbox` |
+| `pwsh-sandbox` | `@singula-ai/alego-pwsh-sandbox` |
+| `approval` | `@singula-ai/alego-user-approval` |
+| `permission` | `@singula-ai/alego-permission-presets` |
+| `shell-env` | `@singula-ai/alego-shell-env` |
+| `tool-bash` | `@singula-ai/alego-tool-bash` |
+| `tool-pwsh` | `@singula-ai/alego-tool-pwsh` |
+| `tool-jobs` | `@singula-ai/alego-tool-jobs` |
+| `fs-observation-policy` | `@singula-ai/alego-fs-observation-policy` |
+| `tool-fs` | `@singula-ai/alego-tool-fs` |
+| `tool-fs-search` | `@singula-ai/alego-tool-fs-search` |
+| `agent-instructions` | `@singula-ai/alego-agent-instructions` |
+| `skill` | `@singula-ai/alego-skill` |
+| `skill-filesystem` | `@singula-ai/alego-skill-filesystem` |
+| `skill-badge` | `@singula-ai/alego-skill-badge` |
+| `tool-skill` | `@singula-ai/alego-tool-skill` |
+| `commands` | `@singula-ai/alego-commands` |
+| `command-feedback` | `@singula-ai/alego-command-feedback` |
+| `goal` | `@singula-ai/alego-goal` |
+| `goal-round-driver` | `@singula-ai/alego-goal-round-driver` |
+| `command-goal` | `@singula-ai/alego-command-goal` |
+| `plan-mode` | `@singula-ai/alego-plan-mode` |
+| `token-meter` | `@singula-ai/alego-token-meter` |
+| `compaction-basic` | `@singula-ai/alego-compaction-basic` |
+| `command-compact` | `@singula-ai/alego-command-compact` |
+| `subagent` | `@singula-ai/alego-subagent` |
+| `subagent-spawn-in-process` | `@singula-ai/alego-subagent-spawn-in-process` |
+| `subagent-fork-in-process` | `@singula-ai/alego-subagent-fork-in-process` |
+| `tool-subagent-control` | `@singula-ai/alego-tool-subagent-control` |
+| `tool-subagent-list-agents` | `@singula-ai/alego-tool-subagent-control/list-agents` |
+| `tool-subagent` | `@singula-ai/alego-tool-subagent` |
+| `tool-subagent-fork` | `@singula-ai/alego-tool-subagent` |
+| `tool-subagent-report` | `@singula-ai/alego-tool-subagent-report` |
+| `workflow-worker-thread` | `@singula-ai/alego-workflow-worker-thread` |
+| `tool-workflow` | `@singula-ai/alego-tool-workflow` |
+| `timeout-policy` | `@singula-ai/alego-tool-call-timeout-policy` |
+| `spill-local` | `@singula-ai/alego-spill-local` |
+| `spill-policy` | `@singula-ai/alego-spill-policy` |
+| `session-checkpoint-policy` | `@singula-ai/alego-session-checkpoint-policy` |
+| `tool-result-pruner` | `@singula-ai/alego-compaction-tool-result-pruner` |
+| `tool-todo` | `@singula-ai/alego-tool-todo` |
+| `tool-goal` | `@singula-ai/alego-tool-goal` |
+| `tool-ralph` | `@singula-ai/alego-tool-ralph` |
+| `tool-str-replace-editor` | `@singula-ai/alego-tool-str-replace-editor` |
+| `repeat-tool-reminder` | `@singula-ai/alego-repeat-tool-reminder` |
+| `web` | `@singula-ai/alego-web` |
+| `web-search-deepseek` | `@singula-ai/alego-web-search-deepseek` |
+| `tool-web` | `@singula-ai/alego-tool-web` |
+| `tools` | `@singula-ai/alego-tools` |
+| `system-prompt` | `@singula-ai/alego-system-prompt` |
+| `agent-loop` | `@singula-ai/alego-agent-loop` |
+| `fs-sandbox` | `@singula-ai/alego-fs-sandbox` |
+| `llm-deepseek` | `@singula-ai/alego-llm-deepseek` |
 
 Source config: [`packages/bundle/base/cordis.patch.yml`](../../packages/bundle/base/cordis.patch.yml).
 

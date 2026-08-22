@@ -1,13 +1,13 @@
-import { createUserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import SessionStore, { SessionId } from '@alego/session'
-import JsonlSessionPersistence from '@alego/session-persistence-jsonl'
-import SqliteSessionPersistence from '@alego/session-persistence-sqlite'
-import SessionTitleService, { foldSessionTitle } from '@alego/session-title'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import SqliteSessionPersistence from '@singula-ai/alego-session-persistence-sqlite'
+import SessionTitleService, { foldSessionTitle } from '@singula-ai/alego-session-title'
 
 const CONFIG = {
   fallbackMaxWords: 5,

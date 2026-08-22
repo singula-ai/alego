@@ -58,7 +58,7 @@ export const zh = {
 /** Translation keys owned by the Cordis UI namespace. */
 export type CordisKey = keyof typeof zh
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Dynamic Cordis UI copy. */
     cordis: CordisKey

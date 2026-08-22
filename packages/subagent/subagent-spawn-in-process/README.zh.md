@@ -1,4 +1,4 @@
-# @alego/subagent-spawn-in-process
+# @singula-ai/alego-subagent-spawn-in-process
 
 [English](README.md) | 中文
 

@@ -1,12 +1,12 @@
 /**
- * Package-owned invariant companion for `@alego/host-frontend-static`.
- * @module @alego/host-frontend-static/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-host-frontend-static`.
+ * @module @singula-ai/alego-host-frontend-static/invariant
  */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/host-frontend-static'
+const PACKAGE_NAME = '@singula-ai/alego-host-frontend-static'
 
 /** Cordis companion plugin name. */
 export const name = 'host-frontend-static-invariant'

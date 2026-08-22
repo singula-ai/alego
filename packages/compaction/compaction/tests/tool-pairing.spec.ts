@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { createUserMessage, CallId , createMessage, createToolResultMessage } from '@alego/llm'
-import { toolPairingBalancedAfter, toolPairingBalancedBefore } from '@alego/compaction'
-import { Session, SessionId } from '@alego/session'
-import type { SessionEvent } from '@alego/session'
+import { createUserMessage, CallId , createMessage, createToolResultMessage } from '@singula-ai/alego-llm'
+import { toolPairingBalancedAfter, toolPairingBalancedBefore } from '@singula-ai/alego-compaction'
+import { Session, SessionId } from '@singula-ai/alego-session'
+import type { SessionEvent } from '@singula-ai/alego-session'
 
 const SURFACE = { surfaceOp: 'append' as const }
 

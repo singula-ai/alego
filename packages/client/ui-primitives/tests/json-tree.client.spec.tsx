@@ -2,7 +2,7 @@
 
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { JsonTree } from '@alego/client-ui-primitives'
+import { JsonTree } from '@singula-ai/alego-client-ui-primitives'
 
 let writeText: ReturnType<typeof vi.fn>
 

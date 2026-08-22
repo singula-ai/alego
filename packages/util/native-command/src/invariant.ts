@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/native-command`.
- * @module @alego/native-command/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-native-command`.
+ * @module @singula-ai/alego-native-command/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/native-command'
+const PACKAGE_NAME = '@singula-ai/alego-native-command'
 
 /** Cordis companion plugin name. */
 export const name = 'native-command-invariant'

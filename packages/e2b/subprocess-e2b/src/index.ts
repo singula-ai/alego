@@ -1,22 +1,22 @@
 /**
  * E2B Service Provider for the subprocess capability seam. Each handle starts through the
  * shared sandbox and retains command output/status paths in that remote world.
- * @module @alego/subprocess-e2b
+ * @module @singula-ai/alego-subprocess-e2b
  */
 
 import { randomUUID } from 'node:crypto'
 import { posix } from 'node:path'
-import { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { SubprocessRuntime } from '@alego/subprocess'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+import { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { SubprocessRuntime } from '@singula-ai/alego-subprocess'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 import type {
   SubprocessHandle,
   SubprocessSpawnSpec,
   SubprocessTerminalHandle,
   SubprocessTerminalSpawnSpec,
-} from '@alego/subprocess'
-import { e2bControlEnvs, quoteE2BShellArg } from '@alego/e2b'
+} from '@singula-ai/alego-subprocess'
+import { e2bControlEnvs, quoteE2BShellArg } from '@singula-ai/alego-e2b'
 import { E2BSubprocessHandle } from './process.ts'
 import { asError, signalOpts } from './remote.ts'
 import { spawnE2BTerminal } from './terminal.ts'

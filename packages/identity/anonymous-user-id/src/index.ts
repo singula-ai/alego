@@ -13,14 +13,14 @@
  * touches the disk once, and a file deleted mid-run keeps the process's id
  * until the next launch.
  *
- * @module @alego/anonymous-user-id
+ * @module @singula-ai/alego-anonymous-user-id
  */
 
 import { randomUUID } from 'node:crypto'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
-import type { Branded } from '@alego/brand'
-import { resolveAlegoHome } from '@alego/home-paths'
+import type { Branded } from '@singula-ai/alego-brand'
+import { resolveAlegoHome } from '@singula-ai/alego-home-paths'
 
 /** A harness-home-scoped anonymous user id (random UUID v4). */
 export type AnonymousUserId = Branded<'AnonymousUserId'>

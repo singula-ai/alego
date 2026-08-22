@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-31-code-runtime-python-fd3-protocol.md
-2026-07-31-code-runtime-python-fd3-protocol.md: f0bfc4b22ffbff5b32b05f0c2659ccd8ccd7cd49
-2026-07-31-code-runtime-python-fd3-protocol.zh.md: f74b49fb0ccaeba8e07694af62c397c63cab5d06
+2026-07-31-code-runtime-python-fd3-protocol.md: e508bf26dfd1b20b7eee6fc02e16ca25df4094c8
+2026-07-31-code-runtime-python-fd3-protocol.zh.md: 04ef23a84123628ae9af8f349660acedaa8a369f

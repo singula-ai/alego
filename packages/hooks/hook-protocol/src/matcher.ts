@@ -4,7 +4,7 @@
  * treats every non-empty pattern as an unanchored regex. Missing, empty, and
  * `*` match all. Runtime matching contains invalid regexes as non-matches;
  * config parsers use {@link matcherDiagnostic} to reject them with a diagnostic.
- * @module @alego/hook-protocol/matcher
+ * @module @singula-ai/alego-hook-protocol/matcher
  */
 
 import type { MatcherMode } from './types.ts'

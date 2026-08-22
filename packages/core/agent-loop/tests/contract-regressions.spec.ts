@@ -1,16 +1,16 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import LlmRuntime, { createUserMessage, CallId, LlmError, MessageSource, ProviderRequestId, StreamChunk  } from '@alego/llm'
-import SessionStore, { Session, SessionEvent, SessionId, TurnEndReason, type UserMessage } from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime, { defineContentToolFixture, type PostToolDecision } from '@alego/tools'
-import AgentRegistry, { type Agent } from '@alego/agent'
-import AgentLoop from '@alego/agent-loop'
+import { Context } from '@singula-ai/cordis'
+import LlmRuntime, { createUserMessage, CallId, LlmError, MessageSource, ProviderRequestId, StreamChunk  } from '@singula-ai/alego-llm'
+import SessionStore, { Session, SessionEvent, SessionId, TurnEndReason, type UserMessage } from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { defineContentToolFixture, type PostToolDecision } from '@singula-ai/alego-tools'
+import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
+import AgentLoop from '@singula-ai/alego-agent-loop'
 import { ReactLoopAgent } from '../src/agent.ts'
-import InvariantRegistry from '@alego/invariants'
-import * as SessionInvariant from '@alego/session/invariant'
-import * as AgentInvariant from '@alego/agent/invariant'
-import * as AgentLoopInvariant from '@alego/agent-loop/invariant'
+import InvariantRegistry from '@singula-ai/alego-invariants'
+import * as SessionInvariant from '@singula-ai/alego-session/invariant'
+import * as AgentInvariant from '@singula-ai/alego-agent/invariant'
+import * as AgentLoopInvariant from '@singula-ai/alego-agent-loop/invariant'
 import { MockAdapter, textResponse, toolCallResponse } from './mock-adapter.ts'
 
 async function mountInvariants(ctx: Context): Promise<void> {
@@ -810,7 +810,7 @@ describe('turn and step boundary recovery', () => {
     expect(adapter.requests).toHaveLength(1)
     expect(errors.map(error => error.message)).toEqual([
       'reject first step-end',
-      'invariant violated by "@alego/session": turn/end 1 while step 1 is still open',
+      'invariant violated by "@singula-ai/alego-session": turn/end 1 while step 1 is still open',
     ])
     expect(boundaryCounts(agent)).toMatchObject({
       turnStart: 1,

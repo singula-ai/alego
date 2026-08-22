@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context, type Plugin } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import { remoteMethods } from '@alego/typert-protocol'
+import { Context, type Plugin } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import { remoteMethods } from '@singula-ai/alego-typert-protocol'
 import PluginInventoryGateway from '../src/index.ts'
 
 const contexts: Context[] = []

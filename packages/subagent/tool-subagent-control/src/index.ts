@@ -4,16 +4,16 @@
  * `ctx.subagents.interrupt()`. They perform no lifecycle routing of their own —
  * residency, cold resume, and interrupt authorization belong to the subagent
  * service — and they live apart from the provider-bound
- * `@alego/tool-subagent` instances so multiple delegation tools share
+ * `@singula-ai/alego-tool-subagent` instances so multiple delegation tools share
  * one control API.
- * @module @alego/tool-subagent-control
+ * @module @singula-ai/alego-tool-subagent-control
  */
 
-import type { Context } from '@alego/cordis'
-import { defineTool } from '@alego/tools'
-import type { ContentBlock } from '@alego/llm'
-import { SessionId } from '@alego/session'
-import type {} from '@alego/subagent'
+import type { Context } from '@singula-ai/cordis'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
+import type {} from '@singula-ai/alego-subagent'
 
 export const name = 'tool-subagent-control'
 export const inject = ['tools', 'subagents']

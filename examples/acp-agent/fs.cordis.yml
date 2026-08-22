@@ -2,16 +2,16 @@
 # the base cordis.yml, so this overlay adds only the local tool-result spill
 # storage those scenarios exercise.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - insert:
           - id: spill-local
-            name: '@alego/spill-local'
+            name: '@singula-ai/alego-spill-local'
             config:
               root: !!js process.env.ALEGO_SNAPSHOT_SPILL_ROOT ?? './.spill'
           - id: spill-policy
-            name: '@alego/spill-policy'
+            name: '@singula-ai/alego-spill-policy'
             config:
               maxInlineBytes: !!js process.env.ALEGO_SNAPSHOT && 800 || 50000

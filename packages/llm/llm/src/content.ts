@@ -1,8 +1,8 @@
-/** Content-block structure helpers. @module @alego/llm/content */
+/** Content-block structure helpers. @module @singula-ai/alego-llm/content */
 
 import type { ContentBlock } from './types.ts'
 import type { Message } from './message.ts'
-import type { ImageAttachmentRef, RequestImageAttachment } from '@alego/attachment'
+import type { ImageAttachmentRef, RequestImageAttachment } from '@singula-ai/alego-attachment'
 
 /** Model-facing stand-in for an image removed to fit a provider request bound. */
 export const OFFLOADED_IMAGE_TEXT

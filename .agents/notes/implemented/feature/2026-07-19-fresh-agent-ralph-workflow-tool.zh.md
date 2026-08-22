@@ -12,7 +12,7 @@ Status: implemented
 
 ## 决策
 
-在 `packages/workflow/` 下新增独立的消费方包 `@alego/tool-ralph`。它注册 `ralph({ objective, maxRounds? })`，拥有固定工作流脚本，并且只依赖 `ctx.tools`、`ctx.systemPrompt`、`ctx.workflowEngine` 和 `ctx.subagents`。Ralph 运行不是会话目标，不会创建目标状态，也不要求在具体 agent loop 中增加分支。
+在 `packages/workflow/` 下新增独立的消费方包 `@singula-ai/alego-tool-ralph`。它注册 `ralph({ objective, maxRounds? })`，拥有固定工作流脚本，并且只依赖 `ctx.tools`、`ctx.systemPrompt`、`ctx.workflowEngine` 和 `ctx.subagents`。Ralph 运行不是会话目标，不会创建目标状态，也不要求在具体 agent loop 中增加分支。
 
 该工具仅以前台方式运行。调用 agent 作为每个子 agent 的父级以提供 cwd 和谱系，父工具调用等待整次运行结束，父步骤的中止信号会取消工作流。每条路径都会等待 `run.dispose()`，因此调用返回前，取消会经过工作线程引擎的有界收敛并使子 agent 完全停稳。
 

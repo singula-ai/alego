@@ -1,4 +1,4 @@
-# @alego/typert-loader
+# @singula-ai/alego-typert-loader
 
 [English](README.md) | 中文
 

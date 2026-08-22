@@ -4,15 +4,15 @@
  * creation, flatten post-publication failures, and dispose to whole-tree
  * quiescence.
  *
- * @module @alego/subagent-codex/run
+ * @module @singula-ai/alego-subagent-codex/run
  */
 
 import { randomUUID } from 'node:crypto'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, resolve } from 'node:path'
-import type { ContentBlock } from '@alego/llm'
-import { SessionId } from '@alego/session'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
 import {
   settleRunResult,
   subprocessRunHandle,
@@ -20,12 +20,12 @@ import {
   type SubagentRun,
   type SubagentStartRequest,
   type SubagentStopReason,
-} from '@alego/subagent'
+} from '@singula-ai/alego-subagent'
 import type {
   SubprocessHandle,
   SubprocessOutcome,
   SubprocessSpawnSpec,
-} from '@alego/subprocess'
+} from '@singula-ai/alego-subprocess'
 import {
   CodexAppServerWire,
   type CodexWireFailureFacts,

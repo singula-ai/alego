@@ -46,72 +46,72 @@
 # window.__ALEGO_BOOT__; the modules row is simultaneously a host row.
 - insert:
     - id: code-runtime
-      name: '@alego/code-runtime-worker-thread'
+      name: '@singula-ai/alego-code-runtime-worker-thread'
 
     - id: storage
-      name: '@alego/storage'
+      name: '@singula-ai/alego-storage'
 
     - id: storage-json
-      name: '@alego/storage-json'
+      name: '@singula-ai/alego-storage-json'
       config:
         root: !!js alegoHomePath('storages')
 
     - id: storage-domain
-      name: '@alego/storage-domain'
+      name: '@singula-ai/alego-storage-domain'
       config:
         backend: json
 
     - id: message-feedback
-      name: '@alego/message-feedback'
+      name: '@singula-ai/alego-message-feedback'
       config:
         maxNoteBytes: 8192
 
     # Browser Session export: `/export` command plus the shared download dialog.
     - id: session-log-download
-      name: '@alego/session-log-export'
+      name: '@singula-ai/alego-session-log-export'
 
     - id: workspace
-      name: '@alego/workspace'
+      name: '@singula-ai/alego-workspace'
 
     - id: session-projection-cache
-      name: '@alego/session-projection-cache'
+      name: '@singula-ai/alego-session-projection-cache'
       config:
         writeEveryEvents: 200
         writeIntervalMs: 5000
 
     - id: session-reference
-      name: '@alego/session-reference'
+      name: '@singula-ai/alego-session-reference'
 
     - id: file-reference-local
-      name: '@alego/file-reference-local'
+      name: '@singula-ai/alego-file-reference-local'
 
     # Whole-log turn/step counts for the chat stats strip (the sessionStats
     # projection key); the projection registry itself is a base-layer row.
     - id: session-stats
-      name: '@alego/session-stats'
+      name: '@singula-ai/alego-session-stats'
 
     # Resolve bind host, SSH launch, and display once at boot, then mount the
     # matching dual-face directory picker. Mount -native or -browse directly in
     # an overlay to pin the interaction.
     - id: directory-picker
-      name: '@alego/host-directory-picker-auto'
+      name: '@singula-ai/alego-host-directory-picker-auto'
 
     # Read-only projection of current Loader entries for trusted client RPCs.
     - id: plugin-inventory
-      name: '@alego/host-plugin-inventory'
+      name: '@singula-ai/alego-host-plugin-inventory'
 
     # The API gateway: the transport-agnostic dispatch face every client shape
     # shares. The base layer's agent-default-model service owns the default model.
     - id: api-gateway
-      name: '@alego/host-apiproxy'
+      name: '@singula-ai/alego-host-apiproxy'
 
     - id: cordis-host-runner
-      name: '@alego/cordis-host-runner'
+      name: '@singula-ai/alego-cordis-host-runner'
 
     # Ordinary provider for the parsed Web flags. Its plugin-level injection
     # waits for cmdlineArgs; no launcher metadata or special row kind is needed.
     - id: web-startup
-      name: '@alego/web-app/startup'
+      name: '@singula-ai/alego-web-app/startup'
 
     # ── layer 2: transport/service ──────────────────────────────────────────────
 
@@ -119,7 +119,7 @@
     # webStartup provider, with these deployment fallbacks. The dist is served by
     # the web-runtime row below through the fallback seat.
     - id: webserver
-      name: '@alego/host-webserver'
+      name: '@singula-ai/alego-host-webserver'
       inject: [webStartup]
       config:
         host: !!js ctx.webStartup.host ?? '127.0.0.1'
@@ -135,7 +135,7 @@
     # suppresses the prompt section for that agent while retaining the host-owned
     # shell variable.
     - id: web-runtime
-      name: '@alego/web-app'
+      name: '@singula-ai/alego-web-app'
       inject: [webStartup]
       config:
         openBrowser: !!js ctx.webStartup.openBrowser
@@ -148,7 +148,7 @@
     # is a row rather than a child of web-runtime because its node half is a
     # client-side package, which a host-side bundle cannot import.
     - id: client-hmr
-      name: '@alego/client-hmr'
+      name: '@singula-ai/alego-client-hmr'
 
     # ── browser plugin roster (alego.client rows; node halves are layer-2 hosts) ──
 
@@ -157,12 +157,12 @@
     # the shell kernel constructs before cordis exists (adopted as a plugin
     # entry by the kernel, never fetched).
     - id: modules
-      name: '@alego/client-modules'
+      name: '@singula-ai/alego-client-modules'
 
     # Owns both ends of the web transport: node half binds the gateway to the
     # webserver under /api; browser half is the fetch/SSE client.
     - id: connection
-      name: '@alego/client-connection'
+      name: '@singula-ai/alego-client-connection'
       inject: [webRuntime]
       config:
         # LAN literals derived from the active bind plus --trusted-host extras.
@@ -171,128 +171,128 @@
         trustedHosts: !!js ctx.webRuntime.trustedHosts
 
     - id: api-remotes
-      name: '@alego/api-remotes'
+      name: '@singula-ai/alego-api-remotes'
 
     - id: client-runtime
-      name: '@alego/client-runtime'
+      name: '@singula-ai/alego-client-runtime'
 
     - id: cordis-client-runner
-      name: '@alego/cordis-client-runner'
+      name: '@singula-ai/alego-cordis-client-runner'
 
     - id: ui-theme
-      name: '@alego/client-ui-theme'
+      name: '@singula-ai/alego-client-ui-theme'
 
     - id: locale
-      name: '@alego/client-locale'
+      name: '@singula-ai/alego-client-locale'
 
     - id: ui-layout
-      name: '@alego/client-ui-layout'
+      name: '@singula-ai/alego-client-ui-layout'
 
     - id: ui-renderer
-      name: '@alego/client-ui-renderer'
+      name: '@singula-ai/alego-client-ui-renderer'
 
     - id: ui-sidebar
-      name: '@alego/client-ui-sidebar'
+      name: '@singula-ai/alego-client-ui-sidebar'
 
     - id: ui-settings
-      name: '@alego/client-ui-settings'
+      name: '@singula-ai/alego-client-ui-settings'
 
     - id: ui-settings-general
-      name: '@alego/client-ui-settings-general'
+      name: '@singula-ai/alego-client-ui-settings-general'
 
     - id: ui-settings-models
-      name: '@alego/client-ui-settings-models'
+      name: '@singula-ai/alego-client-ui-settings-models'
 
     - id: ui-settings-plugin-inventory
-      name: '@alego/client-ui-settings-plugin-inventory'
+      name: '@singula-ai/alego-client-ui-settings-plugin-inventory'
 
     - id: ui-conversation
-      name: '@alego/client-ui-conversation'
+      name: '@singula-ai/alego-client-ui-conversation'
 
     # Official occupants for the generic sidebar and conversation brand slots.
     - id: ui-brand-official
-      name: '@alego/client-ui-brand-official'
+      name: '@singula-ai/alego-client-ui-brand-official'
 
     - id: ui-attachment
-      name: '@alego/client-ui-attachment'
+      name: '@singula-ai/alego-client-ui-attachment'
 
     # Tool call tree, generic fallback, and keyed business Tool views.
     - id: ui-tool
-      name: '@alego/client-ui-tool'
+      name: '@singula-ai/alego-client-ui-tool'
 
     - id: ui-cordis
-      name: '@alego/client-ui-cordis'
+      name: '@singula-ai/alego-client-ui-cordis'
 
     # Durable workflow lifecycle as an independent Chat node after the
     # existing generic workflow tool row.
     - id: ui-workflow-run
-      name: '@alego/client-ui-workflow-run'
+      name: '@singula-ai/alego-client-ui-workflow-run'
 
     # Turn tail: the produced-files row under each closing assistant message.
     # Remove this entry to turn the surface off; the tail hole renders empty.
     - id: ui-deliverables
-      name: '@alego/client-ui-deliverables'
+      name: '@singula-ai/alego-client-ui-deliverables'
 
 
     - id: ui-workspace
-      name: '@alego/client-ui-workspace'
+      name: '@singula-ai/alego-client-ui-workspace'
 
     # Input triggers: the '/' | '@' pipeline (ui-input-trigger), the command surface over
     # it (ui-commands), and the reference sources (ui-skill / ui-reference).
     - id: ui-input-trigger
-      name: '@alego/client-ui-input-trigger'
+      name: '@singula-ai/alego-client-ui-input-trigger'
 
     - id: ui-commands
-      name: '@alego/client-ui-commands'
+      name: '@singula-ai/alego-client-ui-commands'
 
     - id: ui-skill
-      name: '@alego/client-ui-skill'
+      name: '@singula-ai/alego-client-ui-skill'
 
     - id: ui-subagent
-      name: '@alego/client-ui-subagent'
+      name: '@singula-ai/alego-client-ui-subagent'
 
     - id: ui-reference
-      name: '@alego/client-ui-reference'
+      name: '@singula-ai/alego-client-ui-reference'
 
     # Background jobs: the session-header list over the jobsBySession mirror.
     - id: ui-jobs
-      name: '@alego/client-ui-jobs'
+      name: '@singula-ai/alego-client-ui-jobs'
 
     # Goal surface: GoalBar in the input dock over the goal session projection.
     - id: ui-goal
-      name: '@alego/client-ui-goal'
+      name: '@singula-ai/alego-client-ui-goal'
 
     # Per-message feedback: Like/Dislike plus an optional note in the
     # assistant-message action strip, over the messageFeedback Remote.
     - id: ui-message-feedback
-      name: '@alego/client-ui-message-feedback'
+      name: '@singula-ai/alego-client-ui-message-feedback'
 
     # Model selection: the /model popupSelect + composer seat over session.models.
     - id: ui-model-selection
-      name: '@alego/client-ui-model-selection'
+      name: '@singula-ai/alego-client-ui-model-selection'
 
     - id: ui-permission
-      name: '@alego/client-ui-permission-presets'
+      name: '@singula-ai/alego-client-ui-permission-presets'
 
     # The agent-preset row in General settings: the default preset for
     # sessions created later. Absent a roster it renders nothing.
     - id: ui-agent-preset
-      name: '@alego/client-ui-agent-preset'
+      name: '@singula-ai/alego-client-ui-agent-preset'
 
     # Plugin configuration: the host-plane sections a user owns, as expandable
     # cards. A namespace this deployment does not expose renders nothing.
     - id: ui-settings-plugins
-      name: '@alego/client-ui-settings-plugins'
+      name: '@singula-ai/alego-client-ui-settings-plugins'
 
     # Plan control: the composer plan seat over the plan projection + /plan channel.
     - id: ui-plan
-      name: '@alego/client-ui-plan'
+      name: '@singula-ai/alego-client-ui-plan'
 
     - id: ui-user-questions
-      name: '@alego/client-ui-user-questions'
+      name: '@singula-ai/alego-client-ui-user-questions'
 
     - id: ui-trajectory
-      name: '@alego/client-ui-trajectory'
+      name: '@singula-ai/alego-client-ui-trajectory'
 
 # ── the agent plane moves behind agent presets ─────────────────────────────
 #
@@ -440,6 +440,6 @@
 # never reaches that patch still finds a person's presets.
 - insert:
     - id: agent-presets
-      name: '@alego/agent-presets'
+      name: '@singula-ai/alego-agent-presets'
       config:
         default: standard

@@ -9,22 +9,22 @@ import { performance } from 'node:perf_hooks'
 import type { Browser, CDPSession, Locator, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import type { StreamChunk } from '@alego/llm'
+import type { StreamChunk } from '@singula-ai/alego-llm'
 import {
   CallId,
   createAssistantMessage,
   createToolResultMessage,
   createUserMessage,
-} from '@alego/llm'
-import type { ReplayEntry, ReplayOverrideDoc } from '@alego/llm-replay'
-import type { SessionEvent } from '@alego/session'
+} from '@singula-ai/alego-llm'
+import type { ReplayEntry, ReplayOverrideDoc } from '@singula-ai/alego-llm-replay'
+import type { SessionEvent } from '@singula-ai/alego-session'
 import {
   SESSION_FORMAT_VERSION,
   Session,
   SessionId,
-} from '@alego/session'
+} from '@singula-ai/alego-session'
 // Carries the session/title event declaration into the fixture builder.
-import type {} from '@alego/session-title'
+import type {} from '@singula-ai/alego-session-title'
 import {
   launchWebScaffold,
   seedSession,

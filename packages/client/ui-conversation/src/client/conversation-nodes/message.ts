@@ -1,10 +1,10 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   ContextMessageNode, ConversationNodeDefinition, SteeringMessageNode, UserMessageNode,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import {
   contextForm, contextProvenance, isAppendSurfaceEvent, isReplacementSurfaceEvent,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import type { InboxState } from './inbox.ts'
 import { chatNode } from './common.ts'
 
@@ -20,7 +20,7 @@ interface ReferencedSteeringMessageNode extends SteeringMessageNode {
 
 type MessageNode = ReferencedUserMessageNode | ReferencedSteeringMessageNode | ContextMessageNode
 
-declare module '@alego/client-ui-conversation/client' {
+declare module '@singula-ai/alego-client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Ordinary turn-opening user message. */
     user: ReferencedUserMessageNode

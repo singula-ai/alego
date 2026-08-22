@@ -12,13 +12,13 @@ import { homedir } from 'node:os'
 import { access } from 'node:fs/promises'
 import { resolve as resolvePath } from 'node:path'
 import type { AuthContext, Credential, CredentialInfo, CredentialStore } from '@earendil-works/pi-ai'
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import {
   credentialKey, credentialKeyId, credentialKeyScope, credentialRef, isCredentialKeySegment, isCredentialRefName,
-} from '@alego/credentials'
-import type { CredentialKey, CredentialProvider, CredentialRecord } from '@alego/credentials'
-import { launchEnvironmentOf } from '@alego/launch-environment'
-import { LlmError } from '@alego/llm'
+} from '@singula-ai/alego-credentials'
+import type { CredentialKey, CredentialProvider, CredentialRecord } from '@singula-ai/alego-credentials'
+import { launchEnvironmentOf } from '@singula-ai/alego-launch-environment'
+import { LlmError } from '@singula-ai/alego-llm'
 
 /**
  * The record scope every credential this adapter family stores is written

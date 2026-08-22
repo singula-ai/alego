@@ -1,17 +1,17 @@
 /**
  * Service Definition for the user-questions capability seam (`ctx.userQuestions`): a UI-backed service for
  * pausing an agent tool call until the human answers a question. The model-
- * facing tool lives in `@alego/tool-ask-user`; UI packages provide
+ * facing tool lives in `@singula-ai/alego-tool-ask-user`; UI packages provide
  * the single active provider.
  *
- * @module @alego/user-questions
+ * @module @singula-ai/alego-user-questions
  */
 
-import { Context, Service } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import { HarnessError } from '@alego/llm'
+import { Context, Service } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import { HarnessError } from '@singula-ai/alego-llm'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     userQuestions: UserQuestionService
   }

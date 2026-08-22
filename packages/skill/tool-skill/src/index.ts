@@ -1,16 +1,16 @@
 /**
  * Durable session skill catalog and model-facing `skill` loader tool.
  *
- * @module @alego/tool-skill
+ * @module @singula-ai/alego-tool-skill
  */
 
 import { createHash } from 'node:crypto'
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent, PreStepDecision } from '@alego/agent'
-import { defineTool } from '@alego/tools'
-import { createUserMessage } from '@alego/llm'
-import type { UserMessage } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent, PreStepDecision } from '@singula-ai/alego-agent'
+import { defineTool } from '@singula-ai/alego-tools'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type { UserMessage } from '@singula-ai/alego-session'
 import {
   escapeText,
   isModelInvocable,
@@ -19,7 +19,7 @@ import {
   renderSkillContent,
   type SkillInvocationSource,
   type SkillSummary,
-} from '@alego/skill'
+} from '@singula-ai/alego-skill'
 
 export const name = 'tool-skill'
 export const inject = ['agents', 'tools', 'skills']
@@ -40,7 +40,7 @@ export interface SkillCatalogSource {
   readonly entries: readonly { readonly name: string; readonly description: string }[]
 }
 
-declare module '@alego/llm' {
+declare module '@singula-ai/alego-llm' {
   interface MessageSourceMap {
     'skill-catalog': SkillCatalogSource
   }

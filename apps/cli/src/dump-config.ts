@@ -3,7 +3,7 @@
  * profile's patch layers through the include plugin's patch algorithm without
  * booting or evaluating `!!js`, with one source layer per bundle, the
  * profile's own patch file, and each `--patch` overlay.
- * @module @alego/cli/dump-config
+ * @module @singula-ai/alego/dump-config
  */
 
 import { existsSync } from 'node:fs'
@@ -13,7 +13,7 @@ import {
   loadOverlayPatches,
   renderConfigDump,
   type ConfigDumpLayer,
-} from '@alego/app-boot'
+} from '@singula-ai/alego-app-boot'
 import { homePatchPath, prepareProfile, PROFILE_ROOT_FILENAME } from './profile-boot.ts'
 
 const NAME = 'alego'

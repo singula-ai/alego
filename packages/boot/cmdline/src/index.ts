@@ -1,5 +1,5 @@
 /**
- * @alego/cmdline — the command line an alego launcher hands to the app
+ * @singula-ai/alego-cmdline — the command line an alego launcher hands to the app
  * it boots.
  *
  * The launcher parses only its own flags (`--profile`, `--patch`, the config
@@ -13,11 +13,11 @@
  * can inject that service and read it from lazily resolved config —
  * `port: !!js ctx.webStartup.port ?? 3080` — so a flag beats the value written
  * beside it. No row has launcher-level command-line status.
- * @module @alego/cmdline
+ * @module @singula-ai/alego-cmdline
  */
 
 import type { Command } from 'commander'
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 
 /**
  * The invocation's inner arguments: everything after the launcher's own flags,
@@ -41,7 +41,7 @@ export interface AppExit {
   (code: number): void
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     /** The invocation's inner arguments; provided by a launcher before the tree mounts. */
     cmdlineArgs?: CmdlineArgs

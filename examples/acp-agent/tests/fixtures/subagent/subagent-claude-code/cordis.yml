@@ -4,26 +4,26 @@
   name: './fixture.ts'
 
 - id: subagent
-  name: '@alego/subagent'
+  name: '@singula-ai/alego-subagent'
 
 - id: subprocess
-  name: '@alego/subprocess-local'
+  name: '@singula-ai/alego-subprocess-local'
 
 - id: subagent-codex
-  name: '@alego/subagent-codex'
+  name: '@singula-ai/alego-subagent-codex'
 
 - id: subagent-claude-primary
-  name: '@alego/subagent-claude-code'
+  name: '@singula-ai/alego-subagent-claude-code'
   config:
     providerName: claude-primary
 
 - id: subagent-claude-secondary
-  name: '@alego/subagent-claude-code'
+  name: '@singula-ai/alego-subagent-claude-code'
   config:
     providerName: claude-secondary
 
 - id: tool-subagent-codex
-  name: '@alego/tool-subagent'
+  name: '@singula-ai/alego-tool-subagent'
   config:
     provider: codex
     toolName: subagent_codex
@@ -31,7 +31,7 @@
     maxDepth: 'provider-managed'
 
 - id: tool-subagent-claude-code
-  name: '@alego/tool-subagent'
+  name: '@singula-ai/alego-tool-subagent'
   config:
     provider: claude-code
     toolName: subagent_claude_code
@@ -39,7 +39,7 @@
     maxDepth: 'provider-managed'
 
 - id: tool-subagent-claude-primary
-  name: '@alego/tool-subagent'
+  name: '@singula-ai/alego-tool-subagent'
   config:
     provider: claude-primary
     toolName: subagent_claude_primary
@@ -47,7 +47,7 @@
     maxDepth: 'provider-managed'
 
 - id: tool-subagent-claude-secondary
-  name: '@alego/tool-subagent'
+  name: '@singula-ai/alego-tool-subagent'
   config:
     provider: claude-secondary
     toolName: subagent_claude_secondary
@@ -55,7 +55,7 @@
     maxDepth: 'provider-managed'
 
 - id: agent-spine
-  name: '@alego/agent-spine-demo'
+  name: '@singula-ai/alego-agent-spine-demo'
   config:
     agents:
       - id: main
@@ -66,9 +66,9 @@
     workspaceContext: false
 
 - id: persistence
-  name: '@alego/session-persistence-jsonl'
+  name: '@singula-ai/alego-session-persistence-jsonl'
   config:
     root: './.sessions'
 
 - id: checkpoint-policy
-  name: '@alego/session-checkpoint-policy'
+  name: '@singula-ai/alego-session-checkpoint-policy'

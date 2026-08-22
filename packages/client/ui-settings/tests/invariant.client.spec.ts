@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import * as SettingsInvariant from '@alego/client-ui-settings/invariant'
-import InvariantRegistry from '@alego/invariants'
+import { Context } from '@singula-ai/cordis'
+import * as SettingsInvariant from '@singula-ai/alego-client-ui-settings/invariant'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 
 describe('invariant companion', () => {
   it('registers under the package name with an empty installer', async () => {
@@ -11,7 +11,7 @@ describe('invariant companion', () => {
   })
 
   it('node-half apply is a no-op host placeholder', async () => {
-    const { apply } = await import('@alego/client-ui-settings')
+    const { apply } = await import('@singula-ai/alego-client-ui-settings')
     apply()
     expect(true).toBe(true) // reaching here without throw is the contract
   })

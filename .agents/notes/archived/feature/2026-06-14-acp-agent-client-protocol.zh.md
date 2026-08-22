@@ -15,7 +15,7 @@ harness 最初仅通过 readline 循环暴露 agent。该接口能传输文本�
 
 ## 决策
 
-`@alego/acp` 曾是 `ui` 包组中的 UI/客户端驱动插件（现位于 `acp`）。它使用 `@agentclientprotocol/sdk` 的 `AgentSideConnection`（基于 stdin/stdout），仅编排接口服务：agent 创建/恢复工厂、会话持久化、工具注册表、用户交互，以及可选的审批/bash 能力。它不修改 agent loop，也不是能力 seam 的实现。
+`@singula-ai/alego-acp` 曾是 `ui` 包组中的 UI/客户端驱动插件（现位于 `acp`）。它使用 `@agentclientprotocol/sdk` 的 `AgentSideConnection`（基于 stdin/stdout），仅编排接口服务：agent 创建/恢复工厂、会话持久化、工具注册表、用户交互，以及可选的审批/bash 能力。它不修改 agent loop，也不是能力 seam 的实现。
 
 桥接层实现以下稳定的会话路径：
 

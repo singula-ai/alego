@@ -6,8 +6,8 @@
  */
 
 import { z } from 'zod'
-import type { SessionEvent, SessionId } from '@alego/session/types'
-import type { MessageId } from '@alego/llm/brand'
+import type { SessionEvent, SessionId } from '@singula-ai/alego-session/types'
+import type { MessageId } from '@singula-ai/alego-llm/brand'
 import type { RequestPayload, ResponseValue } from './rpc-map.ts'
 import type { Wire } from './rpc.schema.ts'
 import type {
@@ -15,7 +15,7 @@ import type {
   ModelReasoningEffort, ModelSelection, SessionListMetadata, SessionProjectionsBlock, SessionSearchItem, SessionSummary,
 } from './sessions.ts'
 import type { ToolEventView } from './events.ts'
-import type { AttachmentIdType, ImageAttachmentLimits, ImageAttachmentRef } from '@alego/attachment'
+import type { AttachmentIdType, ImageAttachmentLimits, ImageAttachmentRef } from '@singula-ai/alego-attachment'
 import type { WorkspaceId } from './workspace.ts'
 import {
   SESSION_SEARCH_RESULT_LIMIT,

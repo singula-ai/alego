@@ -1,4 +1,4 @@
-# `@alego/cmdline`
+# `@singula-ai/alego-cmdline`
 
 [English](README.md) | 中文
 
@@ -32,14 +32,14 @@ export function apply(ctx: Context): void {
 
 ```yaml
 - id: web-startup
-  name: '@alego/web-app/startup'
+  name: '@singula-ai/alego-web-app/startup'
 ```
 
 所有由这些取值配置的行都使用普通服务注入，并在惰性配置中直接访问该服务：
 
 ```yaml
 - id: webserver
-  name: '@alego/host-webserver'
+  name: '@singula-ai/alego-host-webserver'
   inject: [webStartup]
   config:
     host: !!js ctx.webStartup.host ?? '127.0.0.1'

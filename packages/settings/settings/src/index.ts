@@ -3,11 +3,11 @@
  * per-namespace sections; plugins register a namespace schema and read the
  * resolved value, which layers schema defaults, the registrant's composition
  * `base`, and the user document section, in that order.
- * @module @alego/settings
+ * @module @singula-ai/alego-settings
  */
 
-import { Context, Service } from '@alego/cordis'
-import type z from '@alego/schemastery'
+import { Context, Service } from '@singula-ai/cordis'
+import type z from '@singula-ai/schemastery'
 import { redactSecrets } from './redact.ts'
 import type { RedactedSecret } from './redact.ts'
 import type { SettingsNamespace, SettingsUpdateSource } from './types.ts'
@@ -128,7 +128,7 @@ export interface SettingsScope<T> {
   replace(section: object): Promise<void>
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     settings: SettingsProvider
   }

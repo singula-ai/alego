@@ -6,7 +6,7 @@ Status: implemented
 
 ## Problem
 
-[三条发布序列](2026-08-10-npm-release-sequences.zh.md)交付时带的是 `publishConfig.access: restricted`,因此发到 `@alego` scope 的每个包只在组织内可见。五次排练发布都是这样跑的:`alego@0.0.1-rc.5`、vendor 的 `*-rc.4`、`landlock-run@0.0.1`。
+[三条发布序列](2026-08-10-npm-release-sequences.zh.md)交付时带的是 `publishConfig.access: restricted`,因此发到 `@singula-ai` scope 的每个包只在组织内可见。五次排练发布都是这样跑的:`alego@0.0.1-rc.5`、vendor 的 `*-rc.4`、`landlock-run@0.0.1`。
 
 真正卡住公开消费者的是**受限的依赖**。每个 harness 包都把 vendored 框架声明成 `peerDependency`,`alego-sandbox-local` 把 Landlock 入口声明成 `dependency`。一个公开包若要求一个受限包,组织外的人根本装不上;所以这两条序列必须先公开,alego 族才可能公开 —— 而在 alego 族仍受限期间,它们也正是外部消费者唯一需要解析到的两条。
 
@@ -39,7 +39,7 @@ access 是包的属性、不是版本的属性:已经以 restricted 发布的这
 ## Consequences
 
 - **这十二个包从下一次发布起就是公开的,而且不能干净地回退。** 回到受限 scope 需要付费套餐加逐包 `npm access set status=private`,且已经被下载或镜像的内容收不回来。
-- **`@alego/cli` 仍然装不了(组织外)。** 它的 manifest 保持 `restricted`;变化的是它已发布的依赖不再受限,所以将来公开它是一个版本决定,而不再是依赖问题。
+- **`@singula-ai/alego` 仍然装不了(组织外)。** 它的 manifest 保持 `restricted`;变化的是它已发布的依赖不再受限,所以将来公开它是一个版本决定,而不再是依赖问题。
 - **两条公开序列交付的内容成为全网可读,它们的 payload 策略分量因此变重。** `vendor/cordis` 有意发布 `src`,因为其导出映射声明了 `./src/*`;Landlock 入口按既有约定发布 `src/main.c` 作为审计面。
 - **这两条序列不再需要私有包套餐。** 阻塞过首次 native 发布的 `402 Payment Required` 失败形态对公开包不会再出现。
 - **对公开序列,无凭据的 `npm view` 成为一个可用的检查手段。** 在所有包都受限的时期,没有凭据的机器对一个确实存在的包会收到 `E404`,与「版本不存在」无法区分。

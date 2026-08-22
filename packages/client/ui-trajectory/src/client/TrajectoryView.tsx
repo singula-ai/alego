@@ -1,12 +1,12 @@
 /** Trajectory view: compact summary over a turn-aware event ledger. */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import type { ConvViewProps } from '@alego/client-ui-conversation/client'
-import type { InjectFace, PropsLocale } from '@alego/client-ui-slots'
+import type { ConvViewProps } from '@singula-ai/alego-client-ui-conversation/client'
+import type { InjectFace, PropsLocale } from '@singula-ai/alego-client-ui-slots'
 import type {
   AssistantBlock, AssistantMessageNode, ConversationSnapshot,
   SnapshotStore,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import {
   TrajectoryTable,
   type TrajectoryRequestNumber,

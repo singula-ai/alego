@@ -1,18 +1,18 @@
 # Minimal live counterpart for the glob-sampling snapshot composition.
 - id: llm-deepseek
-  name: '@alego/llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek'
   config:
     models:
       - id: deepseek-v4-pro
 
 - id: subprocess
-  name: '@alego/subprocess-local'
+  name: '@singula-ai/alego-subprocess-local'
 
 - id: bash
-  name: '@alego/bash-local'
+  name: '@singula-ai/alego-bash-local'
 
 - id: acp-agent
-  name: '@alego/acp-demo'
+  name: '@singula-ai/alego-acp-demo'
   config:
     provider: deepseek-official
     model: deepseek-v4-pro
@@ -26,7 +26,7 @@
     persona: You are a concise snapshot agent working in {{cwd}}.
 
 - id: tool-fs-search
-  name: '@alego/tool-fs-search'
+  name: '@singula-ai/alego-tool-fs-search'
   config:
     sampleOverCapGlobResults: true
     globMaxResults: 4

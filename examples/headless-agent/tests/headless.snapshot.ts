@@ -13,12 +13,12 @@ import {
   tokenizeSessionFixtureCwd,
   type HarvestedLog,
   type NormalizeContext,
-} from '@alego/acp-snapshot'
-import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@alego/loader-smoke'
+} from '@singula-ai/alego-acp-snapshot'
+import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@singula-ai/alego-loader-smoke'
 import {
   decompressZstdFrame,
   scanZstdFrames,
-} from '@alego/session-persistence-jsonl/src/zstd.ts'
+} from '@singula-ai/alego-session-persistence-jsonl/src/zstd.ts'
 import { describe, expect, it } from 'vitest'
 
 const snapshotsDir = join(dirname(fileURLToPath(import.meta.url)), 'snapshots')

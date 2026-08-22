@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/llm-replay`.
- * @module @alego/llm-replay/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-llm-replay`.
+ * @module @singula-ai/alego-llm-replay/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/llm-replay'
+const PACKAGE_NAME = '@singula-ai/alego-llm-replay'
 
 /** Cordis companion plugin name. */
 export const name = 'llm-replay-invariant'

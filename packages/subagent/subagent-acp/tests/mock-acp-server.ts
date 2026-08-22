@@ -48,7 +48,7 @@
  * the mode-aware example resolver (tsx in source mode, Node type stripping in
  * built mode). It imports no harness code or workspace paths.
  *
- * @module @alego/subagent-acp/tests/mock-acp-server
+ * @module @singula-ai/alego-subagent-acp/tests/mock-acp-server
  */
 
 import { randomUUID } from 'node:crypto'

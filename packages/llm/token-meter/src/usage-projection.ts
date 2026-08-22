@@ -3,9 +3,9 @@
  */
 
 import { z } from 'zod'
-import type { TokenUsage } from '@alego/llm'
-import type { SessionEvent } from '@alego/session'
-import type { ProjectionDefinition } from '@alego/session-projection'
+import type { TokenUsage } from '@singula-ai/alego-llm'
+import type { SessionEvent } from '@singula-ai/alego-session'
+import type { ProjectionDefinition } from '@singula-ai/alego-session-projection'
 import type { ContextPressureProjection, TokenUsageProjection } from './projection.ts'
 import { foldSurfaceProjection } from './surface-projection.ts'
 
@@ -84,7 +84,7 @@ const usageOf = (event: SessionEvent): TokenUsage | undefined =>
       ? event.data.usage
       : undefined
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionStateMap {
     tokenUsage: TokenUsageState
     contextPressure: ContextPressureState

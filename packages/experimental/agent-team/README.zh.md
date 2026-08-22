@@ -1,4 +1,4 @@
-# @alego/experimental-agent-team
+# @singula-ai/alego-experimental-agent-team
 
 [English](README.md) | 中文
 
@@ -8,7 +8,7 @@
 
 ```yaml
 - id: agent-team
-  name: '@alego/experimental-agent-team'
+  name: '@singula-ai/alego-experimental-agent-team'
   config:
     maxMembers: 8
     maxTasks: 256
@@ -61,7 +61,7 @@ roster 同时报告持久 provisioning／failed phase 与实时 `running`／`idl
 
 #### Token 影响
 
-每次 peer 投递都会把发送者前缀与消息内容加入 target 历史。任务和 roster 变更不增加模型 token；其面向模型的呈现属于 `@alego/experimental-tool-agent-team` 结果。
+每次 peer 投递都会把发送者前缀与消息内容加入 target 历史。任务和 roster 变更不增加模型 token；其面向模型的呈现属于 `@singula-ai/alego-experimental-tool-agent-team` 结果。
 
 #### KV Cache 影响
 

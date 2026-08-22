@@ -1,11 +1,11 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { IDisposable, IPty } from 'node-pty'
-import { LocalTerminalHandle } from '@alego/subprocess-local/src/terminal.ts'
+import { LocalTerminalHandle } from '@singula-ai/alego-subprocess-local/src/terminal.ts'
 import type {
   ProcessIdentity,
   ProcessInspector,
-} from '@alego/subprocess-local/src/process-inspector.ts'
-import type { SubprocessTerminalSignal } from '@alego/subprocess'
+} from '@singula-ai/alego-subprocess-local/src/process-inspector.ts'
+import type { SubprocessTerminalSignal } from '@singula-ai/alego-subprocess'
 
 class FakePty {
   pid = 123

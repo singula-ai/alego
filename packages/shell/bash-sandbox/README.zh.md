@@ -1,8 +1,8 @@
-# @alego/bash-sandbox
+# @singula-ai/alego-bash-sandbox
 
 [English](README.md) | 中文
 
-这是使用沙箱能力的 [`@alego/shell`](../shell/) 执行器 seam 的 Service Provider。加载它时，应**用它替代** `@alego/bash-local`，并同时加载 [`ctx.sandbox`](../../sandbox/sandbox/) 提供方（例如 [`@alego/sandbox-local`](../../sandbox/sandbox-local/)）及 [`ctx.sandboxPolicy`](../../sandbox/sandbox-policy/)；默认模式和工作区根目录由后者负责，并与受沙箱约束的文件系统共享这些设置。无需使用替代工具插件；`alego-tool-bash` 会检测执行器的 `sandboxMode` 能力并添加升权字段。
+这是使用沙箱能力的 [`@singula-ai/alego-shell`](../shell/) 执行器 seam 的 Service Provider。加载它时，应**用它替代** `@singula-ai/alego-bash-local`，并同时加载 [`ctx.sandbox`](../../sandbox/sandbox/) 提供方（例如 [`@singula-ai/alego-sandbox-local`](../../sandbox/sandbox-local/)）及 [`ctx.sandboxPolicy`](../../sandbox/sandbox-policy/)；默认模式和工作区根目录由后者负责，并与受沙箱约束的文件系统共享这些设置。无需使用替代工具插件；`alego-tool-bash` 会检测执行器的 `sandboxMode` 能力并添加升权字段。
 
 包根目录导出默认与具名的 `SandboxBashExecutor` 插件及其 `Config`；结果分类 helper 保留在内部。
 
@@ -26,14 +26,14 @@
 
 ```yaml
 - id: sandbox
-  name: '@alego/sandbox-local'
+  name: '@singula-ai/alego-sandbox-local'
 - id: sandbox-policy
-  name: '@alego/sandbox-policy'
+  name: '@singula-ai/alego-sandbox-policy'
   config:
     mode: read-only
     workspaceRoot: !!js process.cwd() # fallback for calls without a session cwd
 - id: bash
-  name: '@alego/bash-sandbox'
+  name: '@singula-ai/alego-bash-sandbox'
 ```
 
 ## 模型体验
@@ -42,7 +42,7 @@
 
 #### 模型看到的内容
 
-基线是生成的 [`alego-tool-bash` schema](../../../docs/tool-catalog.zh.md#alegotool-bash)。通过公布表明启用隔离的 `sandboxMode` 能力，此后端会为 `bash` 增加 `sandbox_permissions`，其 enum 为 `workspace-write` | `danger-full-access`，并增加 `justification`。策略归属方会另行贡献当前且不区分具体能力的 `sandbox:policy` 上下文。
+基线是生成的 [`alego-tool-bash` schema](../../../docs/tool-catalog.zh.md#singula-aialego-tool-bash)。通过公布表明启用隔离的 `sandboxMode` 能力，此后端会为 `bash` 增加 `sandbox_permissions`，其 enum 为 `workspace-write` | `danger-full-access`，并增加 `justification`。策略归属方会另行贡献当前且不区分具体能力的 `sandbox:policy` 上下文。
 
 #### Token 影响
 

@@ -2,9 +2,9 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import LocalCredentialProvider from '@alego/credentials-local'
-import { credentialKey, credentialRef } from '@alego/credentials'
+import { Context } from '@singula-ai/cordis'
+import LocalCredentialProvider from '@singula-ai/alego-credentials-local'
+import { credentialKey, credentialRef } from '@singula-ai/alego-credentials'
 import { authContextFrom, credentialStoreFrom, recordKeyFor } from '../src/auth.ts'
 
 const CODEX = recordKeyFor('openai-codex')

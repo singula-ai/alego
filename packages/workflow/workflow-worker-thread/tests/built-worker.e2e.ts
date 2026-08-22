@@ -21,9 +21,9 @@ describe.skipIf(!existsSync(builtIndex) || !existsSync(builtWorker))('built work
     const driver = join(packageRoot, `.built-worker-driver-${process.pid}.mjs`)
     try {
       await writeFile(driver, `
-import { Context } from '@alego/cordis'
-import SubagentRuntime from '@alego/subagent'
-import WorkerThreadWorkflowEngine from '@alego/workflow-worker-thread'
+import { Context } from '@singula-ai/cordis'
+import SubagentRuntime from '@singula-ai/alego-subagent'
+import WorkerThreadWorkflowEngine from '@singula-ai/alego-workflow-worker-thread'
 
 const ctx = new Context()
 await ctx.plugin(SubagentRuntime)

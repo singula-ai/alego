@@ -12,10 +12,10 @@ import { mkdir, mkdtemp, readFile, realpath, rm, stat, symlink, unlink, utimes, 
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { Context } from '@alego/cordis'
-import { LocalFileSystem } from '@alego/fs-local'
-import { FsVersion } from '@alego/fs'
-import type { FsTarget } from '@alego/fs'
+import { Context } from '@singula-ai/cordis'
+import { LocalFileSystem } from '@singula-ai/alego-fs-local'
+import { FsVersion } from '@singula-ai/alego-fs'
+import type { FsTarget } from '@singula-ai/alego-fs'
 
 let dir: string
 let ctx: Context

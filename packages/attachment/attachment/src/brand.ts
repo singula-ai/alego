@@ -1,6 +1,6 @@
-/** Attachment identifier brand. @module @alego/attachment/brand */
+/** Attachment identifier brand. @module @singula-ai/alego-attachment/brand */
 
-import type { Branded } from '@alego/brand'
+import type { Branded } from '@singula-ai/alego-brand'
 
 /** Opaque content-addressed identifier for one immutable attachment object. */
 export type AttachmentId = Branded<'AttachmentId'>

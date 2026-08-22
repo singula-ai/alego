@@ -3,9 +3,9 @@
 
 import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
-import { AttachmentId } from '@alego/attachment'
-import { makeTranslate } from '@alego/client-test-runtime'
-import { zh as commonZh } from '@alego/client-locale/src/locales/zh.ts'
+import { AttachmentId } from '@singula-ai/alego-attachment'
+import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
 import { AssistantMarkdown } from '../src/client/chat/AssistantMarkdown.tsx'
 import type { RenderMessageImages } from '../src/client/contract/slots.ts'
 import { attachmentErrorText, imageSizeText } from '../src/client/image-labels.ts'

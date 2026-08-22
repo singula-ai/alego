@@ -1,4 +1,4 @@
-# @alego/client-ui-directory-picker-native
+# @singula-ai/alego-client-ui-directory-picker-native
 
 English | [中文](README.zh.md)
 

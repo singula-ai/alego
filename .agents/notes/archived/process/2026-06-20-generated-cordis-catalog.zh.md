@@ -22,7 +22,7 @@ Archived: 2026-08-07
 具体选择：
 
 - **`@mode` 标签，交叉校验。** 每个 harness 事件的 JSDoc 携带一个显式的 `@mode emit|waterfall|parallel|serial` 标签；缺少标签时生成器直接报错。当签名形状具有决定性时——尾部参数为 `next: () => …` 在结构上即为 waterfall（瀑布式事件）——生成器断言标签与之一致，矛盾时直接报错。emit/parallel/serial 的区别在结构上不可见（`session/flush` 返回 `Promise<void> | void` 且无 `next`，有序的 `agent/pre-step` 检查点亦然），因此信任标签。编写规则见 [AGENTS.md](../../../../AGENTS.md)。
-- **分层范围。** harness 层（8 个 `@alego/*` 服务及其事件）从源码完整渲染。继承层（cordis-core 的 `ctx.on/emit/effect/provide/…` + `internal/*` 事件 + loader/hmr/timer）是插件同样可见的固定版本的 vendor 源码；它从生成器中一张人工维护的表格简洁渲染（名称 + 一行描述 + 源码位置），而非遍历 vendor AST。原因是 cordis-core 的 `Context` 混合了真正的 ctx 成员与非服务字段（`root`、`baseUrl`、`logger`），且 vendor 接口仅在有意的 vendor 同步时才变化。
+- **分层范围。** harness 层（8 个 `@singula-ai/alego-*` 服务及其事件）从源码完整渲染。继承层（cordis-core 的 `ctx.on/emit/effect/provide/…` + `internal/*` 事件 + loader/hmr/timer）是插件同样可见的固定版本的 vendor 源码；它从生成器中一张人工维护的表格简洁渲染（名称 + 一行描述 + 源码位置），而非遍历 vendor AST。原因是 cordis-core 的 `Context` 混合了真正的 ctx 成员与非服务字段（`root`、`baseUrl`、`logger`），且 vendor 接口仅在有意的 vendor 同步时才变化。
 - **指向数据结构目录的交叉链接。** 签名中由仓库拥有的每个类型名（`GenerateOptions`、`StreamChunk`、`ToolDefinition`……）都会通过人工维护的映射链接到其主要核心数据结构页面。AST 遍历采用默认拒绝放行的策略：每个参数、泛型约束/默认值和返回类型引用都必须已映射、是签名自身的类型参数、是点名的 TypeScript/Cordis 基础类型，或带有点名的例外及其非目录文档归属。违规会连同源码位置汇总报告，并点明相应的归属列表。该映射不会复用 `type-equiv.manifest.json`，因为后者记录 `…Map` 符号，而签名引用派生的联合类型名，并且会在多个页面列出某些符号。
 - **专用围栏。** 签名块使用 ` ```ts cordis-catalog ` 信息字符串，并把原始事件或公共方法 JSDoc 直接放在其声明之前。`doc-typecheck` 会识别并跳过这些裸片段，将其排除在 opt-out 比例之外——与 `type-equiv` 块的处理相同。
 

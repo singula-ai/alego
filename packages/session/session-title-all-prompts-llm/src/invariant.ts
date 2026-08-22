@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/session-title-all-prompts-llm`.
- * @module @alego/session-title-all-prompts-llm/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-session-title-all-prompts-llm`.
+ * @module @singula-ai/alego-session-title-all-prompts-llm/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/session-title-all-prompts-llm'
+const PACKAGE_NAME = '@singula-ai/alego-session-title-all-prompts-llm'
 
 /** Cordis companion plugin name. */
 export const name = 'session-title-all-prompts-llm-invariant'

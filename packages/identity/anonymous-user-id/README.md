@@ -1,4 +1,4 @@
-# @alego/anonymous-user-id
+# @singula-ai/alego-anonymous-user-id
 
 English | [中文](README.zh.md)
 

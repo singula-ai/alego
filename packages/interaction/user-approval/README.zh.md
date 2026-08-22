@@ -1,4 +1,4 @@
-# @alego/user-approval
+# @singula-ai/alego-user-approval
 
 [English](README.md) | 中文
 

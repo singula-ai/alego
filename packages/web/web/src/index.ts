@@ -3,11 +3,11 @@
  * fetch. Duplicate ids are rejected. At execution time, a configured provider must exist and
  * be usable; without one, exactly one usable provider is required, so selection never depends
  * on registration order.
- * @module @alego/web
+ * @module @singula-ai/alego-web
  */
 
-import { Context, Service } from '@alego/cordis'
-import z from '@alego/schemastery'
+import { Context, Service } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import type {
   WebFetchProvider,
   WebFetchRequest,
@@ -32,7 +32,7 @@ export type {
   WebSearchSource,
 } from './types.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     web: WebRuntime
   }

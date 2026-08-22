@@ -1,5 +1,5 @@
 {
-  "name": "@alego/bash-sandbox",
+  "name": "@singula-ai/alego-bash-sandbox",
   "description": "Sandbox-consuming implementation of the Alego bash executor seam (confines every command via ctx.sandbox, reports denial/enforcement result facts)",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -32,22 +32,22 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@alego/shell": "workspace:^",
-    "@alego/bash-local": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/sandbox": "workspace:^",
-    "@alego/sandbox-policy": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-shell": "workspace:^",
+    "@singula-ai/alego-bash-local": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-sandbox": "workspace:^",
+    "@singula-ai/alego-sandbox-policy": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
-    "@alego/shell": "workspace:^",
-    "@alego/bash-local": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/subprocess-local": "workspace:^",
-    "@alego/sandbox": "workspace:^",
-    "@alego/sandbox-local": "workspace:^",
-    "@alego/sandbox-policy": "workspace:^",
-    "@alego/cordis": "workspace:^",
-    "@alego/node-addon-landlock-run": "workspace:^"
+    "@singula-ai/alego-shell": "workspace:^",
+    "@singula-ai/alego-bash-local": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-subprocess-local": "workspace:^",
+    "@singula-ai/alego-sandbox": "workspace:^",
+    "@singula-ai/alego-sandbox-local": "workspace:^",
+    "@singula-ai/alego-sandbox-policy": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/node-addon-landlock-run": "workspace:^"
   }
 }

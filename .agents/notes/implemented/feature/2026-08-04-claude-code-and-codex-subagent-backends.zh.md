@@ -34,7 +34,7 @@ configured tool -> alego-tool-subagent -> ctx.subagents -> product provider -> p
 
 ## Codex 提供方
 
-`@alego/subagent-codex` 注册由 Profile 选择、默认值为 `codex` 的提供方名称，解析锁定的 `@openai/codex@0.147.0` 包所声明的 `codex` bin，并使用当前 Node 可执行文件加 `app-server --stdio` 启动该 wrapper。Wrapper 会选择私有原生平台载荷；提供方既不解析也不回退宿主 `codex`。其公开配置包含非空的 `providerName`、显式的 `env` 覆盖项、须为正有限值且不得大于仓库共享 `MAX_TIMER_DELAY_MS` 的 `disposeGraceMs`，以及默认使用 `never` 的三值原生 `permissionMode`。每个命名实例会为自己的运行保留这些已解析值。安装、登录、`CODEX_HOME`、模型选择、基础 URL 和产品会话设置仍由 Codex 原生机制或部署环境负责；所选模式只拥有非交互权限决策中描述的线程 approval／reviewer／sandbox 字段。
+`@singula-ai/alego-subagent-codex` 注册由 Profile 选择、默认值为 `codex` 的提供方名称，解析锁定的 `@openai/codex@0.147.0` 包所声明的 `codex` bin，并使用当前 Node 可执行文件加 `app-server --stdio` 启动该 wrapper。Wrapper 会选择私有原生平台载荷；提供方既不解析也不回退宿主 `codex`。其公开配置包含非空的 `providerName`、显式的 `env` 覆盖项、须为正有限值且不得大于仓库共享 `MAX_TIMER_DELAY_MS` 的 `disposeGraceMs`，以及默认使用 `never` 的三值原生 `permissionMode`。每个命名实例会为自己的运行保留这些已解析值。安装、登录、`CODEX_HOME`、模型选择、基础 URL 和产品会话设置仍由 Codex 原生机制或部署环境负责；所选模式只拥有非交互权限决策中描述的线程 approval／reviewer／sandbox 字段。
 
 发布前，提供方会验证非空的纯文本任务，在父级工作区中启动受管的 app-server，完成 `initialize` → `initialized` 握手，把已解析模式映射为官方 `thread/start` 字段，并创建一个 `ephemeral: true` 线程。固定 app-server argv 不包含模式或任务文本。已发布的运行只拥有一次 `turn/start`；其线程 ID 与轮次 ID 保持私有，绝不会持久化到父会话。
 
@@ -48,7 +48,7 @@ Codex 0.147.0 使用 Responses 协议，而 DeepSeek 的公开 OpenAI 兼容端�
 
 ## Claude Code 提供方
 
-`@alego/subagent-claude-code` 注册由 Profile 选择、默认值为 `claude-code` 的提供方名称，并调用 `@anthropic-ai/claude-agent-sdk@0.3.220`。提供方会省略 `pathToClaudeCodeExecutable`，因此 SDK 会从自己的 optional dependency 闭包中，按操作系统、CPU 与 Linux libc 选择携带 Claude Code 2.1.220 的匹配平台包。提供方既不会解析也不会回退宿主 `claude`；省略 optional dependency、不受支持的平台，以及缺失或损坏的平台载荷，都会在第一次委派的 SDK 启动边界失败。提供方使用官方 `query()` 入口点，并把 SDK 的 `spawnClaudeCodeProcess` 给出的原生 `claude` 或 `claude.exe` 命令、参数、cwd、环境和转发的信号交给 `alego-subprocess`；其私有 `SpawnedProcess` 适配器只公开 SDK 所需的流、事件、终止和退出事实。
+`@singula-ai/alego-subagent-claude-code` 注册由 Profile 选择、默认值为 `claude-code` 的提供方名称，并调用 `@anthropic-ai/claude-agent-sdk@0.3.220`。提供方会省略 `pathToClaudeCodeExecutable`，因此 SDK 会从自己的 optional dependency 闭包中，按操作系统、CPU 与 Linux libc 选择携带 Claude Code 2.1.220 的匹配平台包。提供方既不会解析也不会回退宿主 `claude`；省略 optional dependency、不受支持的平台，以及缺失或损坏的平台载荷，都会在第一次委派的 SDK 启动边界失败。提供方使用官方 `query()` 入口点，并把 SDK 的 `spawnClaudeCodeProcess` 给出的原生 `claude` 或 `claude.exe` 命令、参数、cwd、环境和转发的信号交给 `alego-subprocess`；其私有 `SpawnedProcess` 适配器只公开 SDK 所需的流、事件、终止和退出事实。
 
 公开配置包含非空的 `providerName`、显式的 `env` 覆盖项、须为正有限值且不得大于仓库共享 `MAX_TIMER_DELAY_MS` 的 `disposeGraceMs`，以及默认使用 `dontAsk` 的五值原生 `permissionMode`。每个命名实例会为自己的运行保留这些已解析值。每次运行都会创建自己的 `AbortController`，设置 `persistSession: false`、禁用 `AskUserQuestion`，并把已解析模式传给 SDK；只有 `bypassPermissions` 会取得 SDK 的显式危险确认。提供方故意省略 `settingSources`，因此 SDK 会相对于父会话 cwd 读取宿主机常规的用户、项目和本地 Claude 设置。它既不复制也不过滤这些设置，也不会创建或修改登录状态。其余权限提示会被拒绝，MCP elicitation 会被拒绝，阻塞对话会快速失败，而不会等待本提供方不负责的用户界面。
 

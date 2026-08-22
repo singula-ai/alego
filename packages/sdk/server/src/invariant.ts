@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/sdk-jsonrpc-server`.
- * @module @alego/sdk-jsonrpc-server/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-sdk-jsonrpc-server`.
+ * @module @singula-ai/alego-sdk-jsonrpc-server/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/sdk-jsonrpc-server'
+const PACKAGE_NAME = '@singula-ai/alego-sdk-jsonrpc-server'
 
 /** Cordis companion plugin name. */
 export const name = 'sdk-jsonrpc-server-invariant'

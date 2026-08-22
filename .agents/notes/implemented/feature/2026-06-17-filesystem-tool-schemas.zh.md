@@ -12,7 +12,7 @@ Status: implemented
 
 ## 决策
 
-`@alego/tool-fs` 在首个文件系统工具套件中暴露以下三个面向模型的工具：
+`@singula-ai/alego-tool-fs` 在首个文件系统工具套件中暴露以下三个面向模型的工具：
 
 | 工具 | 我们的 schema | Claude Code | OpenCode | 说明 |
 |---|---|---|---|---|

@@ -158,7 +158,7 @@
 | opt-out ratio | opt-out 比例 | | 退出检查比例 | |
 | orphan | 遗留 | | 孤儿、孤立 | 指英文源已不存在的 `.zh.md`（如「遗留译文」）；进程语境按 OS 惯用语译「孤儿进程」 |
 | orphan branch | 孤立分支 | | 孤儿分支 | 沿用 git 官方中文翻译 |
-| package | 包 | | | 指 npm 包（`@alego/*`）；`package.json` 等代码标识保持原样 |
+| package | 包 | | | 指 npm 包（`@singula-ai/alego-*`）；`package.json` 等代码标识保持原样 |
 | pairing | 配对 | | | |
 | parent-subset grants | 父级子集授权 | | 父集合授权 | 指授权范围仅限于父级所持授权的子集 |
 | peer dependency | 对等依赖 | 对等依赖（peer dependency） | | |

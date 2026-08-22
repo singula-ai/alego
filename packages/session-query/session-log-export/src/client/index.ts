@@ -1,21 +1,21 @@
 /** Browser plugin owning Session export download state and its shared modal. */
 
-import type { ClientContext, SessionId } from '@alego/client-runtime/client'
-import type {} from '@alego/client-locale/client'
-import type {} from '@alego/client-ui-commands/client'
-import type {} from '@alego/client-ui-conversation/client'
+import type { ClientContext, SessionId } from '@singula-ai/alego-client-runtime/client'
+import type {} from '@singula-ai/alego-client-locale/client'
+import type {} from '@singula-ai/alego-client-ui-commands/client'
+import type {} from '@singula-ai/alego-client-ui-conversation/client'
 import { SessionLogDownloadController } from './controller.ts'
 import type { SessionLogDownloadDialogInjected } from './Dialog.tsx'
 import { SessionLogDownloadHeaderAction } from './HeaderAction.tsx'
 import { en, NS, zh, type SessionLogDownloadKey } from './locales.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     sessionLogDownload: SessionLogDownloadController
   }
 }
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface LocaleNamespaceMap {
     'session-log-download': SessionLogDownloadKey
   }

@@ -8,24 +8,24 @@ import { mkdtempSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import SessionStore from '@alego/session'
-import AgentRegistry from '@alego/agent'
-import { TypertLookupFailure } from '@alego/typert-protocol'
-import TypertRegistry from '@alego/typert-registry'
-import { createUserMessage, MessageId } from '@alego/llm'
-import type { Agent } from '@alego/agent'
-import UserQuestionService from '@alego/user-questions'
-import type { SessionEvent, SessionHeader, SessionId } from '@alego/session'
+import { Context } from '@singula-ai/cordis'
+import SessionStore from '@singula-ai/alego-session'
+import AgentRegistry from '@singula-ai/alego-agent'
+import { TypertLookupFailure } from '@singula-ai/alego-typert-protocol'
+import TypertRegistry from '@singula-ai/alego-typert-registry'
+import { createUserMessage, MessageId } from '@singula-ai/alego-llm'
+import type { Agent } from '@singula-ai/alego-agent'
+import UserQuestionService from '@singula-ai/alego-user-questions'
+import type { SessionEvent, SessionHeader, SessionId } from '@singula-ai/alego-session'
 import {
   PersistenceCoordinator,
   SessionPersistenceRevision,
   type PersistenceBackend,
   type StoredPrefix,
-} from '@alego/session-persistence'
-import type { RpcRequest } from '@alego/host-apiproxy/api/rpc'
-import { RpcId } from '@alego/host-apiproxy/api/rpc'
-import { createApiProxy } from '@alego/host-apiproxy'
+} from '@singula-ai/alego-session-persistence'
+import type { RpcRequest } from '@singula-ai/alego-host-apiproxy/api/rpc'
+import { RpcId } from '@singula-ai/alego-host-apiproxy/api/rpc'
+import { createApiProxy } from '@singula-ai/alego-host-apiproxy'
 
 const sid = (id: string): SessionId => id as SessionId
 
@@ -339,7 +339,7 @@ describe('Remote Agent and Session lookup policy', () => {
       inspect,
       locate: () => undefined,
     } as never)
-    const resumedSession = { id: sessionId, header: meta, events: [] } as unknown as import('@alego/session').Session
+    const resumedSession = { id: sessionId, header: meta, events: [] } as unknown as import('@singula-ai/alego-session').Session
     const resumedAgent = { id: sessionId, session: resumedSession, status: 'idle', ctx } as Agent
     const release = Promise.withResolvers<undefined>()
     const resume = vi.spyOn(ctx.agents, 'resume').mockImplementation(async () => {

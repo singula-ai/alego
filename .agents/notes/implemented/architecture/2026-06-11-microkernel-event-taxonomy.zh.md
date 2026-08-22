@@ -17,7 +17,7 @@ Status: implemented
 - **parallel**（await 扇出）：每个监听器都必须获得独立执行的机会：`session/flush` 持久性检查点。
 - **emit**（同步 fire-and-forget）：用于通知：inbox 转换、生命周期、错误，以及受错误隔离的 `tools/result` 观测；该观测接收不可变的最终结果。轮次与步骤边界由持久会话事件拥有。
 
-事件词汇定义在约定包中（`alego-agent` 声明 `agent/*` 事件）；`@alego/agent-loop` 是唯一的具体循环插件，且自身可替换——外部不得依赖它。
+事件词汇定义在约定包中（`alego-agent` 声明 `agent/*` 事件）；`@singula-ai/alego-agent-loop` 是唯一的具体循环插件，且自身可替换——外部不得依赖它。
 
 ## 曾考虑的替代方案
 

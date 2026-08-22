@@ -1,25 +1,25 @@
 /**
- * @alego/headless — one-shot direct Agent driver. The bundle patch
+ * @singula-ai/alego-headless — one-shot direct Agent driver. The bundle patch
  * rides over alego-base without Host, HTTP, or browser plugins; this runner
  * creates one Agent through the core registry, drives the task to quiescence,
  * flushes its Session, prints the final assistant text, and exits.
  *
- * @module @alego/headless
+ * @module @singula-ai/alego-headless
  */
 
 import { randomUUID } from 'node:crypto'
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { installModelSelection } from '@alego/agent'
-import type { ModelSelectionRef } from '@alego/agent'
-import type {} from '@alego/agent-default-model'
-import { createUserMessage } from '@alego/llm'
-import { SessionId } from '@alego/session'
-import type { SessionEvent } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { installModelSelection } from '@singula-ai/alego-agent'
+import type { ModelSelectionRef } from '@singula-ai/alego-agent'
+import type {} from '@singula-ai/alego-agent-default-model'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
+import type { SessionEvent } from '@singula-ai/alego-session'
 // Empty type imports carry the loader Context merge for the settlement await
 // and the cmdline Context merge for the appExit host value.
-import type {} from '@alego/cordis-plugin-loader'
-import type {} from '@alego/cmdline'
+import type {} from '@singula-ai/cordis-plugin-loader'
+import type {} from '@singula-ai/alego-cmdline'
 
 /** Stable Cordis plugin name. */
 export const name = 'headless-runner'
@@ -107,7 +107,7 @@ async function run(ctx: Context, task: string, io: HeadlessIo): Promise<void> {
   // This bundle composes no preset roster, so the model-facing rows sit in the
   // host plane and the agent reads them from the global layer. A deployment
   // that DOES configure one has to join it here first
-  // (@alego/agent-presets README, "Composing a child agent").
+  // (@singula-ai/alego-agent-presets README, "Composing a child agent").
   const { agent } = await agents.create({
     sessionId: SessionId(`session-${randomUUID()}`),
     meta: { cwd: process.cwd() },

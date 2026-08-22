@@ -1,7 +1,7 @@
 /**
  * Framework-free boot page and failure report. It remains available when a
  * client plugin fails because React arrives only with the UI renderer.
- * @module @alego/client-web/src/boot-page
+ * @module @singula-ai/alego-client-web/src/boot-page
  */
 import type { LoaderEntryState } from './loader-status.ts'
 import css from './boot-page.module.css'

@@ -18,24 +18,24 @@
  * disposed by then, and the release that wakes the parent's own settlement
  * watcher has already run. See {@link SubagentContinuationManager.notifySettlement}.
  *
- * @module @alego/subagent
+ * @module @singula-ai/alego-subagent
  */
 
 import { randomUUID } from 'node:crypto'
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   Agent,
   AgentHandle,
   AgentOptions,
   AgentSetupCommit,
   CreateAgentOptions,
-} from '@alego/agent'
-import { boundContextSummary, createUserMessage, errorChain } from '@alego/llm'
-import type { ContentBlock, MessageId, MessageSource } from '@alego/llm'
-import { SessionId } from '@alego/session'
-import type { SessionEvent } from '@alego/session'
-import type { SessionPersistence } from '@alego/session-persistence'
-import type { ToolRestriction } from '@alego/tools'
+} from '@singula-ai/alego-agent'
+import { boundContextSummary, createUserMessage, errorChain } from '@singula-ai/alego-llm'
+import type { ContentBlock, MessageId, MessageSource } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
+import type { SessionEvent } from '@singula-ai/alego-session'
+import type { SessionPersistence } from '@singula-ai/alego-session-persistence'
+import type { ToolRestriction } from '@singula-ai/alego-tools'
 import { foldSubagentDescriptor, snapshotSubagentDescriptor } from './descriptor.ts'
 import type { SubagentDescriptorData } from './descriptor.ts'
 import {
@@ -89,7 +89,7 @@ export interface SubagentSettledMessageSource {
   readonly senderSessionId: SessionId
 }
 
-declare module '@alego/llm' {
+declare module '@singula-ai/alego-llm' {
   interface MessageSourceMap {
     coordinator: CoordinatorMessageSource
     'subagent-report': SubagentReportMessageSource

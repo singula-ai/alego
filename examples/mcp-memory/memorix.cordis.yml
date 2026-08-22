@@ -2,7 +2,7 @@
 # first; ALEGO starts it but does not run a package manager.
 - insert:
     - id: memory-memorix
-      name: '@alego/mcp-client'
+      name: '@singula-ai/alego-mcp-client'
       config:
         serverName: memorix
         transport: stdio

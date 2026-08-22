@@ -1,4 +1,4 @@
-# @alego/session-projection
+# @singula-ai/alego-session-projection
 
 [English](README.md) | 中文
 

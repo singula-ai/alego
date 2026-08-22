@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { CodeRuntime } from '@alego/code-runtime'
-import type { CodeRunRequest, CodeRunResult } from '@alego/code-runtime'
+import { Context } from '@singula-ai/cordis'
+import { CodeRuntime } from '@singula-ai/alego-code-runtime'
+import type { CodeRunRequest, CodeRunResult } from '@singula-ai/alego-code-runtime'
 
 /**
  * Minimal concrete runtime: records requests, "executes" by invoking every

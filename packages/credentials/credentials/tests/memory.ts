@@ -1,4 +1,4 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import { CredentialProvider } from '../src/index.ts'
 import type {
   CredentialInfo,

@@ -12,7 +12,7 @@ Connection refusal, a reset before the first event, clean EOF without `[DONE]`, 
 
 ## Decision
 
-`@alego/llm-mock-server` is a private support package with an importable Node HTTP server. The repository-local `pnpm run mock:llm` source entry provides a standalone process for manual fault injection; the package exposes no installable binary. It accepts OpenAI-compatible root and `/v1` chat-completions paths, validates an optional bearer token, captures requests, and consumes one explicit behavior per accepted request. Script exhaustion fails loud; repetition requires `repeatLast`.
+`@singula-ai/alego-llm-mock-server` is a private support package with an importable Node HTTP server. The repository-local `pnpm run mock:llm` source entry provides a standalone process for manual fault injection; the package exposes no installable binary. It accepts OpenAI-compatible root and `/v1` chat-completions paths, validates an optional bearer token, captures requests, and consumes one explicit behavior per accepted request. Script exhaustion fails loud; repetition requires `repeatLast`.
 
 Request behaviors cover socket reset, post-header disconnect, partial disconnect, stall, valid empty completion, clean truncated streams, malformed payloads, representative HTTP failures, complete text/reasoning/tool-call responses, slow streaming, and max-token completion. A true `connection_refused` is a CLI listener-lifecycle phase because a bound request handler cannot refuse its own TCP connection.
 

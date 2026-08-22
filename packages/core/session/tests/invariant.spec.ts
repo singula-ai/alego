@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { createScope, scopeTarget } from '@alego/scope'
-import { createUserMessage, CallId, createMessage, createToolResultMessage, freezeMessage } from '@alego/llm'
-import SessionStore, { SessionId, TOOL_NOT_STARTED } from '@alego/session'
-import * as SessionInvariant from '@alego/session/invariant'
-import InvariantRegistry, { InvariantError } from '@alego/invariants'
+import { Context } from '@singula-ai/cordis'
+import { createScope, scopeTarget } from '@singula-ai/alego-scope'
+import { createUserMessage, CallId, createMessage, createToolResultMessage, freezeMessage } from '@singula-ai/alego-llm'
+import SessionStore, { SessionId, TOOL_NOT_STARTED } from '@singula-ai/alego-session'
+import * as SessionInvariant from '@singula-ai/alego-session/invariant'
+import InvariantRegistry, { InvariantError } from '@singula-ai/alego-invariants'
 
 async function setup(): Promise<{ ctx: Context; fiber: Awaited<ReturnType<Context['plugin']>> }> {
   const ctx = new Context()

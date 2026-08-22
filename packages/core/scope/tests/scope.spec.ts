@@ -1,9 +1,9 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { bindScopeParent, carrierKeyOf, createScope, isScopeCarrier, scopeChainOf, scopeOf, scopeParentOf, scopeTarget } from '@alego/scope'
-import type { Scope, Scoped } from '@alego/scope'
+import { Context } from '@singula-ai/cordis'
+import { bindScopeParent, carrierKeyOf, createScope, isScopeCarrier, scopeChainOf, scopeOf, scopeParentOf, scopeTarget } from '@singula-ai/alego-scope'
+import type { Scope, Scoped } from '@singula-ai/alego-scope'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Events {
     /**
      * Test-only event for scope-filtered dispatch.

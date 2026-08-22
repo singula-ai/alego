@@ -6,7 +6,7 @@ English | [中文](2026-08-13-public-vendor-and-native-sequences.zh.md)
 
 ## Problem
 
-The [three release sequences](2026-08-10-npm-release-sequences.md) shipped with `publishConfig.access: restricted`, so every package published to the `@alego` scope was visible only inside the organization. Five rehearsal publications ran that way, through `alego@0.0.1-rc.5`, `vendor *-rc.4`, and `landlock-run@0.0.1`.
+The [three release sequences](2026-08-10-npm-release-sequences.md) shipped with `publishConfig.access: restricted`, so every package published to the `@singula-ai` scope was visible only inside the organization. Five rehearsal publications ran that way, through `alego@0.0.1-rc.5`, `vendor *-rc.4`, and `landlock-run@0.0.1`.
 
 A restricted dependency is what actually blocks a public consumer. Every harness package declares the vendored framework as a `peerDependency`, and `alego-sandbox-local` declares the Landlock entry as a `dependency`. A public package that requires a restricted one cannot be installed by anyone outside the organization, so those two sequences have to be public before the alego family can be — and while the alego family is still restricted, they are the only two whose artifacts an outside consumer would need to resolve.
 
@@ -39,7 +39,7 @@ Access is a property of the package, not of a version: the twelve packages alrea
 ## Consequences
 
 - **The twelve packages are public from their next publication onward, and that is not cleanly reversible.** Returning to a restricted scope requires a paid plan plus per-package `npm access set status=private`, and anything already downloaded or mirrored stays out.
-- **`@alego/cli` is still not installable from outside the organization.** Its manifests stay `restricted`; what changed is that its published dependencies no longer would be, so opening it later is a version decision rather than a dependency problem.
+- **`@singula-ai/alego` is still not installable from outside the organization.** Its manifests stay `restricted`; what changed is that its published dependencies no longer would be, so opening it later is a version decision rather than a dependency problem.
 - **What ships from the two public sequences is now world-readable, so their payload policy carries more weight.** `vendor/cordis` publishes `src` deliberately, because its export map declares `./src/*`; the Landlock entry publishes `src/main.c` as a documented audit surface.
 - **The private-packages plan is no longer required for these two sequences.** The `402 Payment Required` failure that blocked the first native publication cannot recur for a public package.
 - **An unauthenticated `npm view` becomes a usable check for the public sequences.** While every package was restricted, a machine without credentials received `E404` for a package that existed, which is indistinguishable from an absent version.

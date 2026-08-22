@@ -1,7 +1,7 @@
 /** Shared event metadata and semantic-document projection. */
 
-import { foldSurface } from '@alego/session'
-import type { SessionEvent, SessionId } from '@alego/session'
+import { foldSurface } from '@singula-ai/alego-session'
+import type { SessionEvent, SessionId } from '@singula-ai/alego-session'
 import type { SessionEventRecord, SessionEventSearchDocument, SessionEventSurface } from './types.ts'
 import { SessionQueryError } from './config.ts'
 import { extractSessionEventText } from './extraction.ts'

@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import TurndownService from 'turndown'
-import { CallId } from '@alego/llm'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime, { type ToolExecutionResult } from '@alego/tools'
-import WebRuntime from '@alego/web'
-import type { WebSearchProvider, WebSearchResult } from '@alego/web'
-import * as ToolWeb from '@alego/tool-web'
+import { CallId } from '@singula-ai/alego-llm'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { type ToolExecutionResult } from '@singula-ai/alego-tools'
+import WebRuntime from '@singula-ai/alego-web'
+import type { WebSearchProvider, WebSearchResult } from '@singula-ai/alego-web'
+import * as ToolWeb from '@singula-ai/alego-tool-web'
 import {
   formatSearchOutput,
   formatFetchOutput,
@@ -21,9 +21,9 @@ import {
   fetchMetaFromResult,
   WEB_SEARCH_MAX_QUERIES,
   WEB_SEARCH_MAX_RESULTS,
-} from '@alego/tool-web'
-import type { ContentBlock } from '@alego/llm'
-import type { ToolResult } from '@alego/tools'
+} from '@singula-ai/alego-tool-web'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { ToolResult } from '@singula-ai/alego-tools'
 import { parseSearchArgs } from '../src/search.ts'
 
 const testToolSignal = new AbortController().signal
@@ -39,7 +39,7 @@ async function mountTools(opts: {
   config?: ToolWeb.Config
   webConfig?: ConstructorParameters<typeof WebRuntime>[1]
   search?: WebSearchProvider
-  fetchProvider?: import('@alego/web').WebFetchProvider
+  fetchProvider?: import('@singula-ai/alego-web').WebFetchProvider
 } = {}): Promise<{ ctx: Context; fiber: Awaited<ReturnType<Context['plugin']>>; call: (name: string, args: unknown) => Promise<ToolExecutionResult> }> {
   const ctx = new Context()
   await ctx.plugin(SystemPrompt)

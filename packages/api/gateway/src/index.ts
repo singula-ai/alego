@@ -1,11 +1,11 @@
 /**
  * Live Typert Remote dispatch over Cordis Services and registered providers.
  * Transport, request correlation, and response envelopes belong to Connection.
- * @module @alego/api-gateway
+ * @module @singula-ai/alego-api-gateway
  */
 
-import { Context, Service, symbols } from '@alego/cordis'
-import type { ConnectionRpcHandler } from '@alego/client-connection'
+import { Context, Service, symbols } from '@singula-ai/cordis'
+import type { ConnectionRpcHandler } from '@singula-ai/alego-client-connection'
 import {
   remoteMethods,
   TypertLookupFailure,
@@ -13,7 +13,7 @@ import {
   type InvocationParameterDescriptor,
   type TypertCodec,
   type TypertGatewayBinding,
-} from '@alego/typert-protocol'
+} from '@singula-ai/alego-typert-protocol'
 import type {
   InvokeRemoteRequest,
   TypertGateway,

@@ -18,17 +18,17 @@
  * agent factory's `setup(agentCtx)` hook is the one supported call site,
  * because only there is the join installed while the agent is still
  * unpublished, so a rejected composition rolls the whole creation back.
- * @module @alego/agent-presets
+ * @module @singula-ai/alego-agent-presets
  */
 
 import { stat } from 'node:fs/promises'
-import { Context, Service } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { bindScopeParent, createScope, scopeOf, type Scope, type ScopeKey, type ScopeParentBinding } from '@alego/scope'
+import { Context, Service } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { bindScopeParent, createScope, scopeOf, type Scope, type ScopeKey, type ScopeParentBinding } from '@singula-ai/alego-scope'
 // Type-only: resolves the `agent/created` lifecycle event this service watches.
-import type {} from '@alego/agent'
-import { settingsNamespace, type SettingsScope, type default as SettingsService } from '@alego/settings'
-import { alegoHomePath } from '@alego/home-paths'
+import type {} from '@singula-ai/alego-agent'
+import { settingsNamespace, type SettingsScope, type default as SettingsService } from '@singula-ai/alego-settings'
+import { alegoHomePath } from '@singula-ai/alego-home-paths'
 import { discoverPresets, USER_PRESET_DIR } from './discovery.ts'
 import { copyComposition, deleteComposition, readComposition } from './authoring.ts'
 import { mountPreset, serviceForAgent, standingMountFor } from './mount.ts'
@@ -66,7 +66,7 @@ export { resolveSessionPreset, type PresetBearingSession } from './session.ts'
 export { PresetMountError, UnknownPresetError } from './preset.ts'
 export type { AgentPreset, Config, PresetRoot, PresetTrust } from './preset.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     agentPresets: AgentPresets
   }

@@ -1,14 +1,14 @@
 /**
  * Vocabulary for the spill storage Service Definition. Types only — the abstract service
  * lives in `./index.ts`, implementations in sibling packages
- * (`@alego/spill-local` first).
+ * (`@singula-ai/alego-spill-local` first).
  *
- * @module @alego/spill/types
+ * @module @singula-ai/alego-spill/types
  */
 
-import type { Branded } from '@alego/brand'
-import type { CallId } from '@alego/llm'
-import type { SessionId } from '@alego/session'
+import type { Branded } from '@singula-ai/alego-brand'
+import type { CallId } from '@singula-ai/alego-llm'
+import type { SessionId } from '@singula-ai/alego-session'
 
 /**
  * Opaque model-facing handle for one spilled artifact. A local backend may use a

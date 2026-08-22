@@ -5,10 +5,10 @@
  * / epoch-guard behavior of the original global cache; the session-key axis
  * is the only extra dimension.
  */
-import type { CommandDescriptor } from '@alego/commands/types'
-import type { SessionId } from '@alego/client-runtime/client'
+import type { CommandDescriptor } from '@singula-ai/alego-commands/types'
+import type { SessionId } from '@singula-ai/alego-client-runtime/client'
 
-export type { CommandDescriptor } from '@alego/commands/types'
+export type { CommandDescriptor } from '@singula-ai/alego-commands/types'
 
 /**
  * cold = never pulled; pending = pull in flight with nothing servable;

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { createScope, scopeOf } from '@alego/scope'
-import type { Scope, ScopeKey } from '@alego/scope'
-import SessionStore from '@alego/session'
-import type { Session } from '@alego/session'
+import { Context } from '@singula-ai/cordis'
+import { createScope, scopeOf } from '@singula-ai/alego-scope'
+import type { Scope, ScopeKey } from '@singula-ai/alego-scope'
+import SessionStore from '@singula-ai/alego-session'
+import type { Session } from '@singula-ai/alego-session'
 
 async function mount(): Promise<Context> {
   const ctx = new Context()

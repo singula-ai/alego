@@ -1,10 +1,10 @@
-/** Package-owned filesystem event-data invariants. @module @alego/fs/invariant */
+/** Package-owned filesystem event-data invariants. @module @singula-ai/alego-fs/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 import type { FsObservation, FsTarget } from './types.ts'
 
-const PACKAGE_NAME = '@alego/fs'
+const PACKAGE_NAME = '@singula-ai/alego-fs'
 
 /** Cordis companion plugin name. */
 export const name = 'fs-invariant'

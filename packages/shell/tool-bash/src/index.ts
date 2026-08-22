@@ -5,25 +5,25 @@
  *
  * TODO(permissions): deployment policy belongs in `tools/pre-execute` and
  * sandboxing executors; see docs/architecture.md § Where new behavior goes.
- * @module @alego/tool-bash
+ * @module @singula-ai/alego-tool-bash
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import { isAbsolute, resolve as resolvePath } from 'node:path'
-import { defineTool, TOOL_ABORTED } from '@alego/tools'
-import type { GenericCallView, TerminalCallView, ToolExecution, ToolResult, ToolResultView } from '@alego/tools'
-import { HarnessError } from '@alego/llm'
-import type { Agent } from '@alego/agent'
-import type {} from '@alego/system-prompt'
-import type {} from '@alego/jobs'
-import type {} from '@alego/user-approval'
-import type {} from '@alego/shell-env'
-import type { SandboxExecutionPolicy, SandboxMode } from '@alego/sandbox'
-import { ESCALATION_TARGETS, approveEscalation, canonicalPath, validateEscalationArgs } from '@alego/sandbox'
-import type { SandboxPolicyService } from '@alego/sandbox-policy'
-import { ALEGO_ENV_PREFIX } from '@alego/shell'
-import type { ShellRunResult } from '@alego/shell'
+import { defineTool, TOOL_ABORTED } from '@singula-ai/alego-tools'
+import type { GenericCallView, TerminalCallView, ToolExecution, ToolResult, ToolResultView } from '@singula-ai/alego-tools'
+import { HarnessError } from '@singula-ai/alego-llm'
+import type { Agent } from '@singula-ai/alego-agent'
+import type {} from '@singula-ai/alego-system-prompt'
+import type {} from '@singula-ai/alego-jobs'
+import type {} from '@singula-ai/alego-user-approval'
+import type {} from '@singula-ai/alego-shell-env'
+import type { SandboxExecutionPolicy, SandboxMode } from '@singula-ai/alego-sandbox'
+import { ESCALATION_TARGETS, approveEscalation, canonicalPath, validateEscalationArgs } from '@singula-ai/alego-sandbox'
+import type { SandboxPolicyService } from '@singula-ai/alego-sandbox-policy'
+import { ALEGO_ENV_PREFIX } from '@singula-ai/alego-shell'
+import type { ShellRunResult } from '@singula-ai/alego-shell'
 import { processOutcome } from './background.ts'
 import { parseExitStatus, renderProcessRead, renderResult } from './render.ts'
 
@@ -353,7 +353,7 @@ export function apply(ctx: Context, config: Config = {}): void {
         }
         const jobs = ctx.get('jobs')
         if (jobs === undefined) {
-          throw new Error('background jobs unavailable: load @alego/jobs and @alego/tool-jobs')
+          throw new Error('background jobs unavailable: load @singula-ai/alego-jobs and @singula-ai/alego-tool-jobs')
         }
         // The caller owns cancellation until ctx.jobs commits detached ownership.
         if (exec.signal.aborted) {

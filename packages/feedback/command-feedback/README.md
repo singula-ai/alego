@@ -1,4 +1,4 @@
-# @alego/command-feedback
+# @singula-ai/alego-command-feedback
 
 English | [中文](README.zh.md)
 
@@ -40,9 +40,9 @@ The producer injects only `commands`. A custom app mounts the registry plus this
 
 ```yaml
 - id: commands
-  name: '@alego/commands'
+  name: '@singula-ai/alego-commands'
 - id: command-feedback
-  name: '@alego/command-feedback'
+  name: '@singula-ai/alego-command-feedback'
 ```
 
 The shipped `alego` base mounts this command unconditionally; it has no configuration and no dependency on the persisted-goal stack. The Web client exposes it through the command adapter. Headless mode, ACP automation, and JSON-RPC do not provide a command adapter, so they do not expose it.

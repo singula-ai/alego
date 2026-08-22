@@ -9,12 +9,12 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { GoalSnapshot } from '@alego/goal/client'
+import type { GoalSnapshot } from '@singula-ai/alego-goal/client'
 import {
   IconCheckOutline16, IconCloseOutline16, IconEditOutline16, IconGoalOutline16,
   IconPauseOutline16, IconPlayOutline16, IconTrashOutline16, Tooltip,
-} from '@alego/client-ui-primitives'
-import type { PropsLocale } from '@alego/client-ui-slots'
+} from '@singula-ai/alego-client-ui-primitives'
+import type { PropsLocale } from '@singula-ai/alego-client-ui-slots'
 import type { GoalActionResult, GoalBarActions } from './slots.ts'
 import type { GoalKey } from './locales.ts'
 import css from './GoalBar.module.css'
@@ -169,7 +169,7 @@ export function GoalBar({ goal, onEdit, onPause, onResume, onClear, t }: GoalBar
 }
 
 /** Full props of the dock entry: InputZone owner share + session standard kit + injected verbs + the locale seat. */
-export type GoalDockProps = import('@alego/client-ui-slots').PropsRuntime<'conversation.input.dock'> & GoalBarActions & PropsLocale<'goal'>
+export type GoalDockProps = import('@singula-ai/alego-client-ui-slots').PropsRuntime<'conversation.input.dock'> & GoalBarActions & PropsLocale<'goal'>
 
 /** Dock adapter: reads the host-computed 'goal' projection (whole value; absent or null renders nothing). */
 export function GoalDock({ useProjection, onEdit, onPause, onResume, onClear, t }: GoalDockProps) {

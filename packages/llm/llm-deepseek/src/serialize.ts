@@ -6,9 +6,9 @@
  * @module alego-llm-deepseek/serialize
  */
 
-import { contentHasImage, LlmError, offloadRequestImagesWithPolicy, requestImageHandleText } from '@alego/llm'
-import type { ContentBlock, GenerateOptions, Message } from '@alego/llm'
-import type { ImageAttachmentRef, RequestImageAttachment } from '@alego/attachment'
+import { contentHasImage, LlmError, offloadRequestImagesWithPolicy, requestImageHandleText } from '@singula-ai/alego-llm'
+import type { ContentBlock, GenerateOptions, Message } from '@singula-ai/alego-llm'
+import type { ImageAttachmentRef, RequestImageAttachment } from '@singula-ai/alego-attachment'
 import type {
   WireImageContentPart,
   WireMessage,

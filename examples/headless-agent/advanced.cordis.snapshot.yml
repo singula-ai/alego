@@ -8,15 +8,15 @@
 # disables the key-requiring DeepSeek adapter and inserts `llm-replay` to serve
 # recorded JSONL without a key or network.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - id: agent-spine
-        name: '@alego/agent-spine-demo'
+        name: '@singula-ai/alego-agent-spine-demo'
         config:
           agents:
             - id: main
@@ -32,7 +32,7 @@
 
             Verify your work by running the code or tests. Keep answers brief and factual.
       - id: persistence
-        name: '@alego/session-persistence-jsonl'
+        name: '@singula-ai/alego-session-persistence-jsonl'
         config:
           root: './.sessions'
           # Replay fixtures are raw JSONL; the whole-config patch must restate
@@ -40,10 +40,10 @@
           compression: none
       - insert:
           - id: code-runtime
-            name: '@alego/code-runtime-worker-thread'
+            name: '@singula-ai/alego-code-runtime-worker-thread'
           - id: cordis-host-runner
-            name: '@alego/cordis-host-runner'
+            name: '@singula-ai/alego-cordis-host-runner'
           - id: tool-cordis
-            name: '@alego/tool-cordis'
+            name: '@singula-ai/alego-tool-cordis'
           - id: llm-replay
-            name: '@alego/llm-replay'
+            name: '@singula-ai/alego-llm-replay'

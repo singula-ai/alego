@@ -2,11 +2,11 @@
  * Scoped-context primitive: mint a Cordis context that tags registrations with
  * an opaque identity and build routing-only event carriers for that identity.
  *
- * @module @alego/scope
+ * @module @singula-ai/alego-scope
  */
 
-import type { Context, Fiber } from '@alego/cordis'
-import { Context as CordisContext } from '@alego/cordis'
+import type { Context, Fiber } from '@singula-ai/cordis'
+import { Context as CordisContext } from '@singula-ai/cordis'
 
 export { AnonymousEntries, NamedEntries, ScopedLayers } from './store.ts'
 export type { ScopeLayer } from './store.ts'

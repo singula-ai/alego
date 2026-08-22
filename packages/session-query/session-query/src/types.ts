@@ -2,7 +2,7 @@
  * Public records for exact reads and relationship traces over the
  * live-preferred logical session corpus.
  *
- * @module @alego/session-query/types
+ * @module @singula-ai/alego-session-query/types
  */
 
 import type {
@@ -11,8 +11,8 @@ import type {
   SessionHeader,
   SessionId,
   SurfaceEvent,
-} from '@alego/session'
-import type { SessionTitleSnapshot } from '@alego/session-title'
+} from '@singula-ai/alego-session'
+import type { SessionTitleSnapshot } from '@singula-ai/alego-session-title'
 import type { SessionSearchCursor } from './cursor.ts'
 
 export type { SessionSearchCursor } from './cursor.ts'

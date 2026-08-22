@@ -1,3 +1,3 @@
 import { clientBundle } from '../../client/tsdown.client.ts'
 
-export default clientBundle('@alego/api-gateway', ['lib/types/index.js', 'lib/types/invariant.js'])
+export default clientBundle('@singula-ai/alego-api-gateway', ['lib/types/index.js', 'lib/types/invariant.js'])

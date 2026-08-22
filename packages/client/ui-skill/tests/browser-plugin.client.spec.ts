@@ -13,13 +13,13 @@
  * projections. Direct driving is deliberate: this spec owns only the
  * source's own contract.
  */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import type { SessionId } from '@alego/client-runtime/client'
-import { SlotRegistry } from '@alego/client-runtime/client'
-import { InputTriggerService } from '@alego/client-ui-input-trigger/client'
-import { TestRemote } from '@alego/client-test-runtime'
-import type { ClientSessionContext, InputTriggerSource } from '@alego/client-ui-input-trigger/client'
+import type { SessionId } from '@singula-ai/alego-client-runtime/client'
+import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import { InputTriggerService } from '@singula-ai/alego-client-ui-input-trigger/client'
+import { TestRemote } from '@singula-ai/alego-client-test-runtime'
+import type { ClientSessionContext, InputTriggerSource } from '@singula-ai/alego-client-ui-input-trigger/client'
 import { apply, inject } from '../src/client/index.ts'
 import { SkillRow as SkillToolRow } from '../src/client/SkillRow.tsx'
 

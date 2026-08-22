@@ -3,10 +3,10 @@
  * supplied each value. Harness consumers resolve through it instead of a flattened
  * `process.env`; launchers may still materialize accepted values for config
  * expressions and third-party libraries.
- * @module @alego/launch-environment
+ * @module @singula-ai/alego-launch-environment
  */
 
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 
 /**
  * Which layer supplied a value, from most to least trusted: the environment
@@ -116,7 +116,7 @@ export function launchEnvironmentOf(ctx: Context): LaunchEnvironmentSnapshot {
     ?? createLaunchEnvironmentSnapshot([{ source: 'process', values: process.env as Record<string, string> }])
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     /** Launcher-owned snapshot of this run's environment; absent in compositions the product CLI did not boot. */
     launchEnvironment?: LaunchEnvironmentSnapshot

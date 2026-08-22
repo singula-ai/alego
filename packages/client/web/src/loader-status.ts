@@ -2,9 +2,9 @@
  * Fiber-state projection vocabulary for the framework-free boot page. The
  * boot chain subscribes to `internal/status` and projects the owning loader
  * entry's current state.
- * @module @alego/client-web/src/loader-status
+ * @module @singula-ai/alego-client-web/src/loader-status
  */
-import type { FiberState } from '@alego/cordis'
+import type { FiberState } from '@singula-ai/cordis'
 
 /**
  * Value mirror of cordis's `FiberState` const enum: a const enum has no

@@ -7,7 +7,7 @@
 import type { ReactNode } from 'react'
 import {
   IconApiOutline14, IconBrowseOutline16, IconCodeOutline16, IconEditOutline16, IconSearchOutline16, IconSparkle16,
-} from '@alego/client-ui-primitives'
+} from '@singula-ai/alego-client-ui-primitives'
 import type { ToolCallOwnerProps, ToolTreeProps } from '../../contract/slots.ts'
 import { readCardModel } from '../models/read-card-model.ts'
 import { diffCardModel } from '../models/diff-card-model.ts'

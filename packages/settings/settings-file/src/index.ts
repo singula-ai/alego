@@ -4,18 +4,18 @@
  * through the seam, and every write re-reads the document under a
  * cross-process writer lock before patching it as a comment-preserving
  * leaf-level diff.
- * @module @alego/settings-file
+ * @module @singula-ai/alego-settings-file
  */
 
-import { Context, Service } from '@alego/cordis'
-import z from '@alego/schemastery'
+import { Context, Service } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import { watch as chokidarWatch } from 'chokidar'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, extname, join, resolve } from 'node:path'
 import { Document, parseDocument } from 'yaml'
-import { withFileLock, writeFileAtomic } from '@alego/atomic-write'
-import { canonicalizeWatchPath, resolveAlegoHome } from '@alego/home-paths'
-import { SettingsProvider, deepEqualJson, type SettingsNamespace } from '@alego/settings'
+import { withFileLock, writeFileAtomic } from '@singula-ai/alego-atomic-write'
+import { canonicalizeWatchPath, resolveAlegoHome } from '@singula-ai/alego-home-paths'
+import { SettingsProvider, deepEqualJson, type SettingsNamespace } from '@singula-ai/alego-settings'
 
 /** Plugin config: file location and hot-reload behavior. */
 export interface Config {

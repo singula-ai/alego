@@ -9,10 +9,10 @@ import { existsSync, mkdtempSync, realpathSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { basename, join } from 'node:path'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { SandboxPolicy } from '@alego/sandbox'
-import { SessionId } from '@alego/session'
-import { LocalSandboxProvider } from '@alego/sandbox-local'
+import { Context } from '@singula-ai/cordis'
+import type { SandboxPolicy } from '@singula-ai/alego-sandbox'
+import { SessionId } from '@singula-ai/alego-session'
+import { LocalSandboxProvider } from '@singula-ai/alego-sandbox-local'
 
 /** Cross-file state shared with the vi.mock factory (hoisting contract). */
 const mockState = vi.hoisted(() => ({
@@ -24,7 +24,7 @@ const mockState = vi.hoisted(() => ({
   disposeFailure: undefined as Error | undefined,
 }))
 
-vi.mock('@alego/sandbox-windows-acl', () => {
+vi.mock('@singula-ai/alego-sandbox-windows-acl', () => {
   class MockAclWriteGrant {
     readonly writeSid: string
     readonly added: Array<{ path: string; standing: boolean }> = []

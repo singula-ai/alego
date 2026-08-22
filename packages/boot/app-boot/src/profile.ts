@@ -19,7 +19,7 @@
  * flat fallback directory `$ALEGO_HOME/profiles/node_modules` (one symlink per
  * package the installation's app and bundles depend on) makes every in-box
  * plugin Node-resolvable from any profile through the ordinary parent-walk.
- * @module @alego/app-boot/profile
+ * @module @singula-ai/alego-app-boot/profile
  */
 
 import { createRequire } from 'node:module'
@@ -27,9 +27,9 @@ import {
   existsSync, lstatSync, mkdirSync, readFileSync, readlinkSync, symlinkSync, unlinkSync, writeFileSync,
 } from 'node:fs'
 import { basename, dirname, join } from 'node:path'
-import type { EntryOptions } from '@alego/cordis-plugin-loader'
-import { applyEntryPatches, type PatchOptions } from '@alego/cordis-plugin-include'
-import { resolveAlegoHome } from '@alego/home-paths'
+import type { EntryOptions } from '@singula-ai/cordis-plugin-loader'
+import { applyEntryPatches, type PatchOptions } from '@singula-ai/cordis-plugin-include'
+import { resolveAlegoHome } from '@singula-ai/alego-home-paths'
 import { loadOverlayPatches } from './index.ts'
 
 /** Directory under the Harness home holding every profile. */
@@ -112,17 +112,17 @@ export function resolveProfileDir(name: string, home: string = resolveAlegoHome(
 
 /** The shipped profile templates auto-initialized on first use, by name. */
 export const PROFILE_TEMPLATES: Record<string, readonly string[]> = {
-  web: ['@alego/base', '@alego/web-app'],
-  headless: ['@alego/base', '@alego/headless'],
+  web: ['@singula-ai/alego-base', '@singula-ai/alego-web-app'],
+  headless: ['@singula-ai/alego-base', '@singula-ai/alego-headless'],
 }
 
 /** Installation-owned bundle tuples normalized to the shipped template. */
 const INSTALLATION_OWNED_PROFILE_TUPLES: Record<string, readonly string[]> = {
-  headless: ['@alego/base', '@alego/web-app', '@alego/headless'],
+  headless: ['@singula-ai/alego-base', '@singula-ai/alego-web-app', '@singula-ai/alego-headless'],
 }
 
 /** The bundle list a `alego plugin` init uses for a name with no shipped template. */
-export const DEFAULT_PROFILE_BUNDLES: readonly string[] = ['@alego/base']
+export const DEFAULT_PROFILE_BUNDLES: readonly string[] = ['@singula-ai/alego-base']
 
 const PROFILE_PATCH_TEMPLATE = `# Your patch layer for this alego profile, applied after every bundle layer:
 # a top-level YAML array of loader patch entries (id-targeted config
@@ -332,7 +332,7 @@ function packageDirFromAnchor(anchor: string, packageName: string): string | und
 /**
  * Resolve one bundle package's directory: installation anchor first, then the
  * profile directory. The installation-first order is the contract that
- * `@alego/base` (and every other in-box bundle) always comes from
+ * `@singula-ai/alego-base` (and every other in-box bundle) always comes from
  * the same installation as the running alego, never from a profile-local copy.
  * Resolution does not require the package to export `./package.json`.
  * @param binName - the diagnostic prefix on the thrown error.

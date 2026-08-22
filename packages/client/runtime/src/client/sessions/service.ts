@@ -14,17 +14,17 @@
  * tears its scope down immediately unless it is the staged one, whose scope
  * survives frozen (read-only view) until the stage moves on.
  */
-import type { Context, Fiber } from '@alego/cordis'
+import type { Context, Fiber } from '@singula-ai/cordis'
 import type {
   IApiClient, RpcError, RpcResult, SessionId, SubagentAddress, JobView, WorkspaceId,
-} from '@alego/api-remotes/client'
+} from '@singula-ai/alego-api-remotes/client'
 // Value import from the inline-safe wire layer (not the connection plugin):
 // plugin-to-plugin value imports are a bundle purity error.
-import { SESSION_SEARCH_RESULT_LIMIT } from '@alego/host-apiproxy/api'
+import { SESSION_SEARCH_RESULT_LIMIT } from '@singula-ai/alego-host-apiproxy/api'
 import type {
   HostObservable, SessionMaybeProvideInfo, SessionProvideInfo,
-} from '@alego/client-ui-slots'
-import type { SessionProjectionMap } from '@alego/session-projection/types'
+} from '@singula-ai/alego-client-ui-slots'
+import type { SessionProjectionMap } from '@singula-ai/alego-session-projection/types'
 import type { SnapshotStore } from '../contract/store.ts'
 import { createSnapshotStore } from '../contract/store.ts'
 import type { SessionFace } from '../contract/session.ts'

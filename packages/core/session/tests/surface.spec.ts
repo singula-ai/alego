@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { SessionEvent, SurfaceEvent, SurfaceEventType } from '@alego/session'
+import type { SessionEvent, SurfaceEvent, SurfaceEventType } from '@singula-ai/alego-session'
 import {
   Session,
   SessionId,
@@ -8,8 +8,8 @@ import {
   isReplacementSurfaceEvent,
   isSurfaceEligibleType,
   isSurfaceEvent,
-} from '@alego/session'
-import { SurfaceManager } from '@alego/session/surface'
+} from '@singula-ai/alego-session'
+import { SurfaceManager } from '@singula-ai/alego-session/surface'
 import {
   createMessage,
   createToolResultMessage,
@@ -17,7 +17,7 @@ import {
   freezeMessage,
   CallId,
   MessageId,
-} from '@alego/llm'
+} from '@singula-ai/alego-llm'
 
 /** Build a minimal session with turn boundaries and a single user message. */
 function surfaceSession(): Session {

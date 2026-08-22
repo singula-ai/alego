@@ -7,20 +7,20 @@
  * projection pair through the standard-kit `useProjection`; zero client-side
  * plan state.
  */
-import type {} from '@alego/api-remotes/client'
-import type { ClientContext, SessionId } from '@alego/client-runtime/client'
+import type {} from '@singula-ai/alego-api-remotes/client'
+import type { ClientContext, SessionId } from '@singula-ai/alego-client-runtime/client'
 // Type-only: pulls the ui-conversation SlotMap merge (the input.plan seat).
-import type {} from '@alego/client-ui-conversation/client'
+import type {} from '@singula-ai/alego-client-ui-conversation/client'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
-import type {} from '@alego/client-locale/client'
+import type {} from '@singula-ai/alego-client-locale/client'
 // Type-only: pulls the `plan` SessionProjectionMap merge for useProjection.
-import type {} from '@alego/plan-mode/client'
+import type {} from '@singula-ai/alego-plan-mode/client'
 import { PlanChip } from './PlanModeControl.tsx'
 import { en, zh, type PlanKey } from './locales.ts'
 
 export type { PlanKey } from './locales.ts'
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface LocaleNamespaceMap {
     /** The composer plan chip's copy. */
     plan: PlanKey

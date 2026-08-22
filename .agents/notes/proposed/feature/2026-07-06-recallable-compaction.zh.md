@@ -41,7 +41,7 @@ Status: proposed
 
 ### 回溯工具
 
-新增包 `@alego/tool-recall`，它只是 `alego-session` 与 `alego-compaction` 词汇之上的消费方，注册两个面向模型的工具：
+新增包 `@singula-ai/alego-tool-recall`，它只是 `alego-session` 与 `alego-compaction` 词汇之上的消费方，注册两个面向模型的工具：
 
 - `history_read(checkpoint, offset?)`：把日志中任意检查点（包括已被取代的检查点）遮蔽的区段渲染为 `User:`／`Assistant:`／`Tool result:` transcript（文本记录），并按配置预算分页，提供续传游标。
 - `history_search(query, checkpoint?, limit?)`：对每个被遮蔽区段进行不区分大小写的字面量扫描；返回带检查点 id 的片段与覆盖元数据（`scanned`／`matched`／`truncated`）。零匹配提示会说明扫描按字面量执行，并建议对可能的检查点直接使用 `history_read`。

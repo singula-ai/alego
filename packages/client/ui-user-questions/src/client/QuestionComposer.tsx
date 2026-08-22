@@ -4,7 +4,7 @@ import {
   Button, IconCheckOutline14, IconChevronDownOutline14, IconChevronLeftOutline14,
   IconChevronRightOutline14, IconChevronUpOutline14, IconCloseOutline16,
   IconEditOutline16, MarkdownText,
-} from '@alego/client-ui-primitives'
+} from '@singula-ai/alego-client-ui-primitives'
 import {
   PendingQuestion, planReviewOf,
   type QuestionAnswer, type QuestionComposerProps,

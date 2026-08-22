@@ -1,6 +1,6 @@
-/** JSON string-prefix accounting for the outer-output ledger. @module @alego/code-runtime-worker-thread/output-json */
+/** JSON string-prefix accounting for the outer-output ledger. @module @singula-ai/alego-code-runtime-worker-thread/output-json */
 
-import type { CodeJsonValue } from '@alego/code-runtime'
+import type { CodeJsonValue } from '@singula-ai/alego-code-runtime'
 
 type IntrinsicCallable = (this: unknown, ...args: unknown[]) => unknown
 

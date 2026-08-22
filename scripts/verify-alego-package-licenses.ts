@@ -7,15 +7,7 @@ import { globSync, readFileSync } from 'node:fs'
 import { resolve, sep } from 'node:path'
 
 const ROOT = resolve(import.meta.dirname, '..')
-/** npm scope of every package in this workspace. */
-const ALEGO_SCOPE = '@alego/'
-/**
- * Workspaces holding the MIT product itself. The scope alone cannot select
- * them: `vendor/` holds rescoped upstream sources, `native/` carries the
- * Landlock addon's own BSD-3-Clause terms, and `website/` is unpublished —
- * all three share the scope while keeping their own licensing.
- */
-const PRODUCT_MANIFESTS = /^(?:package\.json|apps\/[^/]+\/package\.json|packages\/[^/]+\/[^/]+\/package\.json)$/
+const ALEGO_PACKAGE_NAME = /^@singula-ai\/alego(?:-|$)/
 
 /** Result of checking every ALEGO package reachable through the root workspace list. */
 export interface AlegoPackageLicenseReport {
@@ -69,12 +61,11 @@ export function inspectAlegoPackageLicenses(root: string): AlegoPackageLicenseRe
   for (const file of workspaceManifestPaths(root)) {
     const manifest = readManifest(root, file)
     const name = manifest.name
-    const normalizedFile = file.split(sep).join('/')
-    if (typeof name !== 'string' || !name.startsWith(ALEGO_SCOPE)) continue
-    if (!PRODUCT_MANIFESTS.test(normalizedFile)) continue
+    if (typeof name !== 'string' || !ALEGO_PACKAGE_NAME.test(name)) continue
 
     packageCount++
     if (manifest.license !== 'MIT') {
+      const normalizedFile = file.split(sep).join('/')
       failures.push(
         `${normalizedFile}: ${name} must declare "license": "MIT"; found ${printable(manifest.license)}.`,
       )

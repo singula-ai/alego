@@ -5,7 +5,7 @@
  * (like `alego-bash-local`'s `run.ts`) so the filesystem behavior is unit-testable
  * without a `ctx` and without the OS temp dir.
  *
- * @module @alego/spill-local/store
+ * @module @singula-ai/alego-spill-local/store
  */
 
 import { createHash, randomBytes } from 'node:crypto'

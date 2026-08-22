@@ -12,7 +12,7 @@ Status: implemented
 
 ## 决策
 
-`@alego/session-persistence-sqlite` 使用打包后的 schema 17 实现。它是唯一的 SQLite 持久化包和提供方；仓库不保留此前的标量布局与临时版本化同级包。SQLite 仍是可选开关，随产品交付的默认组合继续使用 JSONL。两个后端都通过 `PersistenceCoordinator` 实现同一 `SessionPersistence` 服务，因此物理打包既不改变实时事件投递，也不改变逻辑会话 API。
+`@singula-ai/alego-session-persistence-sqlite` 使用打包后的 schema 17 实现。它是唯一的 SQLite 持久化包和提供方；仓库不保留此前的标量布局与临时版本化同级包。SQLite 仍是可选开关，随产品交付的默认组合继续使用 JSONL。两个后端都通过 `PersistenceCoordinator` 实现同一 `SessionPersistence` 服务，因此物理打包既不改变实时事件投递，也不改变逻辑会话 API。
 
 Schema 17 保留普通 ROWID 表以及复合主键索引 `events(session_id, seq)`。标量行表示一个逻辑事件。打包行使用存储标签 `text-chunks`、`reasoning-chunks` 与 `tool-call-chunks`；SQL 的 `seq` 和 `time` 列保存第一个逻辑成员，`data` 保存打包 payload。打包行把 `ignorable=0` 用作物理判别值，并让 `source_event_seqs` 与 `surface_op` 保持 `NULL`；标量行仅在逻辑事件可忽略时使用 `ignorable=1`，否则使用 `NULL`。因此，未来的可忽略逻辑事件即使复用了某个存储标签名称，也不会被解码为打包行。这些标签属于存储词汇，而不是 `SessionEventMap` 成员。
 

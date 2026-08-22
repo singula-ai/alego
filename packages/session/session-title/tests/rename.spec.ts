@@ -1,15 +1,15 @@
 // SessionTitleService.rename: user-source acceptance, normalization/rejection
 // boundaries, and the pin (a user-sourced latest title schedules no automatic
 // revision; explicit refresh stays the unpin).
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import { createUserMessage } from '@alego/llm'
-import SessionStore, { Session, SessionId } from '@alego/session'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import SessionStore, { Session, SessionId } from '@singula-ai/alego-session'
 import SessionTitleService, {
   SessionTitleProviderId,
   foldSessionTitle,
   type SessionTitleProviderRequest,
-} from '@alego/session-title'
+} from '@singula-ai/alego-session-title'
 
 const CONFIG = {
   fallbackMaxWords: 5,

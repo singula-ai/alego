@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { createUserMessage } from '@alego/llm'
-import type { UserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type { UserMessage } from '@singula-ai/alego-llm'
 import {
   deriveBrowserTimeZoneContext,
   renderBrowserTimeZoneContext,

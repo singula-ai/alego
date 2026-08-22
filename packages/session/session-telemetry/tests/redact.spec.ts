@@ -1,4 +1,4 @@
-import { createUserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
 /**
  * The `session-telemetry/record` waterfall contract: pass-through when no listener is
  * mounted, listener stacking and replacement, ops-record coverage, the
@@ -6,8 +6,8 @@ import { createUserMessage } from '@alego/llm'
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import SessionStore, { SessionId } from '@alego/session'
+import { Context } from '@singula-ai/cordis'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
 import {
   SessionTelemetryCoordinator,
   type SessionTelemetrySink,

@@ -1,10 +1,10 @@
-# @alego/web-search-exa
+# @singula-ai/alego-web-search-exa
 
 [English](README.md) | 中文
 
 由 [Exa](https://exa.ai) 支持的 `WebSearchProvider`，用于 harness [web 能力 seam](../web/README.zh.md)（`ctx.web`）。它调用 Exa 的 `POST /search` 端点并请求高亮摘要内容，把扁平 `results[]` 映射为 seam 规范化的 `WebSearchResult`。
 
-这是一个**实现**包：它向 `ctx.web` 注册提供方，不拥有 `ctx.web` 键，也不注册面向模型的工具（后者属于 `@alego/tool-web`）。与 `@alego/llm-deepseek` 一样，它是函数／命名空间插件（`inject: ['web']`），负责注册后端，而非默认导出服务。
+这是一个**实现**包：它向 `ctx.web` 注册提供方，不拥有 `ctx.web` 键，也不注册面向模型的工具（后者属于 `@singula-ai/alego-tool-web`）。与 `@singula-ai/alego-llm-deepseek` 一样，它是函数／命名空间插件（`inject: ['web']`），负责注册后端，而非默认导出服务。
 
 ## 配置
 
@@ -18,7 +18,7 @@
 
 ```yaml
 - id: web-search-exa
-  name: '@alego/web-search-exa'
+  name: '@singula-ai/alego-web-search-exa'
   config:
     apiKey: !!js process.env.EXA_API_KEY
 ```

@@ -1,6 +1,6 @@
-import type { Context } from '@alego/cordis'
-import type { GenerateOptions, StreamChunk } from '@alego/llm'
-import { CallId, LlmAdapter } from '@alego/llm'
+import type { Context } from '@singula-ai/cordis'
+import type { GenerateOptions, StreamChunk } from '@singula-ai/alego-llm'
+import { CallId, LlmAdapter } from '@singula-ai/alego-llm'
 
 /**
  * Test adapter for the `mock-delegate` model: the first request calls the

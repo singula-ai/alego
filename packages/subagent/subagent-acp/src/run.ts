@@ -5,7 +5,7 @@
  * TODO(acp-subagent-replay): add snapshot-tier coverage with a separate replay fixture and
  * sessions root inside each child process. Current keyless coverage uses a scripted ACP child;
  * with-key coverage drives the real ACP example.
- * @module @alego/subagent-acp/run
+ * @module @singula-ai/alego-subagent-acp/run
  */
 
 import { randomUUID } from 'node:crypto'
@@ -22,11 +22,11 @@ import {
   type SessionNotification,
   type StopReason,
 } from '@agentclientprotocol/sdk'
-import type { ContentBlock } from '@alego/llm'
-import { SessionId } from '@alego/session'
-import { AssistantOutputFold } from '@alego/subagent'
-import type { SubagentResult, SubagentRun, SubagentStartRequest, SubagentStopReason } from '@alego/subagent'
-import type { SubprocessHandle, SubprocessSpawnSpec } from '@alego/subprocess'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
+import { AssistantOutputFold } from '@singula-ai/alego-subagent'
+import type { SubagentResult, SubagentRun, SubagentStartRequest, SubagentStopReason } from '@singula-ai/alego-subagent'
+import type { SubprocessHandle, SubprocessSpawnSpec } from '@singula-ai/alego-subprocess'
 
 /** Fixed response to child permission requests: reject by default, or select the first allow option. */
 export type PermissionPolicy = 'allow' | 'reject'

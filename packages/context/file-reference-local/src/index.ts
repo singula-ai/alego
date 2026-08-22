@@ -1,18 +1,18 @@
 /**
  * Local-filesystem implementation of `ctx.fileReferences`.
  *
- * @module @alego/file-reference-local
+ * @module @singula-ai/alego-file-reference-local
  */
 
-import { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent } from '@alego/agent'
+import { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent } from '@singula-ai/alego-agent'
 import FileReferenceService, {
   FILE_REFERENCE_PROMPT,
   type FileReferenceCandidate,
-} from '@alego/file-reference'
-import type {} from '@alego/system-prompt'
-import type {} from '@alego/tools'
+} from '@singula-ai/alego-file-reference'
+import type {} from '@singula-ai/alego-system-prompt'
+import type {} from '@singula-ai/alego-tools'
 import {
   DEFAULT_FILE_SEARCH_EXCLUDED_DIRECTORIES,
   DEFAULT_FILE_SEARCH_MAX_ENTRIES,
@@ -28,8 +28,8 @@ export {
   WorkspaceFileSearch,
 } from './search.ts'
 export type { FileSearchConfig } from './search.ts'
-export { FILE_REFERENCE_PROMPT } from '@alego/file-reference'
-export { activeAtToken, formatFileMention } from '@alego/file-reference/grammar'
+export { FILE_REFERENCE_PROMPT } from '@singula-ai/alego-file-reference'
+export { activeAtToken, formatFileMention } from '@singula-ai/alego-file-reference/grammar'
 
 /** Local file-reference discovery configuration. */
 export interface Config {

@@ -4,13 +4,13 @@
  * product methods, current thread/turn association, unattended approval
  * responses, and terminal-answer selection.
  *
- * @module @alego/subagent-codex/wire
+ * @module @singula-ai/alego-subagent-codex/wire
  */
 
 import type { Readable, Writable } from 'node:stream'
-import type { ContentBlock } from '@alego/llm'
-import type { SubagentResult } from '@alego/subagent'
-import { JsonRpcLineTransport } from '@alego/sdk-protocol'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { SubagentResult } from '@singula-ai/alego-subagent'
+import { JsonRpcLineTransport } from '@singula-ai/alego-sdk-protocol'
 import type { CodexPermissionMode } from './run.ts'
 
 type JsonObject = Record<string, unknown>

@@ -41,7 +41,7 @@
  * directories, token/grant/spawn errors) prints `windows-acl-run: <detail>`
  * to stderr and exits 127 — the seam's RUNNER_FAILURE_RULES matches that
  * signature. The child is NEVER spawned unrestricted.
- * @module @alego/sandbox-windows-acl/runner
+ * @module @singula-ai/alego-sandbox-windows-acl/runner
  */
 
 import { existsSync, mkdtempSync, rmSync, statSync } from 'node:fs'

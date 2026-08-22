@@ -14,8 +14,8 @@ import { closeSync, mkdtempSync, openSync, unlinkSync, writeSync } from 'node:fs
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { setTimeout as sleepMs } from 'node:timers/promises'
-import { scrubbedParentEnv } from '@alego/subprocess'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+import { scrubbedParentEnv } from '@singula-ai/alego-subprocess'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 import type {
   CollectedOutput,
   SubprocessCollect,
@@ -23,7 +23,7 @@ import type {
   SubprocessOutcome,
   SubprocessOutputMode,
   SubprocessSpawnSpec,
-} from '@alego/subprocess'
+} from '@singula-ai/alego-subprocess'
 import { linuxProcessGroupHasLiveMembers } from './process-inspector.ts'
 
 /**

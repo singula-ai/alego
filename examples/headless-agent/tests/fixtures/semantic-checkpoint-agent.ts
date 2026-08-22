@@ -3,8 +3,8 @@
  * @module semantic-checkpoint-agent
  */
 
-import type { Context } from '@alego/cordis'
-import type { SessionId } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import type { SessionId } from '@singula-ai/alego-session'
 
 /** Fixture plugin name. */
 export const name = 'semantic-checkpoint-agent'

@@ -1,8 +1,8 @@
-# @alego/code-runtime-python
+# @singula-ai/alego-code-runtime-python
 
 [English](README.md) | 中文
 
-[`@alego/code-runtime`](../code-runtime/README.zh.md) seam 的 CPython 子进程实现。与 [`@alego/code-runtime-worker-thread`](../code-runtime-worker-thread/README.zh.md) 配套；以全新的 `python3` 子进程取代 Node worker 线程，让模型代码从 TypeScript 换成 Python。
+[`@singula-ai/alego-code-runtime`](../code-runtime/README.zh.md) seam 的 CPython 子进程实现。与 [`@singula-ai/alego-code-runtime-worker-thread`](../code-runtime-worker-thread/README.zh.md) 配套；以全新的 `python3` 子进程取代 Node worker 线程，让模型代码从 TypeScript 换成 Python。
 
 本包持有该 seam 的 wire protocol：host 侧的帧编解码，以及 Python 侧对同一套消息词汇的镜像。
 

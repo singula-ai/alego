@@ -6,11 +6,11 @@
  * koffi-driven COM conversation on the child's main thread). Only viable when
  * the operator sits at the host's screen; remote deployments compose the
  * browse backend instead.
- * @module @alego/host-directory-picker-native
+ * @module @singula-ai/alego-host-directory-picker-native
  */
 
-import { DirectoryPicker } from '@alego/host-directory-picker'
-import type { DirectoryPickerCapability } from '@alego/host-directory-picker'
+import { DirectoryPicker } from '@singula-ai/alego-host-directory-picker'
+import type { DirectoryPickerCapability } from '@singula-ai/alego-host-directory-picker'
 import { pickNativeDirectory } from './native-picker.ts'
 
 export type { DirectoryPickerInternals, DirectoryPickerRunner } from './native-picker.ts'

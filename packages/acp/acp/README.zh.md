@@ -1,4 +1,4 @@
-# @alego/acp
+# @singula-ai/alego-acp
 
 [English](README.md) | 中文
 
@@ -43,7 +43,7 @@ ACP 要求每个提示词响应都携带 `stopReason`，但桥接层不声称它
 
 ## 运行
 
-`pnpm --dir /path/to/alego run demo:acp` 启动仓库的自动化服务器组合。父 harness 可以通过 [`@alego/subagent-acp`](../../subagent/subagent-acp/README.zh.md) spawn 它；其他 ACP 客户端只需上述核心方法。
+`pnpm --dir /path/to/alego run demo:acp` 启动仓库的自动化服务器组合。父 harness 可以通过 [`@singula-ai/alego-subagent-acp`](../../subagent/subagent-acp/README.zh.md) spawn 它；其他 ACP 客户端只需上述核心方法。
 
 ## 模型体验
 

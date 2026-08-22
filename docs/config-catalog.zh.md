@@ -11,9 +11,9 @@
 
 `Requires:` 行列出插件通过 `inject` 注入的服务键：其 `cordis.yml` 树还必须加载这些服务的提供者。范围限定为 harness 层级（`packages/`）；配置树还可能加载的 vendored cordis 插件（`hmr`、控制台日志记录器等）固定为上游源代码（参见 [vendoring policy](../vendor/README.md)），未收录于此目录。
 
-<a id="alegoacp"></a>
+<a id="singula-aialego-acp"></a>
 
-## `@alego/acp`
+## `@singula-ai/alego-acp`
 
 需要：`agents`
 
@@ -33,9 +33,9 @@ export interface AcpConfig {
 
 来源：[`packages/acp/acp/src/index.ts:71`](../packages/acp/acp/src/index.ts)
 
-<a id="alegoacp-demo"></a>
+<a id="singula-aialego-acp-demo"></a>
 
-## `@alego/acp-demo`
+## `@singula-ai/alego-acp-demo`
 
 ```ts config-catalog
 /**
@@ -84,13 +84,13 @@ export interface Config {
 }
 ```
 
-依赖：[`agentCore`](../packages/examples/agent-spine-demo/src/index.ts) · [`JsonlCompression`](../packages/session/session-persistence-jsonl/src/index.ts) · [`ToolsConfig`](#alegotools)
+依赖：[`agentCore`](../packages/examples/agent-spine-demo/src/index.ts) · [`JsonlCompression`](../packages/session/session-persistence-jsonl/src/index.ts) · [`ToolsConfig`](#singula-aialego-tools)
 
 来源：[`packages/examples/acp-demo/src/index.ts:39`](../packages/examples/acp-demo/src/index.ts)
 
-<a id="alegoagent-default-model"></a>
+<a id="singula-aialego-agent-default-model"></a>
 
-## `@alego/agent-default-model`
+## `@singula-ai/alego-agent-default-model`
 
 ```ts config-catalog
 /** Composition entry for the default model selection. */
@@ -104,9 +104,9 @@ export interface Config {
 
 来源：[`packages/core/agent-default-model/src/index.ts:41`](../packages/core/agent-default-model/src/index.ts)
 
-<a id="alegoagent-instructions"></a>
+<a id="singula-aialego-agent-instructions"></a>
 
-## `@alego/agent-instructions`
+## `@singula-ai/alego-agent-instructions`
 
 ```ts config-catalog
 /** User-facing workspace instruction loader configuration. */
@@ -134,9 +134,9 @@ export interface Config {
 
 来源：[`packages/context/agent-instructions/src/config.ts:18`](../packages/context/agent-instructions/src/config.ts)
 
-<a id="alegoagent-loop"></a>
+<a id="singula-aialego-agent-loop"></a>
 
-## `@alego/agent-loop`
+## `@singula-ai/alego-agent-loop`
 
 需要：`agents` · `sessions` · `llm` · `tools` · `systemPrompt`
 
@@ -166,9 +166,9 @@ export interface Config {
 
 来源：[`packages/core/agent-loop/src/index.ts:255`](../packages/core/agent-loop/src/index.ts)
 
-<a id="alegoagent-presets"></a>
+<a id="singula-aialego-agent-presets"></a>
 
-## `@alego/agent-presets`
+## `@singula-ai/alego-agent-presets`
 
 需要：`loader`
 
@@ -204,9 +204,9 @@ export type PresetTrust = 'system' | 'user'
 
 来源：[`packages/preset/agent-presets/src/preset.ts:52`](../packages/preset/agent-presets/src/preset.ts)
 
-<a id="alegoagent-spine-demo"></a>
+<a id="singula-aialego-agent-spine-demo"></a>
 
-## `@alego/agent-spine-demo`
+## `@singula-ai/alego-agent-spine-demo`
 
 ```ts config-catalog
 /**
@@ -292,13 +292,13 @@ export interface GoalConfig {
 }
 ```
 
-依赖：[`AgentLoopConfig`](#alegoagent-loop) · [`GoalDomainConfig`](#alegogoal) · [`InvariantConfig`](#alegoinvariants) · [`JobsConfig`](#alegojobs-local) · [`SessionTitleConfig`](#alegosession-title) · [`SkillFileSystem`](../packages/skill/skill-filesystem/src/index.ts) · [`SkillRegistryConfig`](#alegoskill) · [`SystemPromptConfig`](#alegosystem-prompt) · [`toolBash`](../packages/shell/tool-bash/src/index.ts) · [`toolGoal`](../packages/goal/tool-goal/src/index.ts) · [`toolJobs`](../packages/jobs/tool-jobs/src/index.ts) · [`ToolsConfig`](#alegotools) · [`toolSkill`](../packages/skill/tool-skill/src/index.ts) · [`workspaceContext`](../packages/context/agent-instructions/src/index.ts)
+依赖：[`AgentLoopConfig`](#singula-aialego-agent-loop) · [`GoalDomainConfig`](#singula-aialego-goal) · [`InvariantConfig`](#singula-aialego-invariants) · [`JobsConfig`](#singula-aialego-jobs-local) · [`SessionTitleConfig`](#singula-aialego-session-title) · [`SkillFileSystem`](../packages/skill/skill-filesystem/src/index.ts) · [`SkillRegistryConfig`](#singula-aialego-skill) · [`SystemPromptConfig`](#singula-aialego-system-prompt) · [`toolBash`](../packages/shell/tool-bash/src/index.ts) · [`toolGoal`](../packages/goal/tool-goal/src/index.ts) · [`toolJobs`](../packages/jobs/tool-jobs/src/index.ts) · [`ToolsConfig`](#singula-aialego-tools) · [`toolSkill`](../packages/skill/tool-skill/src/index.ts) · [`workspaceContext`](../packages/context/agent-instructions/src/index.ts)
 
 来源：[`packages/examples/agent-spine-demo/src/index.ts:92`](../packages/examples/agent-spine-demo/src/index.ts)
 
-<a id="alegoagent-tool-presentation"></a>
+<a id="singula-aialego-agent-tool-presentation"></a>
 
-## `@alego/agent-tool-presentation`
+## `@singula-ai/alego-agent-tool-presentation`
 
 需要：`tools`
 
@@ -320,9 +320,9 @@ export interface Config {
 
 来源：[`packages/core/agent-tool-presentation/src/index.ts:38`](../packages/core/agent-tool-presentation/src/index.ts)
 
-<a id="alegoattachment-local"></a>
+<a id="singula-aialego-attachment-local"></a>
 
-## `@alego/attachment-local`
+## `@singula-ai/alego-attachment-local`
 
 ```ts config-catalog
 /** Local attachment backend configuration. */
@@ -350,9 +350,9 @@ export interface Config {
 
 来源：[`packages/attachment/attachment-local/src/index.ts:51`](../packages/attachment/attachment-local/src/index.ts)
 
-<a id="alegobash-local"></a>
+<a id="singula-aialego-bash-local"></a>
 
-## `@alego/bash-local`
+## `@singula-ai/alego-bash-local`
 
 需要：`subprocess`
 
@@ -376,9 +376,9 @@ export interface Config {
 
 来源：[`packages/shell/bash-local/src/index.ts:41`](../packages/shell/bash-local/src/index.ts)
 
-<a id="alegobash-sandbox"></a>
+<a id="singula-aialego-bash-sandbox"></a>
 
-## `@alego/bash-sandbox`
+## `@singula-ai/alego-bash-sandbox`
 
 需要：`subprocess` · `sandbox` · `sandboxPolicy`
 
@@ -386,20 +386,20 @@ export interface Config {
 /**
  * Plugin config: the local executor's knobs, verbatim. The sandbox policy —
  * the default mode and fallback `workspace-write` root — is NOT here: it lives
- * on `ctx.sandboxPolicy` (`@alego/sandbox-policy`), which resolves
+ * on `ctx.sandboxPolicy` (`@singula-ai/alego-sandbox-policy`), which resolves
  * each calling session's mode and cwd for every enforcing capability. The runner
  * choice is likewise the `ctx.sandbox` provider's config, not this executor's.
  */
 export type Config = LocalConfig
 ```
 
-依赖：[`LocalConfig`](#alegobash-local)
+依赖：[`LocalConfig`](#singula-aialego-bash-local)
 
 来源：[`packages/shell/bash-sandbox/src/index.ts:35`](../packages/shell/bash-sandbox/src/index.ts)
 
-<a id="alegoclient-connection"></a>
+<a id="singula-aialego-client-connection"></a>
 
-## `@alego/client-connection`
+## `@singula-ai/alego-client-connection`
 
 需要：`webServer`
 
@@ -422,9 +422,9 @@ export interface ConnectionConfig {
 
 来源：[`packages/client/connection/src/index.ts:50`](../packages/client/connection/src/index.ts)
 
-<a id="alegoclient-hmr"></a>
+<a id="singula-aialego-client-hmr"></a>
 
-## `@alego/client-hmr`
+## `@singula-ai/alego-client-hmr`
 
 需要：`clientModules` · `webServer`
 
@@ -438,9 +438,9 @@ export interface Config {
 
 来源：[`packages/client/hmr/src/index.ts:31`](../packages/client/hmr/src/index.ts)
 
-<a id="alegocode-runtime-worker-thread"></a>
+<a id="singula-aialego-code-runtime-worker-thread"></a>
 
-## `@alego/code-runtime-worker-thread`
+## `@singula-ai/alego-code-runtime-worker-thread`
 
 ```ts config-catalog
 /** Plugin config: every execution cap, changeable from `cordis.yml` (no hardcoded tunables). */
@@ -475,9 +475,9 @@ export interface Config {
 
 来源：[`packages/code-runtime/code-runtime-worker-thread/src/index.ts:25`](../packages/code-runtime/code-runtime-worker-thread/src/index.ts)
 
-<a id="alegocompaction-basic"></a>
+<a id="singula-aialego-compaction-basic"></a>
 
-## `@alego/compaction-basic`
+## `@singula-ai/alego-compaction-basic`
 
 需要：`llm` · `tokenMeter` · `sessions`
 
@@ -521,9 +521,9 @@ export interface ModelCompactPolicyConfig extends CompactionPolicyConfig {
 
 来源：[`packages/compaction/compaction-basic/src/types.ts:38`](../packages/compaction/compaction-basic/src/types.ts)
 
-<a id="alegocompaction-tool-result-pruner"></a>
+<a id="singula-aialego-compaction-tool-result-pruner"></a>
 
-## `@alego/compaction-tool-result-pruner`
+## `@singula-ai/alego-compaction-tool-result-pruner`
 
 需要：`tokenMeter`
 
@@ -541,9 +541,9 @@ export interface ToolResultPruneConfig {
 
 来源：[`packages/compaction/compaction-tool-result-pruner/src/types.ts:4`](../packages/compaction/compaction-tool-result-pruner/src/types.ts)
 
-<a id="alegocordis-host-runner"></a>
+<a id="singula-aialego-cordis-host-runner"></a>
 
-## `@alego/cordis-host-runner`
+## `@singula-ai/alego-cordis-host-runner`
 
 需要：`tools`
 
@@ -557,9 +557,9 @@ export interface Config {
 
 来源：[`packages/extensions/cordis-host-runner/src/index.ts:88`](../packages/extensions/cordis-host-runner/src/index.ts)
 
-<a id="alegocredentials-local"></a>
+<a id="singula-aialego-credentials-local"></a>
 
-## `@alego/credentials-local`
+## `@singula-ai/alego-credentials-local`
 
 ```ts config-catalog
 /** Plugin config: file location and hot-reload behavior. */
@@ -577,9 +577,9 @@ export interface Config {
 
 来源：[`packages/credentials/credentials-local/src/index.ts:64`](../packages/credentials/credentials-local/src/index.ts)
 
-<a id="alegoe2b"></a>
+<a id="singula-aialego-e2b"></a>
 
-## `@alego/e2b`
+## `@singula-ai/alego-e2b`
 
 ```ts config-catalog
 /** Configuration for the shared E2B sandbox owner. */
@@ -595,9 +595,9 @@ export interface Config {
 
 来源：[`packages/e2b/e2b/src/index.ts:43`](../packages/e2b/e2b/src/index.ts)
 
-<a id="alegoexperimental-agent-team"></a>
+<a id="singula-aialego-experimental-agent-team"></a>
 
-## `@alego/experimental-agent-team`
+## `@singula-ai/alego-experimental-agent-team`
 
 需要：`agents` · `sessions` · `sessionPersistence` · `subagents`
 
@@ -619,9 +619,9 @@ export interface Config {
 
 来源：[`packages/experimental/agent-team/src/types.ts:125`](../packages/experimental/agent-team/src/types.ts)
 
-<a id="alegoexperimental-tool-agent-team"></a>
+<a id="singula-aialego-experimental-tool-agent-team"></a>
 
-## `@alego/experimental-tool-agent-team`
+## `@singula-ai/alego-experimental-tool-agent-team`
 
 需要：`agents` · `agentTeams` · `tools` · `systemPrompt`
 
@@ -637,9 +637,9 @@ export interface Config {
 
 来源：[`packages/experimental/tool-agent-team/src/index.ts:17`](../packages/experimental/tool-agent-team/src/index.ts)
 
-<a id="alegofile-reference-local"></a>
+<a id="singula-aialego-file-reference-local"></a>
 
-## `@alego/file-reference-local`
+## `@singula-ai/alego-file-reference-local`
 
 需要：`agents`
 
@@ -657,9 +657,9 @@ export interface Config {
 
 来源：[`packages/context/file-reference-local/src/index.ts:35`](../packages/context/file-reference-local/src/index.ts)
 
-<a id="alegofs-local"></a>
+<a id="singula-aialego-fs-local"></a>
 
-## `@alego/fs-local`
+## `@singula-ai/alego-fs-local`
 
 ```ts config-catalog
 /** Configuration for the local filesystem backend. */
@@ -676,9 +676,9 @@ export interface Config {
 
 来源：[`packages/fs/fs-local/src/index.ts:41`](../packages/fs/fs-local/src/index.ts)
 
-<a id="alegofs-sandbox"></a>
+<a id="singula-aialego-fs-sandbox"></a>
 
-## `@alego/fs-sandbox`
+## `@singula-ai/alego-fs-sandbox`
 
 需要：`sandboxPolicy`
 
@@ -692,13 +692,13 @@ export interface Config {
 export type Config = LocalConfig
 ```
 
-依赖：[`LocalConfig`](#alegofs-local)
+依赖：[`LocalConfig`](#singula-aialego-fs-local)
 
 来源：[`packages/fs/fs-sandbox/src/index.ts:49`](../packages/fs/fs-sandbox/src/index.ts)
 
-<a id="alegogoal"></a>
+<a id="singula-aialego-goal"></a>
 
-## `@alego/goal`
+## `@singula-ai/alego-goal`
 
 需要：`agents`
 
@@ -712,9 +712,9 @@ export interface Config {
 
 来源：[`packages/goal/goal/src/index.ts:116`](../packages/goal/goal/src/index.ts)
 
-<a id="alegoheadless"></a>
+<a id="singula-aialego-headless"></a>
 
-## `@alego/headless`
+## `@singula-ai/alego-headless`
 
 需要：`agentDefaultModel` · `agents` · `sessions`
 
@@ -728,9 +728,9 @@ export interface Config {
 
 来源：[`packages/bundle/headless/src/index.ts:31`](../packages/bundle/headless/src/index.ts)
 
-<a id="alegohooks-claude-code"></a>
+<a id="singula-aialego-hooks-claude-code"></a>
 
-## `@alego/hooks-claude-code`
+## `@singula-ai/alego-hooks-claude-code`
 
 需要：`shell`
 
@@ -766,9 +766,9 @@ export interface Config {
 
 来源：[`packages/hooks/hooks-claude-code/src/index.ts:45`](../packages/hooks/hooks-claude-code/src/index.ts)
 
-<a id="alegohooks-codex"></a>
+<a id="singula-aialego-hooks-codex"></a>
 
-## `@alego/hooks-codex`
+## `@singula-ai/alego-hooks-codex`
 
 需要：`shell`
 
@@ -793,9 +793,9 @@ export interface Config {
 
 来源：[`packages/hooks/hooks-codex/src/index.ts:44`](../packages/hooks/hooks-codex/src/index.ts)
 
-<a id="alegohost-apiproxy"></a>
+<a id="singula-aialego-host-apiproxy"></a>
 
-## `@alego/host-apiproxy`
+## `@singula-ai/alego-host-apiproxy`
 
 需要：`agentDefaultModel` · `agents` · `attachments` · `directoryPicker` · `llm` · `sessions` · `subagents` · `sessionQuery` · `tools` · `userQuestions` · `workspaceRegistry`
 
@@ -827,9 +827,9 @@ export interface Config {
 
 来源：[`packages/host/apiproxy/src/index.ts:41`](../packages/host/apiproxy/src/index.ts)
 
-<a id="alegohost-directory-picker-browse"></a>
+<a id="singula-aialego-host-directory-picker-browse"></a>
 
-## `@alego/host-directory-picker-browse`
+## `@singula-ai/alego-host-directory-picker-browse`
 
 ```ts config-catalog
 /** Validated plugin configuration. */
@@ -841,9 +841,9 @@ export interface Config {
 
 来源：[`packages/host/directory-picker-browse/src/index.ts:181`](../packages/host/directory-picker-browse/src/index.ts)
 
-<a id="alegohost-frontend-static"></a>
+<a id="singula-aialego-host-frontend-static"></a>
 
-## `@alego/host-frontend-static`
+## `@singula-ai/alego-host-frontend-static`
 
 需要：`webServer`
 
@@ -857,9 +857,9 @@ export interface Config {
 
 来源：[`packages/host/frontend-static/src/index.ts:28`](../packages/host/frontend-static/src/index.ts)
 
-<a id="alegohost-webserver"></a>
+<a id="singula-aialego-host-webserver"></a>
 
-## `@alego/host-webserver`
+## `@singula-ai/alego-host-webserver`
 
 ```ts config-catalog
 /** Gateway config: the listen address. */
@@ -873,9 +873,9 @@ export interface Config {
 
 来源：[`packages/host/webserver/src/index.ts:59`](../packages/host/webserver/src/index.ts)
 
-<a id="alegoinvariants"></a>
+<a id="singula-aialego-invariants"></a>
 
-## `@alego/invariants`
+## `@singula-ai/alego-invariants`
 
 ```ts config-catalog
 /** Runtime invariant selection configured on the service plugin. */
@@ -891,9 +891,9 @@ export interface Config {
 
 来源：[`packages/runtime-diagnostics/invariants/src/index.ts:15`](../packages/runtime-diagnostics/invariants/src/index.ts)
 
-<a id="alegojobs-local"></a>
+<a id="singula-aialego-jobs-local"></a>
 
-## `@alego/jobs-local`
+## `@singula-ai/alego-jobs-local`
 
 ```ts config-catalog
 /** Configuration for the process-local job registry. */
@@ -908,9 +908,9 @@ export interface Config {
 
 来源：[`packages/jobs/jobs-local/src/index.ts:31`](../packages/jobs/jobs-local/src/index.ts)
 
-<a id="alegollm-deepseek"></a>
+<a id="singula-aialego-llm-deepseek"></a>
 
-## `@alego/llm-deepseek`
+## `@singula-ai/alego-llm-deepseek`
 
 需要：`llm`
 
@@ -991,9 +991,9 @@ export interface DeepSeekCatalogModel {
 
 来源：[`packages/llm/llm-deepseek/src/index.ts:106`](../packages/llm/llm-deepseek/src/index.ts)
 
-<a id="alegollm-pi-ai"></a>
+<a id="singula-aialego-llm-pi-ai"></a>
 
-## `@alego/llm-pi-ai`
+## `@singula-ai/alego-llm-pi-ai`
 
 需要：`llm`
 
@@ -1245,9 +1245,9 @@ export type PiAiThinkingFormat = NonNullable<OpenAICompletionsCompat['thinkingFo
 
 来源：[`packages/llm/llm-pi-ai/src/config.ts:213`](../packages/llm/llm-pi-ai/src/config.ts)
 
-<a id="alegollm-replay"></a>
+<a id="singula-aialego-llm-replay"></a>
 
-## `@alego/llm-replay`
+## `@singula-ai/alego-llm-replay`
 
 需要：`llm`
 
@@ -1313,9 +1313,9 @@ export interface ReplayModelConfig {
 
 来源：[`packages/test-support/llm-replay/src/index.ts:809`](../packages/test-support/llm-replay/src/index.ts)
 
-<a id="alegollm-retry"></a>
+<a id="singula-aialego-llm-retry"></a>
 
-## `@alego/llm-retry`
+## `@singula-ai/alego-llm-retry`
 
 需要：`agents`
 
@@ -1326,9 +1326,9 @@ export type Config = Readonly<Record<string, never>>
 
 来源：[`packages/llm/llm-retry/src/index.ts:24`](../packages/llm/llm-retry/src/index.ts)
 
-<a id="alegolsp-stdio"></a>
+<a id="singula-aialego-lsp-stdio"></a>
 
-## `@alego/lsp-stdio`
+## `@singula-ai/alego-lsp-stdio`
 
 需要：`fs` · `lsp` · `subprocess`
 
@@ -1368,9 +1368,9 @@ export interface LspLocalServerConfig {
 
 来源：[`packages/lsp/lsp-stdio/src/index.ts:82`](../packages/lsp/lsp-stdio/src/index.ts)
 
-<a id="alegomcp-client"></a>
+<a id="singula-aialego-mcp-client"></a>
 
-## `@alego/mcp-client`
+## `@singula-ai/alego-mcp-client`
 
 需要：`tools`
 
@@ -1441,9 +1441,9 @@ export interface ReconnectConfig {
 
 来源：[`packages/mcp/mcp-client/src/index.ts:98`](../packages/mcp/mcp-client/src/index.ts)
 
-<a id="alegomessage-feedback"></a>
+<a id="singula-aialego-message-feedback"></a>
 
-## `@alego/message-feedback`
+## `@singula-ai/alego-message-feedback`
 
 需要：`storageDomain` · `sessionPersistence` · `sessions`
 
@@ -1457,9 +1457,9 @@ export interface Config {
 
 来源：[`packages/feedback/message-feedback/src/index.ts:49`](../packages/feedback/message-feedback/src/index.ts)
 
-<a id="alegopermission-presets"></a>
+<a id="singula-aialego-permission-presets"></a>
 
-## `@alego/permission-presets`
+## `@singula-ai/alego-permission-presets`
 
 需要：`shell` · `approval` · `sessions`
 
@@ -1496,9 +1496,9 @@ export interface PresetSpec {
 
 来源：[`packages/interaction/permission-presets/src/index.ts:156`](../packages/interaction/permission-presets/src/index.ts)
 
-<a id="alegopersona"></a>
+<a id="singula-aialego-persona"></a>
 
-## `@alego/persona`
+## `@singula-ai/alego-persona`
 
 需要：`systemPrompt`
 
@@ -1520,9 +1520,9 @@ export interface Config {
 
 来源：[`packages/preset/persona/src/index.ts:34`](../packages/preset/persona/src/index.ts)
 
-<a id="alegoplan-mode"></a>
+<a id="singula-aialego-plan-mode"></a>
 
-## `@alego/plan-mode`
+## `@singula-ai/alego-plan-mode`
 
 需要：`tools` · `systemPrompt`
 
@@ -1536,9 +1536,9 @@ export interface PlanModeConfig {
 
 来源：[`packages/plan/plan-mode/src/index.ts:70`](../packages/plan/plan-mode/src/index.ts)
 
-<a id="alegopwsh-local"></a>
+<a id="singula-aialego-pwsh-local"></a>
 
-## `@alego/pwsh-local`
+## `@singula-ai/alego-pwsh-local`
 
 需要：`subprocess`
 
@@ -1569,9 +1569,9 @@ export interface Config {
 
 来源：[`packages/shell/pwsh-local/src/index.ts:58`](../packages/shell/pwsh-local/src/index.ts)
 
-<a id="alegopwsh-sandbox"></a>
+<a id="singula-aialego-pwsh-sandbox"></a>
 
-## `@alego/pwsh-sandbox`
+## `@singula-ai/alego-pwsh-sandbox`
 
 需要：`subprocess` · `sandbox` · `sandboxPolicy`
 
@@ -1579,7 +1579,7 @@ export interface Config {
 /**
  * Plugin config: the local executor's knobs, verbatim. The sandbox policy —
  * the default mode and fallback `workspace-write` root — is NOT here: it lives
- * on `ctx.sandboxPolicy` (`@alego/sandbox-policy`), which resolves
+ * on `ctx.sandboxPolicy` (`@singula-ai/alego-sandbox-policy`), which resolves
  * each calling session's mode and cwd for every enforcing capability. The
  * runner choice is likewise the `ctx.sandbox` provider's config, not this
  * executor's.
@@ -1587,13 +1587,13 @@ export interface Config {
 export type Config = LocalConfig
 ```
 
-依赖：[`LocalConfig`](#alegopwsh-local)
+依赖：[`LocalConfig`](#singula-aialego-pwsh-local)
 
 来源：[`packages/shell/pwsh-sandbox/src/index.ts:40`](../packages/shell/pwsh-sandbox/src/index.ts)
 
-<a id="alegorepeat-tool-reminder"></a>
+<a id="singula-aialego-repeat-tool-reminder"></a>
 
-## `@alego/repeat-tool-reminder`
+## `@singula-ai/alego-repeat-tool-reminder`
 
 ```ts config-catalog
 /**
@@ -1625,9 +1625,9 @@ export interface Config {
 
 来源：[`packages/guard/repeat-tool-reminder/src/index.ts:28`](../packages/guard/repeat-tool-reminder/src/index.ts)
 
-<a id="alegosandbox-local"></a>
+<a id="singula-aialego-sandbox-local"></a>
 
-## `@alego/sandbox-local`
+## `@singula-ai/alego-sandbox-local`
 
 ```ts config-catalog
 /** Plugin config. All optional — `static Config` supplies the defaults. */
@@ -1657,9 +1657,9 @@ export interface Config {
 
 来源：[`packages/sandbox/sandbox-local/src/index.ts:44`](../packages/sandbox/sandbox-local/src/index.ts)
 
-<a id="alegosandbox-policy"></a>
+<a id="singula-aialego-sandbox-policy"></a>
 
-## `@alego/sandbox-policy`
+## `@singula-ai/alego-sandbox-policy`
 
 ```ts config-catalog
 /**
@@ -1684,9 +1684,9 @@ export interface Config {
 
 来源：[`packages/sandbox/sandbox-policy/src/index.ts:67`](../packages/sandbox/sandbox-policy/src/index.ts)
 
-<a id="alegosdk-jsonrpc-server"></a>
+<a id="singula-aialego-sdk-jsonrpc-server"></a>
 
-## `@alego/sdk-jsonrpc-server`
+## `@singula-ai/alego-sdk-jsonrpc-server`
 
 需要：`agents`
 
@@ -1708,9 +1708,9 @@ export interface JsonRpcConfig {
 
 来源：[`packages/sdk/server/src/index.ts:29`](../packages/sdk/server/src/index.ts)
 
-<a id="alegosession-persistence-jsonl"></a>
+<a id="singula-aialego-session-persistence-jsonl"></a>
 
-## `@alego/session-persistence-jsonl`
+## `@singula-ai/alego-session-persistence-jsonl`
 
 需要：`sessions`
 
@@ -1747,9 +1747,9 @@ export type JsonlCompression = 'zstd' | 'none'
 
 来源：[`packages/session/session-persistence-jsonl/src/index.ts:60`](../packages/session/session-persistence-jsonl/src/index.ts)
 
-<a id="alegosession-persistence-sqlite"></a>
+<a id="singula-aialego-session-persistence-sqlite"></a>
 
-## `@alego/session-persistence-sqlite`
+## `@singula-ai/alego-session-persistence-sqlite`
 
 需要：`sessions`
 
@@ -1774,9 +1774,9 @@ export type JournalMode = 'wal' | 'delete' | 'truncate' | 'persist'
 
 来源：[`packages/session/session-persistence-sqlite/src/index.ts:36`](../packages/session/session-persistence-sqlite/src/index.ts)
 
-<a id="alegosession-projection-cache"></a>
+<a id="singula-aialego-session-projection-cache"></a>
 
-## `@alego/session-projection-cache`
+## `@singula-ai/alego-session-projection-cache`
 
 需要：`storageDomain` · `sessionProjections` · `sessionPersistence` · `sessions`
 
@@ -1797,9 +1797,9 @@ export interface Config {
 
 来源：[`packages/session/session-projection-cache/src/index.ts:42`](../packages/session/session-projection-cache/src/index.ts)
 
-<a id="alegosession-query-sqlite"></a>
+<a id="singula-aialego-session-query-sqlite"></a>
 
-## `@alego/session-query-sqlite`
+## `@singula-ai/alego-session-query-sqlite`
 
 需要：`sessions`
 
@@ -1843,9 +1843,9 @@ export type JournalMode = 'wal' | 'delete' | 'truncate' | 'persist'
 
 来源：[`packages/session-query/session-query-sqlite/src/index.ts:89`](../packages/session-query/session-query-sqlite/src/index.ts)
 
-<a id="alegosession-reference"></a>
+<a id="singula-aialego-session-reference"></a>
 
-## `@alego/session-reference`
+## `@singula-ai/alego-session-reference`
 
 需要：`sessionQuery`
 
@@ -1863,9 +1863,9 @@ export interface Config {
 
 来源：[`packages/context/session-reference/src/config.ts:11`](../packages/context/session-reference/src/config.ts)
 
-<a id="alegosession-telemetry-otel"></a>
+<a id="singula-aialego-session-telemetry-otel"></a>
 
-## `@alego/session-telemetry-otel`
+## `@singula-ai/alego-session-telemetry-otel`
 
 需要：`sessions`
 
@@ -1909,9 +1909,9 @@ export enum SessionTelemetryMode {
 
 来源：[`packages/session/session-telemetry-otel/src/index.ts:91`](../packages/session/session-telemetry-otel/src/index.ts)
 
-<a id="alegosession-title"></a>
+<a id="singula-aialego-session-title"></a>
 
-## `@alego/session-title`
+## `@singula-ai/alego-session-title`
 
 需要：`sessions`
 
@@ -1929,9 +1929,9 @@ export interface Config {
 
 来源：[`packages/session/session-title/src/index.ts:79`](../packages/session/session-title/src/index.ts)
 
-<a id="alegosession-title-all-prompts-llm"></a>
+<a id="singula-aialego-session-title-all-prompts-llm"></a>
 
-## `@alego/session-title-all-prompts-llm`
+## `@singula-ai/alego-session-title-all-prompts-llm`
 
 需要：`sessionTitle` · `llm` · `sessions`
 
@@ -1944,9 +1944,9 @@ export type Config = SessionTitleLlmConfig
 
 来源：[`packages/session/session-title-all-prompts-llm/src/index.ts:15`](../packages/session/session-title-all-prompts-llm/src/index.ts)
 
-<a id="alegosession-title-first-prompt-llm"></a>
+<a id="singula-aialego-session-title-first-prompt-llm"></a>
 
-## `@alego/session-title-first-prompt-llm`
+## `@singula-ai/alego-session-title-first-prompt-llm`
 
 需要：`sessionTitle` · `llm` · `sessions`
 
@@ -1959,9 +1959,9 @@ export type Config = SessionTitleLlmConfig
 
 来源：[`packages/session/session-title-first-prompt-llm/src/index.ts:15`](../packages/session/session-title-first-prompt-llm/src/index.ts)
 
-<a id="alegosettings-file"></a>
+<a id="singula-aialego-settings-file"></a>
 
-## `@alego/settings-file`
+## `@singula-ai/alego-settings-file`
 
 ```ts config-catalog
 /** Plugin config: file location and hot-reload behavior. */
@@ -1979,9 +1979,9 @@ export interface Config {
 
 来源：[`packages/settings/settings-file/src/index.ts:21`](../packages/settings/settings-file/src/index.ts)
 
-<a id="alegoshell-env"></a>
+<a id="singula-aialego-shell-env"></a>
 
-## `@alego/shell-env`
+## `@singula-ai/alego-shell-env`
 
 ```ts config-catalog
 /** Plugin config (all optional — the built-in facts resolve without defaults). */
@@ -1993,9 +1993,9 @@ export interface Config {
 
 来源：[`packages/shell/shell-env/src/index.ts:29`](../packages/shell/shell-env/src/index.ts)
 
-<a id="alegoskill"></a>
+<a id="singula-aialego-skill"></a>
 
-## `@alego/skill`
+## `@singula-ai/alego-skill`
 
 ```ts config-catalog
 /** Skill registry configuration. */
@@ -2007,9 +2007,9 @@ export interface Config {
 
 来源：[`packages/skill/skill/src/index.ts:279`](../packages/skill/skill/src/index.ts)
 
-<a id="alegoskill-filesystem"></a>
+<a id="singula-aialego-skill-filesystem"></a>
 
-## `@alego/skill-filesystem`
+## `@singula-ai/alego-skill-filesystem`
 
 需要：`skills`
 
@@ -2045,9 +2045,9 @@ export interface Config {
 
 来源：[`packages/skill/skill-filesystem/src/index.ts:49`](../packages/skill/skill-filesystem/src/index.ts)
 
-<a id="alegospill-local"></a>
+<a id="singula-aialego-spill-local"></a>
 
-## `@alego/spill-local`
+## `@singula-ai/alego-spill-local`
 
 ```ts config-catalog
 /** Plugin config (all optional — `static Config` supplies the defaults). */
@@ -2063,9 +2063,9 @@ export interface Config {
 
 来源：[`packages/spill/spill-local/src/index.ts:22`](../packages/spill/spill-local/src/index.ts)
 
-<a id="alegospill-policy"></a>
+<a id="singula-aialego-spill-policy"></a>
 
-## `@alego/spill-policy`
+## `@singula-ai/alego-spill-policy`
 
 需要：`tools`
 
@@ -2083,9 +2083,9 @@ export interface Config {
 
 来源：[`packages/spill/spill-policy/src/index.ts:60`](../packages/spill/spill-policy/src/index.ts)
 
-<a id="alegostorage-domain"></a>
+<a id="singula-aialego-storage-domain"></a>
 
-## `@alego/storage-domain`
+## `@singula-ai/alego-storage-domain`
 
 需要：`storage`
 
@@ -2106,9 +2106,9 @@ export interface Config {
 
 来源：[`packages/storage/storage-domain/src/index.ts:52`](../packages/storage/storage-domain/src/index.ts)
 
-<a id="alegostorage-json"></a>
+<a id="singula-aialego-storage-json"></a>
 
-## `@alego/storage-json`
+## `@singula-ai/alego-storage-json`
 
 需要：`storage`
 
@@ -2127,9 +2127,9 @@ export interface Config {
 
 来源：[`packages/storage/storage-json/src/index.ts:27`](../packages/storage/storage-json/src/index.ts)
 
-<a id="alegostorage-sqlite"></a>
+<a id="singula-aialego-storage-sqlite"></a>
 
-## `@alego/storage-sqlite`
+## `@singula-ai/alego-storage-sqlite`
 
 需要：`storage`
 
@@ -2167,9 +2167,9 @@ export type JournalMode = 'wal' | 'delete' | 'truncate' | 'persist'
 
 来源：[`packages/storage/storage-sqlite/src/index.ts:24`](../packages/storage/storage-sqlite/src/index.ts)
 
-<a id="alegosubagent-acp"></a>
+<a id="singula-aialego-subagent-acp"></a>
 
-## `@alego/subagent-acp`
+## `@singula-ai/alego-subagent-acp`
 
 需要：`subagents` · `subprocess`
 
@@ -2220,9 +2220,9 @@ export type PermissionPolicy = 'allow' | 'reject'
 
 来源：[`packages/subagent/subagent-acp/src/index.ts:27`](../packages/subagent/subagent-acp/src/index.ts)
 
-<a id="alegosubagent-claude-code"></a>
+<a id="singula-aialego-subagent-claude-code"></a>
 
-## `@alego/subagent-alego-sdk`
+## `@singula-ai/alego-subagent-alego-sdk`
 
 需要：`subagents`
 
@@ -2273,9 +2273,9 @@ export interface Config {
 
 来源：[`packages/subagent/subagent-alego-sdk/src/index.ts:29`](../packages/subagent/subagent-alego-sdk/src/index.ts)
 
-<a id="alegosubagent-fork-in-process"></a>
+<a id="singula-aialego-subagent-fork-in-process"></a>
 
-## `@alego/subagent-claude-code`
+## `@singula-ai/alego-subagent-claude-code`
 
 需要：`subagents` · `subprocess`
 
@@ -2306,9 +2306,9 @@ export type ClaudeCodePermissionMode = typeof CLAUDE_CODE_PERMISSION_MODES[numbe
 
 来源：[`packages/subagent/subagent-claude-code/src/index.ts:38`](../packages/subagent/subagent-claude-code/src/index.ts)
 
-<a id="alegosubagent-codex"></a>
+<a id="singula-aialego-subagent-codex"></a>
 
-## `@alego/subagent-codex`
+## `@singula-ai/alego-subagent-codex`
 
 需要：`subagents` · `subprocess`
 
@@ -2337,9 +2337,9 @@ export type CodexPermissionMode =
 
 来源：[`packages/subagent/subagent-codex/src/index.ts:36`](../packages/subagent/subagent-codex/src/index.ts)
 
-<a id="alegosubagent-alego-sdk"></a>
+<a id="singula-aialego-subagent-alego-sdk"></a>
 
-## `@alego/subagent-fork-in-process`
+## `@singula-ai/alego-subagent-fork-in-process`
 
 需要：`subagents`
 
@@ -2353,9 +2353,9 @@ export interface Config {
 
 来源：[`packages/subagent/subagent-fork-in-process/src/index.ts:31`](../packages/subagent/subagent-fork-in-process/src/index.ts)
 
-<a id="alegosubagent-spawn-in-process"></a>
+<a id="singula-aialego-subagent-spawn-in-process"></a>
 
-## `@alego/subagent-spawn-in-process`
+## `@singula-ai/alego-subagent-spawn-in-process`
 
 需要：`subagents`
 
@@ -2369,9 +2369,9 @@ export interface Config {
 
 来源：[`packages/subagent/subagent-spawn-in-process/src/index.ts:25`](../packages/subagent/subagent-spawn-in-process/src/index.ts)
 
-<a id="alegosubprocess-e2b"></a>
+<a id="singula-aialego-subprocess-e2b"></a>
 
-## `@alego/subprocess-e2b`
+## `@singula-ai/alego-subprocess-e2b`
 
 需要：`e2b`
 
@@ -2385,9 +2385,9 @@ export interface Config {
 
 来源：[`packages/e2b/subprocess-e2b/src/index.ts:25`](../packages/e2b/subprocess-e2b/src/index.ts)
 
-<a id="alegosystem-prompt"></a>
+<a id="singula-aialego-system-prompt"></a>
 
-## `@alego/system-prompt`
+## `@singula-ai/alego-system-prompt`
 
 ```ts config-catalog
 /** Plugin config: the deployment-authored fragment of the system prompt (see {@link Config.persona} for its contract). */
@@ -2412,9 +2412,9 @@ export interface Config {
 
 来源：[`packages/core/system-prompt/src/index.ts:186`](../packages/core/system-prompt/src/index.ts)
 
-<a id="alegoterminal-bash"></a>
+<a id="singula-aialego-terminal-bash"></a>
 
-## `@alego/terminal-bash`
+## `@singula-ai/alego-terminal-bash`
 
 需要：`terminals` · `sandboxPolicy` · `subprocess`
 
@@ -2462,9 +2462,9 @@ export type ShellDialect = 'bash' | 'pwsh'
 
 来源：[`packages/terminal/terminal-bash/src/config.ts:10`](../packages/terminal/terminal-bash/src/config.ts)
 
-<a id="alegotime-context"></a>
+<a id="singula-aialego-time-context"></a>
 
-## `@alego/time-context`
+## `@singula-ai/alego-time-context`
 
 需要：`agents`
 
@@ -2480,9 +2480,9 @@ export interface Config {
 
 来源：[`packages/context/time-context/src/index.ts:27`](../packages/context/time-context/src/index.ts)
 
-<a id="alegotmux-context"></a>
+<a id="singula-aialego-tmux-context"></a>
 
-## `@alego/tmux-context`
+## `@singula-ai/alego-tmux-context`
 
 需要：`agents`
 
@@ -2496,9 +2496,9 @@ export interface Config {
 
 来源：[`packages/context/tmux-context/src/index.ts:34`](../packages/context/tmux-context/src/index.ts)
 
-<a id="alegotoken-meter"></a>
+<a id="singula-aialego-token-meter"></a>
 
-## `@alego/token-meter`
+## `@singula-ai/alego-token-meter`
 
 ```ts config-catalog
 /** Token-meter plugin configuration; the fixed estimator has no settings. */
@@ -2507,9 +2507,9 @@ export type TokenMeterConfig = Record<string, never>
 
 来源：[`packages/llm/token-meter/src/types.ts:12`](../packages/llm/token-meter/src/types.ts)
 
-<a id="alegotool-bash"></a>
+<a id="singula-aialego-tool-bash"></a>
 
-## `@alego/tool-bash`
+## `@singula-ai/alego-tool-bash`
 
 需要：`tools` · `shell` · `systemPrompt` · `shellEnv`
 
@@ -2523,9 +2523,9 @@ export interface Config {
 
 来源：[`packages/shell/tool-bash/src/index.ts:34`](../packages/shell/tool-bash/src/index.ts)
 
-<a id="alegotool-bash-persistent"></a>
+<a id="singula-aialego-tool-bash-persistent"></a>
 
-## `@alego/tool-bash-persistent`
+## `@singula-ai/alego-tool-bash-persistent`
 
 需要：`tools` · `terminals`
 
@@ -2545,9 +2545,9 @@ export interface Config {
 
 来源：[`packages/shell/tool-bash-persistent/src/index.ts:432`](../packages/shell/tool-bash-persistent/src/index.ts)
 
-<a id="alegotool-fs"></a>
+<a id="singula-aialego-tool-fs"></a>
 
-## `@alego/tool-fs`
+## `@singula-ai/alego-tool-fs`
 
 需要：`tools` · `fs` · `systemPrompt`
 
@@ -2567,9 +2567,9 @@ export interface Config {
 
 来源：[`packages/fs/tool-fs/src/index.ts:25`](../packages/fs/tool-fs/src/index.ts)
 
-<a id="alegotool-fs-search"></a>
+<a id="singula-aialego-tool-fs-search"></a>
 
-## `@alego/tool-fs-search`
+## `@singula-ai/alego-tool-fs-search`
 
 需要：`tools` · `systemPrompt` · `subprocess`
 
@@ -2594,7 +2594,7 @@ export interface Config {
   stderrMaxBytes?: number
   /**
    * Cooperative tool-call timeout budget (ms) on both tools, enforced by
-   * `@alego/tool-call-timeout-policy` through `exec.signal`.
+   * `@singula-ai/alego-tool-call-timeout-policy` through `exec.signal`.
    */
   timeoutMs?: number
 }
@@ -2602,9 +2602,9 @@ export interface Config {
 
 来源：[`packages/fs/tool-fs-search/src/index.ts:73`](../packages/fs/tool-fs-search/src/index.ts)
 
-<a id="alegotool-goal"></a>
+<a id="singula-aialego-tool-goal"></a>
 
-## `@alego/tool-goal`
+## `@singula-ai/alego-tool-goal`
 
 需要：`agents` · `goals` · `tools` · `systemPrompt`
 
@@ -2618,9 +2618,9 @@ export interface Config {
 
 来源：[`packages/goal/tool-goal/src/index.ts:26`](../packages/goal/tool-goal/src/index.ts)
 
-<a id="alegotool-jobs"></a>
+<a id="singula-aialego-tool-jobs"></a>
 
-## `@alego/tool-jobs`
+## `@singula-ai/alego-tool-jobs`
 
 需要：`tools` · `jobs` · `systemPrompt`
 
@@ -2652,9 +2652,9 @@ export type CompletionDelivery = 'quiet' | 'wakeup'
 
 来源：[`packages/jobs/tool-jobs/src/index.ts:32`](../packages/jobs/tool-jobs/src/index.ts)
 
-<a id="alegotool-lsp"></a>
+<a id="singula-aialego-tool-lsp"></a>
 
-## `@alego/tool-lsp`
+## `@singula-ai/alego-tool-lsp`
 
 需要：`tools` · `lsp` · `systemPrompt`
 
@@ -2672,9 +2672,9 @@ export interface Config {
 
 来源：[`packages/lsp/tool-lsp/src/index.ts:58`](../packages/lsp/tool-lsp/src/index.ts)
 
-<a id="alegotool-pwsh"></a>
+<a id="singula-aialego-tool-pwsh"></a>
 
-## `@alego/tool-pwsh`
+## `@singula-ai/alego-tool-pwsh`
 
 需要：`tools` · `shell` · `systemPrompt` · `shellEnv`
 
@@ -2688,9 +2688,9 @@ export interface Config {
 
 来源：[`packages/shell/tool-pwsh/src/index.ts:52`](../packages/shell/tool-pwsh/src/index.ts)
 
-<a id="alegotool-pwsh-persistent"></a>
+<a id="singula-aialego-tool-pwsh-persistent"></a>
 
-## `@alego/tool-pwsh-persistent`
+## `@singula-ai/alego-tool-pwsh-persistent`
 
 需要：`tools` · `terminals`
 
@@ -2710,9 +2710,9 @@ export interface Config {
 
 来源：[`packages/shell/tool-pwsh-persistent/src/index.ts:472`](../packages/shell/tool-pwsh-persistent/src/index.ts)
 
-<a id="alegotool-ralph"></a>
+<a id="singula-aialego-tool-ralph"></a>
 
-## `@alego/tool-ralph`
+## `@singula-ai/alego-tool-ralph`
 
 需要：`tools` · `workflowEngine` · `subagents` · `systemPrompt`
 
@@ -2732,9 +2732,9 @@ export interface Config {
 
 来源：[`packages/workflow/tool-ralph/src/index.ts:23`](../packages/workflow/tool-ralph/src/index.ts)
 
-<a id="alegotool-session-query"></a>
+<a id="singula-aialego-tool-session-query"></a>
 
-## `@alego/tool-session-query`
+## `@singula-ai/alego-tool-session-query`
 
 需要：`tools` · `systemPrompt` · `sessionQuery`
 
@@ -2750,9 +2750,9 @@ export interface Config {
 
 来源：[`packages/session-query/tool-session-query/src/index.ts:29`](../packages/session-query/tool-session-query/src/index.ts)
 
-<a id="alegotool-skill"></a>
+<a id="singula-aialego-tool-skill"></a>
 
-## `@alego/tool-skill`
+## `@singula-ai/alego-tool-skill`
 
 需要：`agents` · `tools` · `skills`
 
@@ -2766,9 +2766,9 @@ export interface Config {
 
 来源：[`packages/skill/tool-skill/src/index.ts:61`](../packages/skill/tool-skill/src/index.ts)
 
-<a id="alegotool-str-replace-editor"></a>
+<a id="singula-aialego-tool-str-replace-editor"></a>
 
-## `@alego/tool-str-replace-editor`
+## `@singula-ai/alego-tool-str-replace-editor`
 
 需要：`tools` · `fs`
 
@@ -2784,9 +2784,9 @@ export interface Config {
 
 来源：[`packages/fs/tool-str-replace-editor/src/index.ts:497`](../packages/fs/tool-str-replace-editor/src/index.ts)
 
-<a id="alegotool-subagent"></a>
+<a id="singula-aialego-tool-subagent"></a>
 
-## `@alego/tool-subagent`
+## `@singula-ai/alego-tool-subagent`
 
 需要：`tools` · `subagents` · `systemPrompt`
 
@@ -2849,9 +2849,9 @@ export interface Config {
 
 来源：[`packages/subagent/tool-subagent/src/index.ts:29`](../packages/subagent/tool-subagent/src/index.ts)
 
-<a id="alegotool-subagent-report"></a>
+<a id="singula-aialego-tool-subagent-report"></a>
 
-## `@alego/tool-subagent-report`
+## `@singula-ai/alego-tool-subagent-report`
 
 需要：`subagents` · `tools` · `systemPrompt`
 
@@ -2871,9 +2871,9 @@ export interface Config {
 
 来源：[`packages/subagent/tool-subagent-report/src/index.ts:27`](../packages/subagent/tool-subagent-report/src/index.ts)
 
-<a id="alegotool-terminal"></a>
+<a id="singula-aialego-tool-terminal"></a>
 
-## `@alego/tool-terminal`
+## `@singula-ai/alego-tool-terminal`
 
 需要：`terminals` · `tools` · `systemPrompt`
 
@@ -2889,9 +2889,9 @@ export interface Config {
 
 来源：[`packages/terminal/tool-terminal/src/index.ts:35`](../packages/terminal/tool-terminal/src/index.ts)
 
-<a id="alegotool-todo"></a>
+<a id="singula-aialego-tool-todo"></a>
 
-## `@alego/tool-todo`
+## `@singula-ai/alego-tool-todo`
 
 需要：`tools`
 
@@ -2911,9 +2911,9 @@ export interface Config {
 
 来源：[`packages/todo/tool-todo/src/index.ts:29`](../packages/todo/tool-todo/src/index.ts)
 
-<a id="alegotool-web"></a>
+<a id="singula-aialego-tool-web"></a>
 
-## `@alego/tool-web`
+## `@singula-ai/alego-tool-web`
 
 需要：`tools` · `web` · `systemPrompt`
 
@@ -2939,9 +2939,9 @@ export interface Config {
 
 来源：[`packages/web/tool-web/src/index.ts:37`](../packages/web/tool-web/src/index.ts)
 
-<a id="alegotool-workflow"></a>
+<a id="singula-aialego-tool-workflow"></a>
 
-## `@alego/tool-workflow`
+## `@singula-ai/alego-tool-workflow`
 
 需要：`tools` · `workflowEngine` · `systemPrompt`
 
@@ -2957,9 +2957,9 @@ export interface Config {
 
 来源：[`packages/workflow/tool-workflow/src/index.ts:33`](../packages/workflow/tool-workflow/src/index.ts)
 
-<a id="alegotools"></a>
+<a id="singula-aialego-tools"></a>
 
-## `@alego/tools`
+## `@singula-ai/alego-tools`
 
 需要：`systemPrompt`
 
@@ -2993,9 +2993,9 @@ export type ToolPresentationMode = 'native' | 'code' | 'both'
 
 来源：[`packages/core/tools/src/index.ts:654`](../packages/core/tools/src/index.ts)
 
-<a id="alegotypert-loader"></a>
+<a id="singula-aialego-typert-loader"></a>
 
-## `@alego/typert-loader`
+## `@singula-ai/alego-typert-loader`
 
 需要：`typert` · `loader`
 
@@ -3009,9 +3009,9 @@ export interface Config {
 
 来源：[`packages/typert/loader/src/index.ts:47`](../packages/typert/loader/src/index.ts)
 
-<a id="alegouser-approval"></a>
+<a id="singula-aialego-user-approval"></a>
 
-## `@alego/user-approval`
+## `@singula-ai/alego-user-approval`
 
 ```ts config-catalog
 /** Plugin config. All optional — `static Config` supplies the defaults. */
@@ -3040,9 +3040,9 @@ export type ApprovalPolicy = 'ask' | 'never'
 
 来源：[`packages/interaction/user-approval/src/index.ts:177`](../packages/interaction/user-approval/src/index.ts)
 
-<a id="alegoweb"></a>
+<a id="singula-aialego-web"></a>
 
-## `@alego/web`
+## `@singula-ai/alego-web`
 
 ```ts config-catalog
 /**
@@ -3061,9 +3061,9 @@ export interface WebRuntimeConfig {
 
 来源：[`packages/web/web/src/index.ts:55`](../packages/web/web/src/index.ts)
 
-<a id="alegoweb-app"></a>
+<a id="singula-aialego-web-app"></a>
 
-## `@alego/web-app`
+## `@singula-ai/alego-web-app`
 
 需要：`webServer`
 
@@ -3088,9 +3088,9 @@ export interface Config {
 
 来源：[`packages/bundle/web-app/src/index.ts:42`](../packages/bundle/web-app/src/index.ts)
 
-<a id="alegoweb-fetch-http"></a>
+<a id="singula-aialego-web-fetch-http"></a>
 
-## `@alego/web-fetch-http`
+## `@singula-ai/alego-web-fetch-http`
 
 需要：`web`
 
@@ -3114,9 +3114,9 @@ export interface Config {
 
 来源：[`packages/web/web-fetch-http/src/index.ts:34`](../packages/web/web-fetch-http/src/index.ts)
 
-<a id="alegoweb-search-deepseek"></a>
+<a id="singula-aialego-web-search-deepseek"></a>
 
-## `@alego/web-search-deepseek`
+## `@singula-ai/alego-web-search-deepseek`
 
 需要：`web`
 
@@ -3142,9 +3142,9 @@ export interface Config {
 
 来源：[`packages/web/web-search-deepseek/src/index.ts:46`](../packages/web/web-search-deepseek/src/index.ts)
 
-<a id="alegoweb-search-exa"></a>
+<a id="singula-aialego-web-search-exa"></a>
 
-## `@alego/web-search-exa`
+## `@singula-ai/alego-web-search-exa`
 
 需要：`web`
 
@@ -3166,9 +3166,9 @@ export interface Config {
 
 来源：[`packages/web/web-search-exa/src/index.ts:38`](../packages/web/web-search-exa/src/index.ts)
 
-<a id="alegoweb-search-perplexity"></a>
+<a id="singula-aialego-web-search-perplexity"></a>
 
-## `@alego/web-search-perplexity`
+## `@singula-ai/alego-web-search-perplexity`
 
 需要：`web`
 
@@ -3190,9 +3190,9 @@ export interface Config {
 
 来源：[`packages/web/web-search-perplexity/src/index.ts:32`](../packages/web/web-search-perplexity/src/index.ts)
 
-<a id="alegoworkflow-worker-thread"></a>
+<a id="singula-aialego-workflow-worker-thread"></a>
 
-## `@alego/workflow-worker-thread`
+## `@singula-ai/alego-workflow-worker-thread`
 
 需要：`subagents`
 
@@ -3224,130 +3224,130 @@ export interface Config {
 
 这些插件通过 `cordis.yml` 中不含 `config:` 块的条目加载；它们未声明任何配置接口。
 
-- `@alego/agent`（[`packages/core/agent/src/index.ts`](../packages/core/agent/src/index.ts)）
-- `@alego/api-gateway` — 需要 `typert`（[`packages/api/gateway/src/index.ts`](../packages/api/gateway/src/index.ts)）
-- `@alego/api-remotes`（[`packages/api/remotes/src/index.ts`](../packages/api/remotes/src/index.ts)）
-- `@alego/authorization` — 需要 `credentials`（[`packages/credentials/authorization/src/index.ts`](../packages/credentials/authorization/src/index.ts)）
-- `@alego/client-locale`（[`packages/client/locale/src/index.ts`](../packages/client/locale/src/index.ts)）
-- `@alego/client-modules` — 需要 `webServer` · `loader`（[`packages/client/modules/src/index.ts`](../packages/client/modules/src/index.ts)）
-- `@alego/client-runtime`（[`packages/client/runtime/src/index.ts`](../packages/client/runtime/src/index.ts)）
-- `@alego/client-ui-agent-preset`（[`packages/client/ui-agent-preset/src/index.ts`](../packages/client/ui-agent-preset/src/index.ts)）
-- `@alego/client-ui-attachment`（[`packages/client/ui-attachment/src/index.ts`](../packages/client/ui-attachment/src/index.ts)）
-- `@alego/client-ui-brand-official`（[`packages/client/ui-brand-official/src/index.ts`](../packages/client/ui-brand-official/src/index.ts)）
-- `@alego/client-ui-commands`（[`packages/client/ui-commands/src/index.ts`](../packages/client/ui-commands/src/index.ts)）
-- `@alego/client-ui-conversation`（[`packages/client/ui-conversation/src/index.ts`](../packages/client/ui-conversation/src/index.ts)）
-- `@alego/client-ui-cordis`（[`packages/extensions/ui-cordis/src/index.ts`](../packages/extensions/ui-cordis/src/index.ts)）
-- `@alego/client-ui-deliverables` — 需要 `systemPrompt`（[`packages/client/ui-deliverables/src/index.ts`](../packages/client/ui-deliverables/src/index.ts)）
-- `@alego/client-ui-directory-picker-browse`（[`packages/client/ui-directory-picker-browse/src/index.ts`](../packages/client/ui-directory-picker-browse/src/index.ts)）
-- `@alego/client-ui-directory-picker-native`（[`packages/client/ui-directory-picker-native/src/index.ts`](../packages/client/ui-directory-picker-native/src/index.ts)）
-- `@alego/client-ui-goal`（[`packages/client/ui-goal/src/index.ts`](../packages/client/ui-goal/src/index.ts)）
-- `@alego/client-ui-input-trigger`（[`packages/client/ui-input-trigger/src/index.ts`](../packages/client/ui-input-trigger/src/index.ts)）
-- `@alego/client-ui-jobs`（[`packages/client/ui-jobs/src/index.ts`](../packages/client/ui-jobs/src/index.ts)）
-- `@alego/client-ui-layout`（[`packages/client/ui-layout/src/index.ts`](../packages/client/ui-layout/src/index.ts)）
-- `@alego/client-ui-message-feedback`（[`packages/client/ui-message-feedback/src/index.ts`](../packages/client/ui-message-feedback/src/index.ts)）
-- `@alego/client-ui-model-selection`（[`packages/client/ui-model-selection/src/index.ts`](../packages/client/ui-model-selection/src/index.ts)）
-- `@alego/client-ui-permission-presets`（[`packages/client/ui-permission-presets/src/index.ts`](../packages/client/ui-permission-presets/src/index.ts)）
-- `@alego/client-ui-plan`（[`packages/client/ui-plan/src/index.ts`](../packages/client/ui-plan/src/index.ts)）
-- `@alego/client-ui-reference`（[`packages/client/ui-reference/src/index.ts`](../packages/client/ui-reference/src/index.ts)）
-- `@alego/client-ui-renderer`（[`packages/client/ui-renderer/src/index.ts`](../packages/client/ui-renderer/src/index.ts)）
-- `@alego/client-ui-settings`（[`packages/client/ui-settings/src/index.ts`](../packages/client/ui-settings/src/index.ts)）
-- `@alego/client-ui-settings-general`（[`packages/client/ui-settings-general/src/index.ts`](../packages/client/ui-settings-general/src/index.ts)）
-- `@alego/client-ui-settings-models`（[`packages/client/ui-settings-models/src/index.ts`](../packages/client/ui-settings-models/src/index.ts)）
-- `@alego/client-ui-settings-plugin-inventory`（[`packages/client/ui-settings-plugin-inventory/src/index.ts`](../packages/client/ui-settings-plugin-inventory/src/index.ts)）
-- `@alego/client-ui-settings-plugins`（[`packages/client/ui-settings-plugins/src/index.ts`](../packages/client/ui-settings-plugins/src/index.ts)）
-- `@alego/client-ui-sidebar`（[`packages/client/ui-sidebar/src/index.ts`](../packages/client/ui-sidebar/src/index.ts)）
-- `@alego/client-ui-skill`（[`packages/client/ui-skill/src/index.ts`](../packages/client/ui-skill/src/index.ts)）
-- `@alego/client-ui-subagent`（[`packages/client/ui-subagent/src/index.ts`](../packages/client/ui-subagent/src/index.ts)）
-- `@alego/client-ui-theme`（[`packages/client/ui-theme/src/index.ts`](../packages/client/ui-theme/src/index.ts)）
-- `@alego/client-ui-tool`（[`packages/client/ui-tool/src/index.ts`](../packages/client/ui-tool/src/index.ts)）
-- `@alego/client-ui-trajectory`（[`packages/client/ui-trajectory/src/index.ts`](../packages/client/ui-trajectory/src/index.ts)）
-- `@alego/client-ui-user-questions`（[`packages/client/ui-user-questions/src/index.ts`](../packages/client/ui-user-questions/src/index.ts)）
-- `@alego/client-ui-workflow-run`（[`packages/client/ui-workflow-run/src/index.ts`](../packages/client/ui-workflow-run/src/index.ts)）
-- `@alego/client-ui-workspace`（[`packages/client/ui-workspace/src/index.ts`](../packages/client/ui-workspace/src/index.ts)）
-- `@alego/command-compact` — 需要 `commands` · `compact`（[`packages/compaction/command-compact/src/index.ts`](../packages/compaction/command-compact/src/index.ts)）
-- `@alego/command-feedback` — 需要 `commands`（[`packages/feedback/command-feedback/src/index.ts`](../packages/feedback/command-feedback/src/index.ts)）
-- `@alego/command-goal` — 需要 `commands` · `goals`（[`packages/goal/command-goal/src/index.ts`](../packages/goal/command-goal/src/index.ts)）
-- `@alego/commands`（[`packages/interaction/commands/src/index.ts`](../packages/interaction/commands/src/index.ts)）
-- `@alego/cordis-client-runner`（[`packages/extensions/cordis-client-runner/src/index.ts`](../packages/extensions/cordis-client-runner/src/index.ts)）
-- `@alego/fs-e2b` — 需要 `e2b`（[`packages/e2b/fs-e2b/src/index.ts`](../packages/e2b/fs-e2b/src/index.ts)）
-- `@alego/fs-observation-policy`（[`packages/fs/fs-observation-policy/src/index.ts`](../packages/fs/fs-observation-policy/src/index.ts)）
-- `@alego/goal-round-driver` — 需要 `agents` · `goals` · `sessions`（[`packages/goal/goal-round-driver/src/index.ts`](../packages/goal/goal-round-driver/src/index.ts)）
-- `@alego/host-directory-picker-auto` — 需要 `webServer` · `loader`（[`packages/host/directory-picker-auto/src/index.ts`](../packages/host/directory-picker-auto/src/index.ts)）
-- `@alego/host-directory-picker-native`（[`packages/host/directory-picker-native/src/index.ts`](../packages/host/directory-picker-native/src/index.ts)）
-- `@alego/host-plugin-inventory` — 需要 `loader`（[`packages/host/plugin-inventory/src/index.ts`](../packages/host/plugin-inventory/src/index.ts)）
-- `@alego/llm`（[`packages/llm/llm/src/index.ts`](../packages/llm/llm/src/index.ts)）
-- `@alego/lsp`（[`packages/lsp/lsp/src/index.ts`](../packages/lsp/lsp/src/index.ts)）
-- `@alego/schedule` — 需要 `agents` · `sessions` · `tools` · `sessionPersistence`（[`packages/schedule/schedule/src/index.ts`](../packages/schedule/schedule/src/index.ts)）
-- `@alego/session`（[`packages/core/session/src/index.ts`](../packages/core/session/src/index.ts)）
-- `@alego/session-checkpoint-policy` — 需要 `llm` · `sessionPersistence` · `sessions` · `tools`（[`packages/session/session-checkpoint-policy/src/index.ts`](../packages/session/session-checkpoint-policy/src/index.ts)）
-- `@alego/session-log-export` — 需要 `commands`（[`packages/session-query/session-log-export/src/index.ts`](../packages/session-query/session-log-export/src/index.ts)）
-- `@alego/session-projection`（[`packages/session/session-projection/src/index.ts`](../packages/session/session-projection/src/index.ts)）
-- `@alego/session-stats` — 需要 `sessionProjections`（[`packages/session/session-stats/src/index.ts`](../packages/session/session-stats/src/index.ts)）
-- `@alego/skill-badge` — 需要 `skills`（[`packages/skill/skill-badge/src/index.ts`](../packages/skill/skill-badge/src/index.ts)）
-- `@alego/storage`（[`packages/storage/storage/src/index.ts`](../packages/storage/storage/src/index.ts)）
-- `@alego/subagent`（[`packages/subagent/subagent/src/index.ts`](../packages/subagent/subagent/src/index.ts)）
-- `@alego/subprocess-local`（[`packages/subprocess/subprocess-local/src/index.ts`](../packages/subprocess/subprocess-local/src/index.ts)）
-- `@alego/terminal`（[`packages/terminal/terminal/src/index.ts`](../packages/terminal/terminal/src/index.ts)）
-- `@alego/tool-ask-user` — 需要 `tools` · `userInteraction`（[`packages/interaction/tool-ask-user/src/index.ts`](../packages/interaction/tool-ask-user/src/index.ts)）
-- `@alego/tool-call-timeout-policy` — 需要 `tools`（[`packages/guard/timeout-policy/src/index.ts`](../packages/guard/timeout-policy/src/index.ts)）
-- `@alego/tool-cordis` — 需要 `tools` · `systemPrompt` · `dynamicCordisRunner` · `cordisInspect`（[`packages/extensions/tool-cordis/src/index.ts`](../packages/extensions/tool-cordis/src/index.ts)）
-- `@alego/tool-subagent-control` — 需要 `tools` · `subagents`（[`packages/subagent/tool-subagent-control/src/index.ts`](../packages/subagent/tool-subagent-control/src/index.ts)）
-- `@alego/user-questions`（[`packages/interaction/user-questions/src/index.ts`](../packages/interaction/user-questions/src/index.ts)）
-- `@alego/workspace` — 需要 `storageDomain` · `sessionPersistence`（[`packages/workspace/workspace/src/index.ts`](../packages/workspace/workspace/src/index.ts)）
+- `@singula-ai/alego-agent`（[`packages/core/agent/src/index.ts`](../packages/core/agent/src/index.ts)）
+- `@singula-ai/alego-api-gateway` — 需要 `typert`（[`packages/api/gateway/src/index.ts`](../packages/api/gateway/src/index.ts)）
+- `@singula-ai/alego-api-remotes`（[`packages/api/remotes/src/index.ts`](../packages/api/remotes/src/index.ts)）
+- `@singula-ai/alego-authorization` — 需要 `credentials`（[`packages/credentials/authorization/src/index.ts`](../packages/credentials/authorization/src/index.ts)）
+- `@singula-ai/alego-client-locale`（[`packages/client/locale/src/index.ts`](../packages/client/locale/src/index.ts)）
+- `@singula-ai/alego-client-modules` — 需要 `webServer` · `loader`（[`packages/client/modules/src/index.ts`](../packages/client/modules/src/index.ts)）
+- `@singula-ai/alego-client-runtime`（[`packages/client/runtime/src/index.ts`](../packages/client/runtime/src/index.ts)）
+- `@singula-ai/alego-client-ui-agent-preset`（[`packages/client/ui-agent-preset/src/index.ts`](../packages/client/ui-agent-preset/src/index.ts)）
+- `@singula-ai/alego-client-ui-attachment`（[`packages/client/ui-attachment/src/index.ts`](../packages/client/ui-attachment/src/index.ts)）
+- `@singula-ai/alego-client-ui-brand-official`（[`packages/client/ui-brand-official/src/index.ts`](../packages/client/ui-brand-official/src/index.ts)）
+- `@singula-ai/alego-client-ui-commands`（[`packages/client/ui-commands/src/index.ts`](../packages/client/ui-commands/src/index.ts)）
+- `@singula-ai/alego-client-ui-conversation`（[`packages/client/ui-conversation/src/index.ts`](../packages/client/ui-conversation/src/index.ts)）
+- `@singula-ai/alego-client-ui-cordis`（[`packages/extensions/ui-cordis/src/index.ts`](../packages/extensions/ui-cordis/src/index.ts)）
+- `@singula-ai/alego-client-ui-deliverables` — 需要 `systemPrompt`（[`packages/client/ui-deliverables/src/index.ts`](../packages/client/ui-deliverables/src/index.ts)）
+- `@singula-ai/alego-client-ui-directory-picker-browse`（[`packages/client/ui-directory-picker-browse/src/index.ts`](../packages/client/ui-directory-picker-browse/src/index.ts)）
+- `@singula-ai/alego-client-ui-directory-picker-native`（[`packages/client/ui-directory-picker-native/src/index.ts`](../packages/client/ui-directory-picker-native/src/index.ts)）
+- `@singula-ai/alego-client-ui-goal`（[`packages/client/ui-goal/src/index.ts`](../packages/client/ui-goal/src/index.ts)）
+- `@singula-ai/alego-client-ui-input-trigger`（[`packages/client/ui-input-trigger/src/index.ts`](../packages/client/ui-input-trigger/src/index.ts)）
+- `@singula-ai/alego-client-ui-jobs`（[`packages/client/ui-jobs/src/index.ts`](../packages/client/ui-jobs/src/index.ts)）
+- `@singula-ai/alego-client-ui-layout`（[`packages/client/ui-layout/src/index.ts`](../packages/client/ui-layout/src/index.ts)）
+- `@singula-ai/alego-client-ui-message-feedback`（[`packages/client/ui-message-feedback/src/index.ts`](../packages/client/ui-message-feedback/src/index.ts)）
+- `@singula-ai/alego-client-ui-model-selection`（[`packages/client/ui-model-selection/src/index.ts`](../packages/client/ui-model-selection/src/index.ts)）
+- `@singula-ai/alego-client-ui-permission-presets`（[`packages/client/ui-permission-presets/src/index.ts`](../packages/client/ui-permission-presets/src/index.ts)）
+- `@singula-ai/alego-client-ui-plan`（[`packages/client/ui-plan/src/index.ts`](../packages/client/ui-plan/src/index.ts)）
+- `@singula-ai/alego-client-ui-reference`（[`packages/client/ui-reference/src/index.ts`](../packages/client/ui-reference/src/index.ts)）
+- `@singula-ai/alego-client-ui-renderer`（[`packages/client/ui-renderer/src/index.ts`](../packages/client/ui-renderer/src/index.ts)）
+- `@singula-ai/alego-client-ui-settings`（[`packages/client/ui-settings/src/index.ts`](../packages/client/ui-settings/src/index.ts)）
+- `@singula-ai/alego-client-ui-settings-general`（[`packages/client/ui-settings-general/src/index.ts`](../packages/client/ui-settings-general/src/index.ts)）
+- `@singula-ai/alego-client-ui-settings-models`（[`packages/client/ui-settings-models/src/index.ts`](../packages/client/ui-settings-models/src/index.ts)）
+- `@singula-ai/alego-client-ui-settings-plugin-inventory`（[`packages/client/ui-settings-plugin-inventory/src/index.ts`](../packages/client/ui-settings-plugin-inventory/src/index.ts)）
+- `@singula-ai/alego-client-ui-settings-plugins`（[`packages/client/ui-settings-plugins/src/index.ts`](../packages/client/ui-settings-plugins/src/index.ts)）
+- `@singula-ai/alego-client-ui-sidebar`（[`packages/client/ui-sidebar/src/index.ts`](../packages/client/ui-sidebar/src/index.ts)）
+- `@singula-ai/alego-client-ui-skill`（[`packages/client/ui-skill/src/index.ts`](../packages/client/ui-skill/src/index.ts)）
+- `@singula-ai/alego-client-ui-subagent`（[`packages/client/ui-subagent/src/index.ts`](../packages/client/ui-subagent/src/index.ts)）
+- `@singula-ai/alego-client-ui-theme`（[`packages/client/ui-theme/src/index.ts`](../packages/client/ui-theme/src/index.ts)）
+- `@singula-ai/alego-client-ui-tool`（[`packages/client/ui-tool/src/index.ts`](../packages/client/ui-tool/src/index.ts)）
+- `@singula-ai/alego-client-ui-trajectory`（[`packages/client/ui-trajectory/src/index.ts`](../packages/client/ui-trajectory/src/index.ts)）
+- `@singula-ai/alego-client-ui-user-questions`（[`packages/client/ui-user-questions/src/index.ts`](../packages/client/ui-user-questions/src/index.ts)）
+- `@singula-ai/alego-client-ui-workflow-run`（[`packages/client/ui-workflow-run/src/index.ts`](../packages/client/ui-workflow-run/src/index.ts)）
+- `@singula-ai/alego-client-ui-workspace`（[`packages/client/ui-workspace/src/index.ts`](../packages/client/ui-workspace/src/index.ts)）
+- `@singula-ai/alego-command-compact` — 需要 `commands` · `compact`（[`packages/compaction/command-compact/src/index.ts`](../packages/compaction/command-compact/src/index.ts)）
+- `@singula-ai/alego-command-feedback` — 需要 `commands`（[`packages/feedback/command-feedback/src/index.ts`](../packages/feedback/command-feedback/src/index.ts)）
+- `@singula-ai/alego-command-goal` — 需要 `commands` · `goals`（[`packages/goal/command-goal/src/index.ts`](../packages/goal/command-goal/src/index.ts)）
+- `@singula-ai/alego-commands`（[`packages/interaction/commands/src/index.ts`](../packages/interaction/commands/src/index.ts)）
+- `@singula-ai/alego-cordis-client-runner`（[`packages/extensions/cordis-client-runner/src/index.ts`](../packages/extensions/cordis-client-runner/src/index.ts)）
+- `@singula-ai/alego-fs-e2b` — 需要 `e2b`（[`packages/e2b/fs-e2b/src/index.ts`](../packages/e2b/fs-e2b/src/index.ts)）
+- `@singula-ai/alego-fs-observation-policy`（[`packages/fs/fs-observation-policy/src/index.ts`](../packages/fs/fs-observation-policy/src/index.ts)）
+- `@singula-ai/alego-goal-round-driver` — 需要 `agents` · `goals` · `sessions`（[`packages/goal/goal-round-driver/src/index.ts`](../packages/goal/goal-round-driver/src/index.ts)）
+- `@singula-ai/alego-host-directory-picker-auto` — 需要 `webServer` · `loader`（[`packages/host/directory-picker-auto/src/index.ts`](../packages/host/directory-picker-auto/src/index.ts)）
+- `@singula-ai/alego-host-directory-picker-native`（[`packages/host/directory-picker-native/src/index.ts`](../packages/host/directory-picker-native/src/index.ts)）
+- `@singula-ai/alego-host-plugin-inventory` — 需要 `loader`（[`packages/host/plugin-inventory/src/index.ts`](../packages/host/plugin-inventory/src/index.ts)）
+- `@singula-ai/alego-llm`（[`packages/llm/llm/src/index.ts`](../packages/llm/llm/src/index.ts)）
+- `@singula-ai/alego-lsp`（[`packages/lsp/lsp/src/index.ts`](../packages/lsp/lsp/src/index.ts)）
+- `@singula-ai/alego-schedule` — 需要 `agents` · `sessions` · `tools` · `sessionPersistence`（[`packages/schedule/schedule/src/index.ts`](../packages/schedule/schedule/src/index.ts)）
+- `@singula-ai/alego-session`（[`packages/core/session/src/index.ts`](../packages/core/session/src/index.ts)）
+- `@singula-ai/alego-session-checkpoint-policy` — 需要 `llm` · `sessionPersistence` · `sessions` · `tools`（[`packages/session/session-checkpoint-policy/src/index.ts`](../packages/session/session-checkpoint-policy/src/index.ts)）
+- `@singula-ai/alego-session-log-export` — 需要 `commands`（[`packages/session-query/session-log-export/src/index.ts`](../packages/session-query/session-log-export/src/index.ts)）
+- `@singula-ai/alego-session-projection`（[`packages/session/session-projection/src/index.ts`](../packages/session/session-projection/src/index.ts)）
+- `@singula-ai/alego-session-stats` — 需要 `sessionProjections`（[`packages/session/session-stats/src/index.ts`](../packages/session/session-stats/src/index.ts)）
+- `@singula-ai/alego-skill-badge` — 需要 `skills`（[`packages/skill/skill-badge/src/index.ts`](../packages/skill/skill-badge/src/index.ts)）
+- `@singula-ai/alego-storage`（[`packages/storage/storage/src/index.ts`](../packages/storage/storage/src/index.ts)）
+- `@singula-ai/alego-subagent`（[`packages/subagent/subagent/src/index.ts`](../packages/subagent/subagent/src/index.ts)）
+- `@singula-ai/alego-subprocess-local`（[`packages/subprocess/subprocess-local/src/index.ts`](../packages/subprocess/subprocess-local/src/index.ts)）
+- `@singula-ai/alego-terminal`（[`packages/terminal/terminal/src/index.ts`](../packages/terminal/terminal/src/index.ts)）
+- `@singula-ai/alego-tool-ask-user` — 需要 `tools` · `userInteraction`（[`packages/interaction/tool-ask-user/src/index.ts`](../packages/interaction/tool-ask-user/src/index.ts)）
+- `@singula-ai/alego-tool-call-timeout-policy` — 需要 `tools`（[`packages/guard/timeout-policy/src/index.ts`](../packages/guard/timeout-policy/src/index.ts)）
+- `@singula-ai/alego-tool-cordis` — 需要 `tools` · `systemPrompt` · `dynamicCordisRunner` · `cordisInspect`（[`packages/extensions/tool-cordis/src/index.ts`](../packages/extensions/tool-cordis/src/index.ts)）
+- `@singula-ai/alego-tool-subagent-control` — 需要 `tools` · `subagents`（[`packages/subagent/tool-subagent-control/src/index.ts`](../packages/subagent/tool-subagent-control/src/index.ts)）
+- `@singula-ai/alego-user-questions`（[`packages/interaction/user-questions/src/index.ts`](../packages/interaction/user-questions/src/index.ts)）
+- `@singula-ai/alego-workspace` — 需要 `storageDomain` · `sessionPersistence`（[`packages/workspace/workspace/src/index.ts`](../packages/workspace/workspace/src/index.ts)）
 
 ## Seam 包（不可直接加载）
 
 抽象服务类——部署时应改为加载具体的实现包（参见[能力 seam](../.agents/notes/implemented/architecture/2026-06-13-capability-seams.zh.md)）。
 
-- `@alego/attachment` — 抽象 `AttachmentStore`（[`packages/attachment/attachment/src/index.ts`](../packages/attachment/attachment/src/index.ts)）
-- `@alego/code-runtime` — 抽象 `CodeRuntime`（[`packages/code-runtime/code-runtime/src/index.ts`](../packages/code-runtime/code-runtime/src/index.ts)）
-- `@alego/compaction` — 抽象 `CompactionEngine`（[`packages/compaction/compaction/src/index.ts`](../packages/compaction/compaction/src/index.ts)）
-- `@alego/credentials` — 抽象 `Credentials`（[`packages/credentials/credentials/src/index.ts`](../packages/credentials/credentials/src/index.ts)）
-- `@alego/file-reference` — 抽象 `FileReferenceService`（[`packages/context/file-reference/src/index.ts`](../packages/context/file-reference/src/index.ts)）
-- `@alego/fs` — 抽象 `FileSystem`（[`packages/fs/fs/src/index.ts`](../packages/fs/fs/src/index.ts)）
-- `@alego/host-directory-picker` — 抽象 `DirectoryPicker`（[`packages/host/directory-picker/src/index.ts`](../packages/host/directory-picker/src/index.ts)）
-- `@alego/jobs` — 抽象 `JobRegistry`（[`packages/jobs/jobs/src/index.ts`](../packages/jobs/jobs/src/index.ts)）
-- `@alego/sandbox` — 抽象 `SandboxProvider`（[`packages/sandbox/sandbox/src/index.ts`](../packages/sandbox/sandbox/src/index.ts)）
-- `@alego/session-persistence` — 抽象 `SessionPersistence`（[`packages/session/session-persistence/src/index.ts`](../packages/session/session-persistence/src/index.ts)）
-- `@alego/session-query` — 抽象 `SessionQueryEngine`（[`packages/session-query/session-query/src/index.ts`](../packages/session-query/session-query/src/index.ts)）
-- `@alego/settings` — 抽象 `Settings`（[`packages/settings/settings/src/index.ts`](../packages/settings/settings/src/index.ts)）
-- `@alego/shell` — 抽象 `ShellExecutor`（[`packages/shell/shell/src/index.ts`](../packages/shell/shell/src/index.ts)）
-- `@alego/spill` — 抽象 `SpillStore`（[`packages/spill/spill/src/index.ts`](../packages/spill/spill/src/index.ts)）
-- `@alego/subprocess` — 抽象 `SubprocessRuntime`（[`packages/subprocess/subprocess/src/index.ts`](../packages/subprocess/subprocess/src/index.ts)）
-- `@alego/workflow` — 抽象 `WorkflowEngine`（[`packages/workflow/workflow/src/index.ts`](../packages/workflow/workflow/src/index.ts)）
+- `@singula-ai/alego-attachment` — 抽象 `AttachmentStore`（[`packages/attachment/attachment/src/index.ts`](../packages/attachment/attachment/src/index.ts)）
+- `@singula-ai/alego-code-runtime` — 抽象 `CodeRuntime`（[`packages/code-runtime/code-runtime/src/index.ts`](../packages/code-runtime/code-runtime/src/index.ts)）
+- `@singula-ai/alego-compaction` — 抽象 `CompactionEngine`（[`packages/compaction/compaction/src/index.ts`](../packages/compaction/compaction/src/index.ts)）
+- `@singula-ai/alego-credentials` — 抽象 `Credentials`（[`packages/credentials/credentials/src/index.ts`](../packages/credentials/credentials/src/index.ts)）
+- `@singula-ai/alego-file-reference` — 抽象 `FileReferenceService`（[`packages/context/file-reference/src/index.ts`](../packages/context/file-reference/src/index.ts)）
+- `@singula-ai/alego-fs` — 抽象 `FileSystem`（[`packages/fs/fs/src/index.ts`](../packages/fs/fs/src/index.ts)）
+- `@singula-ai/alego-host-directory-picker` — 抽象 `DirectoryPicker`（[`packages/host/directory-picker/src/index.ts`](../packages/host/directory-picker/src/index.ts)）
+- `@singula-ai/alego-jobs` — 抽象 `JobRegistry`（[`packages/jobs/jobs/src/index.ts`](../packages/jobs/jobs/src/index.ts)）
+- `@singula-ai/alego-sandbox` — 抽象 `SandboxProvider`（[`packages/sandbox/sandbox/src/index.ts`](../packages/sandbox/sandbox/src/index.ts)）
+- `@singula-ai/alego-session-persistence` — 抽象 `SessionPersistence`（[`packages/session/session-persistence/src/index.ts`](../packages/session/session-persistence/src/index.ts)）
+- `@singula-ai/alego-session-query` — 抽象 `SessionQueryEngine`（[`packages/session-query/session-query/src/index.ts`](../packages/session-query/session-query/src/index.ts)）
+- `@singula-ai/alego-settings` — 抽象 `Settings`（[`packages/settings/settings/src/index.ts`](../packages/settings/settings/src/index.ts)）
+- `@singula-ai/alego-shell` — 抽象 `ShellExecutor`（[`packages/shell/shell/src/index.ts`](../packages/shell/shell/src/index.ts)）
+- `@singula-ai/alego-spill` — 抽象 `SpillStore`（[`packages/spill/spill/src/index.ts`](../packages/spill/spill/src/index.ts)）
+- `@singula-ai/alego-subprocess` — 抽象 `SubprocessRuntime`（[`packages/subprocess/subprocess/src/index.ts`](../packages/subprocess/subprocess/src/index.ts)）
+- `@singula-ai/alego-workflow` — 抽象 `WorkflowEngine`（[`packages/workflow/workflow/src/index.ts`](../packages/workflow/workflow/src/index.ts)）
 ## 库包（无插件入口）
 
 由其他包作为库导入；`cordis.yml` 无法加载它们。
 
-- `@alego/acp-snapshot`（[`packages/test-support/acp-snapshot/src/index.ts`](../packages/test-support/acp-snapshot/src/index.ts)）
-- `@alego/agent-loop-testkit`（[`packages/test-support/agent-loop-testkit/src/index.ts`](../packages/test-support/agent-loop-testkit/src/index.ts)）
-- `@alego/anonymous-user-id`（[`packages/identity/anonymous-user-id/src/index.ts`](../packages/identity/anonymous-user-id/src/index.ts)）
-- `@alego/app-boot`（[`packages/boot/app-boot/src/index.ts`](../packages/boot/app-boot/src/index.ts)）
-- `@alego/atomic-write`（[`packages/util/atomic-write/src/index.ts`](../packages/util/atomic-write/src/index.ts)）
-- `@alego/base`（[`packages/bundle/base/src/index.ts`](../packages/bundle/base/src/index.ts)）
-- `@alego/brand`（[`packages/util/brand/src/index.ts`](../packages/util/brand/src/index.ts)）
-- `@alego/client-test-runtime`（[`packages/test-support/client-runtime/src/index.ts`](../packages/test-support/client-runtime/src/index.ts)）
-- `@alego/client-ui-primitives`（[`packages/client/ui-primitives/src/index.ts`](../packages/client/ui-primitives/src/index.ts)）
-- `@alego/client-ui-slots`（[`packages/client/ui-slots/src/index.ts`](../packages/client/ui-slots/src/index.ts)）
-- `@alego/client-web`（[`packages/client/web/src/index.ts`](../packages/client/web/src/index.ts)）
-- `@alego/cmdline`（[`packages/boot/cmdline/src/index.ts`](../packages/boot/cmdline/src/index.ts)）
-- `@alego/code-runtime-python`（[`packages/code-runtime/code-runtime-python/src/index.ts`](../packages/code-runtime/code-runtime-python/src/index.ts)）
-- `@alego/home-paths`（[`packages/util/home-paths/src/index.ts`](../packages/util/home-paths/src/index.ts)）
-- `@alego/hook-protocol`（[`packages/hooks/hook-protocol/src/index.ts`](../packages/hooks/hook-protocol/src/index.ts)）
-- `@alego/launch-environment`（[`packages/util/launch-environment/src/index.ts`](../packages/util/launch-environment/src/index.ts)）
-- `@alego/llm-mock-server`（[`packages/test-support/llm-mock-server/src/index.ts`](../packages/test-support/llm-mock-server/src/index.ts)）
-- `@alego/loader-smoke`（[`packages/test-support/loader-smoke/src/index.ts`](../packages/test-support/loader-smoke/src/index.ts)）
-- `@alego/native-command`（[`packages/util/native-command/src/index.ts`](../packages/util/native-command/src/index.ts)）
-- `@alego/output-retention`（[`packages/util/output-retention/src/index.ts`](../packages/util/output-retention/src/index.ts)）
-- `@alego/sandbox-windows-acl`（[`packages/sandbox/sandbox-windows-acl/src/index.ts`](../packages/sandbox/sandbox-windows-acl/src/index.ts)）
-- `@alego/scope`（[`packages/core/scope/src/index.ts`](../packages/core/scope/src/index.ts)）
-- `@alego/sdk-client`（[`packages/sdk/client/src/index.ts`](../packages/sdk/client/src/index.ts)）
-- `@alego/sdk-jsonrpc-demo`（[`packages/examples/jsonrpc-demo/src/index.ts`](../packages/examples/jsonrpc-demo/src/index.ts)）
-- `@alego/sdk-protocol`（[`packages/sdk/protocol/src/index.ts`](../packages/sdk/protocol/src/index.ts)）
-- `@alego/session-telemetry`（[`packages/session/session-telemetry/src/index.ts`](../packages/session/session-telemetry/src/index.ts)）
-- `@alego/session-title-llm`（[`packages/session/session-title-llm/src/index.ts`](../packages/session/session-title-llm/src/index.ts)）
-- `@alego/subagent-in-process-driver`（[`packages/subagent/subagent-in-process-driver/src/index.ts`](../packages/subagent/subagent-in-process-driver/src/index.ts)）
-- `@alego/timeout`（[`packages/util/timeout/src/index.ts`](../packages/util/timeout/src/index.ts)）
-- `@alego/typert-generator`（[`packages/typert/generator/src/index.ts`](../packages/typert/generator/src/index.ts)）
-- `@alego/typert-protocol`（[`packages/typert/protocol/src/index.ts`](../packages/typert/protocol/src/index.ts)）
-- `@alego/typert-registry`（[`packages/typert/registry/src/index.ts`](../packages/typert/registry/src/index.ts)）
+- `@singula-ai/alego-acp-snapshot`（[`packages/test-support/acp-snapshot/src/index.ts`](../packages/test-support/acp-snapshot/src/index.ts)）
+- `@singula-ai/alego-agent-loop-testkit`（[`packages/test-support/agent-loop-testkit/src/index.ts`](../packages/test-support/agent-loop-testkit/src/index.ts)）
+- `@singula-ai/alego-anonymous-user-id`（[`packages/identity/anonymous-user-id/src/index.ts`](../packages/identity/anonymous-user-id/src/index.ts)）
+- `@singula-ai/alego-app-boot`（[`packages/boot/app-boot/src/index.ts`](../packages/boot/app-boot/src/index.ts)）
+- `@singula-ai/alego-atomic-write`（[`packages/util/atomic-write/src/index.ts`](../packages/util/atomic-write/src/index.ts)）
+- `@singula-ai/alego-base`（[`packages/bundle/base/src/index.ts`](../packages/bundle/base/src/index.ts)）
+- `@singula-ai/alego-brand`（[`packages/util/brand/src/index.ts`](../packages/util/brand/src/index.ts)）
+- `@singula-ai/alego-client-test-runtime`（[`packages/test-support/client-runtime/src/index.ts`](../packages/test-support/client-runtime/src/index.ts)）
+- `@singula-ai/alego-client-ui-primitives`（[`packages/client/ui-primitives/src/index.ts`](../packages/client/ui-primitives/src/index.ts)）
+- `@singula-ai/alego-client-ui-slots`（[`packages/client/ui-slots/src/index.ts`](../packages/client/ui-slots/src/index.ts)）
+- `@singula-ai/alego-client-web`（[`packages/client/web/src/index.ts`](../packages/client/web/src/index.ts)）
+- `@singula-ai/alego-cmdline`（[`packages/boot/cmdline/src/index.ts`](../packages/boot/cmdline/src/index.ts)）
+- `@singula-ai/alego-code-runtime-python`（[`packages/code-runtime/code-runtime-python/src/index.ts`](../packages/code-runtime/code-runtime-python/src/index.ts)）
+- `@singula-ai/alego-home-paths`（[`packages/util/home-paths/src/index.ts`](../packages/util/home-paths/src/index.ts)）
+- `@singula-ai/alego-hook-protocol`（[`packages/hooks/hook-protocol/src/index.ts`](../packages/hooks/hook-protocol/src/index.ts)）
+- `@singula-ai/alego-launch-environment`（[`packages/util/launch-environment/src/index.ts`](../packages/util/launch-environment/src/index.ts)）
+- `@singula-ai/alego-llm-mock-server`（[`packages/test-support/llm-mock-server/src/index.ts`](../packages/test-support/llm-mock-server/src/index.ts)）
+- `@singula-ai/alego-loader-smoke`（[`packages/test-support/loader-smoke/src/index.ts`](../packages/test-support/loader-smoke/src/index.ts)）
+- `@singula-ai/alego-native-command`（[`packages/util/native-command/src/index.ts`](../packages/util/native-command/src/index.ts)）
+- `@singula-ai/alego-output-retention`（[`packages/util/output-retention/src/index.ts`](../packages/util/output-retention/src/index.ts)）
+- `@singula-ai/alego-sandbox-windows-acl`（[`packages/sandbox/sandbox-windows-acl/src/index.ts`](../packages/sandbox/sandbox-windows-acl/src/index.ts)）
+- `@singula-ai/alego-scope`（[`packages/core/scope/src/index.ts`](../packages/core/scope/src/index.ts)）
+- `@singula-ai/alego-sdk-client`（[`packages/sdk/client/src/index.ts`](../packages/sdk/client/src/index.ts)）
+- `@singula-ai/alego-sdk-jsonrpc-demo`（[`packages/examples/jsonrpc-demo/src/index.ts`](../packages/examples/jsonrpc-demo/src/index.ts)）
+- `@singula-ai/alego-sdk-protocol`（[`packages/sdk/protocol/src/index.ts`](../packages/sdk/protocol/src/index.ts)）
+- `@singula-ai/alego-session-telemetry`（[`packages/session/session-telemetry/src/index.ts`](../packages/session/session-telemetry/src/index.ts)）
+- `@singula-ai/alego-session-title-llm`（[`packages/session/session-title-llm/src/index.ts`](../packages/session/session-title-llm/src/index.ts)）
+- `@singula-ai/alego-subagent-in-process-driver`（[`packages/subagent/subagent-in-process-driver/src/index.ts`](../packages/subagent/subagent-in-process-driver/src/index.ts)）
+- `@singula-ai/alego-timeout`（[`packages/util/timeout/src/index.ts`](../packages/util/timeout/src/index.ts)）
+- `@singula-ai/alego-typert-generator`（[`packages/typert/generator/src/index.ts`](../packages/typert/generator/src/index.ts)）
+- `@singula-ai/alego-typert-protocol`（[`packages/typert/protocol/src/index.ts`](../packages/typert/protocol/src/index.ts)）
+- `@singula-ai/alego-typert-registry`（[`packages/typert/registry/src/index.ts`](../packages/typert/registry/src/index.ts)）

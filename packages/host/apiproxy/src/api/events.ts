@@ -6,20 +6,20 @@
  * signal is a local stream-control parameter, independent of the request (never on the wire).
  */
 
-import type { AskUserQuestionItem } from '@alego/user-questions/types'
-import type { ApprovalOutcome, ApprovalRequestId } from '@alego/user-approval/types'
-import type { Message } from '@alego/llm/types'
-import type { MessageId } from '@alego/llm/brand'
-import type { CallId } from '@alego/llm/brand'
-import type { JsonValue, SessionEvent, SessionId } from '@alego/session/types'
-import type { ToolCallView, ToolResultView } from '@alego/tools/presentation'
+import type { AskUserQuestionItem } from '@singula-ai/alego-user-questions/types'
+import type { ApprovalOutcome, ApprovalRequestId } from '@singula-ai/alego-user-approval/types'
+import type { Message } from '@singula-ai/alego-llm/types'
+import type { MessageId } from '@singula-ai/alego-llm/brand'
+import type { CallId } from '@singula-ai/alego-llm/brand'
+import type { JsonValue, SessionEvent, SessionId } from '@singula-ai/alego-session/types'
+import type { ToolCallView, ToolResultView } from '@singula-ai/alego-tools/presentation'
 import type { RpcError, RpcId, RpcRequest } from './rpc.ts'
 import type { JobView } from './jobs.ts'
 import type { WorkspaceView } from './workspace.ts'
 
 // Client-side consumers take the render-intent vocabulary from the contract;
 // alego-tools remains its owner.
-export type { ToolCallView, ToolResultView } from '@alego/tools/presentation'
+export type { ToolCallView, ToolResultView } from '@singula-ai/alego-tools/presentation'
 
 /**
  * Host-computed render intent accompanying a `tool/call` or `tool/result`
@@ -143,7 +143,7 @@ export type HostFrame =
   | { type: 'host/archived-sessions-changed'; archivedSessionIds: SessionId[] }
   /**
    * One allowlisted host cordis event forwarded verbatim. The allowlist is
-   * owned by `@alego/api-remotes` (`API_REMOTE_FORWARDED_EVENTS`),
+   * owned by `@singula-ai/alego-api-remotes` (`API_REMOTE_FORWARDED_EVENTS`),
    * which is also the only control point over what a consumer can receive.
    * `event` is the host's own event name and `args` its argument list: this
    * path applies no projection, no redaction, and no renaming, so the payload

@@ -6,10 +6,10 @@
  * domain-face behavior is covered props-direct in question-composer.spec.tsx;
  * no renderer machinery here.
  */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
-import { SlotRegistry } from '@alego/client-runtime/client'
-import { LocaleRuntime } from '@alego/client-locale/client'
+import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import { LocaleRuntime } from '@singula-ai/alego-client-locale/client'
 import { QuestionComposer } from '../src/client/QuestionComposer.tsx'
 import { apply, inject } from '../src/client/index.ts'
 

@@ -10,8 +10,8 @@ import {
   parseLspArgs,
   presentLspCall,
   renderUri,
-} from '@alego/tool-lsp'
-import type { LspLocation } from '@alego/lsp'
+} from '@singula-ai/alego-tool-lsp'
+import type { LspLocation } from '@singula-ai/alego-lsp'
 
 const WS = resolve('/home/u/proj')
 const WS_URI = pathToFileURL(WS).href

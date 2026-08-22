@@ -12,7 +12,7 @@ Continuable-child orchestration originally lived in a separate `ctx.subagentCont
 
 ## Decision
 
-`SubagentRuntime` is the only public service. It exposes ordinary `start(name, request)`, Task-backed `startContinuable(spec)`, and intent-named `followup(...)`; provider resume dispatch remains private to its continuation manager. The standalone `@alego/subagent-control` package and `ctx.subagentControl` key are absent; the optional `@alego/tool-subagent-control` package injects `ctx.subagents` directly.
+`SubagentRuntime` is the only public service. It exposes ordinary `start(name, request)`, Task-backed `startContinuable(spec)`, and intent-named `followup(...)`; provider resume dispatch remains private to its continuation manager. The standalone `@singula-ai/alego-subagent-control` package and `ctx.subagentControl` key are absent; the optional `@singula-ai/alego-tool-subagent-control` package injects `ctx.subagents` directly.
 
 The merged service and its providers expose one `SubagentError` taxonomy. Stable codes distinguish provider lookup and capability failures from continuation routing, authorization, cancellation, persistence, and delivery failures; the removed service does not retain a separate error class.
 
@@ -20,7 +20,7 @@ The continuation implementation remains an internal manager rather than expandin
 
 `startContinuable` remains distinct from raw `start` because it has a different ownership and timing contract: it allocates the durable child id, creates the Task, and returns both ids synchronously while startup continues inside the Task. Raw `start` instead awaits provider publication and transfers a holder-owned run. Folding the method onto `start` through flags or return unions would broaden the low-level contract and create more change than keeping the existing explicit entry.
 
-Each `@alego/tool-subagent` instance selects `backgroundMode: 'one-shot' | 'continuable'`, defaulting to `one-shot`. This configuration is policy; `provider.resume` is only the capability check for configured continuable mode. A resumable provider can therefore still run one-shot background work. The `send_message` tool is an independent adapter: loading or omitting it neither enables nor disables `startContinuable`.
+Each `@singula-ai/alego-tool-subagent` instance selects `backgroundMode: 'one-shot' | 'continuable'`, defaulting to `one-shot`. This configuration is policy; `provider.resume` is only the capability check for configured continuable mode. A resumable provider can therefore still run one-shot background work. The `send_message` tool is an independent adapter: loading or omitting it neither enables nor disables `startContinuable`.
 
 ## Alternatives considered
 

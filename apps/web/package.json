@@ -1,6 +1,6 @@
 {
-  "name": "@alego/web-frontend",
-  "description": "Web application entry: vite build over the @alego/client-web shell library; dist/ served by apps/cli's alego web",
+  "name": "@singula-ai/alego-web-frontend",
+  "description": "Web application entry: vite build over the @singula-ai/alego-client-web shell library; dist/ served by apps/cli's alego web",
   "version": "0.1.1-rc.2",
   "publishConfig": {
     "access": "public"
@@ -26,13 +26,13 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@alego/cordis-plugin-group": "workspace:^",
-    "@alego/client-modules": "workspace:^",
-    "@alego/client-ui-primitives": "workspace:^",
-    "@alego/client-ui-slots": "workspace:^",
-    "@alego/client-web": "workspace:^",
-    "@alego/cmdline": "workspace:^",
-    "@alego/pwsh-local": "workspace:^",
+    "@singula-ai/cordis-plugin-group": "workspace:^",
+    "@singula-ai/alego-client-modules": "workspace:^",
+    "@singula-ai/alego-client-ui-primitives": "workspace:^",
+    "@singula-ai/alego-client-ui-slots": "workspace:^",
+    "@singula-ai/alego-client-web": "workspace:^",
+    "@singula-ai/alego-cmdline": "workspace:^",
+    "@singula-ai/alego-pwsh-local": "workspace:^",
     "@types/node": "^22.0.0",
     "@types/react": "~18.3.1",
     "@types/react-dom": "~18.3.0",

@@ -1,15 +1,15 @@
 /** locale apply wiring: service + dictionaries provision, declaration-aware
  * Language row registration, snapshot projection into the row store, and
  * recovery after an HMR collapse of the declaring entry. */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import { SlotRegistry } from '@alego/client-runtime/client'
-import { apply as settingsApply, inject as settingsInject } from '@alego/client-ui-settings/client'
-import { TestRemote } from '@alego/client-test-runtime'
+import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import { apply as settingsApply, inject as settingsInject } from '@singula-ai/alego-client-ui-settings/client'
+import { TestRemote } from '@singula-ai/alego-client-test-runtime'
 import {
   apply, inject, SETTINGS_NS,
-} from '@alego/client-locale/client'
-import type { LanguageRowInjected, LocaleRuntime } from '@alego/client-locale/client'
+} from '@singula-ai/alego-client-locale/client'
+import type { LanguageRowInjected, LocaleRuntime } from '@singula-ai/alego-client-locale/client'
 import { LOCALE_SETTINGS_NAMESPACE, LocaleSettingsSchema } from '../src/locale-settings.ts'
 import { LanguageRow } from '../src/client/LanguageRow.tsx'
 import type { createLanguageRowStore } from '../src/client/settings-store.ts'

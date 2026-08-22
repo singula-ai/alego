@@ -5,11 +5,11 @@
  */
 
 import { useEffect, useState } from 'react'
-import type { SnapshotStore } from '@alego/client-runtime/client'
-import type { InjectFace, PropsLocale, PropsRuntime } from '@alego/client-ui-slots'
+import type { SnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import type { InjectFace, PropsLocale, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
 import {
   IconChevronDownOutline14, Menu, RiskConfirmation,
-} from '@alego/client-ui-primitives'
+} from '@singula-ai/alego-client-ui-primitives'
 import type { PermissionSettingsState } from './settings-store.ts'
 import type { PermissionSettingsKey } from './locales.ts'
 import { FULL_ACCESS_PRESET } from './presentation.ts'
@@ -125,7 +125,7 @@ export function PermissionRow({ load, select, usePermission, t }: PermissionRowP
   )
 }
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Permission row copy. */
     'settings.permission': PermissionSettingsKey

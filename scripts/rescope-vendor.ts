@@ -1,5 +1,5 @@
 /**
- * Rescope the vendored Cordis packages into the `@alego` scope, and undo
+ * Rescope the vendored Cordis packages into the `@singula-ai` scope, and undo
  * that rescope with `--reverse`. Every harness package declares `cordis` as a
  * peer dependency, so publication carries this framework layer too; publishing
  * it under the upstream names would squat them on the registry
@@ -11,7 +11,7 @@
  * scalar. A match needs a quote (or `name: `) immediately left and the matching
  * quote — optionally after a `/subpath` — immediately right, which excludes
  * `cordis.yml`, the Loader's `cordis:` builtin prefix, `cordis-config-entry`,
- * `@alego/tool-cordis`, and `cordiverse/cordis`, and makes the
+ * `@singula-ai/alego-tool-cordis`, and `cordiverse/cordis`, and makes the
  * rewrite idempotent because the scoped name's `cordis` is preceded by `/`.
  * Markdown follows the rename inside every fence, and in `docs/` prose too:
  * a tutorial that teaches an unresolvable name is wrong, while prose elsewhere
@@ -44,15 +44,15 @@ interface Rename {
 
 /** The mapping this codemod applies; `vendor/README.md` carries the same table. */
 const RENAMES: readonly Rename[] = [
-  { directory: 'cordis', upstream: 'cordis', scoped: '@alego/cordis' },
-  { directory: 'cosmokit', upstream: 'cosmokit', scoped: '@alego/cosmokit' },
-  { directory: 'schemastery', upstream: 'schemastery', scoped: '@alego/schemastery' },
-  { directory: 'loader', upstream: '@cordisjs/plugin-loader', scoped: '@alego/cordis-plugin-loader' },
-  { directory: 'include', upstream: '@cordisjs/plugin-include', scoped: '@alego/cordis-plugin-include' },
-  { directory: 'group', upstream: '@cordisjs/plugin-group', scoped: '@alego/cordis-plugin-group' },
-  { directory: 'timer', upstream: '@cordisjs/plugin-timer', scoped: '@alego/cordis-plugin-timer' },
-  { directory: 'hmr', upstream: '@cordisjs/plugin-hmr', scoped: '@alego/cordis-plugin-hmr' },
-  { directory: 'logger-console', upstream: '@cordisjs/plugin-logger-console', scoped: '@alego/cordis-plugin-logger-console' },
+  { directory: 'cordis', upstream: 'cordis', scoped: '@singula-ai/cordis' },
+  { directory: 'cosmokit', upstream: 'cosmokit', scoped: '@singula-ai/cosmokit' },
+  { directory: 'schemastery', upstream: 'schemastery', scoped: '@singula-ai/schemastery' },
+  { directory: 'loader', upstream: '@cordisjs/plugin-loader', scoped: '@singula-ai/cordis-plugin-loader' },
+  { directory: 'include', upstream: '@cordisjs/plugin-include', scoped: '@singula-ai/cordis-plugin-include' },
+  { directory: 'group', upstream: '@cordisjs/plugin-group', scoped: '@singula-ai/cordis-plugin-group' },
+  { directory: 'timer', upstream: '@cordisjs/plugin-timer', scoped: '@singula-ai/cordis-plugin-timer' },
+  { directory: 'hmr', upstream: '@cordisjs/plugin-hmr', scoped: '@singula-ai/cordis-plugin-hmr' },
+  { directory: 'logger-console', upstream: '@cordisjs/plugin-logger-console', scoped: '@singula-ai/cordis-plugin-logger-console' },
 ]
 
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.mjs', '.cjs', '.tpl', '.json', '.yml', '.yaml', '.md'] as const
@@ -143,17 +143,17 @@ interface PostCondition {
 }
 
 const POSTCONDITIONS: readonly PostCondition[] = [
-  { file: 'vendor/cordis/package.json', text: '"name": "@alego/cordis"', count: 1 },
-  { file: 'vendor/hmr/package.json', text: '"name": "@alego/cordis-plugin-hmr"', count: 1 },
-  { file: 'scripts/cordis-walk.ts', text: '@alego\\/cordis', count: 1 },
-  { file: 'scripts/cordis-walk.ts', text: '!== \'@alego/cordis\'', count: 1 },
-  { file: 'scripts/gen-scoped-events.ts', text: '=== \'@alego/cordis\'', count: 1 },
-  { file: 'packages/typert/generator/src/analyzer.ts', text: '!== \'@alego/cordis\'', count: 2 },
-  { file: 'scripts/check-workspace-constraints.ts', text: '?.[\'@alego/cordis\']', count: 2 },
-  { file: 'packages/boot/app-boot/tsdown.config.ts', text: '[\'@alego/cordis-plugin-include\']', count: 1 },
-  { file: 'tsconfig.base.json', text: '"@alego/cordis-plugin-loader": ["./vendor/loader/src"]', count: 1 },
+  { file: 'vendor/cordis/package.json', text: '"name": "@singula-ai/cordis"', count: 1 },
+  { file: 'vendor/hmr/package.json', text: '"name": "@singula-ai/cordis-plugin-hmr"', count: 1 },
+  { file: 'scripts/cordis-walk.ts', text: '@singula-ai\\/cordis', count: 1 },
+  { file: 'scripts/cordis-walk.ts', text: '!== \'@singula-ai/cordis\'', count: 1 },
+  { file: 'scripts/gen-scoped-events.ts', text: '=== \'@singula-ai/cordis\'', count: 1 },
+  { file: 'packages/typert/generator/src/analyzer.ts', text: '!== \'@singula-ai/cordis\'', count: 2 },
+  { file: 'scripts/check-workspace-constraints.ts', text: '?.[\'@singula-ai/cordis\']', count: 2 },
+  { file: 'packages/boot/app-boot/tsdown.config.ts', text: '[\'@singula-ai/cordis-plugin-include\']', count: 1 },
+  { file: 'tsconfig.base.json', text: '"@singula-ai/cordis-plugin-loader": ["./vendor/loader/src"]', count: 1 },
   // The vendored README owns this required entry; reject its deletion or duplication.
-  { file: 'vendor/README.md', text: '17. **`@alego` rescope**', count: 1 },
+  { file: 'vendor/README.md', text: '17. **`@singula-ai` rescope**', count: 1 },
   { file: 'knip.json', text: '@cordisjs', count: 0 },
   { file: 'pnpm-workspace.yaml', text: 'cordis@4.0.0-rc.7', count: 0 },
   // The preset ids in this table are product data, not package names.
@@ -174,7 +174,7 @@ const EXACT_EDITS: readonly ExactEdit[] = [
     id: 'cordis-walk-merge-head',
     file: 'scripts/cordis-walk.ts',
     find: 'const MERGE_HEAD = /declare module [\'"](?:cordis|\\.\\/context\\.ts)[\'"]/',
-    replace: 'const MERGE_HEAD = /declare module [\'"](?:@alego\\/cordis|\\.\\/context\\.ts)[\'"]/',
+    replace: 'const MERGE_HEAD = /declare module [\'"](?:@singula-ai\\/cordis|\\.\\/context\\.ts)[\'"]/',
     expect: 1,
   },
   {
@@ -187,27 +187,27 @@ const EXACT_EDITS: readonly ExactEdit[] = [
     if (!dev) errors.push(\`\${label}: cordis must also be a devDependency\`)
     if (peer && dev && peer !== dev) {
       errors.push(\`\${label}: cordis peer (\${peer}) and dev (\${dev}) ranges must match\`)`,
-    replace: `    const peer = manifest.peerDependencies?.['@alego/cordis']
-    const dev = manifest.devDependencies?.['@alego/cordis']
+    replace: `    const peer = manifest.peerDependencies?.['@singula-ai/cordis']
+    const dev = manifest.devDependencies?.['@singula-ai/cordis']
 
-    if (!peer) errors.push(\`\${label}: @alego/cordis must be a peerDependency\`)
-    if (!dev) errors.push(\`\${label}: @alego/cordis must also be a devDependency\`)
+    if (!peer) errors.push(\`\${label}: @singula-ai/cordis must be a peerDependency\`)
+    if (!dev) errors.push(\`\${label}: @singula-ai/cordis must also be a devDependency\`)
     if (peer && dev && peer !== dev) {
-      errors.push(\`\${label}: @alego/cordis peer (\${peer}) and dev (\${dev}) ranges must match\`)`,
+      errors.push(\`\${label}: @singula-ai/cordis peer (\${peer}) and dev (\${dev}) ranges must match\`)`,
     expect: 1,
   },
   {
-    // The rescoped name is already covered by the `@alego/.+` pattern beside it.
+    // The rescoped name is already covered by the `@singula-ai/.+` pattern beside it.
     id: 'knip-logger-console',
     file: 'knip.json',
     find: `      "ignoreDependencies": [
         "@cordisjs/plugin-logger-console",
-        "@alego/.+"
+        "@singula-ai/.+"
       ]
     },
     "packages/util/home": {`,
     replace: `      "ignoreDependencies": [
-        "@alego/.+"
+        "@singula-ai/.+"
       ]
     },
     "packages/util/home": {`,
@@ -218,12 +218,12 @@ const EXACT_EDITS: readonly ExactEdit[] = [
     file: 'knip.json',
     find: `    "packages/bundle/base": {
       "ignoreDependencies": [
-        "@alego/.+",
+        "@singula-ai/.+",
         "@cordisjs/.+"
       ]`,
     replace: `    "packages/bundle/base": {
       "ignoreDependencies": [
-        "@alego/.+"
+        "@singula-ai/.+"
       ]`,
     expect: 1,
   },
@@ -243,24 +243,24 @@ const EXACT_EDITS: readonly ExactEdit[] = [
   {
     id: 'publication-set-scope-assertion',
     file: 'scripts/publish-npm-baseline.ts',
-    find: '      if (!isVendored && !name.startsWith(\'@alego/\')) {',
+    find: '      if (!isVendored && !name.startsWith(\'@singula-ai/\')) {',
     replace: `      // Vendored packages are rescoped too (vendor/README.md), so publication
       // never carries an upstream name that would squat it on the registry.
-      if (!name.startsWith('@alego/')) {`,
+      if (!name.startsWith('@singula-ai/')) {`,
     expect: 1,
   },
   {
     id: 'vendor-readme-preamble',
     file: 'vendor/README.md',
     find: 'All vendored packages keep their **original npm names** and are marked `private: true` — they are never published from this repo. `pnpm-workspace.yaml#linkWorkspacePackages` makes matching upstream semver ranges resolve these pinned workspaces, including imports from built `lib/`; disabling it substitutes npm copies behind the same names.',
-    replace: 'All vendored packages are **renamed into the `@alego` scope** (`cordis` → `@alego/cordis`, `@cordisjs/plugin-<x>` → `@alego/cordis-plugin-<x>`): every harness package declares `cordis` as a peer dependency, so publishing the harness publishes this framework layer too, and a publication under the upstream names would squat them on the registry. Directory names and upstream version numbers are deliberately unchanged, so the manifest below still reads as an upstream snapshot. `pnpm-workspace.yaml#linkWorkspacePackages` makes those preserved semver ranges resolve these pinned workspaces, including imports from built `lib/`.',
+    replace: 'All vendored packages are **renamed into the `@singula-ai` scope** (`cordis` → `@singula-ai/cordis`, `@cordisjs/plugin-<x>` → `@singula-ai/cordis-plugin-<x>`): every harness package declares `cordis` as a peer dependency, so publishing the harness publishes this framework layer too, and a publication under the upstream names would squat them on the registry. Directory names and upstream version numbers are deliberately unchanged, so the manifest below still reads as an upstream snapshot. `pnpm-workspace.yaml#linkWorkspacePackages` makes those preserved semver ranges resolve these pinned workspaces, including imports from built `lib/`.',
     expect: 1,
   },
   {
     id: 'vendor-readme-schemastery-note',
     file: 'vendor/README.md',
     find: 'whose lazy `require(\'cosmokit\')` can race',
-    replace: 'whose lazy `require(\'@alego/cosmokit\')` can race',
+    replace: 'whose lazy `require(\'@singula-ai/cosmokit\')` can race',
     expect: 1,
   },
   {
@@ -275,14 +275,14 @@ const EXACT_EDITS: readonly ExactEdit[] = [
     id: 'agent-spine-demo-mounted-tree',
     file: 'packages/examples/agent-spine-demo/README.md',
     find: '@cordisjs/plugin-timer            timer service',
-    replace: '@alego/cordis-plugin-timer  timer service',
+    replace: '@singula-ai/cordis-plugin-timer  timer service',
     expect: 1,
   },
   {
     id: 'agent-spine-demo-mounted-tree-zh',
     file: 'packages/examples/agent-spine-demo/README.zh.md',
     find: '@cordisjs/plugin-timer            timer service',
-    replace: '@alego/cordis-plugin-timer  timer service',
+    replace: '@singula-ai/cordis-plugin-timer  timer service',
     expect: 1,
   },
   {
@@ -290,11 +290,11 @@ const EXACT_EDITS: readonly ExactEdit[] = [
     id: 'root-agents-vendored-name-contract',
     file: 'AGENTS.md',
     find: 'vendored packages keep upstream names and are `private: true`. `cordis` is a peerDependency (+ dev) of every harness package.',
-    replace: 'vendored packages are rescoped ([mapping](docs/rescope.md)) and `private: true`. `@alego/cordis` is a peerDependency (+ dev) of every harness package.',
+    replace: 'vendored packages are rescoped ([mapping](docs/rescope.md)) and `private: true`. `@singula-ai/cordis` is a peerDependency (+ dev) of every harness package.',
     expect: 1,
   },
   {
-    // The client purity gate reads `@alego/` as "another plugin package".
+    // The client purity gate reads `@singula-ai/` as "another plugin package".
     // The rescope moves the vendored framework and its libraries into that
     // namespace, where the gate would reject the library imports client
     // bundles have always inlined, so it needs their names.
@@ -302,12 +302,12 @@ const EXACT_EDITS: readonly ExactEdit[] = [
     file: 'packages/client/tsdown.client.ts',
     find: '/** Generated descriptor/codec contribution with no shared runtime identity. */',
     replace: `/**
- * Vendored framework libraries: rescoped into @alego, so the gate below
+ * Vendored framework libraries: rescoped into @singula-ai, so the gate below
  * would read them as plugin packages. They carry no cross-plugin runtime
  * identity to share — the framework itself is a requested module-table row
  * (external), while these are ordinary libraries a browser bundle inlines.
  */
-const VENDORED_LIBRARY = /^@alego\\/(cosmokit|schemastery)(\\/|$)/
+const VENDORED_LIBRARY = /^@singula-ai\\/alego-(cosmokit|schemastery)(\\/|$)/
 
 /** Generated descriptor/codec contribution with no shared runtime identity. */`,
     expect: 1,
@@ -356,14 +356,14 @@ const VENDORED_LIBRARY = /^@alego\\/(cosmokit|schemastery)(\\/|$)/
     id: 'agent-preset-spec-framework-import',
     file: 'packages/client/ui-agent-preset/tests/apply.client.spec.ts',
     find: "import { Context } from 'cordis'",
-    replace: "import { Context } from '@alego/cordis'",
+    replace: "import { Context } from '@singula-ai/cordis'",
     expect: 1,
   },
   {
     id: 'web-agent-presets-e2e-framework-import',
     file: 'apps/cli/tests/web-agent-presets.e2e.ts',
     find: "import { Context } from 'cordis'",
-    replace: "import { Context } from '@alego/cordis'",
+    replace: "import { Context } from '@singula-ai/cordis'",
     expect: 1,
   },
   {
@@ -401,7 +401,7 @@ const VENDORED_LIBRARY = /^@alego\\/(cosmokit|schemastery)(\\/|$)/
     id: 'notices-vendored-section',
     file: 'scripts/gen-third-party-notices.ts',
     find: 'The Cordis framework and its foundation libraries are source-vendored into this repository rather than consumed from npm. All are MIT-licensed',
-    replace: 'The Cordis framework and its foundation libraries are source-vendored into this repository rather than consumed from npm, and republished under the \\`@alego\\` scope. All are MIT-licensed',
+    replace: 'The Cordis framework and its foundation libraries are source-vendored into this repository rather than consumed from npm, and republished under the \\`@singula-ai\\` scope. All are MIT-licensed',
     expect: 1,
   },
   {
@@ -420,7 +420,7 @@ const VENDORED_LIBRARY = /^@alego\\/(cosmokit|schemastery)(\\/|$)/
     file: 'scripts/gen-third-party-notices.spec.ts',
     find: '    expect(rows).toContainEqual({ npmName: \'cordis\', upstream: \'https://github.com/cordiverse/cordis\' })',
     replace: `    expect(rows).toContainEqual({
-      npmName: '@alego/cordis',
+      npmName: '@singula-ai/cordis',
       upstreamName: 'cordis',
       upstream: 'https://github.com/cordiverse/cordis',
     })`,
@@ -430,7 +430,7 @@ const VENDORED_LIBRARY = /^@alego\\/(cosmokit|schemastery)(\\/|$)/
     id: 'notices-spec-shape-fixture',
     file: 'scripts/gen-third-party-notices.spec.ts',
     find: 'parseVendoredRows(\'| `cordis/` | cordis | 4.0.0 | https://example.com | `abc123` |\\n\')',
-    replace: 'parseVendoredRows(\'| `cordis/` | `@alego/cordis` | cordis | 4.0.0 | https://example.com | `abc123` |\\n\')',
+    replace: 'parseVendoredRows(\'| `cordis/` | `@singula-ai/cordis` | cordis | 4.0.0 | https://example.com | `abc123` |\\n\')',
     expect: 1,
   },
   {
@@ -442,7 +442,7 @@ const VENDORED_LIBRARY = /^@alego\\/(cosmokit|schemastery)(\\/|$)/
 ]`,
     replace: `  'packages/runtime-diagnostics/invariants',
   // The framework and the vendored packages the closure declares outright:
-  // rescoped into @alego, so the consumer installs this repository's
+  // rescoped into @singula-ai, so the consumer installs this repository's
   // copies. Schemastery is a hard dependency of three members above, not a
   // peer, so npm resolves it while installing them.
   'vendor/cordis',

@@ -1,4 +1,4 @@
-# @alego/workspace
+# @singula-ai/alego-workspace
 
 [English](README.md) | 中文
 

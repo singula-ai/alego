@@ -12,7 +12,7 @@ host 与 client 属于独立 TypeScript project；把两者放进同一个 `ts.P
 
 ## Decision
 
-[`alego-typert-generator`](../../../../packages/typert/generator/README.zh.md) 分别从 host 和 client project 建立 `ts.Program`，只把 compiler node、symbol 和 checker 当作提取工具。分析结束后，所有生成器和扫描器只消费 Typert 自有的 `WorkspaceModel`、`FaceModel` 与 `TypeGraph`，模型中不保留 AST 或 checker 对象。生成器不依赖 `@alego/typert-registry`。
+[`alego-typert-generator`](../../../../packages/typert/generator/README.zh.md) 分别从 host 和 client project 建立 `ts.Program`，只把 compiler node、symbol 和 checker 当作提取工具。分析结束后，所有生成器和扫描器只消费 Typert 自有的 `WorkspaceModel`、`FaceModel` 与 `TypeGraph`，模型中不保留 AST 或 checker 对象。生成器不依赖 `@singula-ai/alego-typert-registry`。
 
 TypeGraph 保存开发者写下的计算前类型结构，包括泛型参数与应用、显式继承、conditional、mapped、递归引用和 JSDoc。无法无损表示的可达类型使分析失败；某个 emitter 无法处理已经建模的节点时由该 emitter 失败，而不是把类型展平或降级为 `unknown`。
 

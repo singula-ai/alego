@@ -1,12 +1,12 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { Context, Service, symbols } from '@alego/cordis'
-import { createUserMessage, freezeMessage } from '@alego/llm'
-import { Session, SessionId, type UserMessage } from '@alego/session'
+import { Context, Service, symbols } from '@singula-ai/cordis'
+import { createUserMessage, freezeMessage } from '@singula-ai/alego-llm'
+import { Session, SessionId, type UserMessage } from '@singula-ai/alego-session'
 import AgentRegistry, {
   agentEvents,
   Inbox,
-} from '@alego/agent'
-import TypertRegistry from '@alego/typert-registry'
+} from '@singula-ai/alego-agent'
+import TypertRegistry from '@singula-ai/alego-typert-registry'
 
 import type {
   Agent,
@@ -15,7 +15,7 @@ import type {
   AgentStatus,
   CreateAgentOptions,
   ResumeAgentOptions,
-} from '@alego/agent'
+} from '@singula-ai/alego-agent'
 
 function stubAgent(rawId: string, overrides: Partial<Agent> = {}): Agent {
   const id = SessionId(rawId)
@@ -155,8 +155,8 @@ describe('AgentRegistry', () => {
     expect(lookup).toMatchObject({
       parameter: 'agent',
       wire: 'agentId',
-      hostTypeSymbol: '@alego/agent#Agent',
-      wireTypeSymbol: '@alego/session/types#SessionId',
+      hostTypeSymbol: '@singula-ai/alego-agent#Agent',
+      wireTypeSymbol: '@singula-ai/alego-session/types#SessionId',
     })
     expect(lookup?.resolve(agent.id)).toBe(agent)
     expect(ctx.typert.contexts.getHost('agent')?.resolve(agent.id)).toBe(agent.ctx)

@@ -77,13 +77,13 @@
         "**/*.ts"
       ],
       "ignoreDependencies": [
-        "@alego/.+"
+        "@singula-ai/.+"
       ]
     },
     "packages/host/directory-picker-auto": {
       "ignoreDependencies": [
-        "@alego/client-ui-directory-picker-browse",
-        "@alego/client-ui-directory-picker-native"
+        "@singula-ai/alego-client-ui-directory-picker-browse",
+        "@singula-ai/alego-client-ui-directory-picker-native"
       ]
     },
     "packages/extensions/cordis-host-runner": {
@@ -117,7 +117,7 @@
         "tests/**/*.ts"
       ],
       "ignoreDependencies": [
-        "@alego/api-gateway"
+        "@singula-ai/alego-api-gateway"
       ]
     },
     "packages/client/ui-primitives": {
@@ -619,8 +619,8 @@
         "tests/**/*.ts"
       ],
       "ignoreDependencies": [
-        "@alego/client-ui-primitives",
-        "@alego/client-ui-slots",
+        "@singula-ai/alego-client-ui-primitives",
+        "@singula-ai/alego-client-ui-slots",
         "@types/react",
         "@types/react-dom",
         "react",
@@ -638,7 +638,7 @@
         "tests/**/*.ts"
       ],
       "ignoreDependencies": [
-        "@alego/.+"
+        "@singula-ai/.+"
       ]
     },
     "packages/subagent/subagent-alego-sdk": {
@@ -653,17 +653,17 @@
     },
     "packages/bundle/base": {
       "ignoreDependencies": [
-        "@alego/.+"
+        "@singula-ai/.+"
       ]
     },
     "packages/bundle/headless": {
       "ignoreDependencies": [
-        "@alego/code-runtime-worker-thread"
+        "@singula-ai/alego-code-runtime-worker-thread"
       ]
     },
     "packages/bundle/web-app": {
       "ignoreDependencies": [
-        "@alego/.+"
+        "@singula-ai/.+"
       ]
     }
   }

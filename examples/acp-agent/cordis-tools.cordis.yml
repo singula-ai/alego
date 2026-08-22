@@ -1,12 +1,12 @@
 # Add the self-referential Cordis tools without changing the base ACP tool
 # presentation mode.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - insert:
           - id: cordis-host-runner
-            name: '@alego/cordis-host-runner'
+            name: '@singula-ai/alego-cordis-host-runner'
           - id: tool-cordis
-            name: '@alego/tool-cordis'
+            name: '@singula-ai/alego-tool-cordis'

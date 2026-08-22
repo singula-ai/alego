@@ -41,7 +41,7 @@ Cordis 是 Alego 底层以 vendor 方式引入的插件框架。本文介绍 har
 
 ## Loader 配置
 
-`@alego/cordis-plugin-include` 将 `!!js` 解析为表达式节点。Loader 在声明的注入激活后，基于该插件上下文（`ctx.serviceName`）插值条目的 `config`，并在每次挂载决策时基于 loader 上下文插值其 `disabled` 字段；Include 会保留嵌套行表达式，直到目标行激活。其余条目元数据保持字面值。由环境选择插件时，请使用 overlay。
+`@singula-ai/cordis-plugin-include` 将 `!!js` 解析为表达式节点。Loader 在声明的注入激活后，基于该插件上下文（`ctx.serviceName`）插值条目的 `config`，并在每次挂载决策时基于 loader 上下文插值其 `disabled` 字段；Include 会保留嵌套行表达式，直到目标行激活。其余条目元数据保持字面值。由环境选择插件时，请使用 overlay。
 
 ## 实践规则
 

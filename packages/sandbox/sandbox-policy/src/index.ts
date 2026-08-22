@@ -15,16 +15,16 @@
  * reads session state once at each operation boundary; executors and providers
  * remain session-free.
  *
- * @module @alego/sandbox-policy
+ * @module @singula-ai/alego-sandbox-policy
  */
 
 import { resolve as resolvePath } from 'node:path'
-import { Context, Service } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type {} from '@alego/agent'
-import { canonicalPath, type SandboxExecutionPolicy, type SandboxMode } from '@alego/sandbox'
-import type { Session } from '@alego/session'
-import type {} from '@alego/system-prompt'
+import { Context, Service } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type {} from '@singula-ai/alego-agent'
+import { canonicalPath, type SandboxExecutionPolicy, type SandboxMode } from '@singula-ai/alego-sandbox'
+import type { Session } from '@singula-ai/alego-session'
+import type {} from '@singula-ai/alego-system-prompt'
 import { effectiveSandboxMode } from './session-mode.ts'
 
 export { SANDBOX_MODES, effectiveSandboxMode, setSandboxMode } from './session-mode.ts'
@@ -51,7 +51,7 @@ function renderPolicyContext(policy: SandboxExecutionPolicy): string {
   }
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     sandboxPolicy: SandboxPolicyService
   }

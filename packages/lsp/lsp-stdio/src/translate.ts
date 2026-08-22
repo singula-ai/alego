@@ -2,7 +2,7 @@
  * Pure protocol translation for the local host: what the server's capabilities allow, and how its
  * `Location`/`LocationLink`/`Hover` payloads normalize into the seam's closed result unions. No I/O
  * or process state — every function here is a pure transform, which the fake-stdio tests pin exactly.
- * @module @alego/lsp-stdio/translate
+ * @module @singula-ai/alego-lsp-stdio/translate
  */
 
 import type {
@@ -10,9 +10,9 @@ import type {
   LspLocation,
   LspOperation,
   LspRange,
-} from '@alego/lsp'
-import { LspError } from '@alego/lsp'
-import { assertNever } from '@alego/llm'
+} from '@singula-ai/alego-lsp'
+import { LspError } from '@singula-ai/alego-lsp'
+import { assertNever } from '@singula-ai/alego-llm'
 import type {
   WireHover,
   WireLocation,

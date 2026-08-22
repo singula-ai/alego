@@ -1,4 +1,4 @@
-import { CredentialProvider } from '@alego/credentials'
+import { CredentialProvider } from '@singula-ai/alego-credentials'
 import type {
   CredentialInfo,
   CredentialKey,
@@ -7,7 +7,7 @@ import type {
   CredentialRecordInfo,
   CredentialRef,
   ResolvedCredential,
-} from '@alego/credentials'
+} from '@singula-ai/alego-credentials'
 
 /**
  * In-memory credentials provider for the authorization suite. Only the record

@@ -1,4 +1,4 @@
-# @alego/client-ui-trajectory
+# @singula-ai/alego-client-ui-trajectory
 
 English | [中文](README.zh.md)
 

@@ -1,7 +1,7 @@
 import type {
   ConversationSnapshot, ToolCallBlock,
-} from '@alego/client-runtime/client'
-import { conversationContextKey } from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
+import { conversationContextKey } from '@singula-ai/alego-client-runtime/client'
 import type { ChatNode } from '../contract/chat-nodes.ts'
 
 function toolNode(node: ReturnType<ConversationSnapshot['chat']['nodes']['get']>): ChatNode<'tool-call'> | undefined {

@@ -6,15 +6,15 @@
 // and the invariant companion ride along — one line exposes the aggregate
 // coverage gate still requires exercised.
 
-import { Context } from '@alego/cordis'
-import { stubSettingsScope } from '@alego/client-test-runtime'
+import { Context } from '@singula-ai/cordis'
+import { stubSettingsScope } from '@singula-ai/alego-client-test-runtime'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { SlotRegistry } from '@alego/client-runtime/client'
-import { LocaleRuntime } from '@alego/client-locale/client'
-import { apply as themeApply, inject as themeInject, ThemeRuntime } from '@alego/client-ui-theme/client'
-import { apply, inject, LayoutController } from '@alego/client-ui-layout/client'
-import { apply as nodeApply } from '@alego/client-ui-layout'
-import * as invariant from '@alego/client-ui-layout/invariant'
+import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import { LocaleRuntime } from '@singula-ai/alego-client-locale/client'
+import { apply as themeApply, inject as themeInject, ThemeRuntime } from '@singula-ai/alego-client-ui-theme/client'
+import { apply, inject, LayoutController } from '@singula-ai/alego-client-ui-layout/client'
+import { apply as nodeApply } from '@singula-ai/alego-client-ui-layout'
+import * as invariant from '@singula-ai/alego-client-ui-layout/invariant'
 
 beforeEach(() => {
   document.head.querySelectorAll('meta[name="theme-color"]').forEach((node) => { node.remove() })
@@ -117,7 +117,7 @@ describe('node half + invariant companion', () => {
     // The /invariant subpath types live in lib/types (build product); assert
     // the API so the call stays typed where lint runs without a build.
     const dispose = await (invariant as { apply: (ctx: never) => Promise<() => void> }).apply(ctx)
-    expect(register).toHaveBeenCalledWith('@alego/client-ui-layout', expect.any(Function))
+    expect(register).toHaveBeenCalledWith('@singula-ai/alego-client-ui-layout', expect.any(Function))
     // The installer is the declared no-op — calling it must not throw.
     expect(() => { (register.mock.calls[0]![1] as (c: never) => void)(undefined as never) }).not.toThrow()
     expect(dispose).toBeTypeOf('function')

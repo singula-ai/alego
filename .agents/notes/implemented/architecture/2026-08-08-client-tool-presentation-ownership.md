@@ -12,7 +12,7 @@ Tool presentation needed an independent owner without adding a second registry b
 
 ## Decision
 
-Tool is a first-class Client UI presentation concept. `@alego/client-ui-tool` owns root/subcall composition, atomic renderer dispatch by wire Tool name, the Generic fallback, card models, and details output. Business plugins register only their atomic Tool renderers and do not modify conversation or Session.
+Tool is a first-class Client UI presentation concept. `@singula-ai/alego-client-ui-tool` owns root/subcall composition, atomic renderer dispatch by wire Tool name, the Generic fallback, card models, and details output. Business plugins register only their atomic Tool renderers and do not modify conversation or Session.
 
 Conversation data assembly follows the later [Conversation business-node decision](2026-08-09-client-conversation-node-assembly.md). The `ui-conversation` Tool Definition pairs root call/result Session Events, folds Code Dispatch edges into recursive `ToolCallBlock.subCalls`, and emits one stable `tool-call` Chat Node. This data responsibility handles only official Tool identity and topology; it does not interpret presentation for concrete Tool names.
 

@@ -125,7 +125,7 @@ it('boots the built plugin graph and renders a fixture session end to end', asyn
   // Every bundle injected its plugin-owned style tag (the loader's CSS path).
   const styleOwners = [...document.head.querySelectorAll('style[data-plugin]')]
     .map(style => style.getAttribute('data-plugin'))
-  for (const plugin of ['@alego/client-ui-layout', '@alego/client-ui-sidebar', '@alego/client-ui-conversation', '@alego/client-ui-tool']) {
+  for (const plugin of ['@singula-ai/alego-client-ui-layout', '@singula-ai/alego-client-ui-sidebar', '@singula-ai/alego-client-ui-conversation', '@singula-ai/alego-client-ui-tool']) {
     expect(styleOwners).toContain(plugin)
   }
 })

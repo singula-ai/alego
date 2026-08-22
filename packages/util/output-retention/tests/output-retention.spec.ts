@@ -6,7 +6,7 @@ import {
   type Omitted,
   type RetentionNotice,
   TextRetainer,
-} from '@alego/output-retention'
+} from '@singula-ai/alego-output-retention'
 
 /** Decode a RetainedText via a round-trip helper for readable UTF-8 assertions. */
 const utf8 = (s: string): Uint8Array => new TextEncoder().encode(s)

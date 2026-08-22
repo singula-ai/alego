@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { zstdCompressSync } from 'node:zlib'
-import type { SessionEvent } from '@alego/session'
-import { CallId, type StreamChunk } from '@alego/llm'
+import type { SessionEvent } from '@singula-ai/alego-session'
+import { CallId, type StreamChunk } from '@singula-ai/alego-llm'
 import {
   decodeStorageRecord,
   MAX_PACKED_DATA_BYTES,

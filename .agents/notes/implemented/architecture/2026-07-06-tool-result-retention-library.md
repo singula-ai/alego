@@ -12,7 +12,7 @@ The shared abstraction the tools need is **retention**, not generic collection. 
 
 ## Decision
 
-`@alego/output-retention` lives under `packages/util/` (peer to `alego-brand` and `alego-timeout`) and owns bounded model-facing output. It is a library of pure classes and functions, **not** a Cordis service or plugin: it takes no `ctx`, registers nothing, holds no cross-call state, and emits no events. Tool packages import it directly when they need bounded output.
+`@singula-ai/alego-output-retention` lives under `packages/util/` (peer to `alego-brand` and `alego-timeout`) and owns bounded model-facing output. It is a library of pure classes and functions, **not** a Cordis service or plugin: it takes no `ctx`, registers nothing, holds no cross-call state, and emits no events. Tool packages import it directly when they need bounded output.
 
 The library has two independent retainers:
 
@@ -136,7 +136,7 @@ The formatter hook is deliberately small: a tool turns a `RetentionNotice` into 
 
 ## Consequences
 
-**What shipped.** `@alego/output-retention` exports `ItemRetainer`, `TextRetainer`, the result types (`RetainedItems`, `RetainedText`), the strategy types (`ItemRetentionStrategy`, `TextRetentionStrategy`), `Omitted`, `PushDecision`, `RetentionNotice`, and the neutral notice helpers `describeOmitted` / `formatRetentionNotice` — with no dependency on Cordis or any tool package. Unit tests cover item-head retention with exact omission counts, text-head retention, text-tail retention, head-tail byte retention, zero budgets, UTF-8 boundary handling (2-, 3-, and 4-byte codepoints and invalid lead bytes at each cut), and unknown omission wording.
+**What shipped.** `@singula-ai/alego-output-retention` exports `ItemRetainer`, `TextRetainer`, the result types (`RetainedItems`, `RetainedText`), the strategy types (`ItemRetentionStrategy`, `TextRetentionStrategy`), `Omitted`, `PushDecision`, `RetentionNotice`, and the neutral notice helpers `describeOmitted` / `formatRetentionNotice` — with no dependency on Cordis or any tool package. Unit tests cover item-head retention with exact omission counts, text-head retention, text-tail retention, head-tail byte retention, zero budgets, UTF-8 boundary handling (2-, 3-, and 4-byte codepoints and invalid lead bytes at each cut), and unknown omission wording.
 
 **What is documented but not yet migrated.** `glob`, `grep`, `bash`, `web_fetch`, and `web_search` have their mappings documented in the [package README](../../../../packages/util/output-retention/README.md), but not every tool has been migrated onto the library in this change; migration is deliberately separate follow-up work. `read` is documented as intentionally out of scope: its `read-render` line-window contract (`offset`/`limit`, `totalLines`, offset-range errors, per-line preview truncation, a byte cap over the selected window) is not generic retention, and one `Omitted` count cannot represent both sides of a line window.
 

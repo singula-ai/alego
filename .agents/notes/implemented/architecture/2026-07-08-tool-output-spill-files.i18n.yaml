@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-08-tool-output-spill-files.md
-2026-07-08-tool-output-spill-files.md: 35d5855c55eb17f5414349109097af4b78bbb5df
-2026-07-08-tool-output-spill-files.zh.md: 224fd3204819aa814074d4d58c2c19944ca338a6
+2026-07-08-tool-output-spill-files.md: 7d0c57126ff0bbc3312ca01dc1a5284d9a9c2bbb
+2026-07-08-tool-output-spill-files.zh.md: f252fba524b8553c40c3251342a30bee1cb9c656

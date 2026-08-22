@@ -2,12 +2,12 @@
  * Service Definition for the same-world process-confinement capability seam: wrap exact subprocess argv under a
  * host-path file policy. Containers, microVMs, and remote execution replace the
  * surrounding capability seam instead; this service shares the host kernel and filesystem.
- * @module @alego/sandbox
+ * @module @singula-ai/alego-sandbox
  */
 
-import { Context, Service } from '@alego/cordis'
-import { HarnessError } from '@alego/llm'
-import type { SessionId } from '@alego/session'
+import { Context, Service } from '@singula-ai/cordis'
+import { HarnessError } from '@singula-ai/alego-llm'
+import type { SessionId } from '@singula-ai/alego-session'
 
 export {
   ESCALATION_TARGETS,
@@ -143,7 +143,7 @@ export class SandboxUnavailableError extends HarnessError {
   }
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     sandbox: SandboxProvider
   }

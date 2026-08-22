@@ -2,7 +2,7 @@
  * Path-containment mechanics for the filesystem sandbox. Canonical spellings
  * take the fast lexical path; filesystem identity supplies the conservative
  * fallback for alias-equivalent roots such as Windows 8.3 names and casing.
- * @module @alego/fs-sandbox/containment
+ * @module @singula-ai/alego-fs-sandbox/containment
  */
 
 import type { BigIntStats } from 'node:fs'

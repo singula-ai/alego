@@ -1,8 +1,8 @@
-# @alego/pwsh-local
+# @singula-ai/alego-pwsh-local
 
 English | [中文](README.zh.md)
 
-Local PowerShell Service Provider for the `@alego/shell` executor seam over the [`@alego/subprocess`](../../subprocess/subprocess/README.md) service: `PwshLocalExecutor` spawns `pwsh -NoLogo -NoProfile -NonInteractive -Command <command>` per call as a managed process through `ctx.subprocess`, and owns everything PowerShell-shaped — executable resolution, command defaulting and caps, timeout/cancel classification, the model-friendly terminal environment, and the model-facing stdout/stderr merge for background reads. Group mechanics (bounded spill-backed output, credential scrub, kill escalation, disposal) are the subprocess service's.
+Local PowerShell Service Provider for the `@singula-ai/alego-shell` executor seam over the [`@singula-ai/alego-subprocess`](../../subprocess/subprocess/README.md) service: `PwshLocalExecutor` spawns `pwsh -NoLogo -NoProfile -NonInteractive -Command <command>` per call as a managed process through `ctx.subprocess`, and owns everything PowerShell-shaped — executable resolution, command defaulting and caps, timeout/cancel classification, the model-friendly terminal environment, and the model-facing stdout/stderr merge for background reads. Group mechanics (bounded spill-backed output, credential scrub, kill escalation, disposal) are the subprocess service's.
 
 The command string rides as ONE argv element to `-Command`: PowerShell itself parses the text, and no intermediate shell exists, so there is no shell-quoting layer to escape (the `bash -c` string domain has no equivalent here). Native Win32 paths (`C:\...`) pass through unchanged.
 
@@ -12,7 +12,7 @@ The package root exports the default and named `PwshLocalExecutor` plugin, its `
 
 ```yaml
 - id: bash
-  name: '@alego/pwsh-local'
+  name: '@singula-ai/alego-pwsh-local'
   config:
     cwd: C:\path\to\workspace   # default: process.cwd()
     timeoutMs: 120000           # default foreground timeout

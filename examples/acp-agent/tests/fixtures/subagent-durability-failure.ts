@@ -1,5 +1,5 @@
-import type { Context } from '@alego/cordis'
-import { SessionId } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import { SessionId } from '@singula-ai/alego-session'
 
 export const name = 'subagent-durability-failure'
 export const inject = ['agents', 'sessionPersistence', 'subagents']

@@ -10,16 +10,16 @@
  * plugin fiber (HMR safety). The node half and the invariant companion are
  * exercised over the same Context.
  */
-import { Context, Service } from '@alego/cordis'
+import { Context, Service } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
 import { afterEach } from 'vitest'
-import { SlotRegistry, type SessionId } from '@alego/client-runtime/client'
-import { ConversationEventRegistry } from '@alego/client-runtime/src/client/conversation/event-registry.ts'
-import type { GoalProjection } from '@alego/goal/client'
-import { LocaleRuntime } from '@alego/client-locale/client'
-import { makeTranslate } from '@alego/client-test-runtime'
-import { zh as commonZh } from '@alego/client-locale/src/locales/zh.ts'
+import { SlotRegistry, type SessionId } from '@singula-ai/alego-client-runtime/client'
+import { ConversationEventRegistry } from '@singula-ai/alego-client-runtime/src/client/conversation/event-registry.ts'
+import type { GoalProjection } from '@singula-ai/alego-goal/client'
+import { LocaleRuntime } from '@singula-ai/alego-client-locale/client'
+import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
 import type { GoalBarActions } from '../src/client/slots.ts'
 import { apply, inject } from '../src/client/index.ts'
 import { GoalDock } from '../src/client/GoalBar.tsx'

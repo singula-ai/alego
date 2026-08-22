@@ -7,14 +7,14 @@
  */
 
 import { describe, expect, it, beforeEach, afterEach } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { mkdtempSync, readFileSync, rmSync, statSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { basename, dirname, isAbsolute, join, normalize } from 'node:path'
-import { CallId } from '@alego/llm'
-import { SessionId } from '@alego/session'
-import type { SaveTextSpill } from '@alego/spill'
-import LocalSpillStore, { encodeSegment, privateRoot, saveTextFile, sessionDir } from '@alego/spill-local'
+import { CallId } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
+import type { SaveTextSpill } from '@singula-ai/alego-spill'
+import LocalSpillStore, { encodeSegment, privateRoot, saveTextFile, sessionDir } from '@singula-ai/alego-spill-local'
 
 let root: string
 

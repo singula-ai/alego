@@ -2,8 +2,8 @@
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, waitFor } from '@testing-library/react'
-import { AttachmentId } from '@alego/attachment'
-import type { MessageImagesProps } from '@alego/client-ui-conversation/client'
+import { AttachmentId } from '@singula-ai/alego-attachment'
+import type { MessageImagesProps } from '@singula-ai/alego-client-ui-conversation/client'
 import { ImageGallery, MessageImage } from '../src/MessageImage.tsx'
 import type { MessageImageLabels } from '../src/MessageImage.tsx'
 import { MessageImages } from '../src/client/MessageImages.tsx'

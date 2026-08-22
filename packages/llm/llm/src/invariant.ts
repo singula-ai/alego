@@ -1,10 +1,10 @@
-/** Package-owned LLM stream-protocol invariants. @module @alego/llm/invariant */
+/** Package-owned LLM stream-protocol invariants. @module @singula-ai/alego-llm/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 import type { ContentBlockType, StreamChunk } from './types.ts'
 
-const PACKAGE_NAME = '@alego/llm'
+const PACKAGE_NAME = '@singula-ai/alego-llm'
 
 /** Cordis companion plugin name. */
 export const name = 'llm-invariant'

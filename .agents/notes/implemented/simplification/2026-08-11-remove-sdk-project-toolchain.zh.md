@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-仓库曾包含一套从未发布且没有消费方的开发者项目产品。`@alego/create-sdk` 用于生成可编辑的 Cordis 项目；`@alego/scripts` 提供 `alego-sdk` 的开发、构建、启动、配置和插件安装命令；`@alego/helper` 协调功能定义与多文件项目编辑；`@alego/telemetry` 上报启动器活动。该设计旨在让生成的项目保持可编辑，并使项目创建与后续配置对依赖、Cordis 配置项、环境变量占位符和归属文件采用同一套定义。
+仓库曾包含一套从未发布且没有消费方的开发者项目产品。`@singula-ai/alego-create-sdk` 用于生成可编辑的 Cordis 项目；`@singula-ai/alego-scripts` 提供 `alego-sdk` 的开发、构建、启动、配置和插件安装命令；`@singula-ai/alego-helper` 协调功能定义与多文件项目编辑；`@singula-ai/alego-telemetry` 上报启动器活动。该设计旨在让生成的项目保持可编辑，并使项目创建与后续配置对依赖、Cordis 配置项、环境变量占位符和归属文件采用同一套定义。
 
 没有任何项目是通过公开发布版创建的，当前仓库和外部消费方也都不需要这套生命周期。保留它就意味着继续维护 4 个包、2 套交互式命令产品、项目模板、包管理器适配器、配置调和、启动器遥测、1 个仓库 skill（技能）及其测试和文档，却没有证据表明这项产品边界应当存在。
 
@@ -14,9 +14,9 @@ Status: implemented
 
 ## 决策
 
-删除 SDK 项目工具链。`@alego/create-sdk`、`@alego/scripts`、`@alego/helper` 和 `@alego/telemetry` 包及其二进制文件、测试、模板、功能目录、项目编辑模型、包管理器支持、启动器遥测和仓库项目创建 skill 均不提供替代实现或兼容层。与其对应的 workspace、构建、测试、打包、文档生成器、vendor scope 重写和依赖记录也一并移除。
+删除 SDK 项目工具链。`@singula-ai/alego-create-sdk`、`@singula-ai/alego-scripts`、`@singula-ai/alego-helper` 和 `@singula-ai/alego-telemetry` 包及其二进制文件、测试、模板、功能目录、项目编辑模型、包管理器支持、启动器遥测和仓库项目创建 skill 均不提供替代实现或兼容层。与其对应的 workspace、构建、测试、打包、文档生成器、vendor scope 重写和依赖记录也一并移除。
 
-保留运行时 SDK。`@alego/sdk-client`、`@alego/sdk-protocol` 和 `@alego/sdk-jsonrpc-server` 保持原样，从 `packages/scaffold/` 移至 `packages/sdk/`；其 npm 名称和协议交互行为保持不变。消费方继续提供一个可执行文件和一份外置 `cordis.yml`，JSON-RPC 服务器仍是由该配置选择的普通插件。[仓库命名约定](../architecture/2026-08-11-repository-naming-contract-and-rename-ledger.zh.md)负责规定 `SDK` 在仓库中的唯一含义和保留的包名；本说明负责记录已删除的工具链。
+保留运行时 SDK。`@singula-ai/alego-sdk-client`、`@singula-ai/alego-sdk-protocol` 和 `@singula-ai/alego-sdk-jsonrpc-server` 保持原样，从 `packages/scaffold/` 移至 `packages/sdk/`；其 npm 名称和协议交互行为保持不变。消费方继续提供一个可执行文件和一份外置 `cordis.yml`，JSON-RPC 服务器仍是由该配置选择的普通插件。[仓库命名约定](../architecture/2026-08-11-repository-naming-contract-and-rename-ledger.zh.md)负责规定 `SDK` 在仓库中的唯一含义和保留的包名；本说明负责记录已删除的工具链。
 
 被取消的开发者项目、项目编辑和后续能力提案予以删除，而不是保留为活跃或已否决记录。本 Agent Note 保留这些提案共有的动机、不交付该产品的决策、放弃的能力，以及重新考虑这一决定的条件。已冻结的归档 Agent Note 仍是历史快照，不作修改。
 

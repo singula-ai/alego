@@ -1,4 +1,4 @@
-# @alego/tool-pwsh-persistent
+# @singula-ai/alego-tool-pwsh-persistent
 
 [English](README.md) | 中文
 
@@ -19,7 +19,7 @@
 
 #### 模型看到什么
 
-生成的 [`pwsh` schema](../../../docs/tool-catalog.zh.md#alegotool-pwsh-persistent)，含配置的 `description`。本插件不贡献独立的 system-prompt 段落；persona 与环境指引由部署方负责。
+生成的 [`pwsh` schema](../../../docs/tool-catalog.zh.md#singula-aialego-tool-pwsh-persistent)，含配置的 `description`。本插件不贡献独立的 system-prompt 段落；persona 与环境指引由部署方负责。
 
 #### Token 影响
 

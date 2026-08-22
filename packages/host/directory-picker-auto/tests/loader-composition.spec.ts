@@ -13,13 +13,13 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import Include from '@alego/cordis-plugin-include'
-import HttpServer from '@alego/host-webserver'
-import type { DirectoryPicker } from '@alego/host-directory-picker'
-import BrowseDirectoryPicker from '@alego/host-directory-picker-browse'
-import NativeDirectoryPicker from '@alego/host-directory-picker-native'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include from '@singula-ai/cordis-plugin-include'
+import HttpServer from '@singula-ai/alego-host-webserver'
+import type { DirectoryPicker } from '@singula-ai/alego-host-directory-picker'
+import BrowseDirectoryPicker from '@singula-ai/alego-host-directory-picker-browse'
+import NativeDirectoryPicker from '@singula-ai/alego-host-directory-picker-native'
 import * as DirectoryPickerAuto from '../src/index.ts'
 
 const renameControl = vi.hoisted(() => ({
@@ -45,11 +45,11 @@ vi.mock('node:fs/promises', async (importOriginal) => {
   }
 })
 
-const AUTO = '@alego/host-directory-picker-auto'
-const NATIVE = '@alego/host-directory-picker-native'
-const BROWSE = '@alego/host-directory-picker-browse'
-const NATIVE_SURFACE = '@alego/client-ui-directory-picker-native'
-const BROWSE_SURFACE = '@alego/client-ui-directory-picker-browse'
+const AUTO = '@singula-ai/alego-host-directory-picker-auto'
+const NATIVE = '@singula-ai/alego-host-directory-picker-native'
+const BROWSE = '@singula-ai/alego-host-directory-picker-browse'
+const NATIVE_SURFACE = '@singula-ai/alego-client-ui-directory-picker-native'
+const BROWSE_SURFACE = '@singula-ai/alego-client-ui-directory-picker-browse'
 
 /**
  * Loader-visible stand-in for a client surface package: the surfaces belong to
@@ -95,7 +95,7 @@ async function loadComposition(
   root = await mkdtemp(join(tmpdir(), 'alego-directory-picker-auto-'))
   const configPath = join(root, 'cordis.yml')
   await writeFile(configPath, [
-    "- name: '@alego/host-webserver'",
+    "- name: '@singula-ai/alego-host-webserver'",
     '  config:',
     `    host: '${bindHost}'`,
     '    port: 0',
@@ -108,7 +108,7 @@ async function loadComposition(
   await context.plugin(Loader)
   context.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['@alego/host-webserver', HttpServer],
+    ['@singula-ai/alego-host-webserver', HttpServer],
     [AUTO, DirectoryPickerAuto],
     [NATIVE, NativeDirectoryPicker],
     [BROWSE, BrowseDirectoryPicker],

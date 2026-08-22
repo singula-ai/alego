@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { LlmError } from '@alego/llm'
+import { LlmError } from '@singula-ai/alego-llm'
 import { DONE, parseSse } from '../src/sse.ts'
 
 /**

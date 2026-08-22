@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/session-telemetry-otel`.
- * @module @alego/session-telemetry-otel/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-session-telemetry-otel`.
+ * @module @singula-ai/alego-session-telemetry-otel/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/session-telemetry-otel'
+const PACKAGE_NAME = '@singula-ai/alego-session-telemetry-otel'
 
 /** Cordis companion plugin name. */
 export const name = 'session-telemetry-otel-invariant'

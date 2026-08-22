@@ -5,8 +5,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import WebSocket from 'ws'
 import type {
   ApiProxy, HostFrame, MuxFrame, RpcRequest, ServerRequest,
-} from '@alego/host-apiproxy/api'
-import { RpcId } from '@alego/host-apiproxy/api'
+} from '@singula-ai/alego-host-apiproxy/api'
+import { RpcId } from '@singula-ai/alego-host-apiproxy/api'
 import { HOST_EVENTS_PATH, MUX_EVENTS_PATH } from '../src/api-path.ts'
 import { WebSocketDownlinks } from '../src/websocket-downlink.ts'
 

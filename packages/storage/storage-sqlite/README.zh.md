@@ -1,4 +1,4 @@
-# @alego/storage-sqlite
+# @singula-ai/alego-storage-sqlite
 
 [English](README.md) | 中文
 

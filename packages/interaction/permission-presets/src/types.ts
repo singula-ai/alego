@@ -6,7 +6,7 @@
  * browser half-entry's re-export) for client aggregates — with zero content
  * duplication.
  *
- * @module @alego/permission-presets/types
+ * @module @singula-ai/alego-permission-presets/types
  */
 
 /** The select-option shape a presentation layer advertises for one preset (or for the derived `custom` state). */
@@ -31,7 +31,7 @@ export interface PermissionSelect {
   currentValue: string
 }
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionMap {
     /**
      * The session's permission select, folded from the three whole-value

@@ -1,14 +1,14 @@
-# @alego/code-runtime-worker-thread
+# @singula-ai/alego-code-runtime-worker-thread
 
 [English](README.md) | 中文
 
-这是 [`@alego/code-runtime`](../code-runtime/README.zh.md) seam 的 worker 线程实现：`WorkerThreadCodeRuntime` 会在每次运行中使用一个全新的 Node `worker_threads.Worker`，输入 TypeScript，由宿主侧剥离类型，通过消息端口桥接绑定，输出 `{ value, logs, error? }`。**这是隔离措施，而非安全边界**：其信任立场有意与 bash 等价（参见 [Code Mode Agent Note](../../../.agents/notes/implemented/feature/2026-06-15-code-mode.zh.md) 的 Trust posture 章节），但提供 bash 没有的隔离：独立 isolate、空环境、堆上限与强制终止。
+这是 [`@singula-ai/alego-code-runtime`](../code-runtime/README.zh.md) seam 的 worker 线程实现：`WorkerThreadCodeRuntime` 会在每次运行中使用一个全新的 Node `worker_threads.Worker`，输入 TypeScript，由宿主侧剥离类型，通过消息端口桥接绑定，输出 `{ value, logs, error? }`。**这是隔离措施，而非安全边界**：其信任立场有意与 bash 等价（参见 [Code Mode Agent Note](../../../.agents/notes/implemented/feature/2026-06-15-code-mode.zh.md) 的 Trust posture 章节），但提供 bash 没有的隔离：独立 isolate、空环境、堆上限与强制终止。
 
 ## 配置
 
 ```yaml
 - id: code-runtime
-  name: '@alego/code-runtime-worker-thread'
+  name: '@singula-ai/alego-code-runtime-worker-thread'
   config:
     computeMs: 60000              # busy-time budget (measured event-loop active time)
     maxWallMs: 600000             # wall-clock ceiling; never pauses for anything

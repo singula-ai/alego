@@ -1,10 +1,10 @@
 /** Host HTTP bridge for browser-client RPC. */
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type {} from '@alego/attachment'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type {} from '@singula-ai/alego-attachment'
 // Activates the webServer Context merge used below.
-import type { WebRoute, WebUpgradeRoute } from '@alego/host-webserver'
-import { toFetchHandler } from '@alego/host-apiproxy'
+import type { WebRoute, WebUpgradeRoute } from '@singula-ai/alego-host-webserver'
+import { toFetchHandler } from '@singula-ai/alego-host-apiproxy'
 import { API_PATH, HOST_EVENTS_PATH, MUX_EVENTS_PATH } from './api-path.ts'
 import { bridge, DEFAULT_MAX_REQUEST_BODY_BYTES } from './http-bridge.ts'
 import { assertTrustedAuthority, isTrustedApiRequest } from './api-request-trust.ts'

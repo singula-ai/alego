@@ -1,5 +1,5 @@
-import type { Context } from '@alego/cordis'
-import '@alego/user-questions'
+import type { Context } from '@singula-ai/cordis'
+import '@singula-ai/alego-user-questions'
 
 /** Snapshot-only provider whose invocation means the child guard failed. */
 export const name = 'child-question-tripwire'

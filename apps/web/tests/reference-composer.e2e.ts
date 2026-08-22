@@ -7,14 +7,14 @@ import { join } from 'node:path'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import { createUserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
 import {
   SESSION_FORMAT_VERSION,
   Session,
   SessionId,
-} from '@alego/session'
-import type {} from '@alego/session-reference/types'
-import type {} from '@alego/session-title'
+} from '@singula-ai/alego-session'
+import type {} from '@singula-ai/alego-session-reference/types'
+import type {} from '@singula-ai/alego-session-title'
 import {
   assertFixtureInventory,
   captureStableAria,

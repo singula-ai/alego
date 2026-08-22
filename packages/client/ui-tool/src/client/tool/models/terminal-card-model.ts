@@ -8,9 +8,9 @@
  * are derived once.
  * @module
  */
-import { resolveWorkspacePath } from '@alego/client-runtime/client'
-import type { TerminalBlockLabels, TerminalBlockProps } from '@alego/client-ui-primitives'
-import type { TranslateNS } from '@alego/client-ui-slots'
+import { resolveWorkspacePath } from '@singula-ai/alego-client-runtime/client'
+import type { TerminalBlockLabels, TerminalBlockProps } from '@singula-ai/alego-client-ui-primitives'
+import type { TranslateNS } from '@singula-ai/alego-client-ui-slots'
 import type { ToolCallBlock } from './tool-call-model.ts'
 
 /**

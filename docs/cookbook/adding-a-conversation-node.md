@@ -28,12 +28,12 @@ The example keeps the producer declarations and client contribution in one block
 
 ```ts ignore-check
 import { createElement } from 'react'
-import type { Branded } from '@alego/brand'
+import type { Branded } from '@singula-ai/alego-brand'
 import type {
   ClientContext, ConversationLocation, ConversationNodeContext,
   ConversationNodeDefinition,
-} from '@alego/client-runtime/client'
-import type { ChatNodeViewProps } from '@alego/client-ui-conversation/client'
+} from '@singula-ai/alego-client-runtime/client'
+import type { ChatNodeViewProps } from '@singula-ai/alego-client-ui-conversation/client'
 
 type ReviewId = Branded<'ReviewId'>
 
@@ -58,7 +58,7 @@ interface ReviewEndData {
   readonly summary: string
 }
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * Opens one durable review job.
@@ -88,13 +88,13 @@ interface ReviewChatData {
   readonly summary?: string
 }
 
-declare module '@alego/client-ui-conversation/client' {
+declare module '@singula-ai/alego-client-ui-conversation/client' {
   interface ChatNodeDataMap {
     'review-job': ReviewChatData
   }
 }
 
-declare module '@alego/client-runtime/client' {
+declare module '@singula-ai/alego-client-runtime/client' {
   interface ConversationStepDataMap {
     'review-job': ReviewChatData
   }

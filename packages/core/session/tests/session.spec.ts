@@ -1,6 +1,6 @@
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { createUserMessage, CallId, createMessage, createToolResultMessage, MessageId, ReasoningEffortId } from '@alego/llm'
+import { Context } from '@singula-ai/cordis'
+import { createUserMessage, CallId, createMessage, createToolResultMessage, MessageId, ReasoningEffortId } from '@singula-ai/alego-llm'
 import SessionStore, {
   adoptSessionEvent,
   SESSION_FORMAT_VERSION,
@@ -8,8 +8,8 @@ import SessionStore, {
   SessionEvent,
   SessionId,
   snapshotSessionEvent,
-} from '@alego/session'
-import type { CreateSessionOptions, SessionEventType, SessionHeader, SessionSurface, TodoItem } from '@alego/session'
+} from '@singula-ai/alego-session'
+import type { CreateSessionOptions, SessionEventType, SessionHeader, SessionSurface, TodoItem } from '@singula-ai/alego-session'
 
 describe('Session', () => {
   it('exposes one stable readonly surface view', () => {

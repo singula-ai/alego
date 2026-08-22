@@ -8,7 +8,7 @@ This reference defines the profile, web-alias, plugin-management, and config-dum
 
 `alego --profile <name>` boots the profile at `$ALEGO_HOME/profiles/<name>`. The effective tree is composed over an empty root by applying, in order: each bundle patch named in the profile manifest's `alego.profile.bundles` list, the profile's own `cordis.patch.yml`, the home-level `$ALEGO_HOME/cordis.patch.yml` (machine-local preferences shared by every profile, so it outranks the per-profile layer), and each `--patch <path>` overlay in argv order. Later layers win per row; a patch replaces the targeted row's complete `config` value rather than deep-merging keys, and may insert new rows. A parse, schema, resolution, or plugin boot failure is reported and exits nonzero. SIGINT and SIGTERM dispose the mounted root before exit.
 
-Bundle names resolve from the alego installation first, then from the profile directory. In-box bundles (`@alego/base`, `@alego/web-app`, `@alego/headless`) therefore always come from the same installation as the running `alego`; out-of-tree bundles come from the profile's pnpm-managed `node_modules`. A bare plugin `name` in any patch row resolves through the profile directory's Node parent-walk, which reaches the maintained installation fallback `$ALEGO_HOME/profiles/node_modules` (one symlink per package the installation's app and bundles depend on, healed on every launch).
+Bundle names resolve from the alego installation first, then from the profile directory. In-box bundles (`@singula-ai/alego-base`, `@singula-ai/alego-web-app`, `@singula-ai/alego-headless`) therefore always come from the same installation as the running `alego`; out-of-tree bundles come from the profile's pnpm-managed `node_modules`. A bare plugin `name` in any patch row resolves through the profile directory's Node parent-walk, which reaches the maintained installation fallback `$ALEGO_HOME/profiles/node_modules` (one symlink per package the installation's app and bundles depend on, healed on every launch).
 
 The `web` and `headless` profiles auto-initialize from shipped templates on first use (`web`: base + web-app; `headless`: base + headless). Any other missing profile fails loud with a hint to run `alego plugin --profile <name> add <package>`.
 
@@ -40,16 +40,16 @@ alego --profile web --patch ./extra.yml --dump-config
 
 ## Plugin management
 
-`alego plugin --profile <name> <args...>` initializes the profile when missing (shipped template, or `@alego/base` alone for other names), then forwards `<args...>` to `pnpm` with the profile directory as working directory — `add`, `remove`, `why`, `update`, and every other pnpm verb work unchanged; pnpm must be on PATH. Relative path specs (`.`, `../plugin`, and their `file:`/`link:` forms) are anchored to the invoking directory first, so `add .` from a plugin checkout installs that checkout, not the profile. After every successful run, `alego.profile.bundles` is reconciled against the installed state: each dependency resolving to a package whose manifest declares `"alego": { "bundle": { "patch": "./cordis.patch.yml" } }` joins the layer stack (so an `update` that gains the declaration activates it), a bundle-less dependency stays plain with a one-time warning, and a removed dependency leaves the stack.
+`alego plugin --profile <name> <args...>` initializes the profile when missing (shipped template, or `@singula-ai/alego-base` alone for other names), then forwards `<args...>` to `pnpm` with the profile directory as working directory — `add`, `remove`, `why`, `update`, and every other pnpm verb work unchanged; pnpm must be on PATH. Relative path specs (`.`, `../plugin`, and their `file:`/`link:` forms) are anchored to the invoking directory first, so `add .` from a plugin checkout installs that checkout, not the profile. After every successful run, `alego.profile.bundles` is reconciled against the installed state: each dependency resolving to a package whose manifest declares `"alego": { "bundle": { "patch": "./cordis.patch.yml" } }` joins the layer stack (so an `update` that gains the declaration activates it), a bundle-less dependency stays plain with a one-time warning, and a removed dependency leaves the stack.
 
 The Codex and Claude Code subagent providers are separate optional Bundles. Add either package, both in one command, or remove either package independently:
 
 ```sh
-alego plugin --profile <name> add @alego/subagent-codex
-alego plugin --profile <name> add @alego/subagent-claude-code
-alego plugin --profile <name> add @alego/subagent-codex @alego/subagent-claude-code
-alego plugin --profile <name> remove @alego/subagent-codex
-alego plugin --profile <name> remove @alego/subagent-claude-code
+alego plugin --profile <name> add @singula-ai/alego-subagent-codex
+alego plugin --profile <name> add @singula-ai/alego-subagent-claude-code
+alego plugin --profile <name> add @singula-ai/alego-subagent-codex @singula-ai/alego-subagent-claude-code
+alego plugin --profile <name> remove @singula-ai/alego-subagent-codex
+alego plugin --profile <name> remove @singula-ai/alego-subagent-claude-code
 ```
 
 The successful pnpm operation changes the Profile manifest and Bundle list on disk; a running Profile keeps the Bundle set from its current start. Restart that Profile after adding, removing, or updating a Bundle. This startup boundary applies to Bundle membership, while ordinary edits to the Profile or home `cordis.patch.yml` take effect through hot reload. On the next start, each installed Bundle registers only its dormant Host provider; a copied Preset must separately enable the matching tool row for new Agents. The [Codex provider README](../../../packages/subagent/subagent-codex/README.md) and [Claude Code provider README](../../../packages/subagent/subagent-claude-code/README.md) own executable, authentication, payload, and failure details; the [base Bundle reference](../../../packages/bundle/base/README.md) owns the default dependency closure.
@@ -90,7 +90,7 @@ The base bundle mounts the native DeepSeek adapter, settings and credential prov
 
 Session telemetry stays local by default. `ALEGO_TELEMETRY_MODE=FULL` streams every projected session event as OTLP/HTTP logs, while `ALEGO_TELEMETRY_MODE=FEEDBACK_ONLY` uploads a session-log suffix only when feedback is recorded. `ALEGO_TELEMETRY_OTLP_URL` selects another collector, and any non-empty `ALEGO_TELEMETRY_DISABLED` remains an authoritative hard opt-out. The shipped base has no telemetry redaction rule, so explicitly enabled exports can contain message text, tool arguments and results, and workspace paths; the [default-off Agent Note](../../../.agents/notes/implemented/feature/2026-08-10-telemetry-default-off.md) owns that deployment decision.
 
-Install external plugin bundles through `alego plugin --profile <name> add <package-or-git-spec>`. The installed package owns its dependencies and contributes its declared `cordis.patch.yml` layer. The CLI also ships `@alego/mcp-client` as a dependency for patch layers, but no MCP server is enabled by default because each server command is trusted executable code outside the agent sandbox.
+Install external plugin bundles through `alego plugin --profile <name> add <package-or-git-spec>`. The installed package owns its dependencies and contributes its declared `cordis.patch.yml` layer. The CLI also ships `@singula-ai/alego-mcp-client` as a dependency for patch layers, but no MCP server is enabled by default because each server command is trusted executable code outside the agent sandbox.
 
 ## Source execution
 

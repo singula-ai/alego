@@ -8,22 +8,22 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { z } from 'zod'
-import AgentRegistry, { Inbox } from '@alego/agent'
-import { AttachmentStore } from '@alego/attachment'
-import type { Agent } from '@alego/agent'
-import { createUserMessage } from '@alego/llm'
-import SessionStore, { SessionId } from '@alego/session'
-import type { Session } from '@alego/session'
-import SessionProjectionRegistry from '@alego/session-projection'
-import type { ProjectionDefinition } from '@alego/session-projection'
-import UserQuestionService from '@alego/user-questions'
-import type { MuxFrame, RpcRequest } from '@alego/host-apiproxy/api'
-import { RpcId } from '@alego/host-apiproxy/api/rpc'
-import { createApiProxy } from '@alego/host-apiproxy'
+import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import { AttachmentStore } from '@singula-ai/alego-attachment'
+import type { Agent } from '@singula-ai/alego-agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import type { Session } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import type { ProjectionDefinition } from '@singula-ai/alego-session-projection'
+import UserQuestionService from '@singula-ai/alego-user-questions'
+import type { MuxFrame, RpcRequest } from '@singula-ai/alego-host-apiproxy/api'
+import { RpcId } from '@singula-ai/alego-host-apiproxy/api/rpc'
+import { createApiProxy } from '@singula-ai/alego-host-apiproxy'
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionStateMap {
     'test/last-user': LastUserState
     'test/internal-count': number

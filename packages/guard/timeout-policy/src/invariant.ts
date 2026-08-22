@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/tool-call-timeout-policy`.
- * @module @alego/tool-call-timeout-policy/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-tool-call-timeout-policy`.
+ * @module @singula-ai/alego-tool-call-timeout-policy/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/tool-call-timeout-policy'
+const PACKAGE_NAME = '@singula-ai/alego-tool-call-timeout-policy'
 
 /** Cordis companion plugin name. */
 export const name = 'timeout-policy-invariant'

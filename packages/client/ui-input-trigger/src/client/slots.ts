@@ -8,11 +8,11 @@
  * program picks this merge up transitively through its ui-input-trigger imports.
  */
 // Type-only edge: the SlotMap augmentation below merges into this package's interface.
-import type {} from '@alego/client-ui-slots'
-import type { SnapshotStore } from '@alego/client-runtime/client'
+import type {} from '@singula-ai/alego-client-ui-slots'
+import type { SnapshotStore } from '@singula-ai/alego-client-runtime/client'
 import type { MenuState } from '../core/contract.ts'
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface SlotMap {
     /**
      * The InputBar floating overlay anchor: MenuView (this package) and the

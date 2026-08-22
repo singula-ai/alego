@@ -20,7 +20,7 @@ function createWorkspace(): string {
   const root = mkdtempSync(join(tmpdir(), 'alego-package-licenses-'))
   roots.push(root)
   writeManifest(root, 'package.json', {
-    name: '@alego/root',
+    name: '@singula-ai/alego-root',
     license: 'MIT',
     workspaces: ['apps/*', 'packages/*/*', 'vendor/*'],
   })
@@ -28,32 +28,32 @@ function createWorkspace(): string {
 }
 
 describe('ALEGO package license gate', () => {
-  it('checks every repository-owned @alego package while ignoring rescoped vendor sources', () => {
+  it('checks every repository-owned @singula-ai package while ignoring rescoped vendor sources', () => {
     const root = createWorkspace()
-    writeManifest(root, 'apps/cli/package.json', { name: '@alego/cli', license: 'MIT' })
+    writeManifest(root, 'apps/cli/package.json', { name: '@singula-ai/alego', license: 'MIT' })
     writeManifest(root, 'packages/core/agent/package.json', {
-      name: '@alego/agent',
+      name: '@singula-ai/alego-agent',
       license: 'BSD-3-Clause',
     })
     writeManifest(root, 'vendor/cordis/package.json', {
-      name: '@alego/cordis',
+      name: '@singula-ai/cordis',
       license: 'BSD-3-Clause',
     })
 
     expect(inspectAlegoPackageLicenses(root)).toEqual({
       packageCount: 3,
       failures: [
-        'packages/core/agent/package.json: @alego/agent must declare "license": "MIT"; found "BSD-3-Clause".',
+        'packages/core/agent/package.json: @singula-ai/alego-agent must declare "license": "MIT"; found "BSD-3-Clause".',
       ],
     })
   })
 
   it('rejects a missing license declaration', () => {
     const root = createWorkspace()
-    writeManifest(root, 'packages/core/agent/package.json', { name: '@alego/agent' })
+    writeManifest(root, 'packages/core/agent/package.json', { name: '@singula-ai/alego-agent' })
 
     expect(inspectAlegoPackageLicenses(root).failures).toEqual([
-      'packages/core/agent/package.json: @alego/agent must declare "license": "MIT"; found undefined.',
+      'packages/core/agent/package.json: @singula-ai/alego-agent must declare "license": "MIT"; found undefined.',
     ])
   })
 })

@@ -1,11 +1,11 @@
 /** ACP wire-content admission and projection owned by the ACP adapter. @module */
 
 import type { ContentBlock as AcpContentBlock } from '@agentclientprotocol/sdk'
-import type { Context } from '@alego/cordis'
-import { isImageAdmissionError } from '@alego/attachment'
-import type { ImageAttachmentRef, ImageMediaType, SaveImageAttachment } from '@alego/attachment'
-import type { Agent } from '@alego/agent'
-import type { ContentBlock } from '@alego/llm'
+import type { Context } from '@singula-ai/cordis'
+import { isImageAdmissionError } from '@singula-ai/alego-attachment'
+import type { ImageAttachmentRef, ImageMediaType, SaveImageAttachment } from '@singula-ai/alego-attachment'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { ContentBlock } from '@singula-ai/alego-llm'
 
 /** Raster formats shared by ACP image blocks and the core attachment vocabulary. */
 const IMAGE_MEDIA_TYPES: readonly ImageMediaType[] = [

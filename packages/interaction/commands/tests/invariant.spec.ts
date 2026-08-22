@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import * as CommandInvariant from '@alego/commands/invariant'
-import InvariantRegistry, { InvariantError } from '@alego/invariants'
-import SessionStore, { SessionId, type Session } from '@alego/session'
-import { CommandId } from '@alego/commands'
+import { Context } from '@singula-ai/cordis'
+import * as CommandInvariant from '@singula-ai/alego-commands/invariant'
+import InvariantRegistry, { InvariantError } from '@singula-ai/alego-invariants'
+import SessionStore, { SessionId, type Session } from '@singula-ai/alego-session'
+import { CommandId } from '@singula-ai/alego-commands'
 
 async function mount(installCompanion = true): Promise<{ ctx: Context; session: Session }> {
   const ctx = new Context()
@@ -50,7 +50,7 @@ describe('command lifecycle invariants', () => {
       })
     }).toThrow(expect.objectContaining<Partial<InvariantError>>({
       code: 'INVARIANT',
-      packageName: '@alego/commands',
+      packageName: '@singula-ai/alego-commands',
     }))
   })
 
@@ -68,7 +68,7 @@ describe('command lifecycle invariants', () => {
       })
     }).toThrow(expect.objectContaining<Partial<InvariantError>>({
       code: 'INVARIANT',
-      packageName: '@alego/commands',
+      packageName: '@singula-ai/alego-commands',
     }))
   })
 
@@ -83,7 +83,7 @@ describe('command lifecycle invariants', () => {
 
     await expect(ctx.plugin(CommandInvariant)).rejects.toMatchObject({
       code: 'INVARIANT',
-      packageName: '@alego/commands',
+      packageName: '@singula-ai/alego-commands',
     })
   })
 })

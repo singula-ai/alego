@@ -51,7 +51,7 @@ one-shot 行始终会用文案替代输入框，说明执行记录为只读。�
 
 ## 宿主适配器与协议约定
 
-`@alego/host-apiproxy` 拥有浏览器安全的 `subagents` 域：
+`@singula-ai/alego-host-apiproxy` 拥有浏览器安全的 `subagents` 域：
 
 - `subagent.list` 接受 `parentSessionId`，调用 `ctx.subagents.listChildren(parentSessionId, signal)`，返回完整有序的条目以及每个健康行的布尔 `hasChildren` 快照，把每个健康行的语料活动状态替换为其确切 Agent driver 是否正在运行，并说明当前能否从 `ctx.agents` 解析出确切 parent。
 - `subagent.history` 接受包含 mode 的完整地址与普通页参数。它对照直接目录校验 child 与 mode，通过 `ctx.sessionQuery.readSession()` 读取，再次检查直接谱系，并在不发布 agent 的情况下返回普通原始事件、渲染意图、分页与由 Host 计算的会话投影基线。
@@ -69,7 +69,7 @@ one-shot 行始终会用文案替代输入框，说明执行记录为只读。�
 
 不依赖 React 的运行时负责目录、单次并发刷新、保留的地址、可用性提示、传输选择，以及每个列表行当前投影值的引用稳定映射。再次选择已知 child 时会保留其地址，避免导航静默切换到普通会话 API。缺失的中间面包屑地址可以从已加载的祖先目录恢复，但在用户选择该面包屑之前不会保留为传输地址，也不会创建 scope。恢复的导航会持久化包含 mode 的完整地址。
 
-目录通过标准 `useSessions` 快照传递。组件局部状态负责菜单可见性、已展开分支、焦点与悬停计时器。`ui-conversation` 为当前普通 title 和每一级 subagent 面包屑声明谱系 slot，传入纯数据形式的面包屑身份与显示文本，并为祖先传入向上导航回调；普通 title 由 render site 保留为回退。`@alego/client-ui-subagent` 以直接 parent 目录导航占用每个谱系 slot，并根据普通 owner props 选择按原因区分的只读编辑器。组件只接收派生 props 与回调，绝不接收 `ctx`。
+目录通过标准 `useSessions` 快照传递。组件局部状态负责菜单可见性、已展开分支、焦点与悬停计时器。`ui-conversation` 为当前普通 title 和每一级 subagent 面包屑声明谱系 slot，传入纯数据形式的面包屑身份与显示文本，并为祖先传入向上导航回调；普通 title 由 render site 保留为回退。`@singula-ai/alego-client-ui-subagent` 以直接 parent 目录导航占用每个谱系 slot，并根据普通 owner props 选择按原因区分的只读编辑器。组件只接收派生 props 与回调，绝不接收 `ctx`。
 
 每个进程内 subagent child 都会在发布前写入 `SessionHeader.origin: 'subagent'`。会话列表摘要与增量 Host 帧会投影该字段，使分组和扁平侧边栏省略重复的 child 行，同时保留普通 fork。同一条现有的 `host/session-added` 帧还会把已加载的直接 parent 行标记为可展开，而无需引入目录事件流。描述符 mode 与目录校验仍然是导航、继续执行和授权的权威依据。
 

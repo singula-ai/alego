@@ -3,14 +3,14 @@
  * only: selected values remain ordinary prompt text and file contents stay
  * behind the model-facing `read` tool.
  *
- * @module @alego/file-reference-local/search
+ * @module @singula-ai/alego-file-reference-local/search
  */
 
 import { lstat, readdir } from 'node:fs/promises'
 import { isAbsolute, join, relative, resolve, sep } from 'node:path'
-import type { FileReferenceCandidate } from '@alego/file-reference'
+import type { FileReferenceCandidate } from '@singula-ai/alego-file-reference'
 
-export { activeAtToken, formatFileMention } from '@alego/file-reference/grammar'
+export { activeAtToken, formatFileMention } from '@singula-ai/alego-file-reference/grammar'
 
 /** Default maximum file and directory candidates rendered for one query. */
 export const DEFAULT_FILE_SEARCH_MAX_RESULTS = 20

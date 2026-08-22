@@ -1,10 +1,10 @@
-import { createUserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { ContentBlock } from '@alego/llm'
-import SessionStore, { Session, SessionId, type SessionEvent } from '@alego/session'
-import * as TimeInvariant from '@alego/time-context/invariant'
-import InvariantRegistry from '@alego/invariants'
+import { Context } from '@singula-ai/cordis'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import SessionStore, { Session, SessionId, type SessionEvent } from '@singula-ai/alego-session'
+import * as TimeInvariant from '@singula-ai/alego-time-context/invariant'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 
 const SECOND = Date.parse('2026-07-14T00:00:00Z')
 

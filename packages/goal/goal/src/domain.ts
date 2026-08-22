@@ -4,10 +4,10 @@
  * event. Kept separate from ./types.ts (the pure client-safe outlet) because
  * these declarations pull alego-agent, alego-llm, and cordis into the program —
  * the one-program-per-side layout forbids that on client aggregates.
- * @module @alego/goal
+ * @module @singula-ai/alego-goal
  */
 
-import type { Agent } from '@alego/agent'
+import type { Agent } from '@singula-ai/alego-agent'
 import type { GoalId, GoalRef, GoalSnapshot, GoalView } from './types.ts'
 
 /** Goal state-changing verbs recorded in the durable source change. */
@@ -52,13 +52,13 @@ export interface GoalMessageSource {
   readonly round: number
 }
 
-declare module '@alego/llm' {
+declare module '@singula-ai/alego-llm' {
   interface MessageSourceMap {
     goal: GoalMessageSource
   }
 }
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * Complete post-mutation goal state or clear tombstone.
@@ -101,16 +101,16 @@ export type GoalErrorCode =
   | 'GOAL_INVALID_EDIT'
   | 'GOAL_INVALID_TRANSITION'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Events {
     /**
      * Goal mutation accepted by one live agent. The matching `goal/change`
      * session event has already committed. Listener failures are contained.
-     * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
      * @param payload.agent - agent whose session owns the goal.
      * @param payload.change - fresh current projection or clear tombstone.
      * @mode emit
      */
-    'goal/changed'(this: import('@alego/scope').Scoped<Agent>, payload: { agent: Agent; change: GoalChanged }): void
+    'goal/changed'(this: import('@singula-ai/alego-scope').Scoped<Agent>, payload: { agent: Agent; change: GoalChanged }): void
   }
 }

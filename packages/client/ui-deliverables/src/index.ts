@@ -5,8 +5,8 @@
  * alego.client declaration.
  */
 
-import type { Context } from '@alego/cordis'
-import type {} from '@alego/system-prompt'
+import type { Context } from '@singula-ai/cordis'
+import type {} from '@singula-ai/alego-system-prompt'
 
 /** Services required for the model guidance paired with the browser renderer. */
 export const inject = ['systemPrompt']

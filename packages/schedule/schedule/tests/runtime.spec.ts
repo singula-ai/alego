@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import AgentRegistry, { Inbox } from '@alego/agent'
-import type { Agent, AgentCancelCause, InboxTarget } from '@alego/agent'
-import type { UserMessage } from '@alego/llm'
-import SessionStore, { SessionId } from '@alego/session'
+import { Context } from '@singula-ai/cordis'
+import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import type { Agent, AgentCancelCause, InboxTarget } from '@singula-ai/alego-agent'
+import type { UserMessage } from '@singula-ai/alego-llm'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
 import {
   ScheduleId,
   createAfterScheduleRecord,

@@ -1,4 +1,4 @@
-# @alego/client-ui-message-feedback
+# @singula-ai/alego-client-ui-message-feedback
 
 [English](README.md) | 中文
 

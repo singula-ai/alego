@@ -10,16 +10,16 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import SessionStore, { SessionId } from '@alego/session'
-import type { Session } from '@alego/session'
-import type { Agent } from '@alego/agent'
-import { createScope } from '@alego/scope'
-import SessionProjectionRegistry from '@alego/session-projection'
-import CommandRuntime from '@alego/commands'
-import PermissionPresetService from '@alego/permission-presets'
-import type { Config } from '@alego/permission-presets'
-import ApprovalService from '@alego/user-approval'
+import { Context } from '@singula-ai/cordis'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import type { Session } from '@singula-ai/alego-session'
+import type { Agent } from '@singula-ai/alego-agent'
+import { createScope } from '@singula-ai/alego-scope'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import CommandRuntime from '@singula-ai/alego-commands'
+import PermissionPresetService from '@singula-ai/alego-permission-presets'
+import type { Config } from '@singula-ai/alego-permission-presets'
+import ApprovalService from '@singula-ai/alego-user-approval'
 
 async function harness(options: { withPermission?: boolean; config?: Config } = {}): Promise<{ ctx: Context; session: Session }> {
   const ctx = new Context()

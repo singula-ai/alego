@@ -7,9 +7,9 @@
 
 import { describe, expect, it } from 'vitest'
 import fc from 'fast-check'
-import { isJsonValue } from '@alego/session'
-import { parameterSchemaSpecToJsonSchema, validateArgs } from '@alego/tools'
-import type { ParameterPropertySpec, ParameterSchemaSpec, ValueSchemaSpec } from '@alego/tools'
+import { isJsonValue } from '@singula-ai/alego-session'
+import { parameterSchemaSpecToJsonSchema, validateArgs } from '@singula-ai/alego-tools'
+import type { ParameterPropertySpec, ParameterSchemaSpec, ValueSchemaSpec } from '@singula-ai/alego-tools'
 
 /** Remove parameter-only requiredness before nesting a schema as an array item. */
 function asValueSchema(prop: ParameterPropertySpec): ValueSchemaSpec {

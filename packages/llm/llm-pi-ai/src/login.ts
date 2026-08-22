@@ -9,9 +9,9 @@
 
 import { createModels } from '@earendil-works/pi-ai'
 import type { AuthEvent, AuthPrompt, AuthType, Provider } from '@earendil-works/pi-ai'
-import type { Context } from '@alego/cordis'
-import type { AuthorizationMethod, AuthorizationPrompt, AuthorizationSession } from '@alego/authorization'
-import { isCredentialKeySegment } from '@alego/credentials'
+import type { Context } from '@singula-ai/cordis'
+import type { AuthorizationMethod, AuthorizationPrompt, AuthorizationSession } from '@singula-ai/alego-authorization'
+import { isCredentialKeySegment } from '@singula-ai/alego-credentials'
 import { catalogProvider, catalogProviderIds } from './catalog.ts'
 import { recordKeyFor } from './auth.ts'
 import type { PiAiAuthInjection } from './adapter.ts'

@@ -4,9 +4,9 @@
  * participates in method lookup, invocation, or type exposure.
  */
 
-import { Service } from '@alego/cordis'
-import type { Context, Events } from '@alego/cordis'
-import type { ConnectionHandle } from '@alego/client-connection/client'
+import { Service } from '@singula-ai/cordis'
+import type { Context, Events } from '@singula-ai/cordis'
+import type { ConnectionHandle } from '@singula-ai/alego-client-connection/client'
 import type {
   InvocationDescriptor,
   TypertClientRemote,
@@ -15,7 +15,7 @@ import type {
   TypertDisposer,
   TypertRemoteContribution,
   TypertRemoteEvent,
-} from '@alego/typert-protocol'
+} from '@singula-ai/alego-typert-protocol'
 
 interface MountToken {
   active: boolean
@@ -63,7 +63,7 @@ interface InstalledMethod {
 /** Typed Remote service augmented by generated direct namespaces. */
 export type ClientRemote = TypertClientRemote
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     /** Generated Remote namespaces selected by the Client assembly. */
     remote: ClientRemote

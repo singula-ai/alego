@@ -1,4 +1,4 @@
-# @alego/subagent-claude-code
+# @singula-ai/alego-subagent-claude-code
 
 English | [中文](README.zh.md)
 
@@ -44,18 +44,18 @@ Production omits `pathToClaudeCodeExecutable`, so Agent SDK 0.3.220 selects the 
 This package is an optional Profile Bundle. Install it into the target Profile, then restart that Profile; installation brings the pinned Agent SDK and one compatible platform CLI payload into that Profile, while the declared `cordis.patch.yml` layer registers only the dormant `claude-code` Host provider and starts no Claude process. Removing the package withdraws that provider and its private runtime closure on the next Profile start.
 
 ```sh
-alego plugin --profile <name> add @alego/subagent-claude-code
-alego plugin --profile <name> remove @alego/subagent-claude-code
+alego plugin --profile <name> add @singula-ai/alego-subagent-claude-code
+alego plugin --profile <name> remove @singula-ai/alego-subagent-claude-code
 alego --profile <name>
 ```
 
 Installation controls Host availability, not model permission. The Bundle supplies the dormant default `claude-code` row; the Profile may replace that row's complete config or mount additional rows with distinct `providerName`, `permissionMode`, and `env` values. Loading an instance starts no Claude process until a bound tool calls it. Each `alego-tool-subagent` row names one provider and needs its own `toolName`, so the model sees static tools rather than a dynamic provider selector. Full Agent Presets carry a matching default product tool row with `disabled: true`; copy a preset and remove that field to expose `subagent_claude_code` only to agents composed from the copy. Its `one-shot` policy keeps omitted or `false` `run_in_background` calls in the foreground, while explicit `true` returns a parent-owned Job id for `job_output` or `job_kill`. The base host and full presets already provide the generic Job registry and controls.
 
-The standalone composition below shows the complete explicit capability. A Profile based on `@alego/base` keeps its existing Job rows, adds the product provider and tool rows, and does not mount duplicate Job services.
+The standalone composition below shows the complete explicit capability. A Profile based on `@singula-ai/alego-base` keeps its existing Job rows, adds the product provider and tool rows, and does not mount duplicate Job services.
 
 ```yaml
 - id: subagent-claude-safe
-  name: '@alego/subagent-claude-code'
+  name: '@singula-ai/alego-subagent-claude-code'
   config:
     providerName: claude-safe
     permissionMode: dontAsk
@@ -63,7 +63,7 @@ The standalone composition below shows the complete explicit capability. A Profi
       ANTHROPIC_API_KEY: !!js process.env.ANTHROPIC_API_KEY
 
 - id: subagent-claude-bypass
-  name: '@alego/subagent-claude-code'
+  name: '@singula-ai/alego-subagent-claude-code'
   config:
     providerName: claude-bypass
     permissionMode: bypassPermissions
@@ -73,13 +73,13 @@ The standalone composition below shows the complete explicit capability. A Profi
 
 ```yaml
 - id: jobs
-  name: '@alego/jobs-local'
+  name: '@singula-ai/alego-jobs-local'
 
 - id: tool-jobs
-  name: '@alego/tool-jobs'
+  name: '@singula-ai/alego-tool-jobs'
 
 - id: tool-subagent-claude-safe
-  name: '@alego/tool-subagent'
+  name: '@singula-ai/alego-tool-subagent'
   disabled: true
   config:
     provider: claude-safe
@@ -88,7 +88,7 @@ The standalone composition below shows the complete explicit capability. A Profi
     maxDepth: provider-managed
 
 - id: tool-subagent-claude-bypass
-  name: '@alego/tool-subagent'
+  name: '@singula-ai/alego-tool-subagent'
   config:
     provider: claude-bypass
     toolName: subagent_claude_bypass

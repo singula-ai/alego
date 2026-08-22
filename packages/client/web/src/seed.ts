@@ -10,9 +10,9 @@ import * as React from 'react'
 import * as ReactJsxRuntime from 'react/jsx-runtime'
 import * as ReactDom from 'react-dom'
 import * as ReactDomClient from 'react-dom/client'
-import * as Cordis from '@alego/cordis'
-import * as UiSlots from '@alego/client-ui-slots'
-import * as UiPrimitives from '@alego/client-ui-primitives'
+import * as Cordis from '@singula-ai/cordis'
+import * as UiSlots from '@singula-ai/alego-client-ui-slots'
+import * as UiPrimitives from '@singula-ai/alego-client-ui-primitives'
 import type { PlatformModule } from './platform.ts'
 
 /**
@@ -28,8 +28,8 @@ export function getStaticModules(): Record<string, unknown> {
     'react/jsx-runtime': ReactJsxRuntime,
     'react-dom': ReactDom,
     'react-dom/client': ReactDomClient,
-    '@alego/cordis': Cordis,
-    '@alego/client-ui-slots': UiSlots,
-    '@alego/client-ui-primitives': UiPrimitives,
+    '@singula-ai/cordis': Cordis,
+    '@singula-ai/alego-client-ui-slots': UiSlots,
+    '@singula-ai/alego-client-ui-primitives': UiPrimitives,
   } satisfies Record<PlatformModule, unknown>
 }

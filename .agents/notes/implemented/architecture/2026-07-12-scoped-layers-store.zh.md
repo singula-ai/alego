@@ -20,7 +20,7 @@ agent（智能体）作用域机制（[决策](2026-07-08-agent-scope-contexts.z
 
 ## 决策
 
-`@alego/scope` 提供与键类型无关的 `store.ts` 实现模块。该包继续将 Cordis 和 `@alego/invariants` 列为对等依赖（peer dependency），其不变量配套模块保持不变。包根导出四个存储符号：`ScopeLayer`、`ScopedLayers`、`NamedEntries` 和 `AnonymousEntries`。`EntryValues` 仍是内部接口，`store.ts` 不是包子路径。
+`@singula-ai/alego-scope` 提供与键类型无关的 `store.ts` 实现模块。该包继续将 Cordis 和 `@singula-ai/alego-invariants` 列为对等依赖（peer dependency），其不变量配套模块保持不变。包根导出四个存储符号：`ScopeLayer`、`ScopedLayers`、`NamedEntries` 和 `AnonymousEntries`。`EntryValues` 仍是内部接口，`store.ts` 不是包子路径。
 
 `ScopeLayer` 保留显式的聚合概念，同时只要求判断整个层是否为空。服务定义一个具体层，使其表结构与领域 helper 适合该服务；`ScopedLayers` 负责构造、选择、生命周期挂接、通知和聚合回收。
 

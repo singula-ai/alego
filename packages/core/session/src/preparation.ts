@@ -1,6 +1,6 @@
 /**
  * Ownership of one unpublished Session before registry publication.
- * @module @alego/session/preparation
+ * @module @singula-ai/alego-session/preparation
  */
 
 import type { Session } from './index.ts'

@@ -34,7 +34,7 @@ const INSTALL_SECTIONS = ['dependencies', 'optionalDependencies'] as const
 const PEER_SECTIONS = ['peerDependencies'] as const
 
 /** The workspace root manifest, which is never a release member. */
-const WORKSPACE_ROOT_PACKAGE = '@alego/root'
+const WORKSPACE_ROOT_PACKAGE = '@singula-ai/alego-root'
 
 /** One peer declaration the publish order leaves unordered. */
 interface DroppedPeerEdge {
@@ -139,7 +139,7 @@ export abstract class ReleaseFamily {
       const name = requireString(manifest, 'name', normalized)
       const version = requireString(manifest, 'version', normalized)
       if (name === WORKSPACE_ROOT_PACKAGE) throw new Error(`${normalized} selected the workspace root`)
-      if (!name.startsWith('@alego/')) throw new Error(`${normalized} must name an @alego package`)
+      if (!name.startsWith('@singula-ai/')) throw new Error(`${normalized} must name an @singula-ai package`)
       if (seen.has(name)) throw new Error(`${name} appears twice in release family ${this.id}`)
       seen.add(name)
       members.push({
@@ -356,7 +356,7 @@ class AlegoFamily extends ReleaseFamily {
     validateTarballPayload(files, member.name)
   }
 
-  readonly installedEntry = { packageName: '@alego/cli', binPath: 'lib/bin.js' }
+  readonly installedEntry = { packageName: '@singula-ai/alego', binPath: 'lib/bin.js' }
 }
 
 /** `vendor/*`: every package keeps its own version line, so every package has its own tag. */
@@ -383,7 +383,7 @@ class VendorFamily extends ReleaseFamily {
    * @returns `vendor-<unscoped name>-v`.
    */
   tagPrefixFor(member: ReleaseMember): string {
-    return `${this.tagPrefix}${member.name.replace('@alego/', '')}-v`
+    return `${this.tagPrefix}${member.name.replace('@singula-ai/', '')}-v`
   }
 
   /**

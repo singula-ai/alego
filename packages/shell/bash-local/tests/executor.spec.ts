@@ -2,11 +2,11 @@ import { mkdtempSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { LocalBashExecutor } from '@alego/bash-local'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
-import type { ShellProcess } from '@alego/shell'
+import { Context } from '@singula-ai/cordis'
+import { LocalBashExecutor } from '@singula-ai/alego-bash-local'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
+import type { ShellProcess } from '@singula-ai/alego-shell'
 
 const spillDir = mkdtempSync(join(tmpdir(), 'alego-bash-exec-spec-'))
 

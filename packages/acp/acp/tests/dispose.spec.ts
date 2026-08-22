@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { PROTOCOL_VERSION } from '@agentclientprotocol/sdk'
-import type { Agent } from '@alego/agent'
-import type { StreamChunk } from '@alego/llm'
-import { SessionId } from '@alego/session'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { StreamChunk } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
 import { makeBridgeHarness, type BridgeHarness } from './harness.ts'
 
 describe('ACP connection ownership', () => {

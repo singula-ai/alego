@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import Lsp, {
   finalExtension,
   LspError,
@@ -7,7 +7,7 @@ import Lsp, {
   type LspProvider,
   type LspProviderQuery,
   type LspQueryResult,
-} from '@alego/lsp'
+} from '@singula-ai/alego-lsp'
 
 /** A scripted provider that records the queries it receives. */
 function makeProvider(

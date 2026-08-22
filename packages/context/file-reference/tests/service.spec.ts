@@ -1,7 +1,7 @@
 /** The Remote face delegates to the provider's discovery contract unchanged. */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import type { Agent } from '@alego/agent'
+import type { Agent } from '@singula-ai/alego-agent'
 import { FileReferenceService } from '../src/index.ts'
 import type { FileReferenceCandidate } from '../src/types.ts'
 

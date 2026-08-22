@@ -6,15 +6,15 @@ English | [中文](2026-08-03-omit-invariants-from-shipped-config.zh.md)
 
 ## Problem
 
-`@alego/invariants` and package-owned `./invariant` companions are optional development diagnostics. The shipped TUI mounted the service and four stateful companions while the shipped Web tree omitted them, so the two product surfaces had different diagnostic cost and failure behavior. A relational assertion failure could terminate an ordinary TUI run even though the always-on product boundary remained responsible for session validation and immutable history.
+`@singula-ai/alego-invariants` and package-owned `./invariant` companions are optional development diagnostics. The shipped TUI mounted the service and four stateful companions while the shipped Web tree omitted them, so the two product surfaces had different diagnostic cost and failure behavior. A relational assertion failure could terminate an ordinary TUI run even though the always-on product boundary remained responsible for session validation and immutable history.
 
 ## Decision
 
-The shipped `alego` configuration trees under `apps/cli/config/` mount neither `@alego/invariants` nor any package-owned `./invariant` companion. The CLI package therefore carries no direct dependency on the invariant service.
+The shipped `alego` configuration trees under `apps/cli/config/` mount neither `@singula-ai/alego-invariants` nor any package-owned `./invariant` companion. The CLI package therefore carries no direct dependency on the invariant service.
 
 Invariant support remains available for focused tests, example bundles, generated SDK compositions, and custom deployments that opt into diagnostics explicitly. Session validation, snapshotting, freezing, and cited source-event validation remain always on and do not depend on the optional service, as defined by the [source-owned immutability decision](../architecture/2026-06-11-dev-invariants-over-deep-readonly.md).
 
-The built CLI config-dump test checks both shipped surfaces and rejects either the service entry or any `@alego/*/invariant` entry.
+The built CLI config-dump test checks both shipped surfaces and rejects either the service entry or any `@singula-ai/alego-*/invariant` entry.
 
 ## Alternatives considered
 

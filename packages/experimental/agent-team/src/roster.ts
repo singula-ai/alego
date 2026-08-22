@@ -1,12 +1,12 @@
 /** Team membership, continuable-child provisioning, and roster-owned teardown. */
 
 import { randomUUID } from 'node:crypto'
-import type { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import type { MessageId } from '@alego/llm'
-import { SessionId } from '@alego/session'
-import { foldSubagentDescriptor } from '@alego/subagent'
-import type { ContinuableStart } from '@alego/subagent'
+import type { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { MessageId } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
+import { foldSubagentDescriptor } from '@singula-ai/alego-subagent'
+import type { ContinuableStart } from '@singula-ai/alego-subagent'
 import { errorMessage, TeamError } from './error.ts'
 import type { TeamFoldState } from './fold.ts'
 import type { TeamJournal } from './journal.ts'

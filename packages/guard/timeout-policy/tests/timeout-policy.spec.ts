@@ -1,5 +1,5 @@
 /**
- * Unit + real-load-path coverage for @alego/tool-call-timeout-policy. The
+ * Unit + real-load-path coverage for @singula-ai/alego-tool-call-timeout-policy. The
  * timeout-wins cases drive the deadline under fake timers (deterministic — no
  * wall-clock race) and use a COOPERATIVE tool that settles only when its
  * `exec.signal` aborts, mirroring how a real capability forwards the signal and
@@ -7,13 +7,13 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import { CallId, HarnessError } from '@alego/llm'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime, { defineContentToolFixture, TOOL_ABORTED, type ToolExecutionInput, type PostToolDecision } from '@alego/tools'
-import * as timeoutPolicy from '@alego/tool-call-timeout-policy'
-import { TOOL_TIMEOUT } from '@alego/tool-call-timeout-policy'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import { CallId, HarnessError } from '@singula-ai/alego-llm'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { defineContentToolFixture, TOOL_ABORTED, type ToolExecutionInput, type PostToolDecision } from '@singula-ai/alego-tools'
+import * as timeoutPolicy from '@singula-ai/alego-tool-call-timeout-policy'
+import { TOOL_TIMEOUT } from '@singula-ai/alego-tool-call-timeout-policy'
 
 const testToolSignal = new AbortController().signal
 

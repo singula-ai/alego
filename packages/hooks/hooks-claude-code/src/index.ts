@@ -6,18 +6,18 @@
  * `updatedInput` is logged and warned but not honored. Bespoke behavior should
  * use typed native plugins on the same extension points; see the
  * [hook-bridges Agent Note](../../../../.agents/notes/implemented/feature/2026-06-30-hook-bridges.md).
- * @module @alego/hooks-claude-code
+ * @module @singula-ai/alego-hooks-claude-code
  */
 
 import { readFileSync } from 'node:fs'
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent, PreStepDecision } from '@alego/agent'
-import { createUserMessage } from '@alego/llm'
-import type { ContentBlock, MessageSource } from '@alego/llm'
-import type { UserMessage } from '@alego/session'
-import type {} from '@alego/session-persistence'
-import type { PostToolDecision, PreToolDecision, ToolExecution, ToolExecutionResult } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent, PreStepDecision } from '@singula-ai/alego-agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type { ContentBlock, MessageSource } from '@singula-ai/alego-llm'
+import type { UserMessage } from '@singula-ai/alego-session'
+import type {} from '@singula-ai/alego-session-persistence'
+import type { PostToolDecision, PreToolDecision, ToolExecution, ToolExecutionResult } from '@singula-ai/alego-tools'
 import {
   appendHookInvoked,
   appendHookResult,
@@ -30,10 +30,10 @@ import {
   type HookOutput,
   type MatcherGroup,
   type MergedHookOutcome,
-} from '@alego/hook-protocol'
+} from '@singula-ai/alego-hook-protocol'
 // Pulls in the declaration-merged subagent events and the identity pairing their
 // start/end edges.
-import type { SubagentRunId } from '@alego/subagent'
+import type { SubagentRunId } from '@singula-ai/alego-subagent'
 import { parseClaudeCodeConfig, type ClaudeCodeHookConfig } from './config.ts'
 
 export const name = 'hooks-claude-code'

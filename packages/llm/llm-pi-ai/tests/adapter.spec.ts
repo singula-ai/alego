@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { AttachmentId, AttachmentStore, ImageVariantId } from '@alego/attachment'
+import { Context } from '@singula-ai/cordis'
+import { AttachmentId, AttachmentStore, ImageVariantId } from '@singula-ai/alego-attachment'
 import type {
   ImageAttachmentLimits,
   ImageAttachmentRef,
@@ -8,11 +8,11 @@ import type {
   RequestImageAttachment,
   SaveImageAttachment,
   StoredImageAttachment,
-} from '@alego/attachment'
-import LlmRuntime, { createUserMessage, CONTEXT_WINDOW_EXCEEDED_CODE, LlmError, ReasoningEffortId, userAgent } from '@alego/llm'
-import * as LlmPiAi from '@alego/llm-pi-ai'
-import { PiAiAdapter } from '@alego/llm-pi-ai'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+} from '@singula-ai/alego-attachment'
+import LlmRuntime, { createUserMessage, CONTEXT_WINDOW_EXCEEDED_CODE, LlmError, ReasoningEffortId, userAgent } from '@singula-ai/alego-llm'
+import * as LlmPiAi from '@singula-ai/alego-llm-pi-ai'
+import { PiAiAdapter } from '@singula-ai/alego-llm-pi-ai'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 import { getBuiltinModels } from '@earendil-works/pi-ai/providers/all'
 import { DEFAULT_MAX_REQUEST_IMAGE_BYTES, resolveProfiles } from '../src/config.ts'
 import { memoryAuth } from './auth-double.ts'

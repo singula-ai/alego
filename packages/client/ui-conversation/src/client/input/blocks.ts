@@ -12,8 +12,8 @@
  * route regardless of what any client disables.
  */
 
-import { createSnapshotStore } from '@alego/client-runtime/client'
-import type { SessionId, SnapshotStore } from '@alego/client-runtime/client'
+import { createSnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import type { SessionId, SnapshotStore } from '@singula-ai/alego-client-runtime/client'
 
 /** Why one session's composer is inert. */
 export interface ComposerBlock {

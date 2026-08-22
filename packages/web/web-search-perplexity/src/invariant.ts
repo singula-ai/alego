@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/web-search-perplexity`.
- * @module @alego/web-search-perplexity/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-web-search-perplexity`.
+ * @module @singula-ai/alego-web-search-perplexity/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/web-search-perplexity'
+const PACKAGE_NAME = '@singula-ai/alego-web-search-perplexity'
 
 /** Cordis companion plugin name. */
 export const name = 'web-search-perplexity-invariant'

@@ -1,7 +1,7 @@
 /**
  * Model text rendering and generic tool-call presentation.
  *
- * @module @alego/tool-session-query/presentation
+ * @module @singula-ai/alego-tool-session-query/presentation
  */
 
 import {
@@ -12,12 +12,12 @@ import {
   type SessionLineageTrace,
   type SessionRecord,
   type SessionSearchHit,
-} from '@alego/session-query'
+} from '@singula-ai/alego-session-query'
 import type {
   SessionEvent,
   SessionId,
-} from '@alego/session'
-import type { GenericCallView } from '@alego/tools'
+} from '@singula-ai/alego-session'
+import type { GenericCallView } from '@singula-ai/alego-tools'
 import { workspaceAccess } from './workspace-access.ts'
 
 type TitleView = Awaited<ReturnType<typeof workspaceAccess.readTitle>>

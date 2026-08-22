@@ -1,12 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { Session, SessionId } from '@alego/session'
-import AgentRegistry, { agentEvents, Inbox, type Agent } from '@alego/agent'
-import { createUserMessage } from '@alego/llm'
-import { ShellExecutor } from '@alego/shell'
-import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellRunResult } from '@alego/shell'
-import * as tmuxContext from '@alego/tmux-context'
-import type { Config } from '@alego/tmux-context'
+import { Context } from '@singula-ai/cordis'
+import { Session, SessionId } from '@singula-ai/alego-session'
+import AgentRegistry, { agentEvents, Inbox, type Agent } from '@singula-ai/alego-agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import { ShellExecutor } from '@singula-ai/alego-shell'
+import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellRunResult } from '@singula-ai/alego-shell'
+import * as tmuxContext from '@singula-ai/alego-tmux-context'
+import type { Config } from '@singula-ai/alego-tmux-context'
 
 const SIGNAL = new AbortController().signal
 

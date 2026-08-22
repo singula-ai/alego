@@ -3,10 +3,10 @@
  * vocabulary remains in `./types` so Client programs never import Agent or
  * host Cordis context declarations.
  *
- * @module @alego/workflow
+ * @module @singula-ai/alego-workflow
  */
 
-import type { Agent } from '@alego/agent'
+import type { Agent } from '@singula-ai/alego-agent'
 import type {
   WorkflowMeta, WorkflowResult, WorkflowRunId,
 } from './types.ts'

@@ -1,5 +1,5 @@
-import { Context } from '@alego/cordis'
-import Schema from '@alego/schemastery'
+import { Context } from '@singula-ai/cordis'
+import Schema from '@singula-ai/schemastery'
 import { describe, expect, it } from 'vitest'
 import type { SchemaNode } from '../src/client/schema.ts'
 import { SettingsSchemaService } from '../src/client/schema.ts'

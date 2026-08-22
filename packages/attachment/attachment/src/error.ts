@@ -1,4 +1,4 @@
-/** Attachment failure class. @module @alego/attachment/error */
+/** Attachment failure class. @module @singula-ai/alego-attachment/error */
 
 const IMAGE_ADMISSION_ERROR_CODES = [
   'TOO_MANY_IMAGES',
@@ -32,7 +32,7 @@ const IMAGE_ADMISSION_ERROR_CODE_SET: ReadonlySet<string> = new Set(IMAGE_ADMISS
  * Stable failures suitable for host RPC error mapping.
  *
  * Deliberately re-implements the `HarnessError` shape instead of extending it:
- * the base lives in `@alego/llm`, which itself depends on this
+ * the base lives in `@singula-ai/alego-llm`, which itself depends on this
  * package (`ImageBlock` references `ImageAttachmentRef`), so sharing the base
  * would create a dependency cycle. Consumers route on `code`, never on the
  * prototype chain, so the shapes stay interchangeable at the wire boundary.

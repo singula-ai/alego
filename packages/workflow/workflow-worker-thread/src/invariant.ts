@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/workflow-worker-thread`.
- * @module @alego/workflow-worker-thread/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-workflow-worker-thread`.
+ * @module @singula-ai/alego-workflow-worker-thread/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/workflow-worker-thread'
+const PACKAGE_NAME = '@singula-ai/alego-workflow-worker-thread'
 
 /** Cordis companion plugin name. */
 export const name = 'workflow-worker-thread-invariant'

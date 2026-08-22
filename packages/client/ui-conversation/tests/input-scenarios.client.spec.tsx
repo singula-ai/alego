@@ -8,27 +8,27 @@
  * itself is not a dependency of this package; the source below is the
  * decision-table contract at the `InputTriggerSource` boundary.
  */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render } from '@testing-library/react'
 import {
   EMPTY_CHAT_SNAPSHOT, EMPTY_CONVERSATION_VIEWS, SessionRuntime,
-} from '@alego/client-runtime/client'
-import { InputTriggerService } from '@alego/client-ui-input-trigger/client'
+} from '@singula-ai/alego-client-runtime/client'
+import { InputTriggerService } from '@singula-ai/alego-client-ui-input-trigger/client'
 import type {
   ClientSessionContext, CommandClaim, PickOutcome, SubmitEnvelope, SubmitImageAttachment, SubmitOutcome,
-} from '@alego/client-ui-input-trigger/client'
+} from '@singula-ai/alego-client-ui-input-trigger/client'
 import { FakeApiClient, fakeRemote, ok } from '../../runtime/tests/fake-api.client.ts'
-import { makeTranslate } from '@alego/client-test-runtime'
-import { zh as commonZh } from '@alego/client-locale/src/locales/zh.ts'
+import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
 import type { DraftAttachmentId } from '../src/client/input/contract.ts'
 import { SessionInputShell } from '../src/client/input/facade.ts'
 import { InputBar } from '../src/client/skeleton/InputBar.tsx'
 import type { InputBarProps } from '../src/client/skeleton/InputBar.tsx'
 import { zh } from '../src/client/locales.ts'
-import { bindSnapshotSelector } from '@alego/client-test-runtime'
-import { createSnapshotStore } from '@alego/client-runtime/client'
-import type { ConversationSnapshot } from '@alego/client-runtime/client'
+import { bindSnapshotSelector } from '@singula-ai/alego-client-test-runtime'
+import { createSnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import type { ConversationSnapshot } from '@singula-ai/alego-client-runtime/client'
 
 afterEach(cleanup)
 

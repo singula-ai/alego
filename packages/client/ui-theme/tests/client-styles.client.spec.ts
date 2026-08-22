@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
 /** Dynamic ui-theme entry owns the global styles in dependency order. */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { afterEach, describe, expect, it } from 'vitest'
 import { installThemeStyles } from '../src/client/styles.ts'
 
-const PLUGIN_ID = '@alego/client-ui-theme'
+const PLUGIN_ID = '@singula-ai/alego-client-ui-theme'
 
 afterEach(() => {
   document.head.querySelectorAll(`style[data-plugin="${PLUGIN_ID}"]`).forEach((node) => { node.remove() })

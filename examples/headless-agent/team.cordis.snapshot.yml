@@ -1,27 +1,27 @@
 # Keyless Agent Teams composition over the real headless app and deterministic fixture adapter.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - id: tool-subagent-control
-        name: '@alego/tool-subagent-control'
+        name: '@singula-ai/alego-tool-subagent-control'
         disabled: true
       - id: tool-subagent-report
-        name: '@alego/tool-subagent-report'
+        name: '@singula-ai/alego-tool-subagent-report'
         disabled: true
       - id: tool-subagent
-        name: '@alego/tool-subagent'
+        name: '@singula-ai/alego-tool-subagent'
         config:
           provider: spawn
           toolName: subagent
           backgroundMode: one-shot
           maxDepth: 1
       - id: tool-subagent-fork
-        name: '@alego/tool-subagent'
+        name: '@singula-ai/alego-tool-subagent'
         config:
           provider: fork
           toolName: subagent_fork
@@ -29,8 +29,8 @@
           maxDepth: 1
       - insert:
           - id: agent-team
-            name: '@alego/experimental-agent-team'
+            name: '@singula-ai/alego-experimental-agent-team'
           - id: tool-agent-team
-            name: '@alego/experimental-tool-agent-team'
+            name: '@singula-ai/alego-experimental-tool-agent-team'
           - id: team-fixture-llm
             name: './tests/fixtures/team-llm.mjs'

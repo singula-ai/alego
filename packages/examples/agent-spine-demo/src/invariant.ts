@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/agent-spine-demo`.
- * @module @alego/agent-spine-demo/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-agent-spine-demo`.
+ * @module @singula-ai/alego-agent-spine-demo/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/agent-spine-demo'
+const PACKAGE_NAME = '@singula-ai/alego-agent-spine-demo'
 
 /** Cordis companion plugin name. */
 export const name = 'agent-spine-demo-invariant'

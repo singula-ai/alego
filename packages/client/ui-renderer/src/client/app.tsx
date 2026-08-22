@@ -3,10 +3,10 @@
  * `root` slot, which is the only ctx-level slot render in the application.
  */
 import type { ReactNode } from 'react'
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import { bindSnapshotSelector } from './bind.ts'
 import { DocumentTitle } from './DocumentTitle.tsx'
-import type {} from '@alego/client-runtime/client'
+import type {} from '@singula-ai/alego-client-runtime/client'
 
 /** Inputs available after the UI renderer's inject set activates. */
 export interface AssemblyDeps {

@@ -7,17 +7,17 @@
  * imports no provider.
  *
  * Namespace plugin (named exports, no default export).
- * @module @alego/tool-lsp
+ * @module @singula-ai/alego-tool-lsp
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { defineTool } from '@alego/tools'
-import { assertNever } from '@alego/llm'
-import { LspError } from '@alego/lsp'
-import type {} from '@alego/lsp'
-import type {} from '@alego/system-prompt'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { defineTool } from '@singula-ai/alego-tools'
+import { assertNever } from '@singula-ai/alego-llm'
+import { LspError } from '@singula-ai/alego-lsp'
+import type {} from '@singula-ai/alego-lsp'
+import type {} from '@singula-ai/alego-system-prompt'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 import {
   DEFAULT_MAX_LOCATIONS,
   DEFAULT_MAX_RESULT_CHARS,

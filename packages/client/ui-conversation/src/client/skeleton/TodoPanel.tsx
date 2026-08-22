@@ -6,14 +6,14 @@
 // framework-free. Visual: figma 772:51905 / 772:52972 / 772:53419.
 
 import { useId, useState } from 'react'
-import type { Context } from '@alego/cordis'
-import type { PropsLocale, PropsRuntime } from '@alego/client-ui-slots'
+import type { Context } from '@singula-ai/cordis'
+import type { PropsLocale, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
 // The domain's client-namespace pure-type outlet: one import edge delivers
 // the `todos` projection-key merge (single source, no consumer-side restated
 // declare) and the payload type. Type-only by construction — the outlet is
 // free of host value imports, so no host Context merge enters this program.
-import type { TodoItem } from '@alego/tool-todo/client'
-import { IconChecklistOutline14, IconChevronDownOutline14, IconChevronUpOutline14 } from '@alego/client-ui-primitives'
+import type { TodoItem } from '@singula-ai/alego-tool-todo/client'
+import { IconChecklistOutline14, IconChevronDownOutline14, IconChevronUpOutline14 } from '@singula-ai/alego-client-ui-primitives'
 import { NS } from '../locales.ts'
 import css from './TodoPanel.module.css'
 

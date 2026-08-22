@@ -1,4 +1,4 @@
-# @alego/skill-badge
+# @singula-ai/alego-skill-badge
 
 English | [中文](README.zh.md)
 
@@ -10,7 +10,7 @@ The provider exposes its packaged `assets/` directory as the skill resource base
 
 ## Model Experience
 
-Indirectly, through `@alego/tool-skill`, which renders the catalog entry and selected skill body.
+Indirectly, through `@singula-ai/alego-tool-skill`, which renders the catalog entry and selected skill body.
 
 #### KV Cache effect
 

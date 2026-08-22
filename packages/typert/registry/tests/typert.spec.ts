@@ -1,21 +1,21 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { z } from 'zod'
 import TypertRegistry, {
   typertEndpoint,
   typertKey,
   typertPackageKey,
   type TypertContribution,
-} from '@alego/typert-registry'
+} from '@singula-ai/alego-typert-registry'
 import type {
   InvocationDescriptor,
   TypertContext,
   TypertLookup,
   TypertRemoteContribution,
-} from '@alego/typert-protocol'
+} from '@singula-ai/alego-typert-protocol'
 import { apply as applyClientRegistry, inject as clientRegistryInject } from '../src/client/index.ts'
 
-declare module '@alego/typert-protocol' {
+declare module '@singula-ai/alego-typert-protocol' {
   interface TypertLookupMap {
     fixture: TypertLookup<{ readonly id: string }, string>
   }
@@ -33,7 +33,7 @@ async function makeCtx(): Promise<Context> {
 
 function toolsContribution(schema: z.ZodType = z.object({ name: z.string() })): TypertContribution {
   return {
-    package: '@alego/tools',
+    package: '@singula-ai/alego-tools',
     face: 'host',
     schemas: [{ name: 'ToolInput', schema }],
     invocations: [],
@@ -103,16 +103,16 @@ describe('TypertRegistry', () => {
     const contribution = toolsContribution()
     ctx.typert.register(contribution)
 
-    expect(typertKey('@alego/tools', 'ToolInput')).toBe('@alego/tools#ToolInput')
-    expect(typertPackageKey('@alego/tools', 'host')).toBe('@alego/tools#host')
-    expect(ctx.typert.get('@alego/tools#ToolInput')).toMatchObject({
-      package: '@alego/tools',
+    expect(typertKey('@singula-ai/alego-tools', 'ToolInput')).toBe('@singula-ai/alego-tools#ToolInput')
+    expect(typertPackageKey('@singula-ai/alego-tools', 'host')).toBe('@singula-ai/alego-tools#host')
+    expect(ctx.typert.get('@singula-ai/alego-tools#ToolInput')).toMatchObject({
+      package: '@singula-ai/alego-tools',
       face: 'host',
       name: 'ToolInput',
     })
-    expect(ctx.typert.get('@alego/tools#ToolInput')?.schema).toBe(contribution.schemas[0]?.schema)
-    expect(ctx.typert.getPackage('@alego/tools', 'host')).toMatchObject({
-      key: '@alego/tools#host',
+    expect(ctx.typert.get('@singula-ai/alego-tools#ToolInput')?.schema).toBe(contribution.schemas[0]?.schema)
+    expect(ctx.typert.getPackage('@singula-ai/alego-tools', 'host')).toMatchObject({
+      key: '@singula-ai/alego-tools#host',
       model: { services: [{ key: 'tools' }] },
     })
     expect(ctx.typert.list()).toHaveLength(1)
@@ -122,12 +122,12 @@ describe('TypertRegistry', () => {
   it('withdraws schemas and package metadata through the exact contribution disposer', async () => {
     const ctx = await makeCtx()
     const dispose = ctx.typert.register(toolsContribution())
-    expect(ctx.typert.getPackage('@alego/tools')).toBeDefined()
+    expect(ctx.typert.getPackage('@singula-ai/alego-tools')).toBeDefined()
 
     await dispose()
 
-    expect(ctx.typert.get('@alego/tools#ToolInput')).toBeUndefined()
-    expect(ctx.typert.getPackage('@alego/tools')).toBeUndefined()
+    expect(ctx.typert.get('@singula-ai/alego-tools#ToolInput')).toBeUndefined()
+    expect(ctx.typert.getPackage('@singula-ai/alego-tools')).toBeUndefined()
     expect(ctx.typert.listPackages()).toEqual([])
   })
 
@@ -138,11 +138,11 @@ describe('TypertRegistry', () => {
       { inject: ['typert'] },
     ))
     await fiber
-    expect(ctx.typert.getPackage('@alego/tools')).toBeDefined()
+    expect(ctx.typert.getPackage('@singula-ai/alego-tools')).toBeDefined()
 
     await fiber.dispose()
 
-    expect(ctx.typert.getPackage('@alego/tools')).toBeUndefined()
+    expect(ctx.typert.getPackage('@singula-ai/alego-tools')).toBeUndefined()
     expect(ctx.typert.list()).toEqual([])
   })
 
@@ -152,7 +152,7 @@ describe('TypertRegistry', () => {
     ctx.typert.register(original)
 
     expect(() => ctx.typert.register(toolsContribution(z.never()))).toThrow('package face')
-    expect(ctx.typert.get('@alego/tools#ToolInput')?.schema).toBe(original.schemas[0]?.schema)
+    expect(ctx.typert.get('@singula-ai/alego-tools#ToolInput')?.schema).toBe(original.schemas[0]?.schema)
 
     const duplicateBatch: TypertContribution = {
       ...toolsContribution(),
@@ -192,13 +192,13 @@ describe('TypertRegistry', () => {
     const ctx = await makeCtx()
     ctx.typert.register(toolsContribution())
 
-    expect(ctx.typert.resolve('@alego/tools#ToolInput').name).toBe('ToolInput')
-    expect(() => ctx.typert.resolve('@alego/tools#Missing')).toThrow('contributes no schema named "Missing"')
+    expect(ctx.typert.resolve('@singula-ai/alego-tools#ToolInput').name).toBe('ToolInput')
+    expect(() => ctx.typert.resolve('@singula-ai/alego-tools#Missing')).toThrow('contributes no schema named "Missing"')
     expect(() => ctx.typert.resolve('@fixture/absent#Value')).toThrow('has no registered contribution')
     expect(() => ctx.typert.resolve('invalid')).toThrow('expected "<package>#<name>"')
-    const projected = ctx.typert.toJSONSchema('@alego/tools#ToolInput')
+    const projected = ctx.typert.toJSONSchema('@singula-ai/alego-tools#ToolInput')
     expect(projected).toMatchObject({ type: 'object', properties: { name: { type: 'string' } } })
-    expect(ctx.typert.toJSONSchema('@alego/tools#ToolInput')).not.toBe(projected)
+    expect(ctx.typert.toJSONSchema('@singula-ai/alego-tools#ToolInput')).not.toBe(projected)
   })
 
   it('registers local invocations atomically with generated reflection', async () => {
@@ -220,7 +220,7 @@ describe('TypertRegistry', () => {
     await dispose()
     expect(ctx.typert.local.list()).toEqual([])
     expect(ctx.typert.local.hasSeen('goals/create')).toBe(true)
-    expect(ctx.typert.getPackage('@alego/tools')).toBeUndefined()
+    expect(ctx.typert.getPackage('@singula-ai/alego-tools')).toBeUndefined()
     expect(changes).toEqual(['local:goals/create', 'local:goals/create'])
   })
 

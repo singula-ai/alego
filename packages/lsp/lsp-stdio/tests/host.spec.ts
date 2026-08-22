@@ -6,10 +6,10 @@ import { realpath } from 'node:fs/promises'
 import { execFile } from 'node:child_process'
 import { pathToFileURL } from 'node:url'
 import { promisify } from 'node:util'
-import { Context } from '@alego/cordis'
-import LocalFileSystem from '@alego/fs-local'
-import { deadline } from '@alego/timeout'
-import { canonicalizeWorkspace, readHostSource } from '@alego/lsp-stdio'
+import { Context } from '@singula-ai/cordis'
+import LocalFileSystem from '@singula-ai/alego-fs-local'
+import { deadline } from '@singula-ai/alego-timeout'
+import { canonicalizeWorkspace, readHostSource } from '@singula-ai/alego-lsp-stdio'
 
 const execFileAsync = promisify(execFile)
 

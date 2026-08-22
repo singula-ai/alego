@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/host-apiproxy`.
- * @module @alego/host-apiproxy/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-host-apiproxy`.
+ * @module @singula-ai/alego-host-apiproxy/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/host-apiproxy'
+const PACKAGE_NAME = '@singula-ai/alego-host-apiproxy'
 
 /** Cordis companion plugin name. */
 export const name = 'host-apiproxy-invariant'

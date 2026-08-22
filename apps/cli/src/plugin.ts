@@ -7,7 +7,7 @@
  * removed or bundle-less dependency leaves it). Reconciling by installed
  * state, not by dependency diff, means `update` activates a package that
  * gained its `alego.bundle` declaration in a newer version.
- * @module @alego/cli/plugin
+ * @module @singula-ai/alego/plugin
  */
 
 import { spawnSync } from 'node:child_process'
@@ -22,7 +22,7 @@ import {
   resolveProfileDir,
   writeProfileManifest,
   type ProfileManifest,
-} from '@alego/app-boot'
+} from '@singula-ai/alego-app-boot'
 import { INSTALL_ANCHOR } from './profile-boot.ts'
 
 const NAME = 'alego'

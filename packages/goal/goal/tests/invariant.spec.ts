@@ -1,13 +1,13 @@
-import { createUserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import {
   GoalId,
   type GoalSnapshotChangeMeta,
-} from '@alego/goal'
-import * as GoalInvariantCompanion from '@alego/goal/invariant'
-import InvariantRegistry, { InvariantError } from '@alego/invariants'
-import SessionStore, { SessionId } from '@alego/session'
+} from '@singula-ai/alego-goal'
+import * as GoalInvariantCompanion from '@singula-ai/alego-goal/invariant'
+import InvariantRegistry, { InvariantError } from '@singula-ai/alego-invariants'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
 
 const change: GoalSnapshotChangeMeta = {
   kind: 'goal/change',
@@ -54,7 +54,7 @@ describe('goal stream invariants', () => {
       session.append('goal/change', { ...change, extra: true } as never)
     }).toThrow(expect.objectContaining<Partial<InvariantError>>({
       code: 'INVARIANT',
-      packageName: '@alego/goal',
+      packageName: '@singula-ai/alego-goal',
     }))
     expect(session.seq).toBe(0)
     expect(() => {

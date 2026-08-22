@@ -20,12 +20,12 @@
  * time stays uncounted in every time figure — matching the window, which
  * renders it as an untimed interrupted node.
  *
- * @module @alego/session-stats/projection
+ * @module @singula-ai/alego-session-stats/projection
  */
 
 import { z } from 'zod'
-import { isTokenDelta } from '@alego/llm/message'
-import type { ProjectionDefinition } from '@alego/session-projection'
+import { isTokenDelta } from '@singula-ai/alego-llm/message'
+import type { ProjectionDefinition } from '@singula-ai/alego-session-projection'
 
 /** Accumulated whole-log figures (the view is exactly these totals). */
 interface SessionStatsTotals {
@@ -62,7 +62,7 @@ interface SessionStatsState extends SessionStatsTotals {
   pendingCalls: Record<string, number>
 }
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionStateMap {
     sessionStats: SessionStatsState
   }

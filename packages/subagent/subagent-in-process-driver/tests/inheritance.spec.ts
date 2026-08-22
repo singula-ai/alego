@@ -7,17 +7,17 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { mkdtemp, readFile, realpath, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import AgentLoop from '@alego/agent-loop'
-import { mountAgentLoopTestDependencies } from '@alego/agent-loop-testkit'
-import SandboxedFileSystem from '@alego/fs-sandbox'
-import type { ContentBlock } from '@alego/llm'
-import SandboxPolicyService, { setSandboxMode } from '@alego/sandbox-policy'
-import { SessionId, type SessionEvent } from '@alego/session'
-import * as ToolFs from '@alego/tool-fs'
-import ApprovalService from '@alego/user-approval'
-import { snapshotSubagentDescriptor } from '@alego/subagent'
+import { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
+import SandboxedFileSystem from '@singula-ai/alego-fs-sandbox'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import SandboxPolicyService, { setSandboxMode } from '@singula-ai/alego-sandbox-policy'
+import { SessionId, type SessionEvent } from '@singula-ai/alego-session'
+import * as ToolFs from '@singula-ai/alego-tool-fs'
+import ApprovalService from '@singula-ai/alego-user-approval'
+import { snapshotSubagentDescriptor } from '@singula-ai/alego-subagent'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import { startInProcessRun } from '../src/index.ts'
 
@@ -114,7 +114,7 @@ describe('in-process policy inheritance', () => {
       const runtimeContext = child.session.events.find(
         (event): event is SessionEvent<'user/message'> => event.type === 'user/message'
           && event.data.source.kind === 'plugin'
-          && event.data.source.plugin === '@alego/system-prompt',
+          && event.data.source.plugin === '@singula-ai/alego-system-prompt',
       )
       if (request === undefined || runtimeContext === undefined) throw new Error('child request lacks its runtime policy context')
       expect(runtimeContext.seq).toBeLessThan(request.seq)

@@ -17,8 +17,8 @@ import type {
   DynamicCordisResolveAck,
   DynamicCordisRunResolution,
   DynamicCordisRunResponse,
-} from '@alego/api-remotes/client'
-import type { SessionId } from '@alego/client-connection/client'
+} from '@singula-ai/alego-api-remotes/client'
+import type { SessionId } from '@singula-ai/alego-client-connection/client'
 import { errorDetails } from './runtime.ts'
 import type { CordisErrorDetails, CordisObservable, DynamicCordisPackageRunner } from './runtime.ts'
 

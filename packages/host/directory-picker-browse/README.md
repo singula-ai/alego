@@ -1,4 +1,4 @@
-# @alego/host-directory-picker-browse
+# @singula-ai/alego-host-directory-picker-browse
 
 English | [中文](README.zh.md)
 

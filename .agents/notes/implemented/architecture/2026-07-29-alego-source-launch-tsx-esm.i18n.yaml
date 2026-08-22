@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-29-alego-source-launch-tsx-esm.md
-2026-07-29-alego-source-launch-tsx-esm.md: ffa655ada329c7e9d5ffb14a643661d75abb58b8
-2026-07-29-alego-source-launch-tsx-esm.zh.md: b13f58f522383d61ad6cd7416b344ce338be59e4
+2026-07-29-alego-source-launch-tsx-esm.md: 5e4a8f4744bb537d0259f78da1eb8e3f26fb571a
+2026-07-29-alego-source-launch-tsx-esm.zh.md: e52c00e6b9e0cabff3e95c6a6bbfcb453f482b64

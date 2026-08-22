@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/web`.
- * @module @alego/web/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-web`.
+ * @module @singula-ai/alego-web/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/web'
+const PACKAGE_NAME = '@singula-ai/alego-web'
 
 /** Cordis companion plugin name. */
 export const name = 'web-invariant'

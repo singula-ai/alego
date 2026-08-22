@@ -14,15 +14,15 @@
  * holds this package's 'root' row in this compilation unit, but consumers
  * merge keys in; the rule fires on the narrow-map view, not on real
  * redundancy. */
-import { Service } from '@alego/cordis'
-import type { Context } from '@alego/cordis'
-import { SlotCore } from '@alego/client-ui-slots'
+import { Service } from '@singula-ai/cordis'
+import type { Context } from '@singula-ai/cordis'
+import { SlotCore } from '@singula-ai/alego-client-ui-slots'
 import type {
   LiveSlotNode, LocaleFace, OwnerOf, SlotEntryDef, SlotMap, SlotRenderer, SlotRendererHost,
   SlotScope, SlotSpec, StoreDecl, StoreFactory, StoredEntry, StoreInstanceLike,
-} from '@alego/client-ui-slots'
+} from '@singula-ai/alego-client-ui-slots'
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface SlotMap {
     /**
      * The built-in render-tree root hole (seeded by SlotCore): the one slot the

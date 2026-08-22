@@ -1,11 +1,11 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import WebRuntime from '@alego/web'
+import { Context } from '@singula-ai/cordis'
+import WebRuntime from '@singula-ai/alego-web'
 import {
   PerplexitySearchProvider,
   PERPLEXITY_PROVIDER_ID,
-} from '@alego/web-search-perplexity'
-import * as perplexityPlugin from '@alego/web-search-perplexity'
+} from '@singula-ai/alego-web-search-perplexity'
+import * as perplexityPlugin from '@singula-ai/alego-web-search-perplexity'
 import { mapPerplexityResponse } from '../src/provider.ts'
 
 const options = { apiKey: 'pplx-key', baseURL: 'https://api.perplexity.test', model: 'sonar', maxTokens: 1024 }

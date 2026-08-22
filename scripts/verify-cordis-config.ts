@@ -40,7 +40,7 @@ const appOverlayFiles = new Set([
 const metadataFields = ['id', 'name', 'group', 'inject', 'intercept', 'isolate'] as const
 
 /** The adaptive directory-picker chooser package (mounts a backend row at boot). */
-const CHOOSER_PACKAGE = '@alego/host-directory-picker-auto'
+const CHOOSER_PACKAGE = '@singula-ai/alego-host-directory-picker-auto'
 
 /**
  * The packages the chooser mounts by runtime string (mirror of its exported
@@ -50,10 +50,10 @@ const CHOOSER_PACKAGE = '@alego/host-directory-picker-auto'
  * until a macOS boot.
  */
 const CHOOSER_BACKEND_PACKAGES = [
-  '@alego/host-directory-picker-native',
-  '@alego/host-directory-picker-browse',
-  '@alego/client-ui-directory-picker-browse',
-  '@alego/client-ui-directory-picker-native',
+  '@singula-ai/alego-host-directory-picker-native',
+  '@singula-ai/alego-host-directory-picker-browse',
+  '@singula-ai/alego-client-ui-directory-picker-browse',
+  '@singula-ai/alego-client-ui-directory-picker-native',
 ]
 const errors: string[] = []
 const pluginReferences: PluginReference[] = []
@@ -203,7 +203,7 @@ function validateEntry(value: unknown, file: string, path: string): void {
       validateEntry(value.insert[index], file, `${path}.insert[${index}]`)
     }
   }
-  if (value.name !== '@alego/cordis-plugin-include') return
+  if (value.name !== '@singula-ai/cordis-plugin-include') return
   const config = value.config
   if (!isRecord(config) || !isUnknownArray(config.patches)) return
   for (let index = 0; index < config.patches.length; index++) {

@@ -1,4 +1,4 @@
-# @alego/client-hmr
+# @singula-ai/alego-client-hmr
 
 [English](README.md) | 中文
 

@@ -4,8 +4,8 @@
  * component stubs cannot prove per-session identity or disposal.
  */
 import { beforeEach, describe, expect, it } from 'vitest'
-import type { SessionId } from '@alego/client-runtime/client'
-import { SlotTestRuntime } from '@alego/client-test-runtime'
+import type { SessionId } from '@singula-ai/alego-client-runtime/client'
+import { SlotTestRuntime } from '@singula-ai/alego-client-test-runtime'
 import { createChatStore } from '../src/client/stores.ts'
 
 const sid = (s: string): SessionId => s as SessionId

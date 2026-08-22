@@ -95,19 +95,19 @@ function checkManifest(
   if (!manifest.files?.includes('lib/invariant.js')) {
     addViolation(violations, owner.manifestPath, 'files must publish lib/invariant.js')
   }
-  if (owner.packageName === '@alego/invariants') return
-  if (manifest.peerDependencies?.['@alego/invariants'] !== 'workspace:^') {
+  if (owner.packageName === '@singula-ai/alego-invariants') return
+  if (manifest.peerDependencies?.['@singula-ai/alego-invariants'] !== 'workspace:^') {
     addViolation(
       violations,
       owner.manifestPath,
-      '@alego/invariants must be a workspace:^ peerDependency',
+      '@singula-ai/alego-invariants must be a workspace:^ peerDependency',
     )
   }
-  if (manifest.devDependencies?.['@alego/invariants'] !== 'workspace:^') {
+  if (manifest.devDependencies?.['@singula-ai/alego-invariants'] !== 'workspace:^') {
     addViolation(
       violations,
       owner.manifestPath,
-      '@alego/invariants must also be a workspace:^ devDependency',
+      '@singula-ai/alego-invariants must also be a workspace:^ devDependency',
     )
   }
 }
@@ -118,7 +118,7 @@ function checkBuild(
   violations: PackageInvariantViolation[],
 ): void {
   const tsconfigPath = `${owner.dir}/tsconfig.json`
-  if (owner.packageName !== '@alego/invariants'
+  if (owner.packageName !== '@singula-ai/alego-invariants'
     && !projectReferencesInvariants(root, owner.dir, tsconfigPath)) {
     addViolation(
       violations,

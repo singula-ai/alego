@@ -7,11 +7,11 @@
  * fatal close, and exposes tree-scoped termination through the handle so the
  * instance owns teardown; group/tree mechanics live in the subprocess
  * Service Provider.
- * @module @alego/lsp-stdio/connection
+ * @module @singula-ai/alego-lsp-stdio/connection
  */
 
 import type { Writable } from 'node:stream'
-import type { SubprocessHandle, SubprocessSpawnSpec } from '@alego/subprocess'
+import type { SubprocessHandle, SubprocessSpawnSpec } from '@singula-ai/alego-subprocess'
 import { encodeMessage, MessageDecoder } from './framing.ts'
 
 /** How to launch the server and answer its config requests. */

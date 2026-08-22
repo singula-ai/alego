@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { WorkerThreadCodeRuntime } from '@alego/code-runtime-worker-thread'
-import type { Config } from '@alego/code-runtime-worker-thread'
-import type { CodeBindingFunction, CodeBindingNamespace, CodeRunResult } from '@alego/code-runtime'
+import { Context } from '@singula-ai/cordis'
+import { WorkerThreadCodeRuntime } from '@singula-ai/alego-code-runtime-worker-thread'
+import type { Config } from '@singula-ai/alego-code-runtime-worker-thread'
+import type { CodeBindingFunction, CodeBindingNamespace, CodeRunResult } from '@singula-ai/alego-code-runtime'
 
 /**
  * Integration suite over REAL worker threads (no mocks — workers are cheap

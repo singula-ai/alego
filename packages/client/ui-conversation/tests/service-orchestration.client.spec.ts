@@ -3,11 +3,11 @@
 // TestSessions mints tagged scopes through the production createScope, so the
 // service's scopeOf/binding path runs against production resolution (no local
 // tag probe).
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import { AttachmentId } from '@alego/attachment'
-import { makeTranslate, SlotTestRuntime } from '@alego/client-test-runtime'
-import type { QueuedMessage, SessionFace } from '@alego/client-runtime/client'
+import { AttachmentId } from '@singula-ai/alego-attachment'
+import { makeTranslate, SlotTestRuntime } from '@singula-ai/alego-client-test-runtime'
+import type { QueuedMessage, SessionFace } from '@singula-ai/alego-client-runtime/client'
 import { ComposerBlockRegistry } from '../src/client/input/blocks.ts'
 import { InputHub } from '../src/client/input/hub.ts'
 import { ConversationController, UnsupportedImageMediaTypeError } from '../src/client/service.ts'

@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/atomic-write`.
- * @module @alego/atomic-write/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-atomic-write`.
+ * @module @singula-ai/alego-atomic-write/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/atomic-write'
+const PACKAGE_NAME = '@singula-ai/alego-atomic-write'
 
 /** Cordis companion plugin name. */
 export const name = 'atomic-write-invariant'

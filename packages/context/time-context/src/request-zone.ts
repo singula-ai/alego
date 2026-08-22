@@ -1,7 +1,7 @@
 /** Browser-zone derivation and model-facing policy text for one open request turn. */
 
-import { assertNever } from '@alego/llm'
-import type { UserMessage } from '@alego/llm'
+import { assertNever } from '@singula-ai/alego-llm'
+import type { UserMessage } from '@singula-ai/alego-llm'
 
 const IANA_TIME_ZONE = /^[A-Za-z][A-Za-z0-9_+.-]*(?:\/[A-Za-z0-9_+.-]+)+$/
 

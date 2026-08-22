@@ -78,7 +78,7 @@ async function makeConsumer(): Promise<string> {
     await link(dirname(resolved), dep, nm)
   }
   await writeFile(join(dir, 'mock-llm.mjs'), [
-    "import { LlmAdapter } from '@alego/llm'",
+    "import { LlmAdapter } from '@singula-ai/alego-llm'",
     'class Mock extends LlmAdapter {',
     '  async * stream() {',
     "    yield { type: 'block-start', index: 0, blockType: 'text' }",
@@ -96,11 +96,11 @@ async function makeConsumer(): Promise<string> {
     '- id: mock-llm',
     '  name: \'./mock-llm.mjs\'',
     '- id: subprocess',
-    '  name: \'@alego/subprocess-local\'',
+    '  name: \'@singula-ai/alego-subprocess-local\'',
     '- id: bash',
-    '  name: \'@alego/bash-local\'',
+    '  name: \'@singula-ai/alego-bash-local\'',
     '- id: acp-agent',
-    '  name: \'@alego/acp-demo\'',
+    '  name: \'@singula-ai/alego-acp-demo\'',
     '  config:',
     '    provider: built-acp-mock',
     '    model: built-acp-mock',

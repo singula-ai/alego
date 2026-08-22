@@ -31,10 +31,10 @@ Four packages under `packages/self-modification/` implement the dynamic runtime:
 
 | Package | npm package | Responsibility |
 | --- | --- | --- |
-| `tool-cordis` | `@alego/tool-cordis` | Registers the System Prompt, seven model-facing Tools, Host Inspect Providers, `@pluginId` context injection, and Tool presentation metadata |
-| `cordis-host-runner` | `@alego/cordis-host-runner` | Stores the authoritative Registry, allocates IDs, executes Host code, and manages versions, approvals, Runs, private handlers, Inspect routing, and model feedback |
-| `cordis-client-runner` | `@alego/cordis-client-runner` | Synchronizes Inspect manifests in the browser, orchestrates approved Host→Client activation, evaluates Client code, and manages the Guard, Loader/Fiber, timer, styles, and teardown |
-| `ui-cordis` | `@alego/client-ui-cordis` | Renders Define/Run Tool cards, the global Cordis panel, approval controls, version selection, runtime status, and Package-specific business views |
+| `tool-cordis` | `@singula-ai/alego-tool-cordis` | Registers the System Prompt, seven model-facing Tools, Host Inspect Providers, `@pluginId` context injection, and Tool presentation metadata |
+| `cordis-host-runner` | `@singula-ai/alego-cordis-host-runner` | Stores the authoritative Registry, allocates IDs, executes Host code, and manages versions, approvals, Runs, private handlers, Inspect routing, and model feedback |
+| `cordis-client-runner` | `@singula-ai/alego-cordis-client-runner` | Synchronizes Inspect manifests in the browser, orchestrates approved Host→Client activation, evaluates Client code, and manages the Guard, Loader/Fiber, timer, styles, and teardown |
+| `ui-cordis` | `@singula-ai/alego-client-ui-cordis` | Renders Define/Run Tool cards, the global Cordis panel, approval controls, version selection, runtime status, and Package-specific business views |
 
 `tool-cordis` depends only on the Host Runner's in-process service and does not import the Client implementation. `ui-cordis` consumes only the Client Runner face and Client-safe wire types and does not import the Host implementation. Existing generated Remote APIs and forwarded events connect Host and Client runtime control; the gateway owns no dynamic Plugin domain logic.
 

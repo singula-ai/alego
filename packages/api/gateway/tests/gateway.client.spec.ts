@@ -1,8 +1,8 @@
-import { Context, Service } from '@alego/cordis'
-import type { Fiber } from '@alego/cordis'
+import { Context, Service } from '@singula-ai/cordis'
+import type { Fiber } from '@singula-ai/cordis'
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { z } from 'zod'
-import type { ConnectionHandle } from '@alego/client-connection/client'
+import type { ConnectionHandle } from '@singula-ai/alego-client-connection/client'
 import type {
   InvocationDescriptor,
   RemoteResult,
@@ -10,12 +10,12 @@ import type {
   TypertContext,
   TypertRemoteScopeApi,
   TypertRemoteNamespace,
-} from '@alego/typert-protocol'
-import TypertRegistry from '@alego/typert-registry'
+} from '@singula-ai/alego-typert-protocol'
+import TypertRegistry from '@singula-ai/alego-typert-registry'
 import type { ClientRemote } from '../src/client/index.ts'
 import { apply, inject } from '../src/client/index.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Events {
     /**
      * Test-only forwarded Host event.
@@ -35,7 +35,7 @@ declare module '@alego/cordis' {
   }
 }
 
-declare module '@alego/typert-protocol' {
+declare module '@singula-ai/alego-typert-protocol' {
   interface TypertRemoteEventSelection extends Record<'fixture/changed' | 'fixture/idle', true> {}
 
   interface TypertContextMap {

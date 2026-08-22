@@ -5,15 +5,15 @@
 // views. callId/approvalId stay plain string here (narrow to real brands when
 // convenient).
 
-import type { CommandId } from '@alego/commands/brand'
-import type { MessageId } from '@alego/llm/brand'
-import type { ContentBlock } from '@alego/llm/types'
-import type { ImageAttachmentRef } from '@alego/attachment'
-import type { LlmRetryEventData } from '@alego/llm-retry/types'
-import type { TodoItem } from '@alego/session/types'
+import type { CommandId } from '@singula-ai/alego-commands/brand'
+import type { MessageId } from '@singula-ai/alego-llm/brand'
+import type { ContentBlock } from '@singula-ai/alego-llm/types'
+import type { ImageAttachmentRef } from '@singula-ai/alego-attachment'
+import type { LlmRetryEventData } from '@singula-ai/alego-llm-retry/types'
+import type { TodoItem } from '@singula-ai/alego-session/types'
 import type {
   RpcError, SessionId, SubagentAddress, ToolCallView, ToolResultView,
-} from '@alego/api-remotes/client'
+} from '@singula-ai/alego-api-remotes/client'
 import type { PendingInteraction } from './pending.ts'
 import type { ContextProvenanceView, KnownContextForm } from './context-provenance.ts'
 import type {

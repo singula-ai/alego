@@ -6,10 +6,10 @@
 
 import { describe, expect, it } from 'vitest'
 import fc from 'fast-check'
-import { CallId } from '@alego/llm'
-import type { StreamChunk } from '@alego/llm'
-import { decodeStorageRecord, packChunkRuns } from '@alego/session'
-import type { ChunkRow, SessionEvent, StorageRecord } from '@alego/session'
+import { CallId } from '@singula-ai/alego-llm'
+import type { StreamChunk } from '@singula-ai/alego-llm'
+import { decodeStorageRecord, packChunkRuns } from '@singula-ai/alego-session'
+import type { ChunkRow, SessionEvent, StorageRecord } from '@singula-ai/alego-session'
 
 /** Build an `assistant/chunk` event with the exact live-append shape. */
 function chunkEvent(seq: number, time: number, chunk: StreamChunk, turn = 1, step = 1): SessionEvent {

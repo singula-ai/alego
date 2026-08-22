@@ -1,5 +1,5 @@
 {
-  "name": "@alego/pwsh-local",
+  "name": "@singula-ai/alego-pwsh-local",
   "description": "Local PowerShell implementation of the Alego bash executor seam",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -32,23 +32,23 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@alego/shell": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/subprocess": "workspace:^",
-    "@alego/timeout": "workspace:^",
-    "@alego/cordis": "workspace:^",
-    "@alego/settings": "workspace:^"
+    "@singula-ai/alego-shell": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-subprocess": "workspace:^",
+    "@singula-ai/alego-timeout": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-settings": "workspace:^"
   },
   "dependencies": {
-    "@alego/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:^"
   },
   "devDependencies": {
-    "@alego/shell": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/subprocess": "workspace:^",
-    "@alego/subprocess-local": "workspace:^",
-    "@alego/timeout": "workspace:^",
-    "@alego/cordis": "workspace:^",
-    "@alego/settings": "workspace:^"
+    "@singula-ai/alego-shell": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-subprocess": "workspace:^",
+    "@singula-ai/alego-subprocess-local": "workspace:^",
+    "@singula-ai/alego-timeout": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-settings": "workspace:^"
   }
 }

@@ -1,13 +1,13 @@
 /**
  * Shared ownership of one E2B sandbox. Capability adapters await the same SDK
  * handle, so filesystem and process operations inhabit one remote Linux world.
- * @module @alego/e2b
+ * @module @singula-ai/alego-e2b
  */
 
 import { randomUUID } from 'node:crypto'
 import { posix } from 'node:path'
-import { Context, Service } from '@alego/cordis'
-import z from '@alego/schemastery'
+import { Context, Service } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import { FileType, Sandbox, SandboxNotFoundError } from 'e2b'
 
 export {
@@ -60,7 +60,7 @@ interface SchemaResolvedConfig extends Config {
   timeoutMs: number
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     e2b: E2BRuntime
   }

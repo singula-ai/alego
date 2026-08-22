@@ -5,11 +5,11 @@
  * Isolated file so vi.mock of the MCP SDK doesn't pollute other test suites.
  */
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { Context } from '@alego/cordis'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
-import { CallId } from '@alego/llm'
-import type { Config } from '@alego/mcp-client'
+import { Context } from '@singula-ai/cordis'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
+import { CallId } from '@singula-ai/alego-llm'
+import type { Config } from '@singula-ai/alego-mcp-client'
 
 // ---- Mock MCP SDK ----
 
@@ -58,8 +58,8 @@ vi.mock('@modelcontextprotocol/sdk/client/streamableHttp.js', () => ({
 
 // vi.mock is hoisted above static imports, so the modules under test see the
 // mocked SDK even through a static import.
-import { apply } from '@alego/mcp-client/src/index.ts'
-import { RECONNECT_DEFAULTS, resolveReconnectPolicy, startConnection } from '@alego/mcp-client/src/connection.ts'
+import { apply } from '@singula-ai/alego-mcp-client/src/index.ts'
+import { RECONNECT_DEFAULTS, resolveReconnectPolicy, startConnection } from '@singula-ai/alego-mcp-client/src/connection.ts'
 
 // ---- Helpers ----
 

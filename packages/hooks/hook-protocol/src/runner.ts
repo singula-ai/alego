@@ -3,10 +3,10 @@
  * process-group cancellation, and timeout machinery. The bridge supplies the
  * trusted stdin payload and dialect environment, then this module decodes the
  * captured outcome.
- * @module @alego/hook-protocol/runner
+ * @module @singula-ai/alego-hook-protocol/runner
  */
 
-import type { ShellExecutor } from '@alego/shell'
+import type { ShellExecutor } from '@singula-ai/alego-shell'
 import { parseHookOutput } from './codec.ts'
 import type { CommandHook, HookOutput } from './types.ts'
 

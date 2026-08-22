@@ -1,21 +1,21 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import LlmRuntime, { createUserMessage, CallId  } from '@alego/llm'
+import { Context } from '@singula-ai/cordis'
+import LlmRuntime, { createUserMessage, CallId  } from '@singula-ai/alego-llm'
 import SessionStore, {
   SessionId,
   type SessionEvent,
   type TurnEndReason,
   type UserMessage,
-} from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime, { defineContentToolFixture, type PostToolDecision, type PreToolDecision } from '@alego/tools'
+} from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { defineContentToolFixture, type PostToolDecision, type PreToolDecision } from '@singula-ai/alego-tools'
 import AgentRegistry, {
   type Agent,
   type PreStepDecision,
   type SessionStartSource,
-} from '@alego/agent'
+} from '@singula-ai/alego-agent'
 
-import AgentLoop from '@alego/agent-loop'
+import AgentLoop from '@singula-ai/alego-agent-loop'
 import { MockAdapter, textResponse, toolCallResponse } from './mock-adapter.ts'
 
 /**

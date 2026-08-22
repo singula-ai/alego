@@ -84,9 +84,9 @@ MINIMAL_SNAPSHOT_FILENAMES = ("model-visible.json",)
 RUNTIME_CONTEXT_PREFIX = "Current runtime context"
 CUSTOM_CORDIS = """\
 - id: sdk-jsonrpc-server
-  name: '@alego/sdk-jsonrpc-server'
+  name: '@singula-ai/alego-sdk-jsonrpc-server'
 - id: agent-core
-  name: '@alego/agent-spine-demo'
+  name: '@singula-ai/alego-agent-spine-demo'
   config:
     workspaceContext: false
     skills:
@@ -95,38 +95,38 @@ CUSTOM_CORDIS = """\
     tools:
       mode: both
 - id: sessions
-  name: '@alego/session-persistence-jsonl'
+  name: '@singula-ai/alego-session-persistence-jsonl'
   config:
     root: !!js process.env.ALEGO_SESSION_ROOT
     compression: 'none'
 - id: code-runtime
-  name: '@alego/code-runtime-worker-thread'
+  name: '@singula-ai/alego-code-runtime-worker-thread'
 - id: subagents
-  name: '@alego/subagent'
+  name: '@singula-ai/alego-subagent'
 - id: subagent-spawn-in-process
-  name: '@alego/subagent-spawn-in-process'
+  name: '@singula-ai/alego-subagent-spawn-in-process'
   config:
     providerName: spawn
 - id: subagent-tool
-  name: '@alego/tool-subagent'
+  name: '@singula-ai/alego-tool-subagent'
   config:
     provider: spawn
 - id: workflow-engine
-  name: '@alego/workflow-worker-thread'
+  name: '@singula-ai/alego-workflow-worker-thread'
   config:
     provider: spawn
 - id: workflow-tool
-  name: '@alego/tool-workflow'
+  name: '@singula-ai/alego-tool-workflow'
 - id: cordis-host-runner
-  name: '@alego/cordis-host-runner'
+  name: '@singula-ai/alego-cordis-host-runner'
 - id: cordis-tool
-  name: '@alego/tool-cordis'
+  name: '@singula-ai/alego-tool-cordis'
 """
 FS_SEARCH_CORDIS = """\
 - id: sdk-jsonrpc-server
-  name: '@alego/sdk-jsonrpc-server'
+  name: '@singula-ai/alego-sdk-jsonrpc-server'
 - id: agent-core
-  name: '@alego/agent-spine-demo'
+  name: '@singula-ai/alego-agent-spine-demo'
   config:
     workspaceContext: false
     skills:
@@ -134,14 +134,14 @@ FS_SEARCH_CORDIS = """\
     toolBash: false
     toolJobs: false
 - id: sessions
-  name: '@alego/session-persistence-jsonl'
+  name: '@singula-ai/alego-session-persistence-jsonl'
   config:
     root: !!js process.env.ALEGO_SESSION_ROOT
     compression: 'none'
 - id: subprocess
-  name: '@alego/subprocess-local'
+  name: '@singula-ai/alego-subprocess-local'
 - id: fs-search
-  name: '@alego/tool-fs-search'
+  name: '@singula-ai/alego-tool-fs-search'
   config:
     sampleOverCapGlobResults: false
 """
@@ -228,11 +228,11 @@ def mcp_cordis(server_script: Path) -> str:
     return json.dumps([
         {
             "id": "sdk-jsonrpc-server",
-            "name": "@alego/sdk-jsonrpc-server",
+            "name": "@singula-ai/alego-sdk-jsonrpc-server",
         },
         {
             "id": "agent-core",
-            "name": "@alego/agent-spine-demo",
+            "name": "@singula-ai/alego-agent-spine-demo",
             "config": {
                 "workspaceContext": False,
                 "skills": {"enabled": False},
@@ -241,12 +241,12 @@ def mcp_cordis(server_script: Path) -> str:
         },
         {
             "id": "sessions",
-            "name": "@alego/session-persistence-jsonl",
+            "name": "@singula-ai/alego-session-persistence-jsonl",
             "config": {"root": "./sessions", "compression": "none"},
         },
         {
             "id": "mcp-fixture",
-            "name": "@alego/mcp-client",
+            "name": "@singula-ai/alego-mcp-client",
             "config": {
                 "serverName": "fixture",
                 "transport": "stdio",

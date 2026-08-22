@@ -1,4 +1,4 @@
-# @alego/client-ui-cordis
+# @singula-ai/alego-client-ui-cordis
 
 [English](README.md) | 中文
 

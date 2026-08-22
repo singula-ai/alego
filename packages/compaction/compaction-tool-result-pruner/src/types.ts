@@ -1,4 +1,4 @@
-import type { CallId } from '@alego/llm'
+import type { CallId } from '@singula-ai/alego-llm'
 
 /** Character-budget policy for deterministic tool-result pruning. */
 export interface ToolResultPruneConfig {

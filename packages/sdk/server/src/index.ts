@@ -6,13 +6,13 @@
  * owns EOF and signal exits. Keep named plugin exports with no default export so
  * Loader `unwrapExports` preserves `name`, `inject`, `Config`, and `apply`.
  *
- * @module @alego/sdk-jsonrpc-server
+ * @module @singula-ai/alego-sdk-jsonrpc-server
  */
 
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type { Readable, Writable } from 'node:stream'
-import Schema from '@alego/schemastery'
-import { JsonRpcLineTransport } from '@alego/sdk-protocol'
+import Schema from '@singula-ai/schemastery'
+import { JsonRpcLineTransport } from '@singula-ai/alego-sdk-protocol'
 import { HarnessSdkJsonRpcServer } from './server.ts'
 
 export * from './server.ts'

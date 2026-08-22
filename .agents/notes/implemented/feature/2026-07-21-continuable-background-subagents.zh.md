@@ -27,7 +27,7 @@ durable child Session
 
 前台委派保持一次性行为。继续执行覆盖后台的进程内 spawn 和 fork child。每个 `tool-subagent` 实例都会选择 `backgroundMode: 'one-shot' | 'continuable'`；配置为可继续模式时，所挂载提供方必须具备 `resume` 功能，而可恢复的提供方仍可采用一次性后台策略。在下述 ACP（Agent Client Protocol）后续工作完成前，ACP child 仍保持一次性行为。
 
-`ctx.subagents` 是唯一的公开服务。普通 `start` 不感知 child 集合、Activation 与持久化：它校验提供方功能、解析一次性描述符、分发一个 run、观察 run 生命周期，并返回由持有方负责的 run。注入的内部继续执行管理器负责管理稳定的 child id、可继续描述符持久化与查找、Activation 生命周期，以及通过 `startContinuable` 和 `followup` 进行的路由；管理器自行组合 child 之前，提供方通过私有闭包提供准备数据。按提供方绑定的 `@alego/tool-subagent` 插件及面向用户的适配器调用这些意图操作来处理可继续后台工作；前台和一次性后台委派使用普通 `start`。全局命名的模型工具是 `@alego/tool-subagent-control` 中的可选轻量适配器，它是否存在不会决定是否启动可继续工作。parent 到 child 的枚举、一次性／可继续模式共享的描述符身份与 `list_agents` 属于[持久化 subagent 目录](2026-07-22-durable-subagent-catalog-and-list-agents.zh.md)。
+`ctx.subagents` 是唯一的公开服务。普通 `start` 不感知 child 集合、Activation 与持久化：它校验提供方功能、解析一次性描述符、分发一个 run、观察 run 生命周期，并返回由持有方负责的 run。注入的内部继续执行管理器负责管理稳定的 child id、可继续描述符持久化与查找、Activation 生命周期，以及通过 `startContinuable` 和 `followup` 进行的路由；管理器自行组合 child 之前，提供方通过私有闭包提供准备数据。按提供方绑定的 `@singula-ai/alego-tool-subagent` 插件及面向用户的适配器调用这些意图操作来处理可继续后台工作；前台和一次性后台委派使用普通 `start`。全局命名的模型工具是 `@singula-ai/alego-tool-subagent-control` 中的可选轻量适配器，它是否存在不会决定是否启动可继续工作。parent 到 child 的枚举、一次性／可继续模式共享的描述符身份与 `list_agents` 属于[持久化 subagent 目录](2026-07-22-durable-subagent-catalog-and-list-agents.zh.md)。
 
 ### Task 与取消的所有权
 
@@ -37,7 +37,7 @@ durable child Session
 
 用户界面适配器打开 child 会话时，只读取持久化 transcript，不会仅为展示而恢复 agent。用户输入通过继续执行管理器，启动或加入与 parent 输入相同的 Task 激活。由用户启动的 Task 会保留当前加载的精确 parent Agent 作为通知目标，`job_output` 仍是唯一结果路径。只要 Task 尚未标记为已报告，现有完成监听器最多注入一条主动通知；`kill`、终态读取或终态等待都可能将其标记为已报告，并抑制这条通知。因此，仅允许在该 parent 实例保持存活时进行用户交互。可以比 parent 存活更久、并将结论显式合并回去的用户自有会话属于[交互式 side session](../../proposed/feature/2026-07-08-interactive-side-sessions.zh.md)，不属于这一由 Task 持有的生命周期。
 
-如果没有附加任务控制器，`JobRegistry.start()` 会拒绝 producer。因此，接受 child 输入的用户界面适配器必须附加任务控制器，或运行于加载了 `@alego/tool-jobs` 的部署中；仅加载 Task 服务并不足够。这项依赖是 parent 和用户启动的激活共用 Task 结果、取消和通知路径所付出的代价。
+如果没有附加任务控制器，`JobRegistry.start()` 会拒绝 producer。因此，接受 child 输入的用户界面适配器必须附加任务控制器，或运行于加载了 `@singula-ai/alego-tool-jobs` 的部署中；仅加载 Task 服务并不足够。这项依赖是 parent 和用户启动的激活共用 Task 结果、取消和通知路径所付出的代价。
 
 取消始终作用于当前完整激活。如果用户消息和 parent 消息已经加入同一个轮次，任一调用方发起取消都会中止该轮次、dispose 其 run，并将对应 Task 结算为 `killed`；这些消息没有独立的结果或取消权。`followup()` 要求调用方提供信号；若在线 steering 正在等待请求准入时该信号被中止，激活自有的 controller 会被中止，以便提供方丢弃待处理消息，并且该调用仅在子 agent 完全停稳后结算。若需要独立取消，后续消息必须另起轮次，而不能加入当前轮次。
 
@@ -57,7 +57,7 @@ durable child Session
 
 ### 面向模型的 `send_message`
 
-模型获得一个由 `SubagentRuntime.followup()` 支撑的 `send_message(subagent_id, message)` 工具，与 `Agent` 上的意图动词一致。该服务操作负责在 steering 与恢复之间编排；它不同于 run 的 `SubagentRun.steer?()`，后者只能向已活跃的 run 发送消息。工具本身不执行生命周期路由。该工具将后续消息的来源标记为 `{ kind: 'coordinator', senderSessionId: parent.id }`，并转发 `{ source, signal }`；服务要求在一个选项对象中同时提供这两项信息。来源会贯穿在线 steering 和 cold resume 两条路径，而取消只控制尚未完成的在线投递等待，因为 cold resume Task 会立即返回，并自行负责后续取消。child 模型收到的仍是普通的 user role 内容，而持久化的来源信息可防止模型生成的后续消息被归类为直接用户输入。用户适配器则提供 `{ kind: 'user' }` 及其交互信号。该工具位于单独加载的 `@alego/tool-subagent-control` 包中，因此按提供方绑定的 `@alego/tool-subagent` 实例可以继续为 spawn、fork 或 ACP 注册不同的委派工具，而不会重复注册全局控制工具。
+模型获得一个由 `SubagentRuntime.followup()` 支撑的 `send_message(subagent_id, message)` 工具，与 `Agent` 上的意图动词一致。该服务操作负责在 steering 与恢复之间编排；它不同于 run 的 `SubagentRun.steer?()`，后者只能向已活跃的 run 发送消息。工具本身不执行生命周期路由。该工具将后续消息的来源标记为 `{ kind: 'coordinator', senderSessionId: parent.id }`，并转发 `{ source, signal }`；服务要求在一个选项对象中同时提供这两项信息。来源会贯穿在线 steering 和 cold resume 两条路径，而取消只控制尚未完成的在线投递等待，因为 cold resume Task 会立即返回，并自行负责后续取消。child 模型收到的仍是普通的 user role 内容，而持久化的来源信息可防止模型生成的后续消息被归类为直接用户输入。用户适配器则提供 `{ kind: 'user' }` 及其交互信号。该工具位于单独加载的 `@singula-ai/alego-tool-subagent-control` 包中，因此按提供方绑定的 `@singula-ai/alego-tool-subagent` 实例可以继续为 spawn、fork 或 ACP 注册不同的委派工具，而不会重复注册全局控制工具。
 
 - 如果 child 存在运行中的 Task 并支持在线消息，服务会调用 `run.steer(message, source)` 并返回现有 job id；它不会创建新 Task。
 - 如果 child 没有运行中的 Task，`send_message` 会创建新 Task，使用该消息从持久化存储恢复会话，并返回新的 job id。

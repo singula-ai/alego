@@ -1,15 +1,15 @@
 # Keyless counterpart to depth-two.cordis.yml: apply the depth patch and replace
 # the live adapter with per-session replay.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - id: sandbox
-        name: '@alego/sandbox-local'
+        name: '@singula-ai/alego-sandbox-local'
         config:
           runnerCommand:
             - bash
@@ -19,7 +19,7 @@
           runnerFailureSignatures:
             - 'passthrough-runner: profile rejected'
       - id: tool-subagent
-        name: '@alego/tool-subagent'
+        name: '@singula-ai/alego-tool-subagent'
         config:
           provider: spawn
           toolName: subagent
@@ -29,7 +29,7 @@
       # scenario's corpus was captured on flash. A config patch replaces the
       # whole app config, so the base fields are restated verbatim.
       - id: acp-agent
-        name: '@alego/acp-demo'
+        name: '@singula-ai/alego-acp-demo'
         config:
           provider: deepseek-official
           model: deepseek-v4-flash
@@ -43,7 +43,7 @@
             Verify your work by running the code or tests. Keep answers brief and factual.
       - insert:
           - id: llm-replay
-            name: '@alego/llm-replay'
+            name: '@singula-ai/alego-llm-replay'
             config:
               providers:
                 - id: deepseek-official

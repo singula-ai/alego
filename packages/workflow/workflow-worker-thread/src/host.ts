@@ -3,20 +3,20 @@
  * cancellation-grace expiry owns settlement and closes message admission.
  * Pending starts share one abort signal; published children share idempotent
  * cleanup, and quiescence waits for both while synthesizing any missing end events.
- * @module @alego/workflow-worker-thread/host
+ * @module @singula-ai/alego-workflow-worker-thread/host
  */
 
 import { tmpdir } from 'node:os'
 import { Worker } from 'node:worker_threads'
 import type { WorkerOptions } from 'node:worker_threads'
 import { fileURLToPath } from 'node:url'
-import type { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import { assertNever } from '@alego/llm'
-import { snapshotJsonValue } from '@alego/session'
-import type SubagentRuntime from '@alego/subagent'
-import type { SubagentRun } from '@alego/subagent'
-import type { WorkflowAgentEndInfo, WorkflowAgentInfo, WorkflowMeta, WorkflowResult, WorkflowRun, WorkflowRunId } from '@alego/workflow'
+import type { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import { assertNever } from '@singula-ai/alego-llm'
+import { snapshotJsonValue } from '@singula-ai/alego-session'
+import type SubagentRuntime from '@singula-ai/alego-subagent'
+import type { SubagentRun } from '@singula-ai/alego-subagent'
+import type { WorkflowAgentEndInfo, WorkflowAgentInfo, WorkflowMeta, WorkflowResult, WorkflowRun, WorkflowRunId } from '@singula-ai/alego-workflow'
 import { renderThrown } from './realm.ts'
 import type { ExecutionObserver } from './runtime.ts'
 import { HostToWorkerType, WorkerToHostType } from './protocol.ts'

@@ -2,7 +2,7 @@
  * Shared rendering helpers for the shell tools (`alego-tool-bash`,
  * `alego-tool-pwsh`): the exit-status marker contract the tools' renderers
  * emit and the presentation layer parses back.
- * @module @alego/shell/render
+ * @module @singula-ai/alego-shell/render
  */
 
 /**

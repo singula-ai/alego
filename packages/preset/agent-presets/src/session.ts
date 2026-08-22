@@ -10,12 +10,12 @@
  * preset decides the tool schemas and prompt sections the model sees.
  *
  * Reconstruction reads {@link resolveSessionPreset}, never the header alone.
- * @module @alego/agent-presets/session
+ * @module @singula-ai/alego-agent-presets/session
  */
 
-import type { SessionEvent, SessionHeader } from '@alego/session'
+import type { SessionEvent, SessionHeader } from '@singula-ai/alego-session'
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * The session's agent preset was chosen after creation, while the session

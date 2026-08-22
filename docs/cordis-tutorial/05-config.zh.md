@@ -9,8 +9,8 @@
 创建 `config-demo.ts`，并将其放在 `tmp/cordis-tutorial` 中：
 
 ```ts
-import type { Context } from '@alego/cordis'
-import Schema from '@alego/schemastery'
+import type { Context } from '@singula-ai/cordis'
+import Schema from '@singula-ai/schemastery'
 
 export const name = 'config-demo'
 

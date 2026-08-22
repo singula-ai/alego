@@ -13,16 +13,16 @@ import { tmpdir } from 'node:os'
 import { delimiter, dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { promisify } from 'node:util'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { Agent } from '@alego/agent'
-import SubagentRuntime from '@alego/subagent'
+import type { Agent } from '@singula-ai/alego-agent'
+import SubagentRuntime from '@singula-ai/alego-subagent'
 import type {
   SubprocessHandle,
   SubprocessOutcome,
   SubprocessSpawnSpec,
-} from '@alego/subprocess'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
+} from '@singula-ai/alego-subprocess'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 import * as codex from '../src/index.ts'
 import type { CodexPermissionMode } from '../src/run.ts'
 import {

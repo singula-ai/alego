@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import {
   createLaunchEnvironmentSnapshot, ALEGO_LAUNCH_ENVIRONMENT_KEY, launchEnvironmentOf,
 } from '../src/index.ts'

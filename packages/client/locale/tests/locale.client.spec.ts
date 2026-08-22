@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { stubSettingsScope, type StubSettingsScope } from '@alego/client-test-runtime'
-import type { LocaleSettings, LocaleSnapshot } from '@alego/client-locale/client'
-import { FALLBACK_LOCALE, LocaleRuntime } from '@alego/client-locale/client'
+import { Context } from '@singula-ai/cordis'
+import { stubSettingsScope, type StubSettingsScope } from '@singula-ai/alego-client-test-runtime'
+import type { LocaleSettings, LocaleSnapshot } from '@singula-ai/alego-client-locale/client'
+import { FALLBACK_LOCALE, LocaleRuntime } from '@singula-ai/alego-client-locale/client'
 const make = (host?: StubSettingsScope<LocaleSettings>): {
   ctx: Context
   svc: LocaleRuntime

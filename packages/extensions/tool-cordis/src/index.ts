@@ -1,20 +1,20 @@
 /**
  * Model-facing Cordis runtime/package inspection, define, run, stop, and remove tools.
- * @module @alego/tool-cordis
+ * @module @singula-ai/alego-tool-cordis
  */
 
-import type { Context } from '@alego/cordis'
-import type { Agent, PreStepDecision } from '@alego/agent'
+import type { Context } from '@singula-ai/cordis'
+import type { Agent, PreStepDecision } from '@singula-ai/alego-agent'
 import {
   CordisDynamicPackageId, CordisDynamicPluginId,
-} from '@alego/cordis-host-runner'
-import type { DynamicCordisReference } from '@alego/cordis-host-runner'
-import { createUserMessage } from '@alego/llm'
-import type { JsonValue } from '@alego/session'
-import type { UserMessage } from '@alego/session'
-import { defineTool } from '@alego/tools'
-import type { ToolExecution } from '@alego/tools'
-import type {} from '@alego/system-prompt'
+} from '@singula-ai/alego-cordis-host-runner'
+import type { DynamicCordisReference } from '@singula-ai/alego-cordis-host-runner'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type { JsonValue } from '@singula-ai/alego-session'
+import type { UserMessage } from '@singula-ai/alego-session'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { ToolExecution } from '@singula-ai/alego-tools'
+import type {} from '@singula-ai/alego-system-prompt'
 import { missingServices, providedServices } from './inspect.ts'
 import {
   presentDefineCall, presentInspectListCall, presentInspectQueryCall, presentInspectSelfCall, presentRunCall,

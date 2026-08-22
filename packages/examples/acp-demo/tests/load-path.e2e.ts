@@ -32,26 +32,26 @@ const repoTsconfig = fileURLToPath(new URL('../../../../tsconfig.json', import.m
 // session-query consumer/policies, inlined so the package test owns its fixture.
 const CORDIS_YML = `
 - id: llm-deepseek
-  name: '@alego/llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek'
 - id: subprocess
-  name: '@alego/subprocess-local'
+  name: '@singula-ai/alego-subprocess-local'
 - id: bash
-  name: '@alego/bash-local'
+  name: '@singula-ai/alego-bash-local'
 - id: acp-agent
-  name: '@alego/acp-demo'
+  name: '@singula-ai/alego-acp-demo'
   config:
     provider: deepseek-official
     model: deepseek-v4-flash
     persona: 'You are a test agent.'
     workspaceContext: false
 - id: tool-session-query
-  name: '@alego/tool-session-query'
+  name: '@singula-ai/alego-tool-session-query'
 - id: timeout-policy
-  name: '@alego/tool-call-timeout-policy'
+  name: '@singula-ai/alego-tool-call-timeout-policy'
 - id: spill-local
-  name: '@alego/spill-local'
+  name: '@singula-ai/alego-spill-local'
 - id: spill-policy
-  name: '@alego/spill-policy'
+  name: '@singula-ai/alego-spill-policy'
   config:
     maxInlineBytes: 50000
 `

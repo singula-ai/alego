@@ -10,7 +10,7 @@ Session telemetry is mounted by default ([default-mount Note](2026-07-31-web-tel
 
 ## Decision
 
-`getOrCreateAnonymousUserId()` returns the bare UUID line in `$ALEGO_HOME/.anonymous-user-id` (resolved by `resolveAlegoHome`, `$ALEGO_HOME` > `~/.alego`), minting and persisting a random UUID v4 on first use; the backend constructor carries it as the Resource's `user.id` (the OTel semconv user attribute), once per export batch. The original implementation lived inside `session-telemetry-otel` because no second real consumer existed. `/feedback` later became that consumer, so [the shared-id decision](../architecture/2026-08-07-shared-feedback-telemetry-user-id.md) moves ownership to `@alego/anonymous-user-id` without changing the storage, anonymity, concurrency, or loss semantics recorded here. [Direct DeepSeek request identity](2026-08-11-deepseek-request-user-id-header.md) is a third consumer of the same id.
+`getOrCreateAnonymousUserId()` returns the bare UUID line in `$ALEGO_HOME/.anonymous-user-id` (resolved by `resolveAlegoHome`, `$ALEGO_HOME` > `~/.alego`), minting and persisting a random UUID v4 on first use; the backend constructor carries it as the Resource's `user.id` (the OTel semconv user attribute), once per export batch. The original implementation lived inside `session-telemetry-otel` because no second real consumer existed. `/feedback` later became that consumer, so [the shared-id decision](../architecture/2026-08-07-shared-feedback-telemetry-user-id.md) moves ownership to `@singula-ai/alego-anonymous-user-id` without changing the storage, anonymity, concurrency, or loss semantics recorded here. [Direct DeepSeek request identity](2026-08-11-deepseek-request-user-id-header.md) is a third consumer of the same id.
 
 | Ruling | Value | Rationale |
 |---|---|---|
@@ -22,7 +22,7 @@ Session telemetry is mounted by default ([default-mount Note](2026-07-31-web-tel
 | Write failure | Best-effort: return the in-memory id | SessionTelemetryBackend is never blocked by a read-only home |
 | Report position | Resource attribute, not per-record attributes | Once per batch suffices for Resource-dimension aggregation; per-record injection would touch the seam contract and grow the wire |
 | semconv dependency | `@opentelemetry/semantic-conventions` is not imported | One string constant does not justify a dependency |
-| Home | `@alego/anonymous-user-id`, shared by the OTel backend, `/feedback`, and direct DeepSeek requests | Consumers share one storage contract without depending on an exporter backend |
+| Home | `@singula-ai/alego-anonymous-user-id`, shared by the OTel backend, `/feedback`, and direct DeepSeek requests | Consumers share one storage contract without depending on an exporter backend |
 | Separate switch | None | Any consumer can create the identity; `ALEGO_TELEMETRY_DISABLED` stops telemetry reporting but does not disable feedback acknowledgement or the DeepSeek request header |
 
 ## Alternatives considered
@@ -33,7 +33,7 @@ Session telemetry is mounted by default ([default-mount Note](2026-07-31-web-tel
 | user.id on every record's attributes (Claude Code's shape) | Touches the session-telemetry seam contract or injects per record, growing the wire; once per batch on the Resource already aggregates |
 | A shared package before `/feedback` needed the id (the first cut) | At that time the only real consumer was the OTel backend; extraction became justified only when direct feedback needed the same correlation id |
 | AppCLIEntry reading the id and injecting via config patch | Every surface entry needs wiring; a runtime fact inside deployment config conflates the two |
-| Housing it in `@alego/home-paths` | paths is pure path computation with zero IO; a persisting identity capability would pollute the package boundary |
+| Housing it in `@singula-ai/alego-home-paths` | paths is pure path computation with zero IO; a persisting identity capability would pollute the package boundary |
 
 ## Consequences
 

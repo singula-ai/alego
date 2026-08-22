@@ -6,20 +6,20 @@
  * Registrations outlive producer and controller fibers. Agent or service
  * disposal cancels live work and awaits compliant producers; a throwing
  * teardown cancel force-fails only the record and reports a possible orphan.
- * @module @alego/jobs-local
+ * @module @singula-ai/alego-jobs-local
  */
 
-import { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent } from '@alego/agent'
-import { AnonymousEntries, ScopedLayers, scopeOf } from '@alego/scope'
-import type { ScopeLayer } from '@alego/scope'
-import { deadline, timeoutOf } from '@alego/timeout'
-import { JobRegistry, JobId } from '@alego/jobs'
+import { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent } from '@singula-ai/alego-agent'
+import { AnonymousEntries, ScopedLayers, scopeOf } from '@singula-ai/alego-scope'
+import type { ScopeLayer } from '@singula-ai/alego-scope'
+import { deadline, timeoutOf } from '@singula-ai/alego-timeout'
+import { JobRegistry, JobId } from '@singula-ai/alego-jobs'
 import type {
   JobDoneListener, JobKind, JobOutcome, JobRead, JobSnapshot, JobStart, JobStatus,
   JobsChangedListener,
-} from '@alego/jobs'
+} from '@singula-ai/alego-jobs'
 
 /** Timeout code that distinguishes a bounded wait from caller cancellation. */
 export const TASK_WAIT_TIMEOUT = 'TASK_WAIT_TIMEOUT'
@@ -85,7 +85,7 @@ class JobLayer implements ScopeLayer {
 
 /**
  * The in-memory `jobs` registry. See the Service Definition contract in
- * `@alego/jobs` for the ownership, isolation, and lifecycle
+ * `@singula-ai/alego-jobs` for the ownership, isolation, and lifecycle
  * semantics this implementation honors.
  */
 export class LocalJobRegistry extends JobRegistry {
@@ -130,7 +130,7 @@ export class LocalJobRegistry extends JobRegistry {
 
   start(spec: JobStart): JobId {
     if (!this.servesOwner(spec.owner)) {
-      throw new Error('background jobs unavailable: no job controller serves this agent (load @alego/tool-jobs in its composition)')
+      throw new Error('background jobs unavailable: no job controller serves this agent (load @singula-ai/alego-tool-jobs in its composition)')
     }
     if (spec.kind.length === 0) throw new Error('invalid job kind: expected a non-empty string')
     if (spec.label.length === 0) throw new Error('invalid job label: expected a non-empty string')
@@ -449,7 +449,7 @@ export class LocalJobRegistry extends JobRegistry {
     const ownerId = owner.id
     const agents = this.selfCtx.get('agents')
     if (agents === undefined) {
-      throw new Error('background job ownership requires the agent registry (load @alego/agent)')
+      throw new Error('background job ownership requires the agent registry (load @singula-ai/alego-agent)')
     }
     if (agents.get(ownerId) !== owner) {
       throw new Error(`agent "${ownerId}" is not the registered agent instance (background job owner must be live)`)

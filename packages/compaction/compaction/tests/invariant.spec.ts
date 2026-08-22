@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import SessionStore, { Session, SessionId } from '@alego/session'
-import { createUserMessage } from '@alego/llm'
-import { CompactionId, compactCheckpointSource } from '@alego/compaction'
-import * as CompactionInvariant from '@alego/compaction/invariant'
-import { CommandId } from '@alego/commands/brand'
-import InvariantRegistry from '@alego/invariants'
+import { Context } from '@singula-ai/cordis'
+import SessionStore, { Session, SessionId } from '@singula-ai/alego-session'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import { CompactionId, compactCheckpointSource } from '@singula-ai/alego-compaction'
+import * as CompactionInvariant from '@singula-ai/alego-compaction/invariant'
+import { CommandId } from '@singula-ai/alego-commands/brand'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

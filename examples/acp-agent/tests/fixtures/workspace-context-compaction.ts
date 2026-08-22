@@ -1,8 +1,8 @@
-import type { Context } from '@alego/cordis'
-import type {} from '@alego/agent'
-import { CompactionId, compactCheckpointSource } from '@alego/compaction'
-import { createUserMessage } from '@alego/llm'
-import type {} from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import type {} from '@singula-ai/alego-agent'
+import { CompactionId, compactCheckpointSource } from '@singula-ai/alego-compaction'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type {} from '@singula-ai/alego-tools'
 
 export const name = 'workspace-context-compaction'
 

@@ -1,8 +1,8 @@
 /** Test-owned workspaces face: the renderer standard-kit observable plus recorded actions. */
-import { createSnapshotStore } from '@alego/client-runtime/client'
+import { createSnapshotStore } from '@singula-ai/alego-client-runtime/client'
 import type {
   DirectoryListing, IWorkspaces, SessionId, SnapshotStore, WorkspaceId, WorkspaceListState, WorkspaceView,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import { workspaceListState } from './fixtures.ts'
 import type { Stabilizer } from './fixtures.ts'
 

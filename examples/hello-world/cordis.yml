@@ -3,10 +3,10 @@
 # locally authored plugin mounted by relative path — the same entry form a
 # published plugin uses, with a package name in place of the path.
 - id: system-prompt
-  name: '@alego/system-prompt'
+  name: '@singula-ai/alego-system-prompt'
 
 - id: tools
-  name: '@alego/tools'
+  name: '@singula-ai/alego-tools'
 
 # `config` is validated by the plugin's own Schemastery `Config`; an invalid
 # value fails the load rather than reaching the tool.

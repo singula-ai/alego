@@ -1,4 +1,4 @@
-# @alego/llm-replay
+# @singula-ai/alego-llm-replay
 
 [English](README.md) | 中文
 
@@ -34,7 +34,7 @@ fixture 是持久化会话日志（`<scenario>/session.jsonl`）的投影：它�
 
 ```yaml
 - id: llm-replay
-  name: '@alego/llm-replay'
+  name: '@singula-ai/alego-llm-replay'
   config:
     providers:
       - id: deepseek-official

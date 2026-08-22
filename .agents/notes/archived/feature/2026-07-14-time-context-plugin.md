@@ -15,7 +15,7 @@ Prompt assembly can derive both facts per step from durable session timestamps, 
 
 ## Decision
 
-`@alego/time-context` is an opt-in function plugin at `packages/context/time-context/`. The `context/` product group holds bounded request-context enrichments that define neither a tool nor a service. `alego-agent-spine-demo` and shipped examples do not load the package; deployments mount it explicitly when its token and disclosure costs are acceptable.
+`@singula-ai/alego-time-context` is an opt-in function plugin at `packages/context/time-context/`. The `context/` product group holds bounded request-context enrichments that define neither a tool nor a service. `alego-agent-spine-demo` and shipped examples do not load the package; deployments mount it explicitly when its token and disclosure costs are acceptable.
 
 The plugin registers the global `context:time` system-prompt section at order 10, after the deployment persona and before tool guidance. For an active turn it emits an ISO-shaped timestamp with numeric UTC offset and IANA zone, plus a compact whole-second duration since the last model-visible message before the turn opened. Bare and idle assemblies receive an empty section.
 

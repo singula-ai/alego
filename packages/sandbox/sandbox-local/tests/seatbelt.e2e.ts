@@ -4,9 +4,9 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { homedir, tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { SandboxPolicy } from '@alego/sandbox'
-import { LocalSandboxProvider } from '@alego/sandbox-local'
+import { Context } from '@singula-ai/cordis'
+import type { SandboxPolicy } from '@singula-ai/alego-sandbox'
+import { LocalSandboxProvider } from '@singula-ai/alego-sandbox-local'
 import { seatbeltProfileArgs } from '../src/profiles.ts'
 
 /**

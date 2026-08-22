@@ -1,6 +1,6 @@
-import type { Context } from '@alego/cordis'
-import { setSandboxMode } from '@alego/sandbox-policy'
-import type {} from '@alego/agent'
+import type { Context } from '@singula-ai/cordis'
+import { setSandboxMode } from '@singula-ai/alego-sandbox-policy'
+import type {} from '@singula-ai/alego-agent'
 
 export const name = 'parent-sandbox-override'
 

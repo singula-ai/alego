@@ -1,18 +1,18 @@
 /**
  * `LocalSpillStore`: the host-filesystem implementation of the
- * `@alego/spill` storage seam. Persists a tool's oversized text to a
+ * `@singula-ai/alego-spill` storage seam. Persists a tool's oversized text to a
  * private, session-scoped file (see `./store.ts` for the traversal-safe naming
  * and exclusive owner-only write) and returns a path locator plus local
  * read/grep retrieval guidance.
  *
- * @module @alego/spill-local
+ * @module @singula-ai/alego-spill-local
  */
 
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { resolve } from 'node:path'
-import z from '@alego/schemastery'
-import { SpillLocator, SpillStore } from '@alego/spill'
-import type { SaveTextSpill, SpillRef } from '@alego/spill'
+import z from '@singula-ai/schemastery'
+import { SpillLocator, SpillStore } from '@singula-ai/alego-spill'
+import type { SaveTextSpill, SpillRef } from '@singula-ai/alego-spill'
 import { privateRoot, saveTextFile } from './store.ts'
 
 export { encodeSegment, privateRoot, saveTextFile, sessionDir } from './store.ts'

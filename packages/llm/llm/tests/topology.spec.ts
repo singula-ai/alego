@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import LlmRuntime, { LlmAdapter, LlmError } from '@alego/llm'
-import type { GenerateOptions, LlmConfigurableProvider, StreamChunk } from '@alego/llm'
+import { Context } from '@singula-ai/cordis'
+import LlmRuntime, { LlmAdapter, LlmError } from '@singula-ai/alego-llm'
+import type { GenerateOptions, LlmConfigurableProvider, StreamChunk } from '@singula-ai/alego-llm'
 
 class NoopAdapter extends LlmAdapter {
 

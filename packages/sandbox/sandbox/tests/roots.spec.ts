@@ -9,7 +9,7 @@ import { tmpdir } from 'node:os'
 import { mkdtempSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { canonicalPath, writableRoots } from '@alego/sandbox'
+import { canonicalPath, writableRoots } from '@singula-ai/alego-sandbox'
 
 describe('canonicalPath', () => {
   it('resolves symlinks (an existing path realpaths)', () => {

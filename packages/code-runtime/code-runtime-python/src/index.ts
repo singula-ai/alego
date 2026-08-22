@@ -5,7 +5,7 @@
  * the CPython subprocess. The protocol's host-side codec and hostile-frame
  * validators are re-exported so every consumer of the wire shares one
  * vocabulary.
- * @module @alego/code-runtime-python
+ * @module @singula-ai/alego-code-runtime-python
  */
 
 export type { BootMessage, ChildToHost, ReplyMessage } from './protocol.ts'

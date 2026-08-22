@@ -1,15 +1,15 @@
 /**
  * Model-facing persistent `bash` tool over the owner-scoped PTY seam.
- * @module @alego/tool-bash-persistent
+ * @module @singula-ai/alego-tool-bash-persistent
  */
 
 import { randomUUID } from 'node:crypto'
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent } from '@alego/agent'
-import type { TerminalReadResult, TerminalSessionId } from '@alego/terminal'
-import { deadline, timeoutOf } from '@alego/timeout'
-import { defineTool } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { TerminalReadResult, TerminalSessionId } from '@singula-ai/alego-terminal'
+import { deadline, timeoutOf } from '@singula-ai/alego-timeout'
+import { defineTool } from '@singula-ai/alego-tools'
 
 // TODO: Replace the file-search advice; arbitrary command output need not come from a searchable file.
 const TRUNCATED_MESSAGE = '<response clipped><NOTE>To save on context only part of this file has been shown to you. You should retry this tool after you have searched inside the file with `grep -n` in order to find the line numbers of what you are looking for.</NOTE>'

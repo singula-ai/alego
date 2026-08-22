@@ -1,4 +1,4 @@
-# @alego/goal
+# @singula-ai/alego-goal
 
 [English](README.md) | 中文
 
@@ -8,7 +8,7 @@
 
 ```yaml
 - id: goal
-  name: '@alego/goal'
+  name: '@singula-ai/alego-goal'
   config:
     defaultMaxGoalRounds: 256
 ```

@@ -1,9 +1,9 @@
 /** Package-owned invariant companion for the Team tool adapter. */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/experimental-tool-agent-team'
+const PACKAGE_NAME = '@singula-ai/alego-experimental-tool-agent-team'
 
 /** Cordis companion plugin name. */
 export const name = 'tool-team-invariant'

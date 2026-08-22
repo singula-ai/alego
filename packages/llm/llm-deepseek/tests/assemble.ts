@@ -5,9 +5,9 @@
  * one-shot convenience method.
  */
 
-import { BlockAssembler } from '@alego/llm'
-import type { Context } from '@alego/cordis'
-import type { FinishReason, GenerateOptions, Message, TokenUsage } from '@alego/llm'
+import { BlockAssembler } from '@singula-ai/alego-llm'
+import type { Context } from '@singula-ai/cordis'
+import type { FinishReason, GenerateOptions, Message, TokenUsage } from '@singula-ai/alego-llm'
 
 export interface AssembledResult {
   message: Message

@@ -1,37 +1,37 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import AgentLoop from '@alego/agent-loop'
-import { mountAgentLoopTestDependencies } from '@alego/agent-loop-testkit'
-import InvariantRegistry from '@alego/invariants'
-import { CommandId } from '@alego/commands/brand'
-import * as SessionInvariant from '@alego/session/invariant'
-import * as AgentInvariant from '@alego/agent/invariant'
-import * as AgentLoopInvariant from '@alego/agent-loop/invariant'
-import * as CompactionInvariant from '@alego/compaction/invariant'
-import * as CompactionBasicInvariant from '@alego/compaction-basic/invariant'
-import { BasicCompactionEngine } from '@alego/compaction-basic'
-import { CompactionId, isCompactCheckpointSource, ManualCompactionError } from '@alego/compaction'
-import type { CompactionResult } from '@alego/compaction'
+import { Context } from '@singula-ai/cordis'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
+import InvariantRegistry from '@singula-ai/alego-invariants'
+import { CommandId } from '@singula-ai/alego-commands/brand'
+import * as SessionInvariant from '@singula-ai/alego-session/invariant'
+import * as AgentInvariant from '@singula-ai/alego-agent/invariant'
+import * as AgentLoopInvariant from '@singula-ai/alego-agent-loop/invariant'
+import * as CompactionInvariant from '@singula-ai/alego-compaction/invariant'
+import * as CompactionBasicInvariant from '@singula-ai/alego-compaction-basic/invariant'
+import { BasicCompactionEngine } from '@singula-ai/alego-compaction-basic'
+import { CompactionId, isCompactCheckpointSource, ManualCompactionError } from '@singula-ai/alego-compaction'
+import type { CompactionResult } from '@singula-ai/alego-compaction'
 import {
   createAssistantMessage,
   createUserMessage,
   LlmAdapter,
-} from '@alego/llm'
+} from '@singula-ai/alego-llm'
 import type {
   ContentBlock,
   LlmResolvedModelInfo,
   Message,
   StreamChunk,
   TokenUsage,
-} from '@alego/llm'
-import SessionStore, { Session, SessionId, type SessionEvent } from '@alego/session'
-import LlmRuntime from '@alego/llm'
-import TokenMeter from '@alego/token-meter'
-import type { Agent } from '@alego/agent'
+} from '@singula-ai/alego-llm'
+import SessionStore, { Session, SessionId, type SessionEvent } from '@singula-ai/alego-session'
+import LlmRuntime from '@singula-ai/alego-llm'
+import TokenMeter from '@singula-ai/alego-token-meter'
+import type { Agent } from '@singula-ai/alego-agent'
 import type {
   SummarizationInput,
   SummaryResult,
-} from '@alego/compaction-basic/src/summarizer.ts'
+} from '@singula-ai/alego-compaction-basic/src/summarizer.ts'
 
 const MODEL = 'mock'
 const SIGNAL = new AbortController().signal

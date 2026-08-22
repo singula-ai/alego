@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import InvariantService, { InvariantError } from '@alego/invariants'
-import SessionStore, { SessionId } from '@alego/session'
+import { Context } from '@singula-ai/cordis'
+import InvariantService, { InvariantError } from '@singula-ai/alego-invariants'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
 import * as TeamInvariant from '../src/invariant.ts'
 import { TeamId, TeamTaskId } from '../src/types.ts'
 
@@ -38,7 +38,7 @@ describe('Agent Teams stream invariant', () => {
       })
     }).toThrow(expect.objectContaining<Partial<InvariantError>>({
       code: 'INVARIANT',
-      packageName: '@alego/experimental-agent-team',
+      packageName: '@singula-ai/alego-experimental-agent-team',
     }))
     expect(invalid.events).toEqual([])
   })
@@ -63,7 +63,7 @@ describe('Agent Teams stream invariant', () => {
       })
     }).toThrow(expect.objectContaining<Partial<InvariantError>>({
       code: 'INVARIANT',
-      packageName: '@alego/experimental-agent-team',
+      packageName: '@singula-ai/alego-experimental-agent-team',
     }))
     expect(session.events).toEqual([])
   })

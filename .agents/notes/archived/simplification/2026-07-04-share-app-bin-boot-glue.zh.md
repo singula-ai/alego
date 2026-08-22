@@ -11,7 +11,7 @@ stdio 和 ACP（Agent Client Protocol）两个 bin 各自重复了环境加载�
 
 ## 决策
 
-辅助函数只存在一处：[`@alego/app-boot`](../../../../packages/ui/app-boot)（`packages/ui/app-boot`，归入 `ui` 分组，因为 bin 是已发布产物，其运行时依赖本身也必须是已发布的包，而非 `support/`）。包含：`resolveConfigPath`（快照感知，两个 bin 共用的唯一路径解析器）、`loadEnv`、`installFailLoud`、`assertEntriesLoaded` 与 `boot`，每个函数都通过 bin 的诊断前缀参数化，并在其副作用 seam（warn sink、process slice）处支持注入，使单元测试套件能覆盖每个分支——包括 `boot()` 在进程内驱动真实 Loader、使用相对路径 specifier 配置的场景，既覆盖已稳定树的正常路径，也覆盖无 fiber 入口的拒绝路径。该包启用逐文件 100% 覆盖率门禁；Loader 失败的相关知识只有一个归属地。
+辅助函数只存在一处：[`@singula-ai/alego-app-boot`](../../../../packages/ui/app-boot)（`packages/ui/app-boot`，归入 `ui` 分组，因为 bin 是已发布产物，其运行时依赖本身也必须是已发布的包，而非 `support/`）。包含：`resolveConfigPath`（快照感知，两个 bin 共用的唯一路径解析器）、`loadEnv`、`installFailLoud`、`assertEntriesLoaded` 与 `boot`，每个函数都通过 bin 的诊断前缀参数化，并在其副作用 seam（warn sink、process slice）处支持注入，使单元测试套件能覆盖每个分支——包括 `boot()` 在进程内驱动真实 Loader、使用相对路径 specifier 配置的场景，既覆盖已稳定树的正常路径，也覆盖无 fiber 入口的拒绝路径。该包启用逐文件 100% 覆盖率门禁；Loader 失败的相关知识只有一个归属地。
 
 每个 `bin.ts` 都是在共享辅助函数之上加应用特有生命周期的精简自执行组合（ACP bin：重放模式环境变量跳过和 stdin EOF 释放；stdio bin：没有额外逻辑）。这些 bin 仍排除在覆盖率之外且不导出任何内容；已发布产物守卫保持不变——按照“真实入口路径即已发布产物”的防御模式，已构建 bin 冒烟仍在具有 node_modules 形状的临时目录中用纯 node 运行每个 bin（现在也会符号链接 `ui/app-boot`），并继续断言缺失配置时以非零状态退出。[提取示例应用包 Agent Note（agent 决策记录）](../architecture/2026-06-20-extract-example-app-packages.md)中的 bin 归属事实已据此修改。
 

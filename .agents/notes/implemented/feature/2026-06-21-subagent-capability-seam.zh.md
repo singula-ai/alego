@@ -31,13 +31,13 @@ bash seam（[能力 seam](../architecture/2026-06-13-capability-seams.zh.md)）�
 
 | 包 | 角色 |
 |---|---|
-| `@alego/subagent` | 接口：`SubagentRuntime`（`ctx.subagents`）、`SubagentProvider`、`SubagentRun`、请求、结果、能力词汇、`subagent/*` 事件 |
-| `@alego/subagent-spawn-in-process` | 实现：通过 `ctx.agents.create` 创建全新的进程内子 agent |
-| `@alego/subagent-fork-in-process` | 实现：用父 agent 日志快照初始化的进程内子 agent |
-| `@alego/subagent-acp` | 实现：作为 ACP 客户端驱动已配置的子进程 |
-| `@alego/subagent-codex` | 实现：一次性官方 Codex app-server 进程 |
-| `@alego/subagent-claude-code` | 实现：通过 Agent SDK 运行的一次性官方 Claude Code 进程 |
-| `@alego/tool-subagent` | 消费方：基于 `ctx.subagents` 的面向模型的 `subagent` 工具 |
+| `@singula-ai/alego-subagent` | 接口：`SubagentRuntime`（`ctx.subagents`）、`SubagentProvider`、`SubagentRun`、请求、结果、能力词汇、`subagent/*` 事件 |
+| `@singula-ai/alego-subagent-spawn-in-process` | 实现：通过 `ctx.agents.create` 创建全新的进程内子 agent |
+| `@singula-ai/alego-subagent-fork-in-process` | 实现：用父 agent 日志快照初始化的进程内子 agent |
+| `@singula-ai/alego-subagent-acp` | 实现：作为 ACP 客户端驱动已配置的子进程 |
+| `@singula-ai/alego-subagent-codex` | 实现：一次性官方 Codex app-server 进程 |
+| `@singula-ai/alego-subagent-claude-code` | 实现：通过 Agent SDK 运行的一次性官方 Claude Code 进程 |
+| `@singula-ai/alego-tool-subagent` | 消费方：基于 `ctx.subagents` 的面向模型的 `subagent` 工具 |
 
 ### 原语：异步 `start → SubagentRun`
 

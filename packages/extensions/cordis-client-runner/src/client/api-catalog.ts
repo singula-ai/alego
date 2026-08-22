@@ -9,7 +9,7 @@
  * the same AST walk as docs/cordis-catalog, so this data and the rendered
  * docs cannot diverge.
  *
- * @module @alego/cordis-client-runner/client/api-catalog
+ * @module @singula-ai/alego-cordis-client-runner/client/api-catalog
  */
 
 /* jscpd:ignore-start */

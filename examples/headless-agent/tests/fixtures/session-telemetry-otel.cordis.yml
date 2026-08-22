@@ -3,7 +3,7 @@
 # The redact-rule entry models a deployment mounting its own scrub rule on the
 # session-telemetry/record waterfall — the seam itself ships no rules.
 - id: logger-console
-  name: '@alego/cordis-plugin-logger-console'
+  name: '@singula-ai/cordis-plugin-logger-console'
   config:
     colors: false
     levels:
@@ -18,20 +18,20 @@
 
 # Managed child-process groups required by the bash executor.
 - id: subprocess
-  name: '@alego/subprocess-local'
+  name: '@singula-ai/alego-subprocess-local'
 
 - id: bash
-  name: '@alego/bash-local'
+  name: '@singula-ai/alego-bash-local'
 
 - id: session-telemetry-otel
-  name: '@alego/session-telemetry-otel'
+  name: '@singula-ai/alego-session-telemetry-otel'
   config:
     mode: !!js process.env.ALEGO_TELEMETRY_E2E_MODE || 'FULL'
     exporter:
       url: !!js process.env.ALEGO_TELEMETRY_E2E_URL
 
 - id: agent-spine
-  name: '@alego/agent-spine-demo'
+  name: '@singula-ai/alego-agent-spine-demo'
   config:
     agents:
       - id: main
@@ -42,10 +42,10 @@
     workspaceContext: false
 
 - id: persistence
-  name: '@alego/session-persistence-jsonl'
+  name: '@singula-ai/alego-session-persistence-jsonl'
   config:
     root: './.sessions'
     compression: 'none'
 
 - id: checkpoint-policy
-  name: '@alego/session-checkpoint-policy'
+  name: '@singula-ai/alego-session-checkpoint-policy'

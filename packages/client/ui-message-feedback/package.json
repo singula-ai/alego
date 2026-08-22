@@ -1,5 +1,5 @@
 {
-  "name": "@alego/client-ui-message-feedback",
+  "name": "@singula-ai/alego-client-ui-message-feedback",
   "description": "Per-message feedback controls contributed to the assistant-message action strip, backed by the messageFeedback Host Remote",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -32,10 +32,10 @@
   "alego": {
     "client": {
       "inject": [
-        "@alego/client-runtime",
-        "@alego/api-remotes",
-        "@alego/client-locale",
-        "@alego/client-ui-conversation"
+        "@singula-ai/alego-client-runtime",
+        "@singula-ai/alego-api-remotes",
+        "@singula-ai/alego-client-locale",
+        "@singula-ai/alego-client-ui-conversation"
       ],
       "platform": "web"
     }
@@ -46,29 +46,29 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@alego/api-remotes": "workspace:^",
-    "@alego/client-connection": "workspace:^",
-    "@alego/client-locale": "workspace:^",
-    "@alego/client-runtime": "workspace:^",
-    "@alego/client-ui-conversation": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/message-feedback": "workspace:^",
-    "@alego/typert-protocol": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-api-remotes": "workspace:^",
+    "@singula-ai/alego-client-connection": "workspace:^",
+    "@singula-ai/alego-client-locale": "workspace:^",
+    "@singula-ai/alego-client-runtime": "workspace:^",
+    "@singula-ai/alego-client-ui-conversation": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-message-feedback": "workspace:^",
+    "@singula-ai/alego-typert-protocol": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
-    "@alego/api-remotes": "workspace:^",
-    "@alego/client-connection": "workspace:^",
-    "@alego/client-locale": "workspace:^",
-    "@alego/client-runtime": "workspace:^",
-    "@alego/client-test-runtime": "workspace:^",
-    "@alego/client-ui-conversation": "workspace:^",
-    "@alego/client-ui-primitives": "workspace:^",
-    "@alego/client-ui-slots": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/message-feedback": "workspace:^",
-    "@alego/typert-protocol": "workspace:^",
-    "@alego/cordis": "workspace:^",
+    "@singula-ai/alego-api-remotes": "workspace:^",
+    "@singula-ai/alego-client-connection": "workspace:^",
+    "@singula-ai/alego-client-locale": "workspace:^",
+    "@singula-ai/alego-client-runtime": "workspace:^",
+    "@singula-ai/alego-client-test-runtime": "workspace:^",
+    "@singula-ai/alego-client-ui-conversation": "workspace:^",
+    "@singula-ai/alego-client-ui-primitives": "workspace:^",
+    "@singula-ai/alego-client-ui-slots": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-message-feedback": "workspace:^",
+    "@singula-ai/alego-typert-protocol": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
     "@testing-library/react": "^16.1.0",
     "@types/react": "~18.3.1",
     "@types/react-dom": "~18.3.0",

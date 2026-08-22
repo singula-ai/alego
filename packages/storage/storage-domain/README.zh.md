@@ -1,4 +1,4 @@
-# @alego/storage-domain
+# @singula-ai/alego-storage-domain
 
 [English](README.md) | 中文
 

@@ -3,12 +3,12 @@
  * invokes the official Agent SDK in the delegating Session's workspace and
  * places the SDK-spawned real CLI under the shared subprocess owner.
  *
- * @module @alego/subagent-claude-code
+ * @module @singula-ai/alego-subagent-claude-code
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 import {
   assertPositiveFinite,
   NO_START_CAPABILITIES,
@@ -16,7 +16,7 @@ import {
   type ResolvedSubagentStartRequest,
   type SubagentCapabilities,
   type SubagentProvider,
-} from '@alego/subagent'
+} from '@singula-ai/alego-subagent'
 import {
   CLAUDE_CODE_PERMISSION_MODES,
   DEFAULT_CLAUDE_CODE_PERMISSION_MODE,

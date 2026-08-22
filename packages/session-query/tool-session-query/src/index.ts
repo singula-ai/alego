@@ -1,14 +1,14 @@
 /**
  * Model-facing, workspace-authorized session-history search and read tools.
  *
- * @module @alego/tool-session-query
+ * @module @singula-ai/alego-tool-session-query
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
-import { defineTool } from '@alego/tools'
-import type {} from '@alego/system-prompt'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
+import { defineTool } from '@singula-ai/alego-tools'
+import type {} from '@singula-ai/alego-system-prompt'
 import { toolInput } from './input.ts'
 import { operations } from './operations.ts'
 import { presentation } from './presentation.ts'

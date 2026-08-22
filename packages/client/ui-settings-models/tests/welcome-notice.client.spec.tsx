@@ -1,11 +1,11 @@
 // @vitest-environment jsdom
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { bindSnapshotSelector } from '@alego/client-test-runtime'
-import { Context } from '@alego/cordis'
-import { SettingsSchemaService } from '@alego/client-ui-settings/src/client/schema.ts'
-import { SettingsDescribeMirror } from '@alego/client-ui-settings/src/client/settings-mirror.ts'
-import { SettingsScopeController } from '@alego/client-ui-settings/src/client/settings-scope.ts'
+import { bindSnapshotSelector } from '@singula-ai/alego-client-test-runtime'
+import { Context } from '@singula-ai/cordis'
+import { SettingsSchemaService } from '@singula-ai/alego-client-ui-settings/src/client/schema.ts'
+import { SettingsDescribeMirror } from '@singula-ai/alego-client-ui-settings/src/client/settings-mirror.ts'
+import { SettingsScopeController } from '@singula-ai/alego-client-ui-settings/src/client/settings-scope.ts'
 
 /** Stateless schema service for scope construction in this jsdom fixture. */
 const schemaService = new SettingsSchemaService(new Context())

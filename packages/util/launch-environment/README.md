@@ -21,8 +21,8 @@ Values do also reach `process.env` — a user's `--config` tree and third-party 
 Names match the way the platform matches them: exactly on POSIX, case-insensitively on Windows. A case-sensitive lookup there would rank the wrong layer — a shell's `deepseek_api_key` and a project `.env`'s `DEEPSEEK_API_KEY` are one variable to the OS, and treating them as two would let the project win.
 
 ```ts
-import type { Context } from '@alego/cordis'
-import { launchEnvironmentOf } from '@alego/launch-environment'
+import type { Context } from '@singula-ai/cordis'
+import { launchEnvironmentOf } from '@singula-ai/alego-launch-environment'
 
 declare const ctx: Context
 const endpoint = launchEnvironmentOf(ctx).get('DEEPSEEK_BASE_URL')?.value

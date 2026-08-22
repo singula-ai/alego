@@ -1,4 +1,4 @@
-# @alego/session-title-llm
+# @singula-ai/alego-session-title-llm
 
 English | [中文](README.zh.md)
 

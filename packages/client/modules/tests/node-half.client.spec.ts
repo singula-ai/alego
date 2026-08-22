@@ -6,15 +6,15 @@ import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { runInNewContext } from 'node:vm'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { afterEach, describe, expect, it } from 'vitest'
-import { renderIndexInjections, type WebServer, type WebRoute } from '@alego/host-webserver'
+import { renderIndexInjections, type WebServer, type WebRoute } from '@singula-ai/alego-host-webserver'
 import * as modulesClient from '../src/client/index.ts'
 import { ClientModuleRegistry, bootInjections, orderByModuleGraph } from '../src/index.ts'
 import type { ClientModuleLoaderTarget, WebBootEntry, WebBootGraph } from '../src/client/index.ts'
 
-const MODULES_ID = '@alego/client-modules'
-const RUNTIME_ID = '@alego/client-runtime'
+const MODULES_ID = '@singula-ai/alego-client-modules'
+const RUNTIME_ID = '@singula-ai/alego-client-runtime'
 
 let root: string | undefined
 
@@ -304,7 +304,7 @@ describe('module graph order', () => {
 
   it('leaves a request no row answers to the static assembly channel', () => {
     expect(ids(orderByModuleGraph([
-      entry('consumer', { external: ['@alego/cordis'] }),
+      entry('consumer', { external: ['@singula-ai/cordis'] }),
       entry('other'),
     ]))).toEqual(['consumer', 'other'])
   })

@@ -1,14 +1,14 @@
 // @vitest-environment jsdom
-import type { Context } from '@alego/cordis'
-import * as modulesClient from '@alego/client-modules/client'
+import type { Context } from '@singula-ai/cordis'
+import * as modulesClient from '@singula-ai/alego-client-modules/client'
 import type {
   ClientBundleRegistration, ClientModuleCreateOptions, ClientModuleLoaderTarget, AlegoWindow,
   WebBootEntry,
-} from '@alego/client-modules/client'
+} from '@singula-ai/alego-client-modules/client'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { AppWebEntry } from '../src/boot.ts'
 
-const MODULES_ID = '@alego/client-modules'
+const MODULES_ID = '@singula-ai/alego-client-modules'
 const win = globalThis as AlegoWindow
 const moduleFace = modulesClient as unknown as Record<string, unknown>
 

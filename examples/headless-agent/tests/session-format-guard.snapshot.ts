@@ -8,15 +8,15 @@
 
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { Context } from '@alego/cordis'
-import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@alego/loader-smoke'
+import { Context } from '@singula-ai/cordis'
+import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@singula-ai/alego-loader-smoke'
 import SessionStore, {
   SESSION_FORMAT_VERSION,
   SessionId,
   type SessionEvent,
   type SessionHeader,
-} from '@alego/session'
-import JsonlSessionPersistence from '@alego/session-persistence-jsonl'
+} from '@singula-ai/alego-session'
+import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import { describe, expect, it } from 'vitest'
 
 const fixtureDir = join(dirname(fileURLToPath(import.meta.url)), 'workspace-context-resume-snapshots/offline-edit')

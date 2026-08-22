@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/storage-json`.
- * @module @alego/storage-json/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-storage-json`.
+ * @module @singula-ai/alego-storage-json/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/storage-json'
+const PACKAGE_NAME = '@singula-ai/alego-storage-json'
 
 /** Cordis companion plugin name. */
 export const name = 'storage-json-invariant'

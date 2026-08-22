@@ -3,17 +3,17 @@
  * the derived LLM message history. Persistence is a plugin concern (subscribe
  * to `session/event`, drain on `session/flush`).
  *
- * @module @alego/session
+ * @module @singula-ai/alego-session
  */
 
-import { Context, Service } from '@alego/cordis'
+import { Context, Service } from '@singula-ai/cordis'
 import { isAbsolute } from 'node:path'
-import { deepFreeze } from '@alego/llm'
-import { scopeOf, scopeTarget } from '@alego/scope'
-import type { Scoped } from '@alego/scope'
-import type { Message } from '@alego/llm'
+import { deepFreeze } from '@singula-ai/alego-llm'
+import { scopeOf, scopeTarget } from '@singula-ai/alego-scope'
+import type { Scoped } from '@singula-ai/alego-scope'
+import type { Message } from '@singula-ai/alego-llm'
 import { SESSION_FORMAT_VERSION, SessionId } from './types.ts'
-import type { TypertLookup } from '@alego/typert-protocol'
+import type { TypertLookup } from '@singula-ai/alego-typert-protocol'
 import type { CreateSessionOptions, EpochHeader, PrepareSessionOptions, RequestContext, SessionEvent, SessionEventMap, SessionEventType, SessionHeader, SurfaceIntent, SurfaceEventType } from './types.ts'
 import { snapshotJsonValue } from './json.ts'
 import { deriveEventMessage, SurfaceManager } from './surface.ts'
@@ -23,7 +23,7 @@ import { foldRequestHeader } from './request-header.ts'
 export * from './types.ts'
 export { SessionPreparation } from './preparation.ts'
 export type { SessionPreparationOptions } from './preparation.ts'
-export type { AssistantMessage, ToolResultMessage, UserMessage } from '@alego/llm'
+export type { AssistantMessage, ToolResultMessage, UserMessage } from '@singula-ai/alego-llm'
 export { isJsonValue, snapshotJsonValue } from './json.ts'
 export type { JsonValue } from './json.ts'
 export { interruptedTurnClosers, TOOL_NOT_STARTED, TOOL_OUTCOME_UNKNOWN } from './repair.ts'
@@ -34,7 +34,7 @@ export { deriveEventMessage, foldSurface, isAppendSurfaceEvent, isReplacementSur
 export { canonicalHeader, foldRequestHeader, headerEquals } from './request-header.ts'
 export { KNOWN_SESSION_EVENT_TYPES } from './known-event-types.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     sessions: SessionStore
   }
@@ -45,7 +45,7 @@ declare module '@alego/cordis' {
      * back with a paired disposal; detach requested during dispatch is deferred.
      * A returned-promise rejection is logged but cannot retroactively veto this
      * synchronous boundary.
-     * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners
      * receive only sessions entered through that agent's context.
      * @param session - the session just entered and announced.
      * @alegoScopeScan unsupported
@@ -56,7 +56,7 @@ declare module '@alego/cordis' {
      * Emitted once when an announced session leaves the store, including
      * publication rollback, but never for an entry whose creation announcement
      * did not begin. Listener failures are logged and contained.
-     * Scope-filtered dispatch (`@alego/scope`) reuses the owner scope.
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`) reuses the owner scope.
      * @param session - the session that is no longer live in the store.
      * @alegoScopeScan unsupported
      * @mode emit
@@ -66,7 +66,7 @@ declare module '@alego/cordis' {
      * Post-commit, fire-and-forget append feed. The listener snapshot resolves
      * before the log push, but callbacks run after it; observer failures are
      * logged and contained without making the committed append fail.
-     * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners
      * receive only events from sessions entered through that agent's context.
      * @param session - the session whose log grew.
      * @param event - the appended event, exactly as recorded.
@@ -77,7 +77,7 @@ declare module '@alego/cordis' {
     /**
      * Awaited parallel durability checkpoint: every listener runs and the
      * caller awaits all of them, with no waterfall veto. Scope-filtered dispatch
-     * (`@alego/scope`) reuses the session's owner scope.
+     * (`@singula-ai/alego-scope`) reuses the session's owner scope.
      * @param session - the session whose buffered events must reach durable storage.
      * @alegoScopeScan unsupported
      * @mode parallel
@@ -86,7 +86,7 @@ declare module '@alego/cordis' {
   }
 }
 
-declare module '@alego/typert-protocol' {
+declare module '@singula-ai/alego-typert-protocol' {
   interface TypertLookupMap {
     session: TypertLookup<Session, SessionId>
   }
@@ -799,8 +799,8 @@ export class SessionStore extends Service {
       typeCtx.typert.lookups.register('session', {
         parameter: 'session',
         wire: 'sessionId',
-        hostTypeSymbol: '@alego/session#Session',
-        wireTypeSymbol: '@alego/session/types#SessionId',
+        hostTypeSymbol: '@singula-ai/alego-session#Session',
+        wireTypeSymbol: '@singula-ai/alego-session/types#SessionId',
         resolve: sessionId => this.get(sessionId),
       })
     })

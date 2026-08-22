@@ -2,19 +2,19 @@
  * Model-facing foreground Ralph loop over the workflow and subagent seams. A
  * fixed script starts one fresh structured-output child per round, carrying
  * only the immutable objective and the previous bounded handoff between them.
- * @module @alego/tool-ralph
+ * @module @singula-ai/alego-tool-ralph
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { ContentBlock } from '@alego/llm'
-import type { JsonValue } from '@alego/session'
-import type { SubagentProvider } from '@alego/subagent'
-import { defineTool } from '@alego/tools'
-import type { ToolCallView, ToolResultView } from '@alego/tools'
-import type { WorkflowResult, WorkflowRun } from '@alego/workflow'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { JsonValue } from '@singula-ai/alego-session'
+import type { SubagentProvider } from '@singula-ai/alego-subagent'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { ToolCallView, ToolResultView } from '@singula-ai/alego-tools'
+import type { WorkflowResult, WorkflowRun } from '@singula-ai/alego-workflow'
 // Declaration merge only: makes ctx.systemPrompt visible for section registration.
-import type {} from '@alego/system-prompt'
+import type {} from '@singula-ai/alego-system-prompt'
 
 export const name = 'tool-ralph'
 export const inject = ['tools', 'workflowEngine', 'subagents', 'systemPrompt']

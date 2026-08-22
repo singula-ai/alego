@@ -281,7 +281,7 @@ type ThingKind = keyof ThingMap          // 'a' | 'b'
 type Thing = ThingMap[keyof ThingMap]    // the discriminated union
 
 // A plugin extends it without touching the source package:
-declare module '@alego/llm' {
+declare module '@singula-ai/alego-llm' {
   interface ThingMap {
     'c': { kind: 'c'; /* … */ }
   }
@@ -564,7 +564,7 @@ Source: [`packages/preset/agent-presets/src/index.ts`](../../packages/preset/age
 
 ### `ctx.agents` — `AgentRegistry`
 
-Agent service (`ctx.agents`): tracks live agents and carries the initiating Agent through one process-local asynchronous driver chain. Agent *creation* is provided by whichever plugin implements the AgentFactory (`@alego/agent-loop`), registered via setFactory.
+Agent service (`ctx.agents`): tracks live agents and carries the initiating Agent through one process-local asynchronous driver chain. Agent *creation* is provided by whichever plugin implements the AgentFactory (`@singula-ai/alego-agent-loop`), registered via setFactory.
 
 Initiator methods provide same-process causal attribution only. Ambient presence is neither liveness proof nor authorization; subjects and owners remain explicit, as does identity at worker, process, persistence, and wire boundaries. Returned Promise boundaries drain during teardown, except a nested lineage that starts an owning-fiber unload is excluded from its own drain.
 
@@ -750,7 +750,7 @@ A fully configured agent and live session were published. Setup is composition-o
  * rejection is reported. Detach requested during dispatch waits until every
  * creation listener has observed the stable entry.
  * @param payload.agent - the newly registered agent with its live session and completed setup.
- * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+ * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
  * @mode emit
  */
 'agent/created'(this: Scoped<Agent>, payload: { agent: Agent }): void
@@ -772,7 +772,7 @@ An agent left the registry; AgentLoop emits this after driver quiescence and sco
  * and scoped-registration unwind, but before session detachment. Custom
  * registry users own their driver-ordering contract.
  * @param payload.agent - the exact agent removed from the registry.
- * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+ * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
  * @mode emit
  */
 'agent/disposed'(this: Scoped<Agent>, payload: { agent: Agent }): void
@@ -796,7 +796,7 @@ A step or turn errored. The machine reports a failure here even when the error h
  * @param payload.turn - the turn in which the failure surfaced.
  * @param payload.step - the step at which the failure surfaced.
  * @param payload.error - the failure, verbatim.
- * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+ * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
  * @mode emit
  */
 'agent/error'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; error: unknown }): void
@@ -820,7 +820,7 @@ One message left the inbox inside its open turn. If the proposed step is rejecte
  * @param payload.agent - the agent whose inbox changed.
  * @param payload.message - the claimed message.
  * @param payload.turn - the owning turn.
- * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+ * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
  * @mode emit
  */
 'agent/inbox/claimed'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage; turn: number }): void
@@ -841,7 +841,7 @@ One message was discarded from the live inbox.
  * One message was discarded from the live inbox.
  * @param payload.agent - the agent whose inbox changed.
  * @param payload.message - the discarded message.
- * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+ * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
  * @mode emit
  */
 'agent/inbox/discarded'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage }): void
@@ -862,7 +862,7 @@ One message entered the live inbox.
  * One message entered the live inbox.
  * @param payload.agent - the agent whose inbox changed.
  * @param payload.message - the inserted message.
- * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+ * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
  * @mode emit
  */
 'agent/inbox/inserted'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage }): void
@@ -887,7 +887,7 @@ Reject a proposed step or replace the messages that enter it. Calling `next()` p
  * @param payload.turn - the turn that will own the step.
  * @param payload.step - the step proposed by the loop.
  * @param payload.signal - the current turn's cancellation signal.
- * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+ * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
  * @mode waterfall
  */
 'agent/pre-step'(this: Scoped<Agent>, payload: { agent: Agent; messages: UserMessage[]; turn: number; step: number; signal: AbortSignal }, next: () => Promise<PreStepDecision>): Promise<PreStepDecision>
@@ -913,7 +913,7 @@ Replace the frozen call configuration. `await next()` yields the config the mach
  * @param payload.turn - the open turn number.
  * @param payload.step - the step whose request this is.
  * @param payload.signal - the current turn's explicit abort signal.
- * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+ * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
  * @mode waterfall
 */
 'agent/request'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; signal: AbortSignal }, next: () => Promise<LlmCallConfig>): Promise<LlmCallConfig>
@@ -942,7 +942,7 @@ Handle one failed model-request attempt before the loop retries or closes its st
  * @param payload.failure - serializable facts normalized at the final adapter boundary.
  * @param payload.retryPolicy - the policy of the adapter registration that served the failed request.
  * @param payload.signal - the turn abort signal.
- * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+ * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
  * @mode waterfall
  */
 'agent/request-error'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; provider: string; failure: LlmFailure; retryPolicy: ResolvedRetryPolicy | undefined; signal: AbortSignal }, next: () => Promise<RequestErrorAction>): Promise<RequestErrorAction>
@@ -966,7 +966,7 @@ The session lifecycle began, once before the first turn. Use `agent.inject()` to
  * driver starts.
  * @param payload.agent - the agent whose session lifecycle began.
  * @param payload.source - why the session started (fresh startup, resume, …).
- * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+ * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
  * @mode emit
  */
 'agent/session-start'(this: Scoped<Agent>, payload: { agent: Agent; source: SessionStartSource }): void
@@ -989,7 +989,7 @@ Agent status changed (`idle` ⇄ `running`). A waking delivery enters `running` 
  * driver remains scheduled or active.
  * @param payload.agent - the agent whose status flipped.
  * @param payload.status - the status just entered (the transition's destination).
- * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+ * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
  * @mode emit
  */
 'agent/status'(this: Scoped<Agent>, payload: { agent: Agent; status: AgentStatus }): void
@@ -1020,7 +1020,7 @@ The turn is about to close: the model owes no response (no live tool calls, no f
  * @param payload.agent - the agent whose turn is at its stop boundary.
  * @param payload.turn - the turn about to close.
  * @param payload.signal - the current turn's explicit abort signal.
- * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+ * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
  * @mode serial
  */
 'agent/turn-stopping'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; signal: AbortSignal }): Promise<void> | void

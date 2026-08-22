@@ -1,4 +1,4 @@
-# @alego/agent-spine-demo
+# @singula-ai/alego-agent-spine-demo
 
 [English](README.md) | 中文
 
@@ -11,31 +11,31 @@
 `apply(ctx, config)` 将以下每个插件挂载为组合包 fiber 的子节点：
 
 ```
-@alego/cordis-plugin-timer  timer service (writes nothing to stdout)
-@alego/llm              abstract LLM service + content-block vocabulary
-@alego/session          event-sourced session log + store
-@alego/session-title    log-backed title service + deterministic fallback
-@alego/system-prompt    prompt-section + tool-schema assembly
-@alego/tools            registry + guarded pre/around/post/final-result pipeline
-@alego/skill            skill provider registry
-@alego/skill-filesystem      local filesystem skill provider
-@alego/agent            agent registry + initiator scope + agent/* events
-@alego/goal             optional persisted same-session goal domain
-@alego/tool-goal        optional model-facing goal controls
-@alego/goal-round-driver     optional same-session goal-round driver
-@alego/llm-retry        provider-routed request retry policy
-@alego/jobs-local      generic background-job registry
-@alego/invariants       configurable invariant registry service
-@alego/session/invariant
-@alego/agent/invariant
-@alego/scope/invariant
-@alego/agent-loop/invariant
+@singula-ai/cordis-plugin-timer  timer service (writes nothing to stdout)
+@singula-ai/alego-llm              abstract LLM service + content-block vocabulary
+@singula-ai/alego-session          event-sourced session log + store
+@singula-ai/alego-session-title    log-backed title service + deterministic fallback
+@singula-ai/alego-system-prompt    prompt-section + tool-schema assembly
+@singula-ai/alego-tools            registry + guarded pre/around/post/final-result pipeline
+@singula-ai/alego-skill            skill provider registry
+@singula-ai/alego-skill-filesystem      local filesystem skill provider
+@singula-ai/alego-agent            agent registry + initiator scope + agent/* events
+@singula-ai/alego-goal             optional persisted same-session goal domain
+@singula-ai/alego-tool-goal        optional model-facing goal controls
+@singula-ai/alego-goal-round-driver     optional same-session goal-round driver
+@singula-ai/alego-llm-retry        provider-routed request retry policy
+@singula-ai/alego-jobs-local      generic background-job registry
+@singula-ai/alego-invariants       configurable invariant registry service
+@singula-ai/alego-session/invariant
+@singula-ai/alego-agent/invariant
+@singula-ai/alego-scope/invariant
+@singula-ai/alego-agent-loop/invariant
                                   package-owned relational checks
-@alego/tool-bash        the model-facing bash schema (unless toolBash=false)
-@alego/agent-instructions  AGENTS.md/CLAUDE.md workspace context loader
-@alego/tool-skill       session-prefix skill catalog + model-facing loader schema
-@alego/tool-jobs       job_output/job_list/job_kill schemas + completion notices
-@alego/agent-loop       THE concrete loop (gets the forwarded `agents`)
+@singula-ai/alego-tool-bash        the model-facing bash schema (unless toolBash=false)
+@singula-ai/alego-agent-instructions  AGENTS.md/CLAUDE.md workspace context loader
+@singula-ai/alego-tool-skill       session-prefix skill catalog + model-facing loader schema
+@singula-ai/alego-tool-jobs       job_output/job_list/job_kill schemas + completion notices
+@singula-ai/alego-agent-loop       THE concrete loop (gets the forwarded `agents`)
                                   (alego-system-prompt gets the forwarded `persona`)
 ```
 
@@ -54,14 +54,14 @@
 ## 配置
 
 ```ts
-import type { Config } from '@alego/agent-spine-demo'
+import type { Config } from '@singula-ai/alego-agent-spine-demo'
 // { agents?, maxParallelToolCalls?, includeHarnessIdentity?, includeRuntimeContext?, persona?, toolOrder?, tools?, alegoHome?, sessionTitle?, skills?, workspaceContext, toolBash?, jobs?, toolJobs?, goals?, invariants? }
 // workspaceContext requires { maxBytes } or false; the other owner schemas supply defaults.
 ```
 
 组合包将每个字段转发给拥有它的子节点。应用包提供预创建的 agent：无头和 JSON-RPC 组合会创建 `main`，ACP 应用则在 `session/new` 按需创建 agent。`includeRuntimeContext: false` 会转发给 `alego-system-prompt`，为新建会话抑制所有动态上下文快照，但不禁用其策略服务。提示词、工具、标题、skill、工作区上下文、不变式、目标和任务设置沿用其所属包记录的 schema 与默认值；`jobs.maxConcurrentJobsPerOwner` 配置本地 Service Provider，并与面向模型的 `toolJobs` 控制工具相互独立。`pickSpineConfig()` 只复制该组合包拥有的字段，`alegoHome` 值冲突会在组合时失败。
 
-例如，`{ invariants: { enabled: true, package_allowlist: ['^@alego/'], package_blocklist: ['agent-loop$'] } }` 会让包拥有的配套插件保持挂载，但抑制被阻止的拥有者。Blocklist 匹配优先于 allowlist 匹配；正则表达式与生命周期规则见 [`alego-invariants`](../../runtime-diagnostics/invariants/README.zh.md)。
+例如，`{ invariants: { enabled: true, package_allowlist: ['^@singula-ai/alego-'], package_blocklist: ['agent-loop$'] } }` 会让包拥有的配套插件保持挂载，但抑制被阻止的拥有者。Blocklist 匹配优先于 allowlist 匹配；正则表达式与生命周期规则见 [`alego-invariants`](../../runtime-diagnostics/invariants/README.zh.md)。
 
 ## 为何使用代码组合包，而非共享 YAML include
 

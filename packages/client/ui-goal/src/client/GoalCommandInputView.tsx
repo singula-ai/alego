@@ -1,6 +1,6 @@
 import { memo } from 'react'
-import { MessageText } from '@alego/client-ui-primitives'
-import type { PropsLocale, PropsRuntime } from '@alego/client-ui-slots'
+import { MessageText } from '@singula-ai/alego-client-ui-primitives'
+import type { PropsLocale, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
 import type { GoalCommandInputData } from './goal-command-input.ts'
 import css from './GoalCommandInputView.module.css'
 

@@ -2,7 +2,7 @@ import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
-import { runLoaderSmoke } from '@alego/loader-smoke'
+import { runLoaderSmoke } from '@singula-ai/alego-loader-smoke'
 
 const binScript = fileURLToPath(new URL('./fixtures/headless-driver.ts', import.meta.url))
 const configPath = fileURLToPath(new URL('../cordis.yml', import.meta.url))

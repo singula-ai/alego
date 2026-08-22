@@ -6,11 +6,11 @@
 // entries. Tool composition belongs to ui-tool and its machinery spec.
 
 import { describe, expect, it, vi } from 'vitest'
-import { SlotTestRuntime, usePinnedBrowserLanguages, stubSettingsScope } from '@alego/client-test-runtime'
-import { resolveSlotLabel } from '@alego/client-ui-slots'
-import { LocaleRuntime } from '@alego/client-locale/client'
-import type { SessionId } from '@alego/client-runtime/client'
-import { apply, inject } from '@alego/client-ui-conversation/client'
+import { SlotTestRuntime, usePinnedBrowserLanguages, stubSettingsScope } from '@singula-ai/alego-client-test-runtime'
+import { resolveSlotLabel } from '@singula-ai/alego-client-ui-slots'
+import { LocaleRuntime } from '@singula-ai/alego-client-locale/client'
+import type { SessionId } from '@singula-ai/alego-client-runtime/client'
+import { apply, inject } from '@singula-ai/alego-client-ui-conversation/client'
 
 // The service reads its initial locale from the browser; these specs assert
 // the shipped Chinese copy, so they state the browser they assume.

@@ -15,7 +15,7 @@ agent（智能体）可以通过 `session.header.cwd` 识别其工作区，但�
 在 [`SessionPersistence`](../architecture/2026-06-14-session-persistence.zh.md) seam 上增加同步、无副作用的位置查询：
 
 ```ts
-import type { SessionHeader } from '@alego/session'
+import type { SessionHeader } from '@singula-ai/alego-session'
 
 interface SessionLocation {
   readonly kind: string
@@ -33,7 +33,7 @@ interface SessionPersistence {
 
 注册表会为每次前台和后台 bash `ToolExecution` 重新构建受信任的覆盖层：
 
-- `ALEGO_HOME` 始终是配置的 Harness home 绝对路径。独立的 [`@alego/home-paths`](../../../../packages/util/home-paths/README.zh.md) 工具库规定其优先级：显式 `alegoHome`，其次是环境中的 `$ALEGO_HOME`，最后是 `~/.alego`。
+- `ALEGO_HOME` 始终是配置的 Harness home 绝对路径。独立的 [`@singula-ai/alego-home-paths`](../../../../packages/util/home-paths/README.zh.md) 工具库规定其优先级：显式 `alegoHome`，其次是环境中的 `$ALEGO_HOME`，最后是 `~/.alego`。
 - `ALEGO_SHELL=1` 始终存在，用于标识由 Alego 管理、面向模型的 bash 子进程。
 - 执行具有关联 agent 时，`ALEGO_SESSION_ID` 存在并等于 `agent.session.header.id`。
 - 内置的持久化转换层提供 `ALEGO_SESSION_JSONL` 的条件是 `ctx.sessionPersistence.locate(header)` 返回 `kind: 'jsonl'`。
@@ -56,7 +56,7 @@ bash 工具说明只讲解持久约定：当前 harness 环境事实通过受管
 
 恢复操作复用已加载的 header，因此 id 和位置不变。fork 和 spawn 会创建新的会话 id 与位置。父子调用分别从自己的 `ToolExecution.agent` 解析事实；即使调用重叠，每条命令也会收到不可变快照。替换持久化服务会影响后续收集，因为转换层在执行时查询 `ctx.get('sessionPersistence')`；注册表本身受 effect 作用域约束，并且可安全用于 HMR（热模块替换）。
 
-`alegoHome` 是与会话无关的部署上下文。agent-core 通过 `@alego/home-paths` 解析出一个值，并将其同时传给 tool-bash 和本地 skill（技能）发现；独立消费方调用同一解析器。如果顶层 `alegoHome` 与 `skills.local.alegoHome` 均已提供但解析结果不同，组合会失败，而不会公开互相矛盾的 home。持久化可以独立变更，无需把其事实冻结到会话前缀中。
+`alegoHome` 是与会话无关的部署上下文。agent-core 通过 `@singula-ai/alego-home-paths` 解析出一个值，并将其同时传给 tool-bash 和本地 skill（技能）发现；独立消费方调用同一解析器。如果顶层 `alegoHome` 与 `skills.local.alegoHome` 均已提供但解析结果不同，组合会失败，而不会公开互相矛盾的 home。持久化可以独立变更，无需把其事实冻结到会话前缀中。
 
 ## 测试
 

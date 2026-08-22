@@ -5,7 +5,7 @@
  * reference-stable across unrelated snapshot swaps, so this is a pure
  * projection — no second store, no copy.
  */
-import type { ObservableSnapshot, SessionFace } from '@alego/client-runtime/client'
+import type { ObservableSnapshot, SessionFace } from '@singula-ai/alego-client-runtime/client'
 import type { QueuedMessage } from '../input/contract.ts'
 
 /**

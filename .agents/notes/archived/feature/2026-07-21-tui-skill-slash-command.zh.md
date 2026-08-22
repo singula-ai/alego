@@ -11,7 +11,7 @@ Archived: 2026-08-04
 
 ## Decision
 
-[`@alego/tui`](../../../../packages/ui/tui/README.md) 前门拥有一条 `/skill:<name> [instructions]` 命令。提交时它加载指定的 skill，并投递一个文本块作为用户轮次——空闲时用 `agent.send()` 发送、运行中用 `agent.steer()` 中途引导，与普通编辑器输入遵循同一规则。该文本块由 `renderSkillInvocation(skill, instructions)` 生成：一个包裹 skill 正文的 `<skill name="…">` 元素，当提供方暴露资源基址时在其前加一行资源基址行，用户尾随的文本在空行之后追加。该命令是 TUI 独有的功能；它不新增任何面向模型的工具。其可见性和加载策略来自共享的[模型与用户独立 skill 调用策略](2026-07-28-skill-invocation-policy.md)。
+[`@singula-ai/alego-tui`](../../../../packages/ui/tui/README.md) 前门拥有一条 `/skill:<name> [instructions]` 命令。提交时它加载指定的 skill，并投递一个文本块作为用户轮次——空闲时用 `agent.send()` 发送、运行中用 `agent.steer()` 中途引导，与普通编辑器输入遵循同一规则。该文本块由 `renderSkillInvocation(skill, instructions)` 生成：一个包裹 skill 正文的 `<skill name="…">` 元素，当提供方暴露资源基址时在其前加一行资源基址行，用户尾随的文本在空行之后追加。该命令是 TUI 独有的功能；它不新增任何面向模型的工具。其可见性和加载策略来自共享的[模型与用户独立 skill 调用策略](2026-07-28-skill-invocation-policy.md)。
 
 TUI 通过 `ctx.get('skills')` 读取 skill 服务，而非声明式注入，因为 skill 是条件挂载的：没有注册表的部署仍保有可用的前门，此时 `/skill:` 会报告 skill 不可用，而不是挂载失败。`createTuiChat` 是同步的，而 `ctx.skills.list()` 是异步的，所以自动补全先立即种入静态斜杠命令，待目录解析完成后再用 `skill:<name>` 条目重建 provider（提供方）；在 dispose（资源释放）之后才到达的解析结果会被丢弃，而被拒绝的查找会保留基础命令。
 

@@ -19,7 +19,7 @@ Code Mode 只生成一种 SDK 形态：TypeScript。`ToolRuntime` 为 `tools:sdk
 
 两张表在使用前都以 `Object.hasOwn` 读取，这样名为 `toString`/`constructor` 的语言不会把继承自 `Object.prototype` 的成员解析成渲染器。两个守卫的可达性不同：`SDK_RENDERERS` 的回调内守卫不可达，因为 `requireCodeRuntime` 已在同一回调更早处校验过同一张 `const` 表（它带 `/* v8 ignore */`）；而 `RUN_CODE_FLAVORS` 的守卫是主要的、可公开到达的拒绝路径——任何缺席 flavor 表的语言都经 `run_code` 的语言感知 getter 到达它，而公共 `schemas()` 抵达那些 getter 时并未先过 `requireCodeRuntime`；测试直读 definition 上的其中一个 getter，用的是对两张表都缺席的语言。「在 `SDK_RENDERERS` 里却不在 `RUN_CODE_FLAVORS` 里」这种漂移已由共享的 `CodeSdkLanguage` `satisfies` 在 `typecheck` 处拒绝，两个守卫都看不到这种输入；它们如今负责的是所挂载运行时报告了一门两张表都缺席的语言。schema 发射通过 `peekRuntime()` 而非 `requireRuntime()` 读取运行时：`undefined`（无运行时，由直读 definition 的读者与 `schemas()` 到达，其中 doc-catalog 采集是唯一已交付的一个，而它们都不会喂给模型，因为组装路径先过 `requireCodeRuntime`）降级到 TypeScript flavor，而挂载了未知语言则 fail loud——这不是下方被否决的静默回退，那指的是为真实运行时发出错误语言的 SDK。新增一门后端语言是三处并列编辑——一个 `CodeSdkLanguage` 成员加两条表项——再加它的渲染器，以及点名已知值而非从中派生的散文（seam 侧的 `alego-code-runtime` README 双语对、它的 `CodeRuntime.language` JSDoc 与 `docs/subsystems/code-runtime.md` 双语对；本包自己的 README 双语对与它的 `Config.mode` JSDoc，无任何 gate 检查其中任何一处），不动 `agent-loop`，也不动注册表结构。
 
-`code-mode.ts` 只依赖运行时 Service Definition（`@alego/code-runtime`），绝不依赖具体后端；分发在运行时按 `runtime.language` 进行。因此工具层独立于 Python 协议和后端——它只需要服务的 `language` 字段。
+`code-mode.ts` 只依赖运行时 Service Definition（`@singula-ai/alego-code-runtime`），绝不依赖具体后端；分发在运行时按 `runtime.language` 进行。因此工具层独立于 Python 协议和后端——它只需要服务的 `language` 字段。
 
 ### Python SDK 渲染器
 

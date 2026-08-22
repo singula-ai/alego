@@ -15,7 +15,7 @@ The boundary must preserve two properties: the owner of a fact decides how to re
 Extend the [`SessionPersistence`](../architecture/2026-06-14-session-persistence.md) seam with a synchronous, side-effect-free location query:
 
 ```ts
-import type { SessionHeader } from '@alego/session'
+import type { SessionHeader } from '@singula-ai/alego-session'
 
 interface SessionLocation {
   readonly kind: string
@@ -33,7 +33,7 @@ The model-facing bash package owns a `ctx.shellEnv` registry. A contributor decl
 
 The registry rebuilds a trusted overlay for every foreground and background bash `ToolExecution`:
 
-- `ALEGO_HOME` is always the absolute configured Harness home. The standalone [`@alego/home-paths`](../../../../packages/util/home-paths/README.md) utility owns its precedence: explicit `alegoHome`, then ambient `$ALEGO_HOME`, then `~/.alego`.
+- `ALEGO_HOME` is always the absolute configured Harness home. The standalone [`@singula-ai/alego-home-paths`](../../../../packages/util/home-paths/README.md) utility owns its precedence: explicit `alegoHome`, then ambient `$ALEGO_HOME`, then `~/.alego`.
 - `ALEGO_SHELL=1` is always present and identifies a model bash child managed by Alego.
 - `ALEGO_SESSION_ID` is present when the execution has an agent and equals `agent.session.header.id`.
 - The built-in persistence translator contributes `ALEGO_SESSION_JSONL` only when `ctx.sessionPersistence.locate(header)` returns `kind: 'jsonl'`.
@@ -56,7 +56,7 @@ A fresh session receives its id before the first turn, so its first bash call ca
 
 Resume reuses the loaded header and therefore the same id and location. Fork and spawn create new session ids and locations. Parent and child calls resolve from their own `ToolExecution.agent`; each command receives an immutable snapshot even when calls overlap. A persistence service replacement affects later collections because the translator queries `ctx.get('sessionPersistence')` at execution time; the registry itself is effect-scoped and HMR-safe.
 
-`alegoHome` is session-independent deployment context. Agent-core resolves one value through `@alego/home-paths` and routes it to both tool-bash and local skill discovery; standalone consumers call the same resolver. If top-level `alegoHome` and `skills.local.alegoHome` are both supplied and resolve differently, composition fails instead of exposing contradictory homes. Persistence may change independently without freezing its facts into the session prefix.
+`alegoHome` is session-independent deployment context. Agent-core resolves one value through `@singula-ai/alego-home-paths` and routes it to both tool-bash and local skill discovery; standalone consumers call the same resolver. If top-level `alegoHome` and `skills.local.alegoHome` are both supplied and resolve differently, composition fails instead of exposing contradictory homes. Persistence may change independently without freezing its facts into the session prefix.
 
 ## Testing
 

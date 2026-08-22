@@ -7,14 +7,14 @@
  * document. The plugin also registers the Appearance preference row into the
  * settings General section — the theme feature owns its own settings surface.
  */
-import type { Context } from '@alego/cordis'
-import type { BoundActions } from '@alego/client-ui-slots'
-import type { ClientContext, SettingsScope } from '@alego/client-runtime/client'
+import type { Context } from '@singula-ai/cordis'
+import type { BoundActions } from '@singula-ai/alego-client-ui-slots'
+import type { ClientContext, SettingsScope } from '@singula-ai/alego-client-runtime/client'
 // Type-only: the ctx.settingsScope Context merge. Cross-plugin collaboration
 // goes through the service, never a value import (client bundle purity gate).
-import type {} from '@alego/client-ui-settings/client'
+import type {} from '@singula-ai/alego-client-ui-settings/client'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
-import type {} from '@alego/client-locale/client'
+import type {} from '@singula-ai/alego-client-locale/client'
 import type { AppearanceRowInjected } from './AppearanceRow.tsx'
 import { AppearanceRow } from './AppearanceRow.tsx'
 import { createAppearanceRowStore } from './settings-store.ts'
@@ -33,7 +33,7 @@ export type { ThemePreference, ThemeSettings } from '../theme-settings.ts'
 /** Namespace owning this feature's settings-row copy. */
 export const SETTINGS_NS = 'settings.theme'
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface LocaleNamespaceMap {
     /** The Appearance settings row's copy. */
     'settings.theme': ThemeKey
@@ -101,7 +101,7 @@ export interface ThemeTokenInspection {
   cssVariable?: string
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     theme: ThemeRuntime
   }

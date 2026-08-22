@@ -1,6 +1,6 @@
 /** Runtime constructors and protocol constants for the goal domain. */
 
-import { HarnessError } from '@alego/llm'
+import { HarnessError } from '@singula-ai/alego-llm'
 import type { GoalId as GoalIdType } from './types.ts'
 import type { GoalErrorCode } from './domain.ts'
 

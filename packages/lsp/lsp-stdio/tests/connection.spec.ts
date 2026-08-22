@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { fileURLToPath } from 'node:url'
-import { LspConnection } from '@alego/lsp-stdio'
-import type { ConnectionWriter } from '@alego/lsp-stdio/src/connection.ts'
-import { scrubbedParentEnv } from '@alego/subprocess'
-import { spawnSubprocess } from '@alego/subprocess-local/src/spawn.ts'
+import { LspConnection } from '@singula-ai/alego-lsp-stdio'
+import type { ConnectionWriter } from '@singula-ai/alego-lsp-stdio/src/connection.ts'
+import { scrubbedParentEnv } from '@singula-ai/alego-subprocess'
+import { spawnSubprocess } from '@singula-ai/alego-subprocess-local/src/spawn.ts'
 
 const fixtureServer = fileURLToPath(new URL('./fixture-server.ts', import.meta.url))
 

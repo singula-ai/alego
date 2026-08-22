@@ -166,12 +166,12 @@ Source: [`packages/core/system-prompt/src/index.ts`](../../packages/core/system-
 
 #### `system-prompt/assemble` — waterfall
 
-Expert waterfall over the assembled sections, contexts, tools, and variables. Scope-filtered dispatch (`@alego/scope`): scoped listeners receive only that scope's assemblies. The returned value is authoritative. A supplied signal controls only this explicit assembly request and must not be retained to control later turns. A registered complete section is restored after this waterfall, so listeners cannot add to or replace that scope's system prompt.
+Expert waterfall over the assembled sections, contexts, tools, and variables. Scope-filtered dispatch (`@singula-ai/alego-scope`): scoped listeners receive only that scope's assemblies. The returned value is authoritative. A supplied signal controls only this explicit assembly request and must not be retained to control later turns. A registered complete section is restored after this waterfall, so listeners cannot add to or replace that scope's system prompt.
 
 ```ts cordis-catalog
 /**
  * Expert waterfall over the assembled sections, contexts, tools, and variables.
- * Scope-filtered dispatch (`@alego/scope`): scoped listeners
+ * Scope-filtered dispatch (`@singula-ai/alego-scope`): scoped listeners
  * receive only that scope's assemblies. The returned value is authoritative.
  * A supplied signal controls only this explicit assembly request and must not
  * be retained to control later turns. A registered complete section is

@@ -7,9 +7,9 @@
  * namespace's `default` field, which is what the host resolves at creation.
  */
 
-import type { IApiClient } from '@alego/api-remotes/client'
-import { createSnapshotStore, type SnapshotStore } from '@alego/client-runtime/client'
-import type { SettingsDescribeFace } from '@alego/client-ui-settings/client'
+import type { IApiClient } from '@singula-ai/alego-api-remotes/client'
+import { createSnapshotStore, type SnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import type { SettingsDescribeFace } from '@singula-ai/alego-client-ui-settings/client'
 
 /** The agent-preset settings namespace on the host wire. */
 export const AGENT_PRESET_SETTINGS_NS = 'agent-presets'

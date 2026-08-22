@@ -1,4 +1,4 @@
-# @alego/session-telemetry
+# @singula-ai/alego-session-telemetry
 
 [English](README.md) | 中文
 

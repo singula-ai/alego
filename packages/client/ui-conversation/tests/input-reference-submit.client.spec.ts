@@ -4,8 +4,8 @@
  * accepted prompt.
  */
 import { describe, expect, it, vi } from 'vitest'
-import type { ClientContext } from '@alego/client-runtime/client'
-import type { InputTriggerController, SubmitOutcome } from '@alego/client-ui-input-trigger/client'
+import type { ClientContext } from '@singula-ai/alego-client-runtime/client'
+import type { InputTriggerController, SubmitOutcome } from '@singula-ai/alego-client-ui-input-trigger/client'
 import { SessionInputShell } from '../src/client/input/facade.ts'
 import type { DraftAttachmentId } from '../src/client/input/contract.ts'
 

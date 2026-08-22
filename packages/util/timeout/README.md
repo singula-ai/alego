@@ -11,7 +11,7 @@ It is a **library, not a service or plugin**: no `ctx`, registers nothing, holds
 ## API
 
 ```ts
-import { clampTimeout, deadline, idleWatchdog, MAX_TIMER_DELAY_MS, timeoutOf, TimeoutReason } from '@alego/timeout'
+import { clampTimeout, deadline, idleWatchdog, MAX_TIMER_DELAY_MS, timeoutOf, TimeoutReason } from '@singula-ai/alego-timeout'
 ```
 
 | Export | Role |
@@ -30,7 +30,7 @@ import { clampTimeout, deadline, idleWatchdog, MAX_TIMER_DELAY_MS, timeoutOf, Ti
 ## Usage shape
 
 ```ts
-import { deadline, timeoutOf } from '@alego/timeout'
+import { deadline, timeoutOf } from '@singula-ai/alego-timeout'
 
 declare function runWork(options: { signal: AbortSignal }): Promise<unknown>
 

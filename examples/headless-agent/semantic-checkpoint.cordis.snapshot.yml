@@ -3,31 +3,31 @@
 # turn over stream-json; the replay adapter supplies the deterministic response.
 
 - id: persistence
-  name: '@alego/session-persistence-jsonl'
+  name: '@singula-ai/alego-session-persistence-jsonl'
   config:
     root: './.sessions'
     compression: none
 
 - id: checkpoint
-  name: '@alego/session-checkpoint-policy'
+  name: '@singula-ai/alego-session-checkpoint-policy'
 
 - id: replay
-  name: '@alego/llm-replay'
+  name: '@singula-ai/alego-llm-replay'
   config:
     file: !!js process.env.ALEGO_SNAPSHOT_FILE
     overrideFile: !!js process.env.ALEGO_SNAPSHOT_OVERRIDE
 
 # Managed child-process groups for the bash executor (spawn/kill/output plumbing).
 - id: subprocess
-  name: '@alego/subprocess-local'
+  name: '@singula-ai/alego-subprocess-local'
 
 - id: bash
-  name: '@alego/bash-local'
+  name: '@singula-ai/alego-bash-local'
   config:
     timeoutMs: 60000
 
 - id: agent
-  name: '@alego/agent-spine-demo'
+  name: '@singula-ai/alego-agent-spine-demo'
   config:
     agents: []
     workspaceContext: false

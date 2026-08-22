@@ -8,12 +8,12 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import type { Context } from '@alego/cordis'
-import type { PatchOptions } from '@alego/cordis-plugin-include'
-import { boot, loadOverlayPatches } from '@alego/app-boot'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
-import * as McpClient from '@alego/mcp-client/src/index.ts'
+import type { Context } from '@singula-ai/cordis'
+import type { PatchOptions } from '@singula-ai/cordis-plugin-include'
+import { boot, loadOverlayPatches } from '@singula-ai/alego-app-boot'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
+import * as McpClient from '@singula-ai/alego-mcp-client/src/index.ts'
 
 interface ExampleContract {
   file: string
@@ -87,7 +87,7 @@ describe('third-party memory MCP example overlays', () => {
     const row = insertedRow(loadOverlayPatches('memory-mcp-config-test', file))
 
     expect(row.id).toBe(contract.id)
-    expect(row.name).toBe('@alego/mcp-client')
+    expect(row.name).toBe('@singula-ai/alego-mcp-client')
     expect(row.config?.serverName).toBe(contract.serverName)
     expect(row.config?.transport).toBe(contract.transport)
     expect(source.split('\n', 1)[0]).toContain(contract.pin)

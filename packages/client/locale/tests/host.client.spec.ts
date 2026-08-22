@@ -1,9 +1,9 @@
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
-import { SettingsProvider, settingsNamespace, type SettingsNamespace } from '@alego/settings'
+import { SettingsProvider, settingsNamespace, type SettingsNamespace } from '@singula-ai/alego-settings'
 import {
   LOCALE_SETTINGS_NAMESPACE, apply,
-} from '@alego/client-locale'
+} from '@singula-ai/alego-client-locale'
 
 class MemorySettings extends SettingsProvider {
   readonly writable = true

@@ -29,29 +29,29 @@ import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import type { Page } from 'playwright'
 import { expect } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import Include, { type PatchOptions } from '@alego/cordis-plugin-include'
-import Group from '@alego/cordis-plugin-group'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include, { type PatchOptions } from '@singula-ai/cordis-plugin-include'
+import Group from '@singula-ai/cordis-plugin-group'
 import {
   scrubRequestHeaders,
   scrubSessionSnapshot,
   stabilizeFixtureMessageIds,
-} from '@alego/acp-snapshot'
+} from '@singula-ai/alego-acp-snapshot'
 import {
   assertEntriesLoaded,
   composeEntries,
   healProfilesModuleFallback,
   loadOverlayPatches,
-} from '@alego/app-boot'
-import { alegoHomePath } from '@alego/home-paths'
-import { settingsNamespace } from '@alego/settings'
-import { LlmAdapter } from '@alego/llm'
+} from '@singula-ai/alego-app-boot'
+import { alegoHomePath } from '@singula-ai/alego-home-paths'
+import { settingsNamespace } from '@singula-ai/alego-settings'
+import { LlmAdapter } from '@singula-ai/alego-llm'
 import type {
   LlmModelInfo, LlmProviderInfo, LlmResolvedModelInfo, RetryPolicyConfig, StreamChunk,
-} from '@alego/llm'
-import type { ReplayHandle } from '@alego/llm-replay'
-import { installLlmReplay, parseSessionLog } from '@alego/llm-replay'
+} from '@singula-ai/alego-llm'
+import type { ReplayHandle } from '@singula-ai/alego-llm-replay'
+import { installLlmReplay, parseSessionLog } from '@singula-ai/alego-llm-replay'
 import SessionStore, {
   packChunkRuns,
   SESSION_FORMAT_VERSION,
@@ -59,12 +59,12 @@ import SessionStore, {
   type Session,
   type SessionEvent,
   type SessionHeader,
-} from '@alego/session'
-import JsonlSessionPersistence from '@alego/session-persistence-jsonl'
+} from '@singula-ai/alego-session'
+import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 // Empty type imports carry the webServer/agents/sessionPersistence Context merges.
-import type {} from '@alego/host-webserver'
-import type {} from '@alego/agent'
-import { provideCmdline } from '@alego/cmdline'
+import type {} from '@singula-ai/alego-host-webserver'
+import type {} from '@singula-ai/alego-agent'
+import { provideCmdline } from '@singula-ai/alego-cmdline'
 import { REPO_ROOT, requireDist } from './support.ts'
 
 // Host-side web e2e cannot import a browser package: doing so would pull that
@@ -74,7 +74,7 @@ import { REPO_ROOT, requireDist } from './support.ts'
 // import {
 //   WELCOME_NOTICE_ACK_FIELD, WELCOME_NOTICE_SETTINGS_NAMESPACE,
 //   WELCOME_NOTICE_VERSION, WELCOME_NOTICE_COPY,
-// } from '@alego/client-ui-settings-models'
+// } from '@singula-ai/alego-client-ui-settings-models'
 export const WELCOME_NOTICE_SETTINGS_NAMESPACE = 'ui-onboarding'
 export const WELCOME_NOTICE_ACK_FIELD = 'welcomeNoticeVersion'
 export const WELCOME_NOTICE_VERSION = '2026-08-13.1'
@@ -468,7 +468,7 @@ export async function launchWebScaffold(options: LaunchOptions = {}): Promise<We
       config: { host: '127.0.0.1', port: 0 },
     },
     // The bundle's web-runtime row resolves the same built dist under test
-    // (apps/web IS @alego/web-frontend); native browser opening and the
+    // (apps/web IS @singula-ai/alego-web-frontend); native browser opening and the
     // URL line are disabled because this scaffold owns its Playwright browser.
     // Preserve the composed surface-context choice because a patch replaces
     // the row's complete config.
@@ -486,8 +486,8 @@ export async function launchWebScaffold(options: LaunchOptions = {}): Promise<We
     // disable+insert pair.
     { id: 'directory-picker', disabled: true },
     { insert: [
-      { id: 'directory-picker-browse', name: '@alego/host-directory-picker-browse' },
-      { id: 'ui-directory-picker-browse', name: '@alego/client-ui-directory-picker-browse' },
+      { id: 'directory-picker-browse', name: '@singula-ai/alego-host-directory-picker-browse' },
+      { id: 'ui-directory-picker-browse', name: '@singula-ai/alego-client-ui-directory-picker-browse' },
     ] },
     ...options.agentPresets === undefined
       ? []
@@ -499,7 +499,7 @@ export async function launchWebScaffold(options: LaunchOptions = {}): Promise<We
     // scenario adds only the model-facing tools that exercise those services.
     ...options.cordisTools === true
       ? [{ insert: [
-        { id: 'tool-cordis', name: '@alego/tool-cordis' },
+        { id: 'tool-cordis', name: '@singula-ai/alego-tool-cordis' },
       ] }]
       : [],
     ...options.deepSeekSearch === undefined
@@ -550,7 +550,7 @@ export async function launchWebScaffold(options: LaunchOptions = {}): Promise<We
     // `cordis:group` beside it, exactly as `boot()` registers it: a group row is
     // how a preset gives one `isolate` realm to a provider and its consumers,
     // and a preset resolving package names from its own directory cannot reach
-    // `@alego/cordis-plugin-group` by name.
+    // `@singula-ai/cordis-plugin-group` by name.
     ctx.loader.builtins.group = Group
     await ctx.loader.create({
       name: 'cordis:include',

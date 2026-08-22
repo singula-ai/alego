@@ -1,4 +1,4 @@
-# @alego/command-compact
+# @singula-ai/alego-command-compact
 
 [English](README.md) | 中文
 
@@ -34,11 +34,11 @@ busy 结果有意限定在进程范围内：活动的未匹配标记会阻塞，
 
 ```yaml
 - id: commands
-  name: '@alego/commands'
+  name: '@singula-ai/alego-commands'
 - id: compaction-basic
-  name: '@alego/compaction-basic'
+  name: '@singula-ai/alego-compaction-basic'
 - id: command-compact
-  name: '@alego/command-compact'
+  name: '@singula-ai/alego-command-compact'
 ```
 
 随附 `alego` 基础配置将它挂载在 `compaction-basic` 旁，Web 客户端提供命令适配器。未组合命令适配器的自动化接口只保留自动压缩。

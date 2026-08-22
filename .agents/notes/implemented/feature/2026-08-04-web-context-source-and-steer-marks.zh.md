@@ -24,7 +24,7 @@ Chat Inbox 与 Message Definition 会重放持久 `agent/inbox/spliced` 事件�
 
 ## 考虑过的替代方案
 
-**在客户端本地化生产者名称。** 以插件 id 为键的字典读起来确实比 `@alego/system-prompt` 好，但它会在每次重命名时悄悄失准，每新增一个生产者都要改客户端，而且对来自外部的日志根本无法命名。日志已经记录的生产者名称，比客户端自己编造的标签更可靠。
+**在客户端本地化生产者名称。** 以插件 id 为键的字典读起来确实比 `@singula-ai/alego-system-prompt` 好，但它会在每次重命名时悄悄失准，每新增一个生产者都要改客户端，而且对来自外部的日志根本无法命名。日志已经记录的生产者名称，比客户端自己编造的标签更可靠。
 
 **按来源 kind 注册呈现。** 展开项决策把键控的上下文视图 slot 推迟到出现由来源自有的呈现需求为止。为一行命名并不构成独立呈现，而以「已挂载的生产者」为键的注册表恰恰会在最要紧的地方失效——生产者已不再挂载的恢复日志同样必须渲染出来。
 
@@ -44,7 +44,7 @@ Chat Inbox 与 Message Definition 会重放持久 `agent/inbox/spliced` 事件�
 
 - **部分被取代。** 决策中的 steering 标注条款已不再描述 master：[标注移除决策](../simplification/2026-08-10-web-remove-steering-interjection-caption.zh.md)删除了 `插话` / `Interjection` 标注，轮次中途的 steer 只能靠它在消息流中的位置辨认。决策中的上下文来源与召回命名仍然有效，`SteeringMessageNode` 投影未变。
 - 读者一眼即可归因 transcript 中每一条非提示消息；即便面对本客户端版本从未见过其生产者的日志，标题栏依然如实。
-- 只要来源仅携带插件 id，UI 中的生产者名称就呈现为包名形态（`alego-tool-skill`、`@alego/system-prompt`）。这是拒绝客户端名称表的代价；想要更好标签的生产者必须在来源字段中记录该标签。
+- 只要来源仅携带插件 id，UI 中的生产者名称就呈现为包名形态（`alego-tool-skill`、`@singula-ai/alego-system-prompt`）。这是拒绝客户端名称表的代价；想要更好标签的生产者必须在来源字段中记录该标签。
 - `ContextMessageNode` 增加了一个必填字段，因此每一处构造该节点的代码——包括测试 fixture（测试前置数据）——都必须提供它。
 - 即使 agent loop（智能体循环）现在把已经接纳的 steering 记录为 `user/message`，`SteeringMessageNode` 仍是独立的呈现节点；它的身份来自持久 inbox 历史，而不是独立消息事件。
 - 在某个宿主挂载 `alego-session-reference` 之前，`recall` 分支在已发布的 Web 叶子中没有生产者，只能通过别处写入的日志抵达。

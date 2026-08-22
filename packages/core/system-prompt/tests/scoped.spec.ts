@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { createScope, scopeOf } from '@alego/scope'
-import type { Scope, ScopeKey } from '@alego/scope'
-import SystemPrompt, { TOOL_ORDER_REST, renderContextSnapshot, renderPrompt } from '@alego/system-prompt'
-import type { Config, PromptAssembly } from '@alego/system-prompt'
+import { Context } from '@singula-ai/cordis'
+import { createScope, scopeOf } from '@singula-ai/alego-scope'
+import type { Scope, ScopeKey } from '@singula-ai/alego-scope'
+import SystemPrompt, { TOOL_ORDER_REST, renderContextSnapshot, renderPrompt } from '@singula-ai/alego-system-prompt'
+import type { Config, PromptAssembly } from '@singula-ai/alego-system-prompt'
 
 async function mount(config: Config = {}): Promise<Context> {
   const ctx = new Context()

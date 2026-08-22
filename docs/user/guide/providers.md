@@ -113,7 +113,7 @@ What neither sets keeps the installed catalog's value for that model, and what t
 
 Each switch belongs to the protocols that declare it, so a switch valid on one `api` may be refused on another — the message names what that protocol does offer. Like `input` above, a switch states a claim about your endpoint rather than checking it: setting one your gateway does not actually need simply sends a different request.
 
-Every switch, its accepted values, and the protocols that take it are listed under `PiAiCompatProfile` in the [generated `alego-llm-pi-ai` configuration reference](../../config-catalog.md#alegollm-pi-ai) — which is derived from the source, so it cannot fall behind what the adapter accepts.
+Every switch, its accepted values, and the protocols that take it are listed under `PiAiCompatProfile` in the [generated `alego-llm-pi-ai` configuration reference](../../config-catalog.md#singula-aialego-llm-pi-ai) — which is derived from the source, so it cannot fall behind what the adapter accepts.
 
 ## Select a model
 
@@ -134,4 +134,4 @@ If a saved default names a provider that was deleted, the composer displays **Se
 
 ## Advanced configuration
 
-The generated [plugin configuration catalog](../../config-catalog.md) lists every supported field and default for every plugin; [`alego-llm-pi-ai`](../../config-catalog.md#alegollm-pi-ai) is the provider section this page configures. The [`alego-llm-pi-ai`](../../../packages/llm/llm-pi-ai/README.md) and [`alego-llm-deepseek`](../../../packages/llm/llm-deepseek/README.md) references own direct `settings.yaml` configuration, catalog resolution, reasoning controls, credentials, and adapter errors.
+The generated [plugin configuration catalog](../../config-catalog.md) lists every supported field and default for every plugin; [`alego-llm-pi-ai`](../../config-catalog.md#singula-aialego-llm-pi-ai) is the provider section this page configures. The [`alego-llm-pi-ai`](../../../packages/llm/llm-pi-ai/README.md) and [`alego-llm-deepseek`](../../../packages/llm/llm-deepseek/README.md) references own direct `settings.yaml` configuration, catalog resolution, reasoning controls, credentials, and adapter errors.

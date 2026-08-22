@@ -1,4 +1,4 @@
-# @alego/tool-jobs
+# @singula-ai/alego-tool-jobs
 
 English | [中文](README.zh.md)
 
@@ -63,7 +63,7 @@ Prefix-stable while the plugin scope and guidance text are unchanged. Activation
 
 #### What the model sees
 
-The generated [`job_output`, `job_list`, and `job_kill` schemas](../../../docs/tool-catalog.md#alegotool-jobs) while this tool set is visible.
+The generated [`job_output`, `job_list`, and `job_kill` schemas](../../../docs/tool-catalog.md#singula-aialego-tool-jobs) while this tool set is visible.
 
 #### Token effect
 

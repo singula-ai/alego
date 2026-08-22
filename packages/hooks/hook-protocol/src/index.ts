@@ -3,7 +3,7 @@
  * decoding, restrictive outcome merging, durable event helpers, and detached
  * run quiescence. Claude Code and Codex bridges own their distinct payloads,
  * environment rules, matcher mode, and typed extension-point mappings.
- * @module @alego/hook-protocol
+ * @module @singula-ai/alego-hook-protocol
  */
 
 export type {

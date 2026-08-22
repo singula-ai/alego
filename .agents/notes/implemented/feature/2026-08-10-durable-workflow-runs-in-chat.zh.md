@@ -16,7 +16,7 @@ Web Client 已经能够从持久 Session 事件组装由业务拥有的 Conversa
 
 记录只供观察。任一次 Session append 首次失败后，本运行会停止所有后续写入、只记录一次告警，并且绝不改变取消、结果映射或 dispose。每种失败位置都留下空记录或合法连续前缀：已开始运行可以缺少后续成员或运行终点，已开始成员也可以缺少成员终点。包 invariant 会在冷加载与实时 append 时拒绝重复运行 start、无效或复用的正成员序号、无配对或重复成员 end、仍有开放成员时结束运行，以及运行结束后的任何更新。
 
-workflow 包通过 `@alego/workflow/types` 提供浏览器安全的运行与观察词汇；包含活跃 `Agent` 的请求和控制句柄继续只属于 Host。`@alego/tool-workflow/types` 拥有四类 Session 事件。Client 只导入这些类型 face，因此 Host 与 Client TypeScript 程序共享持久合同，而不会合并 Host Cordis Context。
+workflow 包通过 `@singula-ai/alego-workflow/types` 提供浏览器安全的运行与观察词汇；包含活跃 `Agent` 的请求和控制句柄继续只属于 Host。`@singula-ai/alego-tool-workflow/types` 拥有四类 Session 事件。Client 只导入这些类型 face，因此 Host 与 Client TypeScript 程序共享持久合同，而不会合并 Host Cordis Context。
 
 `ui-workflow-run` 注册一个 `workflow-run` Conversation Definition 和一个 keyed Chat renderer。每条事件都能独立给出同一 `runId`；run-start 初始化 State，后续事件按日志顺序更新；只有 update 的历史尾页会保持 pending，直到 prepend 补入唯一 start。最终节点保留引擎拥有的 key，并以 run-start 锚定在原工具调用之后，从运行中到终态始终保留同一个 React 父级。
 

@@ -14,11 +14,11 @@
 import {
   ItemRetainer, TextRetainer,
   describeOmitted, formatRetentionNotice,
-} from '@alego/output-retention'
+} from '@singula-ai/alego-output-retention'
 import type {
   Omitted, PushDecision, RetainedItems, RetainedText,
   ItemRetentionStrategy, TextRetentionStrategy, RetentionNotice,
-} from '@alego/output-retention'
+} from '@singula-ai/alego-output-retention'
 ```
 
 | 导出项 | 职责 |

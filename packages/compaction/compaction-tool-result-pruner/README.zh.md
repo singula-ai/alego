@@ -1,4 +1,4 @@
-# @alego/compaction-tool-result-pruner
+# @singula-ai/alego-compaction-tool-result-pruner
 
 [English](README.md) | 中文
 
@@ -31,8 +31,8 @@
 ## 用法
 
 ```ts
-import type { Context } from '@alego/cordis'
-import ToolResultPruner from '@alego/compaction-tool-result-pruner'
+import type { Context } from '@singula-ai/cordis'
+import ToolResultPruner from '@singula-ai/alego-compaction-tool-result-pruner'
 
 export function apply(ctx: Context): void {
   ctx.plugin(ToolResultPruner)

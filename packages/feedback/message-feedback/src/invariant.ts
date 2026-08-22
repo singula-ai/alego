@@ -1,10 +1,10 @@
-/** Package-owned invariant companion. @module @alego/message-feedback/invariant */
+/** Package-owned invariant companion. @module @singula-ai/alego-message-feedback/invariant */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/message-feedback'
+const PACKAGE_NAME = '@singula-ai/alego-message-feedback'
 
 /** Cordis companion plugin name. */
 export const name = 'message-feedback-invariant'

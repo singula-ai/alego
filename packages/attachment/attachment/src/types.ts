@@ -1,4 +1,4 @@
-/** Durable attachment vocabulary. @module @alego/attachment/types */
+/** Durable attachment vocabulary. @module @singula-ai/alego-attachment/types */
 
 import type { AttachmentId, ImageVariantId } from './brand.ts'
 

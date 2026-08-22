@@ -12,8 +12,8 @@ import {
   launchAcpTestAgent,
   type AgentUnderTest,
   type LaunchedAcpTestAgent,
-} from '@alego/acp-snapshot'
-import { bwrapProfileArgs } from '@alego/sandbox-local/src/profiles.ts'
+} from '@singula-ai/alego-acp-snapshot'
+import { bwrapProfileArgs } from '@singula-ai/alego-sandbox-local/src/profiles.ts'
 import { cleanupAcpExampleTest } from './cleanup.ts'
 
 /**

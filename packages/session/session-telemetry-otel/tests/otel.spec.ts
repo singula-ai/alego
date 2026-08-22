@@ -12,11 +12,11 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { gunzipSync } from 'node:zlib'
-import { Context } from '@alego/cordis'
-import { getOrCreateAnonymousUserId } from '@alego/anonymous-user-id'
-import Loader from '@alego/cordis-plugin-loader'
-import { recordFeedback } from '@alego/command-feedback'
-import SessionStore, { SessionId } from '@alego/session'
+import { Context } from '@singula-ai/cordis'
+import { getOrCreateAnonymousUserId } from '@singula-ai/alego-anonymous-user-id'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import { recordFeedback } from '@singula-ai/alego-command-feedback'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
 import OpenTelemetrySessionBackend, { Config, DEFAULT_TELEMETRY_MODE, SessionTelemetryMode } from '../src/index.ts'
 
 interface Capture {
@@ -144,8 +144,8 @@ describe('OpenTelemetrySessionBackend wire', () => {
     expect(resource).toContainEqual({ key: 'user.id', value: { stringValue: getOrCreateAnonymousUserId() } })
 
     const records = allRecords(captures)
-    const ledger = records.filter(r => r.scope === '@alego/session-telemetry-otel')
-    const ops = records.filter(r => r.scope === '@alego/session-telemetry-otel/ops')
+    const ledger = records.filter(r => r.scope === '@singula-ai/alego-session-telemetry-otel')
+    const ops = records.filter(r => r.scope === '@singula-ai/alego-session-telemetry-otel/ops')
 
     const start = ledger.find(r => r.record.attributes?.some(a => a.key === 'event.type' && a.value.stringValue === 'turn/start'))
     expect(start).toBeDefined()
@@ -195,7 +195,7 @@ describe('OpenTelemetrySessionBackend wire', () => {
     gate.resolve(true)
     await disposal
 
-    const ops = allRecords(captures).filter(r => r.scope === '@alego/session-telemetry-otel/ops')
+    const ops = allRecords(captures).filter(r => r.scope === '@singula-ai/alego-session-telemetry-otel/ops')
     expect(ops).toHaveLength(1)
     expect(ops[0]!.record.attributes).toContainEqual({ key: 'telemetry.op', value: { stringValue: 'shutdown' } })
   })

@@ -1,7 +1,7 @@
 /** Official Alego occupants for the generic browser-brand slots. */
-import type { ClientContext } from '@alego/client-runtime/client'
-import type {} from '@alego/client-ui-conversation/client'
-import type {} from '@alego/client-ui-sidebar/client'
+import type { ClientContext } from '@singula-ai/alego-client-runtime/client'
+import type {} from '@singula-ai/alego-client-ui-conversation/client'
+import type {} from '@singula-ai/alego-client-ui-sidebar/client'
 import { OfficialBrandMark, OfficialBrandName } from './Brand.tsx'
 
 /** Required service: the UI slot registry. */

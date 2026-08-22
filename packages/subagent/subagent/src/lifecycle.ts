@@ -11,15 +11,15 @@
  * between this module and one in-package caller, not something a plugin may
  * depend on.
  *
- * @module @alego/subagent/lifecycle
+ * @module @singula-ai/alego-subagent/lifecycle
  */
 
 import { randomUUID } from 'node:crypto'
-import type { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import type { ContentBlock } from '@alego/llm'
-import { foldConsumedWork } from '@alego/agent'
-import type { SessionEvent, SessionId } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import { foldConsumedWork } from '@singula-ai/alego-agent'
+import type { SessionEvent, SessionId } from '@singula-ai/alego-session'
 import { finalAssistantOutput } from './assistant-output.ts'
 import { SubagentRunId } from './types.ts'
 import type { SubagentResult, SubagentRun, SubagentRunEndInfo, SubagentRunInfo } from './types.ts'

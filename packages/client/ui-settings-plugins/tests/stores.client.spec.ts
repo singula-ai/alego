@@ -4,13 +4,13 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { stubSettingsScope, type StubSettingsScope } from '@alego/client-test-runtime'
+import { stubSettingsScope, type StubSettingsScope } from '@singula-ai/alego-client-test-runtime'
 import { CardForm, numberField, textField } from '../src/client/card-form.ts'
 import { AgentLoopCardController, type AgentLoopSettings } from '../src/client/agent-loop-card-controller.ts'
 import { BashCardController, type BashSettings } from '../src/client/bash-card-controller.ts'
 import {
   SettingsDescribeMirror, type SettingsMirrorSnapshot,
-} from '@alego/client-ui-settings/src/client/settings-mirror.ts'
+} from '@singula-ai/alego-client-ui-settings/src/client/settings-mirror.ts'
 import { ConfigurablePluginsTabController } from '../src/client/tab-store.ts'
 import { WebSearchCardController, type WebSearchSettings } from '../src/client/web-search-card-controller.ts'
 

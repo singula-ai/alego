@@ -12,7 +12,7 @@ Status: implemented
 
 ## 决策
 
-每个具体适配器都在其提供方配置中接受可选的 `retryPolicy`，对它进行校验与解析，并通过 `providerRetryPolicy()` 公开解析后的路由策略。省略配置时，Web、headless 与自定义 profile 等所有组合都使用核心共享的 normal 模式五次重试默认值。有效策略仍然是路由拥有的注册状态，而不是重试执行器设置。分层 settings 在把 `mode` 改为 `always` 后可能保留仅属于 normal 的 `maxRetries` 或 `retryableCodes`；解析器会忽略这些未启用字段，同时仍拒绝未知键，注册后的 always 策略也不包含它们。当调用进入最终适配器边界时，`ctx.llm` 会把实际提供服务的注册项所持不可变策略绑定到该调用；即使路由在请求进行期间被 dispose（资源释放）或替换，agent loop（智能体循环）仍会把该策略传给已关闭步骤恢复。`@alego/llm-retry` 会把绑定到该调用的策略与失败步骤的持久化提供方标识结合起来。未到达最终适配器的调用没有实际提供服务的策略，因而会委托后续处理。
+每个具体适配器都在其提供方配置中接受可选的 `retryPolicy`，对它进行校验与解析，并通过 `providerRetryPolicy()` 公开解析后的路由策略。省略配置时，Web、headless 与自定义 profile 等所有组合都使用核心共享的 normal 模式五次重试默认值。有效策略仍然是路由拥有的注册状态，而不是重试执行器设置。分层 settings 在把 `mode` 改为 `always` 后可能保留仅属于 normal 的 `maxRetries` 或 `retryableCodes`；解析器会忽略这些未启用字段，同时仍拒绝未知键，注册后的 always 策略也不包含它们。当调用进入最终适配器边界时，`ctx.llm` 会把实际提供服务的注册项所持不可变策略绑定到该调用；即使路由在请求进行期间被 dispose（资源释放）或替换，agent loop（智能体循环）仍会把该策略传给已关闭步骤恢复。`@singula-ai/alego-llm-retry` 会把绑定到该调用的策略与失败步骤的持久化提供方标识结合起来。未到达最终适配器的调用没有实际提供服务的策略，因而会委托后续处理。
 
 ```yaml
 providers:

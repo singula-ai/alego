@@ -5,10 +5,10 @@
  * for. Stopping needs no helper — a host half unwinds through an ordinary
  * awaited `fiber.dispose()`, because everything the plugin registered is an
  * effect on its fiber.
- * @module @alego/cordis-host-runner/lifecycle
+ * @module @singula-ai/alego-cordis-host-runner/lifecycle
  */
 
-import type { Context, Fiber, Plugin } from '@alego/cordis'
+import type { Context, Fiber, Plugin } from '@singula-ai/cordis'
 import { guardedPlugin } from './guard.ts'
 
 /**

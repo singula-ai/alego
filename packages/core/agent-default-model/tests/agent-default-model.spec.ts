@@ -1,11 +1,11 @@
 /** Default Agent model settings layered over a real settings provider. */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import AgentDefaultModelConfig, { AGENT_DEFAULT_MODEL_SETTINGS_NAMESPACE } from '../src/index.ts'
-import { SettingsProvider } from '@alego/settings'
-import type { SettingsNamespace } from '@alego/settings'
-import { ReasoningEffortId } from '@alego/llm'
+import { SettingsProvider } from '@singula-ai/alego-settings'
+import type { SettingsNamespace } from '@singula-ai/alego-settings'
+import { ReasoningEffortId } from '@singula-ai/alego-llm'
 
 /** The smallest real provider: one in-memory document, always writable. */
 class MemorySettings extends SettingsProvider {

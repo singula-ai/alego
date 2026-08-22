@@ -3,13 +3,13 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import Include from '@alego/cordis-plugin-include'
-import type { Agent } from '@alego/agent'
-import CommandRuntime from '@alego/commands'
-import SessionStore, { SessionId } from '@alego/session'
-import * as SessionLogDownload from '@alego/session-log-export'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include from '@singula-ai/cordis-plugin-include'
+import type { Agent } from '@singula-ai/alego-agent'
+import CommandRuntime from '@singula-ai/alego-commands'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import * as SessionLogDownload from '@singula-ai/alego-session-log-export'
 
 let root: string | undefined
 let context: Context | undefined
@@ -26,9 +26,9 @@ describe('session-log-download real Loader composition', () => {
     root = await mkdtemp(join(tmpdir(), 'alego-session-export-loader-'))
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@alego/session'",
-      "- name: '@alego/commands'",
-      "- name: '@alego/session-log-export'",
+      "- name: '@singula-ai/alego-session'",
+      "- name: '@singula-ai/alego-commands'",
+      "- name: '@singula-ai/alego-session-log-export'",
       '',
     ].join('\n'))
 
@@ -37,9 +37,9 @@ describe('session-log-download real Loader composition', () => {
     await context.plugin(Loader)
     context.loader.builtins.include = Include
     const modules = new Map<string, unknown>([
-      ['@alego/session', SessionStore],
-      ['@alego/commands', CommandRuntime],
-      ['@alego/session-log-export', SessionLogDownload],
+      ['@singula-ai/alego-session', SessionStore],
+      ['@singula-ai/alego-commands', CommandRuntime],
+      ['@singula-ai/alego-session-log-export', SessionLogDownload],
     ])
     context.loader.internal = {
       version: 'v2',

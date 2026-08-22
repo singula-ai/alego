@@ -11,7 +11,7 @@
 ## 对外接口
 
 ```ts
-import { clampTimeout, deadline, idleWatchdog, MAX_TIMER_DELAY_MS, timeoutOf, TimeoutReason } from '@alego/timeout'
+import { clampTimeout, deadline, idleWatchdog, MAX_TIMER_DELAY_MS, timeoutOf, TimeoutReason } from '@singula-ai/alego-timeout'
 ```
 
 | 导出项 | 职责 |
@@ -30,7 +30,7 @@ import { clampTimeout, deadline, idleWatchdog, MAX_TIMER_DELAY_MS, timeoutOf, Ti
 ## 使用形态
 
 ```ts
-import { deadline, timeoutOf } from '@alego/timeout'
+import { deadline, timeoutOf } from '@singula-ai/alego-timeout'
 
 declare function runWork(options: { signal: AbortSignal }): Promise<unknown>
 

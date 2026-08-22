@@ -2,15 +2,15 @@
  * alego-llm's owned branded ids: tool-call correlation and provider request
  * diagnostics.
  *
- * The `Branded<B>` primitive itself lives in `@alego/brand` (a
+ * The `Branded<B>` primitive itself lives in `@singula-ai/alego-brand` (a
  * zero-dependency type-only package) so every owner of a cross-boundary id can
  * brand it without depending on alego-llm; see that package's README for the
  * nominal-typing policy.
  *
- * @module @alego/llm/brand
+ * @module @singula-ai/alego-llm/brand
  */
 
-import type { Branded } from '@alego/brand'
+import type { Branded } from '@singula-ai/alego-brand'
 
 /** Stable identity carried by one message across inbox, log, and model-request boundaries. */
 export type MessageId = Branded<'MessageId'>

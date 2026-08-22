@@ -1,4 +1,4 @@
-# @alego/session-persistence-sqlite
+# @singula-ai/alego-session-persistence-sqlite
 
 [English](README.md) | 中文
 

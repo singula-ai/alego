@@ -1,4 +1,4 @@
-# `@alego/headless`
+# `@singula-ai/alego-headless`
 
 English | [中文](README.zh.md)
 

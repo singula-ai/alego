@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import SessionStore, { Session, SessionId } from '@alego/session'
-import { ApprovalRequestId } from '@alego/user-approval'
-import * as ApprovalInvariant from '@alego/user-approval/invariant'
-import InvariantRegistry from '@alego/invariants'
+import { Context } from '@singula-ai/cordis'
+import SessionStore, { Session, SessionId } from '@singula-ai/alego-session'
+import { ApprovalRequestId } from '@singula-ai/alego-user-approval'
+import * as ApprovalInvariant from '@singula-ai/alego-user-approval/invariant'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

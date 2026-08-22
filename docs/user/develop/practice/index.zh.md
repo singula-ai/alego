@@ -34,7 +34,7 @@
 
 ```yaml
 # Local execution
-- name: '@alego/bash-local'
+- name: '@singula-ai/alego-bash-local'
 
 # Replace this row with another package that provides the same service.
 ```
@@ -61,9 +61,9 @@
 
 ```ts ignore-check
 // packages/my-cap/my-cap/src/index.ts
-import { Service, type Context } from '@alego/cordis'
+import { Service, type Context } from '@singula-ai/cordis'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     myCap: MyCapService
   }
@@ -91,8 +91,8 @@ export interface MyCapResult {
 
 ```ts ignore-check
 // packages/my-cap/my-cap-local/src/index.ts
-import type { Context } from '@alego/cordis'
-import { MyCapService, type MyCapRequest, type MyCapResult } from '@alego/my-cap'
+import type { Context } from '@singula-ai/cordis'
+import { MyCapService, type MyCapRequest, type MyCapResult } from '@singula-ai/alego-my-cap'
 
 class MyCapLocal extends MyCapService {
   async execute(request: MyCapRequest): Promise<MyCapResult> {
@@ -112,8 +112,8 @@ export function apply(ctx: Context) {
 
 ```ts ignore-check
 // packages/my-cap/tool-my-cap/src/index.ts
-import type { Context } from '@alego/cordis'
-import { defineTool } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import { defineTool } from '@singula-ai/alego-tools'
 
 export const name = 'tool-my-cap'
 export const inject = ['tools', 'myCap']
@@ -140,8 +140,8 @@ export function apply(ctx: Context) {
 ### 在 cordis.yml 中组合
 
 ```yaml
-- name: '@alego/my-cap-local'
-- name: '@alego/tool-my-cap'
+- name: '@singula-ai/alego-my-cap-local'
+- name: '@singula-ai/alego-tool-my-cap'
 ```
 
 ## 设计要点

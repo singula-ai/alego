@@ -1,4 +1,4 @@
-# @alego/shell-env
+# @singula-ai/alego-shell-env
 
 English | [中文](README.zh.md)
 
@@ -10,20 +10,20 @@ The package root exports the Cordis plugin contract (`name`, `inject`, `Config`,
 
 ```yaml
 - id: shell-env
-  name: '@alego/shell-env'
+  name: '@singula-ai/alego-shell-env'
   config:
     alegoHome: C:\Users\me\.alego   # default: $ALEGO_HOME, then ~/.alego
 ```
 
 ## Managed environment
 
-Every foreground and background model shell call receives a newly collected trusted `ALEGO_*` environment. `ALEGO_HOME` is the absolute Harness home resolved by [`@alego/home-paths`](../../util/home-paths/README.md) (`alegoHome` config, then ambient `$ALEGO_HOME`, then `~/.alego`) and `ALEGO_SHELL=1` identifies the managed child. Agent calls additionally receive `ALEGO_SESSION_ID=agent.session.header.id`; when the active persistence seam locates a JSONL artifact they also receive `ALEGO_SESSION_JSONL=<absolute target path>`. The JSONL path is a location hint: it may not exist before the first flush or contain the current buffered turn, and it is not an authorization credential.
+Every foreground and background model shell call receives a newly collected trusted `ALEGO_*` environment. `ALEGO_HOME` is the absolute Harness home resolved by [`@singula-ai/alego-home-paths`](../../util/home-paths/README.md) (`alegoHome` config, then ambient `$ALEGO_HOME`, then `~/.alego`) and `ALEGO_SHELL=1` identifies the managed child. Agent calls additionally receive `ALEGO_SESSION_ID=agent.session.header.id`; when the active persistence seam locates a JSONL artifact they also receive `ALEGO_SESSION_JSONL=<absolute target path>`. The JSONL path is a location hint: it may not exist before the first flush or contain the current buffered turn, and it is not an authorization credential.
 
 `ctx.shellEnv` owns collection. Other plugins can register an effect-scoped contributor with a stable name, declared keys/descriptions, and `resolve(execution: ToolExecution)`; duplicate ownership and undeclared runtime keys fail loudly, while `list()` enumerates declarations without executing providers. Harness built-ins reserve `ALEGO_HOME`, `ALEGO_SHELL`, and `ALEGO_SESSION_ID`; this plugin's persistence translator owns `ALEGO_SESSION_JSONL` by reading the backend-neutral `sessionPersistence.locate()` seam.
 
 ```ts
-import type { Context } from '@alego/cordis'
-import type {} from '@alego/shell-env'
+import type { Context } from '@singula-ai/cordis'
+import type {} from '@singula-ai/alego-shell-env'
 
 export const inject = ['shellEnv']
 

@@ -8,7 +8,7 @@ Status: implemented
 
 这个仓库有三组互不相干的可发布包，却没有任何发布通道把它们送上 registry。
 
-`packages/*/*` 与 `apps/*` 组成 `@alego/cli` 的运行面；`vendor/*` 是九个 rescope 过的 Cordis 框架包，各自带着上游的版本号；`native/landlock-run/packages/*` 是 Linux 平台包，有自己的 workflow。三组的版本基线、变更节奏和构建要求都不同：alego 随产品迭代，vendor 只在同步上游或改动本地修改时才动，native 需要 musl 工具链和逐架构构建。把它们塞进一条发布流水线，等于每次产品发版都要重发框架和原生二进制。
+`packages/*/*` 与 `apps/*` 组成 `@singula-ai/alego` 的运行面；`vendor/*` 是九个 rescope 过的 Cordis 框架包，各自带着上游的版本号；`native/landlock-run/packages/*` 是 Linux 平台包，有自己的 workflow。三组的版本基线、变更节奏和构建要求都不同：alego 随产品迭代，vendor 只在同步上游或改动本地修改时才动，native 需要 musl 工具链和逐架构构建。把它们塞进一条发布流水线，等于每次产品发版都要重发框架和原生二进制。
 
 挡路的还有两处硬门。全部 217 个 workspace manifest 都是 `private: true`，`npm publish` 直接拒绝。更隐蔽的是 933 条 alego 兄弟包之间硬写的 `peerDependencies: "^0.0.1"`：`pnpm pack` 只替换 `workspace:` 协议，不动语义范围，而 `^0.0.1` 等于 `>=0.0.1 <0.0.2`——发 `0.0.2` 落不进去，发 `0.0.1-rc.1` 也落不进去（semver 规定不带预发布段的范围排除预发布版本）。这些条目至今没出事，只因为版本一直停在 `0.0.1`。
 
@@ -26,7 +26,7 @@ Status: implemented
 | vendored framework | `vendor/*` 九个包 | 每包各自一条版本线 | `vendor-<包名>-v<版本>`（每包一个） | `release-vendor.yml`（pack）/ `release-vendor-publish.yml`（发布） |
 | native | `native/landlock-run/packages/*` | 自己的 `0.0.x` | `landlock-run-v<版本>` | `landlock-run-release.yml` |
 
-三组一律发到 npmjs.com 的 `@alego` scope，且 access 按序列而非按 scope 区分：vendored 框架与 native 包是 `public`，alego 族是 `restricted`（[理由](2026-08-13-public-vendor-and-native-sequences.zh.md)）。没有任何发布路径传 `--access`——一个选项无法服务级别互不相同的序列，且会覆盖真正拥有该级别的 manifest。
+三组一律发到 npmjs.com 的 `@singula-ai` scope，且 access 按序列而非按 scope 区分：vendored 框架与 native 包是 `public`，alego 族是 `restricted`（[理由](2026-08-13-public-vendor-and-native-sequences.zh.md)）。没有任何发布路径传 `--access`——一个选项无法服务级别互不相同的序列，且会覆盖真正拥有该级别的 manifest。
 
 ### 版本由本地命令写进仓库，CI 只核对与上传
 
@@ -40,15 +40,15 @@ vendor 九包加了 scope 之后与上游脱钩，但保留各自的版本线。
 
 | 包 | 上游版本 | 首发版本 |
 |---|---|---|
-| `@alego/cordis` | 4.0.0-rc.7 | 4.0.1 |
-| `@alego/cordis-plugin-loader` | 1.0.0-rc.5 | 1.0.1 |
-| `@alego/cosmokit` | 1.8.1 | 1.8.2 |
-| `@alego/schemastery` | 3.18.0 | 3.18.1 |
-| `@alego/cordis-plugin-hmr` | 1.0.15 | 1.0.16 |
-| `@alego/cordis-plugin-include` | 1.0.4 | 1.0.5 |
-| `@alego/cordis-plugin-timer` | 1.1.2 | 1.1.3 |
-| `@alego/cordis-plugin-group` | 1.0.0 | 1.0.1 |
-| `@alego/cordis-plugin-logger-console` | 1.0.0 | 1.0.1 |
+| `@singula-ai/cordis` | 4.0.0-rc.7 | 4.0.1 |
+| `@singula-ai/cordis-plugin-loader` | 1.0.0-rc.5 | 1.0.1 |
+| `@singula-ai/cosmokit` | 1.8.1 | 1.8.2 |
+| `@singula-ai/schemastery` | 3.18.0 | 3.18.1 |
+| `@singula-ai/cordis-plugin-hmr` | 1.0.15 | 1.0.16 |
+| `@singula-ai/cordis-plugin-include` | 1.0.4 | 1.0.5 |
+| `@singula-ai/cordis-plugin-timer` | 1.1.2 | 1.1.3 |
+| `@singula-ai/cordis-plugin-group` | 1.0.0 | 1.0.1 |
+| `@singula-ai/cordis-plugin-logger-console` | 1.0.0 | 1.0.1 |
 
 以「上次发布版本」为基线才扛得住重同步：本仓发过 `4.0.1` 之后上游把版本恢复成 `4.0.0-rc.8`，只看 manifest 会再算出 `4.0.1` 并撞上已发版本。加 `--prerelease rc.1` 则发一次排练版：它进 `--tag next`，而且不占用那组数字——预发布的优先级低于它所先行的正式版，所以 `4.0.1` 仍然接在 `4.0.1-rc.1` 之后。这个次序由脚本自己算，不读 `git tag --sort=v:refname`——git 会把预发布排在正式版之前。
 
@@ -78,7 +78,7 @@ registry 的两个行为决定了「怎么尝试一次发布」。写入之间�
 
 所有指向 workspace 成员的引用都用 `workspace:^`，由 `pnpm pack` 替换成匹配目标版本的范围：兄弟包的 `peerDependencies` 跟随族版本，指向 vendored 包的引用跟随那个包自己的版本线。Landlock 平台包保留 `workspace:*`（发布成精确版本），因为平台包与它的入口必须版本完全一致。
 
-`scripts/check-workspace-constraints.ts` 要求这个协议，所以新包无法再引入硬写的范围；同理，invariant companion 规则要求 `@alego/invariants` 用 `workspace:^`。
+`scripts/check-workspace-constraints.ts` 要求这个协议，所以新包无法再引入硬写的范围；同理，invariant companion 规则要求 `@singula-ai/alego-invariants` 用 `workspace:^`。
 
 ### optional 依赖绝不在模块作用域被加载
 
@@ -146,7 +146,7 @@ alego 的验证会一并安装 vendored 族的 pack 产物。harness 的包把 v
 
 **只做打包后安装验证，不起本地 registry。** 参照流程是把 tarball 解包成一棵树、用普通 Node 驱动，这绕过了版本范围解析。曾提议在 CI 里起本地 registry 补这一层，被否：产物正确性已由既有测试覆盖，发布路径由 master 的排练覆盖，而 pull request 只需证明发布集能打出来。用 `file:` 说明符安装依然会对每个内部依赖走一遍范围解析。
 
-**按入口闭包挑一部分包发。** 从 `@alego/cli` 与 `@alego/web-frontend` 沿 `dependencies` 爬得到 156 个包，比全量少 61 个。但本仓的插件是 `cordis.yml` 按名字挂载的、不是被 import 的：`vendor/cordis-plugin-group` 与 `vendor/cordis-plugin-logger-console` 落在依赖闭包之外，却是运行时必需。照代码依赖挑的失败形态是「消费方装完起不来」，而且要额外持续证明「没漏任何挂载项」。私有 scope 下多出来的包对组织外不可见。`python/`、根 `examples/`、`docs/` 与 `website/` 不是成员。
+**按入口闭包挑一部分包发。** 从 `@singula-ai/alego` 与 `@singula-ai/alego-web-frontend` 沿 `dependencies` 爬得到 156 个包，比全量少 61 个。但本仓的插件是 `cordis.yml` 按名字挂载的、不是被 import 的：`vendor/cordis-plugin-group` 与 `vendor/cordis-plugin-logger-console` 落在依赖闭包之外，却是运行时必需。照代码依赖挑的失败形态是「消费方装完起不来」，而且要额外持续证明「没漏任何挂载项」。私有 scope 下多出来的包对组织外不可见。`python/`、根 `examples/`、`docs/` 与 `website/` 不是成员。
 
 **在 `scripts/publish-npm-baseline.ts` 上扩展。** 它是本机发布脚本，把 pack 与 publish 放在同一进程，与「无凭据 pack、受保护 publish」的分离相反。它验证过的零件——payload 校验与已安装产物探针——被搬运复用，以免 `pnpm run duplication` 判重复。
 

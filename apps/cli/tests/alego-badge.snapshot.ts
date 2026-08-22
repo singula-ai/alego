@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
-import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@alego/loader-smoke'
+import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@singula-ai/alego-loader-smoke'
 const binScript = fileURLToPath(new URL('./fixtures/alego-badge/snapshot.ts', import.meta.url))
 const configPath = fileURLToPath(new URL('./fixtures/alego-badge/cordis.yml', import.meta.url))
 const defaultConfigPath = fileURLToPath(new URL('./fixtures/alego-badge/default.cordis.yml', import.meta.url))

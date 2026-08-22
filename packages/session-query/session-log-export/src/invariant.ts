@@ -1,10 +1,10 @@
-/** Package invariant companion for `@alego/session-log-export`. */
+/** Package invariant companion for `@singula-ai/alego-session-log-export`. */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/session-log-export'
+const PACKAGE_NAME = '@singula-ai/alego-session-log-export'
 
 export const name = 'session-export-invariant'
 export const inject = ['invariants']

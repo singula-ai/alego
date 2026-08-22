@@ -1,23 +1,23 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   AssistantBlock, AssistantMessageNode, ConversationLocation, ConversationMatch,
   ConversationNodeContext, ConversationNodeDefinition,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import {
   emptyAssistantBlock, isAppendSurfaceEvent, isTokenDelta, toAssistantBlock, toAssistantBlocks,
-} from '@alego/client-runtime/client'
-import type {} from '@alego/llm-retry/types'
+} from '@singula-ai/alego-client-runtime/client'
+import type {} from '@singula-ai/alego-llm-retry/types'
 import type { AssistantChatData } from '../contract/chat-nodes.ts'
 import { CHAT_SYNTHETIC_SEQ_OFFSETS, chatNode } from './common.ts'
 
-declare module '@alego/client-ui-conversation/client' {
+declare module '@singula-ai/alego-client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Streaming, settled, or interrupted Assistant step. */
     'assistant-step': AssistantChatData
   }
 }
 
-declare module '@alego/client-runtime/client' {
+declare module '@singula-ai/alego-client-runtime/client' {
   interface ConversationStepDataMap {
     /** Streaming, settled, or interrupted Assistant material for this Step. */
     'assistant-step': AssistantChatData

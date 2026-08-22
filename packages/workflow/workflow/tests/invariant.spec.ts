@@ -1,15 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { SessionId } from '@alego/session'
-import { WorkflowRunId } from '@alego/workflow'
+import { Context } from '@singula-ai/cordis'
+import { SessionId } from '@singula-ai/alego-session'
+import { WorkflowRunId } from '@singula-ai/alego-workflow'
 import type {
   WorkflowAgentEndInfo,
   WorkflowAgentInfo,
   WorkflowResultInfo,
   WorkflowRunInfo,
-} from '@alego/workflow'
-import * as WorkflowInvariant from '@alego/workflow/invariant'
-import InvariantRegistry from '@alego/invariants'
+} from '@singula-ai/alego-workflow'
+import * as WorkflowInvariant from '@singula-ai/alego-workflow/invariant'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

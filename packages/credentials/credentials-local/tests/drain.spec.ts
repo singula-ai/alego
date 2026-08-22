@@ -1,17 +1,17 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { credentialKey, credentialRef } from '@alego/credentials'
+import { credentialKey, credentialRef } from '@singula-ai/alego-credentials'
 import { LocalCredentialProvider } from '../src/index.ts'
 
 // The atomic write is the gated asynchronous hold point inside a queued
 // write; gating it makes the dispose-versus-queued-write race fully
 // deterministic. The lock helper passes through so the gated operation still
 // runs inside its real acquire/release cycle.
-vi.mock('@alego/atomic-write', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@alego/atomic-write')>()
+vi.mock('@singula-ai/alego-atomic-write', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@singula-ai/alego-atomic-write')>()
   let gate: Promise<void> = Promise.resolve()
   return {
     ...actual,
@@ -23,7 +23,7 @@ vi.mock('@alego/atomic-write', async (importOriginal) => {
 })
 
 async function setGate(next: Promise<void>): Promise<void> {
-  const mocked = await import('@alego/atomic-write') as unknown as { __setGate: (next: Promise<void>) => void }
+  const mocked = await import('@singula-ai/alego-atomic-write') as unknown as { __setGate: (next: Promise<void>) => void }
   mocked.__setGate(next)
 }
 

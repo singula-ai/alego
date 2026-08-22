@@ -8,14 +8,14 @@ English | [中文](2026-07-24-single-harness-home-resolver.zh.md)
 
 The harness had two inconsistent conventions for "where does Alego user data live":
 
-- `@alego/home` resolved `configured ?? $ALEGO_HOME ?? ~/.alego`.
-- `@alego/home-paths` shipped a **second** `resolveAlegoHome` with the same precedence plus tilde expansion — a near-duplicate of `alego-home` that no gate flagged because the two lived in different packages and had already drifted (only one expanded tildes).
+- `@singula-ai/alego-home` resolved `configured ?? $ALEGO_HOME ?? ~/.alego`.
+- `@singula-ai/alego-home-paths` shipped a **second** `resolveAlegoHome` with the same precedence plus tilde expansion — a near-duplicate of `alego-home` that no gate flagged because the two lived in different packages and had already drifted (only one expanded tildes).
 
 Two resolvers for the same cross-cutting fact meant there was no single home policy.
 
 ## Decision
 
-One resolver owns the harness home, in `@alego/home-paths`, single-root:
+One resolver owns the harness home, in `@singula-ai/alego-home-paths`, single-root:
 
 ```
 explicit configured path  >  $ALEGO_HOME  >  ~/.alego
@@ -23,7 +23,7 @@ explicit configured path  >  $ALEGO_HOME  >  ~/.alego
 
 An empty or whitespace-only `$ALEGO_HOME` is treated as unset; otherwise `resolve('')` would silently place the home at the current working directory. The harness keeps all user data under one root; there is no XDG config/data/cache split. `alegoHomePath(...segments)` joins deployment-owned children onto that root, and `alego-app-boot` exposes it to Loader `!!js` config expressions before mounting entries, so shipped compositions derive `sessions` and `storages` without copying the resolver. `alegoHomeDisplay()` names a resolved root symbolically for user-facing paths — `~/.alego` for the default home, `$ALEGO_HOME` for any configured home — so the user-global `AGENTS.md` label never leaks an absolute machine path. It replaces agent-instructions's bespoke default-vs-`$ALEGO_HOME` check.
 
-`@alego/home` is deleted. Its three importers (`alego-tool-bash`, `alego-skill-filesystem`, `alego-agent-spine-demo`) import `resolveAlegoHome` from `alego-home-paths`.
+`@singula-ai/alego-home` is deleted. Its three importers (`alego-tool-bash`, `alego-skill-filesystem`, `alego-agent-spine-demo`) import `resolveAlegoHome` from `alego-home-paths`.
 
 `alego-telemetry` and its separate home policy are absent under the [SDK project toolchain removal](../simplification/2026-08-11-remove-sdk-project-toolchain.md), leaving this resolver as the sole home policy.
 

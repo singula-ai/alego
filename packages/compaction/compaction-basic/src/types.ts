@@ -1,10 +1,10 @@
 /**
  * Configuration vocabulary for the replay-aware basic compaction backend.
  *
- * @module @alego/compaction-basic/types
+ * @module @singula-ai/alego-compaction-basic/types
  */
 
-import type { LlmCallConfig } from '@alego/llm'
+import type { LlmCallConfig } from '@singula-ai/alego-llm'
 
 /** Policy fields shared by the default policy and exact model overrides. */
 export interface CompactionPolicyConfig {

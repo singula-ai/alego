@@ -5,7 +5,7 @@
  * traffic in bare sources; binding happens on the React side.
  */
 import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector.js'
-import type { HostObservable, SnapshotSelectorHook } from '@alego/client-ui-slots'
+import type { HostObservable, SnapshotSelectorHook } from '@singula-ai/alego-client-ui-slots'
 
 /**
  * Bind a bare observable source to a typed uSES selector hook.

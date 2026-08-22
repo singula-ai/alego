@@ -7,34 +7,34 @@
  * event ledger with its timing overview, and fiber disposal removes the tab.
  * Timeline projection and inclusive focus edge cases ride along.
  */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { createElement, type ComponentProps, type FC, type ReactNode } from 'react'
-import { bindSnapshotSelector } from '@alego/client-test-runtime'
-import { resolveSlotLabel } from '@alego/client-ui-slots'
+import { bindSnapshotSelector } from '@singula-ai/alego-client-test-runtime'
+import { resolveSlotLabel } from '@singula-ai/alego-client-ui-slots'
 import {
   ConversationEventRegistry, ConversationViewRegistry, createSnapshotStore,
   EMPTY_CHAT_SNAPSHOT,
-} from '@alego/client-runtime/client'
-import { SlotRegistry } from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
+import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
 import type {
   ConversationSnapshot, RequestView,
   SessionId, SessionListState, SnapshotStore, WorkspaceListState,
-} from '@alego/client-runtime/client'
-import type { ConvViewProps, ViewTab } from '@alego/client-ui-conversation/client'
+} from '@singula-ai/alego-client-runtime/client'
+import type { ConvViewProps, ViewTab } from '@singula-ai/alego-client-ui-conversation/client'
 import {
   ConversationSession, ConversationSessionHeader,
   type ConversationSessionHeaderProps, type ConversationSessionProps,
-} from '@alego/client-ui-conversation/src/client/skeleton/ConversationSession.tsx'
-import { createChatStore } from '@alego/client-ui-conversation/src/client/stores.ts'
-import { zh as conversationZh } from '@alego/client-ui-conversation/src/client/locales.ts'
-import { apply as localeApply, inject as localeInject } from '@alego/client-locale/client'
-import { stubSettingsScope } from '@alego/client-test-runtime'
-import type { LocaleKeysOf } from '@alego/client-ui-slots'
+} from '@singula-ai/alego-client-ui-conversation/src/client/skeleton/ConversationSession.tsx'
+import { createChatStore } from '@singula-ai/alego-client-ui-conversation/src/client/stores.ts'
+import { zh as conversationZh } from '@singula-ai/alego-client-ui-conversation/src/client/locales.ts'
+import { apply as localeApply, inject as localeInject } from '@singula-ai/alego-client-locale/client'
+import { stubSettingsScope } from '@singula-ai/alego-client-test-runtime'
+import type { LocaleKeysOf } from '@singula-ai/alego-client-ui-slots'
 import { zh, type TrajectoryKey } from '../src/client/locales.ts'
-import { apply, inject } from '@alego/client-ui-trajectory/client'
-import { apply as nodeApply } from '@alego/client-ui-trajectory'
+import { apply, inject } from '@singula-ai/alego-client-ui-trajectory/client'
+import { apply as nodeApply } from '@singula-ai/alego-client-ui-trajectory'
 import type { TrajectoryTurnModel } from '../src/client/layout.ts'
 import { TrajectoryTimeline } from '../src/client/TrajectoryTimeline.tsx'
 import {

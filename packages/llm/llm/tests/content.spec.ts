@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { AttachmentId } from '@alego/attachment'
+import { AttachmentId } from '@singula-ai/alego-attachment'
 import {
   CallId,
   createUserMessage,

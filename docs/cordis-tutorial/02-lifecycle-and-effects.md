@@ -11,7 +11,7 @@ For a resource Cordis does not already manage — a timer, a connection, a watch
 Create `lifecycle.ts` in `tmp/cordis-tutorial`:
 
 ```ts
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 
 export const name = 'lifecycle-demo'
 

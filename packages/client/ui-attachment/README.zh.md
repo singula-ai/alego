@@ -1,4 +1,4 @@
-# @alego/client-ui-attachment
+# @singula-ai/alego-client-ui-attachment
 
 [English](README.md) | 中文
 

@@ -1,4 +1,4 @@
-# @alego/session-query-sqlite
+# @singula-ai/alego-session-query-sqlite
 
 English | [中文](README.zh.md)
 

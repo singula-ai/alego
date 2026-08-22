@@ -1,7 +1,7 @@
 /** Validated configuration for the local PTY backend. */
 
-import z from '@alego/schemastery'
-import { resolvePwshPath } from '@alego/pwsh-local'
+import z from '@singula-ai/schemastery'
+import { resolvePwshPath } from '@singula-ai/alego-pwsh-local'
 
 /** One supported interactive shell dialect. */
 export type ShellDialect = 'bash' | 'pwsh'

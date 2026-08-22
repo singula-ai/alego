@@ -1,4 +1,4 @@
-# @alego/subprocess
+# @singula-ai/alego-subprocess
 
 [English](README.md) | 中文
 

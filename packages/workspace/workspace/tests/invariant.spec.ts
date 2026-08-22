@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import InvariantRegistry from '@alego/invariants'
-import type { DomainChanged } from '@alego/storage-domain'
+import { Context } from '@singula-ai/cordis'
+import InvariantRegistry from '@singula-ai/alego-invariants'
+import type { DomainChanged } from '@singula-ai/alego-storage-domain'
 import * as WorkspaceInvariant from '../src/invariant.ts'
 import { WorkspaceId } from '../src/index.ts'
 

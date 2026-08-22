@@ -1,7 +1,7 @@
-/** Package-owned workflow lifecycle invariants. @module @alego/workflow/invariant */
+/** Package-owned workflow lifecycle invariants. @module @singula-ai/alego-workflow/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 import type {
   WorkflowAgentEndInfo,
   WorkflowAgentInfo,
@@ -9,7 +9,7 @@ import type {
   WorkflowRunInfo,
 } from './types.ts'
 
-const PACKAGE_NAME = '@alego/workflow'
+const PACKAGE_NAME = '@singula-ai/alego-workflow'
 
 /** Cordis companion plugin name. */
 export const name = 'workflow-invariant'

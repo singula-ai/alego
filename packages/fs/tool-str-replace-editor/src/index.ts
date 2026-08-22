@@ -1,18 +1,18 @@
 /**
  * Model-facing `str_replace_editor` over the Harness filesystem seam.
- * @module @alego/tool-str-replace-editor
+ * @module @singula-ai/alego-tool-str-replace-editor
  */
 
 import { isAbsolute } from 'node:path'
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { FsError } from '@alego/fs'
-import type { FsInfo, FsTarget, FsWriteIntent } from '@alego/fs'
-import { sandboxDenialMarker } from '@alego/sandbox'
-import type { SandboxExecutionPolicy } from '@alego/sandbox'
-import type { SandboxPolicyService } from '@alego/sandbox-policy'
-import { defineTool } from '@alego/tools'
-import type { ToolCallView, ToolRunContext } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { FsError } from '@singula-ai/alego-fs'
+import type { FsInfo, FsTarget, FsWriteIntent } from '@singula-ai/alego-fs'
+import { sandboxDenialMarker } from '@singula-ai/alego-sandbox'
+import type { SandboxExecutionPolicy } from '@singula-ai/alego-sandbox'
+import type { SandboxPolicyService } from '@singula-ai/alego-sandbox-policy'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { ToolCallView, ToolRunContext } from '@singula-ai/alego-tools'
 
 const TRUNCATED_MESSAGE = '<response clipped><NOTE>To save on context only part of this file has been shown to you. You should retry this tool after you have searched inside the file with `grep -n` in order to find the line numbers of what you are looking for.</NOTE>'
 

@@ -3,19 +3,19 @@
  * and bridges bindings over its message port. This is containment, not a security boundary:
  * model code has bash-equivalent trust despite an empty environment, a heap cap, measured
  * event-loop busy-time and wall-time budgets, and termination that also stops synchronous loops.
- * @module @alego/code-runtime-worker-thread
+ * @module @singula-ai/alego-code-runtime-worker-thread
  */
 
 import { Worker } from 'node:worker_threads'
 import { stripTypeScriptTypes } from 'node:module'
 import type { Readable } from 'node:stream'
 import { fileURLToPath } from 'node:url'
-import { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
-import { CodeRuntime, DUNDER_MEMBER, PORTABLE_RESERVED_WORDS, RESERVED_BINDING_GLOBALS, RESERVED_ERROR_MEMBERS } from '@alego/code-runtime'
-import type { CodeBindingNamespace, CodeJsonValue, CodeRunFailure, CodeRunRequest, CodeRunResult } from '@alego/code-runtime'
-import { snapshotJsonValue } from '@alego/session'
+import { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
+import { CodeRuntime, DUNDER_MEMBER, PORTABLE_RESERVED_WORDS, RESERVED_BINDING_GLOBALS, RESERVED_ERROR_MEMBERS } from '@singula-ai/alego-code-runtime'
+import type { CodeBindingNamespace, CodeJsonValue, CodeRunFailure, CodeRunRequest, CodeRunResult } from '@singula-ai/alego-code-runtime'
+import { snapshotJsonValue } from '@singula-ai/alego-session'
 import type { ReplyMessage, WorkerBootData, WorkerToHost } from './protocol.ts'
 import { jsonStringBytesUpTo, jsonValueBytesUpTo, truncateJsonStringBytes } from './output-json.ts'
 import { decodeWorkerJson, encodeWorkerJson } from './worker-json.ts'

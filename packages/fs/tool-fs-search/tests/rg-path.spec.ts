@@ -7,10 +7,10 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { CallId } from '@alego/llm'
-import type { ToolExecution } from '@alego/tools'
-import { resolveRgPath, runRipgrep } from '@alego/tool-fs-search'
+import { Context } from '@singula-ai/cordis'
+import { CallId } from '@singula-ai/alego-llm'
+import type { ToolExecution } from '@singula-ai/alego-tools'
+import { resolveRgPath, runRipgrep } from '@singula-ai/alego-tool-fs-search'
 
 // Any access to the mocked module's surface throws — the shape a missing
 // platform package produces at module evaluation.

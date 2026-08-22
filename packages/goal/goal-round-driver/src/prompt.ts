@@ -1,7 +1,7 @@
 /** Model-visible continuation prompt for one same-session goal round. */
 
-import type { ContentBlock } from '@alego/llm'
-import type { GoalView } from '@alego/goal'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { GoalView } from '@singula-ai/alego-goal'
 
 /**
  * Render the complete goal-round instruction retained in session history.

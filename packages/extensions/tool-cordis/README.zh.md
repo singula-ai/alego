@@ -1,8 +1,8 @@
-# @alego/tool-cordis
+# @singula-ai/alego-tool-cordis
 
 [English](README.md) | 中文
 
-自引用 Cordis 工具集：五个面向模型的工具，操作当前 ALEGO 进程中的实时运行时。注册表、vm 沙箱与浏览器广播属于 [`@alego/cordis-host-runner`](../cordis-host-runner/README.zh.md)（`ctx.dynamic`），本工具集注入它——只装这些工具而不装 runner 的组合永远不会激活它们。沙箱语义、动态包生命周期与组合及既定决策详见[工具集 Agent Note](../../../.agents/notes/implemented/feature/2026-07-08-self-referential-cordis-toolset.zh.md)。
+自引用 Cordis 工具集：五个面向模型的工具，操作当前 ALEGO 进程中的实时运行时。注册表、vm 沙箱与浏览器广播属于 [`@singula-ai/alego-cordis-host-runner`](../cordis-host-runner/README.zh.md)（`ctx.dynamic`），本工具集注入它——只装这些工具而不装 runner 的组合永远不会激活它们。沙箱语义、动态包生命周期与组合及既定决策详见[工具集 Agent Note](../../../.agents/notes/implemented/feature/2026-07-08-self-referential-cordis-toolset.zh.md)。
 
 ## 功能
 
@@ -24,7 +24,7 @@
 
 ## 配置
 
-无。vm 求值边界（`vmTimeoutMs`）与浏览器确认窗口（`ackTimeoutMs`）属于拥有沙箱与广播的 runner 服务——见 [`@alego/cordis-host-runner`](../cordis-host-runner/README.zh.md#config)。
+无。vm 求值边界（`vmTimeoutMs`）与浏览器确认窗口（`ackTimeoutMs`）属于拥有沙箱与广播的 runner 服务——见 [`@singula-ai/alego-cordis-host-runner`](../cordis-host-runner/README.zh.md#config)。
 
 ## 生成的 client 槽目录
 
@@ -47,7 +47,7 @@
 
 ## 渲染
 
-每个工具都渲染 `generic` 卡片（`read`／`execute`／`delete`）；`cordis_define` 以 `rawInput` 携带提交的两个半，并用标签与用途作为卡片标题。presenter 是 args 的纯函数，结果保留默认文本渲染。Web 客户端注册自己的 keyed `cordis_define` 行（`@alego/client-ui-cordis`），从调用参数与结果元数据里取标签、用途和铸出的标识；没有该注册的界面则退回到这张 generic 卡片。
+每个工具都渲染 `generic` 卡片（`read`／`execute`／`delete`）；`cordis_define` 以 `rawInput` 携带提交的两个半，并用标签与用途作为卡片标题。presenter 是 args 的纯函数，结果保留默认文本渲染。Web 客户端注册自己的 keyed `cordis_define` 行（`@singula-ai/alego-client-ui-cordis`），从调用参数与结果元数据里取标签、用途和铸出的标识；没有该注册的界面则退回到这张 generic 卡片。
 
 ## 导出形式
 
@@ -59,7 +59,7 @@ Namespace 插件：命名导出 `name`／`inject`／`apply`，无默认导出（
 
 #### 模型看到的内容
 
-该插件可见时，会话模型会看到生成的 [`cordis_inspect`、`cordis_define`、`cordis_run`、`cordis_stop` 和 `cordis_undefine` schema](../../../docs/tool-catalog.zh.md#alegotool-cordis)。
+该插件可见时，会话模型会看到生成的 [`cordis_inspect`、`cordis_define`、`cordis_run`、`cordis_stop` 和 `cordis_undefine` schema](../../../docs/tool-catalog.zh.md#singula-aialego-tool-cordis)。
 
 #### Token 影响
 

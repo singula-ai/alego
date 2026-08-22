@@ -1,4 +1,4 @@
-/** Lossless-JSON validation and detached snapshots for durable session data. @module @alego/session/json */
+/** Lossless-JSON validation and detached snapshots for durable session data. @module @singula-ai/alego-session/json */
 
 /**
  * A value that round-trips losslessly through JSON: `null`, a boolean, a finite

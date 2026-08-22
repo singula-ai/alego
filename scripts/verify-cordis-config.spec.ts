@@ -17,7 +17,7 @@ import {
 describe('verify-cordis-config metadata expressions', () => {
   it('accepts a disabled !!js expression', () => {
     const problems = metadataExpressionErrors(
-      { id: 'tool-bash', name: '@alego/tool-bash', disabled: { __jsExpr: "process.platform === 'win32'" } },
+      { id: 'tool-bash', name: '@singula-ai/alego-tool-bash', disabled: { __jsExpr: "process.platform === 'win32'" } },
       '[0]',
     )
     expect(problems).toEqual([])
@@ -54,11 +54,11 @@ describe('workspace Bundle discovery and product dependency closures', () => {
       mkdirSync(bundleDir, { recursive: true })
       mkdirSync(plainDir, { recursive: true })
       writeFileSync(join(bundleDir, 'package.json'), JSON.stringify({
-        name: '@alego/subagent-example',
+        name: '@singula-ai/alego-subagent-example',
         alego: { bundle: { patch: './cordis.patch.yml' } },
       }))
       writeFileSync(join(plainDir, 'package.json'), JSON.stringify({
-        name: '@alego/plain',
+        name: '@singula-ai/alego-plain',
       }))
 
       expect(bundleManifestPaths(fixture)).toEqual([
@@ -73,16 +73,16 @@ describe('workspace Bundle discovery and product dependency closures', () => {
     const manifestPath = 'packages/subagent/example/package.json'
     const file = 'packages/subagent/example/cordis.patch.yml'
     const manifest = {
-      name: '@alego/subagent-example',
+      name: '@singula-ai/alego-subagent-example',
       dependencies: {},
     }
-    const self = { file, name: '@alego/subagent-example' }
+    const self = { file, name: '@singula-ai/alego-subagent-example' }
     expect(bundlePluginDependencyErrors(manifestPath, manifest, [self])).toEqual([])
     expect(bundlePluginDependencyErrors(manifestPath, manifest, [
       self,
-      { file, name: '@alego/missing-plugin' },
+      { file, name: '@singula-ai/alego-missing-plugin' },
     ])).toEqual([
-      `${file}: @alego/missing-plugin must be declared in ${manifestPath} dependencies`,
+      `${file}: @singula-ai/alego-missing-plugin must be declared in ${manifestPath} dependencies`,
     ])
   })
 })

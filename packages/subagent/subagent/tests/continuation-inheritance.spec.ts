@@ -10,18 +10,18 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import AgentLoop from '@alego/agent-loop'
-import { mountAgentLoopTestDependencies } from '@alego/agent-loop-testkit'
-import { createUserMessage } from '@alego/llm'
-import SandboxPolicyService, { effectiveSandboxMode, setSandboxMode } from '@alego/sandbox-policy'
-import { SessionId } from '@alego/session'
-import type { SessionEvent } from '@alego/session'
-import JsonlSessionPersistence from '@alego/session-persistence-jsonl'
-import * as SubagentFork from '@alego/subagent-fork-in-process'
-import * as SubagentSpawn from '@alego/subagent-spawn-in-process'
-import ApprovalService, { effectiveApprovalPolicy } from '@alego/user-approval'
+import { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import SandboxPolicyService, { effectiveSandboxMode, setSandboxMode } from '@singula-ai/alego-sandbox-policy'
+import { SessionId } from '@singula-ai/alego-session'
+import type { SessionEvent } from '@singula-ai/alego-session'
+import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as SubagentFork from '@singula-ai/alego-subagent-fork-in-process'
+import * as SubagentSpawn from '@singula-ai/alego-subagent-spawn-in-process'
+import ApprovalService, { effectiveApprovalPolicy } from '@singula-ai/alego-user-approval'
 import { MockAdapter, textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import SubagentRuntime from '../src/index.ts'
 
@@ -104,7 +104,7 @@ describe('continuable policy inheritance', () => {
     const runtimeContext = loaded.events.find(
       (event): event is SessionEvent<'user/message'> => event.type === 'user/message'
         && event.data.source.kind === 'plugin'
-        && event.data.source.plugin === '@alego/system-prompt',
+        && event.data.source.plugin === '@singula-ai/alego-system-prompt',
     )
     const contextText = runtimeContext?.data.content
       .flatMap(block => block.type === 'text' ? [block.text] : [])

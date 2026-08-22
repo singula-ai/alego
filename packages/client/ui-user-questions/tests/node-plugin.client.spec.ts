@@ -1,8 +1,8 @@
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { afterEach, describe, expect, it } from 'vitest'
-import ToolRuntime from '@alego/tools'
-import SystemPrompt from '@alego/system-prompt'
-import UserQuestionService from '@alego/user-questions'
+import ToolRuntime from '@singula-ai/alego-tools'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import UserQuestionService from '@singula-ai/alego-user-questions'
 import { apply } from '../src/index.ts'
 
 let ctx: Context | undefined

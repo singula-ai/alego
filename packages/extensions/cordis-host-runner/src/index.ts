@@ -1,16 +1,16 @@
 /**
  * Dynamic Cordis Plugin service: immutable package definitions, one active run
  * per Plugin, human-approved Client activation, and Host/Client invocation.
- * @module @alego/cordis-host-runner
+ * @module @singula-ai/alego-cordis-host-runner
  */
 
-import { Context } from '@alego/cordis'
-import type { Fiber } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent } from '@alego/agent'
-import { createUserMessage } from '@alego/llm'
-import type { JsonValue } from '@alego/session/types'
-import { TypertRemoteService, Remote } from '@alego/typert-protocol'
+import { Context } from '@singula-ai/cordis'
+import type { Fiber } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent } from '@singula-ai/alego-agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type { JsonValue } from '@singula-ai/alego-session/types'
+import { TypertRemoteService, Remote } from '@singula-ai/alego-typert-protocol'
 import { isPlugin, normalizeHandler } from './guard.ts'
 import { CordisInspectRegistryService } from './inspect-registry.ts'
 import { missingServices, startHostHalf } from './lifecycle.ts'
@@ -77,7 +77,7 @@ export function ApprovalRequestId(id: string): ApprovalRequestId {
   return id as ApprovalRequestId
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     /** Process-local dynamic Plugin registry and lifecycle service. */
     dynamicCordisRunner: DynamicCordisRunnerService

@@ -1,4 +1,4 @@
-# @alego/spill
+# @singula-ai/alego-spill
 
 [English](README.md) | 中文
 
@@ -8,9 +8,9 @@
 
 | 包 | 职责 |
 |---|---|
-| `@alego/spill`（本包） | Service Definition：抽象服务与词汇类型 |
-| `@alego/spill-local` | Service Provider：位于宿主文件系统中的私有会话级文件 |
-| `@alego/spill-policy` | Consumer：对过大最终结果执行 spill 的工具结果策略 |
+| `@singula-ai/alego-spill`（本包） | Service Definition：抽象服务与词汇类型 |
+| `@singula-ai/alego-spill-local` | Service Provider：位于宿主文件系统中的私有会话级文件 |
+| `@singula-ai/alego-spill-policy` | Consumer：对过大最终结果执行 spill 的工具结果策略 |
 
 这种拆分方式与 shell/fs seam 相同。未来的远程或虚拟后端（例如 `spill://…` URI、数据库键或后端专用取回工具）可实现此 Service Definition，无需修改策略插件。
 
@@ -20,7 +20,7 @@
 |---|---|
 | `saveText(input)` | 逐字保存 `input.content`；成功时返回 `SpillRef`（不透明定位信息、写入的精确字节数和取回指引）。**发生真实存储故障时，调用会以拒绝状态结束**（权限、ENOSPC、后端不可用）；由调用方决定如何降级。 |
 
-存储操作以请求的 `owner` 会话作为保存时命名空间进行分组；后端自行选择私有表示，并可以从调用方的 `suggestedName` 派生名称，但绝不能将其当作可信路径。该 seam 只负责存储：不提供保留策略（由 [`@alego/output-retention`](../../util/output-retention) 负责），不替换工具结果（由 `@alego/spill-policy` 负责），也不提供取回/搜索 API（后端的 `retrievalHint` 会告诉模型如何使用定位信息）。
+存储操作以请求的 `owner` 会话作为保存时命名空间进行分组；后端自行选择私有表示，并可以从调用方的 `suggestedName` 派生名称，但绝不能将其当作可信路径。该 seam 只负责存储：不提供保留策略（由 [`@singula-ai/alego-output-retention`](../../util/output-retention) 负责），不替换工具结果（由 `@singula-ai/alego-spill-policy` 负责），也不提供取回/搜索 API（后端的 `retrievalHint` 会告诉模型如何使用定位信息）。
 
 ## 词汇
 

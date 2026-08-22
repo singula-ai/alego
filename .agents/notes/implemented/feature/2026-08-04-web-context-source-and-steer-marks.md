@@ -24,7 +24,7 @@ The Chat Message Definition attaches a `provenance` view containing the producer
 
 ## Alternatives considered
 
-**Localize producer names in the client.** A dictionary keyed by plugin id would read better than `@alego/system-prompt`, but it drifts silently on every rename, needs a client change per new producer, and cannot name a producer from a foreign log at all. The producer name already recorded in the log is more reliable than a label the client invents.
+**Localize producer names in the client.** A dictionary keyed by plugin id would read better than `@singula-ai/alego-system-prompt`, but it drifts silently on every rename, needs a client change per new producer, and cannot name a producer from a foreign log at all. The producer name already recorded in the log is more reliable than a label the client invents.
 
 **Register presentations per source kind.** The disclosure decision deferred a keyed context-view slot until source-owned presentations emerged. Naming a row is not a distinct presentation, and a registry keyed on mounted producers would fail exactly where it matters — a resumed log whose producer is no longer mounted still has to render.
 
@@ -44,7 +44,7 @@ The Chat Message Definition attaches a `provenance` view containing the producer
 
 - **Superseded in part.** The steering-caption clause of the Decision no longer describes master: the [caption removal](../simplification/2026-08-10-web-remove-steering-interjection-caption.md) deleted the `插话` / `Interjection` caption, leaving a mid-turn steer recognizable only by its position in the flow. The context-source and recall naming in the Decision stays current, and the `SteeringMessageNode` projection is unchanged.
 - A reader can attribute every non-prompt message in the transcript at a glance, and the header stays honest for logs this client version has never seen a producer for.
-- Producer names in the UI are package-shaped (`alego-tool-skill`, `@alego/system-prompt`) wherever the source carries only a plugin id. That is the cost of refusing a client-side name table; a producer that wants a better label must record one in its source fields.
+- Producer names in the UI are package-shaped (`alego-tool-skill`, `@singula-ai/alego-system-prompt`) wherever the source carries only a plugin id. That is the cost of refusing a client-side name table; a producer that wants a better label must record one in its source fields.
 - `ContextMessageNode` gains a required field, so every constructed node — including test fixtures — must supply it.
 - `SteeringMessageNode` remains a distinct presentation node even though the agent loop now records admitted steering as `user/message`; its identity comes from the durable inbox history rather than a separate message event.
 - The `recall` arm has no producer in a shipped Web leaf until a host mounts `alego-session-reference`; it is reachable only through logs written elsewhere.

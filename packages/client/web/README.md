@@ -1,4 +1,4 @@
-# @alego/client-web
+# @singula-ai/alego-client-web
 
 English | [中文](README.zh.md)
 

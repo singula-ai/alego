@@ -1,4 +1,4 @@
-# @alego/client-ui-theme
+# @singula-ai/alego-client-ui-theme
 
 English | [中文](README.zh.md)
 

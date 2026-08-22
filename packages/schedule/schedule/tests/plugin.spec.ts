@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { Context, Service } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import { agentEvents } from '@alego/agent'
-import AgentLoop from '@alego/agent-loop'
-import { mountAgentLoopTestDependencies } from '@alego/agent-loop-testkit'
-import { CallId } from '@alego/llm'
-import { SessionId } from '@alego/session'
+import { Context, Service } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import { agentEvents } from '@singula-ai/alego-agent'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
+import { CallId } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
 import * as toolSchedule from '../src/index.ts'
 
 class PersistenceProbe extends Service {

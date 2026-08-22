@@ -1,8 +1,8 @@
 /** Public Agent Teams identities, durable records, and service request values. */
 
-import type { Branded } from '@alego/brand'
-import type { ContentBlock } from '@alego/llm'
-import type { SessionId } from '@alego/session'
+import type { Branded } from '@singula-ai/alego-brand'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { SessionId } from '@singula-ai/alego-session'
 
 /** Identifies the implicit team rooted at one top-level Session. */
 export type TeamId = Branded<'TeamId'>
@@ -115,7 +115,7 @@ export interface TeamMessageSource {
   readonly senderName: string
 }
 
-declare module '@alego/llm' {
+declare module '@singula-ai/alego-llm' {
   interface MessageSourceMap {
     'team-message': TeamMessageSource
   }
@@ -200,7 +200,7 @@ export interface TeamWaitResult {
   readonly timedOut: boolean
 }
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /** Whole teammate lifecycle value, stored only in the Team Lead Session. */
     'team/member': { version: 1; teamId: TeamId; member: TeamMemberSnapshot }

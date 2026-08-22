@@ -1,4 +1,4 @@
-# @alego/tool-goal
+# @singula-ai/alego-tool-goal
 
 [English](README.md) | 中文
 
@@ -28,7 +28,7 @@ complete 与 blocked 还接受完全一致的当前 Goal Round：来源为 goal 
 
 ```yaml
 - id: tool-goal
-  name: '@alego/tool-goal'
+  name: '@singula-ai/alego-tool-goal'
   config:
     blockedAfterConsecutiveRounds: 3
 ```
@@ -61,7 +61,7 @@ Use goal tools for one long-running completion objective in the current session.
 
 #### 模型看到的内容
 
-生成的 [`get_goal`、`create_goal` 和 `update_goal` schema](../../../docs/tool-catalog.zh.md#alegotool-goal)。成功结果是紧凑 JSON。变更会追加 goal 领域的持久 `goal/change` 事件，而不会将模型上下文加入队列。结果中的 `activation` 是实时观察值，绝不会成为回放权限依据。
+生成的 [`get_goal`、`create_goal` 和 `update_goal` schema](../../../docs/tool-catalog.zh.md#singula-aialego-tool-goal)。成功结果是紧凑 JSON。变更会追加 goal 领域的持久 `goal/change` 事件，而不会将模型上下文加入队列。结果中的 `activation` 是实时观察值，绝不会成为回放权限依据。
 
 #### Token 影响
 

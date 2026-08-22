@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/session-stats`.
- * @module @alego/session-stats/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-session-stats`.
+ * @module @singula-ai/alego-session-stats/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/session-stats'
+const PACKAGE_NAME = '@singula-ai/alego-session-stats'
 
 /** Cordis companion plugin name. */
 export const name = 'session-stats-invariant'

@@ -1,4 +1,4 @@
-# @alego/agent-spine-demo
+# @singula-ai/alego-agent-spine-demo
 
 English | [中文](README.zh.md)
 
@@ -11,31 +11,31 @@ Read this package for the whole plugin tree and its composition order.
 `apply(ctx, config)` mounts each of these as a child of the bundle fiber:
 
 ```
-@alego/cordis-plugin-timer  timer service (writes nothing to stdout)
-@alego/llm              abstract LLM service + content-block vocabulary
-@alego/session          event-sourced session log + store
-@alego/session-title    log-backed title service + deterministic fallback
-@alego/system-prompt    prompt-section + tool-schema assembly
-@alego/tools            registry + guarded pre/around/post/final-result pipeline
-@alego/skill            skill provider registry
-@alego/skill-filesystem      local filesystem skill provider
-@alego/agent            agent registry + initiator scope + agent/* events
-@alego/goal             optional persisted same-session goal domain
-@alego/tool-goal        optional model-facing goal controls
-@alego/goal-round-driver     optional same-session goal-round driver
-@alego/llm-retry        provider-routed request retry policy
-@alego/jobs-local      generic background-job registry
-@alego/invariants       configurable invariant registry service
-@alego/session/invariant
-@alego/agent/invariant
-@alego/scope/invariant
-@alego/agent-loop/invariant
+@singula-ai/cordis-plugin-timer  timer service (writes nothing to stdout)
+@singula-ai/alego-llm              abstract LLM service + content-block vocabulary
+@singula-ai/alego-session          event-sourced session log + store
+@singula-ai/alego-session-title    log-backed title service + deterministic fallback
+@singula-ai/alego-system-prompt    prompt-section + tool-schema assembly
+@singula-ai/alego-tools            registry + guarded pre/around/post/final-result pipeline
+@singula-ai/alego-skill            skill provider registry
+@singula-ai/alego-skill-filesystem      local filesystem skill provider
+@singula-ai/alego-agent            agent registry + initiator scope + agent/* events
+@singula-ai/alego-goal             optional persisted same-session goal domain
+@singula-ai/alego-tool-goal        optional model-facing goal controls
+@singula-ai/alego-goal-round-driver     optional same-session goal-round driver
+@singula-ai/alego-llm-retry        provider-routed request retry policy
+@singula-ai/alego-jobs-local      generic background-job registry
+@singula-ai/alego-invariants       configurable invariant registry service
+@singula-ai/alego-session/invariant
+@singula-ai/alego-agent/invariant
+@singula-ai/alego-scope/invariant
+@singula-ai/alego-agent-loop/invariant
                                   package-owned relational checks
-@alego/tool-bash        the model-facing bash schema (unless toolBash=false)
-@alego/agent-instructions  AGENTS.md/CLAUDE.md workspace context loader
-@alego/tool-skill       session-prefix skill catalog + model-facing loader schema
-@alego/tool-jobs       job_output/job_list/job_kill schemas + completion notices
-@alego/agent-loop       THE concrete loop (gets the forwarded `agents`)
+@singula-ai/alego-tool-bash        the model-facing bash schema (unless toolBash=false)
+@singula-ai/alego-agent-instructions  AGENTS.md/CLAUDE.md workspace context loader
+@singula-ai/alego-tool-skill       session-prefix skill catalog + model-facing loader schema
+@singula-ai/alego-tool-jobs       job_output/job_list/job_kill schemas + completion notices
+@singula-ai/alego-agent-loop       THE concrete loop (gets the forwarded `agents`)
                                   (alego-system-prompt gets the forwarded `persona`)
 ```
 
@@ -54,14 +54,14 @@ This applies the [Service Definition / Service Provider / Consumer separation](.
 ## Config
 
 ```ts
-import type { Config } from '@alego/agent-spine-demo'
+import type { Config } from '@singula-ai/alego-agent-spine-demo'
 // { agents?, maxParallelToolCalls?, includeHarnessIdentity?, includeRuntimeContext?, persona?, toolOrder?, tools?, alegoHome?, sessionTitle?, skills?, workspaceContext, toolBash?, jobs?, toolJobs?, goals?, invariants? }
 // workspaceContext requires { maxBytes } or false; the other owner schemas supply defaults.
 ```
 
 The bundle forwards each field to the child that owns it. App packages supply any pre-created agents: headless and JSON-RPC compositions create `main`, while the ACP app creates agents on demand at `session/new`. `includeRuntimeContext: false` is forwarded to `alego-system-prompt` and suppresses all dynamic context snapshots for fresh sessions without disabling their policy services. Prompt, tool, title, skill, agent-instructions, invariant, goal, and task settings retain the schemas and defaults documented by their owning packages; `jobs.maxConcurrentJobsPerOwner` configures the local provider independently of the model-facing `toolJobs` controls. `pickSpineConfig()` copies only fields owned by this bundle, and conflicting `alegoHome` values fail during composition.
 
-For example, `{ invariants: { enabled: true, package_allowlist: ['^@alego/'], package_blocklist: ['agent-loop$'] } }` keeps the package-owned companions mounted but suppresses the blocked owner. Blocklist matches override allowlist matches; see [`alego-invariants`](../../runtime-diagnostics/invariants/README.md) for regex and lifecycle rules.
+For example, `{ invariants: { enabled: true, package_allowlist: ['^@singula-ai/alego-'], package_blocklist: ['agent-loop$'] } }` keeps the package-owned companions mounted but suppresses the blocked owner. Blocklist matches override allowlist matches; see [`alego-invariants`](../../runtime-diagnostics/invariants/README.md) for regex and lifecycle rules.
 
 ## Why a code bundle, not a shared YAML include
 

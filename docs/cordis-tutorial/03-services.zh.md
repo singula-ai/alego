@@ -9,9 +9,9 @@
 创建 `greeter.ts`，将它放在 `tmp/cordis-tutorial` 中：
 
 ```ts
-import { Service, type Context } from '@alego/cordis'
+import { Service, type Context } from '@singula-ai/cordis'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     greeter: GreeterService
   }
@@ -37,7 +37,7 @@ export function apply(ctx: Context) {
 两部分协同工作：
 
 - **运行时**：`super(ctx, 'greeter')` 以名称 `greeter` 注册该实例。此后，任何插件都可以通过 `ctx.greeter` 访问它。注册属于 effect，卸载提供方时会移除该服务。
-- **编译时**：`declare module '@alego/cordis'` 块使用 TypeScript 声明合并，把 `greeter` 加入 `Context` 接口，使 `ctx.greeter` 在各处都能通过类型检查。它不会生成代码；没有该声明时，服务在运行时仍能工作，但消费方会失去类型安全。
+- **编译时**：`declare module '@singula-ai/cordis'` 块使用 TypeScript 声明合并，把 `greeter` 加入 `Context` 接口，使 `ctx.greeter` 在各处都能通过类型检查。它不会生成代码；没有该声明时，服务在运行时仍能工作，但消费方会失去类型安全。
 
 `Service` 子类本身就是插件（第 1 章介绍的类形态），因此 `ctx.plugin(GreeterService)` 会像挂载其他插件一样挂载它。
 
@@ -46,7 +46,7 @@ export function apply(ctx: Context) {
 创建 `consumer.ts`：
 
 ```ts
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 
 export const name = 'consumer'
 export const inject = ['greeter']

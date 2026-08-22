@@ -1,16 +1,16 @@
-import { createUserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import {
   CompactionId,
   CompactionEngine,
   compactCheckpointSource,
   isCompactCheckpointSource,
-} from '@alego/compaction'
-import type { CompactionResult, CompactionTrigger } from '@alego/compaction'
-import { Session, SessionId } from '@alego/session'
-import type { CompactionAgentContext } from '@alego/compaction'
-import type { ManualCompactAgentContext } from '@alego/compaction'
+} from '@singula-ai/alego-compaction'
+import type { CompactionResult, CompactionTrigger } from '@singula-ai/alego-compaction'
+import { Session, SessionId } from '@singula-ai/alego-session'
+import type { CompactionAgentContext } from '@singula-ai/alego-compaction'
+import type { ManualCompactAgentContext } from '@singula-ai/alego-compaction'
 
 /**
  * A trivial concrete CompactionEngine implementing the abstract contract. The

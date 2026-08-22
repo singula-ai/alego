@@ -1,8 +1,8 @@
 /** Host loader entry for the browser implementation exported from `./client`. */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { settingsNamespace } from '@alego/settings'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { settingsNamespace } from '@singula-ai/alego-settings'
 
 /** Durable settings namespace for product-wide GUI onboarding facts. */
 const ONBOARDING_SETTINGS_NAMESPACE = 'ui-onboarding'

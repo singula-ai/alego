@@ -13,16 +13,16 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import Include from '@alego/cordis-plugin-include'
-import LlmRuntime from '@alego/llm'
-import { credentialRef } from '@alego/credentials'
-import LocalCredentialProvider from '@alego/credentials-local'
-import { settingsNamespace } from '@alego/settings'
-import FileSettingsProvider from '@alego/settings-file'
-import { getOrCreateAnonymousUserId } from '@alego/anonymous-user-id'
-import * as LlmDeepSeek from '@alego/llm-deepseek'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include from '@singula-ai/cordis-plugin-include'
+import LlmRuntime from '@singula-ai/alego-llm'
+import { credentialRef } from '@singula-ai/alego-credentials'
+import LocalCredentialProvider from '@singula-ai/alego-credentials-local'
+import { settingsNamespace } from '@singula-ai/alego-settings'
+import FileSettingsProvider from '@singula-ai/alego-settings-file'
+import { getOrCreateAnonymousUserId } from '@singula-ai/alego-anonymous-user-id'
+import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek'
 import { assemble } from './assemble.ts'
 import { closeMockServers, mockServer, textEvents } from './mock-server.ts'
 
@@ -63,19 +63,19 @@ async function loadComposition(
     ...options.withDynamic
       ? [
         '- id: settings',
-        "  name: '@alego/settings-file'",
+        "  name: '@singula-ai/alego-settings-file'",
         '  config:',
         `    path: ${JSON.stringify(settingsPath)}`,
         '    debounceMs: 10',
         '- id: credentials',
-        "  name: '@alego/credentials-local'",
+        "  name: '@singula-ai/alego-credentials-local'",
         '  config:',
         `    path: ${JSON.stringify(credentialsPath)}`,
         '    debounceMs: 10',
       ]
       : [],
     '- id: llm-deepseek',
-    "  name: '@alego/llm-deepseek'",
+    "  name: '@singula-ai/alego-llm-deepseek'",
     '  config:',
     `    baseURL: ${JSON.stringify(options.baseURL)}`,
     '',
@@ -88,9 +88,9 @@ async function loadComposition(
   ctx.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
     ['test-llm-service', LlmRuntime],
-    ['@alego/settings-file', FileSettingsProvider],
-    ['@alego/credentials-local', LocalCredentialProvider],
-    ['@alego/llm-deepseek', LlmDeepSeek],
+    ['@singula-ai/alego-settings-file', FileSettingsProvider],
+    ['@singula-ai/alego-credentials-local', LocalCredentialProvider],
+    ['@singula-ai/alego-llm-deepseek', LlmDeepSeek],
   ])
   ctx.loader.internal = {
     version: 'v2',

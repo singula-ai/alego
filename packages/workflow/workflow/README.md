@@ -1,12 +1,12 @@
-# @alego/workflow
+# @singula-ai/alego-workflow
 
 English | [中文](README.zh.md)
 
 The workflow seam (`ctx.workflowEngine`) executes a model-written orchestration script that can fan out subagents. The seam defines the script, run, result, error, and event contracts; an engine decides how to isolate and execute the script.
 
-`@alego/workflow-worker-thread` is the current engine and `@alego/tool-workflow` is the model-facing consumer. A future process or sandbox engine can replace the implementation without changing the tool.
+`@singula-ai/alego-workflow-worker-thread` is the current engine and `@singula-ai/alego-tool-workflow` is the model-facing consumer. A future process or sandbox engine can replace the implementation without changing the tool.
 
-The package root is the Host face. The browser-safe `@alego/workflow/types` subpath contains run identities, metadata, results, and observe-only lifecycle payloads without importing `Agent`, Cordis services, or Host context declarations; Host-only `WorkflowStartRequest` and `WorkflowRun` live behind the package root.
+The package root is the Host face. The browser-safe `@singula-ai/alego-workflow/types` subpath contains run identities, metadata, results, and observe-only lifecycle payloads without importing `Agent`, Cordis services, or Host context declarations; Host-only `WorkflowStartRequest` and `WorkflowRun` live behind the package root.
 
 ## Service and run contract
 

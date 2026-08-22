@@ -13,14 +13,14 @@
  * error. The module owns no catalog state and does not consult Activation,
  * Agent-registry, continuation-manager, or provider state.
  *
- * @module @alego/subagent
+ * @module @singula-ai/alego-subagent
  */
 
-import type { Context } from '@alego/cordis'
-import type { Session, SessionEvent, SessionHeader, SessionId } from '@alego/session'
-import type { SessionPersistence } from '@alego/session-persistence'
-import type { SessionProjectionRegistry } from '@alego/session-projection'
-import type { SessionProjectionCache } from '@alego/session-projection-cache'
+import type { Context } from '@singula-ai/cordis'
+import type { Session, SessionEvent, SessionHeader, SessionId } from '@singula-ai/alego-session'
+import type { SessionPersistence } from '@singula-ai/alego-session-persistence'
+import type { SessionProjectionRegistry } from '@singula-ai/alego-session-projection'
+import type { SessionProjectionCache } from '@singula-ai/alego-session-projection-cache'
 import { SubagentError } from './error.ts'
 import type { SubagentIdentityProjection } from './projection-types.ts'
 
@@ -191,7 +191,7 @@ async function prepareListing(
   // deployment configuration error, never an empty success.
   if (projections === undefined) {
     throw new SubagentError(
-      'listing subagents requires the sessionProjections registry (load @alego/session-projection)',
+      'listing subagents requires the sessionProjections registry (load @singula-ai/alego-session-projection)',
       'SUBAGENT_CONTROL_PROJECTIONS_UNAVAILABLE',
     )
   }
@@ -201,7 +201,7 @@ async function prepareListing(
   const sessions = ctx.get('sessions')
   if (sessions === undefined) {
     throw new SubagentError(
-      'listing subagents requires the session store (load @alego/session)',
+      'listing subagents requires the session store (load @singula-ai/alego-session)',
       'SUBAGENT_CONTROL_SESSION_STORE_UNAVAILABLE',
     )
   }

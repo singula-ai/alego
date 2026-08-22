@@ -52,16 +52,16 @@ The root entrypoint of each owner remains independent of diagnostics. Loading th
 ## Composition
 
 ```ts
-import type { Context } from '@alego/cordis'
-import InvariantRegistry from '@alego/invariants'
-import * as SessionInvariant from '@alego/session/invariant'
+import type { Context } from '@singula-ai/cordis'
+import InvariantRegistry from '@singula-ai/alego-invariants'
+import * as SessionInvariant from '@singula-ai/alego-session/invariant'
 
 declare const ctx: Context
 
 ctx.plugin(InvariantRegistry, {
   enabled: true,
-  package_allowlist: ['^@alego/'],
-  package_blocklist: ['^@alego/agent-loop$'],
+  package_allowlist: ['^@singula-ai/alego-'],
+  package_blocklist: ['^@singula-ai/alego-agent-loop$'],
 })
 ctx.plugin(SessionInvariant)
 ```

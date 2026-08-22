@@ -1,5 +1,5 @@
 /**
- * @alego/host-webserver — Web route-registration plugin: a node:http
+ * @singula-ai/alego-host-webserver — Web route-registration plugin: a node:http
  * server plus the `webServer` service (HTTP and upgrade route registries, the
  * structured index injection table with raw transform taps behind it, and the
  * single fallback seat for everything no route claims). Knows no harness concepts and serves no files; the composing
@@ -12,14 +12,14 @@ import { createServer } from 'node:http'
 import type { IncomingMessage, ServerResponse, Server } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import type { Duplex } from 'node:stream'
-import { Context, Service } from '@alego/cordis'
-import z from '@alego/schemastery'
+import { Context, Service } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import { renderIndexInjections, type IndexInjection } from './injections.ts'
 
 export { renderIndexInjections } from './injections.ts'
 export type { IndexInjection, IndexInjectionPlacement } from './injections.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     webServer: WebServer
   }

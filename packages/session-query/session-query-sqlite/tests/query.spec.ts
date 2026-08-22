@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { SessionId } from '@alego/session'
-import { SessionSearchCursor, type SessionQueryErrorCode } from '@alego/session-query'
+import { SessionId } from '@singula-ai/alego-session'
+import { SessionSearchCursor, type SessionQueryErrorCode } from '@singula-ai/alego-session-query'
 import {
   buildEventWhere,
   buildSessionWhere,

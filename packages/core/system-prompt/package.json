@@ -1,5 +1,5 @@
 {
-  "name": "@alego/system-prompt",
+  "name": "@singula-ai/alego-system-prompt",
   "description": "System prompt assembly registry for the Alego",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -32,18 +32,18 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/scope": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-scope": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "dependencies": {
-    "@alego/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:^"
   },
   "devDependencies": {
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/scope": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-scope": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   }
 }

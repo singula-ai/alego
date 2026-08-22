@@ -1,11 +1,11 @@
 /**
  * Owner-scoped persistent PTY registry. Backends own terminal mechanics while
  * this service owns ids, publication, authorization, and awaited cleanup.
- * @module @alego/terminal
+ * @module @singula-ai/alego-terminal
  */
 
-import { Context, Service } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
+import { Context, Service } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
 import { TerminalBackendCleanupError } from './types.ts'
 import type {
   TerminalBackend,
@@ -45,7 +45,7 @@ export { TerminalBackendCleanupError } from './types.ts'
 /** Opaque identity minted by {@link TerminalSessionService} for one live PTY session. */
 export type TerminalSessionId = TerminalSessionIdValue
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     terminals: TerminalSessionService
   }

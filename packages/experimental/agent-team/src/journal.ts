@@ -1,8 +1,8 @@
 /** Serialized Team transactions over the exact live Lead Session log. */
 
-import type { Agent } from '@alego/agent'
-import type { Context } from '@alego/cordis'
-import type { SessionEventMap, SessionId } from '@alego/session'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { Context } from '@singula-ai/cordis'
+import type { SessionEventMap, SessionId } from '@singula-ai/alego-session'
 import { foldTeam } from './fold.ts'
 import type { TeamEventType, TeamFoldState } from './fold.ts'
 

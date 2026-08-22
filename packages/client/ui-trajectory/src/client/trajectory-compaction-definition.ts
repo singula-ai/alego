@@ -1,8 +1,8 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   ConversationMatch, ConversationNodeDefinition, RequestView,
-} from '@alego/client-runtime/client'
-import type {} from '@alego/compaction/types'
+} from '@singula-ai/alego-client-runtime/client'
+import type {} from '@singula-ai/alego-compaction/types'
 import { trajectoryNode } from './trajectory-definition-common.ts'
 
 interface CompactionState {

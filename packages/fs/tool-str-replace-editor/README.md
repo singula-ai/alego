@@ -1,4 +1,4 @@
-# @alego/tool-str-replace-editor
+# @singula-ai/alego-tool-str-replace-editor
 
 English | [中文](README.zh.md)
 
@@ -21,7 +21,7 @@ The schema provides `view`, `create`, `str_replace`, and `insert` over absolute 
 
 #### What the model sees
 
-The generated [`str_replace_editor` schema](../../../docs/tool-catalog.md#alegotool-str-replace-editor), including the configured `description`. The plugin contributes no standalone system-prompt section.
+The generated [`str_replace_editor` schema](../../../docs/tool-catalog.md#singula-aialego-tool-str-replace-editor), including the configured `description`. The plugin contributes no standalone system-prompt section.
 
 #### Token effect
 

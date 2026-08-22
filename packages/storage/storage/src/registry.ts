@@ -1,6 +1,6 @@
 /**
  * Named backend registry of the storage hub.
- * @module @alego/storage/src/registry
+ * @module @singula-ai/alego-storage/src/registry
  */
 
 import type { StorageBackend } from './backend.ts'

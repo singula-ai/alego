@@ -25,7 +25,7 @@ import {
 } from '../src/fsio.ts'
 import type { LocalTarget } from '../src/fsio.ts'
 import { copyFileDaclWin32, readFileDaclWin32 } from '../src/win32.ts'
-import { FsError, FsTargetKey } from '@alego/fs'
+import { FsError, FsTargetKey } from '@singula-ai/alego-fs'
 
 let dir: string
 beforeEach(async () => {

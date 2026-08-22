@@ -11,9 +11,9 @@ import {
   HoverCard, IconArchiveOutline20, IconBranchOutline16, IconEditOutline16,
   IconEllipsisOutline16, IconFolderClose16, IconFolderOpen16, IconPlusOutline16,
   IconTrashOutline16, IconTriangleRightFill14, Menu, StateDot,
-} from '@alego/client-ui-primitives'
-import type { StateDotState } from '@alego/client-ui-primitives'
-import { abbreviateHomePath } from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-ui-primitives'
+import type { StateDotState } from '@singula-ai/alego-client-ui-primitives'
+import { abbreviateHomePath } from '@singula-ai/alego-client-runtime/client'
 import type { WorkspaceBrowserProps } from '../contract/slots.ts'
 import type { GroupNode, SearchResultNode, SessionNode } from '../tree.ts'
 import { relativeTime } from '../tree.ts'

@@ -1,6 +1,6 @@
 /** DeepSeek Files API identifiers. @module alego-llm-deepseek/file-id */
 
-import type { Branded } from '@alego/brand'
+import type { Branded } from '@singula-ai/alego-brand'
 
 /** Opaque identifier returned by the DeepSeek Files API. */
 export type DeepSeekFileId = Branded<'DeepSeekFileId'>

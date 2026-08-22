@@ -1,4 +1,4 @@
-import SessionQueryEngine from '@alego/session-query'
+import SessionQueryEngine from '@singula-ai/alego-session-query'
 import type {
   SessionEventSearchPage,
   SessionEventSearchRequest,
@@ -6,7 +6,7 @@ import type {
   SessionSearchHit,
   SessionSearchPage,
   SessionSearchRequest,
-} from '@alego/session-query'
+} from '@singula-ai/alego-session-query'
 
 /** Test-only concrete query service for backend-independent behavior. */
 export class TestSessionQueryEngine extends SessionQueryEngine {

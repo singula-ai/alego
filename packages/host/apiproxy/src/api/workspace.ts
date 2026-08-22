@@ -1,12 +1,12 @@
 /**
  * workspace domain contract. Wire projection of the host-side workspace
- * entity (@alego/workspace): a stable id over a directory path,
+ * entity (@singula-ai/alego-workspace): a stable id over a directory path,
  * a display title, and the ordered session account. Method signatures are the
  * source of truth, same as the sessions domain.
  */
 
-import type { SessionId } from '@alego/session/types'
-import type { Branded } from '@alego/brand'
+import type { SessionId } from '@singula-ai/alego-session/types'
+import type { Branded } from '@singula-ai/alego-brand'
 import type { RpcRequest, RpcResponse } from './rpc.ts'
 
 /**

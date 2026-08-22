@@ -1,13 +1,13 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import { CallId } from '@alego/llm'
-import { carrierKeyOf, createScope } from '@alego/scope'
-import type { Scope } from '@alego/scope'
-import SessionStore, { Session, SessionId } from '@alego/session'
-import type { SessionEvent } from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import ApprovalService, { ApprovalOutcome, ApprovalRequest, effectiveApprovalPolicy, setApprovalPolicy } from '@alego/user-approval'
+import { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import { CallId } from '@singula-ai/alego-llm'
+import { carrierKeyOf, createScope } from '@singula-ai/alego-scope'
+import type { Scope } from '@singula-ai/alego-scope'
+import SessionStore, { Session, SessionId } from '@singula-ai/alego-session'
+import type { SessionEvent } from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ApprovalService, { ApprovalOutcome, ApprovalRequest, effectiveApprovalPolicy, setApprovalPolicy } from '@singula-ai/alego-user-approval'
 
 /**
  * A minimal Agent stand-in — the service only reaches `agent.session.append`

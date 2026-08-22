@@ -1,4 +1,4 @@
-# @alego/tool-terminal
+# @singula-ai/alego-tool-terminal
 
 English | [中文](README.zh.md)
 
@@ -41,7 +41,7 @@ Prefix-stable while the registration scope and guidance text are unchanged.
 
 #### What the model sees
 
-The six generated schemas are listed in the [`alego-tool-terminal` catalog section](../../../docs/tool-catalog.md#alegotool-terminal). Their fixed schema tokens are present whenever this plugin is active; agent-scoped tool filtering may hide them.
+The six generated schemas are listed in the [`alego-tool-terminal` catalog section](../../../docs/tool-catalog.md#singula-aialego-tool-terminal). Their fixed schema tokens are present whenever this plugin is active; agent-scoped tool filtering may hide them.
 
 #### Token effect
 
@@ -68,4 +68,4 @@ Append-only; new results follow the reusable request prefix.
 ## Known Limitations and Deferred Work
 
 - No named key sequence, TUI, BEL, resize, auto-start, or cross-agent sharing schema is exposed.
-- Background mode requires both `@alego/jobs` and its model-facing controller.
+- Background mode requires both `@singula-ai/alego-jobs` and its model-facing controller.

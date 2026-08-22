@@ -1,12 +1,12 @@
-# @alego/skill
+# @singula-ai/alego-skill
 
 English | [中文](README.zh.md)
 
 Pure agent skill provider registry.
 
-This package owns the `ctx.skills` interface. It does not know whether skills come from local files, embedded plugin data, HTTP, or another backend; providers register those sources with `ctx.skills.registerProvider(...)`. The shipped local implementation is [`@alego/skill-filesystem`](../skill-filesystem).
+This package owns the `ctx.skills` interface. It does not know whether skills come from local files, embedded plugin data, HTTP, or another backend; providers register those sources with `ctx.skills.registerProvider(...)`. The shipped local implementation is [`@singula-ai/alego-skill-filesystem`](../skill-filesystem).
 
-The registry is host+per-scope layered over [`@alego/scope`](../../core/scope), the shape the tools registry established: a registration files into the layer of its calling context's scope — host rows and repository plugins land in the global layer, a plugin mounted by an agent preset's standing composition lands in that preset's layer — and a read merges the global layer with the viewing scope's chain, the nearest layer winning a duplicate name outright while rank decides duplicates only within one layer.
+The registry is host+per-scope layered over [`@singula-ai/alego-scope`](../../core/scope), the shape the tools registry established: a registration files into the layer of its calling context's scope — host rows and repository plugins land in the global layer, a plugin mounted by an agent preset's standing composition lands in that preset's layer — and a read merges the global layer with the viewing scope's chain, the nearest layer winning a duplicate name outright while rank decides duplicates only within one layer.
 
 ## Service: `SkillRegistry` (ctx key: `skills`)
 
@@ -61,7 +61,7 @@ Definitions remain progressively loaded. `get()` asks the winning provider for t
 
 ## Consumer boundary
 
-The registry does not render model guidance or register model-facing tools. [`@alego/tool-skill`](../tool-skill) consumes `ctx.skills` to provide durable session catalogs and the `skill` tool, so providers remain independent of model-facing behavior.
+The registry does not render model guidance or register model-facing tools. [`@singula-ai/alego-tool-skill`](../tool-skill) consumes `ctx.skills` to provide durable session catalogs and the `skill` tool, so providers remain independent of model-facing behavior.
 
 ## Model Experience
 

@@ -4,7 +4,7 @@ import {
   RpcId,
   serverResponseSchema,
   type ClientRequest,
-} from '@alego/host-apiproxy/api'
+} from '@singula-ai/alego-host-apiproxy/api'
 import type { ClientConnectionRpc } from '../rpc.ts'
 import { randomUuid } from './random-uuid.ts'
 

@@ -1,16 +1,16 @@
 /** The `agent-loop` settings section layered over the composition entry. */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { Fiber } from '@alego/cordis'
-import LlmRuntime from '@alego/llm'
-import SessionStore from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
-import AgentRegistry from '@alego/agent'
-import { SettingsProvider } from '@alego/settings'
-import type { SettingsNamespace } from '@alego/settings'
-import AgentLoop, { AGENT_LOOP_SETTINGS_NAMESPACE } from '@alego/agent-loop'
+import { Context } from '@singula-ai/cordis'
+import type { Fiber } from '@singula-ai/cordis'
+import LlmRuntime from '@singula-ai/alego-llm'
+import SessionStore from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
+import AgentRegistry from '@singula-ai/alego-agent'
+import { SettingsProvider } from '@singula-ai/alego-settings'
+import type { SettingsNamespace } from '@singula-ai/alego-settings'
+import AgentLoop, { AGENT_LOOP_SETTINGS_NAMESPACE } from '@singula-ai/alego-agent-loop'
 
 /** The smallest real provider: one in-memory document, always writable. */
 class MemorySettings extends SettingsProvider {

@@ -8,7 +8,7 @@ English | [中文](2026-08-04-artifact-first-npm-baseline-publication.zh.md)
 
 Runnable source in the monorepo does not prove that published packages are runnable. Workspace links, TypeScript paths, tsx source loading, and residual `lib/` files in the working tree can supply files or dependencies that are absent from a published tarball. Existing built-artifact tests still read `lib/` directly from the working tree, so they do not verify what `package.json#files` selects or the layout produced by package-manager installation. An execution that succeeds in development mode can therefore be published without a required bundle chunk, declaration, configuration file, or asset.
 
-Publishing many mutually dependent `@alego` packages also creates a set-consistency problem. If a script publishes each package immediately after packing it, a later pack or validation failure leaves the first part of an unusable baseline in the registry. The npm registry has no cross-package transaction, so “publish once” cannot promise an atomic commit. It can promise that the complete publication set is packed and validated before any remote write, then published from that immutable set by one resumable orchestration command.
+Publishing many mutually dependent `@singula-ai` packages also creates a set-consistency problem. If a script publishes each package immediately after packing it, a later pack or validation failure leaves the first part of an unusable baseline in the registry. The npm registry has no cross-package transaction, so “publish once” cannot promise an atomic commit. It can promise that the complete publication set is packed and validated before any remote write, then published from that immutable set by one resumable orchestration command.
 
 The current baseline also requires a person to derive versions, authenticate, pack, publish, and retry from a local machine. A later GitHub Actions workflow must reuse the same release bundle and validation logic. It must not rebuild a different, untested set of tarballs after publication is approved.
 
@@ -16,7 +16,7 @@ The current baseline also requires a person to derive versions, authenticate, pa
 
 The publication flow uses an immutable release bundle as its boundary. The pack phase builds every target package from one fixed Git commit, creates every tarball, validates tarball contents, and passes an installed-artifact integration test. The publish phase reads only those tarballs and their manifest and is forbidden from rebuilding or repacking.
 
-The target set contains only `@alego/*` workspace packages discovered from `packages/*/*/package.json` and `apps/*/package.json`. The root project, `website/`, vendor, Python, and native workspaces are outside this NPM baseline. Discovery must reject duplicate names, mixed base versions, an unexpected publication privacy state, and unknown packages in the bundle instead of relying on another hand-maintained package-name list.
+The target set contains only `@singula-ai/alego-*` workspace packages discovered from `packages/*/*/package.json` and `apps/*/package.json`. The root project, `website/`, vendor, Python, and native workspaces are outside this NPM baseline. Discovery must reject duplicate names, mixed base versions, an unexpected publication privacy state, and unknown packages in the bundle instead of relying on another hand-maintained package-name list.
 
 The prerelease version consists of the package stable base version, a second-precision UTC timestamp captured when the command starts, and the target commit's 10-character short SHA: `<base>-<YYYYMMDDHHmmss>-<short-commit>`. The dist-tag is derived as `dev-<base>`. For example, base `0.0.1`, time `2026-08-04T00:32:00Z`, and commit `909292dd7b` produce version `0.0.1-20260804003200-909292dd7b` and tag `dev-0.0.1`. Retrying one release bundle must retain its version and manifest; repacking creates a version from the new command start time.
 
@@ -56,7 +56,7 @@ Installation uses the client behavior selected for this publication. Registry up
 
 The test covers at least these execution surfaces:
 
-- Installed `@alego/cli` runs `alego --version` and `alego --dump-default-config` successfully under plain Node, covering the static CLI entry and one dynamic mode entry.
+- Installed `@singula-ai/alego` runs `alego --version` and `alego --dump-default-config` successfully under plain Node, covering the static CLI entry and one dynamic mode entry.
 - Installed default `alego` completes one keyless TUI startup in a PTY and exits under test control after reaching a defined ready signal. This path must load the real TUI dynamic chunk, so a missing publication file such as `lib/tui-*.js` fails the gate.
 - Every other published `bin` defines a package-owned smoke command that neither reaches a real service nor modifies user state. Different CLIs are not forced to share `--help`; the test runs the actual installed entry and checks its agreed exit or ready signal.
 - Node-compatible public runtime entries load from the installation. Browser, worker, or host-protocol-only entries use matching isolated fixtures, but their inputs must still be the current tarballs exclusively.
@@ -107,7 +107,7 @@ The registry token is injected only into the publish job, which uses a protected
 
 Full packing, installation, and startup add CI time and workflow-artifact volume. The implementation should cache external dependencies and the pnpm store, but it must not cache or reuse installed workspace output for target packages. Safe consumer probes can run in parallel to reduce latency.
 
-Installing every tarball as a temporary project's top-level dependency can hide an undeclared internal dependency. The test generator should install each tested application's declared recursive closure and retain existing dependency gates. For `@alego/cli`, whose dependency surface approaches the full set, package-manifest and static graph checks remain necessary to detect undeclared edges.
+Installing every tarball as a temporary project's top-level dependency can hide an undeclared internal dependency. The test generator should install each tested application's declared recursive closure and retain existing dependency gates. For `@singula-ai/alego`, whose dependency surface approaches the full set, package-manifest and static graph checks remain necessary to detect undeclared edges.
 
 Platform-specific optional dependencies, native addons, PTYs, and browser entries may require platform-owned probes. The first phase must cover primary `alego` startup on the publication Linux runner and one local macOS path, then expand the matrix with the actual publication platforms. Skipping an unstable probe must not move a production path outside the gate.
 

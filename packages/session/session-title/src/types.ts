@@ -5,14 +5,14 @@
  * `./types` for host consumers, `./client/types` (the browser half-entry's
  * re-export) for client aggregates — with zero content duplication.
  *
- * @module @alego/session-title/types
+ * @module @singula-ai/alego-session-title/types
  */
 
 // Marks this file a module so the declaration below AUGMENTS the projection
 // table instead of declaring an ambient module.
 export {}
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionStateMap {
     title: string | null
   }

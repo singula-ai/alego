@@ -18,9 +18,9 @@ A thin spill storage seam plus a default spill policy plugin, in a new `packages
 
 | Package | Role |
 |---|---|
-| `@alego/spill` | Interface: `ctx.spillStore`, vocabulary types, no storage implementation. |
-| `@alego/spill-local` | Local backend: private, session-scoped file storage on the host filesystem. |
-| `@alego/spill-policy` | Tool-result policy plugin: wraps final text results after dispatch and replaces oversized results with a retained preview plus a spill locator. |
+| `@singula-ai/alego-spill` | Interface: `ctx.spillStore`, vocabulary types, no storage implementation. |
+| `@singula-ai/alego-spill-local` | Local backend: private, session-scoped file storage on the host filesystem. |
+| `@singula-ai/alego-spill-policy` | Tool-result policy plugin: wraps final text results after dispatch and replaces oversized results with a retained preview plus a spill locator. |
 
 There is no dedicated model-facing Consumer package. The Consumer is the existing `ctx.tools` execution pipeline: `alego-spill-policy` consumes final tool results through the `tools/post-execute` waterfall, and the model follows the backend-supplied retrieval hint for the returned locator.
 
@@ -114,15 +114,15 @@ With `alego-spill-policy` configured, a large formatted fetch result is automati
 
 ```yaml
 - id: web-fetch-http
-  name: '@alego/web-fetch-http'
+  name: '@singula-ai/alego-web-fetch-http'
   config:
     maxBodyChars: 500000
 
 - id: spill-local
-  name: '@alego/spill-local'
+  name: '@singula-ai/alego-spill-local'
 
 - id: spill-policy
-  name: '@alego/spill-policy'
+  name: '@singula-ai/alego-spill-policy'
   config:
     maxInlineBytes: 50000
 ```
@@ -133,9 +133,9 @@ This separation is important. `web-fetch-http` still owns resource caps (`maxRes
 
 Retention is separate from spill storage:
 
-- `@alego/output-retention` owns preview mechanics (`TextRetainer`, `ItemRetainer`, and omitted metadata).
-- `@alego/spill` owns saving final text and returning a locator plus retrieval hint.
-- `@alego/spill-policy` applies the default final-result policy in the tool pipeline, composing the two.
+- `@singula-ai/alego-output-retention` owns preview mechanics (`TextRetainer`, `ItemRetainer`, and omitted metadata).
+- `@singula-ai/alego-spill` owns saving final text and returning a locator plus retrieval hint.
+- `@singula-ai/alego-spill-policy` applies the default final-result policy in the tool pipeline, composing the two.
 
 The final-result policy cannot replace tool-owned early spill. Some useful content is not present in final `ToolExecutionResult.content`:
 

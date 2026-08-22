@@ -1,7 +1,7 @@
 /** Shared trajectory record data and formatting contracts. */
 
 import type { HTMLAttributes } from 'react'
-import type { ConversationPromptSnapshot } from '@alego/client-runtime/client'
+import type { ConversationPromptSnapshot } from '@singula-ai/alego-client-runtime/client'
 
 /** Closed set of trajectory record kinds. */
 export type TrajectoryCellKind =

@@ -16,7 +16,7 @@ Web Host 为每个新建或恢复的 Agent 安装 `ModelSelection`。如果会�
 
 浏览器中的 `ModelDirectoryResolver` 为每个实时会话持有一个 `ModelDirectory`。其快照包含当前完整的 `ModelSelection`、分组目录、提供方失败记录、操作错误，以及 `idle`、`loading`、`ready`、`selecting`、`error` 状态。挂载时会预先填充触发器标签，此后每次打开菜单都会刷新目录。目录与选择调用共用操作代次，防止较早响应覆盖较新结果；连接重置会先丢弃当前进程中的投影，再恢复 Host 选择。失败时保留先前的选择和可用分组。
 
-`@alego/client-ui-conversation` 将会话作用域的单实例 slot `conversation.input.model` 声明为其输入栏 entry 的子 slot。InputBar 在尾部控件区将该 seat 渲染于 pending 指示器与主按钮之前；该 seat 接收输入栏的 `locked` owner prop 与会话作用域。`@alego/client-ui-model-selection` 占用该 seat，并在同一目录上提供 `/model`。其紧凑型触发器显示目录中的确切模型名称与生效的推理强度标签。当前选择不在分组中时，触发器显示 `Select model`，模型列表不标记任何活动行，Effort 行也保持隐藏；选择一个已列出的模型，会通过共享的选择路径赋值完整选择。除此情形外，向上展开的菜单会首先提供 Model 与 Effort；Model 可深入提供方分组，Effort 可深入适配器排序的级别。仅当适配器没有配置模型默认值时，才显示提供方默认值行。
+`@singula-ai/alego-client-ui-conversation` 将会话作用域的单实例 slot `conversation.input.model` 声明为其输入栏 entry 的子 slot。InputBar 在尾部控件区将该 seat 渲染于 pending 指示器与主按钮之前；该 seat 接收输入栏的 `locked` owner prop 与会话作用域。`@singula-ai/alego-client-ui-model-selection` 占用该 seat，并在同一目录上提供 `/model`。其紧凑型触发器显示目录中的确切模型名称与生效的推理强度标签。当前选择不在分组中时，触发器显示 `Select model`，模型列表不标记任何活动行，Effort 行也保持隐藏；选择一个已列出的模型，会通过共享的选择路径赋值完整选择。除此情形外，向上展开的菜单会首先提供 Model 与 Effort；Model 可深入提供方分组，Effort 可深入适配器排序的级别。仅当适配器没有配置模型默认值时，才显示提供方默认值行。
 
 生产环境的浏览器名册由 `apps/cli/config/base.cordis.yml` 与 `apps/cli/config/web.cordis.yml` 共同组装；模型功能对应其中一行 `alego.client` 配置项，而不是 Web boot 代码中硬编码的包。其包 manifest（元数据清单）将加载顺序置于运行时与命令功能之后；Cordis 服务注入则等待 conversation slot 可用，再注册 composer 占用方。
 

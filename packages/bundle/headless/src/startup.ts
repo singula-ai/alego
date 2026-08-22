@@ -2,12 +2,12 @@
  * The one-shot app's command-line provider: it parses the task positional and
  * `--help`, then publishes {@link HEADLESS_STARTUP_SERVICE}. The runner is an
  * ordinary consumer whose lazy config waits for that service.
- * @module @alego/headless/startup
+ * @module @singula-ai/alego-headless/startup
  */
 
 import { Command } from 'commander'
-import type { Context } from '@alego/cordis'
-import { parseCmdline } from '@alego/cmdline'
+import type { Context } from '@singula-ai/cordis'
+import { parseCmdline } from '@singula-ai/alego-cmdline'
 
 /** Stable Cordis plugin name. */
 export const name = 'headless-startup'

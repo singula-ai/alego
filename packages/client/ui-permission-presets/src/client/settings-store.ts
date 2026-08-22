@@ -8,13 +8,13 @@
 
 import type {
   IApiClient, SettingsNamespaceView,
-} from '@alego/api-remotes/client'
+} from '@singula-ai/alego-api-remotes/client'
 import {
   createSnapshotStore, type SnapshotStore,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import type {
   SchemaNode, SettingsDescribeFace, SettingsSchemaService,
-} from '@alego/client-ui-settings/client'
+} from '@singula-ai/alego-client-ui-settings/client'
 import { displayPermissionPreset } from './presentation.ts'
 
 /** Permission's settings namespace on the host wire. */

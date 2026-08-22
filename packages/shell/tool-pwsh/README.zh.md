@@ -1,8 +1,8 @@
-# @alego/tool-pwsh
+# @singula-ai/alego-tool-pwsh
 
 [English](README.md) | 中文
 
-注册在 `ctx.shell` 执行器 seam 之上的面向模型的 `pwsh` 工具。面向由 PowerShell 执行器（如 `@alego/pwsh-local`）支撑 `ctx.shell` 的 Windows 组合；工具约定是 PowerShell 方言：原生 `C:\...` 路径与 `$env:NAME` 变量。行为与 `alego-tool-bash` 逐调用对齐——通过通用任务运行时执行前台与 `run_in_background`、通过共享 `shell-env` 注册表管理 `ALEGO_*` 环境、sandbox 拒绝渲染与同轮次 `sandbox_permissions` 升级面、以及 bash 的 marker/截断渲染故事（干净退出不产生 marker）。
+注册在 `ctx.shell` 执行器 seam 之上的面向模型的 `pwsh` 工具。面向由 PowerShell 执行器（如 `@singula-ai/alego-pwsh-local`）支撑 `ctx.shell` 的 Windows 组合；工具约定是 PowerShell 方言：原生 `C:\...` 路径与 `$env:NAME` 变量。行为与 `alego-tool-bash` 逐调用对齐——通过通用任务运行时执行前台与 `run_in_background`、通过共享 `shell-env` 注册表管理 `ALEGO_*` 环境、sandbox 拒绝渲染与同轮次 `sandbox_permissions` 升级面、以及 bash 的 marker/截断渲染故事（干净退出不产生 marker）。
 
 需要已加载的执行器实现与 `shell-env` 插件；两者都存在前工具保持 pending（`inject: ['tools', 'bash', 'systemPrompt', 'bashEnv']`）。
 
@@ -38,7 +38,7 @@
 
 ## UI presentation
 
-工具拥有自己的 `presentCall`/`presentResult` 呈现意图。前台调用是携带命令、描述与可选 cwd 的 `terminal` 卡；`run_in_background` 调用是携带原始命令的 `generic` 卡，镜像 bash 工具的后台呈现。完成的前台结果同样是 `terminal` 卡：退出 marker 变成卡片的退出状态 pill（`exitCode`/`signal`），去 marker 的正文成为卡片输出——与 bash 工具的 terminal 卡故事完全一致，经由 `@alego/shell` 的共享退出状态解析。后台 ack 与执行错误保持 `generic` 卡，以 `console` 围栏包裹渲染输出。这些 presenter 是纯函数且可重放。
+工具拥有自己的 `presentCall`/`presentResult` 呈现意图。前台调用是携带命令、描述与可选 cwd 的 `terminal` 卡；`run_in_background` 调用是携带原始命令的 `generic` 卡，镜像 bash 工具的后台呈现。完成的前台结果同样是 `terminal` 卡：退出 marker 变成卡片的退出状态 pill（`exitCode`/`signal`），去 marker 的正文成为卡片输出——与 bash 工具的 terminal 卡故事完全一致，经由 `@singula-ai/alego-shell` 的共享退出状态解析。后台 ack 与执行错误保持 `generic` 卡，以 `console` 围栏包裹渲染输出。这些 presenter 是纯函数且可重放。
 
 ## 模型体验
 
@@ -66,7 +66,7 @@ Non-zero exits are reported as `[exit code: N]` markers; investigate failures be
 
 #### 模型看到的内容
 
-模型看到生成的 [`pwsh` schema](../../../docs/tool-catalog.zh.md#alegotool-pwsh)。按 agent 作用域的工具限制可以移除该 agent 的定义。
+模型看到生成的 [`pwsh` schema](../../../docs/tool-catalog.zh.md#singula-aialego-tool-pwsh)。按 agent 作用域的工具限制可以移除该 agent 的定义。
 
 #### Token 影响
 
@@ -108,7 +108,7 @@ ack 是固定短行；任务输出按读取有界。
 
 #### 模型看到的内容
 
-校验与基础设施失败规范化为 `Error: <message>`。本包的稳定消息包括 `invalid command: expected a non-empty string`、`invalid description: expected a non-empty string`、`invalid timeoutMs: expected a positive number, got <value>`、`invalid escalation: sandbox_permissions requires a justification`、`invalid escalation: justification is only valid together with sandbox_permissions`、`invalid justification: expected a non-empty sentence`、`sandbox_permissions is not available in this composition (no sandboxing executor to escalate)`、共享的升级失败（非严格更宽、无审批服务、无 agent 可路由、无审批通道、用户拒绝、已取消）、`run_in_background is disabled for this deployment (enableRunInBackground: false)`、`background jobs unavailable: load @alego/jobs and @alego/tool-jobs` 与 `tool call aborted`。
+校验与基础设施失败规范化为 `Error: <message>`。本包的稳定消息包括 `invalid command: expected a non-empty string`、`invalid description: expected a non-empty string`、`invalid timeoutMs: expected a positive number, got <value>`、`invalid escalation: sandbox_permissions requires a justification`、`invalid escalation: justification is only valid together with sandbox_permissions`、`invalid justification: expected a non-empty sentence`、`sandbox_permissions is not available in this composition (no sandboxing executor to escalate)`、共享的升级失败（非严格更宽、无审批服务、无 agent 可路由、无审批通道、用户拒绝、已取消）、`run_in_background is disabled for this deployment (enableRunInBackground: false)`、`background jobs unavailable: load @singula-ai/alego-jobs and @singula-ai/alego-tool-jobs` 与 `tool call aborted`。
 
 #### Token 影响
 
@@ -121,6 +121,6 @@ ack 是固定短行；任务输出按读取有界。
 ## 已知限制与暂缓事项
 
 - **Windows 沙箱下的语言模式与 named-pipe 捕获** — 在 [Windows ACL 沙箱](../../sandbox/sandbox-windows-acl/README.zh.md) 下，read-only pwsh 会以 ConstrainedLanguage 启动，因为临时目录写入被拒绝，导致 PowerShell 的 AppLocker 探针失败并按 fail-closed 处理：`Add-Type`、非核心 .NET 静态调用（`[System.IO.*]::`、`[math]::`）、COM 对象与反射都会以“only core types”错误失败，且该模式无法从内部解除。workspace-write 的私有临时目录使探针得以完成，因此除非主机策略另有规定，否则它保持 FullLanguage。两种受限模式都拒绝 named-pipe 打开，因此受限命令内的管道 stdio spawn 以 EPERM 失败。工具描述把这两个约定教给模型；后端 README 负责完整的限制说明。
-- **无持久 shell** — 每次调用都启动全新的 `pwsh -Command`；持久 shell 对应物是 [`@alego/tool-pwsh-persistent`](../tool-pwsh-persistent/README.zh.md)，它在 Windows（ConPTY）以及装有 pwsh 的 POSIX 主机上跨调用保持一个 owner 作用域的 pwsh 存活。
+- **无持久 shell** — 每次调用都启动全新的 `pwsh -Command`；持久 shell 对应物是 [`@singula-ai/alego-tool-pwsh-persistent`](../tool-pwsh-persistent/README.zh.md)，它在 Windows（ConPTY）以及装有 pwsh 的 POSIX 主机上跨调用保持一个 owner 作用域的 pwsh 存活。
 - **PowerShell 方言约定** — 模型必须写 PowerShell（原生路径、`$env:` 变量），而不是 bash；没有方言翻译。
 - **会话 cwd 身份不做规范化** — workdir 基座直接取会话头 cwd 原值，不同于 bash 工具经 sandbox-root 规范化的身份。在隔离执行器下，策略的工作区根**会**被规范化（由共享的策略服务完成），因此当原始会话 cwd 与其规范化形态不同时，workdir 与隔离根可能不一致——这一 parity 差距留待共享 shell 工具基座提取时解决。

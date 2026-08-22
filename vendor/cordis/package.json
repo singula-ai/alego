@@ -1,5 +1,5 @@
 {
-  "name": "@alego/cordis",
+  "name": "@singula-ai/cordis",
   "description": "Meta-Framework for Modern JavaScript Applications",
   "version": "4.0.1",
   "publishConfig": {
@@ -33,19 +33,19 @@
   "author": "Shigma <shigma10826@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "@alego/cordis-plugin-include": "workspace:^",
-    "@alego/cordis-plugin-loader": "workspace:^"
+    "@singula-ai/cordis-plugin-include": "workspace:^",
+    "@singula-ai/cordis-plugin-loader": "workspace:^"
   },
   "peerDependenciesMeta": {
-    "@alego/cordis-plugin-include": {
+    "@singula-ai/cordis-plugin-include": {
       "optional": true
     },
-    "@alego/cordis-plugin-loader": {
+    "@singula-ai/cordis-plugin-loader": {
       "optional": true
     }
   },
   "dependencies": {
     "@standard-schema/spec": "^1.1.0",
-    "@alego/cosmokit": "workspace:^"
+    "@singula-ai/cosmokit": "workspace:^"
   }
 }

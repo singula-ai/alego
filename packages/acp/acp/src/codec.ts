@@ -1,10 +1,10 @@
 /**
  * Pure translation between the harness lifecycle and the automation-only ACP wire.
- * @module @alego/acp/codec
+ * @module @singula-ai/alego-acp/codec
  */
 
 import type { StopReason } from '@agentclientprotocol/sdk'
-import type { TurnEndReason } from '@alego/session'
+import type { TurnEndReason } from '@singula-ai/alego-session'
 
 /**
  * Map a harness turn ending to ACP's terminal reason vocabulary.

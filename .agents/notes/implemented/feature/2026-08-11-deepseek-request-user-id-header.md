@@ -12,7 +12,7 @@ The user id is transport metadata, not model input. It must not enter the reques
 
 ## Decision
 
-`alego-llm-deepseek` sends `x-alego-user-id` on every provider request sent after successful credential resolution. The value comes from `@alego/anonymous-user-id` and therefore matches the OpenTelemetry Resource `user.id` and `/feedback` acknowledgement for the same `$ALEGO_HOME`. The adapter continues to send `x-alego-session-id` only when `GenerateOptions.sessionId` is present; the agent loop supplies the current durable `Session.id` for ordinary agent, title-generation, and compaction requests.
+`alego-llm-deepseek` sends `x-alego-user-id` on every provider request sent after successful credential resolution. The value comes from `@singula-ai/alego-anonymous-user-id` and therefore matches the OpenTelemetry Resource `user.id` and `/feedback` acknowledgement for the same `$ALEGO_HOME`. The adapter continues to send `x-alego-session-id` only when `GenerateOptions.sessionId` is present; the agent loop supplies the current durable `Session.id` for ordinary agent, title-generation, and compaction requests.
 
 The plugin resolves the user id lazily after credentials succeed and memoizes it for that plugin instance. A missing credential therefore does not create `.anonymous-user-id`, while the first authorized provider request can create it even when `ALEGO_TELEMETRY_DISABLED` is set. The direct adapter constructor accepts a `resolveUserId` dependency so wire behavior remains deterministic in unit tests.
 

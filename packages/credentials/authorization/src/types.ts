@@ -2,10 +2,10 @@
  * Wire-safe authorization types, free of cordis/service imports so browser type
  * chains (apiproxy api → client) can consume them without loading this
  * package's Context augmentation.
- * @module @alego/authorization/types
+ * @module @singula-ai/alego-authorization/types
  */
 
-import type { CredentialKey } from '@alego/credentials/types'
+import type { CredentialKey } from '@singula-ai/alego-credentials/types'
 
 /** One way a flow can obtain its credential, named by the flow that offers it. */
 export interface AuthorizationMethod {

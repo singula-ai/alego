@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/tmux-context`.
- * @module @alego/tmux-context/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-tmux-context`.
+ * @module @singula-ai/alego-tmux-context/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/tmux-context'
+const PACKAGE_NAME = '@singula-ai/alego-tmux-context'
 
 /** Cordis companion plugin name. */
 export const name = 'tmux-context-invariant'

@@ -1,4 +1,4 @@
-# @alego/agent-instructions
+# @singula-ai/alego-agent-instructions
 
 [English](README.md) | 中文
 

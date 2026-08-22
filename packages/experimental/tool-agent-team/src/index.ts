@@ -1,12 +1,12 @@
 /** Scoped model-facing tools for the opt-in Agent Teams runtime. */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent } from '@alego/agent'
-import { TeamTaskId } from '@alego/experimental-agent-team'
-import type { TeamMemberView } from '@alego/experimental-agent-team'
-import { defineTool } from '@alego/tools'
-import type { InferValue, ValueSchemaSpec } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent } from '@singula-ai/alego-agent'
+import { TeamTaskId } from '@singula-ai/alego-experimental-agent-team'
+import type { TeamMemberView } from '@singula-ai/alego-experimental-agent-team'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { InferValue, ValueSchemaSpec } from '@singula-ai/alego-tools'
 
 /** Cordis plugin name. */
 export const name = 'tool-agent-team'

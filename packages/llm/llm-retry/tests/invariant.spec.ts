@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import SessionStore, { SessionId, type Session } from '@alego/session'
-import { createUserMessage, ProviderRequestId } from '@alego/llm'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
-import InvariantRegistry from '@alego/invariants'
-import * as RetryInvariant from '@alego/llm-retry/invariant'
-import { RetryId } from '@alego/llm-retry'
+import { Context } from '@singula-ai/cordis'
+import SessionStore, { SessionId, type Session } from '@singula-ai/alego-session'
+import { createUserMessage, ProviderRequestId } from '@singula-ai/alego-llm'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
+import InvariantRegistry from '@singula-ai/alego-invariants'
+import * as RetryInvariant from '@singula-ai/alego-llm-retry/invariant'
+import { RetryId } from '@singula-ai/alego-llm-retry'
 import { providerForOpenStep } from '../src/history.ts'
 
 async function setup(): Promise<Context> {

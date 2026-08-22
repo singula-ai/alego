@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import AgentRegistry from '@alego/agent'
-import type { Agent } from '@alego/agent'
-import SessionStore from '@alego/session'
-import type { Session, SessionEvent, SessionHeader, SessionId } from '@alego/session'
-import { createApiRemoteAgentResolver } from '@alego/api-remotes'
-import { TypertLookupFailure } from '@alego/typert-protocol'
-import TypertRegistry from '@alego/typert-registry'
+import { Context } from '@singula-ai/cordis'
+import AgentRegistry from '@singula-ai/alego-agent'
+import type { Agent } from '@singula-ai/alego-agent'
+import SessionStore from '@singula-ai/alego-session'
+import type { Session, SessionEvent, SessionHeader, SessionId } from '@singula-ai/alego-session'
+import { createApiRemoteAgentResolver } from '@singula-ai/alego-api-remotes'
+import { TypertLookupFailure } from '@singula-ai/alego-typert-protocol'
+import TypertRegistry from '@singula-ai/alego-typert-registry'
 
 const sid = (value: string): SessionId => value as SessionId
 

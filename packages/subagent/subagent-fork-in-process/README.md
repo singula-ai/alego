@@ -1,4 +1,4 @@
-# @alego/subagent-fork-in-process
+# @singula-ai/alego-subagent-fork-in-process
 
 English | [中文](README.zh.md)
 

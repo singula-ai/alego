@@ -8,8 +8,8 @@ import { useId } from 'react'
 import type { ReactNode, RefObject } from 'react'
 import {
   AlegoMark, IconChevronDownOutline14, IconFolderClose16, IconFolderOpen16,
-} from '@alego/client-ui-primitives'
-import { workspaceTitleOf } from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-ui-primitives'
+import { workspaceTitleOf } from '@singula-ai/alego-client-runtime/client'
 import type { ConversationSlotProps } from '../contract/slots.ts'
 import css from './HeroShell.module.css'
 

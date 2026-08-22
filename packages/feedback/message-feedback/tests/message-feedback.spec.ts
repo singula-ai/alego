@@ -1,9 +1,9 @@
 import { randomUUID } from 'node:crypto'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { MessageId } from '@alego/llm/brand'
-import { Session, SessionId } from '@alego/session'
-import { remoteMethods } from '@alego/typert-protocol'
+import { Context } from '@singula-ai/cordis'
+import type { MessageId } from '@singula-ai/alego-llm/brand'
+import { Session, SessionId } from '@singula-ai/alego-session'
+import { remoteMethods } from '@singula-ai/alego-typert-protocol'
 import MessageFeedbackService, { messageFeedbackRowSchema } from '../src/index.ts'
 import type {
   MessageFeedbackItem,

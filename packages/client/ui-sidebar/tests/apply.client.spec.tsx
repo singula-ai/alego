@@ -1,10 +1,10 @@
 /** Sidebar shell slot registration and its plain runtime/layout callbacks. */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import { SlotRegistry } from '@alego/client-runtime/client'
-import { LocaleRuntime } from '@alego/client-locale/client'
-import { apply, inject } from '@alego/client-ui-sidebar/client'
-import type { SidebarRootInjected } from '@alego/client-ui-sidebar/client'
+import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import { LocaleRuntime } from '@singula-ai/alego-client-locale/client'
+import { apply, inject } from '@singula-ai/alego-client-ui-sidebar/client'
+import type { SidebarRootInjected } from '@singula-ai/alego-client-ui-sidebar/client'
 
 async function bench(declare = true) {
   const ctx = new Context()

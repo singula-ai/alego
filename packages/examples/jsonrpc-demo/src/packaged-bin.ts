@@ -3,7 +3,7 @@
  * Closed-runtime JSON-RPC agent bin. Bare plugins resolve from the installed
  * runtime closure while relative plugins remain configuration-relative.
  *
- * @module @alego/sdk-jsonrpc-demo/packaged-bin
+ * @module @singula-ai/alego-sdk-jsonrpc-demo/packaged-bin
  */
 
 import { runJsonrpcAgent } from './runner.ts'

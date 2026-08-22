@@ -1,6 +1,6 @@
 /** Shared status derivation over Host inventory and this page's Client live set. */
 
-import type { DynamicCordisLivePackage } from '@alego/cordis-client-runner/client'
+import type { DynamicCordisLivePackage } from '@singula-ai/alego-cordis-client-runner/client'
 import type {
   CordisDynamicPackageId, DynamicCordisInventoryRow,
 } from './events.ts'

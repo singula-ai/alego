@@ -2,10 +2,10 @@ import { existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { SessionEvent } from '@alego/session'
-import { CompactionId } from '@alego/compaction'
-import LlmRuntime, { CallId, createUserMessage, GenerateOptions, LlmAdapter, StreamChunk } from '@alego/llm'
+import { Context } from '@singula-ai/cordis'
+import type { SessionEvent } from '@singula-ai/alego-session'
+import { CompactionId } from '@singula-ai/alego-compaction'
+import LlmRuntime, { CallId, createUserMessage, GenerateOptions, LlmAdapter, StreamChunk } from '@singula-ai/alego-llm'
 import {
   type Config,
   type ReplayEntry,

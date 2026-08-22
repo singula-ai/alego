@@ -6,15 +6,15 @@
  * Export discipline:
  * packages/client/AGENTS.md.
  */
-import type { ClientContext } from '@alego/client-runtime/client'
-import type { ConnectionHandle } from '@alego/api-remotes/client'
+import type { ClientContext } from '@singula-ai/alego-client-runtime/client'
+import type { ConnectionHandle } from '@singula-ai/alego-api-remotes/client'
 // Type-only: pulls the shell's SlotMap merge (the 'settings.section' entry).
-import type {} from '@alego/client-ui-settings/client'
+import type {} from '@singula-ai/alego-client-ui-settings/client'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
-import type {} from '@alego/client-locale/client'
+import type {} from '@singula-ai/alego-client-locale/client'
 // Type-only: pulls the ctx.remote merge and the forwarded-event key face
 // (settings/credentials invalidations ride the allowlist) into this program.
-import type {} from '@alego/api-remotes/client'
+import type {} from '@singula-ai/alego-api-remotes/client'
 import { ModelsSection } from './ModelsSection.tsx'
 import type { ModelsSectionInjected } from './ModelsSection.tsx'
 import { DeepSeekOnboardingDialog } from './DeepSeekOnboardingDialog.tsx'
@@ -30,7 +30,7 @@ import { WELCOME_NOTICE_SETTINGS_NAMESPACE } from '../onboarding-copy.ts'
 export type { ModelsSectionInjected, ModelsSectionProps } from './ModelsSection.tsx'
 export type { ModelsKey } from './locales.ts'
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface LocaleNamespaceMap {
     /** The Models page + product-onboarding copy. */
     'settings.models': ModelsKey

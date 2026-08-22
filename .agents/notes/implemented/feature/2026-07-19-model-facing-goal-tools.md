@@ -12,7 +12,7 @@ The tool API also needs to preserve the separation between durable state and liv
 
 ## Decision
 
-`@alego/tool-goal` in `packages/goal/tool-goal/` contributes three exclusive tools and one system-prompt policy section over `ctx.goals`: `get_goal`, `create_goal`, and `update_goal`. The names and read-create-update shape follow Codex's compact goal tool surface while the authority rules use this repository's public agent, session, tool, and goal services.
+`@singula-ai/alego-tool-goal` in `packages/goal/tool-goal/` contributes three exclusive tools and one system-prompt policy section over `ctx.goals`: `get_goal`, `create_goal`, and `update_goal`. The names and read-create-update shape follow Codex's compact goal tool surface while the authority rules use this repository's public agent, session, tool, and goal services.
 
 ### Tools and model contract
 

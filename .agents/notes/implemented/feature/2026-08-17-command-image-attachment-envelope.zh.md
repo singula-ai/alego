@@ -18,7 +18,7 @@ Web composer 的一次提交是一个信封——草稿文本、已附加图片�
 
 **通用标识，图片专用载荷。**浏览器草稿与持久化引用已经使用 `DraftAttachmentId` 和 `AttachmentId`；命令 RPC 传输的是编码字节，而非图片标识。图片仍是唯一已经定义准入规则和模型块语义的非文本附件，因此 wire 保持 `EncodedImageAttachment[]`，声明保持 `input.images`。
 
-**执行器强制。**`CommandRuntime.execute(agent, line, images, signal)` 携带本次提交的 base64 图片（来自 `@alego/attachment/types` 的 `EncodedImageAttachment`）。强制执行声明的是执行器而非 composer：把图片发给未声明的命令、附件存储缺失、批量超限，都会在处理器运行前以记录在案的 `command/done` 错误结算。准入经由 attachment 包的 `admitEncodedImages`——共享 wire 入口，强制执行规范 base64 并把批量准入（限额、校验、有序提交）委托给 `AttachmentStore.saveImages`——使两个 wire 端点（prompt RPC 与命令执行器）共享同一序列，被拒绝的批量不会发布任何持久化对象。通过准入的批量以冻结的有序 `ImageBlock` 数组挂在 `invocation.attachments` 上交给处理器。
+**执行器强制。**`CommandRuntime.execute(agent, line, images, signal)` 携带本次提交的 base64 图片（来自 `@singula-ai/alego-attachment/types` 的 `EncodedImageAttachment`）。强制执行声明的是执行器而非 composer：把图片发给未声明的命令、附件存储缺失、批量超限，都会在处理器运行前以记录在案的 `command/done` 错误结算。准入经由 attachment 包的 `admitEncodedImages`——共享 wire 入口，强制执行规范 base64 并把批量准入（限额、校验、有序提交）委托给 `AttachmentStore.saveImages`——使两个 wire 端点（prompt RPC 与命令执行器）共享同一序列，被拒绝的批量不会发布任何持久化对象。通过准入的批量以冻结的有序 `ImageBlock` 数组挂在 `invocation.attachments` 上交给处理器。
 
 **模型可见性由生产方负责。**注册表自身绝不调度这些图片。`/goal` 在 create 或 edit 成功后通过 `agent.followup` 提交一条用户消息——图片块加固定文本 `Reference images for the goal objective.`——后续 Goal Round 从普通会话历史读取图片，goal 领域不存储附件状态。`/plan <message>` 把图片并入其 steer 的文本消息；不带参数的 `/plan` 则 steer 一条只含图片的用户消息，因为图片可能包含全部任务内容。不会发送模型输入的控制形式（`/goal pause`、`/plan off`）会直接返回错误，composer 的图片原地保留。plan 投影会把 `command/run` 视为候选选择，并在配对的 `command/done` 报错时丢弃它，因此被拒绝的带图 `/plan off` 不会留下待退出状态。
 

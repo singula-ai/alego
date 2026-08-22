@@ -7,7 +7,7 @@ import type { WorkspaceEmitResult } from '../src/workspace.ts'
 
 const generated = vi.hoisted(() => vi.fn<() => WorkspaceEmitResult[]>(() => [
   {
-    package: '@alego/tools',
+    package: '@singula-ai/alego-tools',
     packageRoot: 'packages/core/tools',
     face: 'host' as const,
     exports: [],
@@ -20,7 +20,7 @@ const generated = vi.hoisted(() => vi.fn<() => WorkspaceEmitResult[]>(() => [
     },
   },
   {
-    package: '@alego/tools',
+    package: '@singula-ai/alego-tools',
     packageRoot: 'packages/core/tools',
     face: 'client' as const,
     exports: [],
@@ -43,7 +43,7 @@ const generated = vi.hoisted(() => vi.fn<() => WorkspaceEmitResult[]>(() => [
 ]))
 
 const discovered = vi.hoisted(() => vi.fn(() => [
-  { package: '@alego/tools', root: 'packages/core/tools', faces: ['host'] },
+  { package: '@singula-ai/alego-tools', root: 'packages/core/tools', faces: ['host'] },
   { package: '@fixture/ignored', root: 'packages/ignored', faces: ['host'] },
   { package: '@fixture/remote-only', root: 'packages/remote-only', faces: ['host'] },
 ]))
@@ -95,11 +95,11 @@ describe('typertPlugin', () => {
   it('writes every generated face beside a nested package bundle', async () => {
     const root = await workspace()
     const output = await packageOutput(root, 'tools', {
-      name: '@alego/tools',
+      name: '@singula-ai/alego-tools',
       exports: { './typert': './lib/typert.host.js' },
     }, 'lib/dev')
     const clientOutput = await packageOutput(root, 'client-tools', {
-      name: '@alego/tools',
+      name: '@singula-ai/alego-tools',
       exports: { './client/typert': './lib/typert.client.js' },
     })
 
@@ -145,7 +145,7 @@ describe('typertPlugin', () => {
   it('removes stale Remote artifacts from a Host package without Remote output', async () => {
     const root = await workspace()
     const output = await packageOutput(root, 'tools', {
-      name: '@alego/tools',
+      name: '@singula-ai/alego-tools',
       exports: { './typert': './lib/typert.host.js' },
     })
     const packageLib = join(root, 'packages', 'tools', 'lib')
@@ -155,7 +155,7 @@ describe('typertPlugin', () => {
       'typert.remote-client.d.ts.map',
     ]) writeFileSync(join(packageLib, file), 'stale\n')
     generated.mockReturnValueOnce([{
-      package: '@alego/tools',
+      package: '@singula-ai/alego-tools',
       packageRoot: 'packages/core/tools',
       face: 'host',
       exports: [],
@@ -174,9 +174,9 @@ describe('typertPlugin', () => {
 
   it('emits every explicit workspace contributor once from a host-only prepass', async () => {
     const root = await workspace()
-    const trigger = await packageOutput(root, 'generator', { name: '@alego/typert-generator' })
+    const trigger = await packageOutput(root, 'generator', { name: '@singula-ai/alego-typert-generator' })
     await packageOutput(root, 'core/tools', {
-      name: '@alego/tools',
+      name: '@singula-ai/alego-tools',
       exports: { './typert': './lib/typert.host.js' },
     })
     await packageOutput(root, 'ignored', { name: '@fixture/ignored' })
@@ -193,7 +193,7 @@ describe('typertPlugin', () => {
     expect(discovered).toHaveBeenCalledWith(['host'])
     expect(generated).toHaveBeenCalledOnce()
     expect(generated).toHaveBeenCalledWith(
-      ['@alego/tools', '@fixture/remote-only'],
+      ['@singula-ai/alego-tools', '@fixture/remote-only'],
       ['host'],
     )
     expect(readFileSync(join(root, 'packages/core/tools/lib/typert.host.js'), 'utf8'))

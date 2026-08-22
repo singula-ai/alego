@@ -14,7 +14,7 @@ Status: implemented
 
 ## 决策
 
-该实现在 `packages/context/agent-instructions` 中，包名为 `@alego/agent-instructions`。它是请求上下文扩展，不是核心服务或文件系统后端。共享 demo 主干与 Host Runtime 根据显式的 `{ maxBytes } | false` 部署选择挂载它；`alego web` 启用 65,536 字节预算，Host Runtime 的 headless 消费方则禁用它。该插件使用 `agent/pre-step`、不可变的 `tools/result` 结果、`session/event` 边界和可选的 `ctx.fs` 功能。
+该实现在 `packages/context/agent-instructions` 中，包名为 `@singula-ai/alego-agent-instructions`。它是请求上下文扩展，不是核心服务或文件系统后端。共享 demo 主干与 Host Runtime 根据显式的 `{ maxBytes } | false` 部署选择挂载它；`alego web` 启用 65,536 字节预算，Host Runtime 的 headless 消费方则禁用它。该插件使用 `agent/pre-step`、不可变的 `tools/result` 结果、`session/event` 边界和可选的 `ctx.fs` 功能。
 
 插件不会静态注入 `fs`。因此，不带提供方的产品树仍能正常启动；在文件系统提供方出现之前，插件保持无操作。所有生产读取都通过该提供方完成。候选项探测会解析每个路径并对结果执行 stat，因此会跟随最终路径组件的符号链接至其目标：指向普通文件的链接会被加载，缺失路径或非文件目标则确认为不存在。允许仓库拥有的链接跨越信任边界，是对最初不跟随探测方式的刻意反转；[跟随指令符号链接记录](2026-07-21-follow-instruction-symlinks.zh.md)负责说明该决策及其残余风险。步骤信号与动态工具执行信号会贯穿解析、元数据探测和流式读取，因此取消不会等待无关的文件系统扫描。解析或 stat 异常归类为不可用：它只跳过该候选项，绝不被解释为已经加载的作用域被删除。
 

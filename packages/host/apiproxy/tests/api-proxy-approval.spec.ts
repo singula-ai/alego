@@ -7,17 +7,17 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import AgentRegistry from '@alego/agent'
-import type { Agent } from '@alego/agent'
-import SessionStore from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import UserQuestionService from '@alego/user-questions'
-import ApprovalService from '@alego/user-approval'
-import type { ApprovalRequestId } from '@alego/user-approval'
-import type { ApiProxy, MuxFrame, RpcRequest } from '@alego/host-apiproxy/api'
-import type { RpcId } from '@alego/host-apiproxy/api/rpc'
-import { RpcId as mintRpcId } from '@alego/host-apiproxy/api/rpc'
+import { Context } from '@singula-ai/cordis'
+import AgentRegistry from '@singula-ai/alego-agent'
+import type { Agent } from '@singula-ai/alego-agent'
+import SessionStore from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import UserQuestionService from '@singula-ai/alego-user-questions'
+import ApprovalService from '@singula-ai/alego-user-approval'
+import type { ApprovalRequestId } from '@singula-ai/alego-user-approval'
+import type { ApiProxy, MuxFrame, RpcRequest } from '@singula-ai/alego-host-apiproxy/api'
+import type { RpcId } from '@singula-ai/alego-host-apiproxy/api/rpc'
+import { RpcId as mintRpcId } from '@singula-ai/alego-host-apiproxy/api/rpc'
 import { createApiProxy } from '../src/api-proxy.ts'
 
 async function harness(): Promise<{ ctx: Context; api: ApiProxy }> {

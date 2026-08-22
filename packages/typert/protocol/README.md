@@ -1,4 +1,4 @@
-# @alego/typert-protocol
+# @singula-ai/alego-typert-protocol
 
 English | [中文](README.zh.md)
 

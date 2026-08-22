@@ -1,4 +1,4 @@
-# @alego/token-meter
+# @singula-ai/alego-token-meter
 
 English | [中文](README.zh.md)
 
@@ -46,8 +46,8 @@ The [Agent Note](../../../.agents/notes/implemented/architecture/2026-07-29-proj
 ## Composition
 
 ```yaml
-- name: '@alego/token-meter'
-- name: '@alego/compaction-basic'
+- name: '@singula-ai/alego-token-meter'
+- name: '@singula-ai/alego-compaction-basic'
 ```
 
 Both plugins have usable defaults. The meter remains independent of model routing and optional compaction. A deployment configures capacity on its LLM adapter and compaction policy on `alego-compaction-basic`.

@@ -1,7 +1,7 @@
 /** Schedule-owned use of the shared session durability barrier. */
 
-import type { Context } from '@alego/cordis'
-import type { Session } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import type { Session } from '@singula-ai/alego-session'
 
 /** Failure to prove that the current live prefix reached a persistence listener. */
 export class SchedulePersistenceError extends Error {

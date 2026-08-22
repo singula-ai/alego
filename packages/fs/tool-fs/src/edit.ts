@@ -2,14 +2,14 @@
  * Model-facing literal edit, unique-match by default. It obtains an optional guard from the
  * single intent slot, calls `ctx.fs.editText` without a separate stat, then records the observed
  * version; no policy means an unconditional atomic edit.
- * @module @alego/tool-fs/src/edit
+ * @module @singula-ai/alego-tool-fs/src/edit
  */
 
-import type { Context } from '@alego/cordis'
-import { defineTool } from '@alego/tools'
-import type { DiffCallView, DiffResultView, ToolResult } from '@alego/tools'
-import type {} from '@alego/fs'
-import type {} from '@alego/system-prompt'
+import type { Context } from '@singula-ai/cordis'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { DiffCallView, DiffResultView, ToolResult } from '@singula-ai/alego-tools'
+import type {} from '@singula-ai/alego-fs'
+import type {} from '@singula-ai/alego-system-prompt'
 import { computeHunkDiffs, diffsFromMeta } from './diff.ts'
 import { remediateFsError } from './error.ts'
 import { sessionResolveOptions } from './session-cwd.ts'

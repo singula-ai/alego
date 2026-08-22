@@ -2,15 +2,15 @@
  * Provider-routed model-request retry policy on the agent loop's request
  * recovery extension point. Each scheduled retry is durable before its cancellable wait.
  *
- * @module @alego/llm-retry
+ * @module @singula-ai/alego-llm-retry
  */
 
 import { randomUUID } from 'node:crypto'
-import type { Context, Events } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent, RequestErrorAction } from '@alego/agent'
-import type { LlmFailure, ResolvedRetryPolicy } from '@alego/llm'
-import type { SessionEvent } from '@alego/session'
+import type { Context, Events } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent, RequestErrorAction } from '@singula-ai/alego-agent'
+import type { LlmFailure, ResolvedRetryPolicy } from '@singula-ai/alego-llm'
+import type { SessionEvent } from '@singula-ai/alego-session'
 import { RetryId } from './brand.ts'
 import type { LlmRetryEventData } from './types.ts'
 

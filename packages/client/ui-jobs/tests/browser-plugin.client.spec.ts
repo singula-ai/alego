@@ -4,12 +4,12 @@
  * removal — HMR safety), the inert node entry, and the invariant companion's
  * ownership reservation.
  */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
-import InvariantRegistry from '@alego/invariants'
-import { SlotRegistry } from '@alego/client-runtime/client'
-import { stubSettingsScope } from '@alego/client-test-runtime'
-import { apply as applyLocale, inject as localeInject } from '@alego/client-locale/client'
+import InvariantRegistry from '@singula-ai/alego-invariants'
+import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import { stubSettingsScope } from '@singula-ai/alego-client-test-runtime'
+import { apply as applyLocale, inject as localeInject } from '@singula-ai/alego-client-locale/client'
 import { apply, inject } from '../src/client/index.ts'
 import { apply as applyNode } from '../src/index.ts'
 import * as JobInvariant from '../src/invariant.ts'

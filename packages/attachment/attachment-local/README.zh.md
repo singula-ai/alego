@@ -1,8 +1,8 @@
-# @alego/attachment-local
+# @singula-ai/alego-attachment-local
 
 [English](README.md) | 中文
 
-这是 [`@alego/attachment`](../attachment) 的私有本地实现。对象存放在 `<ALEGO_HOME>/attachments/v1/objects/<sha256-prefix>/<sha256>`，并通过不透明的 `sha256:` 标识符寻址。每个进程都会把每级祖先目录项同步到文件系统根目录，以此一次性证明 home 已持久化。写入使用私有暂存目录、仅所有者可访问的文件、经过同步的临时文件、原子且排他的硬链接发布，并对发布路径执行目录同步（适用于 POSIX；Windows 依赖文件系统元数据日志），确保已报告的引用能够在崩溃后继续存在。
+这是 [`@singula-ai/alego-attachment`](../attachment) 的私有本地实现。对象存放在 `<ALEGO_HOME>/attachments/v1/objects/<sha256-prefix>/<sha256>`，并通过不透明的 `sha256:` 标识符寻址。每个进程都会把每级祖先目录项同步到文件系统根目录，以此一次性证明 home 已持久化。写入使用私有暂存目录、仅所有者可访问的文件、经过同步的临时文件、原子且排他的硬链接发布，并对发布路径执行目录同步（适用于 POSIX；Windows 依赖文件系统元数据日志），确保已报告的引用能够在崩溃后继续存在。
 
 每条消息最多准入 20 张图片，源图编码字节总量不超过 200MiB。每张源图不得超过 20MiB、64,000,000 像素和单边 8192px。随后生成提供方无关的规范化附件：应用 EXIF 方向，删除元数据和色彩配置文件，转换为 8-bit sRGB/sRGBA，并保持宽高比把长边限制到 `normalizedImageMaxDimension`（默认 2048px）。规范化附件有独立的 `normalizedImageMaxBytes` 安全上限（默认 4MiB）。透明像素会保留；当所有 alpha 样本均为不透明时，Sharp/libvips 可能省略没有实际作用的 alpha 平面。系统用 nearest-neighbour 对有界样本分类，不会通过像素平均把高频图片误判为低色数。确认的低色数图片先尝试 PNG，只有不带 alpha 通道时才使用 palette，随后依次尝试质量 85、80、75 的 WebP；其他透明图片依次尝试这些质量的 WebP；其他非透明图片依次尝试这些质量的 JPEG。只有前一个候选超限时才会执行下一个候选；同一尺寸的候选全部超限后才缩小尺寸。已经处于两个规范化上限内的干净、单帧、8-bit sRGB/sRGBA PNG、JPEG 或 WebP 按字节原样直通；16-bit PNG、GIF、动图、元数据、方向和不兼容色彩空间都会触发转换。源图和转换后的附件各完整解码一次。`saveImages` 在发布任何批次成员前为每张图片各准备并验证一次规范化附件，因此校验失败不会留下部分引用，提交阶段也不会重复执行完整图片编码。
 

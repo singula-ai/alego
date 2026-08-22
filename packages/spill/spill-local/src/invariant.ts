@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/spill-local`.
- * @module @alego/spill-local/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-spill-local`.
+ * @module @singula-ai/alego-spill-local/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/spill-local'
+const PACKAGE_NAME = '@singula-ai/alego-spill-local'
 
 /** Cordis companion plugin name. */
 export const name = 'spill-local-invariant'

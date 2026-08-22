@@ -5,17 +5,17 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { AgentHandle } from '@alego/agent'
-import { CallId, createUserMessage, LlmAdapter } from '@alego/llm'
-import type { GenerateOptions, StreamChunk } from '@alego/llm'
-import { SessionId, type SessionEvent } from '@alego/session'
+import type { AgentHandle } from '@singula-ai/alego-agent'
+import { CallId, createUserMessage, LlmAdapter } from '@singula-ai/alego-llm'
+import type { GenerateOptions, StreamChunk } from '@singula-ai/alego-llm'
+import { SessionId, type SessionEvent } from '@singula-ai/alego-session'
 import {
   ScheduleId,
   createEveryScheduleRecord,
   foldScheduleEvents,
   resolveEveryOccurrence,
   type EveryScheduleRecord,
-} from '@alego/schedule'
+} from '@singula-ai/alego-schedule'
 import {
   assertFixtureInventory,
   captureStableAria,

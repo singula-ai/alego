@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/storage-sqlite`.
- * @module @alego/storage-sqlite/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-storage-sqlite`.
+ * @module @singula-ai/alego-storage-sqlite/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/storage-sqlite'
+const PACKAGE_NAME = '@singula-ai/alego-storage-sqlite'
 
 /** Cordis companion plugin name. */
 export const name = 'storage-sqlite-invariant'

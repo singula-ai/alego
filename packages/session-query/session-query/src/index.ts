@@ -1,13 +1,13 @@
 /**
  * Service Definition for combined session-history reads, traces, filters, and full-text search.
  *
- * @module @alego/session-query
+ * @module @singula-ai/alego-session-query
  */
 
-import { Context, Service } from '@alego/cordis'
-import { Session, snapshotSessionEvent, type SessionId } from '@alego/session'
-import { foldSessionTitle } from '@alego/session-title'
-import type { SessionTitleSnapshot } from '@alego/session-title'
+import { Context, Service } from '@singula-ai/cordis'
+import { Session, snapshotSessionEvent, type SessionId } from '@singula-ai/alego-session'
+import { foldSessionTitle } from '@singula-ai/alego-session-title'
+import type { SessionTitleSnapshot } from '@singula-ai/alego-session-title'
 import type {
   SessionEventResultFilter,
   SessionEventSearchPage,
@@ -65,7 +65,7 @@ export {
 } from './filters.ts'
 export { assertSessionHeadersCompatible } from './sources.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     sessionQuery: SessionQueryEngine
   }

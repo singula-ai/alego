@@ -1,15 +1,15 @@
 /**
  * Host-filesystem implementation of `ctx.fs`. Realpath-derived target identity makes aliases
  * share stale guards, and writes through a symlink update its target without replacing the link.
- * @module @alego/fs-local
+ * @module @singula-ai/alego-fs-local
  */
 
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { constants as bufferConstants } from 'node:buffer'
 import { isAbsolute, relative, resolve, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import z from '@alego/schemastery'
-import { FileSystem, FsError, FsVersion } from '@alego/fs'
+import z from '@singula-ai/schemastery'
+import { FileSystem, FsError, FsVersion } from '@singula-ai/alego-fs'
 import type {
   FsDirEntry,
   FsEditOutcome,
@@ -19,7 +19,7 @@ import type {
   FsTarget,
   FsWriteIntent,
   FsWriteOutcome,
-} from '@alego/fs'
+} from '@singula-ai/alego-fs'
 import {
   applyLiteralEdit,
   listDirectory,

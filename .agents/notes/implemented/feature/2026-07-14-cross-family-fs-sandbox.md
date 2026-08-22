@@ -18,7 +18,7 @@ Three coordinated pieces, all composed from the leaf `cordis.yml`, none touching
 
 ### `ctx.sandboxPolicy` — one home for mode and workspace root
 
-`packages/sandbox/sandbox-policy/` (`@alego/sandbox-policy`) registers `ctx.sandboxPolicy`, the single owner of the deployment's sandbox policy:
+`packages/sandbox/sandbox-policy/` (`@singula-ai/alego-sandbox-policy`) registers `ctx.sandboxPolicy`, the single owner of the deployment's sandbox policy:
 
 - `Config`: `mode` (the closed `SandboxMode` union, default `read-only`) and `workspaceRoot` (default the process cwd, resolved absolute). Misconfiguration fails loud at load.
 - The per-session override event `sandbox/mode`, with its pure fold (`effectiveSandboxMode(events)`), its write path (`setSandboxMode(session, mode)`), and `SANDBOX_MODES`. The event is policy state — consumed by two families — so it lives here, not in either capability's seam. Its shape and log-only semantics match the `approval/*` precedent.
@@ -29,7 +29,7 @@ Three coordinated pieces, all composed from the leaf `cordis.yml`, none touching
 
 ### `alego-fs-sandbox` — enforcement inside the provider
 
-`packages/fs/fs-sandbox/` (`@alego/fs-sandbox`) mirrors the `bash-local`/`bash-sandbox` split: `SandboxedFileSystem extends LocalFileSystem`, registered as `ctx.fs`, injecting `sandboxPolicy`. Reads (`resolve`/`stat`/`readText`/`streamText`/`listDir`) pass through untouched — every mode permits reading. The two mutations enforce by mode before delegating to the inherited atomic write:
+`packages/fs/fs-sandbox/` (`@singula-ai/alego-fs-sandbox`) mirrors the `bash-local`/`bash-sandbox` split: `SandboxedFileSystem extends LocalFileSystem`, registered as `ctx.fs`, injecting `sandboxPolicy`. Reads (`resolve`/`stat`/`readText`/`streamText`/`listDir`) pass through untouched — every mode permits reading. The two mutations enforce by mode before delegating to the inherited atomic write:
 
 - `read-only` denies `writeText`/`editText` outright.
 - `workspace-write` fences the canonicalized target against the writable-root set — `writableRoots(policy)` in `alego-sandbox`: the workspace root plus the platform temp areas (`/tmp`, `os.tmpdir()`), each realpathed — the SAME set the Seatbelt profile grants, so the fs fence is the fourth dialect of one mode meaning alongside the bwrap/Landlock/Seatbelt profiles, and "the write tool cannot write `/tmp` but bash can" asymmetries cannot arise. Canonical spellings take a lexical containment fast path; when Windows exposes one directory through different casing or long-name/8.3 spellings, an ancestor walk compares filesystem identity rather than weakening the boundary to textual prefix guesses. The target is re-canonicalized (`resolve` realpaths the deepest existing ancestor) immediately before delegating, so an ancestor symlink swapped since the tool resolved it is caught.

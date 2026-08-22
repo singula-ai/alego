@@ -2,17 +2,17 @@
  * Register a DeepSeek-backed provider in `ctx.web`. It calls the Anthropic-compatible Messages API
  * with native `web_search_20250305`. The provider reuses `DEEPSEEK_API_KEY` but not
  * `DEEPSEEK_BASE_URL`, because search and chat-completions use different bases.
- * @module @alego/web-search-deepseek
+ * @module @singula-ai/alego-web-search-deepseek
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type {} from '@alego/agent'
-import { credentialRef } from '@alego/credentials'
-import { installSettingsSection, settingsNamespace } from '@alego/settings'
-import { launchEnvironmentOf } from '@alego/launch-environment'
-import type {} from '@alego/session'
-import type {} from '@alego/web'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type {} from '@singula-ai/alego-agent'
+import { credentialRef } from '@singula-ai/alego-credentials'
+import { installSettingsSection, settingsNamespace } from '@singula-ai/alego-settings'
+import { launchEnvironmentOf } from '@singula-ai/alego-launch-environment'
+import type {} from '@singula-ai/alego-session'
+import type {} from '@singula-ai/alego-web'
 import {
   DeepSeekSearchProvider,
   DEEPSEEK_DEFAULT_API_VERSION,

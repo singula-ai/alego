@@ -1,11 +1,11 @@
-/** Package-owned session-event invariants for sandbox policy. @module @alego/sandbox-policy/invariant */
+/** Package-owned session-event invariants for sandbox policy. @module @singula-ai/alego-sandbox-policy/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { Session, SessionEvent } from '@alego/session'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 import { SANDBOX_MODES } from './session-mode.ts'
 
-const PACKAGE_NAME = '@alego/sandbox-policy'
+const PACKAGE_NAME = '@singula-ai/alego-sandbox-policy'
 
 /** Cordis companion plugin name. */
 export const name = 'sandbox-policy-invariant'

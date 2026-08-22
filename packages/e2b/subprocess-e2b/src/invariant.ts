@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/subprocess-e2b`.
- * @module @alego/subprocess-e2b/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-subprocess-e2b`.
+ * @module @singula-ai/alego-subprocess-e2b/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/subprocess-e2b'
+const PACKAGE_NAME = '@singula-ai/alego-subprocess-e2b'
 
 /** Cordis companion plugin name. */
 export const name = 'subprocess-e2b-invariant'

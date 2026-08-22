@@ -1,4 +1,4 @@
-# @alego/sdk-jsonrpc-demo
+# @singula-ai/alego-sdk-jsonrpc-demo
 
 [English](README.md) | 中文
 

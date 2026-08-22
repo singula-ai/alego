@@ -1,8 +1,8 @@
-# @alego/cordis-host-runner
+# @singula-ai/alego-cordis-host-runner
 
 English | [中文](README.zh.md)
 
-The host half of model-mounted dynamic packages: the definition registry, the `node:vm` sandbox and fiber lifecycle for host halves, the invoke handler table, and the run round trip a browser page carries out. Provided as `ctx.dynamicCordisRunner`. The model-facing tools live in [`@alego/tool-cordis`](../tool-cordis/README.md); the browser half is loaded by [`@alego/cordis-client-runner`](../cordis-client-runner/README.md).
+The host half of model-mounted dynamic packages: the definition registry, the `node:vm` sandbox and fiber lifecycle for host halves, the invoke handler table, and the run round trip a browser page carries out. Provided as `ctx.dynamicCordisRunner`. The model-facing tools live in [`@singula-ai/alego-tool-cordis`](../tool-cordis/README.md); the browser half is loaded by [`@singula-ai/alego-cordis-client-runner`](../cordis-client-runner/README.md).
 
 ## What it does
 
@@ -21,7 +21,7 @@ A refusal from `run` or `stop` names one of `definition-missing`, `host-half-fai
 
 A definition another session defined reads as absent rather than forbidden, so nothing leaks across sessions. `invoke` and `resolveRequestRun` carry no session at all: a component's call and a page's answer are page-global facts, not one session's.
 
-Four forwarded events belong to this feature, declared by this package on its client-safe [`./types`](src/types.ts) subpath and allowlisted for delivery by [`@alego/api-remotes`](../../api/remotes/README.md), which is what lets a browser reach them through `ctx.remote.$on`: `cordis/request-run` (`{requestId, agentId, id, name, purpose}` — metadata, never code), `cordis/request-run-resolved` (`{requestId, outcome}`), `dynamicCordisRunner/package` (`{id, name, rev}`), and `dynamicCordisRunner/retract` (`{id, rev}`). The last two are a symmetric pair announcing run state — every fresh start and every stop, whether or not the package has a browser half.
+Four forwarded events belong to this feature, declared by this package on its client-safe [`./types`](src/types.ts) subpath and allowlisted for delivery by [`@singula-ai/alego-api-remotes`](../../api/remotes/README.md), which is what lets a browser reach them through `ctx.remote.$on`: `cordis/request-run` (`{requestId, agentId, id, name, purpose}` — metadata, never code), `cordis/request-run-resolved` (`{requestId, outcome}`), `dynamicCordisRunner/package` (`{id, name, rev}`), and `dynamicCordisRunner/retract` (`{id, rev}`). The last two are a symmetric pair announcing run state — every fresh start and every stop, whether or not the package has a browser half.
 
 ## Storage stance
 
@@ -69,4 +69,4 @@ A host half that registers tools changes the next request's tool view, which inv
 - `runHostHalf` carries no request id, so "which request evaluated this host half" is attributed host-side to the most recently armed request for that definition; several concurrent run requests for one definition would need that rule revisited.
 - A success answer naming a superseded revision is refused (`accepted: false`) and leaves the request suspended, so the model's call ends only through a valid answer or its own cancellation. Settling it would take a fresh orchestration against the live revision, and no page does that today — the [browser half](../cordis-client-runner/README.md) does not read the ack — so in practice such a request is closed by another page's answer or by the caller's cancellation.
 - A browser half's declared `inject` is read from the plugin it returns in the page, so the announcement carries no service-declaration field at all.
-- **`zod` is a runtime dependency of the generated TypeRT faces, not of `src`.** `./typert` and `./remote` resolve to `lib/typert.*.js`, which `tsc` emits unbundled with a bare `import { z } from 'zod'`, so the package must declare it (the `@alego/goal` precedent) and `knip.json` must ignore it for this workspace — knip reads source, and these faces are build products. Nothing in `src` imports zod.
+- **`zod` is a runtime dependency of the generated TypeRT faces, not of `src`.** `./typert` and `./remote` resolve to `lib/typert.*.js`, which `tsc` emits unbundled with a bare `import { z } from 'zod'`, so the package must declare it (the `@singula-ai/alego-goal` precedent) and `knip.json` must ignore it for this workspace — knip reads source, and these faces are build products. Nothing in `src` imports zod.

@@ -4,10 +4,10 @@
  * projection, and snapshot reference stability.
  */
 import { describe, expect, it } from 'vitest'
-import { createUserMessage } from '@alego/llm'
-import type { ContentBlock, UserMessage } from '@alego/llm/types'
-import type { SessionEvent } from '@alego/session/types'
-import type { MessageId, MuxFrame, RpcId, SessionId } from '@alego/api-remotes/client'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type { ContentBlock, UserMessage } from '@singula-ai/alego-llm/types'
+import type { SessionEvent } from '@singula-ai/alego-session/types'
+import type { MessageId, MuxFrame, RpcId, SessionId } from '@singula-ai/alego-api-remotes/client'
 import { Session } from '../src/client/sessions/session.ts'
 import { SessionManager } from '../src/client/sessions/manager.ts'
 import { FakeApiClient, fakeRemote } from './fake-api.client.ts'

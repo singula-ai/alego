@@ -1,18 +1,18 @@
-import { createAssistantMessage, createUserMessage } from '@alego/llm'
+import { createAssistantMessage, createUserMessage } from '@singula-ai/alego-llm'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context, type Fiber } from '@alego/cordis'
+import { Context, type Fiber } from '@singula-ai/cordis'
 import { DatabaseSync } from 'node:sqlite'
 import { chmod, mkdtemp, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
-import SessionStore, { SESSION_FORMAT_VERSION, SessionId } from '@alego/session'
-import type { SessionEvent, SessionHeader, SessionId as SessionIdType } from '@alego/session'
-import SessionPersistence, { SessionPersistenceRevision } from '@alego/session-persistence'
-import type { SessionPersistenceSnapshot } from '@alego/session-persistence'
-import SqliteSessionPersistence from '@alego/session-persistence-sqlite'
+import SessionStore, { SESSION_FORMAT_VERSION, SessionId } from '@singula-ai/alego-session'
+import type { SessionEvent, SessionHeader, SessionId as SessionIdType } from '@singula-ai/alego-session'
+import SessionPersistence, { SessionPersistenceRevision } from '@singula-ai/alego-session-persistence'
+import type { SessionPersistenceSnapshot } from '@singula-ai/alego-session-persistence'
+import SqliteSessionPersistence from '@singula-ai/alego-session-persistence-sqlite'
 import SqliteSessionQueryEngine, {
   SESSION_QUERY_SQLITE_SCHEMA_VERSION,
-} from '@alego/session-query-sqlite'
+} from '@singula-ai/alego-session-query-sqlite'
 import {
   SESSION_QUERY_DEFAULT_PERSISTED_INSPECT_CONCURRENCY,
   SessionQueryError,
@@ -20,7 +20,7 @@ import {
   type SessionAvailability,
   type SessionQueryErrorCode,
   type SessionSearchRequest,
-} from '@alego/session-query'
+} from '@singula-ai/alego-session-query'
 
 const temporaryDirectories: string[] = []
 

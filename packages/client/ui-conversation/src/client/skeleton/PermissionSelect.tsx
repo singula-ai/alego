@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import clsx from 'clsx'
-import type { PermissionSelect as PermissionSelectValue } from '@alego/permission-presets/client'
-import { IconChevronDownOutline14, Menu, RiskConfirmation } from '@alego/client-ui-primitives'
-import type { MenuEntry } from '@alego/client-ui-primitives'
+import type { PermissionSelect as PermissionSelectValue } from '@singula-ai/alego-permission-presets/client'
+import { IconChevronDownOutline14, Menu, RiskConfirmation } from '@singula-ai/alego-client-ui-primitives'
+import type { MenuEntry } from '@singula-ai/alego-client-ui-primitives'
 import type { ComposerBarProps } from '../contract/slots.ts'
 import css from './PermissionSelect.module.css'
 

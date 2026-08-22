@@ -30,15 +30,15 @@
  * accent row derived only from each logged call/result slice.
  */
 // Type-only: the carrier types, the forwarded Host-event face and the ctx.remote merge.
-import type { ConnectionHandle, SessionId, SkillEntry } from '@alego/api-remotes/client'
-import type { ClientContext, ISessions } from '@alego/client-runtime/client'
-import type { InputTriggerServiceContract, InputTriggerSource } from '@alego/client-ui-input-trigger/client'
+import type { ConnectionHandle, SessionId, SkillEntry } from '@singula-ai/alego-api-remotes/client'
+import type { ClientContext, ISessions } from '@singula-ai/alego-client-runtime/client'
+import type { InputTriggerServiceContract, InputTriggerSource } from '@singula-ai/alego-client-ui-input-trigger/client'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
-import type {} from '@alego/client-locale/client'
+import type {} from '@singula-ai/alego-client-locale/client'
 import { SkillRow } from './SkillRow.tsx'
 import { en, NS, zh, type SkillKey } from './locales.ts'
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface LocaleNamespaceMap {
     /** The dedicated skill tool row's copy. */
     skill: SkillKey

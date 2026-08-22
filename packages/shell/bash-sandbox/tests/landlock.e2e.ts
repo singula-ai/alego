@@ -4,12 +4,12 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { homedir, tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { launcherPath } from '@alego/node-addon-landlock-run'
-import { LocalSandboxProvider } from '@alego/sandbox-local'
-import { SandboxPolicyService } from '@alego/sandbox-policy'
-import { SandboxBashExecutor } from '@alego/bash-sandbox'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
+import { Context } from '@singula-ai/cordis'
+import { launcherPath } from '@singula-ai/node-addon-landlock-run'
+import { LocalSandboxProvider } from '@singula-ai/alego-sandbox-local'
+import { SandboxPolicyService } from '@singula-ai/alego-sandbox-policy'
+import { SandboxBashExecutor } from '@singula-ai/alego-bash-sandbox'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 
 /**
  * KEYLESS consumer-integration proof: the REAL `LocalSandboxProvider` (bwrap
@@ -17,7 +17,7 @@ import LocalSubprocessRuntime from '@alego/subprocess-local'
  * REAL `SandboxBashExecutor`, driven through the executor's public run/start
  * paths. Verifies the WORLD (files exist or don't) plus the stamped result
  * facts; the backend-only confinement proofs live with
- * `@alego/sandbox-local`.
+ * `@singula-ai/alego-sandbox-local`.
  *
  * Self-skips when the running kernel does not enforce Landlock. CI builds the launcher from
  * `native/landlock-run` before running this file.

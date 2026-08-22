@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/fs-observation-policy`.
- * @module @alego/fs-observation-policy/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-fs-observation-policy`.
+ * @module @singula-ai/alego-fs-observation-policy/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/fs-observation-policy'
+const PACKAGE_NAME = '@singula-ai/alego-fs-observation-policy'
 
 /** Cordis companion plugin name. */
 export const name = 'fs-observation-policy-invariant'

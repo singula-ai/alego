@@ -2,15 +2,15 @@
 // plus the shared estimator's pricing branches.
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { createMessage, createUserMessage } from '@alego/llm'
-import type { ContentBlock, ToolSchema } from '@alego/llm'
-import SessionStore from '@alego/session'
-import type { Session, SessionEvent } from '@alego/session'
-import SessionProjectionRegistry from '@alego/session-projection'
-import TokenMeter from '@alego/token-meter'
-import type { ContextBreakdownProjection } from '@alego/token-meter/client'
-import { CompactionId } from '@alego/compaction'
+import { Context } from '@singula-ai/cordis'
+import { createMessage, createUserMessage } from '@singula-ai/alego-llm'
+import type { ContentBlock, ToolSchema } from '@singula-ai/alego-llm'
+import SessionStore from '@singula-ai/alego-session'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import TokenMeter from '@singula-ai/alego-token-meter'
+import type { ContextBreakdownProjection } from '@singula-ai/alego-token-meter/client'
+import { CompactionId } from '@singula-ai/alego-compaction'
 import { contextBreakdownProjectionDefinition } from '../src/breakdown-projection.ts'
 import {
   estimateContent,

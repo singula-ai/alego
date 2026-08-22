@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react'
-import { JsonBlock } from '@alego/client-ui-primitives'
+import { JsonBlock } from '@singula-ai/alego-client-ui-primitives'
 import type { ChatNodeOwnerProps, ChatViewSlotProps } from '../contract/slots.ts'
 import type { ChatNode } from '../contract/chat-nodes.ts'
 import css from './ChatView.module.css'

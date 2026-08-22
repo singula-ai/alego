@@ -1,9 +1,9 @@
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { type Agent } from '@alego/agent'
+import { Context } from '@singula-ai/cordis'
+import { type Agent } from '@singula-ai/alego-agent'
 
-import { HarnessError } from '@alego/llm'
-import { carrierKeyOf } from '@alego/scope'
+import { HarnessError } from '@singula-ai/alego-llm'
+import { carrierKeyOf } from '@singula-ai/alego-scope'
 import SubagentRuntime, {
   foldSubagentDescriptor,
   snapshotSubagentDescriptor,
@@ -17,8 +17,8 @@ import SubagentRuntime, {
   type SubagentRun,
   type SubagentRunEndInfo,
   type SubagentStartRequest,
-} from '@alego/subagent'
-import { SessionId, type SessionEvent } from '@alego/session'
+} from '@singula-ai/alego-subagent'
+import { SessionId, type SessionEvent } from '@singula-ai/alego-session'
 
 function fakeParent(id = 'parent-1'): Agent {
   return { id: SessionId(id) } as unknown as Agent

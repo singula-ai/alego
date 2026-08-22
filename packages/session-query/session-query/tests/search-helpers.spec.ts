@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { createUserMessage, CallId , createMessage, createToolResultMessage } from '@alego/llm'
+import { Context } from '@singula-ai/cordis'
+import { createUserMessage, CallId , createMessage, createToolResultMessage } from '@singula-ai/alego-llm'
 import SessionStore, {
   SESSION_FORMAT_VERSION,
   SessionId,
-} from '@alego/session'
-import type { SessionEvent, SessionHeader } from '@alego/session'
+} from '@singula-ai/alego-session'
+import type { SessionEvent, SessionHeader } from '@singula-ai/alego-session'
 import {
   buildSessionEventRecords,
   buildSessionEventSearchDocuments,
@@ -16,7 +16,7 @@ import {
   materializeSessionEventResultFilters,
   materializeSessionResultFilters,
   type SessionQueryErrorCode,
-} from '@alego/session-query'
+} from '@singula-ai/alego-session-query'
 import { TestSessionQueryEngine } from './test-service.ts'
 
 const id = SessionId('session')

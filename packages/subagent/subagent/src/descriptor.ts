@@ -18,14 +18,14 @@
  * durable descriptor, so it neither restores the prior budget nor inherits
  * the parent's current one; the resumed route's defaults apply instead.
  *
- * @module @alego/subagent/descriptor
+ * @module @singula-ai/alego-subagent/descriptor
  */
 
-import { snapshotJsonValue } from '@alego/session'
-import type { SessionEvent } from '@alego/session'
-import type { ToolRestriction } from '@alego/tools'
+import { snapshotJsonValue } from '@singula-ai/alego-session'
+import type { SessionEvent } from '@singula-ai/alego-session'
+import type { ToolRestriction } from '@singula-ai/alego-tools'
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * Durable identity and lifecycle mode of a session-backed subagent child,

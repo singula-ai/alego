@@ -2,11 +2,11 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import type { AgentHandle } from '@alego/agent'
-import { CallId, createUserMessage } from '@alego/llm'
-import { SessionId } from '@alego/session'
-import type {} from '@alego/agent-presets'
-import type {} from '@alego/system-prompt'
+import type { AgentHandle } from '@singula-ai/alego-agent'
+import { CallId, createUserMessage } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
+import type {} from '@singula-ai/alego-agent-presets'
+import type {} from '@singula-ai/alego-system-prompt'
 import { assertFixtureInventory, launchWebScaffold, type WebScaffold } from './scaffold.ts'
 
 const SNAPSHOT_DIR = fileURLToPath(new URL('./snapshots/minimal-preset', import.meta.url))
@@ -57,7 +57,7 @@ describe('minimal agent preset', () => {
     if (requestHeader === undefined) throw new Error('the minimal agent issued no model request')
     expect(agentHandle.agent.session.events.some(event => event.type === 'user/message'
       && event.data.source.kind === 'plugin'
-      && event.data.source.plugin === '@alego/system-prompt')).toBe(false)
+      && event.data.source.plugin === '@singula-ai/alego-system-prompt')).toBe(false)
     const presetFileSystem = scaffold.ctx.agentPresets.serviceFor(agentHandle.agent, 'fs')
     expect(presetFileSystem).toBeDefined()
     expect(presetFileSystem?.sandboxMode).toBeUndefined()

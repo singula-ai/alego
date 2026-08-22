@@ -1,21 +1,21 @@
 import { access } from 'node:fs/promises'
 import { join, posix } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
-import { Inbox } from '@alego/agent'
-import type { Agent } from '@alego/agent'
-import { runLoaderSmoke } from '@alego/loader-smoke'
+import { Inbox } from '@singula-ai/alego-agent'
+import type { Agent } from '@singula-ai/alego-agent'
+import { runLoaderSmoke } from '@singula-ai/alego-loader-smoke'
 import {
   FileNotFoundError,
   Sandbox,
   SandboxNotFoundError,
-} from '@alego/e2b'
-import TerminalSessionService, { TerminalSessionId } from '@alego/terminal'
-import { BashTerminalBackend } from '@alego/terminal-bash'
-import SandboxPolicyService from '@alego/sandbox-policy'
-import { Session, SessionId } from '@alego/session'
-import E2BSubprocessRuntime from '@alego/subprocess-e2b'
+} from '@singula-ai/alego-e2b'
+import TerminalSessionService, { TerminalSessionId } from '@singula-ai/alego-terminal'
+import { BashTerminalBackend } from '@singula-ai/alego-terminal-bash'
+import SandboxPolicyService from '@singula-ai/alego-sandbox-policy'
+import { Session, SessionId } from '@singula-ai/alego-session'
+import E2BSubprocessRuntime from '@singula-ai/alego-subprocess-e2b'
 
 const fixtureRoot = fileURLToPath(new URL('../../../../examples/headless-agent/tests/fixtures/e2b/e2b/', import.meta.url))
 const binScript = join(fixtureRoot, 'bin.ts')

@@ -1,7 +1,7 @@
 /**
  * Browser-safe subagent projection vocabulary.
  *
- * @module @alego/subagent/client
+ * @module @singula-ai/alego-subagent/client
  */
 
 export type { SubagentIdentityProjection, SubagentTimingProjection } from './projection-types.ts'

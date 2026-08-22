@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { scopeTarget } from '@alego/scope'
-import { CallId } from '@alego/llm'
-import SessionStore, { Session, SessionId } from '@alego/session'
-import type { ToolExecution, ToolExecutionResult, ToolExecutionToken } from '@alego/tools'
-import * as ToolsInvariant from '@alego/tools/invariant'
-import InvariantRegistry from '@alego/invariants'
+import { Context } from '@singula-ai/cordis'
+import { scopeTarget } from '@singula-ai/alego-scope'
+import { CallId } from '@singula-ai/alego-llm'
+import SessionStore, { Session, SessionId } from '@singula-ai/alego-session'
+import type { ToolExecution, ToolExecutionResult, ToolExecutionToken } from '@singula-ai/alego-tools'
+import * as ToolsInvariant from '@singula-ai/alego-tools/invariant'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 
 const testToolSignal = new AbortController().signal
 

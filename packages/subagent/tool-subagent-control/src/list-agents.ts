@@ -4,15 +4,15 @@
  * `descendants` scope, `ctx.subagents.listDescendants()`. It stays separately
  * loadable from the root `send_message` plugin so a deployment can register
  * continuation delivery without exposing discovery.
- * @module @alego/tool-subagent-control/list-agents
+ * @module @singula-ai/alego-tool-subagent-control/list-agents
  */
 
-import type { Context } from '@alego/cordis'
-import { defineTool } from '@alego/tools'
-import type { Agent } from '@alego/agent'
-import type { SessionId } from '@alego/session'
-import { assertNever } from '@alego/llm'
-import type { SubagentDescendantListEntry, SubagentListEntry } from '@alego/subagent'
+import type { Context } from '@singula-ai/cordis'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { SessionId } from '@singula-ai/alego-session'
+import { assertNever } from '@singula-ai/alego-llm'
+import type { SubagentDescendantListEntry, SubagentListEntry } from '@singula-ai/alego-subagent'
 
 export const name = 'tool-subagent-list-agents'
 export const inject = ['tools', 'subagents', 'agents']

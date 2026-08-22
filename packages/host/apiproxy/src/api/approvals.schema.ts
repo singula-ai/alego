@@ -5,7 +5,7 @@
  */
 
 import { z } from 'zod'
-import type { ApprovalRequestId } from '@alego/user-approval/types'
+import type { ApprovalRequestId } from '@singula-ai/alego-user-approval/types'
 import type { ApprovalResponsePayload } from './approvals.ts'
 import type { Wire } from './rpc.schema.ts'
 import { sessionIdSchema } from './sessions.schema.ts'

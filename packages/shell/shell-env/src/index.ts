@@ -5,18 +5,18 @@
  * the registry itself while plugins can register additional, enumerable facts
  * with effect-scoped disposal.
  *
- * @module @alego/shell-env
+ * @module @singula-ai/alego-shell-env
  */
 
-import { Service, type Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { ALEGO_ENV_PREFIX } from '@alego/shell'
-import type { AlegoEnvironment, AlegoEnvironmentKey } from '@alego/shell'
-import { ALEGO_HOME_ENV, resolveAlegoHome } from '@alego/home-paths'
-import type { ToolExecution } from '@alego/tools'
-import type {} from '@alego/session-persistence'
+import { Service, type Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { ALEGO_ENV_PREFIX } from '@singula-ai/alego-shell'
+import type { AlegoEnvironment, AlegoEnvironmentKey } from '@singula-ai/alego-shell'
+import { ALEGO_HOME_ENV, resolveAlegoHome } from '@singula-ai/alego-home-paths'
+import type { ToolExecution } from '@singula-ai/alego-tools'
+import type {} from '@singula-ai/alego-session-persistence'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     shellEnv: ShellEnvRegistry
   }

@@ -10,8 +10,8 @@ import {
   createToolResultMessage,
   createUserMessage,
   isTokenDelta,
-} from '@alego/llm/message'
-import { CallId } from '@alego/llm/brand'
+} from '@singula-ai/alego-llm/message'
+import { CallId } from '@singula-ai/alego-llm/brand'
 import type {
   AssistantMessage,
   ContentBlock,
@@ -19,24 +19,24 @@ import type {
   TokenUsage,
   ToolResultMessage,
   UserMessage,
-} from '@alego/llm'
-import type { AttachmentIdType, ImageAttachmentRef } from '@alego/attachment'
+} from '@singula-ai/alego-llm'
+import type { AttachmentIdType, ImageAttachmentRef } from '@singula-ai/alego-attachment'
 import type {
   SessionEvent,
   SessionId,
   TodoItem,
-} from '@alego/session/types'
+} from '@singula-ai/alego-session/types'
 // Type-only: the brand constructor is host-side; the fixture casts at its
 // wire-fabrication boundary (the schema layer's one-cast-point posture).
-import type { CommandId } from '@alego/commands/brand'
-import type { CommandDescriptor, CommandExecution, CommandResult } from '@alego/commands/types'
-import { deriveEventMessage, foldSurface } from '@alego/session/surface'
+import type { CommandId } from '@singula-ai/alego-commands/brand'
+import type { CommandDescriptor, CommandExecution, CommandResult } from '@singula-ai/alego-commands/types'
+import { deriveEventMessage, foldSurface } from '@singula-ai/alego-session/surface'
 import type {
   ApiProxy, ClientRequest, ClientResponse, HistoryEntry, HostFrame, MuxFrame, RpcReceipt,
   ModelProviderGroup, ModelSelection, RpcRequest, RpcResponse, RpcResult, ServerRequest, ServerResponse, SessionSummary,
   ToolCallView, ToolEventView, ToolResultView, WorkspaceId, WorkspaceView,
 } from './api.ts'
-import type { RequestPayload, ResponseValue, RpcMethodMap } from '@alego/host-apiproxy/api'
+import type { RequestPayload, ResponseValue, RpcMethodMap } from '@singula-ai/alego-host-apiproxy/api'
 import { AbstractApiClient, RpcId, SESSION_SEARCH_RESULT_LIMIT } from './api.ts'
 import { randomUuid } from './random-uuid.ts'
 import type { ClientConnectionRpc } from '../rpc.ts'
@@ -1550,9 +1550,9 @@ function createFixtureWorld(options: FixtureOptions): FixtureWorld {
    * roster a GUI journey sees after writing is the text it wrote.
    */
   const fixturePresets = new Map<string, { trust: 'system' | 'user'; content: string }>([
-    ['standard', { trust: 'system', content: "- id: tool-bash\n  name: '@alego/tool-bash'\n" }],
-    ['minimal', { trust: 'system', content: "- id: tool-web-search\n  name: '@alego/tool-web-search'\n" }],
-    ['my-agent', { trust: 'user', content: "- id: tool-read\n  name: '@alego/tool-read'\n" }],
+    ['standard', { trust: 'system', content: "- id: tool-bash\n  name: '@singula-ai/alego-tool-bash'\n" }],
+    ['minimal', { trust: 'system', content: "- id: tool-web-search\n  name: '@singula-ai/alego-tool-web-search'\n" }],
+    ['my-agent', { trust: 'user', content: "- id: tool-read\n  name: '@singula-ai/alego-tool-read'\n" }],
   ])
   let fixtureDefaultPreset = 'standard'
   const nextTurn = new Map<SessionId, number>([[sid('fx-alpha'), 75]])

@@ -1,17 +1,17 @@
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import LlmRuntime, { createUserMessage, CallId, isAgentLoopRequest, LlmAdapter  } from '@alego/llm'
-import type { FinishReason, GenerateOptions, StreamChunk } from '@alego/llm'
-import SessionStore, { SessionId } from '@alego/session'
-import { SessionTitleProviderId } from '@alego/session-title'
-import type { SessionTitleProviderRequest } from '@alego/session-title'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+import LlmRuntime, { createUserMessage, CallId, isAgentLoopRequest, LlmAdapter  } from '@singula-ai/alego-llm'
+import type { FinishReason, GenerateOptions, StreamChunk } from '@singula-ai/alego-llm'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import { SessionTitleProviderId } from '@singula-ai/alego-session-title'
+import type { SessionTitleProviderRequest } from '@singula-ai/alego-session-title'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 import {
   generateSessionTitleWithLlm,
   resolveSessionTitleLlmConfig,
   SESSION_TITLE_TIMEOUT_CODE,
-} from '@alego/session-title-llm'
-import type { SessionTitleLlmConfig } from '@alego/session-title-llm'
+} from '@singula-ai/alego-session-title-llm'
+import type { SessionTitleLlmConfig } from '@singula-ai/alego-session-title-llm'
 
 class RecordingAdapter extends LlmAdapter {
   readonly requests: GenerateOptions[] = []

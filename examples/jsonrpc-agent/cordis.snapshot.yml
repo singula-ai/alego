@@ -8,18 +8,18 @@
 # `llm-replay` reads `ALEGO_SNAPSHOT_FILE` / `ALEGO_SNAPSHOT_CHILD_FILES` from the
 # harness. Stdout remains reserved for JSON-RPC frames.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       # `name` asserts the target: a mismatch skips the patch and warns only
       # when a logger exists.
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - insert:
           - id: llm-replay
-            name: '@alego/llm-replay'
+            name: '@singula-ai/alego-llm-replay'
             config:
               providers:
                 - id: deepseek-official

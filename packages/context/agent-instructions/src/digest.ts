@@ -1,7 +1,7 @@
 /**
  * Content identity for workspace instruction duplicate suppression.
  *
- * @module @alego/agent-instructions/digest
+ * @module @singula-ai/alego-agent-instructions/digest
  */
 
 import { createHash } from 'node:crypto'

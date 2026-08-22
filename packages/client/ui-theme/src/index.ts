@@ -1,8 +1,8 @@
 /** Host registration for the browser theme preference and pre-plugin palette. */
 
-import type { Context } from '@alego/cordis'
-import type {} from '@alego/host-webserver'
-import { settingsNamespace } from '@alego/settings'
+import type { Context } from '@singula-ai/cordis'
+import type {} from '@singula-ai/alego-host-webserver'
+import { settingsNamespace } from '@singula-ai/alego-settings'
 import { bootThemeInjection } from './boot-theme.ts'
 import {
   DEFAULT_PREFERENCE, THEME_SETTINGS_NAMESPACE, ThemeSettingsSchema,

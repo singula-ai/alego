@@ -1,8 +1,8 @@
-# @alego/hooks-codex
+# @singula-ai/alego-hooks-codex
 
 [English](README.md) | 中文
 
-一个 Cordis 插件，在 harness 的规范拦截点上运行用户现有 **Codex** hook 配置的受支持子集。它是 hooks 子系统中采用 **Codex 方言** 的一侧。方言无关原语来自 [`@alego/hook-protocol`](../hook-protocol/README.zh.md)；该桥接负责处理 Codex 形状的 payload、matcher 模式和决策映射。
+一个 Cordis 插件，在 harness 的规范拦截点上运行用户现有 **Codex** hook 配置的受支持子集。它是 hooks 子系统中采用 **Codex 方言** 的一侧。方言无关原语来自 [`@singula-ai/alego-hook-protocol`](../hook-protocol/README.zh.md)；该桥接负责处理 Codex 形状的 payload、matcher 模式和决策映射。
 
 该桥接实现 Codex 当前 hook 协议的一个有意选取的子集：
 
@@ -17,7 +17,7 @@
 ## 配置
 
 ```ts
-import type { Config } from '@alego/hooks-codex'
+import type { Config } from '@singula-ai/alego-hooks-codex'
 const config: Config = {
   configPath: '/path/to/.codex/hooks.json', // required
   model: 'deepseek-v4',                      // optional: stamped on every payload (Codex includes `model`)

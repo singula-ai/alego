@@ -1,4 +1,4 @@
-# @alego/subagent-acp
+# @singula-ai/alego-subagent-acp
 
 [English](README.md) | 中文
 
@@ -35,7 +35,7 @@ ACP 不声明任何启动时能力，因为当前进程无法强制执行远程�
 
 ```yaml
 - id: subagent-acp
-  name: '@alego/subagent-acp'
+  name: '@singula-ai/alego-subagent-acp'
   config:
     providerName: acp
     command: node

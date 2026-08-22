@@ -1,13 +1,13 @@
 /** The shared `bash` settings section as the pwsh executor family resolves it. */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { Fiber } from '@alego/cordis'
-import { SettingsProvider } from '@alego/settings'
-import type { SettingsNamespace } from '@alego/settings'
-import { SHELL_SETTINGS_NAMESPACE } from '@alego/shell'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
-import { PwshLocalExecutor } from '@alego/pwsh-local'
+import { Context } from '@singula-ai/cordis'
+import type { Fiber } from '@singula-ai/cordis'
+import { SettingsProvider } from '@singula-ai/alego-settings'
+import type { SettingsNamespace } from '@singula-ai/alego-settings'
+import { SHELL_SETTINGS_NAMESPACE } from '@singula-ai/alego-shell'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
+import { PwshLocalExecutor } from '@singula-ai/alego-pwsh-local'
 
 /** The smallest real provider: one in-memory document, always writable. */
 class MemorySettings extends SettingsProvider {

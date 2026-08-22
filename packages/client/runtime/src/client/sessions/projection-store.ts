@@ -8,7 +8,7 @@
  * exists: a domain ships projection support with zero client code. Per-key
  * bare observable faces feed `useProjection` (ui-renderer binds them).
  */
-import type { SessionProjectionMap } from '@alego/session-projection/types'
+import type { SessionProjectionMap } from '@singula-ai/alego-session-projection/types'
 import type { ObservableSnapshot } from '../contract/store.ts'
 import { Notifier } from './notifier.ts'
 
@@ -19,7 +19,7 @@ import { Notifier } from './notifier.ts'
 // client program (one program must not hold both sides). No second
 // client-side "views" table (rejected in the Alternatives of
 // .agents/notes/proposed/architecture/2026-07-27-session-projection-and-command-log.md).
-export type { SessionProjectionMap } from '@alego/session-projection/types'
+export type { SessionProjectionMap } from '@singula-ai/alego-session-projection/types'
 
 /**
  * The fifth framework hook seat (see the session-projection subsystem page,

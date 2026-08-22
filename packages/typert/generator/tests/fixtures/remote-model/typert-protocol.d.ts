@@ -1,4 +1,4 @@
-declare module '@alego/typert-protocol' {
+declare module '@singula-ai/alego-typert-protocol' {
   export interface TypertLookup<Host, Wire> {
     readonly host: Host
     readonly wire: Wire

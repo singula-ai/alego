@@ -10,16 +10,16 @@
  * disposing the old instance and creating a new one; identical `serverName`
  * reproduces identical public tool names.
  *
- * @module @alego/mcp-client
+ * @module @singula-ai/alego-mcp-client
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 import { RECONNECT_DEFAULTS, resolveReconnectPolicy, startConnection } from './connection.ts'
 import type { ReconnectConfig } from './connection.ts'
 // Side-effect type import: declaration-merges `ctx.tools` onto Context.
-import type {} from '@alego/tools'
+import type {} from '@singula-ai/alego-tools'
 
 export type { McpResult } from './tools.ts'
 export type { ReconnectConfig, ResolvedReconnectPolicy } from './connection.ts'

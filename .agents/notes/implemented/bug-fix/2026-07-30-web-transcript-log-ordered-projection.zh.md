@@ -33,11 +33,11 @@ surface 顺序还让另外两个问题成为结构性的。一次替换之后它
 本仓库对这一情形的既有答案是不含 cordis 的叶子子路径，本次变更就新增了一个：`COMPACT_CHECKPOINT_SOURCE` 与 `isCompactCheckpointSource` 现在住在 `packages/compaction/compaction/src/checkpoint.ts`，它不导入 cordis、也不增强任何模块（即 `alego-commands/brand` / `alego-llm/message` 的形状），而包根重新导出两者，因此每个宿主侧消费方——终端的 chat helper、`alego-session-reference` 的投影——都不需改动。适配器用仅类型导入把它的字面量钉在该声明上：
 
 ```ts
-import type { CompactionCheckpointSource } from '@alego/compaction/checkpoint'
+import type { CompactionCheckpointSource } from '@singula-ai/alego-compaction/checkpoint'
 const COMPACT_PLUGIN: CompactionCheckpointSource['plugin'] = 'compact'
 ```
 
-重命名 Service Definition 的插件 id 现在会在客户端产生编译错误：`TS2322: Type '"compact"' is not assignable to type '"compaction"'`。该导入必须保持**仅类型**——任何既非平台模块又非 inline-safe wire 层的 `@alego` 包值导入都会被客户端纯度门禁（`packages/client/tsdown.client.ts`）拒绝，而它自己的报错信息就记录着仅类型导入会被擦除、永不抵达该门禁。仅类型的叶子导入同时需要 `tsconfig.base.json` 的一条 `paths` 条目和 `packages/client/runtime/tsconfig.json` `references` 中的 `{"path": "../../compaction/compaction"}`：composite 的 `rootDir` 规则同样适用于被擦除的导入，缺少该引用时的诊断是 `TS6059`/`TS6307`。
+重命名 Service Definition 的插件 id 现在会在客户端产生编译错误：`TS2322: Type '"compact"' is not assignable to type '"compaction"'`。该导入必须保持**仅类型**——任何既非平台模块又非 inline-safe wire 层的 `@singula-ai` 包值导入都会被客户端纯度门禁（`packages/client/tsdown.client.ts`）拒绝，而它自己的报错信息就记录着仅类型导入会被擦除、永不抵达该门禁。仅类型的叶子导入同时需要 `tsconfig.base.json` 的一条 `paths` 条目和 `packages/client/runtime/tsconfig.json` `references` 中的 `{"path": "../../compaction/compaction"}`：composite 的 `rootDir` 规则同样适用于被擦除的导入，缺少该引用时的诊断是 `TS6059`/`TS6307`。
 
 `packages/client/ui-conversation/tests/conversation-node-definitions.client.spec.ts` 是行为侧的另一半，用检查点与溯源记录驱动压缩 Definition，并证明后续加载的旧分页可以补齐缺失的摘要数据。Definition 仅类型导入该叶子路径，使客户端继续与 compact 包根及经由它可达的宿主侧 `Context` 合并隔离。
 

@@ -1,19 +1,19 @@
 /**
  * Public agent types and live-runtime events. Durable transcript facts and
- * turn/step boundaries remain `@alego/session` events.
+ * turn/step boundaries remain `@singula-ai/alego-session` events.
  *
- * @module @alego/agent
+ * @module @singula-ai/alego-agent
  */
 
-import type { Context } from '@alego/cordis'
-import type { Scoped } from '@alego/scope'
-import type { LlmCallConfig, LlmFailure, ResolvedRetryPolicy } from '@alego/llm'
-import type { AgentCancelCause, Session, SessionId, UserMessage } from '@alego/session'
-export type { AgentCancelCause } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import type { Scoped } from '@singula-ai/alego-scope'
+import type { LlmCallConfig, LlmFailure, ResolvedRetryPolicy } from '@singula-ai/alego-llm'
+import type { AgentCancelCause, Session, SessionId, UserMessage } from '@singula-ai/alego-session'
+export type { AgentCancelCause } from '@singula-ai/alego-session'
 import type { Inbox } from './inbox.ts'
 import type { InboxTarget } from './types.ts'
-import type {} from '@alego/system-prompt'
-declare module '@alego/system-prompt' {
+import type {} from '@singula-ai/alego-system-prompt'
+declare module '@singula-ai/alego-system-prompt' {
   interface AssembleContext {
     /** Agent for this assembly; absent on diagnostics. When present, `scope` must identify the same agent. */
     agent?: Agent
@@ -143,7 +143,7 @@ export interface Agent {
   inject(message: UserMessage): void
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Events {
     // ---- lifecycle (emit) ----
     /**
@@ -153,7 +153,7 @@ declare module '@alego/cordis' {
      * rejection is reported. Detach requested during dispatch waits until every
      * creation listener has observed the stable entry.
      * @param payload.agent - the newly registered agent with its live session and completed setup.
-     * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
      * @mode emit
      */
     'agent/created'(this: Scoped<Agent>, payload: { agent: Agent }): void
@@ -162,7 +162,7 @@ declare module '@alego/cordis' {
      * and scoped-registration unwind, but before session detachment. Custom
      * registry users own their driver-ordering contract.
      * @param payload.agent - the exact agent removed from the registry.
-     * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
      * @mode emit
      */
     'agent/disposed'(this: Scoped<Agent>, payload: { agent: Agent }): void
@@ -172,7 +172,7 @@ declare module '@alego/cordis' {
      * driver remains scheduled or active.
      * @param payload.agent - the agent whose status flipped.
      * @param payload.status - the status just entered (the transition's destination).
-     * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
      * @mode emit
      */
     'agent/status'(this: Scoped<Agent>, payload: { agent: Agent; status: AgentStatus }): void
@@ -180,7 +180,7 @@ declare module '@alego/cordis' {
      * One message entered the live inbox.
      * @param payload.agent - the agent whose inbox changed.
      * @param payload.message - the inserted message.
-     * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
      * @mode emit
      */
     'agent/inbox/inserted'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage }): void
@@ -191,7 +191,7 @@ declare module '@alego/cordis' {
      * @param payload.agent - the agent whose inbox changed.
      * @param payload.message - the claimed message.
      * @param payload.turn - the owning turn.
-     * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
      * @mode emit
      */
     'agent/inbox/claimed'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage; turn: number }): void
@@ -199,7 +199,7 @@ declare module '@alego/cordis' {
      * One message was discarded from the live inbox.
      * @param payload.agent - the agent whose inbox changed.
      * @param payload.message - the discarded message.
-     * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
      * @mode emit
      */
     'agent/inbox/discarded'(this: Scoped<Agent>, payload: { agent: Agent; message: UserMessage }): void
@@ -211,7 +211,7 @@ declare module '@alego/cordis' {
      * driver starts.
      * @param payload.agent - the agent whose session lifecycle began.
      * @param payload.source - why the session started (fresh startup, resume, …).
-     * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
      * @mode emit
      */
     'agent/session-start'(this: Scoped<Agent>, payload: { agent: Agent; source: SessionStartSource }): void
@@ -225,7 +225,7 @@ declare module '@alego/cordis' {
      * @param payload.turn - the turn that will own the step.
      * @param payload.step - the step proposed by the loop.
      * @param payload.signal - the current turn's cancellation signal.
-     * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
      * @mode waterfall
      */
     'agent/pre-step'(this: Scoped<Agent>, payload: { agent: Agent; messages: UserMessage[]; turn: number; step: number; signal: AbortSignal }, next: () => Promise<PreStepDecision>): Promise<PreStepDecision>
@@ -238,7 +238,7 @@ declare module '@alego/cordis' {
      * @param payload.turn - the open turn number.
      * @param payload.step - the step whose request this is.
      * @param payload.signal - the current turn's explicit abort signal.
-     * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
      * @mode waterfall
     */
     'agent/request'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; signal: AbortSignal }, next: () => Promise<LlmCallConfig>): Promise<LlmCallConfig>
@@ -254,7 +254,7 @@ declare module '@alego/cordis' {
      * @param payload.failure - serializable facts normalized at the final adapter boundary.
      * @param payload.retryPolicy - the policy of the adapter registration that served the failed request.
      * @param payload.signal - the turn abort signal.
-     * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
      * @mode waterfall
      */
     'agent/request-error'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; provider: string; failure: LlmFailure; retryPolicy: ResolvedRetryPolicy | undefined; signal: AbortSignal }, next: () => Promise<RequestErrorAction>): Promise<RequestErrorAction>
@@ -272,7 +272,7 @@ declare module '@alego/cordis' {
      * @param payload.agent - the agent whose turn is at its stop boundary.
      * @param payload.turn - the turn about to close.
      * @param payload.signal - the current turn's explicit abort signal.
-     * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
      * @mode serial
      */
     'agent/turn-stopping'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; signal: AbortSignal }): Promise<void> | void
@@ -284,7 +284,7 @@ declare module '@alego/cordis' {
      * @param payload.turn - the turn in which the failure surfaced.
      * @param payload.step - the step at which the failure surfaced.
      * @param payload.error - the failure, verbatim.
-     * Scope-filtered dispatch (`@alego/scope`): agent-scoped listeners receive only that agent.
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
      * @mode emit
      */
     'agent/error'(this: Scoped<Agent>, payload: { agent: Agent; turn: number; step: number; error: unknown }): void

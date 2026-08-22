@@ -7,7 +7,7 @@ Archived: 2026-07-26
 
 ## 问题
 
-`@alego/subagent-mock` 曾是一个以工作区插件形式发布的可配置测试替身。它仅有两个外部消费方：`tool-subagent` 单元测试和工具目录生成器；运行时包、示例、快照配置和真实提供方都不会加载它。
+`@singula-ai/alego-subagent-mock` 曾是一个以工作区插件形式发布的可配置测试替身。它仅有两个外部消费方：`tool-subagent` 单元测试和工具目录生成器；运行时包、示例、快照配置和真实提供方都不会加载它。
 
 这个用途狭窄的 fixture（测试前置数据）需要维护 manifest（元数据清单）、导出、对等依赖（peer dependency）与开发依赖、项目引用、包（package）README 契约、Loader 组合测试、模块图成员关系以及文档例外。工具目录生成器挂载它，只是为了让生产消费方注册 schema，并不会执行子 agent。
 

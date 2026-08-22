@@ -11,8 +11,8 @@ import { describe, expect, it, vi } from 'vitest'
 import type {
   ApprovalRequestId, CordisDynamicPackageId, CordisDynamicPluginId, CordisDynamicPluginRunId,
   DynamicCordisClientSource, DynamicCordisHostHalfResult, DynamicCordisResolveAck,
-} from '@alego/api-remotes/client'
-import type { SessionId } from '@alego/client-connection/client'
+} from '@singula-ai/alego-api-remotes/client'
+import type { SessionId } from '@singula-ai/alego-client-connection/client'
 import { CordisRunOrchestrator } from '../src/client/orchestrator.ts'
 import type { CordisUserRunRequest } from '../src/client/orchestrator.ts'
 import type { DynamicCordisLoadResult, DynamicCordisPackageRunner } from '../src/client/runtime.ts'

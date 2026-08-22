@@ -1,5 +1,5 @@
-import { defineProperty } from '@alego/cosmokit'
-import type { Dict } from '@alego/cosmokit'
+import { defineProperty } from '@singula-ai/cosmokit'
+import type { Dict } from '@singula-ai/cosmokit'
 import type { StandardSchemaV1 } from '@standard-schema/spec'
 import { Context } from './context.ts'
 import { Fiber } from './fiber.ts'

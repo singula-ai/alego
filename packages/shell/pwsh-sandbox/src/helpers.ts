@@ -1,15 +1,15 @@
 /**
  * Internal sandbox-result classification helpers — deliberate call-for-call
- * mirror of `@alego/bash-sandbox/src/helpers.ts` (the pwsh twin of
+ * mirror of `@singula-ai/alego-bash-sandbox/src/helpers.ts` (the pwsh twin of
  * the bash consumer shares the identical classification dialect).
  *
- * @module @alego/pwsh-sandbox/helpers
+ * @module @singula-ai/alego-pwsh-sandbox/helpers
  */
 
 /* jscpd:ignore-start */
 import { accessSync, constants, statSync } from 'node:fs'
-import type { ShellRunResult } from '@alego/shell'
-import type { RunnerFailureRule } from '@alego/sandbox'
+import type { ShellRunResult } from '@singula-ai/alego-shell'
+import type { RunnerFailureRule } from '@singula-ai/alego-sandbox'
 
 /** Node-local spawn codes proven to identify executable resolution or permission failure. */
 const EXECUTABLE_SPAWN_CODES = new Set(['EACCES', 'ENOENT'])

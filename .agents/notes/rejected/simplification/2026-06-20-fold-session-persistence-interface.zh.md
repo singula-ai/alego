@@ -18,7 +18,7 @@ Status: rejected — 独立的持久化 Service Definition 包是持久化能力
 
 ## 验收标准
 
-- `@alego/session-persistence` 作为包被移除。
+- `@singula-ai/alego-session-persistence` 作为包被移除。
 - `alego-session` 导出持久化服务类型、协调器和约定辅助工具。
 - JSONL 和 SQLite 后端包直接依赖 `alego-session`。
 - `agent-loop` 的恢复功能使用会话包拥有的服务键。

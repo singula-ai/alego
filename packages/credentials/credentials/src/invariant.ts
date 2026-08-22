@@ -1,12 +1,12 @@
 /**
- * Package-owned invariant companion for `@alego/credentials`.
- * @module @alego/credentials/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-credentials`.
+ * @module @singula-ai/alego-credentials/invariant
  */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/credentials'
+const PACKAGE_NAME = '@singula-ai/alego-credentials'
 
 /** Cordis companion plugin name. */
 export const name = 'credentials-invariant'

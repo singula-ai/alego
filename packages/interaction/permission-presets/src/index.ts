@@ -10,21 +10,21 @@
  * @module alego-permission-presets
  */
 
-import { Context, Service } from '@alego/cordis'
-import z from '@alego/schemastery'
+import { Context, Service } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import { z as zod } from 'zod'
-import type { Session, SessionEvent } from '@alego/session'
-import type { SandboxMode } from '@alego/sandbox'
-import { SANDBOX_MODES, effectiveSandboxMode, setSandboxMode } from '@alego/sandbox-policy'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import type { SandboxMode } from '@singula-ai/alego-sandbox'
+import { SANDBOX_MODES, effectiveSandboxMode, setSandboxMode } from '@singula-ai/alego-sandbox-policy'
 // Side-effect type import: declaration-merges `ctx.shell` (the capability fact
 // `sandboxMode` this service reads), without a value dependency on the seam.
-import type {} from '@alego/shell'
-import type { ApprovalPolicy } from '@alego/user-approval'
-import { APPROVAL_POLICIES, effectiveApprovalPolicy, setApprovalPolicy } from '@alego/user-approval'
-import { installSettingsSection, settingsNamespace } from '@alego/settings'
+import type {} from '@singula-ai/alego-shell'
+import type { ApprovalPolicy } from '@singula-ai/alego-user-approval'
+import { APPROVAL_POLICIES, effectiveApprovalPolicy, setApprovalPolicy } from '@singula-ai/alego-user-approval'
+import { installSettingsSection, settingsNamespace } from '@singula-ai/alego-settings'
 // Type-only: resolves ctx.sessionProjections / ctx.commands for the optional children.
-import type {} from '@alego/session-projection'
-import type {} from '@alego/commands'
+import type {} from '@singula-ai/alego-session-projection'
+import type {} from '@singula-ai/alego-commands'
 import type { PermissionSelect, PresetOption } from './types.ts'
 
 // The `permissions` projection-key declaration lives in src/types.ts (its one
@@ -33,13 +33,13 @@ import type { PermissionSelect, PresetOption } from './types.ts'
 // consuming the declarations still receive the SessionProjectionMap merge.
 export type * from './types.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     permissionPresets: PermissionPresetService
   }
 }
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * Records the selected preset as durable, log-only user intent. The knob
@@ -100,7 +100,7 @@ export interface KnobState {
   approval: ApprovalPolicy | null
 }
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionStateMap {
     permissions: KnobState
   }

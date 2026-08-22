@@ -1,4 +1,4 @@
-import type { Branded } from '@alego/brand'
+import type { Branded } from '@singula-ai/alego-brand'
 import type {
   AssistantMessage,
   CallId,
@@ -10,7 +10,7 @@ import type {
   ToolResultMessage,
   ToolSchema,
   UserMessage,
-} from '@alego/llm'
+} from '@singula-ai/alego-llm'
 import type { JsonValue } from './json.ts'
 
 // The lossless-JSON payload type belongs to this client-safe face too: a wire

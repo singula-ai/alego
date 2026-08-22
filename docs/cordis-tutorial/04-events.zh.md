@@ -9,9 +9,9 @@
 创建 `stats.ts`，将它放在 `tmp/cordis-tutorial` 中。它是一项负责计数并在每次变化时发出通知的服务：
 
 ```ts
-import { Service, type Context } from '@alego/cordis'
+import { Service, type Context } from '@singula-ai/cordis'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     stats: StatsService
   }
@@ -46,7 +46,7 @@ export function apply(ctx: Context) {
 创建 `reporter.ts`：
 
 ```ts ignore-check
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {} from './stats.ts'
 
 export const name = 'reporter'
@@ -96,9 +96,9 @@ export function apply(ctx: Context) {
 waterfall 是实现拦截的模式。每个监听器都会收到参数和一个 `next()` continuation；它可以转换 `next()` 的返回值，也可以不调用 `next()` 就直接返回，从而短路链条的其余部分。Cordis 文档把后一种行为称为否决。创建 `waterfall-demo.ts`：
 
 ```ts
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Events {
     'demo/transform'(input: string, next: () => Promise<string>): Promise<string>
   }

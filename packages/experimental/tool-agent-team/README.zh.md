@@ -1,4 +1,4 @@
-# @alego/experimental-tool-agent-team
+# @singula-ai/alego-experimental-tool-agent-team
 
 [English](README.md) | 中文
 
@@ -8,7 +8,7 @@
 
 ```yaml
 - id: tool-agent-team
-  name: '@alego/experimental-tool-agent-team'
+  name: '@singula-ai/alego-experimental-tool-agent-team'
   config:
     freshProvider: spawn
     forkProvider: fork
@@ -18,7 +18,7 @@
 
 ## 工具与权限
 
-生成的[工具目录](../../../docs/tool-catalog.zh.md#alegoexperimental-tool-agent-team)负责精确 schema。该适配器提供 teammate 创建；quiet 与 waking peer 投递；roster 列表、等待和仅限 Lead 的 interrupt；以及任务 create／list／get／CAS update 操作。
+生成的[工具目录](../../../docs/tool-catalog.zh.md#singula-aialego-experimental-tool-agent-team)负责精确 schema。该适配器提供 teammate 创建；quiet 与 waking peer 投递；roster 列表、等待和仅限 Lead 的 interrupt；以及任务 create／list／get／CAS update 操作。
 
 每个工具都要求完全相同的调用 `Agent`。`spawn_teammate` 与 `interrupt_agent` 在 `ctx.agentTeams` 内部强制执行 Lead 权限，而不只依赖描述。所有成员都可以与任意 peer 通讯并使用任务板。任务变更保留领域层的 Owner／Lead 与 revision 校验。
 

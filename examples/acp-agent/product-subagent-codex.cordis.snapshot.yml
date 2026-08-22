@@ -1,16 +1,16 @@
 # Keyless twin of product-subagent-codex.cordis.yml: keep both named product
 # providers and tools while replacing only the external model adapter.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - insert:
           - id: llm-replay
-            name: '@alego/llm-replay'
+            name: '@singula-ai/alego-llm-replay'
             config:
               providers:
                 - id: deepseek-official
@@ -19,22 +19,22 @@
                     - id: deepseek-v4-flash
                     - id: deepseek-v4-pro
           - id: subagent-codex-primary
-            name: '@alego/subagent-codex'
+            name: '@singula-ai/alego-subagent-codex'
             config:
               providerName: codex-primary
           - id: subagent-codex-secondary
-            name: '@alego/subagent-codex'
+            name: '@singula-ai/alego-subagent-codex'
             config:
               providerName: codex-secondary
           - id: tool-subagent-codex-primary
-            name: '@alego/tool-subagent'
+            name: '@singula-ai/alego-tool-subagent'
             config:
               provider: codex-primary
               toolName: subagent_codex_primary
               backgroundMode: one-shot
               maxDepth: provider-managed
           - id: tool-subagent-codex-secondary
-            name: '@alego/tool-subagent'
+            name: '@singula-ai/alego-tool-subagent'
             config:
               provider: codex-secondary
               toolName: subagent_codex_secondary

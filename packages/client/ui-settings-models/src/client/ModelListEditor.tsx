@@ -16,8 +16,8 @@
 
 import { useState } from 'react'
 import type { ReactNode } from 'react'
-import type { DiscoveredModelView, IApiClient } from '@alego/api-remotes/client'
-import { Button, Modal } from '@alego/client-ui-primitives'
+import type { DiscoveredModelView, IApiClient } from '@singula-ai/alego-api-remotes/client'
+import { Button, Modal } from '@singula-ai/alego-client-ui-primitives'
 import { formatCapacity, parseCapacity } from './DeepSeekModelsEditor.tsx'
 import type { DeepSeekModelDraft } from './DeepSeekModelsEditor.tsx'
 import { messageOf } from './store.ts'

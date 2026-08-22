@@ -12,7 +12,7 @@
  */
 
 import { EventSourceParserStream } from 'eventsource-parser/stream'
-import { LlmError } from '@alego/llm'
+import { LlmError } from '@singula-ai/alego-llm'
 
 /** The terminal payload DeepSeek (and OpenAI) send after the last chunk. */
 export const DONE = '[DONE]'

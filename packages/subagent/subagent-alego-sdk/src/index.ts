@@ -7,13 +7,13 @@
  * `request.parent` is the session's workspace cwd. This plugin uses named
  * exports only; a default would hide its loader metadata (see
  * `docs/postmortem/0001-acp-default-export-drops-inject.md`).
- * @module @alego/subagent-alego-sdk
+ * @module @singula-ai/alego-subagent-alego-sdk
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { SubagentCapabilities, SubagentProvider, SubagentStartRequest } from '@alego/subagent'
-import { assertPositiveFinite, NO_START_CAPABILITIES, resolveChildCwd, validateConfiguredCwd } from '@alego/subagent'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { SubagentCapabilities, SubagentProvider, SubagentStartRequest } from '@singula-ai/alego-subagent'
+import { assertPositiveFinite, NO_START_CAPABILITIES, resolveChildCwd, validateConfiguredCwd } from '@singula-ai/alego-subagent'
 import {
   DEFAULT_DISPOSE_EOF_GRACE_MS,
   DEFAULT_DISPOSE_GRACE_MS,

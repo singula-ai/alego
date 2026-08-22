@@ -2,12 +2,12 @@
  * Fixed physical-record compression for SQLite. Schema-owned functions
  * encode logical events and decode tagged rows before persistence consumers
  * observe them.
- * @module @alego/session-persistence-sqlite/compression
+ * @module @singula-ai/alego-session-persistence-sqlite/compression
  */
 
 import { TextDecoder } from 'node:util'
 import { constants, zstdCompressSync, zstdDecompressSync } from 'node:zlib'
-import type { SessionEvent, SurfaceEventType } from '@alego/session'
+import type { SessionEvent, SurfaceEventType } from '@singula-ai/alego-session'
 import {
   decodeSerializedChunkRow,
   type ChunkRow,

@@ -3,7 +3,7 @@
  * `.env`, install the fail-loud Loader guards, resolve the config path (snapshot-aware), load the
  * optional user patch layers from the Harness home (`~/.alego`), expose its path resolver to
  * config expressions, and drive the Cordis Loader against a leaf `cordis.yml` until the tree settles.
- * @module @alego/app-boot
+ * @module @singula-ai/alego-app-boot
  */
 
 import { pathToFileURL } from 'node:url'
@@ -11,17 +11,17 @@ import { readFileSync } from 'node:fs'
 import { parseEnv } from 'node:util'
 import { basename, dirname, isAbsolute, resolve } from 'node:path'
 import * as yaml from 'js-yaml'
-import { Context, type FiberState } from '@alego/cordis'
-import Loader, { type Entry, type EntryOptions } from '@alego/cordis-plugin-loader'
-import Include, { applyEntryPatches, entryListSchema, type PatchOptions } from '@alego/cordis-plugin-include'
-import Group from '@alego/cordis-plugin-group'
-import { alegoHomePath, resolveAlegoHome } from '@alego/home-paths'
-import { createLaunchEnvironmentSnapshot, type LaunchEnvironmentSnapshot } from '@alego/launch-environment'
-import type {} from '@alego/cordis-plugin-hmr'
+import { Context, type FiberState } from '@singula-ai/cordis'
+import Loader, { type Entry, type EntryOptions } from '@singula-ai/cordis-plugin-loader'
+import Include, { applyEntryPatches, entryListSchema, type PatchOptions } from '@singula-ai/cordis-plugin-include'
+import Group from '@singula-ai/cordis-plugin-group'
+import { alegoHomePath, resolveAlegoHome } from '@singula-ai/alego-home-paths'
+import { createLaunchEnvironmentSnapshot, type LaunchEnvironmentSnapshot } from '@singula-ai/alego-launch-environment'
+import type {} from '@singula-ai/cordis-plugin-hmr'
 // Side-effect type import: resolves `ctx.get('systemPrompt')` to the service.
-import type {} from '@alego/system-prompt'
+import type {} from '@singula-ai/alego-system-prompt'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     /** Harness-home path resolver available to Loader `!!js` config expressions. */
     alegoHomePath?: typeof alegoHomePath
@@ -266,7 +266,7 @@ export async function watchUserPatches(
 
 /**
  * Load an optional patch-list file: a top-level YAML array of loader patch
- * entries (`@alego/cordis-plugin-include`'s `PatchOptions`): id-targeted config
+ * entries (`@singula-ai/cordis-plugin-include`'s `PatchOptions`): id-targeted config
  * overrides and `insert` lists, with `!!js` expressions allowed. A missing
  * file means "no layer"; an unreadable, unparsable, or non-array file throws —
  * a present patch file that cannot apply is a misconfiguration and must fail
@@ -306,7 +306,7 @@ export function loadOverlayPatches(binName: string, file: string): PatchOptions[
 }
 /**
  * Parse one loader patch list: a top-level YAML array of
- * `@alego/cordis-plugin-include` `PatchOptions` (id-targeted config overrides and
+ * `@singula-ai/cordis-plugin-include` `PatchOptions` (id-targeted config overrides and
  * `insert` lists, `!!js` expressions allowed). Every invalid field or value throws,
  * because a patch file that cannot be applied at all is a misconfiguration; a
  * single patch whose target row is absent stays a per-entry Loader warning, so
@@ -504,7 +504,7 @@ export async function mountRootInclude(
     }
   // `cordis:group` alongside it: a group row is how a composition gives one
   // `isolate` realm to a provider and its consumers together, and an agent
-  // preset living outside this workspace cannot resolve `@alego/cordis-plugin-group`
+  // preset living outside this workspace cannot resolve `@singula-ai/cordis-plugin-group`
   // by name. Both builtins load through the ambient module pipeline, so neither
   // depends on the included tree's own specifier resolution.
   ctx.loader.builtins.group = Group

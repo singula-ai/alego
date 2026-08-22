@@ -16,7 +16,7 @@ Package ownership must also be exhaustive. Without a mechanical repository rule,
 
 ### One registry service, package-owned contributions
 
-`@alego/invariants` is a product-independent Cordis service plugin that registers `ctx.invariants`. It owns configuration, registration uniqueness, child-fiber lifecycle, and package-attributed failures. It imports no session, agent, scope, or agent-loop package and contains none of their checks.
+`@singula-ai/alego-invariants` is a product-independent Cordis service plugin that registers `ctx.invariants`. It owns configuration, registration uniqueness, child-fiber lifecycle, and package-attributed failures. It imports no session, agent, scope, or agent-loop package and contains none of their checks.
 
 Every workspace package publishes a `./invariant` companion plugin that registers its exact full npm name. A companion checks a meaningful event or mutable-data relationship when its owner has one; otherwise it carries an owner-specific explanation for its empty installer. Generated ownership placeholders and synthetic API-shape assertions are forbidden by the follow-up [runtime-contract Agent Note](2026-07-19-package-invariant-runtime-contracts.md). Package root entrypoints do not import or register diagnostics implicitly, so loading a root package does not change runtime checking or require the invariant service.
 
@@ -59,10 +59,10 @@ The former functional-plugin entry point and one-argument `InvariantError` const
 
 | Companion entry | Registration name | Owned checks |
 |---|---|---|
-| `@alego/session/invariant` | `@alego/session` | session sequence, turn/step enclosure, and same-step call/result trace |
-| `@alego/agent/invariant` | `@alego/agent` | agent-status transitions |
-| `@alego/scope/invariant` | `@alego/scope` | scoped-event carrier presence and subject consistency |
-| `@alego/agent-loop/invariant` | `@alego/agent-loop` | model-request reconstruction |
+| `@singula-ai/alego-session/invariant` | `@singula-ai/alego-session` | session sequence, turn/step enclosure, and same-step call/result trace |
+| `@singula-ai/alego-agent/invariant` | `@singula-ai/alego-agent` | agent-status transitions |
+| `@singula-ai/alego-scope/invariant` | `@singula-ai/alego-scope` | scoped-event carrier presence and subject consistency |
+| `@singula-ai/alego-agent-loop/invariant` | `@singula-ai/alego-agent-loop` | model-request reconstruction |
 
 These four owners supplied the initial stateful checks. The follow-up runtime-contract decision adds checks for seventeen more owners with real event or mutable-data relationships and records justified empty companions for the rest. Every companion is a separately bundled `./invariant` export with its own declarations and Loader-safe namespace plugin shape; the service package's own companion imports its local service type to avoid a self-dependency.
 

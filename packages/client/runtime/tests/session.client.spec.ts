@@ -7,9 +7,9 @@
  */
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { SessionEvent } from '@alego/session/types'
-import type {} from '@alego/commands/types'
-import type { SessionId } from '@alego/api-remotes/client'
+import type { SessionEvent } from '@singula-ai/alego-session/types'
+import type {} from '@singula-ai/alego-commands/types'
+import type { SessionId } from '@singula-ai/alego-api-remotes/client'
 import { Session } from '../src/client/sessions/session.ts'
 import type {
   ChatConversationViewNode, ChatLocationNodeIndex, ChatNodeStore, ChatSnapshot,

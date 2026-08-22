@@ -7,14 +7,14 @@
  */
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render } from '@testing-library/react'
-import { bindSnapshotSelector } from '@alego/client-test-runtime'
+import { bindSnapshotSelector } from '@singula-ai/alego-client-test-runtime'
 import {
   createSnapshotStore, EMPTY_CHAT_SNAPSHOT, EMPTY_CONVERSATION_VIEWS,
-} from '@alego/client-runtime/client'
-import type { ClientContext, ConversationSnapshot, SessionId } from '@alego/client-runtime/client'
-import type { SubmitImageAttachment, SubmitOutcome } from '@alego/client-ui-input-trigger/client'
-import { makeTranslate } from '@alego/client-test-runtime'
-import { zh as commonZh } from '@alego/client-locale/src/locales/zh.ts'
+} from '@singula-ai/alego-client-runtime/client'
+import type { ClientContext, ConversationSnapshot, SessionId } from '@singula-ai/alego-client-runtime/client'
+import type { SubmitImageAttachment, SubmitOutcome } from '@singula-ai/alego-client-ui-input-trigger/client'
+import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
 import type { DraftAttachmentId } from '../src/client/input/contract.ts'
 import { SessionInputShell } from '../src/client/input/facade.ts'
 import { InputBar } from '../src/client/skeleton/InputBar.tsx'

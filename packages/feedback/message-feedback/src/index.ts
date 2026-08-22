@@ -1,17 +1,17 @@
 /**
  * Durable, lifecycle-bound feedback for finalized assistant messages.
- * @module @alego/message-feedback
+ * @module @singula-ai/alego-message-feedback
  */
 
 import { Buffer } from 'node:buffer'
 import { randomUUID } from 'node:crypto'
-import { Context, Service } from '@alego/cordis'
-import s from '@alego/schemastery'
-import { deriveEventMessage, isAppendSurfaceEvent } from '@alego/session/surface'
-import type { SessionHeader, SessionId } from '@alego/session/types'
-import type { SessionInspection } from '@alego/session-persistence'
-import type { KvTable } from '@alego/storage-domain'
-import { TypertRemoteService, Remote } from '@alego/typert-protocol'
+import { Context, Service } from '@singula-ai/cordis'
+import s from '@singula-ai/schemastery'
+import { deriveEventMessage, isAppendSurfaceEvent } from '@singula-ai/alego-session/surface'
+import type { SessionHeader, SessionId } from '@singula-ai/alego-session/types'
+import type { SessionInspection } from '@singula-ai/alego-session-persistence'
+import type { KvTable } from '@singula-ai/alego-storage-domain'
+import { TypertRemoteService, Remote } from '@singula-ai/alego-typert-protocol'
 import { messageFeedbackDomainSpec } from './spec.ts'
 import type { MessageFeedbackRow, MessageFeedbackSessionIdentity } from './spec.ts'
 import type {
@@ -51,7 +51,7 @@ export interface Config {
   readonly maxNoteBytes: number
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     messageFeedback: MessageFeedbackService
   }

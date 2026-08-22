@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { credentialKey } from '@alego/credentials'
-import InvariantRegistry from '@alego/invariants'
-import AuthorizationService from '@alego/authorization'
+import { Context } from '@singula-ai/cordis'
+import { credentialKey } from '@singula-ai/alego-credentials'
+import InvariantRegistry from '@singula-ai/alego-invariants'
+import AuthorizationService from '@singula-ai/alego-authorization'
 import * as AuthorizationInvariant from '../src/invariant.ts'
 import { MemoryCredentials } from './memory.ts'
 
@@ -81,7 +81,7 @@ describe('authorization invariant companion', () => {
     await ctx.plugin(AuthorizationInvariant)
 
     expect(() => {
-      ctx.invariants.register('@alego/authorization', () => {})
+      ctx.invariants.register('@singula-ai/alego-authorization', () => {})
     }).toThrow(/already registered/)
   })
 })

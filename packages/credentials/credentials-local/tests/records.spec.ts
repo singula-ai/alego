@@ -3,12 +3,12 @@
 // through one serialized read-modify-write so a rotating credential cannot be
 // lost between processes.
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { credentialKey, credentialKeyScope, credentialRef, parseCredentialKey } from '@alego/credentials'
-import type { CredentialKey, CredentialRecord } from '@alego/credentials'
+import { credentialKey, credentialKeyScope, credentialRef, parseCredentialKey } from '@singula-ai/alego-credentials'
+import type { CredentialKey, CredentialRecord } from '@singula-ai/alego-credentials'
 import { LocalCredentialProvider } from '../src/index.ts'
 
 /** Credential documents are seeded owner-only, exactly as the provider creates them. */

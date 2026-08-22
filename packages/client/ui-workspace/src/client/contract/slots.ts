@@ -22,15 +22,15 @@
  * and a hole has exactly one declaring entry — they carry the same owner
  * contract and the same occupant.
  */
-import type { HostDescriptionSource } from '@alego/client-connection/client'
-import type { HostObservable, PropsHooks, PropsLocale, PropsRenderSlots, PropsRuntime, PropsStore } from '@alego/client-ui-slots'
+import type { HostDescriptionSource } from '@singula-ai/alego-client-connection/client'
+import type { HostObservable, PropsHooks, PropsLocale, PropsRenderSlots, PropsRuntime, PropsStore } from '@singula-ai/alego-client-ui-slots'
 // Type-only: pull the owner SlotMap merges into programs that resolve the
 // runtime shares below.
-import type {} from '@alego/client-ui-sidebar/client'
-import type {} from '@alego/client-ui-conversation/client'
+import type {} from '@singula-ai/alego-client-ui-sidebar/client'
+import type {} from '@singula-ai/alego-client-ui-conversation/client'
 import type {
   SessionId, SessionSearchResultItem, WorkspaceId, WorkspaceView,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import type { createWorkspaceViewStore } from '../stores.ts'
 
 /**
@@ -51,7 +51,7 @@ export interface DirectoryFlowOwnerProps {
   onError: (message: string) => void
 }
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface SlotMap {
     /** Directory-flow hole under the conversation empty-state picker (declared by the WorkspacePicker entry). */
     'conversation.hero.workspace.directoryFlow': { kind: 'single'; scope: 'root'; owner: DirectoryFlowOwnerProps }

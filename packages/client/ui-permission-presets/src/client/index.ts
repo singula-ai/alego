@@ -13,18 +13,18 @@
  * The General-settings row separately writes the default preset for sessions
  * created later through the host Settings API.
  */
-import type { ConnectionHandle } from '@alego/api-remotes/client'
+import type { ConnectionHandle } from '@singula-ai/alego-api-remotes/client'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
-import type {} from '@alego/client-locale/client'
+import type {} from '@singula-ai/alego-client-locale/client'
 // Type-only: the settings slot types (this package registers a General row).
-import type {} from '@alego/client-ui-settings/client'
+import type {} from '@singula-ai/alego-client-ui-settings/client'
 // Type-only: pulls the ctx.remote merge and the forwarded-event key face
 // (the settings invalidation rides the allowlist) into this program.
-import type {} from '@alego/api-remotes/client'
-import type { ClientContext, SessionFace } from '@alego/client-runtime/client'
-import type { CommandUiContract, SelectOption } from '@alego/client-ui-commands/client'
-import type { ClientSessionContext } from '@alego/client-ui-input-trigger/client'
-import type { PermissionSelect } from '@alego/permission-presets/client'
+import type {} from '@singula-ai/alego-api-remotes/client'
+import type { ClientContext, SessionFace } from '@singula-ai/alego-client-runtime/client'
+import type { CommandUiContract, SelectOption } from '@singula-ai/alego-client-ui-commands/client'
+import type { ClientSessionContext } from '@singula-ai/alego-client-ui-input-trigger/client'
+import type { PermissionSelect } from '@singula-ai/alego-permission-presets/client'
 import { PermissionRow } from './PermissionRow.tsx'
 import type { PermissionRowInjected } from './PermissionRow.tsx'
 import {

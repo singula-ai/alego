@@ -1,4 +1,4 @@
-import type { ContentBlock, ToolSchema } from '@alego/llm/types'
+import type { ContentBlock, ToolSchema } from '@singula-ai/alego-llm/types'
 import type {
   AssistantProvenanceView, AssistantRequestConfig,
 } from './conversation.ts'

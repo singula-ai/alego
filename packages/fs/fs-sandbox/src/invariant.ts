@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/fs-sandbox`.
- * @module @alego/fs-sandbox/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-fs-sandbox`.
+ * @module @singula-ai/alego-fs-sandbox/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/fs-sandbox'
+const PACKAGE_NAME = '@singula-ai/alego-fs-sandbox'
 
 /** Cordis companion plugin name. */
 export const name = 'fs-sandbox-invariant'

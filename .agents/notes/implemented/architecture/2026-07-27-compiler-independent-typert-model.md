@@ -12,7 +12,7 @@ The host and client are independent TypeScript projects; placing both in one `ts
 
 ## Decision
 
-[`alego-typert-generator`](../../../../packages/typert/generator/README.md) builds separate `ts.Program` instances from the host and client projects and uses compiler nodes, symbols, and checkers only as extraction tools. After analysis, every generator and scanner consumes only Typert's own `WorkspaceModel`, `FaceModel`, and `TypeGraph`; the model retains no AST or checker objects. The generator has no dependency on `@alego/typert-registry`.
+[`alego-typert-generator`](../../../../packages/typert/generator/README.md) builds separate `ts.Program` instances from the host and client projects and uses compiler nodes, symbols, and checkers only as extraction tools. After analysis, every generator and scanner consumes only Typert's own `WorkspaceModel`, `FaceModel`, and `TypeGraph`; the model retains no AST or checker objects. The generator has no dependency on `@singula-ai/alego-typert-registry`.
 
 TypeGraph preserves the developer-authored, pre-evaluation type structure, including generic parameters and applications, explicit inheritance, conditional and mapped types, recursive references, and JSDoc. A reachable type that cannot be represented losslessly causes analysis to fail. If an emitter cannot handle an already modeled node, that emitter fails instead of flattening the type or degrading it to `unknown`.
 

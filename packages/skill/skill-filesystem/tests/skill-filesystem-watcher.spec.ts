@@ -4,8 +4,8 @@ import { mkdir, realpath, rm, symlink, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import SkillRegistry from '@alego/skill'
+import { Context } from '@singula-ai/cordis'
+import SkillRegistry from '@singula-ai/alego-skill'
 
 interface FakeWatcherControl {
   emitter: EventEmitter

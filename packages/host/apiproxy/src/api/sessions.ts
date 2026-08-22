@@ -4,18 +4,18 @@
  * else references RequestPayload<'session.*'> / ResponseValue<'session.*'>.
  */
 
-import type { MessageId } from '@alego/llm/brand'
-import type { AttachmentIdType, ImageAttachmentLimits, ImageAttachmentRef, ImageMediaType } from '@alego/attachment'
-import type { ContentBlock } from '@alego/llm/types'
-import type { SessionEvent, SessionId } from '@alego/session/types'
+import type { MessageId } from '@singula-ai/alego-llm/brand'
+import type { AttachmentIdType, ImageAttachmentLimits, ImageAttachmentRef, ImageMediaType } from '@singula-ai/alego-attachment'
+import type { ContentBlock } from '@singula-ai/alego-llm/types'
+import type { SessionEvent, SessionId } from '@singula-ai/alego-session/types'
 // The pure-type outlet: api/ is browser-importable, and the package root's
 // cordis Context merge (via alego-agent) must not enter client aggregates.
-import type { SessionProjectionMap } from '@alego/session-projection/types'
+import type { SessionProjectionMap } from '@singula-ai/alego-session-projection/types'
 import type { RpcId, RpcRequest, RpcResponse } from './rpc.ts'
 import type { ToolEventView } from './events.ts'
 import type { WorkspaceId } from './workspace.ts'
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionStateMap {
     sessionListMetadata: SessionListMetadata
     imageLimits: null
@@ -47,7 +47,7 @@ export interface SessionListMetadata {
   lastPromptAt: number | null
 }
 
-declare module '@alego/llm' {
+declare module '@singula-ai/alego-llm' {
   interface MessageSourceMap {
     /**
      * The prompt's rpcId is passed through MessageSource into the `user/message` event

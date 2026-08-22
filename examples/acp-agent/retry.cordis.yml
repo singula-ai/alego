@@ -6,12 +6,12 @@
 # adapter fields around `retryPolicy`, while the app patch re-pins the recorded
 # flash model and restates its base fields.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         config:
           thinking: enabled
           reasoningEffort: max
@@ -26,7 +26,7 @@
             - id: deepseek-v4-flash
             - id: deepseek-v4-pro
       - id: acp-agent
-        name: '@alego/acp-demo'
+        name: '@singula-ai/alego-acp-demo'
         config:
           provider: deepseek-official
           model: deepseek-v4-flash

@@ -1,7 +1,7 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import type { ShellExecRequest, ShellExecSpec, ShellExecutor, ShellRunResult } from '@alego/shell'
-import { DEFAULT_HOOK_TIMEOUT_MS, runHook } from '@alego/hook-protocol'
-import type { RunHookOptions } from '@alego/hook-protocol'
+import type { ShellExecRequest, ShellExecSpec, ShellExecutor, ShellRunResult } from '@singula-ai/alego-shell'
+import { DEFAULT_HOOK_TIMEOUT_MS, runHook } from '@singula-ai/alego-hook-protocol'
+import type { RunHookOptions } from '@singula-ai/alego-hook-protocol'
 
 /**
  * A minimal stand-in for the bits of {@link ShellExecutor} that {@link runHook}

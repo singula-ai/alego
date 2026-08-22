@@ -1,4 +1,4 @@
-# @alego/lsp
+# @singula-ai/alego-lsp
 
 English | [中文](README.zh.md)
 
@@ -8,9 +8,9 @@ This package owns the Service Definition role of the LSP capability:
 
 | Package | Role |
 |---|---|
-| `@alego/lsp` (this) | Service Definition: the service, provider registry keyed by branded id + extension mapping, per-query selection, request/result vocabulary, the `LspError` taxonomy |
-| `@alego/lsp-stdio` | Service Provider: a generic local backend that registers configured stdio language-server providers |
-| `@alego/tool-lsp` | Consumer: the model-facing `lsp` tool over `ctx.lsp` |
+| `@singula-ai/alego-lsp` (this) | Service Definition: the service, provider registry keyed by branded id + extension mapping, per-query selection, request/result vocabulary, the `LspError` taxonomy |
+| `@singula-ai/alego-lsp-stdio` | Service Provider: a generic local backend that registers configured stdio language-server providers |
+| `@singula-ai/alego-tool-lsp` | Consumer: the model-facing `lsp` tool over `ctx.lsp` |
 
 The seam exposes exactly four semantic operations — `goToDefinition`, `findReferences`, `goToImplementation`, `hover` — and no generic JSON-RPC escape hatch, so no protocol payload or unreviewed command/mutation reaches a provider through `ctx.lsp`.
 

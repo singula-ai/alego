@@ -5,9 +5,9 @@
  * settings surface.
  */
 import { useState } from 'react'
-import type { PropsLocale, PropsRuntime, PropsStore } from '@alego/client-ui-slots'
-import { IconChevronDownOutline14, Menu } from '@alego/client-ui-primitives'
-import type {} from '@alego/client-ui-settings/client'
+import type { PropsLocale, PropsRuntime, PropsStore } from '@singula-ai/alego-client-ui-slots'
+import { IconChevronDownOutline14, Menu } from '@singula-ai/alego-client-ui-primitives'
+import type {} from '@singula-ai/alego-client-ui-settings/client'
 import type { createLanguageRowStore } from './settings-store.ts'
 import css from './LanguageRow.module.css'
 

@@ -1,11 +1,11 @@
 /**
  * Human-facing `/compact` command over the backend-independent compaction seam.
- * @module @alego/command-compact
+ * @module @singula-ai/alego-command-compact
  */
 
-import type { Context } from '@alego/cordis'
-import { ManualCompactionError } from '@alego/compaction'
-import type { CommandInvocation, CommandResult } from '@alego/commands'
+import type { Context } from '@singula-ai/cordis'
+import { ManualCompactionError } from '@singula-ai/alego-compaction'
+import type { CommandInvocation, CommandResult } from '@singula-ai/alego-commands'
 
 export const name = 'command-compact'
 export const inject = ['commands', 'compaction']

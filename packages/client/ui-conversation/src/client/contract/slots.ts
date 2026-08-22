@@ -1,18 +1,18 @@
 /** Conversation slot declarations and their composed component props. */
 import type { ReactNode, RefObject } from 'react'
-import type { ImageAttachmentRef } from '@alego/attachment'
+import type { ImageAttachmentRef } from '@singula-ai/alego-attachment'
 import type {
   InjectFace, MaybeSnapshotSelectorHook, PropsLocale, PropsRenderSlots, PropsRuntime, PropsStore,
   SlotHookFactory, SnapshotSelectorHook,
-} from '@alego/client-ui-slots'
+} from '@singula-ai/alego-client-ui-slots'
 import type {
   CommandNode, CompactionSummaryNode, ConversationSnapshot, ConversationTurnDataMap,
   ObservableSnapshot, PendingInteraction, PendingWait, SessionId, ToolCallBlock,
   TurnLocation, WorkspaceId,
-} from '@alego/client-runtime/client'
-import type { MarkdownFileMentions } from '@alego/client-ui-primitives'
-import type { MessageId } from '@alego/client-connection/client'
-import type {} from '@alego/client-ui-layout/client'
+} from '@singula-ai/alego-client-runtime/client'
+import type { MarkdownFileMentions } from '@singula-ai/alego-client-ui-primitives'
+import type { MessageId } from '@singula-ai/alego-client-connection/client'
+import type {} from '@singula-ai/alego-client-ui-layout/client'
 import type { ComposerBlock } from '../input/blocks.ts'
 import type {
   ComposerKeyboard, DraftAttachmentId, EditSelection, InputActions, InputNotice, InputState,
@@ -57,7 +57,7 @@ export interface MessageImagesOwnerProps {
 /** Slot-backed renderer used by chat nodes without importing an attachment implementation. */
 export type RenderMessageImages = (owner: Omit<MessageImagesOwnerProps, 'loadImage'>) => ReactNode
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface SlotMap {
     /**
      * The entire body of one session: taking this seat means rendering that
@@ -366,7 +366,7 @@ export interface ChatFileMentions {
   forClosing(owner: TurnTailOwnerProps): MarkdownFileMentions | undefined
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     /** Prose file-mention provider (ui-deliverables); reach via ctx.get — optional. */
     chatFileMentions: ChatFileMentions

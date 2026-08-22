@@ -44,7 +44,7 @@ Each row was produced by booting the shipped Web composition and calling the too
 
 | Composition under test | `list()` `broken` | `standingKeyFor()` |
 |---|---|---|
-| row names an absent package | empty | `Cannot find package '@alego/does-not-exist'` |
+| row names an absent package | empty | `Cannot find package '@singula-ai/alego-does-not-exist'` |
 | service row with no realm, name the host supplies | empty | `service "tasks" has been registered at <LocalJobRegistry>` |
 | service row with no realm, name the host does not supply | empty | `row(s) published process-global service(s) [workflows]; …` |
 | same row inside `isolate` | empty | mounts |

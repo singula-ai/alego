@@ -7,7 +7,7 @@ Archived: 2026-07-26
 
 ## 问题
 
-仓库同时提供两个交互式终端前端：面向行的 readline 通道（`@alego/stdio`）和全屏的 [`@alego/tui`](../feature/2026-07-17-dedicated-full-screen-tui-front-door.md)。TUI 落地之后，readline 的交互角色已经冗余——`demo:tui` 作为编码 agent 体验取代了 `demo:repl`——而它剩下的真实角色（管道与自动化）已由单次任务的 `@alego/cli-demo` 应用以更好的方式承担（任务输入、ALEGO 原生 `text`/`json`/`stream-json` 输出、持久化、信号处理）。
+仓库同时提供两个交互式终端前端：面向行的 readline 通道（`@singula-ai/alego-stdio`）和全屏的 [`@singula-ai/alego-tui`](../feature/2026-07-17-dedicated-full-screen-tui-front-door.md)。TUI 落地之后，readline 的交互角色已经冗余——`demo:tui` 作为编码 agent 体验取代了 `demo:repl`——而它剩下的真实角色（管道与自动化）已由单次任务的 `@singula-ai/alego-cli-demo` 应用以更好的方式承担（任务输入、ALEGO 原生 `text`/`json`/`stream-json` 输出、持久化、信号处理）。
 
 这种重复是结构性的，不只是表面问题：`alego-stdio-demo` 携带一个 `TerminalMode`（`auto`/`readline`/`tui`）选择接缝、约 1,000 行 readline 单元测试、一套被 CI 演示冒烟测试和两个 built-bin e2e 用 grep 匹配的 readline 文本记录语法（`[tool call] …` 行），以及一个倒置的示例组合：旗舰 `tui-agent` 叶节点被定义为对它所取代的 `repl-agent` 叶节点的 include patch。
 
@@ -15,7 +15,7 @@ Archived: 2026-07-26
 
 删除 readline 前端和 repl-agent 示例；只保留三类前端原型：**交互式 TUI**（仅 TTY，管道下快速失败）、**单次任务 CLI**（`-p`/位置参数任务，服务管道与自动化）以及**服务器**（ACP / JSON-RPC）。
 
-- `packages/ui/stdio` 与 `examples/repl-agent` 已删除。`packages/examples/stdio-demo` 更名为 `@alego/tui-demo`（`packages/examples/tui-demo`）并始终挂载 `alego-tui`；`TerminalMode`/`resolveTerminalMode`/`ui.mode` 接缝随之删除。bin 在**启动 loader 之前**就拒绝非 TTY 流（Loader 树内组合期抛出的异常按条目记录日志而不会重新抛出，管道启动否则会沉降为一个空闲的无 UI 进程而不是以非零码退出）。
+- `packages/ui/stdio` 与 `examples/repl-agent` 已删除。`packages/examples/stdio-demo` 更名为 `@singula-ai/alego-tui-demo`（`packages/examples/tui-demo`）并始终挂载 `alego-tui`；`TerminalMode`/`resolveTerminalMode`/`ui.mode` 接缝随之删除。bin 在**启动 loader 之前**就拒绝非 TTY 流（Loader 树内组合期抛出的异常按条目记录日志而不会重新抛出，管道启动否则会沉降为一个空闲的无 UI 进程而不是以非零码退出）。
 - `examples/tui-agent/cordis.yml` 现在内联拥有编码组合（include patch 倒置消失）；其 Code Mode 覆盖层 include 自己的基础配置。`examples/cordis-agent` 迁移到 TUI 应用。
 - `examples/echo-agent` 迁移到单次任务的 `alego-cli-demo` 应用；`alego-cli-demo` 新增 `-p/--prompt` 作为单个任务的旗标形式（与位置参数互斥）。
 - 与 UI 无关的带密钥编码 e2e（`full-loop`、`coding-task`、`resume`、`compaction`、`todo-write`、`code-mode` 及其共享 harness）原样从 `examples/repl-agent/tests/` 移入 `examples/tui-agent/tests/`——它们以编程方式组装整个栈，从不接触任何 UI。

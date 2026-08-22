@@ -1,8 +1,8 @@
-# @alego/host-apiproxy
+# @singula-ai/alego-host-apiproxy
 
 [English](README.md) | 中文
 
-所有客户端共用的 API 网关由三部分组成：TypeScript API 约定（`src/api/`，不依赖 Node，可从浏览器导入）、fetch 载体对（`src/fetch/`：宿主侧的 `toFetchHandler`，以及客户端侧的 `AbstractApiClient` 与平台子类）和宿主侧实现（`src/api-proxy.ts`：`createApiProxy` 加上默认导出的 `ApiProxyService` 网关插件，其配置为 `{nativeOpen?, sessionExportCompressionLevel?, coldBlankProbeMaxBytes?}`，提供 `ctx.apiProxy`）。该包不注册任何路由；HTTP 等载体自行包装 `ctx.apiProxy`。随发行版交付的 Web 组合位于 [`packages/bundle/web-app/cordis.patch.yml`](../../bundle/web-app/cordis.patch.yml)，其默认 Agent（智能体）模型选择属于 base 组合包中的 [`@alego/agent-default-model`](../../core/agent-default-model/README.zh.md)。
+所有客户端共用的 API 网关由三部分组成：TypeScript API 约定（`src/api/`，不依赖 Node，可从浏览器导入）、fetch 载体对（`src/fetch/`：宿主侧的 `toFetchHandler`，以及客户端侧的 `AbstractApiClient` 与平台子类）和宿主侧实现（`src/api-proxy.ts`：`createApiProxy` 加上默认导出的 `ApiProxyService` 网关插件，其配置为 `{nativeOpen?, sessionExportCompressionLevel?, coldBlankProbeMaxBytes?}`，提供 `ctx.apiProxy`）。该包不注册任何路由；HTTP 等载体自行包装 `ctx.apiProxy`。随发行版交付的 Web 组合位于 [`packages/bundle/web-app/cordis.patch.yml`](../../bundle/web-app/cordis.patch.yml)，其默认 Agent（智能体）模型选择属于 base 组合包中的 [`@singula-ai/alego-agent-default-model`](../../core/agent-default-model/README.zh.md)。
 
 ## 共享 Agent 默认值（`agent-default-model` Settings 分节）
 
@@ -26,7 +26,7 @@ Settings 分节中的 `reasoningEffort` 在 agent-default-model 插件配置中�
 
 `session.history` 会读取已附加 Session 的内存状态，或通过持久化检查冷日志，而不会恢复或发布 agent，然后按追加来源的消息边界分页：`maxMessages` 统计以追加方式进入 surface 的 `user/message` 和 `assistant/message` 事件，因此仅供模型使用的替换副本不占用配额。每一页仍是一段连续的原始事件区间，从而让压缩（compaction）的仅日志 `compaction/summary` 记录与引用它的替换留在同一页。
 
-`session.history` 的尾页（不带 `beforeSeq`）额外携带一个可选的 `projections` 块——`ctx.sessionProjections`（`@alego/session-projection`）上每个已注册单元的水位线快照，`asOfSeq` = 这些值共同反映到的最后一个事件 seq（空日志为 `-1`）。网关还订阅注册表的变更流，为每个状态发生变化的单元生成一个 `session/projection` mux 帧（`{sessionId, key, value, seq}`——实时推送状态，绝不入日志；客户端按 seq 高者胜维护一个按会话的通用值仓）。载体不持有其他领域的知识（每个值在注册表内部已过其单元自己的 schema；协议 schema 对 `values`/`value` 保持宽松）；loadOlder 页永不携带该块，未装注册表的组合则两个面都不提供。网关拥有两个单元：`sessionListMetadata` 缓存用于 `session.list` 的单调 blank→nonblank 转换与最新真人 prompt 时间；`imageLimits` 则把 prompt 准入时执行的 attachments 配置作为每次启动恒定的值发布（`apply` 保持状态引用不变，因此只靠基线携带、绝不产生变更帧），供客户端在提交前拒绝超限的加入并给上传入口标注上限，后者仅在注册表与 attachments 服务同时组合时激活。
+`session.history` 的尾页（不带 `beforeSeq`）额外携带一个可选的 `projections` 块——`ctx.sessionProjections`（`@singula-ai/alego-session-projection`）上每个已注册单元的水位线快照，`asOfSeq` = 这些值共同反映到的最后一个事件 seq（空日志为 `-1`）。网关还订阅注册表的变更流，为每个状态发生变化的单元生成一个 `session/projection` mux 帧（`{sessionId, key, value, seq}`——实时推送状态，绝不入日志；客户端按 seq 高者胜维护一个按会话的通用值仓）。载体不持有其他领域的知识（每个值在注册表内部已过其单元自己的 schema；协议 schema 对 `values`/`value` 保持宽松）；loadOlder 页永不携带该块，未装注册表的组合则两个面都不提供。网关拥有两个单元：`sessionListMetadata` 缓存用于 `session.list` 的单调 blank→nonblank 转换与最新真人 prompt 时间；`imageLimits` 则把 prompt 准入时执行的 attachments 配置作为每次启动恒定的值发布（`apply` 保持状态引用不变，因此只靠基线携带、绝不产生变更帧），供客户端在提交前拒绝超限的加入并给上传入口标注上限，后者仅在注册表与 attachments 服务同时组合时激活。
 
 会话日志导出是宿主侧的下载面，不是 RPC：`GET /api/session.export?sessionId=…&includeDescendants=true` 流式返回一个 ZIP，其中每个文件都是会话存储工件的逐字原文（持久化后端的 `readRaw`——按物理编码解码的确切持久化字节，绝非从解析后事件重建），根会话放在其原始基础文件名下，每个子代理后代放在 `subagents/<id>/` 下，每个被任何包含的日志引用的图片放在 `media/<attachmentId>.<ext>` 下（从附件存储读取并校验；共享图片只出现一次）。`HEAD` 会执行相同的根工件准备，并在没有响应 body 的情况下返回状态与响应头，使浏览器 Client 可以在把 GET 交给原生下载管理器前发现流式传输前的失败。每个实时根会话或后代都会在读取原始工件前立即通过权威的 `SessionStore.flush` 持久性屏障；冷会话没有需要 flush 的内存工作。压缩在宿主侧使用 fflate 流式 Zip API 和已验证的 `sessionExportCompressionLevel` 0–9（默认 6），使部署可以在 CPU／延迟与归档大小之间取舍；响应边生成边分块写出，宿主从不把整个归档放进单个缓冲区。响应队列达到 64 KiB 字节高水位后，生产会等待 Consumer pull 恢复正容量；fflate 的同步回调最多只会让该界限多出一次有界输入 push 的输出。请求中止或响应 body 取消会停止血缘与工件工作、终止活跃压缩器，并继续按取消传播，而不会变成 HTTP 500。它要求同时挂载持久化、session-query 与附件服务：任一缺失应答 500，持久化后端不提供每会话原始工件时应答 501，根会话缺失时应答 404，后代缺少存储工件或引用的图片无法读取则整个流失败（fail-loud，绝不静默少导出）。端点由传输层挂载，`ApiProxy.downloads.sessionLog` 实现它。
 

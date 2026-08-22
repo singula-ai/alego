@@ -1,11 +1,11 @@
-/** Package-owned background-job snapshot invariants. @module @alego/jobs/invariant */
+/** Package-owned background-job snapshot invariants. @module @singula-ai/alego-jobs/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 import type { JobSnapshot } from './types.ts'
 
-const PACKAGE_NAME = '@alego/jobs'
+const PACKAGE_NAME = '@singula-ai/alego-jobs'
 const TERMINAL_STATUSES = new Set(['completed', 'killed', 'failed'])
 
 /** Cordis companion plugin name. */

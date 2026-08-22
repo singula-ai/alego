@@ -1,11 +1,11 @@
 /**
  * Disposable live timer projection for one exact root agent.
- * @module @alego/schedule
+ * @module @singula-ai/alego-schedule
  */
 
-import type { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import { createUserMessage } from '@alego/llm'
+import type { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
 import type { EveryScheduleRecord, OneShotScheduleRecord } from './types.ts'
 import {
   foldScheduleEvents,

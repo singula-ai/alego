@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write
-2026-07-20-retire-readline-front-door.md: 5f8c9cbb5d28bc5de5242833ab43d7322dc5ebe2
-2026-07-20-retire-readline-front-door.zh.md: e712f0e75b85bfd478d9eafd30a7a2c10cb6387d
+2026-07-20-retire-readline-front-door.md: 3a736b31b86c7e3cb841ba99bd31f576327a4232
+2026-07-20-retire-readline-front-door.zh.md: bce22162118da97001746fd944b24841fae3efb5

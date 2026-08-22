@@ -1,10 +1,10 @@
 /**
  * Compiler-independent Typert protocol shared by business packages, generated
  * Remote artifacts, the Host Gateway, and Client API implementations.
- * @module @alego/typert-protocol/types
+ * @module @singula-ai/alego-typert-protocol/types
  */
 
-import type { Context, Events } from '@alego/cordis'
+import type { Context, Events } from '@singula-ai/cordis'
 
 declare const LOOKUP_HOST: unique symbol
 declare const LOOKUP_WIRE: unique symbol
@@ -484,7 +484,7 @@ export interface TypertRegistryContract {
   readonly contexts: TypertContextRegistry
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     typert: TypertRegistryContract
   }

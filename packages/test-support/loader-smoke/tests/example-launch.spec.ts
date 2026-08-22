@@ -3,7 +3,7 @@ import {
   EXAMPLE_MODE_ENV,
   resolveExampleLaunch,
   resolveExampleMode,
-} from '@alego/loader-smoke'
+} from '@singula-ai/alego-loader-smoke'
 
 const SRC_BIN = '/repo/packages/examples/acp-demo/src/bin.ts'
 const TSCONFIG = '/repo/tsconfig.json'

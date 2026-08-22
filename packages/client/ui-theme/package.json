@@ -1,5 +1,5 @@
 {
-  "name": "@alego/client-ui-theme",
+  "name": "@singula-ai/alego-client-ui-theme",
   "description": "Theme plugin: Host bootstrap for the pre-plugin palette; DOM-free ThemeRuntime for light/dark/system state; --dsw-* token styles and Appearance settings row",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -32,11 +32,11 @@
   "alego": {
     "client": {
       "inject": [
-        "@alego/client-connection",
-        "@alego/client-runtime",
-        "@alego/client-locale",
-        "@alego/client-ui-settings",
-        "@alego/api-remotes"
+        "@singula-ai/alego-client-connection",
+        "@singula-ai/alego-client-runtime",
+        "@singula-ai/alego-client-locale",
+        "@singula-ai/alego-client-ui-settings",
+        "@singula-ai/alego-api-remotes"
       ],
       "platform": "web",
       "immediately": true
@@ -44,29 +44,29 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@alego/cordis": "workspace:^",
-    "@alego/api-remotes": "workspace:^",
-    "@alego/client-connection": "workspace:^",
-    "@alego/client-locale": "workspace:^",
-    "@alego/client-runtime": "workspace:^",
-    "@alego/client-ui-settings": "workspace:^",
-    "@alego/host-webserver": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/settings": "workspace:^"
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-api-remotes": "workspace:^",
+    "@singula-ai/alego-client-connection": "workspace:^",
+    "@singula-ai/alego-client-locale": "workspace:^",
+    "@singula-ai/alego-client-runtime": "workspace:^",
+    "@singula-ai/alego-client-ui-settings": "workspace:^",
+    "@singula-ai/alego-host-webserver": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-settings": "workspace:^"
   },
   "devDependencies": {
-    "@alego/cordis": "workspace:^",
-    "@alego/api-remotes": "workspace:^",
-    "@alego/client-connection": "workspace:^",
-    "@alego/client-locale": "workspace:^",
-    "@alego/client-runtime": "workspace:^",
-    "@alego/client-test-runtime": "workspace:^",
-    "@alego/client-ui-primitives": "workspace:^",
-    "@alego/client-ui-settings": "workspace:^",
-    "@alego/client-ui-slots": "workspace:^",
-    "@alego/host-webserver": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/settings": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-api-remotes": "workspace:^",
+    "@singula-ai/alego-client-connection": "workspace:^",
+    "@singula-ai/alego-client-locale": "workspace:^",
+    "@singula-ai/alego-client-runtime": "workspace:^",
+    "@singula-ai/alego-client-test-runtime": "workspace:^",
+    "@singula-ai/alego-client-ui-primitives": "workspace:^",
+    "@singula-ai/alego-client-ui-settings": "workspace:^",
+    "@singula-ai/alego-client-ui-slots": "workspace:^",
+    "@singula-ai/alego-host-webserver": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-settings": "workspace:^",
     "@types/react": "~18.3.1",
     "react": "^18.2.0"
   },
@@ -83,6 +83,6 @@
   },
   "dependencies": {
     "clsx": "^2.0.0",
-    "@alego/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:^"
   }
 }

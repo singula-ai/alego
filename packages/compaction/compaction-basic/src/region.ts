@@ -2,7 +2,7 @@
  * Surface retention selection and the shared log-recorded compaction
  * transaction for automatic open-turn and manual idle-session compaction.
  *
- * @module @alego/compaction-basic/region
+ * @module @singula-ai/alego-compaction-basic/region
  */
 
 import { randomUUID } from 'node:crypto'
@@ -13,14 +13,14 @@ import {
   compactCheckpointSource,
   toolPairingBalancedAfter,
   toolPairingBalancedBefore,
-} from '@alego/compaction'
-import type { CompactionResult } from '@alego/compaction'
-import type { CommandId } from '@alego/commands/brand'
-import { createUserMessage, errorChain } from '@alego/llm'
-import type { Message, UserMessage } from '@alego/llm'
-import type { TokenMeasurement, TokenMeter } from '@alego/token-meter'
-import type { Session, SessionEvent } from '@alego/session'
-import type { Agent } from '@alego/agent'
+} from '@singula-ai/alego-compaction'
+import type { CompactionResult } from '@singula-ai/alego-compaction'
+import type { CommandId } from '@singula-ai/alego-commands/brand'
+import { createUserMessage, errorChain } from '@singula-ai/alego-llm'
+import type { Message, UserMessage } from '@singula-ai/alego-llm'
+import type { TokenMeasurement, TokenMeter } from '@singula-ai/alego-token-meter'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import type { Agent } from '@singula-ai/alego-agent'
 import { frameSummary } from './summarizer.ts'
 import type { SummarizationInput, SummaryResult } from './summarizer.ts'
 

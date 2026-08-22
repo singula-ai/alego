@@ -1,13 +1,13 @@
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
-import { boot } from '@alego/app-boot'
-import { Inbox } from '@alego/agent'
-import type { Agent } from '@alego/agent'
-import { Session, SessionId } from '@alego/session'
-import type {} from '@alego/fs-e2b'
-import type {} from '@alego/bash-local'
-import type {} from '@alego/lsp-stdio'
-import type {} from '@alego/terminal-bash'
+import { boot } from '@singula-ai/alego-app-boot'
+import { Inbox } from '@singula-ai/alego-agent'
+import type { Agent } from '@singula-ai/alego-agent'
+import { Session, SessionId } from '@singula-ai/alego-session'
+import type {} from '@singula-ai/alego-fs-e2b'
+import type {} from '@singula-ai/alego-bash-local'
+import type {} from '@singula-ai/alego-lsp-stdio'
+import type {} from '@singula-ai/alego-terminal-bash'
 
 const configPath = process.argv[2]
 if (configPath === undefined) throw new Error('usage: bin.ts <cordis.yml>')

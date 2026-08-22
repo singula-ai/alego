@@ -2,17 +2,17 @@
  * Model-facing whole-list replacement. Each call appends a `todo/write` snapshot to the calling
  * agent's session; replay is last-write-wins, and UIs render from session events. A non-agent
  * caller has no owning list and is rejected. Named exports preserve loader injection metadata.
- * @module @alego/tool-todo
+ * @module @singula-ai/alego-tool-todo
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import { z as zod } from 'zod'
 import type { ZodType } from 'zod'
-import { defineTool } from '@alego/tools'
-import type { TodoItem } from '@alego/session'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { TodoItem } from '@singula-ai/alego-session'
 // Type-only: resolves ctx.sessionProjections for the optional unit child.
-import type {} from '@alego/session-projection'
+import type {} from '@singula-ai/alego-session-projection'
 // The `todos` projection-key declaration lives in src/types.ts (its one home);
 // this re-export projects the type face onto the package root AND keeps the
 // module edge in the emitted index.d.ts, so aggregate programs consuming the

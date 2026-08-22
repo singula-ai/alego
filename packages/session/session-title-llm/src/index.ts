@@ -1,25 +1,25 @@
 /**
  * Shared route, framing, timeout, assembly, and validation policy for
  * model-backed session-title providers.
- * @module @alego/session-title-llm
+ * @module @singula-ai/alego-session-title-llm
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { createUserMessage, BlockAssembler, deepFreeze } from '@alego/llm'
-import type { FinishReason, GenerateOptions, Message } from '@alego/llm'
-import { deadline, MAX_TIMER_DELAY_MS } from '@alego/timeout'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { createUserMessage, BlockAssembler, deepFreeze } from '@singula-ai/alego-llm'
+import type { FinishReason, GenerateOptions, Message } from '@singula-ai/alego-llm'
+import { deadline, MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 import {
   normalizeSessionTitle,
   SessionTitleProviderId,
-} from '@alego/session-title'
+} from '@singula-ai/alego-session-title'
 import type {
   SessionTitleAutomaticMode,
   SessionTitleModelProvenance,
   SessionTitleProviderRequest,
   SessionTitleProviderResult,
   SessionTitleUserMessage,
-} from '@alego/session-title'
+} from '@singula-ai/alego-session-title'
 
 /** Exact model-visible request recorded before one auxiliary title dispatch. */
 export interface SessionTitleLlmRequestEventData {
@@ -37,7 +37,7 @@ export interface SessionTitleLlmRequestEventData {
   readonly maxTokens: number
 }
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /** Log-only pre-dispatch record of one session-title model request. */
     'session/title-llm-request': SessionTitleLlmRequestEventData

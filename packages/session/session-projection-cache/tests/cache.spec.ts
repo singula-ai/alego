@@ -7,18 +7,18 @@
  */
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { z } from 'zod'
-import Storage from '@alego/storage'
-import { DomainFacility } from '@alego/storage-domain'
-import SessionStore, { SessionId } from '@alego/session'
-import type { Session, SessionEvent } from '@alego/session'
-import SessionProjectionRegistry from '@alego/session-projection'
-import type { ProjectionDefinition } from '@alego/session-projection'
+import Storage from '@singula-ai/alego-storage'
+import { DomainFacility } from '@singula-ai/alego-storage-domain'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import type { ProjectionDefinition } from '@singula-ai/alego-session-projection'
 import { MemoryMediaPool, MemoryStorageBackend } from '../../../storage/storage-domain/tests/helpers/memory-backend.ts'
 import SessionProjectionCache from '../src/index.ts'
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionStateMap {
     'cache-test/marks': MarksState
     'cache-test/marks2': Map<string, string>
@@ -28,7 +28,7 @@ declare module '@alego/session-projection/types' {
   }
 }
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     'cache-test/mark': { marks: string[] }
   }

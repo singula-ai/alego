@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/sandbox-windows-acl`.
- * @module @alego/sandbox-windows-acl/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-sandbox-windows-acl`.
+ * @module @singula-ai/alego-sandbox-windows-acl/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/sandbox-windows-acl'
+const PACKAGE_NAME = '@singula-ai/alego-sandbox-windows-acl'
 
 /** Cordis companion plugin name. */
 export const name = 'sandbox-windows-acl-invariant'

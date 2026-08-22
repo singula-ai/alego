@@ -11,8 +11,8 @@
  * @module alego-tools/json-schema
  */
 
-import { assertNever, HarnessError } from '@alego/llm'
-import { isJsonValue, type JsonValue } from '@alego/session'
+import { assertNever, HarnessError } from '@singula-ai/alego-llm'
+import { isJsonValue, type JsonValue } from '@singula-ai/alego-session'
 
 /** Scalar JSON values supported by `enum` and `const`. */
 export type JsonSchemaScalar = string | number | boolean | null

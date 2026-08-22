@@ -1,8 +1,8 @@
 /** Unified JSON-value schema DSL, inference, compilation, and typed tool helper. @module alego-tools/schema */
 
-import { HarnessError } from '@alego/llm'
-import type { ContentBlock } from '@alego/llm'
-import type { JsonValue } from '@alego/session'
+import { HarnessError } from '@singula-ai/alego-llm'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { JsonValue } from '@singula-ai/alego-session'
 import type { ToolDefinition, ToolExecution, ToolExecutionResult, ToolRunContext, ToolResult } from './index.ts'
 import { assertSupportedJsonSchema, isJsonSchemaRecord, isPlainJsonArray, JsonSchemaError, validateJsonSchemaValue } from './json-schema.ts'
 import type { JsonSchemaNode, JsonSchemaScalar, ObjectJsonSchema } from './json-schema.ts'

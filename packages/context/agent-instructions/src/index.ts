@@ -6,15 +6,15 @@
  * Plugin lifecycle reads use the optional `ctx.fs` provider, so providerless products
  * mount it as a no-op.
  *
- * @module @alego/agent-instructions
+ * @module @singula-ai/alego-agent-instructions
  */
 
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import { isDeepStrictEqual } from 'node:util'
-import type { Agent, PreStepDecision } from '@alego/agent'
-import { createUserMessage } from '@alego/llm'
-import type { Session, UserMessage } from '@alego/session'
-import type { ToolExecution, ToolExecutionResult, ToolExecutionToken } from '@alego/tools'
+import type { Agent, PreStepDecision } from '@singula-ai/alego-agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type { Session, UserMessage } from '@singula-ai/alego-session'
+import type { ToolExecution, ToolExecutionResult, ToolExecutionToken } from '@singula-ai/alego-tools'
 import { Config, resolveConfig, workspaceBaselineIdentity, type ResolvedConfig } from './config.ts'
 import { findProjectRoot, loadBaselineInstructionSet } from './files.ts'
 import {

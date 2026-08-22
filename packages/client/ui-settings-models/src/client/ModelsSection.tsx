@@ -14,9 +14,9 @@
 
 import { useState } from 'react'
 import type { ReactNode } from 'react'
-import type { IApiClient } from '@alego/api-remotes/client'
-import { Button, IconPlusOutline16, Modal } from '@alego/client-ui-primitives'
-import type { InjectFace } from '@alego/client-ui-slots'
+import type { IApiClient } from '@singula-ai/alego-api-remotes/client'
+import { Button, IconPlusOutline16, Modal } from '@singula-ai/alego-client-ui-primitives'
+import type { InjectFace } from '@singula-ai/alego-client-ui-slots'
 import { CustomProviderCard } from './CustomProviderCard.tsx'
 import { deriveKeyRef, messageOf, protocolChoices, providerUsable } from './store.ts'
 import type { ModelsSettingsStore, ProviderRow } from './store.ts'

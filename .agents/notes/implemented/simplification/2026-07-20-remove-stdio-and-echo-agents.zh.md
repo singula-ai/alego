@@ -18,9 +18,9 @@ Alego 在 TUI 和 Headless coding agent 之外，还提供了两个重复的产�
 
 保留的应用角色均有明确归属：
 
-- `@alego/tui` 负责终端交互式执行。它会在 Loader 启动前拒绝非 TTY 流；`apps/cli/config/base.cordis.yml` 与 `tui.cordis.yml` overlay 拥有完整 coding 组装，PTY 与终端快照覆盖则位于 `apps/cli/tests/`。
+- `@singula-ai/alego-tui` 负责终端交互式执行。它会在 Loader 启动前拒绝非 TTY 流；`apps/cli/config/base.cordis.yml` 与 `tui.cordis.yml` overlay 拥有完整 coding 组装，PTY 与终端快照覆盖则位于 `apps/cli/tests/`。
 - [`alego --profile headless`](../../../../apps/cli/README.zh.md) 负责非交互式执行。其 `headless` profile 是产品组装；`examples/headless-agent` 负责回放快照、通用真实 agent 测试套件和未导出的无密钥 Loader driver。
-- [`@alego/acp-demo`](../../../../packages/examples/acp-demo/README.zh.md) 和 `@alego/sdk-jsonrpc-server` 负责各自的分帧协议集成。
+- [`@singula-ai/alego-acp-demo`](../../../../packages/examples/acp-demo/README.zh.md) 和 `@singula-ai/alego-sdk-jsonrpc-server` 负责各自的分帧协议集成。
 
 承载 `stdio` 运行接口选项的 SDK 项目模型已由 [SDK 项目工具链移除决策](2026-08-11-remove-sdk-project-toolchain.zh.md)删除。仓库中的演示文档要求 DeepSeek API key，并优先引导到当前可运行的产品。
 

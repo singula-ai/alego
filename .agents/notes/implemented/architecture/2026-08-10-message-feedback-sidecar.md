@@ -12,7 +12,7 @@ A sidecar keyed only by `SessionId` can outlive the log lifecycle it describes w
 
 ## Decision
 
-`@alego/message-feedback` owns the `ctx.messageFeedback` service and stores message feedback as one storage-domain sidecar row per Session. The sidecar is neither Session-log content nor a Session projection. It emits no `feedback/record` event and performs no telemetry handoff; the command-feedback and message-feedback contracts remain independent.
+`@singula-ai/alego-message-feedback` owns the `ctx.messageFeedback` service and stores message feedback as one storage-domain sidecar row per Session. The sidecar is neither Session-log content nor a Session projection. It emits no `feedback/record` event and performs no telemetry handoff; the command-feedback and message-feedback contracts remain independent.
 
 Every usable row is bound to the inspected Session header identity `{createdAt, cwd}`, not merely its `SessionId`. A lifecycle mismatch is treated as absence: `list` returns no items, and `put` may replace the stale row with one bound to the current identity. An id reused with a different header identity therefore cannot inherit stale feedback. A fork receives its own Session identity and no sidecar copy: even when the fork seed contains the same assistant messages, feedback remains attached to the Session in which the human recorded it.
 

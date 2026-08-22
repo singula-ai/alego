@@ -1,5 +1,5 @@
 {
-  "name": "@alego/cordis-host-runner",
+  "name": "@singula-ai/alego-cordis-host-runner",
   "description": "Dynamic package definition registry, host-half sandbox lifecycle, and invoke handler table for model-mounted dual-half packages",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -49,30 +49,30 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@alego/schemastery": "workspace:^",
+    "@singula-ai/schemastery": "workspace:^",
     "zod": "^4.4.3"
   },
   "peerDependencies": {
-    "@alego/cordis": "workspace:^",
-    "@alego/agent": "workspace:^",
-    "@alego/brand": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/scope": "workspace:^",
-    "@alego/session": "workspace:^",
-    "@alego/tools": "workspace:^",
-    "@alego/typert-protocol": "workspace:^"
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-brand": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-scope": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/alego-typert-protocol": "workspace:^"
   },
   "devDependencies": {
-    "@alego/cordis": "workspace:^",
-    "@alego/cordis-plugin-timer": "workspace:^",
-    "@alego/agent": "workspace:^",
-    "@alego/brand": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/scope": "workspace:^",
-    "@alego/session": "workspace:^",
-    "@alego/tools": "workspace:^",
-    "@alego/typert-protocol": "workspace:^"
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/cordis-plugin-timer": "workspace:^",
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-brand": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-scope": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/alego-typert-protocol": "workspace:^"
   }
 }

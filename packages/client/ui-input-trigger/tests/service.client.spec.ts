@@ -7,15 +7,15 @@
  * scope-birth roster warm — is InputTriggerController behavior, tested on a real
  * session scope (createScope).
  */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import { createScope, scopeOf } from '@alego/client-runtime/client'
-import type { SessionId } from '@alego/client-runtime/client'
-import { InputTriggerController, InputTriggerService } from '@alego/client-ui-input-trigger/client'
+import { createScope, scopeOf } from '@singula-ai/alego-client-runtime/client'
+import type { SessionId } from '@singula-ai/alego-client-runtime/client'
+import { InputTriggerController, InputTriggerService } from '@singula-ai/alego-client-ui-input-trigger/client'
 import type {
   BeginCommandRequest, ClientSessionContext, CommandClaim, InsertReferenceRequest, PickOutcome,
   ReferenceInsert, InputTriggerCandidate, InputTriggerPick, InputTriggerSource, SourceRoster, TriggerChar,
-} from '@alego/client-ui-input-trigger/client'
+} from '@singula-ai/alego-client-ui-input-trigger/client'
 
 const sid = (k: string): SessionId => k as SessionId
 

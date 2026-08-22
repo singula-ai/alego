@@ -44,7 +44,7 @@ agent 按 `cordis_mount` 自身文档所述的方式够到 roster 服务：挂�
 
 | 被测组装 | `list()` 的 `broken` | `standingKeyFor()` |
 |---|---|---|
-| 行指向不存在的包 | 空 | `Cannot find package '@alego/does-not-exist'` |
+| 行指向不存在的包 | 空 | `Cannot find package '@singula-ai/alego-does-not-exist'` |
 | 服务行未套 realm，名字宿主已提供 | 空 | `service "tasks" has been registered at <LocalJobRegistry>` |
 | 服务行未套 realm，名字宿主未提供 | 空 | `row(s) published process-global service(s) [workflows]; …` |
 | 同一行置于 `isolate` 内 | 空 | 挂载成功 |

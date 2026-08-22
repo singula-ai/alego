@@ -1,11 +1,11 @@
 /**
  * Shared process lifecycle for the generic and closed-runtime JSON-RPC bins.
  *
- * @module @alego/sdk-jsonrpc-demo/runner
+ * @module @singula-ai/alego-sdk-jsonrpc-demo/runner
  */
 
 import { existsSync } from 'node:fs'
-import { boot, installFailLoud, loadEnv, resolveConfigPath } from '@alego/app-boot'
+import { boot, installFailLoud, loadEnv, resolveConfigPath } from '@singula-ai/alego-app-boot'
 
 /* v8 ignore start -- composition over tested app-boot/jsonrpc and executable acceptance paths */
 const NAME = 'alego-jsonrpc-agent'

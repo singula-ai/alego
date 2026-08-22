@@ -1,16 +1,16 @@
 /**
- * `@alego/web-search-perplexity`: registers a Perplexity-backed
+ * `@singula-ai/alego-web-search-perplexity`: registers a Perplexity-backed
  * `WebSearchProvider` with `ctx.web`. A function/namespace plugin (NOT a
  * default-export service): it registers INTO the seam's provider registry, like
- * `@alego/llm-deepseek` registers an adapter into `ctx.llm`.
+ * `@singula-ai/alego-llm-deepseek` registers an adapter into `ctx.llm`.
  *
- * @module @alego/web-search-perplexity
+ * @module @singula-ai/alego-web-search-perplexity
  */
 
-import type { Context } from '@alego/cordis'
-import { launchEnvironmentOf } from '@alego/launch-environment'
-import z from '@alego/schemastery'
-import type {} from '@alego/web'
+import type { Context } from '@singula-ai/cordis'
+import { launchEnvironmentOf } from '@singula-ai/alego-launch-environment'
+import z from '@singula-ai/schemastery'
+import type {} from '@singula-ai/alego-web'
 import { PerplexitySearchProvider, PERPLEXITY_DEFAULT_BASE_URL, PERPLEXITY_DEFAULT_MAX_TOKENS, PERPLEXITY_DEFAULT_MODEL } from './provider.ts'
 
 export {

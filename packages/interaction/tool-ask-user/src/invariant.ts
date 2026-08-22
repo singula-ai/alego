@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/tool-ask-user`.
- * @module @alego/tool-ask-user/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-tool-ask-user`.
+ * @module @singula-ai/alego-tool-ask-user/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/tool-ask-user'
+const PACKAGE_NAME = '@singula-ai/alego-tool-ask-user'
 
 /** Cordis companion plugin name. */
 export const name = 'tool-ask-user-invariant'

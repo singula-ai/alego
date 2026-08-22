@@ -102,14 +102,14 @@ teardown 独立报告顶层进程退出与存活进程清理。PTY 会话不会�
 
 ```yaml
 plugins:
-  '@alego/sandbox-local':
-  '@alego/sandbox-policy':
+  '@singula-ai/alego-sandbox-local':
+  '@singula-ai/alego-sandbox-policy':
     config:
       mode: workspace-write
       workspaceRoot: .
-  '@alego/terminal':
-  '@alego/subprocess-local':
-  '@alego/terminal-bash':
+  '@singula-ai/alego-terminal':
+  '@singula-ai/alego-subprocess-local':
+  '@singula-ai/alego-terminal-bash':
     config:
       scrollbackLines: 10000
       scrollbackMaxBytes: 4194304
@@ -120,7 +120,7 @@ plugins:
       handoffGraceMs: 500
       timeoutMs: 30000
       disposeGraceMs: 3000
-  '@alego/tool-terminal':
+  '@singula-ai/alego-tool-terminal':
     config:
       enableRunInBackground: true
       maxResultBytes: 262144

@@ -12,7 +12,7 @@ Status: implemented
 
 ## 决策
 
-位于 `packages/goal/goal-round-driver/` 的 `@alego/goal-round-driver` 是构建在 `ctx.goals`、公共 `Agent` 接口和持久会话事件之上的策略插件。它不导入具体 agent-loop 实现。它以每个实时 `Agent` 的确切对象身份为单位维护进程内调度状态，并且最多预留一个自动 Goal Round。
+位于 `packages/goal/goal-round-driver/` 的 `@singula-ai/alego-goal-round-driver` 是构建在 `ctx.goals`、公共 `Agent` 接口和持久会话事件之上的策略插件。它不导入具体 agent-loop 实现。它以每个实时 `Agent` 的确切对象身份为单位维护进程内调度状态，并且最多预留一个自动 Goal Round。
 
 层次关系为目标（Goal）→ Goal Round → 轮次（Turn）→ 步骤（Step）。Goal Round 是外层继续执行策略的一次迭代；它会成为一个归属于目标的会话轮次，而该轮次可以包含任意数量的普通模型或工具步骤。同一会话中的人类轮次不是 Goal Round，也绝不会增加 `roundsStarted`。
 

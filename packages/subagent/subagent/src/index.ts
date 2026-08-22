@@ -10,8 +10,8 @@
  * (`LlmRuntime.registerAdapter`), not the single-service bash executor.
  *
  * This package owns the Service Definition role of the capability seam. Service Providers
- * (`@alego/subagent-spawn-in-process`, `-fork`, `-acp`) and the model-facing
- * consumer (`@alego/tool-subagent`) are separate packages.
+ * (`@singula-ai/alego-subagent-spawn-in-process`, `-fork`, `-acp`) and the model-facing
+ * consumer (`@singula-ai/alego-tool-subagent`) are separate packages.
  *
  * Public operations express caller intent: `start` returns one published owned
  * one-shot run, `startContinuable` establishes a durable continuable child, and
@@ -28,16 +28,16 @@
  * serialization and hostile-input validation belong at real process, worker,
  * persistence, and model boundaries.
  *
- * @module @alego/subagent
+ * @module @singula-ai/alego-subagent
  */
 
-import { Context, Service } from '@alego/cordis'
-import { scopeTarget } from '@alego/scope'
-import type { Scoped } from '@alego/scope'
-import { assertObjectJsonSchema } from '@alego/tools'
-import type { ContentBlock, MessageId } from '@alego/llm'
-import type { Agent } from '@alego/agent'
-import type { SessionId } from '@alego/session'
+import { Context, Service } from '@singula-ai/cordis'
+import { scopeTarget } from '@singula-ai/alego-scope'
+import type { Scoped } from '@singula-ai/alego-scope'
+import { assertObjectJsonSchema } from '@singula-ai/alego-tools'
+import type { ContentBlock, MessageId } from '@singula-ai/alego-llm'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { SessionId } from '@singula-ai/alego-session'
 import type {
   ContinuableCreateRequest,
   ContinuableCreateSpec,
@@ -126,7 +126,7 @@ export type { SubagentDescendantListEntry, SubagentListEntry } from './list-chil
 export type { SubagentRunEndInfo, SubagentRunInfo } from './types.ts'
 export type { SubagentIdentityProjection, SubagentTimingProjection } from './projection-types.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     subagents: SubagentRuntime
   }

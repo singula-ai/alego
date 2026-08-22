@@ -13,8 +13,8 @@ import { join } from 'node:path'
 import type { Browser, Locator, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { SessionEvent } from '@alego/session'
-import type { SessionId } from '@alego/session/types'
+import type { SessionEvent } from '@singula-ai/alego-session'
+import type { SessionId } from '@singula-ai/alego-session/types'
 import {
   assertFixtureInventory, captureStableAria, compareOrRefreshGolden, fixtureUserPrompts,
   launchWebScaffold, recordFixture, watchConsole, webSnapshotMode, type WebScaffold,

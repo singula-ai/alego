@@ -3,18 +3,18 @@
  * `ctx.subagents` that runs each child as a fresh child {@link Agent} on the same cordis
  * context (its own session, own system prompt, zero parent context). The cheapest transport,
  * reusing the agent factory's quiescent teardown.
- * @module @alego/subagent-spawn-in-process
+ * @module @singula-ai/alego-subagent-spawn-in-process
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import type {
   ContinuableCreateSpec,
   ResolvedSubagentStartRequest,
   SubagentCapabilities,
   SubagentProvider,
-} from '@alego/subagent'
-import { startInProcessRun } from '@alego/subagent-in-process-driver'
+} from '@singula-ai/alego-subagent'
+import { startInProcessRun } from '@singula-ai/alego-subagent-in-process-driver'
 
 export const name = 'subagent-spawn-in-process'
 // `tools` is deliberately not injected: the child factory already provides it during setup,

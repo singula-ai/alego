@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { SessionId } from '@alego/client-runtime/client'
+import type { SessionId } from '@singula-ai/alego-client-runtime/client'
 import {
   downloadUrl, SessionLogDownloadController, sessionLogZipFilename,
 } from '../src/client/controller.ts'

@@ -1,23 +1,23 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   ConversationMatch, ConversationNodeContext, ConversationNodeDefinition, TurnLocation,
-} from '@alego/client-runtime/client'
-import { isAppendSurfaceEvent, toAssistantBlocks } from '@alego/client-runtime/client'
-import type {} from '@alego/llm-retry/types'
+} from '@singula-ai/alego-client-runtime/client'
+import { isAppendSurfaceEvent, toAssistantBlocks } from '@singula-ai/alego-client-runtime/client'
+import type {} from '@singula-ai/alego-llm-retry/types'
 import type {
   AssistantChatData, FinalAssistantChatData, TurnTailChatData,
 } from '../contract/chat-nodes.ts'
 import { deriveTurnMetrics } from '../chat/turn-metrics.ts'
 import { CHAT_SYNTHETIC_SEQ_OFFSETS, chatNode } from './common.ts'
 
-declare module '@alego/client-ui-conversation/client' {
+declare module '@singula-ai/alego-client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Completed-turn actions and extension tail. */
     'turn-tail': TurnTailChatData
   }
 }
 
-declare module '@alego/client-runtime/client' {
+declare module '@singula-ai/alego-client-runtime/client' {
   interface ConversationTurnDataMap {
     /** Closing Assistant and footer facts derived for this completed Turn. */
     'turn-tail': TurnTailChatData

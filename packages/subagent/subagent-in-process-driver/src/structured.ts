@@ -7,13 +7,13 @@
  * Capture commits only after the authoritative `tools/result` succeeds; Code Mode capture also
  * waits for the enclosing `run_code` result. The terminal result marker and monotonic tool
  * guard prevent later calls from reopening a completed structured run.
- * @module @alego/subagent-in-process-driver/structured
+ * @module @singula-ai/alego-subagent-in-process-driver/structured
  */
 
-import type { Context } from '@alego/cordis'
-import type { ToolSchema } from '@alego/llm'
-import type { ToolExecution, ToolRunContext } from '@alego/tools'
-import { ToolArgsError, validateJsonSchemaValue, type ObjectJsonSchema } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import type { ToolSchema } from '@singula-ai/alego-llm'
+import type { ToolExecution, ToolRunContext } from '@singula-ai/alego-tools'
+import { ToolArgsError, validateJsonSchemaValue, type ObjectJsonSchema } from '@singula-ai/alego-tools'
 
 /** The model-facing tool name a structured child must call to finish. */
 export const STRUCTURED_OUTPUT_TOOL = 'structured_output'

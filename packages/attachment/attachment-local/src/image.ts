@@ -1,8 +1,8 @@
 /** Raster inspection: full decode at admission, header-only probe on verified reads. */
 
 import sharp, { type Sharp } from 'sharp'
-import { AttachmentError } from '@alego/attachment'
-import type { ImageMediaType } from '@alego/attachment'
+import { AttachmentError } from '@singula-ai/alego-attachment'
+import type { ImageMediaType } from '@singula-ai/alego-attachment'
 
 /** Decoded metadata from a supported image. */
 export interface DetectedImage {

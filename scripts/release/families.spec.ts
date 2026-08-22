@@ -45,7 +45,7 @@ describe('release families', () => {
     const members = releaseFamily('alego').members(resolve(import.meta.dirname, '../..'))
 
     expect(members.some(member => member.directory.startsWith('packages/experimental/'))).toBe(false)
-    expect(members.map(member => member.name)).not.toContain('@alego/experimental-agent-team')
+    expect(members.map(member => member.name)).not.toContain('@singula-ai/alego-experimental-agent-team')
   })
 
   it('bumps private alego packages without adding release tags', () => {
@@ -56,7 +56,7 @@ describe('release families', () => {
     write(join(root, 'packages/core/unselected/package.json'), '{"version":"0.0.1"}\n')
 
     const alego = releaseFamily('alego')
-    const published = member('packages/core/published', '@alego/published')
+    const published = member('packages/core/published', '@singula-ai/alego-published')
     const { planned } = planShared(alego, root, [published], '0.0.2')
 
     expect(planned.map(entry => ({ path: entry.manifestPath, tag: entry.tag }))).toEqual([
@@ -69,8 +69,8 @@ describe('release families', () => {
   it('names one tag for the whole alego family and one per vendored package', () => {
     const alego = releaseFamily('alego')
     const vendor = releaseFamily('vendor')
-    const cli = member('apps/cli', '@alego/cli')
-    const cordis = { ...member('vendor/cordis', '@alego/cordis'), version: '4.0.1' }
+    const cli = member('apps/cli', '@singula-ai/alego')
+    const cordis = { ...member('vendor/cordis', '@singula-ai/cordis'), version: '4.0.1' }
 
     expect(alego.tagFor(cli)).toBe('alego-v0.0.1')
     expect(vendor.tagFor(cordis)).toBe('vendor-cordis-v4.0.1')
@@ -82,7 +82,7 @@ describe('release families', () => {
 
   it('rejects a family whose members disagree on the shared version', () => {
     const alego = releaseFamily('alego')
-    const members = [member('apps/cli', '@alego/cli'), { ...member('apps/web', '@alego/web-frontend'), version: '0.0.2' }]
+    const members = [member('apps/cli', '@singula-ai/alego'), { ...member('apps/web', '@singula-ai/alego-web-frontend'), version: '0.0.2' }]
 
     expect(() => { alego.verifyVersions(members) }).toThrow(/must share one version/)
     expect(() => { alego.verifyVersions([members[0]!]) }).not.toThrow()
@@ -91,8 +91,8 @@ describe('release families', () => {
   it('accepts independent vendored versions and rejects an unpublishable one', () => {
     const vendor = releaseFamily('vendor')
     const members = [
-      { ...member('vendor/cordis', '@alego/cordis'), version: '4.0.1' },
-      { ...member('vendor/cosmokit', '@alego/cosmokit'), version: '1.8.2' },
+      { ...member('vendor/cordis', '@singula-ai/cordis'), version: '4.0.1' },
+      { ...member('vendor/cosmokit', '@singula-ai/cosmokit'), version: '1.8.2' },
     ]
 
     expect(() => { vendor.verifyVersions(members) }).not.toThrow()
@@ -119,23 +119,23 @@ describe('release families', () => {
   it('publishes a dependency before its consumer, and orders ties by name', () => {
     const alego = releaseFamily('alego')
     const members = [
-      member('packages/a/consumer', '@alego/consumer', { dependencies: { '@alego/library': 'workspace:^' } }),
-      member('packages/a/library', '@alego/library'),
-      member('packages/a/zebra', '@alego/zebra'),
+      member('packages/a/consumer', '@singula-ai/alego-consumer', { dependencies: { '@singula-ai/alego-library': 'workspace:^' } }),
+      member('packages/a/library', '@singula-ai/alego-library'),
+      member('packages/a/zebra', '@singula-ai/alego-zebra'),
     ]
 
     expect(alego.publishOrder(members).order.map(entry => entry.name)).toEqual([
-      '@alego/library',
-      '@alego/consumer',
-      '@alego/zebra',
+      '@singula-ai/alego-library',
+      '@singula-ai/alego-consumer',
+      '@singula-ai/alego-zebra',
     ])
   })
 
   it('reports a runtime dependency cycle instead of emitting an arbitrary order', () => {
     const alego = releaseFamily('alego')
     const members = [
-      member('packages/a/left', '@alego/left', { dependencies: { '@alego/right': 'workspace:^' } }),
-      member('packages/a/right', '@alego/right', { dependencies: { '@alego/left': 'workspace:^' } }),
+      member('packages/a/left', '@singula-ai/alego-left', { dependencies: { '@singula-ai/alego-right': 'workspace:^' } }),
+      member('packages/a/right', '@singula-ai/alego-right', { dependencies: { '@singula-ai/alego-left': 'workspace:^' } }),
     ]
 
     expect(() => { alego.publishOrder(members) }).toThrow(/dependency cycle/)
@@ -144,44 +144,44 @@ describe('release families', () => {
   it('publishes a peer before its consumer', () => {
     const alego = releaseFamily('alego')
     const members = [
-      member('packages/a/consumer', '@alego/consumer', { peerDependencies: { '@alego/zebra': 'workspace:^' } }),
-      member('packages/a/zebra', '@alego/zebra'),
+      member('packages/a/consumer', '@singula-ai/alego-consumer', { peerDependencies: { '@singula-ai/alego-zebra': 'workspace:^' } }),
+      member('packages/a/zebra', '@singula-ai/alego-zebra'),
     ]
 
     // Name order alone would place the consumer first; the peer edge moves it.
     expect(alego.publishOrder(members).order.map(entry => entry.name)).toEqual([
-      '@alego/zebra',
-      '@alego/consumer',
+      '@singula-ai/alego-zebra',
+      '@singula-ai/alego-consumer',
     ])
   })
 
   it('orders around a peer cycle rather than refusing to publish, and reports the edge it dropped', () => {
     const alego = releaseFamily('alego')
     const members = [
-      member('packages/a/left', '@alego/left', { peerDependencies: { '@alego/right': 'workspace:^' } }),
-      member('packages/a/right', '@alego/right', { peerDependencies: { '@alego/left': 'workspace:^' } }),
+      member('packages/a/left', '@singula-ai/alego-left', { peerDependencies: { '@singula-ai/alego-right': 'workspace:^' } }),
+      member('packages/a/right', '@singula-ai/alego-right', { peerDependencies: { '@singula-ai/alego-left': 'workspace:^' } }),
     ]
 
     // Sibling packages declare each other as peers, and npm treats an unmet peer
     // as a warning, so this pair has to publish rather than fail the release.
     const plan = alego.publishOrder(members)
     expect(plan.order.map(entry => entry.name)).toEqual([
-      '@alego/right',
-      '@alego/left',
+      '@singula-ai/alego-right',
+      '@singula-ai/alego-left',
     ])
     // One of the two edges has to give, and which one it is belongs in the log.
     expect(plan.droppedPeerEdges).toEqual([
-      { consumer: '@alego/right', peer: '@alego/left' },
+      { consumer: '@singula-ai/alego-right', peer: '@singula-ai/alego-left' },
     ])
   })
 
   it('honours an install edge even when a peer cycle surrounds it', () => {
     const alego = releaseFamily('alego')
     const members = [
-      member('packages/a/base', '@alego/base', { peerDependencies: { '@alego/consumer': 'workspace:^' } }),
-      member('packages/a/consumer', '@alego/consumer', {
-        dependencies: { '@alego/base': 'workspace:^' },
-        peerDependencies: { '@alego/base': 'workspace:^' },
+      member('packages/a/base', '@singula-ai/alego-base', { peerDependencies: { '@singula-ai/alego-consumer': 'workspace:^' } }),
+      member('packages/a/consumer', '@singula-ai/alego-consumer', {
+        dependencies: { '@singula-ai/alego-base': 'workspace:^' },
+        peerDependencies: { '@singula-ai/alego-base': 'workspace:^' },
       }),
     ]
 
@@ -189,49 +189,49 @@ describe('release families', () => {
     // would reverse it is the one dropped.
     const plan = alego.publishOrder(members)
     expect(plan.order.map(entry => entry.name)).toEqual([
-      '@alego/base',
-      '@alego/consumer',
+      '@singula-ai/alego-base',
+      '@singula-ai/alego-consumer',
     ])
     expect(plan.droppedPeerEdges).toEqual([
-      { consumer: '@alego/base', peer: '@alego/consumer' },
+      { consumer: '@singula-ai/alego-base', peer: '@singula-ai/alego-consumer' },
     ])
   })
 
   it('refuses an order that would publish a consumer before a dependency it installs', () => {
     const alego = releaseFamily('alego')
     const members = [
-      member('packages/a/alpha', '@alego/alpha', { peerDependencies: { '@alego/bravo': 'workspace:^' } }),
-      member('packages/a/bravo', '@alego/bravo', { peerDependencies: { '@alego/charlie': 'workspace:^' } }),
-      member('packages/a/charlie', '@alego/charlie', { dependencies: { '@alego/alpha': 'workspace:^' } }),
+      member('packages/a/alpha', '@singula-ai/alego-alpha', { peerDependencies: { '@singula-ai/alego-bravo': 'workspace:^' } }),
+      member('packages/a/bravo', '@singula-ai/alego-bravo', { peerDependencies: { '@singula-ai/alego-charlie': 'workspace:^' } }),
+      member('packages/a/charlie', '@singula-ai/alego-charlie', { dependencies: { '@singula-ai/alego-alpha': 'workspace:^' } }),
     ]
 
     // A cycle of two peer edges closed by one install edge: dropping a peer edge
     // would order this, and the traversal drops the install edge instead. That
     // order would publish charlie before the alpha it installs, so it is refused
     // here rather than published.
-    expect(() => { alego.publishOrder(members) }).toThrow(/no publish order honours @alego\/charlie -> @alego\/alpha/)
+    expect(() => { alego.publishOrder(members) }).toThrow(/no publish order honours @singula-ai\/alego-charlie -> @singula-ai\/alego-alpha/)
   })
 
   it('ignores devDependencies when ordering', () => {
     const alego = releaseFamily('alego')
     const members = [
-      member('packages/a/alpha', '@alego/alpha', { devDependencies: { '@alego/zebra': 'workspace:^' } }),
-      member('packages/a/zebra', '@alego/zebra'),
+      member('packages/a/alpha', '@singula-ai/alego-alpha', { devDependencies: { '@singula-ai/alego-zebra': 'workspace:^' } }),
+      member('packages/a/zebra', '@singula-ai/alego-zebra'),
     ]
 
     // A dev dependency is absent from the published package, so it must not move
     // the consumer behind it.
     expect(alego.publishOrder(members).order.map(entry => entry.name)).toEqual([
-      '@alego/alpha',
-      '@alego/zebra',
+      '@singula-ai/alego-alpha',
+      '@singula-ai/alego-zebra',
     ])
   })
 
   it('applies the harness payload policy to alego and keeps upstream payloads for vendored packages', () => {
     const alego = releaseFamily('alego')
     const vendor = releaseFamily('vendor')
-    const harness = member('packages/a/library', '@alego/library')
-    const vendored = member('vendor/cordis', '@alego/cordis')
+    const harness = member('packages/a/library', '@singula-ai/alego-library')
+    const vendored = member('vendor/cordis', '@singula-ai/cordis')
 
     expect(() => { alego.validatePayload(harness, ['package/lib/index.js', 'package/src/index.ts']) })
       .toThrow(/publishes source file/)
@@ -240,7 +240,7 @@ describe('release families', () => {
   })
 
   it('drives the installed entry only for the family that publishes one', () => {
-    expect(releaseFamily('alego').installedEntry).toEqual({ packageName: '@alego/cli', binPath: 'lib/bin.js' })
+    expect(releaseFamily('alego').installedEntry).toEqual({ packageName: '@singula-ai/alego', binPath: 'lib/bin.js' })
     expect(releaseFamily('vendor').installedEntry).toBeUndefined()
   })
 
@@ -295,10 +295,10 @@ describe('version precedence', () => {
 })
 
 describe('payload change judgement', () => {
-  const sourceShipping = member('vendor/cosmokit', '@alego/cosmokit', {
+  const sourceShipping = member('vendor/cosmokit', '@singula-ai/cosmokit', {
     files: ['lib/index.js', 'lib/types/**/*.d.ts', 'src'],
   })
-  const buildOutputOnly = member('vendor/cordis', '@alego/cordis', {
+  const buildOutputOnly = member('vendor/cordis', '@singula-ai/cordis', {
     files: ['lib/index.js', 'lib/types/**/*.d.ts', 'bin.js'],
   })
 
@@ -323,7 +323,7 @@ describe('payload change judgement', () => {
     // unnecessary patch bump, while under-reporting fails the next publish on a
     // version whose bytes moved.
     expect(reachesPayload(sourceShipping, 'vendor/cosmokit/README.i18n.yaml')).toBe(true)
-    expect(reachesPayload(member('packages/a/library', '@alego/library', { files: ['lib/index.js'] }),
+    expect(reachesPayload(member('packages/a/library', '@singula-ai/alego-library', { files: ['lib/index.js'] }),
       'packages/a/library/tests/library.spec.ts')).toBe(false)
   })
 })

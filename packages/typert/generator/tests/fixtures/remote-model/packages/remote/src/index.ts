@@ -1,4 +1,4 @@
-import { TypertRemoteService, Remote, RemoteScope } from '@alego/typert-protocol'
+import { TypertRemoteService, Remote, RemoteScope } from '@singula-ai/alego-typert-protocol'
 import type { Agent } from '@fixture/domain'
 import type {
   CreateGoalRequest,

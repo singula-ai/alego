@@ -7,7 +7,7 @@
  */
 import * as React from 'react'
 import { describe, expect, it, vi } from 'vitest'
-import type { CordisDynamicPluginId } from '@alego/api-remotes/client'
+import type { CordisDynamicPluginId } from '@singula-ai/alego-api-remotes/client'
 import {
   DynamicCordisStyles,
   DYNAMIC_CLIENT_REDIRECTS,

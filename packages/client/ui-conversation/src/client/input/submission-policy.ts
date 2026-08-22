@@ -5,7 +5,7 @@
  */
 import {
   createSnapshotStore, type SettingsScope, type SnapshotStore,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import type {
   BusyEnterBehavior, ComposerSubmitGesture, InputSubmitMode,
 } from '../contract/composer-submission.ts'

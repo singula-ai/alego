@@ -12,7 +12,7 @@ Adding Ralph behavior to `alego-agent-loop`, the goal driver, or the public mode
 
 ## Decision
 
-Add `@alego/tool-ralph` as a separate Consumer package under `packages/workflow/`. It registers `ralph({ objective, maxRounds? })`, owns a fixed workflow script, and depends only on `ctx.tools`, `ctx.systemPrompt`, `ctx.workflowEngine`, and `ctx.subagents`. A Ralph run is not a session goal, creates no goal state, and requires no branch in the concrete agent loop.
+Add `@singula-ai/alego-tool-ralph` as a separate Consumer package under `packages/workflow/`. It registers `ralph({ objective, maxRounds? })`, owns a fixed workflow script, and depends only on `ctx.tools`, `ctx.systemPrompt`, `ctx.workflowEngine`, and `ctx.subagents`. A Ralph run is not a session goal, creates no goal state, and requires no branch in the concrete agent loop.
 
 The tool is foreground-only. The calling agent parents every child for cwd and lineage, the parent tool call waits for the complete run, and the parent step's abort signal cancels the workflow. `run.dispose()` is awaited on every path, so cancellation reaches the worker engine's bounded settlement and child quiescence before the call returns.
 

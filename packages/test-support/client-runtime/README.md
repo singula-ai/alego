@@ -1,4 +1,4 @@
-# @alego/client-test-runtime
+# @singula-ai/alego-client-test-runtime
 
 English | [中文](README.zh.md)
 
@@ -20,5 +20,5 @@ None; this package neither assembles nor sends a provider request.
 
 ## Known Limitations and Deferred Work
 
-- **Consumed through repository source aliases only.** Specs resolve the package through tsconfig `paths` to `src`; the built `lib/` artifact re-exports `@alego/client-runtime/client`, whose bundle is a browser loader script with no Node ESM exports, so `lib/index.js` is not importable under plain Node. Every consumer is an in-repository Vitest suite; there is no Node-compatible runtime entry.
+- **Consumed through repository source aliases only.** Specs resolve the package through tsconfig `paths` to `src`; the built `lib/` artifact re-exports `@singula-ai/alego-client-runtime/client`, whose bundle is a browser loader script with no Node ESM exports, so `lib/index.js` is not importable under plain Node. Every consumer is an in-repository Vitest suite; there is no Node-compatible runtime entry.
 - **Conversation snapshots are fixture data, not replayed history.** `updateSnapshot` writes the snapshot store directly; the wire-to-snapshot computation stays covered by the runtime package's own tests and the replay e2e. A fixture can therefore express states the production projection would never produce.

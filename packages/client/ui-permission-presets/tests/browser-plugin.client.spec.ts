@@ -8,14 +8,14 @@
  * disposal removes the contribution (HMR safety). The same plugin registers
  * its Settings row and invalidates that row on host settings changes.
  */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
-import { SlotRegistry, type SessionId } from '@alego/client-runtime/client'
-import { LocaleRuntime } from '@alego/client-locale/client'
-import { TestRemote } from '@alego/client-test-runtime'
-import { apply as settingsApply, inject as settingsInject } from '@alego/client-ui-settings/client'
-import type { CommandDecoration } from '@alego/client-ui-commands/client'
-import type { PermissionSelect } from '@alego/permission-presets/client'
+import { SlotRegistry, type SessionId } from '@singula-ai/alego-client-runtime/client'
+import { LocaleRuntime } from '@singula-ai/alego-client-locale/client'
+import { TestRemote } from '@singula-ai/alego-client-test-runtime'
+import { apply as settingsApply, inject as settingsInject } from '@singula-ai/alego-client-ui-settings/client'
+import type { CommandDecoration } from '@singula-ai/alego-client-ui-commands/client'
+import type { PermissionSelect } from '@singula-ai/alego-permission-presets/client'
 import {
   PermissionRow, type PermissionRowInjected,
 } from '../src/client/PermissionRow.tsx'

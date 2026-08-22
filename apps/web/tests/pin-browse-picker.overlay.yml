@@ -8,6 +8,6 @@
   disabled: true
 - insert:
     - id: directory-picker-browse
-      name: '@alego/host-directory-picker-browse'
+      name: '@singula-ai/alego-host-directory-picker-browse'
     - id: ui-directory-picker-browse
-      name: '@alego/client-ui-directory-picker-browse'
+      name: '@singula-ai/alego-client-ui-directory-picker-browse'

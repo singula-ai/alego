@@ -1,10 +1,10 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   ConversationMatch, ConversationNodeContext, ConversationNodeDefinition, TurnMaxTokensNode,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import { CHAT_SYNTHETIC_SEQ_OFFSETS, chatNode } from './common.ts'
 
-declare module '@alego/client-ui-conversation/client' {
+declare module '@singula-ai/alego-client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Turn ended by the per-request output-token cap. */
     'turn-max-tokens': TurnMaxTokensNode

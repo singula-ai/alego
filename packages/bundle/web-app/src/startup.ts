@@ -3,12 +3,12 @@
  * family (`--host`, `--port`, `--trusted-host`, `--no-open`) and its `--help`
  * text, then provides the immutable values as {@link WEB_STARTUP_SERVICE}.
  * Ordinary rows inject that service before reading it from lazy config.
- * @module @alego/web-app/startup
+ * @module @singula-ai/alego-web-app/startup
  */
 
 import { Command } from 'commander'
-import type { Context } from '@alego/cordis'
-import { parseCmdline } from '@alego/cmdline'
+import type { Context } from '@singula-ai/cordis'
+import { parseCmdline } from '@singula-ai/alego-cmdline'
 
 /** Stable Cordis plugin name. */
 export const name = 'web-startup'

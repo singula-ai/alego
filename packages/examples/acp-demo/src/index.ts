@@ -1,29 +1,29 @@
 /**
  * The ACP automation server app: the default agent spine
- * ({@link @alego/agent-spine-demo}), JSONL session persistence, and
- * the {@link @alego/acp} bridge. The app owns those plugins through one
+ * ({@link @singula-ai/alego-agent-spine-demo}), JSONL session persistence, and
+ * the {@link @singula-ai/alego-acp} bridge. The app owns those plugins through one
  * ordered lifecycle so ACP sessions quiesce before persistence detaches. It
  * writes nothing to stdout.
  * It pre-creates no agents and leaves adapters, executors, and optional tools to
  * the leaf, which must likewise avoid stdout loggers. Named exports are
  * required so Loader retains this plugin's `Config` schema (see
  * docs/postmortem/0001).
- * @module @alego/acp-demo
+ * @module @singula-ai/alego-acp-demo
  */
 
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import { join } from 'node:path'
-import z from '@alego/schemastery'
-import * as acp from '@alego/acp'
-import * as agentCore from '@alego/agent-spine-demo'
-import * as workspaceContext from '@alego/agent-instructions'
-import ToolRuntime, { type Config as ToolsConfig } from '@alego/tools'
+import z from '@singula-ai/schemastery'
+import * as acp from '@singula-ai/alego-acp'
+import * as agentCore from '@singula-ai/alego-agent-spine-demo'
+import * as workspaceContext from '@singula-ai/alego-agent-instructions'
+import ToolRuntime, { type Config as ToolsConfig } from '@singula-ai/alego-tools'
 import JsonlSessionPersistence, {
   JsonlCompressionSchema,
   type JsonlCompression,
-} from '@alego/session-persistence-jsonl'
-import * as sessionCheckpointPolicy from '@alego/session-checkpoint-policy'
-import SqliteSessionQueryEngine from '@alego/session-query-sqlite'
+} from '@singula-ai/alego-session-persistence-jsonl'
+import * as sessionCheckpointPolicy from '@singula-ai/alego-session-checkpoint-policy'
+import SqliteSessionQueryEngine from '@singula-ai/alego-session-query-sqlite'
 
 export const name = 'acp-demo'
 const DEFAULT_PERSISTENCE_ROOT = './.sessions'

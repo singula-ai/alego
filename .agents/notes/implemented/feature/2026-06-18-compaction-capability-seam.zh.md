@@ -18,10 +18,10 @@ Status: implemented
 
 遵循[能力 seam Agent Note](../architecture/2026-06-13-capability-seams.zh.md)，压缩以独立包发布，使约定、算法和（后续的）消费方 API 各自独立演进：
 
-1. **接口** — `@alego/compaction`：抽象 `CompactionEngine`，拥有 `ctx.compaction` 键、`CompactionResult` 词汇、`compaction/*` 会话事件、手动失败分类体系以及规范的检查点消息来源。它将 `compactIfNeeded()`、`compactNow()` 和 `compactRegion()` 声明为**抽象方法**——约定说明压缩*做什么*，而非*怎么做*。
-2. **实现** — `@alego/compaction-basic`：具体的 `BasicCompactionEngine`，消费 `ctx.tokenMeter`，并拥有尾→头保留遍历、通过 `ctx.llm.stream()` 生成摘要、surface 替换、锁、步骤前压力处理和规范的上下文溢出恢复。`summarize()` 是其唯一的子类钩子；计价与回放仍归 meter 所有。
-3. **无模型配套服务** — `@alego/compaction-tool-result-pruner`：一个具体的可选服务，在后端选择摘要范围之前，重写当前过大的 `tool/result` 节点。它不是第二种压缩实现，也不实现 `CompactionEngine`。
-4. **面向用户的消费方** — `@alego/command-compact` 通过 `ctx.commands` 注册无参数 `/compact`，并调用后端无关的 `compactNow()` 操作。它是供用户直接控制的命令，不是面向模型的工具。
+1. **接口** — `@singula-ai/alego-compaction`：抽象 `CompactionEngine`，拥有 `ctx.compaction` 键、`CompactionResult` 词汇、`compaction/*` 会话事件、手动失败分类体系以及规范的检查点消息来源。它将 `compactIfNeeded()`、`compactNow()` 和 `compactRegion()` 声明为**抽象方法**——约定说明压缩*做什么*，而非*怎么做*。
+2. **实现** — `@singula-ai/alego-compaction-basic`：具体的 `BasicCompactionEngine`，消费 `ctx.tokenMeter`，并拥有尾→头保留遍历、通过 `ctx.llm.stream()` 生成摘要、surface 替换、锁、步骤前压力处理和规范的上下文溢出恢复。`summarize()` 是其唯一的子类钩子；计价与回放仍归 meter 所有。
+3. **无模型配套服务** — `@singula-ai/alego-compaction-tool-result-pruner`：一个具体的可选服务，在后端选择摘要范围之前，重写当前过大的 `tool/result` 节点。它不是第二种压缩实现，也不实现 `CompactionEngine`。
+4. **面向用户的消费方** — `@singula-ai/alego-command-compact` 通过 `ctx.commands` 注册无参数 `/compact`，并调用后端无关的 `compactNow()` 操作。它是供用户直接控制的命令，不是面向模型的工具。
 
 ### 约定依赖 `alego-session` 和 `alego-llm`——有意为之的偏离
 

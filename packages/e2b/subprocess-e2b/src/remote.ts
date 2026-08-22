@@ -4,8 +4,8 @@
  * the ordinary-process and terminal teardown ladders.
  */
 
-import { CommandExitError, e2bControlEnvs, SandboxNotFoundError } from '@alego/e2b'
-import type { Sandbox } from '@alego/e2b'
+import { CommandExitError, e2bControlEnvs, SandboxNotFoundError } from '@singula-ai/alego-e2b'
+import type { Sandbox } from '@singula-ai/alego-e2b'
 
 /**
  * Normalize an unknown rejection into an Error.

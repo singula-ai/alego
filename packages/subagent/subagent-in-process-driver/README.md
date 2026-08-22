@@ -1,4 +1,4 @@
-# @alego/subagent-in-process-driver
+# @singula-ai/alego-subagent-in-process-driver
 
 English | [中文](README.zh.md)
 

@@ -2,15 +2,15 @@
 # the auxiliary route consumes replay.override.json with pacing so its accepted
 # title commits only after the main turn has closed.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - id: acp-agent
-        name: '@alego/acp-demo'
+        name: '@singula-ai/alego-acp-demo'
         config:
           provider: deepseek-official
           model: deepseek-v4-flash
@@ -24,7 +24,7 @@
             Verify your work by running the code or tests. Keep answers brief and factual.
       - insert:
           - id: llm-replay-main
-            name: '@alego/llm-replay'
+            name: '@singula-ai/alego-llm-replay'
             config:
               overrideFile: ./.missing-main-replay-override.json
               providers:
@@ -33,7 +33,7 @@
                   models:
                     - id: deepseek-v4-flash
           - id: llm-replay-title
-            name: '@alego/llm-replay'
+            name: '@singula-ai/alego-llm-replay'
             config:
               paceMs: 10
               providers:
@@ -42,7 +42,7 @@
                   models:
                     - id: title-model
           - id: session-title-provider
-            name: '@alego/session-title-first-prompt-llm'
+            name: '@singula-ai/alego-session-title-first-prompt-llm'
             config:
               targetWords: 5
               targetCjkCharacters: 10

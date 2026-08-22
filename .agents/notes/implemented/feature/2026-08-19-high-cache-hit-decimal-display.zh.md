@@ -12,7 +12,7 @@ Web 会话统计行会把所有非空缓存命中率舍入为整数。真实比�
 
 ## 决策
 
-`StatsLine` 继续从 `@alego/token-meter` 所拥有的完整会话 `tokenUsage` 投影派生比率；该投影仍是未缓存输入、缓存读取、缓存写入与输出计数的唯一所有方（[投影决策](../architecture/2026-07-29-projected-token-usage-and-request-context.zh.md)）。展示层只改变插入现有 `stats.cacheHit` locale 模板的文本。
+`StatsLine` 继续从 `@singula-ai/alego-token-meter` 所拥有的完整会话 `tokenUsage` 投影派生比率；该投影仍是未缓存输入、缓存读取、缓存写入与输出计数的唯一所有方（[投影决策](../architecture/2026-07-29-projected-token-usage-and-request-context.zh.md)）。展示层只改变插入现有 `stats.cacheHit` locale 模板的文本。
 
 | 真实比率 | 显示结果 |
 |---|---|

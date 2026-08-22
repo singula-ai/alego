@@ -8,12 +8,12 @@
  * the process machinery itself (spawn, env scrub, tree-scoped teardown)
  * belongs to the `alego-subprocess` seam.
  *
- * @module @alego/subagent/out-of-process
+ * @module @singula-ai/alego-subagent/out-of-process
  */
 
 import { accessSync, constants, statSync } from 'node:fs'
 import { isAbsolute, resolve } from 'node:path'
-import type { ContentBlock } from '@alego/llm'
+import type { ContentBlock } from '@singula-ai/alego-llm'
 import type { SubagentCapabilities, SubagentResult, SubagentRun, SubagentStopReason } from './types.ts'
 
 /** Maximum UTF-8 size of {@link SubagentResult.diagnostic}. */

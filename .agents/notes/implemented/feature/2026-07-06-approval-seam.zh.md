@@ -20,12 +20,12 @@ Status: implemented
 
 ```yaml
 - id: approval
-  name: '@alego/user-approval'
+  name: '@singula-ai/alego-user-approval'
   # config:
   #   policy: never   # deployment default for sessions without an override; 'ask' when omitted
 ```
 
-仅有这条条目只提供机制，不提供通道：没有组合应答者时，每次 ask 都解析为 `unavailable`，发起请求的工具调用会被拒绝——无需配置即可做到故障时默认拒绝。组合 ACP 应用（`@alego/acp-demo`，如 [acp-agent 示例的默认树](../../../../examples/acp-agent/README.zh.md)）即可闭环：其[仅面向自动化的桥接层](../simplification/2026-07-23-acp-automation-only-protocol.zh.md)注册一个应答者，向拥有该会话的客户端发送 `session/request_permission`，携带精确的工具调用 id 和一次性 allow/reject 选项。`policy: never` 是无人值守姿态：每次 ask 都会被确定性地自动拒绝，当前值也会加入运行时上下文快照。`policy` 在插件加载时对照封闭列表校验；非法值直接抛异常。
+仅有这条条目只提供机制，不提供通道：没有组合应答者时，每次 ask 都解析为 `unavailable`，发起请求的工具调用会被拒绝——无需配置即可做到故障时默认拒绝。组合 ACP 应用（`@singula-ai/alego-acp-demo`，如 [acp-agent 示例的默认树](../../../../examples/acp-agent/README.zh.md)）即可闭环：其[仅面向自动化的桥接层](../simplification/2026-07-23-acp-automation-only-protocol.zh.md)注册一个应答者，向拥有该会话的客户端发送 `session/request_permission`，携带精确的工具调用 id 和一次性 allow/reject 选项。`policy: never` 是无人值守姿态：每次 ask 都会被确定性地自动拒绝，当前值也会加入运行时上下文快照。`policy` 在插件加载时对照封闭列表校验；非法值直接抛异常。
 
 组合部署的可观测行为：`allowed-once` 仅允许该次调用继续；拒绝、关闭和通道缺失以三种不同原因拒绝，模型可以区分；轮次内成功的请求会在发起请求的 agent 的会话日志上落一对持久化的 `approval/asked`/`approval/decided` 事件；授权不会在发起请求的调用结束后继续存在。空闲时的请求或审计追加失败会拒绝，而不会返回未经审计的决策。
 

@@ -5,21 +5,21 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { stat } from 'node:fs/promises'
-import AgentRegistry from '@alego/agent'
-import { createUserMessage } from '@alego/llm'
-import SessionStore from '@alego/session'
-import type { SessionHeader, SessionId } from '@alego/session'
-import UserQuestionService from '@alego/user-questions'
+import AgentRegistry from '@singula-ai/alego-agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import SessionStore from '@singula-ai/alego-session'
+import type { SessionHeader, SessionId } from '@singula-ai/alego-session'
+import UserQuestionService from '@singula-ai/alego-user-questions'
 import {
   SessionQueryError,
   type SessionSearchHit,
   type SessionSearchRequest,
-} from '@alego/session-query'
-import type { RpcRequest } from '@alego/host-apiproxy/api'
-import { RpcId } from '@alego/host-apiproxy/api'
-import { createApiProxy } from '@alego/host-apiproxy'
+} from '@singula-ai/alego-session-query'
+import type { RpcRequest } from '@singula-ai/alego-host-apiproxy/api'
+import { RpcId } from '@singula-ai/alego-host-apiproxy/api'
+import { createApiProxy } from '@singula-ai/alego-host-apiproxy'
 
 vi.mock('node:fs/promises', async (importOriginal) => {
   const actual = await importOriginal<typeof import('node:fs/promises')>()

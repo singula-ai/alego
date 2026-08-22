@@ -31,7 +31,7 @@ import { entryDirs, packageDirs, platformDirs, readJson, root } from './repo.mjs
 const args = process.argv.slice(2);
 const currentPlatformOnly = args.includes('--current-platform-only');
 const tarballDir = path.resolve(args.find((arg) => !arg.startsWith('--')) || path.join(root, 'dist', 'npm'));
-const entryPackageName = '@alego/node-addon-landlock-run';
+const entryPackageName = '@singula-ai/node-addon-landlock-run';
 
 function tarballName(manifest) {
   if (manifest.name.startsWith('@')) {
@@ -180,10 +180,10 @@ import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { grantArgs, launcherPath, probe } from '@alego/node-addon-landlock-run';
+import { grantArgs, launcherPath, probe } from '@singula-ai/node-addon-landlock-run';
 
 const requireLandlock = process.env.NALR_REQUIRE_LANDLOCK === '1';
-const platformPackage = '@alego/node-addon-landlock-run-' + process.platform + '-' + process.arch;
+const platformPackage = '@singula-ai/node-addon-landlock-run-' + process.platform + '-' + process.arch;
 const resolved = launcherPath();
 assert.ok(path.isAbsolute(resolved), 'launcherPath must be absolute');
 assert.ok(resolved.includes(path.join(...platformPackage.split('/'))), 'launcherPath must point into the platform package: ' + resolved);

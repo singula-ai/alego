@@ -7,9 +7,9 @@
  */
 import type {
   IApiClient, ModelCatalogFailure, ModelProviderGroup, ModelSelection, SessionId, SessionModels,
-} from '@alego/api-remotes/client'
-import type { SnapshotStore } from '@alego/client-runtime/client'
-import { createSnapshotStore } from '@alego/client-runtime/client'
+} from '@singula-ai/alego-api-remotes/client'
+import type { SnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import { createSnapshotStore } from '@singula-ai/alego-client-runtime/client'
 
 /** Directory snapshot both entries render from. */
 export interface ModelDirectoryState {

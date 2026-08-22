@@ -6,15 +6,15 @@ Status: implemented
 
 ## 问题
 
-在 [`alego --profile headless`](../architecture/2026-08-06-app-owned-command-line.zh.md) 成为产品的一次性命令后，`@alego/cli-demo` 仍是承担同一工作的第二个应用包。它另行拥有一套可执行文件、参数语法、应用组装、取消生命周期、文本／JSON／stream-JSON 输出约定、构建产物、配套文档和测试套件。两个入口组装的树也不相同，因此 demo 成功不能证明已交付的 `headless` profile 可用，用户还必须在功能重叠的命令之间作出选择。
+在 [`alego --profile headless`](../architecture/2026-08-06-app-owned-command-line.zh.md) 成为产品的一次性命令后，`@singula-ai/alego-cli-demo` 仍是承担同一工作的第二个应用包。它另行拥有一套可执行文件、参数语法、应用组装、取消生命周期、文本／JSON／stream-JSON 输出约定、构建产物、配套文档和测试套件。两个入口组装的树也不相同，因此 demo 成功不能证明已交付的 `headless` profile 可用，用户还必须在功能重叠的命令之间作出选择。
 
 回放套件仍需要规范会话事件来固定组装后的后端行为。这一测试需求不需要已发布命令或兼容性约定。
 
 ## 决策
 
-彻底删除 `@alego/cli-demo`：包括它的包、bin、解析器、应用插件、输出格式、测试、workspace 引用、生成目录条目和现行文档。不保留别名或兼容包。源码用户通过 `pnpm alego --profile headless` 调用产品命令；stdout 上的最终文本、stderr 上的失败诊断、持久化、退出状态和关闭行为均由该命令负责。
+彻底删除 `@singula-ai/alego-cli-demo`：包括它的包、bin、解析器、应用插件、输出格式、测试、workspace 引用、生成目录条目和现行文档。不保留别名或兼容包。源码用户通过 `pnpm alego --profile headless` 调用产品命令；stdout 上的最终文本、stderr 上的失败诊断、持久化、退出状态和关闭行为均由该命令负责。
 
-`examples/headless-agent` 成为显式测试组装。其 Loader 配置把 `@alego/agent-spine-demo`、一个根 agent（智能体）、JSONL 持久化和检查点策略挂载为独立配置行，不再将其隐藏在应用组合包之后。支持层的 `@alego/loader-smoke` 包负责共享的直接 agent 轮次 helper；未导出的示例本地 driver 选择各自的 Loader 配置，并将规范事件渲染为 JSONL。这些 driver 只由测试启动，不提供 bin，也不定义受支持的产品输出格式。
+`examples/headless-agent` 成为显式测试组装。其 Loader 配置把 `@singula-ai/alego-agent-spine-demo`、一个根 agent（智能体）、JSONL 持久化和检查点策略挂载为独立配置行，不再将其隐藏在应用组合包之后。支持层的 `@singula-ai/alego-loader-smoke` 包负责共享的直接 agent 轮次 helper；未导出的示例本地 driver 选择各自的 Loader 配置，并将规范事件渲染为 JSONL。这些 driver 只由测试启动，不提供 bin，也不定义受支持的产品输出格式。
 
 ## 考虑过的替代方案
 
@@ -25,7 +25,7 @@ Status: implemented
 
 ## 后果
 
-这是有意为之的破坏性变更。`alego-cli-demo`、它的 `--output-format` 选项以及对 `@alego/cli-demo/src/cli.ts` 的导入都不再可解析。本变更不提供公开的事件流替代接口；调用方使用 `alego --profile headless` 执行一次性任务，需要结构化自动化时则必须选择现有的协议接口。
+这是有意为之的破坏性变更。`alego-cli-demo`、它的 `--output-format` 选项以及对 `@singula-ai/alego-cli-demo/src/cli.ts` 的导入都不再可解析。本变更不提供公开的事件流替代接口；调用方使用 `alego --profile headless` 执行一次性任务，需要结构化自动化时则必须选择现有的协议接口。
 
 仓库通过仅供测试的基础设施保留后端回放覆盖，产品冒烟测试和 built-bin 验收则运行 `alego --profile headless`。只有当独立的一次性包负责一套真正独立、带版本且不能归产品启动器所有的协议时，它才可以重新引入；第二种命令写法或输出 shim 并不足以构成理由。
 

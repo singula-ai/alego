@@ -15,7 +15,7 @@ Archived: 2026-07-26
 
 ## 决策
 
-`@alego/time-context` 是位于 `packages/context/time-context/`、需要显式启用的函数插件。`context/` 产品分组用于容纳既不定义工具、也不定义服务的有界请求上下文增强。`alego-agent-spine-demo` 和仓库提供的示例都不会加载该包；只有当 token 与信息披露成本可接受时，部署方才显式挂载它。
+`@singula-ai/alego-time-context` 是位于 `packages/context/time-context/`、需要显式启用的函数插件。`context/` 产品分组用于容纳既不定义工具、也不定义服务的有界请求上下文增强。`alego-agent-spine-demo` 和仓库提供的示例都不会加载该包；只有当 token 与信息披露成本可接受时，部署方才显式挂载它。
 
 该插件注册顺序值为 10 的全局系统提示词区段 `context:time`，位置在部署方角色设定之后、工具指导之前。对于活跃轮次，它会输出带数字 UTC 偏移和 IANA 时区、形似 ISO 的时间戳，以及从轮次开始前最后一条模型可见消息起算的紧凑整秒时长。未绑定 agent 或 agent 处于空闲状态时，该区段为空。
 

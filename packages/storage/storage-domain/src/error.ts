@@ -1,6 +1,6 @@
 /**
  * Error vocabulary of the domain data form.
- * @module @alego/storage-domain/src/error
+ * @module @singula-ai/alego-storage-domain/src/error
  */
 
 /** Discriminant codes carried by every {@link DomainError}. */

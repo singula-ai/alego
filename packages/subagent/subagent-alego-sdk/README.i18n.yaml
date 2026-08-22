@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/subagent/subagent-alego-sdk/README.md
-README.md: 6670d1021b2a4cc0235ecd5772ab59b78a081042
-README.zh.md: 9ef9fa6af4f80987f1fd1db6414903dd7eefb68a
+README.md: 3fc087b85a777d8ea44606e33c776e5d2f05e279
+README.zh.md: aa5858e9e5d1049b6094eb190e4a3d32684a3eae

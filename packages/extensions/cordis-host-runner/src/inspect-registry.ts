@@ -1,12 +1,12 @@
 /** Host registry for model-visible, read-only Cordis capability queries. */
 
-import { Service } from '@alego/cordis'
-import type { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import { snapshotJsonValue } from '@alego/session'
-import type { JsonValue } from '@alego/session/types'
-import { assertSupportedJsonSchema, validateJsonSchemaValue } from '@alego/tools'
-import type { JsonSchemaNode } from '@alego/tools'
+import { Service } from '@singula-ai/cordis'
+import type { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import { snapshotJsonValue } from '@singula-ai/alego-session'
+import type { JsonValue } from '@singula-ai/alego-session/types'
+import { assertSupportedJsonSchema, validateJsonSchemaValue } from '@singula-ai/alego-tools'
+import type { JsonSchemaNode } from '@singula-ai/alego-tools'
 import type {
   CordisInspectMethodManifest, CordisInspectPlatform, CordisInspectProviderManifest,
   CordisInspectProviderView, CordisInspectQueryRequest, CordisInspectQueryResolution,
@@ -35,7 +35,7 @@ interface PendingClientQuery {
   settle(resolution: CordisInspectQueryResolution): void
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     /** Host registry for Cordis inspect providers and Client manifest/query routing. */
     cordisInspect: CordisInspectRegistryService

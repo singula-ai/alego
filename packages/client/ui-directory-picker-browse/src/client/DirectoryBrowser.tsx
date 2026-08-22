@@ -39,10 +39,10 @@ import clsx from 'clsx'
 import {
   Button, IconCheckOutline16, IconChevronRightOutline14, IconEditOutline16, IconFolderClose16, IconFolderOpen16,
   IconPlusOutline16, Modal,
-} from '@alego/client-ui-primitives'
-import type { DirectoryEntry, DirectoryListing } from '@alego/client-runtime/client'
-import { DirectoryBrowseError } from '@alego/client-runtime/client'
-import type { Translate } from '@alego/client-locale/client'
+} from '@singula-ai/alego-client-ui-primitives'
+import type { DirectoryEntry, DirectoryListing } from '@singula-ai/alego-client-runtime/client'
+import { DirectoryBrowseError } from '@singula-ai/alego-client-runtime/client'
+import type { Translate } from '@singula-ai/alego-client-locale/client'
 import css from './DirectoryBrowser.module.css'
 
 /** Owner-supplied browser props: browse calls, pick semantics, and copy. */

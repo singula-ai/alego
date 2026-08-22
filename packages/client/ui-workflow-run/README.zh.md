@@ -1,4 +1,4 @@
-# @alego/client-ui-workflow-run
+# @singula-ai/alego-client-ui-workflow-run
 
 [English](README.md) | 中文
 

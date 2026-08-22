@@ -22,24 +22,24 @@ const workspaceGlobs = [
   { dir: 'apps', depth: 1 },
 ] as const
 const vendoredPackages = new Set([
-  '@alego/cordis',
-  '@alego/cosmokit',
-  '@alego/schemastery',
-  '@alego/cordis-plugin-loader',
-  '@alego/cordis-plugin-include',
-  '@alego/cordis-plugin-group',
-  '@alego/cordis-plugin-timer',
-  '@alego/cordis-plugin-hmr',
-  '@alego/cordis-plugin-logger-console',
+  '@singula-ai/cordis',
+  '@singula-ai/cosmokit',
+  '@singula-ai/schemastery',
+  '@singula-ai/cordis-plugin-loader',
+  '@singula-ai/cordis-plugin-include',
+  '@singula-ai/cordis-plugin-group',
+  '@singula-ai/cordis-plugin-timer',
+  '@singula-ai/cordis-plugin-hmr',
+  '@singula-ai/cordis-plugin-logger-console',
 ])
 const publicLandlockPackages = new Set([
-  '@alego/node-addon-landlock-run',
-  '@alego/node-addon-landlock-run-linux-arm64',
-  '@alego/node-addon-landlock-run-linux-x64',
+  '@singula-ai/node-addon-landlock-run',
+  '@singula-ai/node-addon-landlock-run-linux-arm64',
+  '@singula-ai/node-addon-landlock-run-linux-x64',
 ])
 /** Deliberate source payloads whose exact bytes are part of the package's audit surface. */
 const publicationSourceAllowlist: Readonly<Record<string, readonly string[]>> = {
-  '@alego/node-addon-landlock-run': ['src/main.c'],
+  '@singula-ai/node-addon-landlock-run': ['src/main.c'],
 }
 const repositoryUrl = 'git+https://github.com/singula-ai/alego.git'
 /**
@@ -53,16 +53,16 @@ const publishedRepositoryUrl = 'git+https://github.com/singula-ai/alego.git'
 /** Private packages that participate in workspace checks but not releases. */
 const experimentalPackageDirectory = /^packages\/experimental\/[^/]+$/
 /** npm namespace reserved for private experimental packages. */
-const experimentalPackageNamePrefix = '@alego/experimental-'
+const experimentalPackageNamePrefix = '@singula-ai/alego-experimental-'
 /** Directories whose packages this repository publishes: one release member each. */
 const releaseMemberDirectory = /^(?:packages\/(?!experimental\/)[^/]+\/[^/]+|apps\/[^/]+|vendor\/[^/]+)$/
 
 const localArtifactDirs = new Set(['node_modules'])
 const appPackageFiles: Readonly<Record<string, readonly string[]>> = {
-  '@alego/cli': ['lib/*.js', 'config'],
+  '@singula-ai/alego': ['lib/*.js', 'config'],
   // The Web build emits sourcemaps for browser debugging; publishing them is
   // what the payload policy forbids, so the bundle ships without them.
-  '@alego/web-frontend': ['dist', '!dist/**/*.map'],
+  '@singula-ai/alego-web-frontend': ['dist', '!dist/**/*.map'],
 }
 
 /** The subset of package.json fields this constraint check cares about. */
@@ -148,22 +148,22 @@ const packageFileExtras: Readonly<Record<string, readonly string[]>> = {
   // them through its own CSS pipeline, so the sheets are published artifacts.
   // The glob covers whichever sheets a package emits; sourcemaps stay
   // unpublished, as everywhere else in the repository.
-  '@alego/client-ui-primitives': ['lib/**/*.css'],
-  '@alego/client-web': ['lib/**/*.css'],
-  '@alego/client-ui-theme': ['lib/styles'],
+  '@singula-ai/alego-client-ui-primitives': ['lib/**/*.css'],
+  '@singula-ai/alego-client-web': ['lib/**/*.css'],
+  '@singula-ai/alego-client-ui-theme': ['lib/styles'],
   // The CPython side ships as source .py files, published as-is rather than built.
-  '@alego/code-runtime-python': ['py/**/*.py'],
+  '@singula-ai/alego-code-runtime-python': ['py/**/*.py'],
   // The Python runtime uses a distinct closed-resolution bin; the public CLI
   // keeps config-owned bare-package resolution through lib/bin.js.
-  '@alego/sdk-jsonrpc-demo': ['lib/packaged-bin.js'],
+  '@singula-ai/alego-sdk-jsonrpc-demo': ['lib/packaged-bin.js'],
   // The argv-prefix runner entry ships beside the lib as its own bundle;
   // sandbox-local resolves it through the package's ./runner export. tsdown
   // also shares its generated FFI code through a hashed runtime chunk.
-  '@alego/sandbox-windows-acl': ['lib/runner.js', 'lib/types-*.js'],
+  '@singula-ai/alego-sandbox-windows-acl': ['lib/runner.js', 'lib/types-*.js'],
   // SQLite loads every statement from immutable package resources at runtime.
-  '@alego/session-persistence-sqlite': ['resources/sql/**/*.sql'],
-  '@alego/skill-badge': ['assets'],
-  '@alego/subprocess-local': ['scripts/ensure-spawn-helper.mjs'],
+  '@singula-ai/alego-session-persistence-sqlite': ['resources/sql/**/*.sql'],
+  '@singula-ai/alego-skill-badge': ['assets'],
+  '@singula-ai/alego-subprocess-local': ['scripts/ensure-spawn-helper.mjs'],
 }
 
 function sameStringList(actual: readonly string[] | undefined, expected: readonly string[]): boolean {
@@ -307,7 +307,7 @@ function checkWorkspace({ dir, manifest }: WorkspaceManifest): string[] {
     return errors
   }
 
-  if (manifest.name?.startsWith('@alego/')) {
+  if (manifest.name?.startsWith('@singula-ai/')) {
     const allowedSources = publicationSourceAllowlist[manifest.name] ?? []
     for (const file of manifest.files ?? []) {
       if (isForbiddenPublicationFile(file) && !allowedSources.includes(file)) {
@@ -316,7 +316,7 @@ function checkWorkspace({ dir, manifest }: WorkspaceManifest): string[] {
     }
   }
 
-  if (dir.startsWith('apps/') && manifest.name?.startsWith('@alego/')) {
+  if (dir.startsWith('apps/') && manifest.name?.startsWith('@singula-ai/')) {
     const expectedFiles = appPackageFiles[manifest.name]
     if (expectedFiles === undefined) {
       errors.push(`${label}: app package has no publication files policy`)
@@ -334,14 +334,14 @@ function checkWorkspace({ dir, manifest }: WorkspaceManifest): string[] {
     }
   }
 
-  if (dir.startsWith('packages/') && manifest.name?.startsWith('@alego/')) {
-    const peer = manifest.peerDependencies?.['@alego/cordis']
-    const dev = manifest.devDependencies?.['@alego/cordis']
+  if (dir.startsWith('packages/') && manifest.name?.startsWith('@singula-ai/alego-')) {
+    const peer = manifest.peerDependencies?.['@singula-ai/cordis']
+    const dev = manifest.devDependencies?.['@singula-ai/cordis']
 
-    if (!peer) errors.push(`${label}: @alego/cordis must be a peerDependency`)
-    if (!dev) errors.push(`${label}: @alego/cordis must also be a devDependency`)
+    if (!peer) errors.push(`${label}: @singula-ai/cordis must be a peerDependency`)
+    if (!dev) errors.push(`${label}: @singula-ai/cordis must also be a devDependency`)
     if (peer && dev && peer !== dev) {
-      errors.push(`${label}: @alego/cordis peer (${peer}) and dev (${dev}) ranges must match`)
+      errors.push(`${label}: @singula-ai/cordis peer (${peer}) and dev (${dev}) ranges must match`)
     }
     if (manifest.version !== repositoryVersion) {
       errors.push(`${label}: package.json version must match root version ${repositoryVersion ?? '(missing)'}`)

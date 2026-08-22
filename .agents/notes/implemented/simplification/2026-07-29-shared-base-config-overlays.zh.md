@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-`alego` 交付了两棵完整的配置树，其中有 43 个共享配置项。`apps/cli/cordis.yml` 以 74 个平铺配置项组合 web surface，而 TUI 启动的是 `examples/tui-agent/cordis.yml`——其中单独一行 `@alego/tui-demo` 挂载了十二个插件，并把它们的配置重新声明为自己那份二十个键、仅作透传的 `Config`。
+`alego` 交付了两棵完整的配置树，其中有 43 个共享配置项。`apps/cli/cordis.yml` 以 74 个平铺配置项组合 web surface，而 TUI 启动的是 `examples/tui-agent/cordis.yml`——其中单独一行 `@singula-ai/alego-tui-demo` 挂载了十二个插件，并把它们的配置重新声明为自己那份二十个键、仅作透传的 `Config`。
 
 这两份文件都名不副实。`examples/tui-agent` 并不是示例：`apps/cli/src/tui.ts` 把它硬编码为产品的默认配置；它还拥有 TUI 的 PTY 冒烟测试、八个终端快照场景，以及被 `cordis-agent` 叶节点 import 的 PTY harness。`alego-tui-demo` 也不是 demo——它就是应用本身，由交付的二进制从 `packages/examples/` 中挂载。
 
@@ -38,7 +38,7 @@ patch 会整体替换目标配置项的 `config` 而不合并。因此，取值�
 
 ## 影响
 
-指名 `@alego/tui-demo` 或 patch `tui-agent` 配置项的 overlay 或 `--config` 树将不再可解析。overlay 现在要 patch 拥有对应键的那一行：模型路由在 `agent-loop`，人设在 `system-prompt`，呈现设置在 `tui`。
+指名 `@singula-ai/alego-tui-demo` 或 patch `tui-agent` 配置项的 overlay 或 `--config` 树将不再可解析。overlay 现在要 patch 拥有对应键的那一行：模型路由在 `agent-loop`，人设在 `system-prompt`，呈现设置在 `tui`。
 
 若某个 patch 的 `id` 不匹配任何配置项，它仍为空操作而不报错。这是有意为之：同一份个人 overlay 会跨 surface 共用，而 `insert` 配置项按设计本就不匹配任何目标，因此仅在 `web` 下存在的配置项不能让 TUI 启动失败。
 

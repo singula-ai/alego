@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { jsonSchemaToTs, renderToolsSdk } from '@alego/tools/src/ts-types.ts'
-import type { ToolSdkSchema } from '@alego/tools/src/ts-types.ts'
-import { parameterSchemaSpecToJsonSchema } from '@alego/tools'
+import { jsonSchemaToTs, renderToolsSdk } from '@singula-ai/alego-tools/src/ts-types.ts'
+import type { ToolSdkSchema } from '@singula-ai/alego-tools/src/ts-types.ts'
+import { parameterSchemaSpecToJsonSchema } from '@singula-ai/alego-tools'
 
 describe('jsonSchemaToTs', () => {
   it('maps every unified schema construct', () => {

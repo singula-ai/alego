@@ -1,4 +1,4 @@
-import { Service } from '@alego/cordis'
+import { Service } from '@singula-ai/cordis'
 
 /** Shared lifecycle and stable-entry storage for one Conversation Definition registry. */
 export abstract class ConversationDefinitionRegistry<Definition> extends Service {

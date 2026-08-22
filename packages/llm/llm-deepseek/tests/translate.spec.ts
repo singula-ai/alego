@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { BlockAssembler, EMPTY_RESPONSE_CODE, LlmError } from '@alego/llm'
-import type { StreamChunk } from '@alego/llm'
+import { BlockAssembler, EMPTY_RESPONSE_CODE, LlmError } from '@singula-ai/alego-llm'
+import type { StreamChunk } from '@singula-ai/alego-llm'
 import { DONE } from '../src/sse.ts'
 import { mapFinishReason, mapUsage, translate } from '../src/translate.ts'
 

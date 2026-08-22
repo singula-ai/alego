@@ -41,7 +41,7 @@ const repoRoot = fileURLToPath(new URL('..', import.meta.url))
 const CLIENT_TYPE_PROGRAM = 'tsconfig.client.json'
 
 /** Compile-shell workspace whose dist `alego web` serves. */
-const SHELL_PACKAGE = '@alego/web-frontend'
+const SHELL_PACKAGE = '@singula-ai/alego-web-frontend'
 
 /**
  * Test infrastructure builds through the client preset but never enters the

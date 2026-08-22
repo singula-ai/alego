@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { startMockLlmServer } from '@alego/llm-mock-server'
+import { startMockLlmServer } from '@singula-ai/alego-llm-mock-server'
 import { execa } from 'execa'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
@@ -186,7 +186,7 @@ function createEnvironmentProbeProfile(home: string, project: string): void {
     name: 'alego-profile-environment-probe',
     private: true,
     dependencies: {},
-    alego: { profile: { bundles: ['@alego/base'] } },
+    alego: { profile: { bundles: ['@singula-ai/alego-base'] } },
   }, undefined, 2))
   writeFileSync(join(profileDir, 'cordis.patch.yml'), [
     '- insert:',
@@ -209,7 +209,7 @@ interface StartupFixture {
  * A custom profile whose ordinary provider plugin injects `cmdlineArgs`, plus
  * a row that reads its app-owned service through a `!!js` config expression.
  * Both plugin modules resolve
- * `@alego/cmdline` and `commander` through the profile module
+ * `@singula-ai/alego-cmdline` and `commander` through the profile module
  * fallback, exactly as an installed out-of-tree bundle does.
  */
 function createStartupFixture(): StartupFixture {
@@ -222,7 +222,7 @@ function createStartupFixture(): StartupFixture {
   mkdirSync(bundleDir, { recursive: true })
   writeFileSync(join(bundleDir, 'startup.mjs'), [
     "import { Command } from 'commander'",
-    "import { parseCmdline } from '@alego/cmdline'",
+    "import { parseCmdline } from '@singula-ai/alego-cmdline'",
     "export const name = 'fixture-startup'",
     "export const inject = ['cmdlineArgs']",
     'export function apply(ctx) {',
@@ -685,7 +685,7 @@ describe.skipIf(!existsSync(alegoBin))('alego BUILT bin (node lib/bin.js, no tsx
         name: 'alego-profile-up',
         private: true,
         dependencies: { 'late-bundle': 'file:./late-bundle' },
-        alego: { profile: { bundles: ['@alego/base'] } },
+        alego: { profile: { bundles: ['@singula-ai/alego-base'] } },
       }))
       writeFileSync(join(profileDir, 'cordis.patch.yml'), '[]\n')
       // v1: no alego manifest — a plain dependency.
@@ -693,7 +693,7 @@ describe.skipIf(!existsSync(alegoBin))('alego BUILT bin (node lib/bin.js, no tsx
       const first = await runBuiltBin(['plugin', '--profile', 'up', 'root'], { ALEGO_HOME: home })
       expect(first.code).toBe(0)
       let manifest = JSON.parse(readFileSync(join(profileDir, 'package.json'), 'utf8')) as { alego: { profile: { bundles: string[] } } }
-      expect(manifest.alego.profile.bundles).toEqual(['@alego/base'])
+      expect(manifest.alego.profile.bundles).toEqual(['@singula-ai/alego-base'])
       // v2: the installed package now declares alego.bundle (an update landed).
       writeFileSync(join(installed, 'package.json'), JSON.stringify({
         name: 'late-bundle', version: '2.0.0', alego: { bundle: { patch: './cordis.patch.yml' } },
@@ -702,7 +702,7 @@ describe.skipIf(!existsSync(alegoBin))('alego BUILT bin (node lib/bin.js, no tsx
       const second = await runBuiltBin(['plugin', '--profile', 'up', 'root'], { ALEGO_HOME: home })
       expect(second.code).toBe(0)
       manifest = JSON.parse(readFileSync(join(profileDir, 'package.json'), 'utf8')) as { alego: { profile: { bundles: string[] } } }
-      expect(manifest.alego.profile.bundles).toEqual(['@alego/base', 'late-bundle'])
+      expect(manifest.alego.profile.bundles).toEqual(['@singula-ai/alego-base', 'late-bundle'])
     } finally {
       rmSync(home, { recursive: true, force: true })
     }
@@ -717,10 +717,10 @@ describe.skipIf(!existsSync(alegoBin))('alego BUILT bin (node lib/bin.js, no tsx
       const { stdout, code, stderr } = await runBuiltBin(['--profile', 'web', '--dump-default-config'], { ALEGO_HOME: home })
       expect(code).toBe(0)
       expect(stderr).toBe('')
-      expect(stdout).toContain("name: '@alego/agent-loop'")
+      expect(stdout).toContain("name: '@singula-ai/alego-agent-loop'")
       expect(stdout).toContain('agents: []')
-      expect(stdout).toContain('# == @alego/base')
-      expect(stdout).toContain("name: '@alego/host-webserver'")
+      expect(stdout).toContain('# == @singula-ai/alego-base')
+      expect(stdout).toContain("name: '@singula-ai/alego-host-webserver'")
     }, 30_000)
 
     it('prints the headless profile without Host or browser layers', async () => {
@@ -730,10 +730,10 @@ describe.skipIf(!existsSync(alegoBin))('alego BUILT bin (node lib/bin.js, no tsx
       )
       expect(code).toBe(0)
       expect(stderr).toBe('')
-      expect(stdout).toContain("name: '@alego/headless'")
-      expect(stdout).not.toMatch(/name: '@alego\/host-/)
-      expect(stdout).not.toContain("name: '@alego/web-app'")
-      expect(stdout).not.toMatch(/name: '@alego\/client-/)
+      expect(stdout).toContain("name: '@singula-ai/alego-headless'")
+      expect(stdout).not.toMatch(/name: '@singula-ai\/alego-host-/)
+      expect(stdout).not.toContain("name: '@singula-ai/alego-web-app'")
+      expect(stdout).not.toMatch(/name: '@singula-ai\/alego-client-/)
     }, 30_000)
 
     it('composes the profile user layer and a --patch overlay in order', async () => {

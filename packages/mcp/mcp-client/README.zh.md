@@ -1,4 +1,4 @@
-# @alego/mcp-client
+# @singula-ai/alego-mcp-client
 
 [English](README.md) | 中文
 
@@ -10,7 +10,7 @@ MCP 客户端桥接插件：连接外部 [Model Context Protocol](https://modelc
 
 ```yaml
 - id: mcp-github
-  name: '@alego/mcp-client'
+  name: '@singula-ai/alego-mcp-client'
   config:
     serverName: github
     transport: stdio
@@ -20,7 +20,7 @@ MCP 客户端桥接插件：连接外部 [Model Context Protocol](https://modelc
       GITHUB_TOKEN: !!js process.env.GITHUB_TOKEN
 
 - id: mcp-web
-  name: '@alego/mcp-client'
+  name: '@singula-ai/alego-mcp-client'
   config:
     serverName: web
     transport: streamable-http

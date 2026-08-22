@@ -21,8 +21,8 @@
 变量名按平台自身的规则匹配：POSIX 上精确匹配，Windows 上不区分大小写。在 Windows 上做大小写敏感的查找会选错层——shell 里的 `deepseek_api_key` 与项目 `.env` 里的 `DEEPSEEK_API_KEY` 对操作系统而言是同一个变量，把它们当成两个就会让项目胜出。
 
 ```ts
-import type { Context } from '@alego/cordis'
-import { launchEnvironmentOf } from '@alego/launch-environment'
+import type { Context } from '@singula-ai/cordis'
+import { launchEnvironmentOf } from '@singula-ai/alego-launch-environment'
 
 declare const ctx: Context
 const endpoint = launchEnvironmentOf(ctx).get('DEEPSEEK_BASE_URL')?.value

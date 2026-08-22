@@ -1,18 +1,18 @@
 import { Buffer } from 'node:buffer'
 import { dirname, posix } from 'node:path'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import {
   CommandExitError,
   FileNotFoundError,
   FileType,
   type EntryInfo,
   type Sandbox,
-} from '@alego/e2b'
-import type E2BRuntime from '@alego/e2b'
-import { FsTargetKey, FsVersion } from '@alego/fs'
-import E2BFileSystem from '@alego/fs-e2b'
+} from '@singula-ai/alego-e2b'
+import type E2BRuntime from '@singula-ai/alego-e2b'
+import { FsTargetKey, FsVersion } from '@singula-ai/alego-fs'
+import E2BFileSystem from '@singula-ai/alego-fs-e2b'
 import * as E2BFsInvariant from '../src/invariant.ts'
-import InvariantRegistry from '@alego/invariants'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 import { describe, expect, it, vi } from 'vitest'
 
 interface RemoteNode {

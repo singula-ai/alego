@@ -1,6 +1,6 @@
 /**
  * SQLite schema ownership and durable-row validation.
- * @module @alego/session-persistence-sqlite/schema
+ * @module @singula-ai/alego-session-persistence-sqlite/schema
  */
 
 import { randomUUID } from 'node:crypto'
@@ -11,7 +11,7 @@ import { setTimeout as delay } from 'node:timers/promises'
 import {
   SessionId,
   type SessionHeader,
-} from '@alego/session'
+} from '@singula-ai/alego-session'
 import { sql } from './sql.ts'
 
 /** Current physical-record schema with packed and compressed event rows. */

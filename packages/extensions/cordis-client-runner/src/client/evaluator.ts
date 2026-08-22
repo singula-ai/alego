@@ -8,7 +8,7 @@
  */
 
 import * as React from 'react'
-import type { CordisDynamicPluginId } from '@alego/api-remotes/client'
+import type { CordisDynamicPluginId } from '@singula-ai/alego-api-remotes/client'
 
 /** A mountable plugin as the closure must return it (FUNCTION or OBJECT form). */
 export interface DynamicCordisEvaluatedPlugin {

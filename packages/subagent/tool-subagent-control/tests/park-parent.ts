@@ -4,8 +4,8 @@
  * @module park-parent
  */
 
-import type { Context } from '@alego/cordis'
-import type { SessionId } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import type { SessionId } from '@singula-ai/alego-session'
 
 /**
  * Reject every step of the stand-in parent. Each child settlement wakes its

@@ -8,7 +8,7 @@ Status: implemented
 
 钩子子系统提供两个桥接插件：一个运行用户既有的 Claude Code（CC）钩子，另一个运行 Codex 钩子。参考实现（`~/repos/refs/claude-code`、`~/repos/refs/codex`）表明一个决定性事实：**Codex 有意重新实现了 CC 钩子协议的一个子集。** 它的引擎读取相同的 `hooks.json`，使用相同的 matcher-group 形状、相同的 exit-code/structured-stdout 输出约定，以及相同的命令钩子执行模型。Codex 的源码甚至以 Claude 的引擎命名，并在注释中标注了「有意偏离」之处。因此，如果不做抽取，两个桥接插件将大量重复协议逻辑。
 
-本 Agent Note 引入 `@alego/hook-protocol`，一个**库**（不是插件——它不注册也不注入任何东西），持有两个桥接插件共同依赖的真正相同的原语。共享与方言专属之间的分界是本设计的重心。
+本 Agent Note 引入 `@singula-ai/alego-hook-protocol`，一个**库**（不是插件——它不注册也不注入任何东西），持有两个桥接插件共同依赖的真正相同的原语。共享与方言专属之间的分界是本设计的重心。
 
 ## 决策
 

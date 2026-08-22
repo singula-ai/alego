@@ -22,14 +22,14 @@
 - insert:
     # Code Mode is a core execution capability, not a Web component.
     - id: code-runtime
-      name: '@alego/code-runtime-worker-thread'
+      name: '@singula-ai/alego-code-runtime-worker-thread'
 
     - id: headless-startup
-      name: '@alego/headless/startup'
+      name: '@singula-ai/alego-headless/startup'
 
     # Reads its task from the ordinary headlessStartup provider.
     - id: headless-runner
-      name: '@alego/headless'
+      name: '@singula-ai/alego-headless'
       inject: [headlessStartup]
       config:
         task: !!js ctx.headlessStartup.task

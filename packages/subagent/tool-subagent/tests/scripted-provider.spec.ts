@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { type Agent } from '@alego/agent'
-import SubagentRuntime, { type SubagentStartRequest } from '@alego/subagent'
-import { SessionId } from '@alego/session'
+import { Context } from '@singula-ai/cordis'
+import { type Agent } from '@singula-ai/alego-agent'
+import SubagentRuntime, { type SubagentStartRequest } from '@singula-ai/alego-subagent'
+import { SessionId } from '@singula-ai/alego-session'
 import * as scripted from './scripted-provider.ts'
 
 /** A minimal parent; the scripted provider only reads its id. */

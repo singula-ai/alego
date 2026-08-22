@@ -10,7 +10,7 @@
  * The canonical value never crosses the wire — only the model-facing render text
  * and this JSON `meta` do — so the structured shape a UI renders MUST ride in
  * `meta`. Each projection consumes the SAME retained matches/paths the
- * model-facing render consumes ({@link module:@alego/tool-fs-search/search-core}
+ * model-facing render consumes ({@link module:@singula-ai/alego-tool-fs-search/search-core}
  * `retainGrepMatches`/`retainGlobPaths`), so text and card agree about which
  * results survived the inline cap, and reports `total` (every result found) and
  * `truncated`, so a UI never presents a capped result as complete.
@@ -23,15 +23,15 @@
  * final output budget (`alego-spill-policy`) only shrinks `content`, never `meta`,
  * so this projection owns keeping `meta` bounded.
  *
- * @module @alego/tool-fs-search/presentation
+ * @module @singula-ai/alego-tool-fs-search/presentation
  */
 
 import type {
   SearchFileMatches,
   SearchLineMatch,
   SearchResultView,
-} from '@alego/tools'
-import type { RetainedItems } from '@alego/output-retention'
+} from '@singula-ai/alego-tools'
+import type { RetainedItems } from '@singula-ai/alego-output-retention'
 import type { GrepMatch } from './search-core.ts'
 
 /**
@@ -71,7 +71,7 @@ type MetaFileMatches = { path: string; matches: MetaLineMatch[] }
  * Group flat matches by file (first-seen order) into the structured by-file shape
  * a UI renders as expandable per-file groups. The grouping matches the
  * model-facing text grouping
- * ({@link module:@alego/tool-fs-search/grep} `formatGrepMatches`), so
+ * ({@link module:@singula-ai/alego-tool-fs-search/grep} `formatGrepMatches`), so
  * card and text agree about file order and membership.
  *
  * @param matches - the retained matches to group, in output order.

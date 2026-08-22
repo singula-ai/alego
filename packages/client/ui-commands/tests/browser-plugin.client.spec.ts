@@ -6,14 +6,14 @@
  * scope → popupFor; unknown id fails loud), both fold up on fiber disposal
  * (HMR safety), and the service satisfies the frozen CommandUiContract.
  */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
-import { createScope, scopeOf, SlotRegistry } from '@alego/client-runtime/client'
-import type { SessionId } from '@alego/client-runtime/client'
-import type { InputTriggerSource } from '@alego/client-ui-input-trigger/client'
+import { createScope, scopeOf, SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import type { SessionId } from '@singula-ai/alego-client-runtime/client'
+import type { InputTriggerSource } from '@singula-ai/alego-client-ui-input-trigger/client'
 import type { CommandUiContract } from '../src/client/contract.ts'
 import type { PopupSelectInjected } from '../src/client/PopupSelectView.tsx'
-import { LocaleRuntime } from '@alego/client-locale/client'
+import { LocaleRuntime } from '@singula-ai/alego-client-locale/client'
 import { apply, CommandUiRuntime, inject } from '../src/client/index.ts'
 
 const sid = (k: string): SessionId => k as SessionId

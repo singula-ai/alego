@@ -1,15 +1,15 @@
-/** Package-owned compaction log-stream invariants. @module @alego/compaction/invariant */
+/** Package-owned compaction log-stream invariants. @module @singula-ai/alego-compaction/invariant */
 
-import type { Context } from '@alego/cordis'
-import { isReplacementSurfaceEvent } from '@alego/session'
-import type { Session, SessionEvent } from '@alego/session'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import { isReplacementSurfaceEvent } from '@singula-ai/alego-session'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 import type { CompactionId } from './brand.ts'
 import { isCompactCheckpointSource } from './checkpoint.ts'
 import type { CompactionCheckpointSource } from './checkpoint.ts'
 import type {} from './types.ts'
 
-const PACKAGE_NAME = '@alego/compaction'
+const PACKAGE_NAME = '@singula-ai/alego-compaction'
 
 /** Cordis companion plugin name. */
 export const name = 'compaction-invariant'

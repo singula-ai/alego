@@ -3,12 +3,12 @@
 // neither knows the other's cache, so only the read-modify-write cycle under
 // the `<file>.lock` sibling keeps both namespaces alive on disk.
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
+import { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import { chmod, mkdtemp, readFile, rm, utimes, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { settingsNamespace } from '@alego/settings'
+import { settingsNamespace } from '@singula-ai/alego-settings'
 import { FileSettingsProvider } from '../src/index.ts'
 
 const AlphaSchema: z<{ value: number }> = z.object({ value: z.number().default(0) })

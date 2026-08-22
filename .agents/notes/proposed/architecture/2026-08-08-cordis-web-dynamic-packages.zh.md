@@ -31,10 +31,10 @@ Status: proposed
 
 | 包 | npm 包名 | 职责 |
 | --- | --- | --- |
-| `tool-cordis` | `@alego/tool-cordis` | 注册 System Prompt、七个模型 Tool、Host Inspect Provider、`@pluginId` 上下文注入和 Tool 展示元数据 |
-| `cordis-host-runner` | `@alego/cordis-host-runner` | 保存权威 Registry，分配 ID，执行 Host 代码，管理版本、审批、Run、私有 handler、Inspect 路由和模型反馈 |
-| `cordis-client-runner` | `@alego/cordis-client-runner` | 在浏览器同步 Inspect manifest，编排审批后的 Host→Client 激活，求值 Client 代码，管理 Guard、Loader/Fiber、timer、样式和 teardown |
-| `ui-cordis` | `@alego/client-ui-cordis` | 展示 Define/Run Tool 卡片、全局 Cordis 面板、审批控件、版本选择、运行状态和 Package 自定义业务视图 |
+| `tool-cordis` | `@singula-ai/alego-tool-cordis` | 注册 System Prompt、七个模型 Tool、Host Inspect Provider、`@pluginId` 上下文注入和 Tool 展示元数据 |
+| `cordis-host-runner` | `@singula-ai/alego-cordis-host-runner` | 保存权威 Registry，分配 ID，执行 Host 代码，管理版本、审批、Run、私有 handler、Inspect 路由和模型反馈 |
+| `cordis-client-runner` | `@singula-ai/alego-cordis-client-runner` | 在浏览器同步 Inspect manifest，编排审批后的 Host→Client 激活，求值 Client 代码，管理 Guard、Loader/Fiber、timer、样式和 teardown |
+| `ui-cordis` | `@singula-ai/alego-client-ui-cordis` | 展示 Define/Run Tool 卡片、全局 Cordis 面板、审批控件、版本选择、运行状态和 Package 自定义业务视图 |
 
 `tool-cordis` 只依赖 Host Runner 的进程内服务，不导入 Client 实现。`ui-cordis` 只消费 Client Runner face 和 Client-safe wire 类型，不导入 Host 实现。Host 与 Client 的运行控制通过已有生成 Remote 面和转发事件连接，网关不拥有动态 Plugin 的领域逻辑。
 

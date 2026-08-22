@@ -1,7 +1,7 @@
 /** Synchronous schema introspection and immutable settings-draft edits. */
-import { Service } from '@alego/cordis'
-import type { Context } from '@alego/cordis'
-import Schema from '@alego/schemastery'
+import { Service } from '@singula-ai/cordis'
+import type { Context } from '@singula-ai/cordis'
+import Schema from '@singula-ai/schemastery'
 
 /** Live schemastery node used for settings introspection and validation. */
 export type SchemaNode = Schema
@@ -150,7 +150,7 @@ export class SettingsSchemaService extends Service {
   }
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     /** Settings-owned synchronous schema and immutable path operations. */
     settingsSchema: SettingsSchemaService

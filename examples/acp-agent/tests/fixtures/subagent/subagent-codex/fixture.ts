@@ -1,8 +1,8 @@
 /** Parent adapter that fails if the composition-only Loader test starts a turn. */
 
-import type { Context } from '@alego/cordis'
-import type { GenerateOptions, StreamChunk } from '@alego/llm'
-import { LlmAdapter } from '@alego/llm'
+import type { Context } from '@singula-ai/cordis'
+import type { GenerateOptions, StreamChunk } from '@singula-ai/alego-llm'
+import { LlmAdapter } from '@singula-ai/alego-llm'
 
 class CompositionOnlyAdapter extends LlmAdapter {
   async * stream(_options: GenerateOptions): AsyncIterable<StreamChunk> {

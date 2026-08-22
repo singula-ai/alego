@@ -1,4 +1,4 @@
-# @alego/tool-ask-user
+# @singula-ai/alego-tool-ask-user
 
 [English](README.md) | 中文
 
@@ -27,7 +27,7 @@
 
 #### 模型看到的内容
 
-模型会看到生成的 [`ask_user_question` schema](../../../docs/tool-catalog.zh.md#alegotool-ask-user)，其中包含问题 id、提示语、标题、选项和多选标志。
+模型会看到生成的 [`ask_user_question` schema](../../../docs/tool-catalog.zh.md#singula-aialego-tool-ask-user)，其中包含问题 id、提示语、标题、选项和多选标志。
 
 #### Token 影响
 

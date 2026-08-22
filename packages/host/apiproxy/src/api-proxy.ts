@@ -8,34 +8,34 @@ import { mkdir, stat } from 'node:fs/promises'
 import { homedir } from 'node:os'
 import { dirname } from 'node:path'
 import { z as zod } from 'zod'
-import type { Context } from '@alego/cordis'
-import { installModelSelection } from '@alego/agent'
-import type { Agent, ModelSelection, ModelSelectionRef, AgentOptions, AgentStatus } from '@alego/agent'
-import type {} from '@alego/agent-presets/types'
-import { AttachmentError, admitEncodedImages } from '@alego/attachment'
-import type { ImageAttachmentRef } from '@alego/attachment'
-import { createUserMessage, freezeMessage, ReasoningEffortId } from '@alego/llm'
-import { errorChain } from '@alego/llm'
-import type { ContentBlock, MessageSource } from '@alego/llm'
-import { isAppendSurfaceEvent, isJsonValue } from '@alego/session'
-import type { JsonValue, Session, SessionEvent, SessionEventMap, SessionHeader, SessionId, UserMessage } from '@alego/session'
-import type { SessionPersistence } from '@alego/session-persistence'
-import { SessionQueryError, type SessionSearchCursor } from '@alego/session-query'
-import { SubagentError } from '@alego/subagent'
-import type { SubagentListEntry as CatalogSubagentListEntry } from '@alego/subagent'
-import { isUserInvocable } from '@alego/skill'
-import type { Workspace, WorkspaceRecord } from '@alego/workspace'
+import type { Context } from '@singula-ai/cordis'
+import { installModelSelection } from '@singula-ai/alego-agent'
+import type { Agent, ModelSelection, ModelSelectionRef, AgentOptions, AgentStatus } from '@singula-ai/alego-agent'
+import type {} from '@singula-ai/alego-agent-presets/types'
+import { AttachmentError, admitEncodedImages } from '@singula-ai/alego-attachment'
+import type { ImageAttachmentRef } from '@singula-ai/alego-attachment'
+import { createUserMessage, freezeMessage, ReasoningEffortId } from '@singula-ai/alego-llm'
+import { errorChain } from '@singula-ai/alego-llm'
+import type { ContentBlock, MessageSource } from '@singula-ai/alego-llm'
+import { isAppendSurfaceEvent, isJsonValue } from '@singula-ai/alego-session'
+import type { JsonValue, Session, SessionEvent, SessionEventMap, SessionHeader, SessionId, UserMessage } from '@singula-ai/alego-session'
+import type { SessionPersistence } from '@singula-ai/alego-session-persistence'
+import { SessionQueryError, type SessionSearchCursor } from '@singula-ai/alego-session-query'
+import { SubagentError } from '@singula-ai/alego-subagent'
+import type { SubagentListEntry as CatalogSubagentListEntry } from '@singula-ai/alego-subagent'
+import { isUserInvocable } from '@singula-ai/alego-skill'
+import type { Workspace, WorkspaceRecord } from '@singula-ai/alego-workspace'
 import {
   workspaceDomainState, workspaceRecord, WorkspaceId as brandWorkspaceId,
   WorkspaceMoveInvalidError, WorkspaceOrderInvalidError, WorkspaceUnknownSessionError,
-} from '@alego/workspace'
+} from '@singula-ai/alego-workspace'
 // Type-only: brings the `ctx.tools` Context merge into this program (viewFor reads presenters).
 import {
   InvalidPresetIdError, PresetExistsError, PresetMountError,
   PresetNotWritableError, resolveSessionPreset, UnknownPresetError,
-} from '@alego/agent-presets'
-import type { PresetBearingSession } from '@alego/agent-presets'
-import type {} from '@alego/tools'
+} from '@singula-ai/alego-agent-presets'
+import type { PresetBearingSession } from '@singula-ai/alego-agent-presets'
+import type {} from '@singula-ai/alego-tools'
 import type {
   ApiProxy, ConfigurableProviderView, CredentialView, GoalRef, HistoryEntry, HostFrame,
   ModelCatalogFailure, ModelProviderGroup,
@@ -52,44 +52,44 @@ import {
   type SessionLogExportReady,
   type SessionLogCompressionLevel,
 } from './session-export.ts'
-import type { SessionRawArtifact } from '@alego/session-persistence'
+import type { SessionRawArtifact } from '@singula-ai/alego-session-persistence'
 import {
   SESSION_SEARCH_RESULT_LIMIT,
   SESSION_SEARCH_SNIPPET_MAX_CODE_POINTS,
   truncateUnicodeCodePoints,
 } from './api/session-search.ts'
 // Type-only: resolves `ctx.get('sessionProjections')` to the projection registry.
-import type {} from '@alego/session-projection'
+import type {} from '@singula-ai/alego-session-projection'
 // Type-only: resolves `ctx.get('tasks')` to the background job registry.
-import type {} from '@alego/jobs'
-import type { JobSnapshot } from '@alego/jobs'
+import type {} from '@singula-ai/alego-jobs'
+import type { JobSnapshot } from '@singula-ai/alego-jobs'
 // Type-only: resolves `ctx.get('sessionProjectionCache')` (the cold listing column).
-import type {} from '@alego/session-projection-cache'
+import type {} from '@singula-ai/alego-session-projection-cache'
 // GoalError narrows domain rejections to their stable codes at the wire boundary.
-import { GoalError } from '@alego/goal'
-import type { GoalRef as CoreGoalRef } from '@alego/goal'
+import { GoalError } from '@singula-ai/alego-goal'
+import type { GoalRef as CoreGoalRef } from '@singula-ai/alego-goal'
 // Type-only edges: resolve the command-change stream and `ctx.get('skills')`.
-import type {} from '@alego/commands'
+import type {} from '@singula-ai/alego-commands'
 // Type-only: the dynamic-package runner's forwarded-event declarations. Its
 // client-safe `./types` subpath deliberately, not the package root — the root
 // merges `ctx.dynamicCordisRunner`, and a dependency on that package would
 // rebuild the api-remotes cycle this direction exists to avoid.
-import type {} from '@alego/cordis-host-runner/types'
-import type {} from '@alego/skill'
+import type {} from '@singula-ai/alego-cordis-host-runner/types'
+import type {} from '@singula-ai/alego-skill'
 // The settings/credentials seams: brand guards run at this wire boundary; the
 // service reads stay optional (`ctx.get`) so a composition without either
 // provider still serves every other domain.
-import { SettingsConflictError, settingsNamespace } from '@alego/settings'
-import type { SettingsDescriptor, SettingsNamespace, SettingsPathOp } from '@alego/settings'
-import { credentialRef } from '@alego/credentials'
+import { SettingsConflictError, settingsNamespace } from '@singula-ai/alego-settings'
+import type { SettingsDescriptor, SettingsNamespace, SettingsPathOp } from '@singula-ai/alego-settings'
+import { credentialRef } from '@singula-ai/alego-credentials'
 // Value edge: the rename impl narrows the title service's validation failure; the import also resolves `ctx.get('sessionTitle')`.
-import { SessionTitleInvalidError } from '@alego/session-title'
-import type { CallId } from '@alego/llm/brand'
-import type { ScopeKey } from '@alego/scope'
-import type { ApprovalOutcome, ApprovalRequestId } from '@alego/user-approval'
+import { SessionTitleInvalidError } from '@singula-ai/alego-session-title'
+import type { CallId } from '@singula-ai/alego-llm/brand'
+import type { ScopeKey } from '@singula-ai/alego-scope'
+import type { ApprovalOutcome, ApprovalRequestId } from '@singula-ai/alego-user-approval'
 // Side-effect type import: resolves the `approval/request` waterfall and
 // `ctx.get('approval')` without a value dependency on the seam (optional composition).
-import type {} from '@alego/user-approval'
+import type {} from '@singula-ai/alego-user-approval'
 import { approvalResponsePayloadSchema } from './api/approvals.schema.ts'
 import { imageLimitsProjectionSchema, sessionListMetadataProjectionSchema } from './api/sessions.schema.ts'
 import { questionResponsePayloadSchema } from './api/questions.schema.ts'
@@ -97,9 +97,9 @@ import type { ClientResponse, RpcError, RpcReceipt, RpcRequest, RpcResponse } fr
 import { RpcId } from './api/rpc.ts'
 import type {
   AskUserQuestionAnswer, AskUserQuestionItem, AskUserQuestionRequest,
-} from '@alego/user-questions'
-import { UserQuestionError } from '@alego/user-questions'
-import { DirectoryPickerError } from '@alego/host-directory-picker'
+} from '@singula-ai/alego-user-questions'
+import { UserQuestionError } from '@singula-ai/alego-user-questions'
+import { DirectoryPickerError } from '@singula-ai/alego-host-directory-picker'
 import {
   ApiRemoteSessionNotFound as SessionNotFound,
   ApiRemoteSubagentSessionOwnership as SubagentSessionOwnership,
@@ -108,7 +108,7 @@ import {
   createApiRemoteAgentResolver,
   hasApiRemoteSubagentOwner,
   inspectApiRemoteSession,
-} from '@alego/api-remotes'
+} from '@singula-ai/alego-api-remotes'
 import { canOpenNativePath, openNativePath, openNativeTextFile } from './native-path-opener.ts'
 
 /** Page size when history is called without maxMessages. */
@@ -883,7 +883,7 @@ function subagentPromptError(
 function projectionsUnavailableError(): RpcError {
   return {
     code: 'internal',
-    message: 'subagent catalog is unavailable: this deployment does not mount the sessionProjections registry (load @alego/session-projection)',
+    message: 'subagent catalog is unavailable: this deployment does not mount the sessionProjections registry (load @singula-ai/alego-session-projection)',
     details: {},
   }
 }
@@ -1738,7 +1738,7 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
     const presets = ctx.get('agentPresets')
     const goals = presets?.serviceFor(agent, 'goals') ?? ctx.get('goals')
     if (goals === undefined) {
-      return { error: { code: 'internal', message: 'goal service is absent: neither this session\'s agent preset nor the host composition mounts @alego/goal', details: {} } }
+      return { error: { code: 'internal', message: 'goal service is absent: neither this session\'s agent preset nor the host composition mounts @singula-ai/alego-goal', details: {} } }
     }
     return goals
   }
@@ -1809,7 +1809,7 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
 
   /** Missing-service report shared by the settings domain (skills-domain stance). */
   function settingsAbsent(): RpcError {
-    return { code: 'internal', message: 'settings service is absent: this deployment does not mount a settings provider (e.g. @alego/settings-file) in its composition', details: {} }
+    return { code: 'internal', message: 'settings service is absent: this deployment does not mount a settings provider (e.g. @singula-ai/alego-settings-file) in its composition', details: {} }
   }
 
   /** Open one Host-resolved target and map native failures onto the wire vocabulary. */
@@ -1863,7 +1863,7 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
 
   /** Missing-service report shared by the credentials domain. */
   function credentialsAbsent(): RpcError {
-    return { code: 'internal', message: 'credentials service is absent: this deployment does not mount a credential provider (e.g. @alego/credentials-local) in its composition', details: {} }
+    return { code: 'internal', message: 'credentials service is absent: this deployment does not mount a credential provider (e.g. @singula-ai/alego-credentials-local) in its composition', details: {} }
   }
 
   /** Map one redacted settings descriptor to its wire view. */
@@ -1956,7 +1956,7 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
         if (sessionQuery === undefined) {
           return err(request, {
             code: 'internal',
-            message: 'session search is unavailable: this deployment does not mount @alego/session-query',
+            message: 'session search is unavailable: this deployment does not mount @singula-ai/alego-session-query',
             details: {},
           })
         }
@@ -3136,7 +3136,7 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
         // (an undeclared `ctx.skills` property read fails the reflect proxy).
         const skillRegistry = scoped ?? ctx.get('skills')
         if (skillRegistry === undefined) {
-          return err(request, { code: 'internal', message: 'skill registry is absent: neither this session\'s agent preset nor the host composition mounts @alego/skill', details: {} })
+          return err(request, { code: 'internal', message: 'skill registry is absent: neither this session\'s agent preset nor the host composition mounts @singula-ai/alego-skill', details: {} })
         }
         // The scope presenters resolve in — the live agent, else the recorded
         // preset's standing key, else the global layer — so a cold session's

@@ -1,20 +1,20 @@
 /**
  * Same-session goal domain: event-sourced state, compare-and-set mutations,
  * and process-local continuation activation.
- * @module @alego/goal
+ * @module @singula-ai/alego-goal
  */
 
 import { randomUUID } from 'node:crypto'
-import { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
+import { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import { z as zod } from 'zod'
 import type { ZodType } from 'zod'
-import { agentEvents } from '@alego/agent'
-import type { Agent } from '@alego/agent'
-import type { Session, SessionEvent } from '@alego/session'
-import { TypertRemoteService, Remote } from '@alego/typert-protocol'
+import { agentEvents } from '@singula-ai/alego-agent'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import { TypertRemoteService, Remote } from '@singula-ai/alego-typert-protocol'
 // Type-only: resolves ctx.sessionProjections for the optional unit child.
-import type {} from '@alego/session-projection'
+import type {} from '@singula-ai/alego-session-projection'
 import {
   applyGoalEvent,
   decodeGoalChange,
@@ -56,7 +56,7 @@ export type * from './domain.ts'
 export { GOAL_CHANGE_VERSION, GoalError, GoalId } from './runtime.ts'
 export { decodeGoalChange, foldGoal, goalChangeRef } from './fold.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     goals: GoalService
   }

@@ -5,8 +5,8 @@
 // even when this UI version has never seen its producer.
 
 import type { ReactNode } from 'react'
-import type { ContextMessageNode, KnownContextForm } from '@alego/client-runtime/client'
-import { JsonBlock } from '@alego/client-ui-primitives'
+import type { ContextMessageNode, KnownContextForm } from '@singula-ai/alego-client-runtime/client'
+import { JsonBlock } from '@singula-ai/alego-client-ui-primitives'
 import type { ChatViewSlotProps } from '../contract/slots.ts'
 import css from './ContextBody.module.css'
 

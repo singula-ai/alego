@@ -13,10 +13,10 @@
  * as trusted as the host process that accepted its definition.
  */
 
-import { Context } from '@alego/cordis'
-import type { DynamicCordisPackage } from '@alego/api-remotes/client'
-import type { SlotRegistry } from '@alego/client-runtime/client'
-import type { ThemeRuntime } from '@alego/client-ui-theme/client'
+import { Context } from '@singula-ai/cordis'
+import type { DynamicCordisPackage } from '@singula-ai/alego-api-remotes/client'
+import type { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import type { ThemeRuntime } from '@singula-ai/alego-client-ui-theme/client'
 
 /** Facade verbs beyond declared services (host CTX_VERBS twin). */
 const CTX_VERBS = new Set([

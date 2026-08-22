@@ -1,4 +1,4 @@
-# @alego/client-connection
+# @singula-ai/alego-client-connection
 
 English | [中文](README.zh.md)
 

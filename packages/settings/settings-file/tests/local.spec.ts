@@ -1,11 +1,11 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
+import { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import { chmod, lstat, mkdir, mkdtemp, readFile, readdir, rename, rm, stat, symlink, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { writeFileAtomic } from '@alego/atomic-write'
-import { settingsNamespace } from '@alego/settings'
+import { writeFileAtomic } from '@singula-ai/alego-atomic-write'
+import { settingsNamespace } from '@singula-ai/alego-settings'
 import { FileSettingsProvider, resolveSpec } from '../src/index.ts'
 
 interface ThemeConfig {

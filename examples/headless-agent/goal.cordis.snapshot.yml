@@ -2,17 +2,17 @@
 # a config patch cannot target an entry behind a nested include, then restates
 # the goal overlay while replacing the live model with keyless replay.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - insert:
           - id: goal
-            name: '@alego/goal'
+            name: '@singula-ai/alego-goal'
           - id: tool-goal
-            name: '@alego/tool-goal'
+            name: '@singula-ai/alego-tool-goal'
           - id: llm-replay
-            name: '@alego/llm-replay'
+            name: '@singula-ai/alego-llm-replay'

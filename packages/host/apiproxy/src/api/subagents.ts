@@ -4,9 +4,9 @@
  * direct parent into the child's Agent inbox.
  */
 
-import type { MessageId } from '@alego/llm/brand'
-import type { ContentBlock } from '@alego/llm/types'
-import type { SessionId } from '@alego/session/types'
+import type { MessageId } from '@singula-ai/alego-llm/brand'
+import type { ContentBlock } from '@singula-ai/alego-llm/types'
+import type { SessionId } from '@singula-ai/alego-session/types'
 import type { RpcRequest, RpcResponse } from './rpc.ts'
 import type { HistoryEntry, SessionProjectionsBlock } from './sessions.ts'
 

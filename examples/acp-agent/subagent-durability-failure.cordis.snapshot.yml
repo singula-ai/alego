@@ -1,15 +1,15 @@
 # Keyless counterpart to subagent-durability-failure.cordis.yml: replace the
 # live adapter with replay and fail the provider-owned final child checkpoint.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - id: acp-agent
-        name: '@alego/acp-demo'
+        name: '@singula-ai/alego-acp-demo'
         config:
           provider: deepseek-official
           model: deepseek-v4-flash
@@ -22,7 +22,7 @@
 
             Verify your work by running the code or tests. Keep answers brief and factual.
       - id: sandbox
-        name: '@alego/sandbox-local'
+        name: '@singula-ai/alego-sandbox-local'
         config:
           runnerCommand:
             - bash
@@ -33,7 +33,7 @@
             - 'passthrough-runner: profile rejected'
       - insert:
           - id: llm-replay
-            name: '@alego/llm-replay'
+            name: '@singula-ai/alego-llm-replay'
             config:
               providers:
                 - id: deepseek-official

@@ -1,5 +1,5 @@
-import { EntryGroup, EntryTree, isJsExpr, type EntryOptions } from '@alego/cordis-plugin-loader'
-import { Context, Service } from '@alego/cordis'
+import { EntryGroup, EntryTree, isJsExpr, type EntryOptions } from '@singula-ai/cordis-plugin-loader'
+import { Context, Service } from '@singula-ai/cordis'
 import { extname } from 'node:path'
 import { access, constants, readFile, rename, writeFile } from 'node:fs/promises'
 import { setTimeout as delay } from 'node:timers/promises'

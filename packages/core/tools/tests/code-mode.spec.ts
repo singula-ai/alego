@@ -1,16 +1,16 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { createUserMessage, CallId  } from '@alego/llm'
-import { createScope } from '@alego/scope'
-import type { Scope } from '@alego/scope'
-import SystemPrompt from '@alego/system-prompt'
-import { CodeRuntime } from '@alego/code-runtime'
-import type { CodeRunRequest, CodeRunResult } from '@alego/code-runtime'
-import ToolRuntime, { CodeRunFailedError, RUN_CODE_NAME, TOOL_ABORTED_BEFORE_DISPATCH, defineContentToolFixture, defineTool } from '@alego/tools'
-import type { Config, JsonSchemaNode, PostToolDecision, ToolExecutionResult } from '@alego/tools'
-import type { Agent } from '@alego/agent'
-import { Session, SessionId } from '@alego/session'
-import type { JsonValue, SessionEventMap } from '@alego/session'
+import { Context } from '@singula-ai/cordis'
+import { createUserMessage, CallId  } from '@singula-ai/alego-llm'
+import { createScope } from '@singula-ai/alego-scope'
+import type { Scope } from '@singula-ai/alego-scope'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import { CodeRuntime } from '@singula-ai/alego-code-runtime'
+import type { CodeRunRequest, CodeRunResult } from '@singula-ai/alego-code-runtime'
+import ToolRuntime, { CodeRunFailedError, RUN_CODE_NAME, TOOL_ABORTED_BEFORE_DISPATCH, defineContentToolFixture, defineTool } from '@singula-ai/alego-tools'
+import type { Config, JsonSchemaNode, PostToolDecision, ToolExecutionResult } from '@singula-ai/alego-tools'
+import type { Agent } from '@singula-ai/alego-agent'
+import { Session, SessionId } from '@singula-ai/alego-session'
+import type { JsonValue, SessionEventMap } from '@singula-ai/alego-session'
 
 const testToolSignal = new AbortController().signal
 
@@ -1735,7 +1735,7 @@ describe('per-agent presentation', () => {
   })
 
   it('inherits a STANDING preset scope\'s mode down the chain, agents beside it unaffected', async () => {
-    const { bindScopeParent } = await import('@alego/scope')
+    const { bindScopeParent } = await import('@singula-ai/alego-scope')
     const { ctx, systemPrompt } = await setup({ mode: 'native' })
     const calls = registerEcho(ctx)
     // The preset's standing scope declares once; the agent only PARENTS to it

@@ -1,15 +1,15 @@
 /**
  * Instruction-file discovery and bounded, abort-aware provider reads.
  *
- * @module @alego/agent-instructions/files
+ * @module @singula-ai/alego-agent-instructions/files
  */
 
 import { createReadStream } from 'node:fs'
 import { stat } from 'node:fs/promises'
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path'
-import type { FileSystem, FsInfo, FsTarget, FsVersion } from '@alego/fs'
-import { assertNever } from '@alego/llm'
-import { alegoHomeDisplay } from '@alego/home-paths'
+import type { FileSystem, FsInfo, FsTarget, FsVersion } from '@singula-ai/alego-fs'
+import { assertNever } from '@singula-ai/alego-llm'
+import { alegoHomeDisplay } from '@singula-ai/alego-home-paths'
 import { resolveConfig, resolveDiscoveryConfig, type ResolvedConfig } from './config.ts'
 import { trimmedInstructionDigest } from './digest.ts'
 import {

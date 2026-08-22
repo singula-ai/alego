@@ -11,7 +11,7 @@ import {
   alegoHomePath,
   expandHomePath,
   resolveAlegoHome,
-} from '@alego/home-paths'
+} from '@singula-ai/alego-home-paths'
 
 afterEach(() => {
   vi.unstubAllEnvs()

@@ -9,8 +9,8 @@
  * through {@link SettingsDescribeMirror.acceptView}.
  */
 
-import type { IApiClient, SettingsNamespaceView } from '@alego/api-remotes/client'
-import { createSnapshotStore, type SnapshotStore } from '@alego/client-runtime/client'
+import type { IApiClient, SettingsNamespaceView } from '@singula-ai/alego-api-remotes/client'
+import { createSnapshotStore, type SnapshotStore } from '@singula-ai/alego-client-runtime/client'
 
 type SettingsFace = Pick<IApiClient, 'settings'>
 

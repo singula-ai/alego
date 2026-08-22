@@ -8,7 +8,7 @@ English | [中文](2026-06-20-discover-package-inventory.zh.md)
 
 Package and gate inventories are repeated across TypeScript project references, package docs, CI prose, and Knip overrides. Most restate package layout, manifest data, or aggregate command contents. Each new package therefore creates avoidable synchronization points.
 
-The [package hierarchy](../../archived/architecture/2026-06-20-package-hierarchy.md) already removed several of these by hand: `scripts/publint-all.ts` now derives its list from the `packages/<group>/<pkg>` layout, and the two `tsconfig` `paths` maps collapsed to one `@alego/*` wildcard. What remains is the inventory that cannot be globbed away — chiefly the aggregate configs' (`tsconfig.host.json`, `tsconfig.client.json`) project `references`, which TypeScript requires as explicit arrays (no wildcard form).
+The [package hierarchy](../../archived/architecture/2026-06-20-package-hierarchy.md) already removed several of these by hand: `scripts/publint-all.ts` now derives its list from the `packages/<group>/<pkg>` layout, and the two `tsconfig` `paths` maps collapsed to one `@singula-ai/alego-*` wildcard. What remains is the inventory that cannot be globbed away — chiefly the aggregate configs' (`tsconfig.host.json`, `tsconfig.client.json`) project `references`, which TypeScript requires as explicit arrays (no wildcard form).
 
 Static lists are appropriate when they encode policy; they are needless friction when they duplicate manifest data or layout facts that already exist in `package.json`, workspace globs, or the package hierarchy.
 

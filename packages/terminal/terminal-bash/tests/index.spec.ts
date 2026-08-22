@@ -1,27 +1,27 @@
 import { describe, expect, it, vi } from 'vitest'
 import { PassThrough } from 'node:stream'
 import { resolve } from 'node:path'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import SessionStore, { Session, SessionId } from '@alego/session'
-import AgentRegistry, { Inbox, type Agent } from '@alego/agent'
-import SandboxProvider from '@alego/sandbox'
-import type { ConfinedArgv, SandboxPolicy } from '@alego/sandbox'
-import SandboxPolicyService, { setSandboxMode } from '@alego/sandbox-policy'
-import TerminalSessionService, { TerminalBackendCleanupError, TerminalSessionId } from '@alego/terminal'
-import type { TerminalSendRequest, TerminalWaitReason } from '@alego/terminal'
-import { BashTerminalBackend, PWSH_PROMPT_SETUP } from '@alego/terminal-bash'
-import { ENCODING_PREAMBLE } from '@alego/pwsh-local'
-import * as ptyLocal from '@alego/terminal-bash'
-import type { ResolvedConfig } from '@alego/terminal-bash/src/config.ts'
-import type { LocalPtySession } from '@alego/terminal-bash/src/session.ts'
-import { SubprocessRuntime } from '@alego/subprocess'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import SessionStore, { Session, SessionId } from '@singula-ai/alego-session'
+import AgentRegistry, { Inbox, type Agent } from '@singula-ai/alego-agent'
+import SandboxProvider from '@singula-ai/alego-sandbox'
+import type { ConfinedArgv, SandboxPolicy } from '@singula-ai/alego-sandbox'
+import SandboxPolicyService, { setSandboxMode } from '@singula-ai/alego-sandbox-policy'
+import TerminalSessionService, { TerminalBackendCleanupError, TerminalSessionId } from '@singula-ai/alego-terminal'
+import type { TerminalSendRequest, TerminalWaitReason } from '@singula-ai/alego-terminal'
+import { BashTerminalBackend, PWSH_PROMPT_SETUP } from '@singula-ai/alego-terminal-bash'
+import { ENCODING_PREAMBLE } from '@singula-ai/alego-pwsh-local'
+import * as ptyLocal from '@singula-ai/alego-terminal-bash'
+import type { ResolvedConfig } from '@singula-ai/alego-terminal-bash/src/config.ts'
+import type { LocalPtySession } from '@singula-ai/alego-terminal-bash/src/session.ts'
+import { SubprocessRuntime } from '@singula-ai/alego-subprocess'
 import type {
   SubprocessHandle,
   SubprocessSpawnSpec,
   SubprocessTerminalHandle,
   SubprocessTerminalSpawnSpec,
-} from '@alego/subprocess'
+} from '@singula-ai/alego-subprocess'
 
 class EmptySandbox extends SandboxProvider {
   confine(_argv: readonly string[], _policy: SandboxPolicy): ConfinedArgv {

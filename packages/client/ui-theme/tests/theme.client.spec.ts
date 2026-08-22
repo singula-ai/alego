@@ -1,13 +1,13 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { stubSettingsScope, type StubSettingsScope } from '@alego/client-test-runtime'
+import { Context } from '@singula-ai/cordis'
+import { stubSettingsScope, type StubSettingsScope } from '@singula-ai/alego-client-test-runtime'
 import type {
   ThemeSettings,
   ThemeSnapshot,
   ThemeTokenOverrides,
-} from '@alego/client-ui-theme/client'
-import { ThemeRuntime } from '@alego/client-ui-theme/client'
+} from '@singula-ai/alego-client-ui-theme/client'
+import { ThemeRuntime } from '@singula-ai/alego-client-ui-theme/client'
 
 const make = (host = stubSettingsScope<ThemeSettings>()): {
   ctx: Context

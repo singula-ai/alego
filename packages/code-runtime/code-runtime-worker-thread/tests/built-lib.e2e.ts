@@ -18,8 +18,8 @@ const built = ['lib/index.js', 'lib/worker.cjs'].every(file => existsSync(join(p
 describe.skipIf(!built)('built lib real load path (plain node)', () => {
   it('runs a TypeScript program with a binding through lib/index.js and its lib/worker.cjs entry', async () => {
     const script = `
-      const { Context } = await import('@alego/cordis')
-      const { WorkerThreadCodeRuntime } = await import('@alego/code-runtime-worker-thread')
+      const { Context } = await import('@singula-ai/cordis')
+      const { WorkerThreadCodeRuntime } = await import('@singula-ai/alego-code-runtime-worker-thread')
       const ctx = new Context()
       await ctx.plugin(WorkerThreadCodeRuntime, {})
       const result = await ctx.codeRuntime.run({

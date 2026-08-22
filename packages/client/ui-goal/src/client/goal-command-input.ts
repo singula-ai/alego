@@ -1,9 +1,9 @@
-import type { SessionEvent } from '@alego/session/types'
-import type { CommandId } from '@alego/commands/brand'
-import type {} from '@alego/commands/types'
+import type { SessionEvent } from '@singula-ai/alego-session/types'
+import type { CommandId } from '@singula-ai/alego-commands/brand'
+import type {} from '@singula-ai/alego-commands/types'
 import type {
   ConversationNodeDefinition,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 
 /** Goal-owned human command input projected independently of model messages. */
 export interface GoalCommandInputData {
@@ -12,7 +12,7 @@ export interface GoalCommandInputData {
   readonly time: number
 }
 
-declare module '@alego/client-ui-conversation/client' {
+declare module '@singula-ai/alego-client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Human-entered `/goal` command input. */
     'command-input': GoalCommandInputData

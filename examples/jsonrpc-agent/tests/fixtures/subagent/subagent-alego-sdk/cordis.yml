@@ -10,12 +10,12 @@
   name: './mock-delegating-llm.ts'
 
 - id: subagent
-  name: '@alego/subagent'
+  name: '@singula-ai/alego-subagent'
 
 # providerName is omitted: the composition exercises the shipped default
 # (`alego-sdk`) through the real Loader.
 - id: subagent-alego-sdk
-  name: '@alego/subagent-alego-sdk'
+  name: '@singula-ai/alego-subagent-alego-sdk'
   config:
     command: !!js process.env.ALEGO_TEST_CHILD_COMMAND
     args: !!js JSON.parse(process.env.ALEGO_TEST_CHILD_ARGS ?? '[]')
@@ -24,7 +24,7 @@
     env: !!js JSON.parse(process.env.ALEGO_TEST_CHILD_ENV ?? '{}')
 
 - id: tool-subagent
-  name: '@alego/tool-subagent'
+  name: '@singula-ai/alego-tool-subagent'
   config:
     provider: alego-sdk
     toolName: subagent
@@ -33,7 +33,7 @@
     maxDepth: 'provider-managed'
 
 - id: agent-spine
-  name: '@alego/agent-spine-demo'
+  name: '@singula-ai/alego-agent-spine-demo'
   config:
     agents:
       - id: main
@@ -44,10 +44,10 @@
     workspaceContext: false
 
 - id: persistence
-  name: '@alego/session-persistence-jsonl'
+  name: '@singula-ai/alego-session-persistence-jsonl'
   config:
     root: './.sessions'
     compression: 'none'
 
 - id: checkpoint-policy
-  name: '@alego/session-checkpoint-policy'
+  name: '@singula-ai/alego-session-checkpoint-policy'

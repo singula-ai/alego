@@ -355,9 +355,9 @@ const KIND_EXAMPLE: Readonly<Record<string, readonly string[]>> = {
   chain: ['select: owner => null'],
 }
 
-/** Drop the `@alego/` prefix so rows stay readable. */
+/** Drop the `@singula-ai/alego-` prefix so rows stay readable. */
 function shortPackage(name: string): string {
-  return name.replace('@alego/', '')
+  return name.replace('@singula-ai/alego-', '')
 }
 
 /** Truncate an over-long declaration, naming the truncation. */
@@ -416,7 +416,7 @@ export function renderClientCatalog(entries: readonly SlotEntry[]): string {
     ' * mounted for the seat to exist. Data only — this module is the one legitimate',
     ' * meeting point of the two planes, so it carries strings, never client imports.',
     ' *',
-    ' * @module @alego/cordis-client-runner/client/slot-catalog',
+    ' * @module @singula-ai/alego-cordis-client-runner/client/slot-catalog',
     ' */',
     '',
     '/* jscpd:ignore-start */',

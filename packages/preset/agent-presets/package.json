@@ -1,5 +1,5 @@
 {
-  "name": "@alego/agent-presets",
+  "name": "@singula-ai/alego-agent-presets",
   "description": "Per-session agent composition from preset cordis.yml files for the Alego",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -37,37 +37,37 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@alego/cordis-plugin-include": "workspace:^",
-    "@alego/cordis-plugin-loader": "workspace:^",
-    "@alego/agent": "workspace:^",
-    "@alego/atomic-write": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/home-paths": "workspace:^",
-    "@alego/scope": "workspace:^",
-    "@alego/session": "workspace:^",
-    "@alego/settings": "workspace:^",
-    "@alego/system-prompt": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/cordis-plugin-include": "workspace:^",
+    "@singula-ai/cordis-plugin-loader": "workspace:^",
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-atomic-write": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-home-paths": "workspace:^",
+    "@singula-ai/alego-scope": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-settings": "workspace:^",
+    "@singula-ai/alego-system-prompt": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "dependencies": {
     "js-yaml": "^4.1.0",
-    "@alego/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:^"
   },
   "devDependencies": {
-    "@alego/cordis-plugin-include": "workspace:^",
-    "@alego/cordis-plugin-loader": "workspace:^",
-    "@alego/agent": "workspace:^",
-    "@alego/agent-loop": "workspace:^",
-    "@alego/atomic-write": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/home-paths": "workspace:^",
-    "@alego/scope": "workspace:^",
-    "@alego/session": "workspace:^",
-    "@alego/settings": "workspace:^",
-    "@alego/settings-file": "workspace:^",
-    "@alego/system-prompt": "workspace:^",
-    "@alego/tools": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/cordis-plugin-include": "workspace:^",
+    "@singula-ai/cordis-plugin-loader": "workspace:^",
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-agent-loop": "workspace:^",
+    "@singula-ai/alego-atomic-write": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-home-paths": "workspace:^",
+    "@singula-ai/alego-scope": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-settings": "workspace:^",
+    "@singula-ai/alego-settings-file": "workspace:^",
+    "@singula-ai/alego-system-prompt": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   }
 }

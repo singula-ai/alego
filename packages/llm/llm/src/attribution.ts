@@ -4,7 +4,7 @@
  * `.agents/notes/implemented/architecture/2026-06-21-mandatory-app-attribution-headers.md`.
  *
  * App-attribution vocabulary for provider requests.
- * @module @alego/llm/attribution
+ * @module @singula-ai/alego-llm/attribution
  */
 
 import { createRequire } from 'node:module'

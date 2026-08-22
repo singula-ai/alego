@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { COMPOSITION_FILE, discoverPresets, scanRoot } from '@alego/agent-presets'
+import { COMPOSITION_FILE, discoverPresets, scanRoot } from '@singula-ai/alego-agent-presets'
 
 const fsHarness = vi.hoisted(() => ({
   nextReadError: undefined as NodeJS.ErrnoException | undefined,

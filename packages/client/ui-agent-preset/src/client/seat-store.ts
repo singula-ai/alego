@@ -10,10 +10,10 @@
  * deployment default again, matching the workspace picker beside it.
  */
 
-import type { IApiClient } from '@alego/api-remotes/client'
+import type { IApiClient } from '@singula-ai/alego-api-remotes/client'
 import {
   createSnapshotStore, type SessionId, type SnapshotStore,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import { messageOf, presetOptions } from './settings-store.ts'
 import type { AgentPresetOption } from './settings-store.ts'
 

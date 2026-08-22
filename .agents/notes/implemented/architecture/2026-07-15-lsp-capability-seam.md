@@ -16,9 +16,9 @@ Many language servers behave best when the queried document is opened with curre
 
 Add LSP as a three-package capability seam with one read-only model tool and one generic local provider implementation:
 
-1. `@alego/lsp` at `packages/lsp/lsp` owns `ctx.lsp`, provider registration and selection, normalized requests/results, execution control, and structured LSP errors.
-2. `@alego/lsp-stdio` at `packages/lsp/lsp-stdio` adapts configured stdio language servers to the seam. One plugin instance accepts a named server table and registers one isolated provider for each command and extension-to-language-id mapping.
-3. `@alego/tool-lsp` at `packages/lsp/tool-lsp` owns the model-facing `lsp` schema, prompt guidance, argument validation, result limits and formatting, and transport-neutral UI presentation.
+1. `@singula-ai/alego-lsp` at `packages/lsp/lsp` owns `ctx.lsp`, provider registration and selection, normalized requests/results, execution control, and structured LSP errors.
+2. `@singula-ai/alego-lsp-stdio` at `packages/lsp/lsp-stdio` adapts configured stdio language servers to the seam. One plugin instance accepts a named server table and registers one isolated provider for each command and extension-to-language-id mapping.
+3. `@singula-ai/alego-tool-lsp` at `packages/lsp/tool-lsp` owns the model-facing `lsp` schema, prompt guidance, argument validation, result limits and formatting, and transport-neutral UI presentation.
 
 `alego-lsp-stdio` is a generic host, not a language-server catalog or installer. Deployments explicitly configure commands and mappings; future presets belong in composition plugins or `cordis.yml` overlays.
 
@@ -35,7 +35,7 @@ The seam exposes one `query(request, signal?)` operation because no fields need 
 The contract shape:
 
 ```ts
-import type { Branded } from '@alego/brand'
+import type { Branded } from '@singula-ai/alego-brand'
 
 type LspOperation = 'goToDefinition' | 'findReferences' | 'goToImplementation' | 'hover'
 type LspProviderId = Branded<'LspProviderId'>

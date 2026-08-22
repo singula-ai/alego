@@ -12,7 +12,7 @@ The capture surface has to be usable at the moment of annoyance, which rules out
 
 ## Decision
 
-`@alego/command-feedback` in `packages/feedback/command-feedback/` registers one global `feedback` command over `ctx.commands`. `/feedback <text>` acknowledges with the receiving session id and the shared harness-home anonymous user id; bare or whitespace-only input returns a direct usage error. The handler is synchronous, injects only `commands`, and has no configuration. [The shared-id decision](../architecture/2026-08-07-shared-feedback-telemetry-user-id.md) records why feedback and OpenTelemetry use the same `$ALEGO_HOME/.anonymous-user-id` value.
+`@singula-ai/alego-command-feedback` in `packages/feedback/command-feedback/` registers one global `feedback` command over `ctx.commands`. `/feedback <text>` acknowledges with the receiving session id and the shared harness-home anonymous user id; bare or whitespace-only input returns a direct usage error. The handler is synchronous, injects only `commands`, and has no configuration. [The shared-id decision](../architecture/2026-08-07-shared-feedback-telemetry-user-id.md) records why feedback and OpenTelemetry use the same `$ALEGO_HOME/.anonymous-user-id` value.
 
 The package declares the log-only `feedback/record { text }` session event and exports `recordFeedback(session, text)` as its command-independent producer. The producer discards surrounding whitespace, rejects an empty result, and appends exactly one event. `/feedback` delegates to it, so another UI, hook, or host integration can record the same domain fact without constructing a slash command.
 

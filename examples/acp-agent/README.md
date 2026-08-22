@@ -13,9 +13,9 @@ The leaf loads the ACP app, DeepSeek adapter, sandboxed bash and filesystem stac
 
 ## Protocol channel
 
-Stdout carries only newline-delimited ACP JSON-RPC. `@alego/acp-demo` installs no stdout logger; leaf additions must use stderr for diagnostics.
+Stdout carries only newline-delimited ACP JSON-RPC. `@singula-ai/alego-acp-demo` installs no stdout logger; leaf additions must use stderr for diagnostics.
 
-The automation contract — supported methods, baseline prompt content, committed-text output, and the intentionally absent UI surfaces — lives in [`@alego/acp`](../../packages/acp/acp/README.md).
+The automation contract — supported methods, baseline prompt content, committed-text output, and the intentionally absent UI surfaces — lives in [`@singula-ai/alego-acp`](../../packages/acp/acp/README.md).
 
 ## Session workspaces and permissions
 

@@ -8,13 +8,13 @@
  * entries, so the surface is discovered exactly as a config-row's would be
  * and one resolved choice still swaps both faces; pinning an interaction
  * remains composing that pair directly instead of this row.
- * @module @alego/host-directory-picker-auto
+ * @module @singula-ai/alego-host-directory-picker-auto
  */
 
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 // Empty type imports carry the `loader` and `webServer` Context merges for the reads below.
-import type {} from '@alego/cordis-plugin-loader'
-import type {} from '@alego/host-webserver'
+import type {} from '@singula-ai/cordis-plugin-loader'
+import type {} from '@singula-ai/alego-host-webserver'
 import { canExecute, hasLinuxChooserBinary } from './probe.ts'
 import type { DirectoryPickerBackendKind } from './resolve.ts'
 import { resolveDirectoryPickerBackend } from './resolve.ts'
@@ -35,8 +35,8 @@ export const inject = ['webServer', 'loader']
  * app composing this chooser to declare both values as dependencies.
  */
 export const BACKEND_PACKAGES: Record<DirectoryPickerBackendKind, string> = {
-  native: '@alego/host-directory-picker-native',
-  browse: '@alego/host-directory-picker-browse',
+  native: '@singula-ai/alego-host-directory-picker-native',
+  browse: '@singula-ai/alego-host-directory-picker-browse',
 }
 
 /**
@@ -48,8 +48,8 @@ export const BACKEND_PACKAGES: Record<DirectoryPickerBackendKind, string> = {
  * workspace.
  */
 export const SURFACE_PACKAGES: Record<DirectoryPickerBackendKind, string> = {
-  native: '@alego/client-ui-directory-picker-native',
-  browse: '@alego/client-ui-directory-picker-browse',
+  native: '@singula-ai/alego-client-ui-directory-picker-native',
+  browse: '@singula-ai/alego-client-ui-directory-picker-browse',
 }
 
 /**

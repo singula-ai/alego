@@ -8,7 +8,7 @@ import {
   launchAcpTestAgent,
   type AgentUnderTest,
   type LaunchedAcpTestAgent,
-} from '@alego/acp-snapshot'
+} from '@singula-ai/alego-acp-snapshot'
 import { cleanupAcpExampleTest } from './cleanup.ts'
 
 /**

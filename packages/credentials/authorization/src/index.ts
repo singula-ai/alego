@@ -23,12 +23,12 @@
  * })
  * ```
  *
- * @module @alego/authorization
+ * @module @singula-ai/alego-authorization
  */
 
-import { Context, Service } from '@alego/cordis'
-import type { CredentialKey } from '@alego/credentials'
-import { HarnessError } from '@alego/llm'
+import { Context, Service } from '@singula-ai/cordis'
+import type { CredentialKey } from '@singula-ai/alego-credentials'
+import { HarnessError } from '@singula-ai/alego-llm'
 
 import type {
   AuthorizationEntry, AuthorizationMethod, AuthorizationNotice, AuthorizationOutcome, AuthorizationPrompt,
@@ -40,7 +40,7 @@ export type {
   AuthorizationPromptOption, AuthorizationSettlement, AuthorizationStatus,
 } from './types.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     authorization: AuthorizationService
   }

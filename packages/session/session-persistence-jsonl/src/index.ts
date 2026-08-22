@@ -3,11 +3,11 @@
  * events in one append-only file per session, and delegates orchestration to
  * {@link PersistenceCoordinator}. Its side-effect-free locator returns the
  * absolute per-session log target before materialization.
- * @module @alego/session-persistence-jsonl
+ * @module @singula-ai/alego-session-persistence-jsonl
  */
 
-import { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
+import { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import { readdirSync } from 'node:fs'
 import { open, mkdir, readFile, readdir, realpath, link, rm, stat, truncate } from 'node:fs/promises'
 import { dirname, join, resolve } from 'node:path'
@@ -20,8 +20,8 @@ import {
   type PersistenceBackend, type SessionLocation, type SessionPersistenceSnapshot,
   type SessionInspection, type SessionPersistenceRevision as PersistenceRevision, type SessionRawArtifact,
   type StoredPrefix,
-} from '@alego/session-persistence'
-import type { SessionEvent, SessionId, SessionHeader, SessionPreparation } from '@alego/session'
+} from '@singula-ai/alego-session-persistence'
+import type { SessionEvent, SessionId, SessionHeader, SessionPreparation } from '@singula-ai/alego-session'
 import {
   encodeSegment, eventLines, logPath, logSuffix, parseHeaderMeta, projectDir, scanLog, sessionDir,
   SessionLogScanner, toHeaderLine,

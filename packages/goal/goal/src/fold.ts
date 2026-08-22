@@ -1,7 +1,7 @@
 /** Pure replay fold and strict decoder for durable goal changes. */
 
-import type { MessageSource } from '@alego/llm'
-import type { SessionEvent } from '@alego/session'
+import type { MessageSource } from '@singula-ai/alego-llm'
+import type { SessionEvent } from '@singula-ai/alego-session'
 import { GOAL_CHANGE_VERSION, GoalId } from './runtime.ts'
 import type { GoalBlockReason, GoalPhase, GoalRef, GoalSnapshot } from './types.ts'
 import type {

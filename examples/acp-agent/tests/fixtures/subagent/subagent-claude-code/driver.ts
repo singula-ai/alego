@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /** Inspect the public Claude Code Bundle composition without invoking the product. */
 
-import { boot, loadOverlayPatches, resolveConfigPath } from '@alego/app-boot'
-import type {} from '@alego/subagent'
-import type {} from '@alego/tools'
+import { boot, loadOverlayPatches, resolveConfigPath } from '@singula-ai/alego-app-boot'
+import type {} from '@singula-ai/alego-subagent'
+import type {} from '@singula-ai/alego-tools'
 
 const configPath = process.argv[2]
 const bundlePatchPath = process.argv[3]

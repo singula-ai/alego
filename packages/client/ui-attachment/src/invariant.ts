@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/client-ui-attachment`.
- * @module @alego/client-ui-attachment/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-client-ui-attachment`.
+ * @module @singula-ai/alego-client-ui-attachment/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/client-ui-attachment'
+const PACKAGE_NAME = '@singula-ai/alego-client-ui-attachment'
 
 /** Cordis companion plugin name. */
 export const name = 'client-ui-attachment-invariant'

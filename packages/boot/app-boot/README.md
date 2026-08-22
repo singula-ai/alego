@@ -1,4 +1,4 @@
-# `@alego/app-boot`
+# `@singula-ai/alego-app-boot`
 
 English | [中文](README.zh.md)
 
@@ -29,7 +29,7 @@ The Loader mounts entries concurrently, so a surface can already own the termina
 
 `cordis:group` is registered beside `cordis:include` so a composition can give one `isolate` realm to a provider and its consumers together. Both load through the ambient module pipeline rather than the included tree's own specifier resolution, which is what lets a composition outside this workspace — an agent preset under the Harness home — use a group row at all.
 
-Bare plugin specifiers in a config (`@alego/*`, npm packages) resolve through the Cordis Loader's internal module loader. They resolve from the config directory by default; a closed runtime passes `bareModuleBaseUrl` to `boot` or `mountRootInclude` so its installed package tree remains authoritative even when the config lives inside another Node project. Relative specifiers always resolve against the config directory. Repository bins install Loader's optional `node-addon-require-builtin` peer; external callers must supply it or install plugins where plain Node import resolution can find them. The built `alego-app-boot` artifact embeds the statically mounted Include implementation while leaving Loader external, so the include tree and host bind to one Loader peer. The `pnpm alego` source path additionally maps manifest-declared workspace packages to their TypeScript source; its configuration gate requires every shipped raw/Web bare plugin to appear in the resolver manifest's `dependencies`.
+Bare plugin specifiers in a config (`@singula-ai/alego-*`, npm packages) resolve through the Cordis Loader's internal module loader. They resolve from the config directory by default; a closed runtime passes `bareModuleBaseUrl` to `boot` or `mountRootInclude` so its installed package tree remains authoritative even when the config lives inside another Node project. Relative specifiers always resolve against the config directory. Repository bins install Loader's optional `node-addon-require-builtin` peer; external callers must supply it or install plugins where plain Node import resolution can find them. The built `alego-app-boot` artifact embeds the statically mounted Include implementation while leaving Loader external, so the include tree and host bind to one Loader peer. The `pnpm alego` source path additionally maps manifest-declared workspace packages to their TypeScript source; its configuration gate requires every shipped raw/Web bare plugin to appear in the resolver manifest's `dependencies`.
 
 This package carries no loader hooks and no dev-mode surface. The [`alego` app](../../../apps/cli/README.md) owns its Node source-launch hook and consumes these helpers for the boot sequence; built consumers continue to use plain Node package resolution.
 

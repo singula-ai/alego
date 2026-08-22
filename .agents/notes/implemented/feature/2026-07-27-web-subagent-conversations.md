@@ -51,7 +51,7 @@ Agent-bound auxiliary controls are unavailable in addressed child views. In part
 
 ## Host adapter and wire contract
 
-`@alego/host-apiproxy` owns a browser-safe `subagents` domain:
+`@singula-ai/alego-host-apiproxy` owns a browser-safe `subagents` domain:
 
 - `subagent.list` takes `parentSessionId`, calls `ctx.subagents.listChildren(parentSessionId, signal)`, returns the complete ordered entries with each healthy row's boolean `hasChildren` snapshot, replaces each healthy row's corpus activity with whether its exact Agent driver is running, and includes whether the exact parent currently resolves from `ctx.agents`.
 - `subagent.history` takes the full mode-bearing address plus ordinary page arguments. It verifies the child and mode against the direct catalog, reads through `ctx.sessionQuery.readSession()`, rechecks direct lineage, and returns the ordinary raw-event, render-intent, pagination, and host-computed session-projection baseline without publishing an Agent.
@@ -69,7 +69,7 @@ The adapter stays in `alego-host-apiproxy`; `alego-host-webserver` remains a car
 
 The React-free runtime owns catalogs, single-flight refreshes, retained addresses, availability hints, transport selection, and a reference-stable map of each list row's current projection values. Re-selecting a known child retains its address so navigation cannot silently switch to ordinary session APIs. A missing intermediate breadcrumb address can be recovered from an already-loaded ancestor catalog, but it is not retained for transport and creates no scope until the user selects that breadcrumb. Restored navigation persists the full mode-bearing address.
 
-Catalogs ride the standard `useSessions` snapshot. Component-local state owns menu visibility, expanded branches, focus, and hover timers. `ui-conversation` declares a lineage slot for the current ordinary title and every subagent breadcrumb, passes plain breadcrumb identity and display text plus an upward-navigation callback for ancestors, and retains the ordinary title as the render fallback. `@alego/client-ui-subagent` occupies each lineage slot with direct-parent catalog navigation and elects a reason-specific read-only composer from ordinary owner props. Components receive derived props and callbacks, never `ctx`.
+Catalogs ride the standard `useSessions` snapshot. Component-local state owns menu visibility, expanded branches, focus, and hover timers. `ui-conversation` declares a lineage slot for the current ordinary title and every subagent breadcrumb, passes plain breadcrumb identity and display text plus an upward-navigation callback for ancestors, and retains the ordinary title as the render fallback. `@singula-ai/alego-client-ui-subagent` occupies each lineage slot with direct-parent catalog navigation and elects a reason-specific read-only composer from ordinary owner props. Components receive derived props and callbacks, never `ctx`.
 
 Every in-process subagent child stamps `SessionHeader.origin: 'subagent'` before publication. Session list summaries and incremental Host frames project it so grouped and flat sidebars omit duplicate child rows while preserving ordinary forks. The same existing `host/session-added` frame marks a loaded direct parent row expandable without introducing a catalog event stream. Descriptor mode and catalog verification remain the authority for navigation, continuation, and authorization.
 

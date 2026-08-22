@@ -13,8 +13,8 @@
  * until the result arrives.
  * @module
  */
-import { abbreviateHomePath } from '@alego/client-runtime/client'
-import type { ReadBlockLine, ReadBlockProps } from '@alego/client-ui-primitives'
+import { abbreviateHomePath } from '@singula-ai/alego-client-runtime/client'
+import type { ReadBlockLine, ReadBlockProps } from '@singula-ai/alego-client-ui-primitives'
 import { relativizeToCwd, type ToolCallBlock } from './tool-call-model.ts'
 
 /**

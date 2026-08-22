@@ -5,9 +5,9 @@
 // Host machine.
 
 import { useLayoutEffect, useRef, useState } from 'react'
-import type { HostDescriptionSource } from '@alego/client-connection/client'
-import type { InjectFace, PropsLocale } from '@alego/client-ui-slots'
-import type { TurnTailOwnerProps } from '@alego/client-ui-conversation/client'
+import type { HostDescriptionSource } from '@singula-ai/alego-client-connection/client'
+import type { InjectFace, PropsLocale } from '@singula-ai/alego-client-ui-slots'
+import type { TurnTailOwnerProps } from '@singula-ai/alego-client-ui-conversation/client'
 import { basename } from './turn-deliverables.ts'
 import type { NS } from './locales.ts'
 import css from './ProducedFiles.module.css'

@@ -1,4 +1,4 @@
-# @alego/permission-presets
+# @singula-ai/alego-permission-presets
 
 [English](README.md) | 中文
 

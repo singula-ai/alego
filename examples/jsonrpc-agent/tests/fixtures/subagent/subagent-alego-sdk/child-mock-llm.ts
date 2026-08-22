@@ -1,6 +1,6 @@
-import type { Context } from '@alego/cordis'
-import type { GenerateOptions, StreamChunk } from '@alego/llm'
-import { LlmAdapter } from '@alego/llm'
+import type { Context } from '@singula-ai/cordis'
+import type { GenerateOptions, StreamChunk } from '@singula-ai/alego-llm'
+import { LlmAdapter } from '@singula-ai/alego-llm'
 
 /**
  * Scripted model for the CHILD runtime: answers every request with its own

@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, expectTypeOf, it } from 'vitest'
 import {
   bindTypertRemote,
@@ -11,9 +11,9 @@ import {
   type TypertContext,
   type TypertForwardableEvent,
   type TypertRemoteEvent,
-} from '@alego/typert-protocol'
+} from '@singula-ai/alego-typert-protocol'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Events {
     /**
      * Test-only one-way event: bound to no Scope and returning nothing.
@@ -34,7 +34,7 @@ declare module '@alego/cordis' {
   }
 }
 
-declare module '@alego/typert-protocol' {
+declare module '@singula-ai/alego-typert-protocol' {
   interface TypertContextMap {
     metaFixture: TypertContext<string>
   }

@@ -1,11 +1,11 @@
-import { createUserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import { codingHarness, TODO_SYSTEM_PROMPT, waitForIdle } from './harness.ts'
-import { SessionId } from '@alego/session'
+import { SessionId } from '@singula-ai/alego-session'
 
 /**
  * A REAL model drives the REAL todo_write tool: verify the WORLD (the session

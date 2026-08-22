@@ -1,4 +1,4 @@
-# `@alego/agent-loop-testkit`
+# `@singula-ai/alego-agent-loop-testkit`
 
 [English](README.md) | 中文
 
@@ -7,9 +7,9 @@
 调用方注册适配器和可选插件，使用待测配置挂载 `AgentLoop`，并 dispose（资源释放）自己的 Context。系统提示词和工具注册表配置可通过 `options` 转发；该辅助函数不提供超出服务自有默认值的测试默认值。插件加载失败会使辅助函数调用被拒绝，而顺序中较早激活的服务仍归调用方的 Context 所有。
 
 ```ts
-import { Context } from '@alego/cordis'
-import AgentLoop from '@alego/agent-loop'
-import { mountAgentLoopTestDependencies } from '@alego/agent-loop-testkit'
+import { Context } from '@singula-ai/cordis'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
 
 const ctx = new Context()
 

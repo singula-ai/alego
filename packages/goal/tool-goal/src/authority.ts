@@ -1,11 +1,11 @@
 /** Execution-time authority checks for the model-facing goal tools. */
 
-import type { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import type { GoalView } from '@alego/goal'
-import { HarnessError } from '@alego/llm'
-import type { SessionEvent } from '@alego/session'
-import type { ToolRunContext } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { GoalView } from '@singula-ai/alego-goal'
+import { HarnessError } from '@singula-ai/alego-llm'
+import type { SessionEvent } from '@singula-ai/alego-session'
+import type { ToolRunContext } from '@singula-ai/alego-tools'
 
 type TurnStartEvent = Extract<SessionEvent, { type: 'turn/start' }>
 

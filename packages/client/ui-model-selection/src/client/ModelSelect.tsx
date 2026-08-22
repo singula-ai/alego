@@ -16,12 +16,12 @@ import {
   type KeyboardEvent, type FocusEvent,
 } from 'react'
 import clsx from 'clsx'
-import type { ModelReasoningEffort, ModelSelection } from '@alego/api-remotes/client'
+import type { ModelReasoningEffort, ModelSelection } from '@singula-ai/alego-api-remotes/client'
 import {
   IconCheckOutline16, IconChevronDownOutline14, IconChevronRightOutline14,
   IconWarningOutline16, Toast,
-} from '@alego/client-ui-primitives'
-import type { PropsLocale } from '@alego/client-ui-slots'
+} from '@singula-ai/alego-client-ui-primitives'
+import type { PropsLocale } from '@singula-ai/alego-client-ui-slots'
 import type { ModelSelectInjected } from './slots.ts'
 import css from './ModelSelect.module.css'
 

@@ -1,10 +1,10 @@
-import { createUserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
 import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import type { Context } from '@alego/cordis'
-import { SessionId } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import { SessionId } from '@singula-ai/alego-session'
 import { fsHarness, waitForIdle } from './harness.ts'
 
 /** Key-gated smoke for a real model driving the local read/write/edit tools. */

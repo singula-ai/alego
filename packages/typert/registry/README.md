@@ -1,4 +1,4 @@
-# @alego/typert-registry
+# @singula-ai/alego-typert-registry
 
 English | [中文](README.zh.md)
 
@@ -17,7 +17,7 @@ Package reflection is keyed by `<package>#<face>`. Schemas are keyed by `<packag
 - `toJSONSchema(key, params?)` projects a live schema with `z.toJSONSchema()` without caching the result.
 - `typertKey()` and `typertPackageKey()` compose the two stable identity forms.
 
-The `@alego/typert-registry/types` subpath contains the pure contribution and record contracts. [`alego-typert-loader`](../loader/README.md) discovers and registers generated host artifacts in Loader compositions; direct `ctx.typert.register()` supports other composition owners.
+The `@singula-ai/alego-typert-registry/types` subpath contains the pure contribution and record contracts. [`alego-typert-loader`](../loader/README.md) discovers and registers generated host artifacts in Loader compositions; direct `ctx.typert.register()` supports other composition owners.
 
 ## Model Experience
 

@@ -3,9 +3,9 @@
 import { useEffect } from 'react'
 import {
   IconCodeOutline16, IconInspectOutline12, StateDot,
-} from '@alego/client-ui-primitives'
-import type { InjectFace, PropsLocale, PropsRenderSlots } from '@alego/client-ui-slots'
-import type { ToolCallViewProps } from '@alego/client-ui-tool/client'
+} from '@singula-ai/alego-client-ui-primitives'
+import type { InjectFace, PropsLocale, PropsRenderSlots } from '@singula-ai/alego-client-ui-slots'
+import type { ToolCallViewProps } from '@singula-ai/alego-client-ui-tool/client'
 import { cordisRunCard } from './card-model.ts'
 import { cordisToolViewKey } from './run-card-index.ts'
 import type { CordisRunCardFace } from './slots.ts'

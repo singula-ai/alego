@@ -5,7 +5,7 @@
  * `./types` for host consumers, `./client` for client aggregates — with zero
  * content duplication.
  *
- * @module @alego/plan-mode/types
+ * @module @singula-ai/alego-plan-mode/types
  */
 
 /**
@@ -21,7 +21,7 @@ export interface PlanProjection {
   pending: boolean
 }
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionMap {
     /** Plan collaboration state folded from the plan command lifecycle and `plan/mode` events. */
     plan: PlanProjection

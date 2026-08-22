@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/api-gateway`.
- * @module @alego/api-gateway/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-api-gateway`.
+ * @module @singula-ai/alego-api-gateway/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/api-gateway'
+const PACKAGE_NAME = '@singula-ai/alego-api-gateway'
 
 /** Cordis companion plugin name. */
 export const name = 'api-gateway-invariant'

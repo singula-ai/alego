@@ -5,13 +5,13 @@
  * to the same append-only / contiguous-seq / lazy-materialization / crash
  * semantics. The JSONL backend's own spec adds file-specific tests on top.
  *
- * @module @alego/session-persistence/tests/contract
+ * @module @singula-ai/alego-session-persistence/tests/contract
  */
 
 import { describe, expect, it } from 'vitest'
-import { SESSION_FORMAT_VERSION, Session, SessionId, TOOL_NOT_STARTED, TOOL_OUTCOME_UNKNOWN } from '@alego/session'
-import type { SessionEvent, SessionHeader, SurfaceEventType, SurfaceIntent } from '@alego/session'
-import { CallId, MessageId, createMessage, freezeMessage } from '@alego/llm'
+import { SESSION_FORMAT_VERSION, Session, SessionId, TOOL_NOT_STARTED, TOOL_OUTCOME_UNKNOWN } from '@singula-ai/alego-session'
+import type { SessionEvent, SessionHeader, SurfaceEventType, SurfaceIntent } from '@singula-ai/alego-session'
+import { CallId, MessageId, createMessage, freezeMessage } from '@singula-ai/alego-llm'
 import type { SessionPersistence } from '../src/index.ts'
 
 /** A backend under test plus its teardown. */

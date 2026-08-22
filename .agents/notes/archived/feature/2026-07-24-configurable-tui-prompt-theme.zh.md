@@ -13,7 +13,7 @@ Archived: 2026-08-04
 
 TUI 主题把 `color`、`truecolor`、`leftPrompt`、`rightPrompt`、`inputPrompt` 以及运行状态下的静态 `inputPlaceholder` 归为一组。三个提示符字符串通过插值引用 `${name}`；未知或不可用的值连同相邻的横向分隔空白一起消失。左右模板共用一行，重叠时保留右侧，宽度计算使用可识别 ANSI 的可见宽度。输入模板控制编辑器首行前缀与续行缩进。
 
-`ctx.tuiPrompt` 是由 `@alego/tui/prompt` 提供的上下文全局注册表。`register(name, initialValue)` 返回带 `set(value)` 与 `dispose()` 的句柄。存储的值是字符串而非回调：更新必须显式发起，未变化的字符串会被忽略，而一次注册、变更或 dispose 会安排一次合并后的通知。渲染器用 `get(name)` 读取当前值，并用 `subscribe(listener)` 订阅何时重绘。该订阅是服务内部的直接回调，而非 Cordis 事件，因此一个自行变化的值仍能重绘，而不需要一个其他消费方永远不会观察的总线条目。`subscribe` 与每个注册都由调用方的 Cordis effect 拥有，因此在订阅方或贡献方的 fiber dispose 时一并移除。每次 `subscribe` 都是一个按记录身份区分的独立订阅，因此两个 fiber 可以传入同一个回调，而 dispose 其中一个不会影响另一个。合并通知会容错每个观察者——同步抛出、返回被拒 promise，甚至一个对字符串渲染也会抛异常的错误（日志走不抛异常的 `errorChain`）——因此一个损坏的观察者不会饿死其余观察者；并且在派发过程中会重新校验每个订阅的存活性，因此同一批次中同步取消了另一个订阅的监听器会立即使其静默。注册遵循 Cordis 的 effect 所有权模型，拒绝重复名称，并在插件 dispose（资源释放）时移除对应的值。
+`ctx.tuiPrompt` 是由 `@singula-ai/alego-tui/prompt` 提供的上下文全局注册表。`register(name, initialValue)` 返回带 `set(value)` 与 `dispose()` 的句柄。存储的值是字符串而非回调：更新必须显式发起，未变化的字符串会被忽略，而一次注册、变更或 dispose 会安排一次合并后的通知。渲染器用 `get(name)` 读取当前值，并用 `subscribe(listener)` 订阅何时重绘。该订阅是服务内部的直接回调，而非 Cordis 事件，因此一个自行变化的值仍能重绘，而不需要一个其他消费方永远不会观察的总线条目。`subscribe` 与每个注册都由调用方的 Cordis effect 拥有，因此在订阅方或贡献方的 fiber dispose 时一并移除。每次 `subscribe` 都是一个按记录身份区分的独立订阅，因此两个 fiber 可以传入同一个回调，而 dispose 其中一个不会影响另一个。合并通知会容错每个观察者——同步抛出、返回被拒 promise，甚至一个对字符串渲染也会抛异常的错误（日志走不抛异常的 `errorChain`）——因此一个损坏的观察者不会饿死其余观察者；并且在派发过程中会重新校验每个订阅的存活性，因此同一批次中同步取消了另一个订阅的监听器会立即使其静默。注册遵循 Cordis 的 effect 所有权模型，拒绝重复名称，并在插件 dispose（资源释放）时移除对应的值。
 
 注册的片段被视为可信的、允许携带 ANSI 的呈现输出。模板中的字面文本与普通外部内容仍会被清洗，但提供提示符值的插件可以输出终端控制序列。复合值自行负责协调背景色过渡与分隔符，因此一个 `${powerline}` 值就能渲染完整的 Powerline 段，而无需与相邻的原子提供方耦合。
 

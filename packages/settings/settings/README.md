@@ -1,4 +1,4 @@
-# @alego/settings
+# @singula-ai/alego-settings
 
 English | [中文](README.zh.md)
 

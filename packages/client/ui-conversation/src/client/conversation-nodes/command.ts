@@ -1,16 +1,16 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   CommandNode, CompactionSummaryNode, ConversationMatch, ConversationNodeContext,
   ConversationNodeDefinition,
-} from '@alego/client-runtime/client'
-import { isReplacementSurfaceEvent } from '@alego/client-runtime/client'
-import type { CompactionCheckpointSource } from '@alego/compaction/checkpoint'
-import type {} from '@alego/compaction/types'
-import type {} from '@alego/commands/types'
+} from '@singula-ai/alego-client-runtime/client'
+import { isReplacementSurfaceEvent } from '@singula-ai/alego-client-runtime/client'
+import type { CompactionCheckpointSource } from '@singula-ai/alego-compaction/checkpoint'
+import type {} from '@singula-ai/alego-compaction/types'
+import type {} from '@singula-ai/alego-commands/types'
 import type { ManualCompactionChatData } from '../contract/chat-nodes.ts'
 import { chatNode } from './common.ts'
 
-declare module '@alego/client-ui-conversation/client' {
+declare module '@singula-ai/alego-client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Ordinary slash-command lifecycle. */
     command: CommandNode

@@ -32,19 +32,19 @@
  * as the user's environment layer; a store that doubled as the environment
  * layer would shadow non-secret entries behind its precedence, making them
  * silently unreachable.
- * @module @alego/credentials-local
+ * @module @singula-ai/alego-credentials-local
  */
 
-import { Context, Service } from '@alego/cordis'
-import z from '@alego/schemastery'
+import { Context, Service } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import { watch as chokidarWatch } from 'chokidar'
 import { mkdir, readFile, stat } from 'node:fs/promises'
 import { dirname, join, resolve } from 'node:path'
 import { Document, isMap, isScalar, parseDocument, type YAMLError } from 'yaml'
-import { withFileLock, writeFileAtomic } from '@alego/atomic-write'
-import { canonicalizeWatchPath, resolveAlegoHome } from '@alego/home-paths'
-import { launchEnvironmentOf } from '@alego/launch-environment'
-import { CredentialProvider, credentialRef, parseCredentialKey } from '@alego/credentials'
+import { withFileLock, writeFileAtomic } from '@singula-ai/alego-atomic-write'
+import { canonicalizeWatchPath, resolveAlegoHome } from '@singula-ai/alego-home-paths'
+import { launchEnvironmentOf } from '@singula-ai/alego-launch-environment'
+import { CredentialProvider, credentialRef, parseCredentialKey } from '@singula-ai/alego-credentials'
 import type {
   ApiKeyRecord,
   CredentialInfo,
@@ -54,8 +54,8 @@ import type {
   CredentialRecordInfo,
   CredentialRef,
   ResolvedCredential,
-} from '@alego/credentials'
-import type { LaunchEnvironmentEntry } from '@alego/launch-environment'
+} from '@singula-ai/alego-credentials'
+import type { LaunchEnvironmentEntry } from '@singula-ai/alego-launch-environment'
 
 /** Basename of the credentials document inside the harness home. */
 export const CREDENTIALS_FILENAME = '.credentials.yaml'

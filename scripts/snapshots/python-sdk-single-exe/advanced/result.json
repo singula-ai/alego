@@ -2848,7 +2848,7 @@
             ],
             "source": {
               "kind": "plugin",
-              "plugin": "@alego/system-prompt",
+              "plugin": "@singula-ai/alego-system-prompt",
               "form": "snapshot",
               "sections": [
                 {
@@ -3552,7 +3552,7 @@
             ],
             "source": {
               "kind": "plugin",
-              "plugin": "@alego/system-prompt",
+              "plugin": "@singula-ai/alego-system-prompt",
               "form": "snapshot",
               "sections": [
                 {

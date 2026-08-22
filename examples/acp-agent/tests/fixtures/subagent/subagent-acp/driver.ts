@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /** Test driver: one delegation turn through a headless Loader composition. */
 
-import { boot, resolveConfigPath } from '@alego/app-boot'
-import { runFixtureTurn } from '@alego/loader-smoke'
+import { boot, resolveConfigPath } from '@singula-ai/alego-app-boot'
+import { runFixtureTurn } from '@singula-ai/alego-loader-smoke'
 
 const configPath = process.argv[2]
 if (configPath === undefined) throw new Error('acp-subagent cwd driver requires a config path')

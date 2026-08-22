@@ -8,17 +8,17 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import AgentRegistry, { Inbox } from '@alego/agent'
-import type { Agent } from '@alego/agent'
-import SessionStore, { SessionId } from '@alego/session'
-import type { Session } from '@alego/session'
-import UserQuestionService from '@alego/user-questions'
-import LocalJobRegistry from '@alego/jobs-local'
-import type { JobOutcome } from '@alego/jobs'
-import type { MuxFrame, RpcRequest } from '@alego/host-apiproxy/api'
-import { RpcId } from '@alego/host-apiproxy/api/rpc'
-import { createApiProxy } from '@alego/host-apiproxy'
+import { Context } from '@singula-ai/cordis'
+import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import type { Agent } from '@singula-ai/alego-agent'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import type { Session } from '@singula-ai/alego-session'
+import UserQuestionService from '@singula-ai/alego-user-questions'
+import LocalJobRegistry from '@singula-ai/alego-jobs-local'
+import type { JobOutcome } from '@singula-ai/alego-jobs'
+import type { MuxFrame, RpcRequest } from '@singula-ai/alego-host-apiproxy/api'
+import { RpcId } from '@singula-ai/alego-host-apiproxy/api/rpc'
+import { createApiProxy } from '@singula-ai/alego-host-apiproxy'
 
 type JobFrame = Extract<MuxFrame, { type: 'session/jobs' }>
 

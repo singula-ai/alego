@@ -24,7 +24,7 @@ with Alego() as harness:
 
 `Alego` keeps its lazily started runtime subprocess for reuse across calls. Use it as a context manager, as above, or call `close()` explicitly when finished.
 
-By default, the SDK launches the bundled single-file `alego-jsonrpc-agent` executable from the `alego-runtime-bin` package and injects that package's default configuration (the stdio JSON-RPC server, agent core, preloaded DeepSeek adapter, JSONL session persistence with an explicitly composed semantic checkpoint policy, local bash) via `ALEGO_CORDIS_CONFIG`. To run a plugin composition of your own, keep the `@alego/sdk-jsonrpc-server` entry in the config and pass the Cordis config path.
+By default, the SDK launches the bundled single-file `alego-jsonrpc-agent` executable from the `alego-runtime-bin` package and injects that package's default configuration (the stdio JSON-RPC server, agent core, preloaded DeepSeek adapter, JSONL session persistence with an explicitly composed semantic checkpoint policy, local bash) via `ALEGO_CORDIS_CONFIG`. To run a plugin composition of your own, keep the `@singula-ai/alego-sdk-jsonrpc-server` entry in the config and pass the Cordis config path.
 
 ```py
 from alego import Alego

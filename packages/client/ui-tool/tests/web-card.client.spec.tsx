@@ -12,24 +12,24 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/react'
 import {
   createSnapshotStore, EMPTY_CONVERSATION_VIEWS,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import type {
   ConversationSnapshot, RunningToolCall, SessionId, SessionListState, ToolResultNode, WorkspaceListState,
-} from '@alego/client-runtime/client'
-import type { ToolResultView } from '@alego/api-remotes/client'
-import { bindSnapshotSelector } from '@alego/client-test-runtime'
-import type { SelectionTarget } from '@alego/client-ui-conversation/client'
-import type { ToolCallOwnerProps } from '@alego/client-ui-tool/client'
-import { IconGlobeOutline14 } from '@alego/client-ui-primitives'
+} from '@singula-ai/alego-client-runtime/client'
+import type { ToolResultView } from '@singula-ai/alego-api-remotes/client'
+import { bindSnapshotSelector } from '@singula-ai/alego-client-test-runtime'
+import type { SelectionTarget } from '@singula-ai/alego-client-ui-conversation/client'
+import type { ToolCallOwnerProps } from '@singula-ai/alego-client-ui-tool/client'
+import { IconGlobeOutline14 } from '@singula-ai/alego-client-ui-primitives'
 import { webCardModel } from '../src/client/tool/models/web-card-model.ts'
-import { createChatStore } from '@alego/client-ui-conversation/src/client/stores.ts'
+import { createChatStore } from '@singula-ai/alego-client-ui-conversation/src/client/stores.ts'
 import { GenericToolCard } from '../src/client/tool/toolviews/GenericToolCard.tsx'
-import { DetailsPanel } from '@alego/client-ui-conversation/src/client/skeleton/DetailsPanel.tsx'
+import { DetailsPanel } from '@singula-ai/alego-client-ui-conversation/src/client/skeleton/DetailsPanel.tsx'
 import { WebRow, webToolview } from '../src/client/tool/toolviews/web-row.tsx'
 import { renderToolDetails, SessionProviderStub, toolChatSnapshot } from './tool-details-render.client.tsx'
-import { makeTranslate } from '@alego/client-test-runtime'
-import { zh as commonZh } from '@alego/client-locale/src/locales/zh.ts'
-import { zh } from '@alego/client-ui-conversation/src/client/locales.ts'
+import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
+import { zh } from '@singula-ai/alego-client-ui-conversation/src/client/locales.ts'
 
 afterEach(cleanup)
 
@@ -300,7 +300,7 @@ describe('web toolview registration', () => {
           return () => {}
         },
       },
-    } as unknown as import('@alego/cordis').Context
+    } as unknown as import('@singula-ai/cordis').Context
     webToolview.apply(ctx)
     expect(registered.map(r => r.key)).toEqual(['web_search', 'web_fetch'])
     // Both keys claim the conversation locale seat ToolRow's body copy needs.

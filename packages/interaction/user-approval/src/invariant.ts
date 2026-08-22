@@ -1,12 +1,12 @@
-/** Package-owned approval audit-stream invariants. @module @alego/user-approval/invariant */
+/** Package-owned approval audit-stream invariants. @module @singula-ai/alego-user-approval/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { Session, SessionEvent } from '@alego/session'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 import type { ApprovalRequestId } from './index.ts'
 import { APPROVAL_POLICIES } from './index.ts'
 
-const PACKAGE_NAME = '@alego/user-approval'
+const PACKAGE_NAME = '@singula-ai/alego-user-approval'
 const APPROVAL_OUTCOMES = ['allowed-once', 'rejected', 'cancelled', 'unavailable'] as const
 
 /** Cordis companion plugin name. */

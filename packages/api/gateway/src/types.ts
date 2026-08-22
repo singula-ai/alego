@@ -1,6 +1,6 @@
 /**
  * Carrier-independent Typert Gateway request, service, and error contracts.
- * @module @alego/api-gateway/types
+ * @module @singula-ai/alego-api-gateway/types
  */
 
 /** One Remote method request after a carrier has decoded its envelope. */
@@ -46,7 +46,7 @@ export interface TypertGateway {
   invoke(request: InvokeRemoteRequest): Promise<unknown>
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     /** Host dispatcher for Typert Remote calls. */
     typertGateway: TypertGateway

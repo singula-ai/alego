@@ -1,5 +1,5 @@
 /**
- * @alego/host-frontend-static — SPA dist server over the webserver
+ * @singula-ai/alego-host-frontend-static — SPA dist server over the webserver
  * fallback seat: serves the built frontend directory with explicit index
  * entry points. A readable index renders at the dist root and configured index
  * path; missing paths return 404, traversal outside the dist root is 403,
@@ -8,15 +8,15 @@
  * injection rows, then raw taps). The dist location is workspace knowledge of
  * the composing application, so `distIndex` is typically supplied through a
  * `!!js` expression, never hardcoded by a deployment.
- * @module @alego/host-frontend-static
+ * @module @singula-ai/alego-host-frontend-static
  */
 
 import type { ServerResponse } from 'node:http'
 import { readFile } from 'node:fs/promises'
 import { dirname, extname, join, normalize, resolve, sep } from 'node:path'
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type {} from '@alego/host-webserver'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type {} from '@singula-ai/alego-host-webserver'
 
 /** Stable Cordis plugin name. */
 export const name = 'frontend-static'

@@ -1,11 +1,11 @@
 /** Event-level policy tests; no filesystem provider is needed because the plugin performs no I/O. */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { FsTargetKey, FsVersion } from '@alego/fs'
-import type { FsObservation, FsTarget, FsWriteIntent } from '@alego/fs'
-import * as FsPolicy from '@alego/fs-observation-policy'
-import type { FsObservationActor } from '@alego/fs-observation-policy'
+import { Context } from '@singula-ai/cordis'
+import { FsTargetKey, FsVersion } from '@singula-ai/alego-fs'
+import type { FsObservation, FsTarget, FsWriteIntent } from '@singula-ai/alego-fs'
+import * as FsPolicy from '@singula-ai/alego-fs-observation-policy'
+import type { FsObservationActor } from '@singula-ai/alego-fs-observation-policy'
 
 function target(path: string): FsTarget {
   return { targetKey: FsTargetKey(path), displayPath: path }

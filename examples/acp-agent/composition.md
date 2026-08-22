@@ -8,101 +8,101 @@ The ACP demo exposes fresh baseline-prompt agent sessions to programmatic client
 ```mermaid
 flowchart LR
   cfg["examples/acp-agent<br/>cordis.yml"]
-  plugin_acp_llm_deepseek["llm-deepseek<br/>@alego/llm-deepseek"]
+  plugin_acp_llm_deepseek["llm-deepseek<br/>@singula-ai/alego-llm-deepseek"]
   cfg --> plugin_acp_llm_deepseek
-  plugin_acp_sandbox["sandbox<br/>@alego/sandbox-local"]
+  plugin_acp_sandbox["sandbox<br/>@singula-ai/alego-sandbox-local"]
   cfg --> plugin_acp_sandbox
-  plugin_acp_sandbox_policy["sandbox-policy<br/>@alego/sandbox-policy"]
+  plugin_acp_sandbox_policy["sandbox-policy<br/>@singula-ai/alego-sandbox-policy"]
   cfg --> plugin_acp_sandbox_policy
-  plugin_acp_subprocess["subprocess<br/>@alego/subprocess-local"]
+  plugin_acp_subprocess["subprocess<br/>@singula-ai/alego-subprocess-local"]
   cfg --> plugin_acp_subprocess
-  plugin_acp_bash["bash<br/>@alego/bash-sandbox"]
+  plugin_acp_bash["bash<br/>@singula-ai/alego-bash-sandbox"]
   cfg --> plugin_acp_bash
-  plugin_acp_approval["approval<br/>@alego/user-approval"]
+  plugin_acp_approval["approval<br/>@singula-ai/alego-user-approval"]
   cfg --> plugin_acp_approval
-  plugin_acp_acp_agent["acp-agent<br/>@alego/acp-demo"]
+  plugin_acp_acp_agent["acp-agent<br/>@singula-ai/alego-acp-demo"]
   cfg --> plugin_acp_acp_agent
-  plugin_acp_acp_agent --> bundle_agent_core["@alego/agent-spine-demo"]
-  plugin_acp_acp_agent --> bundle_jsonl["@alego/session-persistence-jsonl"]
-  plugin_acp_acp_agent --> entrypoint_acp["@alego/acp<br/>automation-only JSON-RPC stdio<br/>fresh sessions created by client"]
+  plugin_acp_acp_agent --> bundle_agent_core["@singula-ai/alego-agent-spine-demo"]
+  plugin_acp_acp_agent --> bundle_jsonl["@singula-ai/alego-session-persistence-jsonl"]
+  plugin_acp_acp_agent --> entrypoint_acp["@singula-ai/alego-acp<br/>automation-only JSON-RPC stdio<br/>fresh sessions created by client"]
   bundle_agent_core --> spine_llm["ctx.llm"]
   bundle_agent_core --> spine_sessions["ctx.sessions"]
   bundle_agent_core --> spine_tools["ctx.tools + tool-bash"]
   bundle_agent_core --> spine_loop["ctx.agents + ctx.agentLoop"]
-  plugin_acp_token_meter["token-meter<br/>@alego/token-meter"]
+  plugin_acp_token_meter["token-meter<br/>@singula-ai/alego-token-meter"]
   cfg --> plugin_acp_token_meter
-  plugin_acp_compaction_basic["compaction-basic<br/>@alego/compaction-basic"]
+  plugin_acp_compaction_basic["compaction-basic<br/>@singula-ai/alego-compaction-basic"]
   cfg --> plugin_acp_compaction_basic
-  plugin_acp_session_projection["session-projection<br/>@alego/session-projection"]
+  plugin_acp_session_projection["session-projection<br/>@singula-ai/alego-session-projection"]
   cfg --> plugin_acp_session_projection
-  plugin_acp_subagent["subagent<br/>@alego/subagent"]
+  plugin_acp_subagent["subagent<br/>@singula-ai/alego-subagent"]
   cfg --> plugin_acp_subagent
-  plugin_acp_subagent_spawn_in_process["subagent-spawn-in-process<br/>@alego/subagent-spawn-in-process"]
+  plugin_acp_subagent_spawn_in_process["subagent-spawn-in-process<br/>@singula-ai/alego-subagent-spawn-in-process"]
   cfg --> plugin_acp_subagent_spawn_in_process
-  plugin_acp_subagent_fork_in_process["subagent-fork-in-process<br/>@alego/subagent-fork-in-process"]
+  plugin_acp_subagent_fork_in_process["subagent-fork-in-process<br/>@singula-ai/alego-subagent-fork-in-process"]
   cfg --> plugin_acp_subagent_fork_in_process
-  plugin_acp_tool_subagent_control["tool-subagent-control<br/>@alego/tool-subagent-control"]
+  plugin_acp_tool_subagent_control["tool-subagent-control<br/>@singula-ai/alego-tool-subagent-control"]
   cfg --> plugin_acp_tool_subagent_control
-  plugin_acp_tool_subagent_list_agents["tool-subagent-list-agents<br/>@alego/tool-subagent-control/list-agents"]
+  plugin_acp_tool_subagent_list_agents["tool-subagent-list-agents<br/>@singula-ai/alego-tool-subagent-control/list-agents"]
   cfg --> plugin_acp_tool_subagent_list_agents
-  plugin_acp_tool_subagent_report["tool-subagent-report<br/>@alego/tool-subagent-report"]
+  plugin_acp_tool_subagent_report["tool-subagent-report<br/>@singula-ai/alego-tool-subagent-report"]
   cfg --> plugin_acp_tool_subagent_report
-  plugin_acp_tool_subagent["tool-subagent<br/>@alego/tool-subagent"]
+  plugin_acp_tool_subagent["tool-subagent<br/>@singula-ai/alego-tool-subagent"]
   cfg --> plugin_acp_tool_subagent
-  plugin_acp_tool_subagent_fork["tool-subagent-fork<br/>@alego/tool-subagent"]
+  plugin_acp_tool_subagent_fork["tool-subagent-fork<br/>@singula-ai/alego-tool-subagent"]
   cfg --> plugin_acp_tool_subagent_fork
-  plugin_acp_workflow_worker_thread["workflow-worker-thread<br/>@alego/workflow-worker-thread"]
+  plugin_acp_workflow_worker_thread["workflow-worker-thread<br/>@singula-ai/alego-workflow-worker-thread"]
   cfg --> plugin_acp_workflow_worker_thread
-  plugin_acp_tool_workflow["tool-workflow<br/>@alego/tool-workflow"]
+  plugin_acp_tool_workflow["tool-workflow<br/>@singula-ai/alego-tool-workflow"]
   cfg --> plugin_acp_tool_workflow
-  plugin_acp_tool_ralph["tool-ralph<br/>@alego/tool-ralph"]
+  plugin_acp_tool_ralph["tool-ralph<br/>@singula-ai/alego-tool-ralph"]
   cfg --> plugin_acp_tool_ralph
-  plugin_acp_tool_todo["tool-todo<br/>@alego/tool-todo"]
+  plugin_acp_tool_todo["tool-todo<br/>@singula-ai/alego-tool-todo"]
   cfg --> plugin_acp_tool_todo
-  plugin_acp_repeat_tool_reminder["repeat-tool-reminder<br/>@alego/repeat-tool-reminder"]
+  plugin_acp_repeat_tool_reminder["repeat-tool-reminder<br/>@singula-ai/alego-repeat-tool-reminder"]
   cfg --> plugin_acp_repeat_tool_reminder
-  plugin_acp_fs_sandbox["fs-sandbox<br/>@alego/fs-sandbox"]
+  plugin_acp_fs_sandbox["fs-sandbox<br/>@singula-ai/alego-fs-sandbox"]
   cfg --> plugin_acp_fs_sandbox
-  plugin_acp_fs_observation_policy["fs-observation-policy<br/>@alego/fs-observation-policy"]
+  plugin_acp_fs_observation_policy["fs-observation-policy<br/>@singula-ai/alego-fs-observation-policy"]
   cfg --> plugin_acp_fs_observation_policy
-  plugin_acp_tool_fs["tool-fs<br/>@alego/tool-fs"]
+  plugin_acp_tool_fs["tool-fs<br/>@singula-ai/alego-tool-fs"]
   cfg --> plugin_acp_tool_fs
-  plugin_acp_hooks_claude_code["hooks-claude-code<br/>@alego/hooks-claude-code"]
+  plugin_acp_hooks_claude_code["hooks-claude-code<br/>@singula-ai/alego-hooks-claude-code"]
   cfg --> plugin_acp_hooks_claude_code
-  plugin_acp_hooks_codex["hooks-codex<br/>@alego/hooks-codex"]
+  plugin_acp_hooks_codex["hooks-codex<br/>@singula-ai/alego-hooks-codex"]
   cfg --> plugin_acp_hooks_codex
 ```
 
 | Plugin id | Package / module |
 | --- | --- |
-| `llm-deepseek` | `@alego/llm-deepseek` |
-| `sandbox` | `@alego/sandbox-local` |
-| `sandbox-policy` | `@alego/sandbox-policy` |
-| `subprocess` | `@alego/subprocess-local` |
-| `bash` | `@alego/bash-sandbox` |
-| `approval` | `@alego/user-approval` |
-| `acp-agent` | `@alego/acp-demo` |
-| `token-meter` | `@alego/token-meter` |
-| `compaction-basic` | `@alego/compaction-basic` |
-| `session-projection` | `@alego/session-projection` |
-| `subagent` | `@alego/subagent` |
-| `subagent-spawn-in-process` | `@alego/subagent-spawn-in-process` |
-| `subagent-fork-in-process` | `@alego/subagent-fork-in-process` |
-| `tool-subagent-control` | `@alego/tool-subagent-control` |
-| `tool-subagent-list-agents` | `@alego/tool-subagent-control/list-agents` |
-| `tool-subagent-report` | `@alego/tool-subagent-report` |
-| `tool-subagent` | `@alego/tool-subagent` |
-| `tool-subagent-fork` | `@alego/tool-subagent` |
-| `workflow-worker-thread` | `@alego/workflow-worker-thread` |
-| `tool-workflow` | `@alego/tool-workflow` |
-| `tool-ralph` | `@alego/tool-ralph` |
-| `tool-todo` | `@alego/tool-todo` |
-| `repeat-tool-reminder` | `@alego/repeat-tool-reminder` |
-| `fs-sandbox` | `@alego/fs-sandbox` |
-| `fs-observation-policy` | `@alego/fs-observation-policy` |
-| `tool-fs` | `@alego/tool-fs` |
-| `hooks-claude-code` | `@alego/hooks-claude-code` |
-| `hooks-codex` | `@alego/hooks-codex` |
+| `llm-deepseek` | `@singula-ai/alego-llm-deepseek` |
+| `sandbox` | `@singula-ai/alego-sandbox-local` |
+| `sandbox-policy` | `@singula-ai/alego-sandbox-policy` |
+| `subprocess` | `@singula-ai/alego-subprocess-local` |
+| `bash` | `@singula-ai/alego-bash-sandbox` |
+| `approval` | `@singula-ai/alego-user-approval` |
+| `acp-agent` | `@singula-ai/alego-acp-demo` |
+| `token-meter` | `@singula-ai/alego-token-meter` |
+| `compaction-basic` | `@singula-ai/alego-compaction-basic` |
+| `session-projection` | `@singula-ai/alego-session-projection` |
+| `subagent` | `@singula-ai/alego-subagent` |
+| `subagent-spawn-in-process` | `@singula-ai/alego-subagent-spawn-in-process` |
+| `subagent-fork-in-process` | `@singula-ai/alego-subagent-fork-in-process` |
+| `tool-subagent-control` | `@singula-ai/alego-tool-subagent-control` |
+| `tool-subagent-list-agents` | `@singula-ai/alego-tool-subagent-control/list-agents` |
+| `tool-subagent-report` | `@singula-ai/alego-tool-subagent-report` |
+| `tool-subagent` | `@singula-ai/alego-tool-subagent` |
+| `tool-subagent-fork` | `@singula-ai/alego-tool-subagent` |
+| `workflow-worker-thread` | `@singula-ai/alego-workflow-worker-thread` |
+| `tool-workflow` | `@singula-ai/alego-tool-workflow` |
+| `tool-ralph` | `@singula-ai/alego-tool-ralph` |
+| `tool-todo` | `@singula-ai/alego-tool-todo` |
+| `repeat-tool-reminder` | `@singula-ai/alego-repeat-tool-reminder` |
+| `fs-sandbox` | `@singula-ai/alego-fs-sandbox` |
+| `fs-observation-policy` | `@singula-ai/alego-fs-observation-policy` |
+| `tool-fs` | `@singula-ai/alego-tool-fs` |
+| `hooks-claude-code` | `@singula-ai/alego-hooks-claude-code` |
+| `hooks-codex` | `@singula-ai/alego-hooks-codex` |
 
 Source config: [`examples/acp-agent/cordis.yml`](cordis.yml).
 

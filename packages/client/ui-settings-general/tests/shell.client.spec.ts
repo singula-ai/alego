@@ -1,8 +1,8 @@
 /** Settings shell registration: slot declaration injection, the ledger projections, and HMR recovery. */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import { SlotRegistry } from '@alego/client-runtime/client'
-import { apply as settingsApply, inject as settingsInject } from '@alego/client-ui-settings/client'
+import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import { apply as settingsApply, inject as settingsInject } from '@singula-ai/alego-client-ui-settings/client'
 import { apply, inject } from '../src/client/index.ts'
 import type { SettingsRootInjected } from '../src/client/shell-contract.ts'
 import { SettingsRoot } from '../src/client/SettingsRoot.tsx'

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import WebRuntime, {
   WebError,
   type WebFetchProvider,
@@ -7,7 +7,7 @@ import WebRuntime, {
   type WebSearchProvider,
   type WebSearchRequest,
   type WebSearchResult,
-} from '@alego/web'
+} from '@singula-ai/alego-web'
 
 /** A scripted search provider for contract tests. */
 function makeSearchProvider(

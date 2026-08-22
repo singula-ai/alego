@@ -1,12 +1,12 @@
 import type {
   ChatConversationViewNode, ConversationLocation, ConversationNodeContext,
   ConversationNodeDefinition,
-} from '@alego/client-runtime/client'
-import type { SessionId } from '@alego/session/types'
+} from '@singula-ai/alego-client-runtime/client'
+import type { SessionId } from '@singula-ai/alego-session/types'
 import type {
   ToolWorkflowAgentEndData, ToolWorkflowAgentStartData,
-} from '@alego/tool-workflow/types'
-import type { WorkflowAgentOutcome, WorkflowStopReason } from '@alego/workflow/types'
+} from '@singula-ai/alego-tool-workflow/types'
+import type { WorkflowAgentOutcome, WorkflowStopReason } from '@singula-ai/alego-workflow/types'
 
 /** Status shown for a workflow, phase, or member. */
 export type WorkflowRunStatus = 'running' | 'completed' | 'failed' | 'cancelled' | 'interrupted'
@@ -34,7 +34,7 @@ export interface WorkflowRunChatData {
   readonly phases: readonly WorkflowRunPhaseData[]
 }
 
-declare module '@alego/client-ui-conversation/client' {
+declare module '@singula-ai/alego-client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Durable top-level workflow run and all members that actually started. */
     'workflow-run': WorkflowRunChatData

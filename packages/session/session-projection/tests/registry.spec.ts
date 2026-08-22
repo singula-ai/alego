@@ -8,14 +8,14 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { z } from 'zod'
-import SessionStore from '@alego/session'
-import type { Session, SessionEvent } from '@alego/session'
-import SessionProjectionRegistry from '@alego/session-projection'
-import type { ProjectionDefinition } from '@alego/session-projection'
+import SessionStore from '@singula-ai/alego-session'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import type { ProjectionDefinition } from '@singula-ai/alego-session-projection'
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionStateMap {
     'test/marks': MarksState
     'test/count': number
@@ -26,7 +26,7 @@ declare module '@alego/session-projection/types' {
   }
 }
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     'test/mark': { marks: string[] }
   }

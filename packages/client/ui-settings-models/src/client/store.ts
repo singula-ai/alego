@@ -8,10 +8,10 @@
 
 import type {
   ConfigurableProviderView, CredentialView, IApiClient, SettingsNamespaceView,
-} from '@alego/api-remotes/client'
-import type { SnapshotStore } from '@alego/client-runtime/client'
-import { createSnapshotStore } from '@alego/client-runtime/client'
-import type { SettingsDescribeFace } from '@alego/client-ui-settings/client'
+} from '@singula-ai/alego-api-remotes/client'
+import type { SnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import { createSnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import type { SettingsDescribeFace } from '@singula-ai/alego-client-ui-settings/client'
 import type { SettingsSchemaOperations } from './schema-operations.ts'
 
 /**

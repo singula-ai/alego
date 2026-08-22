@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { mergeHookOutputs } from '@alego/hook-protocol'
-import type { HookOutput } from '@alego/hook-protocol'
+import { mergeHookOutputs } from '@singula-ai/alego-hook-protocol'
+import type { HookOutput } from '@singula-ai/alego-hook-protocol'
 
 function out(over: Partial<HookOutput> = {}): HookOutput {
   return { exitCode: 0, stderr: '', stdout: '', ...over }

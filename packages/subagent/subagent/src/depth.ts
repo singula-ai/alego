@@ -3,12 +3,12 @@
  * children. Kept apart from the service so composition helpers can read it
  * without importing the registry.
  *
- * @module @alego/subagent/depth
+ * @module @singula-ai/alego-subagent/depth
  */
 
-import type { Agent } from '@alego/agent'
+import type { Agent } from '@singula-ai/alego-agent'
 
-declare module '@alego/agent' {
+declare module '@singula-ai/alego-agent' {
   interface AgentOptions {
     /** Delegation depth: zero for a top-level agent and parent depth + 1 for a child. */
     subagentDepth?: number

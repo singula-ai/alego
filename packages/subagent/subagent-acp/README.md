@@ -1,4 +1,4 @@
-# @alego/subagent-acp
+# @singula-ai/alego-subagent-acp
 
 English | [中文](README.zh.md)
 
@@ -35,7 +35,7 @@ ACP advertises no start-time capabilities because this process cannot enforce th
 
 ```yaml
 - id: subagent-acp
-  name: '@alego/subagent-acp'
+  name: '@singula-ai/alego-subagent-acp'
   config:
     providerName: acp
     command: node

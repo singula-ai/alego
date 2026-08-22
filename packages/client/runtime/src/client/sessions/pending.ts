@@ -4,7 +4,7 @@
 
 import type {
   ClientResponse, MuxFrame, RpcId, RpcReceipt, SessionId,
-} from '@alego/api-remotes/client'
+} from '@singula-ai/alego-api-remotes/client'
 
 /** Kind-keyed payload map: the requested frame's domain fields (envelope fields stripped). */
 export interface PendingPayloads {

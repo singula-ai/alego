@@ -1,9 +1,9 @@
 /**
  * Shared cancellation helpers for the local LSP provider's host-I/O, queue, and protocol phases.
- * @module @alego/lsp-stdio/abort
+ * @module @singula-ai/alego-lsp-stdio/abort
  */
 
-import { timeoutOf } from '@alego/timeout'
+import { timeoutOf } from '@singula-ai/alego-timeout'
 
 /**
  * Build an abort Error carrying the signal's reason and preserving timeout classification.

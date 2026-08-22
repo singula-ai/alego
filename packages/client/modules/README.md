@@ -1,4 +1,4 @@
-# @alego/client-modules
+# @singula-ai/alego-client-modules
 
 English | [中文](README.zh.md)
 
@@ -25,4 +25,4 @@ None; this package neither assembles nor sends a provider request.
 ## Known Limitations and Deferred Work
 
 - **Flat module graph by design** — every bundle is one module node whose edges point only at table leaves; the interface (`loadCache`/`edges`/`invalidate`) already supports a general module graph, so the externalization granularity can change without an interface change.
-- **No unload bookkeeping of its own** — style removal and fiber teardown ordering live with the HMR driver (`@alego/client-hmr`); the loader only inventories owned style tag ids per record.
+- **No unload bookkeeping of its own** — style removal and fiber teardown ordering live with the HMR driver (`@singula-ai/alego-client-hmr`); the loader only inventories owned style tag ids per record.

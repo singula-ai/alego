@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write
-2026-07-21-tui-todo-write-opt-in.md: f192dc8c7a6e2a10e32f8a66e0af6e4a88dcdc58
-2026-07-21-tui-todo-write-opt-in.zh.md: bbfea083a91458b63c78624886147ea76685bf23
+2026-07-21-tui-todo-write-opt-in.md: c7d6cd9e59c70d2b60115c4ebfbaad0641bf3b66
+2026-07-21-tui-todo-write-opt-in.zh.md: 31915cc707b4bc365b2edab234aae3edda03d1d8

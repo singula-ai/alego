@@ -1,11 +1,11 @@
-/** Package-owned tool-pipeline invariants. @module @alego/tools/invariant */
+/** Package-owned tool-pipeline invariants. @module @singula-ai/alego-tools/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { Session, SessionEvent } from '@alego/session'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 import type { ToolExecution, ToolExecutionResult } from './index.ts'
 
-const PACKAGE_NAME = '@alego/tools'
+const PACKAGE_NAME = '@singula-ai/alego-tools'
 
 /** Cordis companion plugin name. */
 export const name = 'tools-invariant'

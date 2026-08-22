@@ -1,4 +1,4 @@
-import { Context, Service } from '@alego/cordis'
+import { Context, Service } from '@singula-ai/cordis'
 import { Entry, type EntryOptions } from './entry.ts'
 import { EntryTree } from './tree.ts'
 

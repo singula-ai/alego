@@ -1,5 +1,5 @@
-import { Context, FiberState, Inject, Service, type Fiber } from '@alego/cordis'
-import { defineProperty, isNullable, type Dict } from '@alego/cosmokit'
+import { Context, FiberState, Inject, Service, type Fiber } from '@singula-ai/cordis'
+import { defineProperty, isNullable, type Dict } from '@singula-ai/cosmokit'
 import { ModuleLoader } from './internal.ts'
 import { Entry, type EntryOptions } from './config/entry.ts'
 import { EntryGroup } from './config/group.ts'
@@ -20,7 +20,7 @@ export * from './config/utils.ts'
 /** Re-export Node internal module loader compatibility types. */
 export * from './internal.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Events {
     'exit'(signal: NodeJS.Signals): Promise<void>
     'loader/config-update'(): void

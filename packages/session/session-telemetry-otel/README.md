@@ -1,14 +1,14 @@
-# @alego/session-telemetry-otel
+# @singula-ai/alego-session-telemetry-otel
 
 English | [中文](README.zh.md)
 
-The OpenTelemetry backend for [the telemetry seam](../session-telemetry/) — the only entry a deployment loads. Its `mode` decides whether the seam follows session events live, replays the canonical log only at recorded feedback, or keeps telemetry local. Uploading modes compose the OTel JS SDK as-is (`LoggerProvider` → `BatchLogRecordProcessor` → OTLP/HTTP log exporter) and map each handed-over record onto `logger.emit()`, under two instrumentation scopes: ledger records on `@alego/session-sessionTelemetry-otel`, operational records on `@alego/session-sessionTelemetry-otel/ops`. Resource identity contains `service.name`/`service.version` from `alego-llm`'s `APP_IDENTITY` plus this package's anonymous `user.id` (`$ALEGO_HOME/.anonymous-user-id`, a random UUID created on first use and reset by deleting the file), carried once per export batch rather than per record.
+The OpenTelemetry backend for [the telemetry seam](../session-telemetry/) — the only entry a deployment loads. Its `mode` decides whether the seam follows session events live, replays the canonical log only at recorded feedback, or keeps telemetry local. Uploading modes compose the OTel JS SDK as-is (`LoggerProvider` → `BatchLogRecordProcessor` → OTLP/HTTP log exporter) and map each handed-over record onto `logger.emit()`, under two instrumentation scopes: ledger records on `@singula-ai/alego-session-sessionTelemetry-otel`, operational records on `@singula-ai/alego-session-sessionTelemetry-otel/ops`. Resource identity contains `service.name`/`service.version` from `alego-llm`'s `APP_IDENTITY` plus this package's anonymous `user.id` (`$ALEGO_HOME/.anonymous-user-id`, a random UUID created on first use and reset by deleting the file), carried once per export batch rather than per record.
 
 ## Config
 
 ```yaml
 - id: sessionTelemetry-otel
-  name: '@alego/session-sessionTelemetry-otel'
+  name: '@singula-ai/alego-session-sessionTelemetry-otel'
   config:
     mode: FULL                # explicit opt-in; default: DISABLED
     shutdownTimeoutMillis: 3000 # optional; defaults to 3000

@@ -8,18 +8,18 @@
  *
  * Namespace plugin (named exports, no default export). Lifecycle is effect-scoped: disposal
  * unregisters from `ctx.lsp` and tears down every live server.
- * @module @alego/lsp-stdio
+ * @module @singula-ai/alego-lsp-stdio
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { LspError, LspProviderId } from '@alego/lsp'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { LspError, LspProviderId } from '@singula-ai/alego-lsp'
 import type {
   LspProvider,
   LspProviderQuery,
   LspQueryResult,
-} from '@alego/lsp'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+} from '@singula-ai/alego-lsp'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 import { abortable, abortError } from './abort.ts'
 import { canonicalizeWorkspace, readHostSource } from './host.ts'
 import type { HostWorkspace } from './host.ts'

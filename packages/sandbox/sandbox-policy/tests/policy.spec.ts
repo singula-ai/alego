@@ -8,11 +8,11 @@ import { mkdirSync, mkdtempSync, realpathSync, rmSync, symlinkSync } from 'node:
 import { tmpdir } from 'node:os'
 import { join, resolve, sep } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import { Session, SessionId } from '@alego/session'
-import SandboxPolicyService, { SANDBOX_MODES, effectiveSandboxMode, setSandboxMode } from '@alego/sandbox-policy'
-import SystemPrompt, { renderContextSnapshot, renderPrompt } from '@alego/system-prompt'
+import { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import { Session, SessionId } from '@singula-ai/alego-session'
+import SandboxPolicyService, { SANDBOX_MODES, effectiveSandboxMode, setSandboxMode } from '@singula-ai/alego-sandbox-policy'
+import SystemPrompt, { renderContextSnapshot, renderPrompt } from '@singula-ai/alego-system-prompt'
 
 async function mounted(config: { mode?: 'read-only' | 'workspace-write' | 'danger-full-access'; workspaceRoot?: string } = {}) {
   const ctx = new Context()

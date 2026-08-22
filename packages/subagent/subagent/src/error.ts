@@ -1,10 +1,10 @@
 /**
  * Typed failures shared by subagent service and provider operations.
  *
- * @module @alego/subagent
+ * @module @singula-ai/alego-subagent
  */
 
-import { HarnessError } from '@alego/llm'
+import { HarnessError } from '@singula-ai/alego-llm'
 
 /** Typed failure for the subagent seam. */
 export class SubagentError extends HarnessError {

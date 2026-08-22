@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/web-search-deepseek`.
- * @module @alego/web-search-deepseek/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-web-search-deepseek`.
+ * @module @singula-ai/alego-web-search-deepseek/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/web-search-deepseek'
+const PACKAGE_NAME = '@singula-ai/alego-web-search-deepseek'
 
 /** Cordis companion plugin name. */
 export const name = 'web-search-deepseek-invariant'

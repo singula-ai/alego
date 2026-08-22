@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/launch-environment`.
- * @module @alego/launch-environment/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-launch-environment`.
+ * @module @singula-ai/alego-launch-environment/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/launch-environment'
+const PACKAGE_NAME = '@singula-ai/alego-launch-environment'
 
 /** Cordis companion plugin name. */
 export const name = 'launch-environment-invariant'

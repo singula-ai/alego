@@ -1,4 +1,4 @@
-# `@alego/agent-loop-testkit`
+# `@singula-ai/alego-agent-loop-testkit`
 
 English | [中文](README.zh.md)
 
@@ -7,9 +7,9 @@ Shared prerequisite mounting for tests that exercise the concrete `AgentLoop`. `
 The caller registers adapters and optional plugins, mounts `AgentLoop` with the configuration under test, and disposes its own Context. System-prompt and tool-registry configuration can be forwarded through `options`; the helper does not provide test defaults beyond those owned by the services. A plugin-load failure rejects the helper call, while services activated earlier in the sequence remain owned by the caller's Context.
 
 ```ts
-import { Context } from '@alego/cordis'
-import AgentLoop from '@alego/agent-loop'
-import { mountAgentLoopTestDependencies } from '@alego/agent-loop-testkit'
+import { Context } from '@singula-ai/cordis'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
 
 const ctx = new Context()
 

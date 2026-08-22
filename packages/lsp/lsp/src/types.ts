@@ -4,7 +4,7 @@
  * `index.ts`. Positions and ranges are zero-based UTF-16, matching the protocol; the model-facing
  * tool owns the one-based cursor convention. The seam exposes no protocol types, process or document
  * controls, or generic JSON-RPC escape hatch — only the four semantic operations.
- * @module @alego/lsp/types
+ * @module @singula-ai/alego-lsp/types
  */
 
 import type { LspProviderId } from './brand.ts'

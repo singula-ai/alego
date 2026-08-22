@@ -1,8 +1,8 @@
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
-import type { SettingsNamespaceView } from '@alego/api-remotes/client'
-import { SettingsSchemaService } from '@alego/client-ui-settings/src/client/schema.ts'
-import { SettingsDescribeMirror } from '@alego/client-ui-settings/src/client/settings-mirror.ts'
+import type { SettingsNamespaceView } from '@singula-ai/alego-api-remotes/client'
+import { SettingsSchemaService } from '@singula-ai/alego-client-ui-settings/src/client/schema.ts'
+import { SettingsDescribeMirror } from '@singula-ai/alego-client-ui-settings/src/client/settings-mirror.ts'
 import {
   PermissionPresetSettingsController, permissionDefaultOf,
 } from '../src/client/settings-store.ts'

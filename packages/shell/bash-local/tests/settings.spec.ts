@@ -1,13 +1,13 @@
 /** The `bash` settings section layered over the executor's composition entry. */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { Fiber } from '@alego/cordis'
-import { SettingsProvider } from '@alego/settings'
-import type { SettingsNamespace } from '@alego/settings'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
-import { SHELL_SETTINGS_NAMESPACE } from '@alego/shell'
-import { LocalBashExecutor } from '@alego/bash-local'
+import { Context } from '@singula-ai/cordis'
+import type { Fiber } from '@singula-ai/cordis'
+import { SettingsProvider } from '@singula-ai/alego-settings'
+import type { SettingsNamespace } from '@singula-ai/alego-settings'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
+import { SHELL_SETTINGS_NAMESPACE } from '@singula-ai/alego-shell'
+import { LocalBashExecutor } from '@singula-ai/alego-bash-local'
 
 /** The smallest real provider: one in-memory document, always writable. */
 class MemorySettings extends SettingsProvider {

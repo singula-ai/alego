@@ -2,15 +2,15 @@
  * Tests for the spill Service Definition: a minimal concrete subclass registers as
  * `ctx.spillStore`, a second load throws (duplicate service), and disposal
  * releases the service. The storage behavior is the implementation's concern
- * (`@alego/spill-local`); here we only pin the seam contract.
+ * (`@singula-ai/alego-spill-local`); here we only pin the seam contract.
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { CallId } from '@alego/llm'
-import { SessionId } from '@alego/session'
-import { SpillLocator, SpillStore } from '@alego/spill'
-import type { SaveTextSpill, SpillRef } from '@alego/spill'
+import { Context } from '@singula-ai/cordis'
+import { CallId } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
+import { SpillLocator, SpillStore } from '@singula-ai/alego-spill'
+import type { SaveTextSpill, SpillRef } from '@singula-ai/alego-spill'
 
 /** Minimal concrete backend: records the last request, returns a fixed ref. */
 class StubStore extends SpillStore {

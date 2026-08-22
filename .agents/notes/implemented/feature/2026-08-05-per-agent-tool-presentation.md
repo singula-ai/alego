@@ -23,7 +23,7 @@ Two consequences fell out and are load-bearing:
 
 The SDK prompt section is registered globally by a code-mode deployment (unchanged) and additionally per scope by `presentAs`, where it shadows by name. Its body renders empty for a native scope, which the prompt renderer drops — that is what keeps an agent opting OUT of a code-mode deployment free of an SDK section.
 
-The preset expresses the choice through one row, `@alego/agent-tool-presentation`, whose whole body is a `presentAs` call. A code mode waits for `ctx.codeRuntime` through `ctx.inject` rather than assuming it: the runtime is host-plane, and a pending row is what `alego-agent-presets` already reports as an unusable mount, naming the row — so a preset selecting Code Mode against a runtime-less deployment fails where an operator can act.
+The preset expresses the choice through one row, `@singula-ai/alego-agent-tool-presentation`, whose whole body is a `presentAs` call. A code mode waits for `ctx.codeRuntime` through `ctx.inject` rather than assuming it: the runtime is host-plane, and a pending row is what `alego-agent-presets` already reports as an unusable mount, naming the row — so a preset selecting Code Mode against a runtime-less deployment fails where an operator can act.
 
 ## Alternatives considered
 

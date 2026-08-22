@@ -1,16 +1,16 @@
 // @vitest-environment jsdom
-import { Context, Service } from '@alego/cordis'
+import { Context, Service } from '@singula-ai/cordis'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   ConversationEventRegistry, ConversationNodeAssembler, SlotRegistry,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 import type {
   ChatConversationViewNode, ConversationEventInput, ConversationMatch, ConversationNodeDefinition,
   ConversationViewDefinition, SessionId, SessionListState,
-} from '@alego/client-runtime/client'
-import { apply as applyLocale, inject as localeInject } from '@alego/client-locale/client'
-import { makeTranslate, stubSettingsScope } from '@alego/client-test-runtime'
+} from '@singula-ai/alego-client-runtime/client'
+import { apply as applyLocale, inject as localeInject } from '@singula-ai/alego-client-locale/client'
+import { makeTranslate, stubSettingsScope } from '@singula-ai/alego-client-test-runtime'
 import {
   WorkflowRunPanel, type WorkflowRunInjected, type WorkflowRunPanelProps,
 } from '../src/client/WorkflowRunPanel.tsx'
@@ -880,6 +880,6 @@ describe('plugin lifecycle', () => {
       register: (pkg: string) => { registered.push(pkg); return () => {} },
     } as never)
     await applyInvariant(ctx)
-    expect(registered).toEqual(['@alego/client-ui-workflow-run'])
+    expect(registered).toEqual(['@singula-ai/alego-client-ui-workflow-run'])
   })
 })

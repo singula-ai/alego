@@ -1,7 +1,7 @@
 /**
  * Model-facing workspace instruction rendering within an explicit byte budget.
  *
- * @module @alego/agent-instructions/render
+ * @module @singula-ai/alego-agent-instructions/render
  */
 
 import { basename, dirname } from 'node:path'

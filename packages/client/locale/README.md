@@ -1,4 +1,4 @@
-# @alego/client-locale
+# @singula-ai/alego-client-locale
 
 English | [中文](README.zh.md)
 

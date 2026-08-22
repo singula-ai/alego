@@ -1,11 +1,11 @@
-import { createUserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import { codingHarness, finalText, SYSTEM_PROMPT, waitForIdle } from './harness.ts'
-import { SessionId } from '@alego/session'
+import { SessionId } from '@singula-ai/alego-session'
 
 /**
  * The first place a REAL model meets the REAL bash tool: the cheap canary

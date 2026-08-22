@@ -12,10 +12,10 @@
 - text: /user-invoke-demo and confirm the fixture wiring {{clock}}
 - button "Copy":
   - img
-- button "Context injection @alego/system-prompt":
+- button "Context injection @singula-ai/alego-system-prompt":
   - img
   - img
-  - text: Context injection @alego/system-prompt
+  - text: Context injection @singula-ai/alego-system-prompt
 - button "Context injection user-invoke-demo":
   - img
   - img

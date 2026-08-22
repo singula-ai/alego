@@ -21,11 +21,11 @@ Create the `packages/storage/` group — the `ctx.storage` hub (backend registry
 
 | Package | Path | ctx surface | This phase |
 | --- | --- | --- | --- |
-| `@alego/storage` | `packages/storage/storage/` | `ctx.storage` (the hub) | ✓ |
-| `@alego/storage-json` | `packages/storage/storage-json/` | registers backend `json` | ✓ |
-| `@alego/storage-sqlite` | `packages/storage/storage-sqlite/` | registers backend `sqlite` | ✓ |
-| `@alego/storage-domain` | `packages/storage/storage-domain/` | mounts `ctx.storage.domain` | ✓ |
-| `@alego/workspace` | `packages/workspace/workspace/` | `ctx.workspaceRegistry` | ✓ |
+| `@singula-ai/alego-storage` | `packages/storage/storage/` | `ctx.storage` (the hub) | ✓ |
+| `@singula-ai/alego-storage-json` | `packages/storage/storage-json/` | registers backend `json` | ✓ |
+| `@singula-ai/alego-storage-sqlite` | `packages/storage/storage-sqlite/` | registers backend `sqlite` | ✓ |
+| `@singula-ai/alego-storage-domain` | `packages/storage/storage-domain/` | mounts `ctx.storage.domain` | ✓ |
+| `@singula-ai/alego-workspace` | `packages/workspace/workspace/` | `ctx.workspaceRegistry` | ✓ |
 | `SessionPersistence.delete` extension + cascade orchestration | `packages/session/session-persistence*` | new method on the existing seam | ✗ future work (session side untouched this phase) |
 | `workspace.*` / `session.delete` RPC, GUI wiring, boot assembly | — | — | ✗ next phase |
 

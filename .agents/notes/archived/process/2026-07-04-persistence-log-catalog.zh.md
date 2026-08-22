@@ -20,7 +20,7 @@ Archived: 2026-07-27
 - **强制保证 JSDoc 完整性。** 每个成员和渲染出的信封类型都必须带有描述正文，完整的源码 JSDoc 会在目录中保持附着于其声明。`@mode` 标签是硬错误：分派模式属于 Cordis 总线事件，持久化记录没有这种模式。所有违规会汇总为一条错误，列出每个违规项。
 - **surface 徽章由派生得出，而非手工列举。** `SurfaceEventType`（产生 LLM（大语言模型）消息且可能携带 `surfaceOp` 的子集）从拥有方包中的 union 声明解析；如果 union 成员命名了一个未声明的事件，则为硬错误（否则陈旧的 union 成员会静默地不标注任何内容）。其余一律渲染为 **log-only**。
 - **专用围栏。** 声明块使用 ` ```ts persistence-catalog ` 信息字符串，`doc-typecheck` 会识别并跳过这些块，将其排除在 opt-out 比例之外——处理方式与 `ts cordis-catalog` 相同（这些声明引用所属模块中的类型，无法独立编译）。
-- **仓库范围。** 目录枚举本仓库中的包，与兄弟文档的 packages-only 范围一致；下游插件可以合并更多事件类型，它们在设计上不在目录范围内。遍历过程用硬错误保护自身假设：拥有方的顶层 `interface SessionEventMap` 必须是 `@alego/session` 中唯一的导出声明（无关的、局部的或同名重复的接口不能被当作磁盘词汇编入目录）；任何声明不得携带 `extends`（继承的键会加入 `keyof SessionEventMap` 却没有对应的目录行）；每个成员必须是带有显式 payload 类型的属性签名（方法形式的成员会加入 `keyof` 却在静默遍历中被漏过）；跨声明的重复成员也会失败。
+- **仓库范围。** 目录枚举本仓库中的包，与兄弟文档的 packages-only 范围一致；下游插件可以合并更多事件类型，它们在设计上不在目录范围内。遍历过程用硬错误保护自身假设：拥有方的顶层 `interface SessionEventMap` 必须是 `@singula-ai/alego-session` 中唯一的导出声明（无关的、局部的或同名重复的接口不能被当作磁盘词汇编入目录）；任何声明不得携带 `extends`（继承的键会加入 `keyof SessionEventMap` 却没有对应的目录行）；每个成员必须是带有显式 payload 类型的属性签名（方法形式的成员会加入 `keyof` 却在静默遍历中被漏过）；跨声明的重复成员也会失败。
 
 本方案取代了手工副本：session.md 的 `hook/*` 表格、精简版 README 的事件表格、hook-protocol README 的 payload 条目列表，以及会话 README 的名称列表现在链接到目录，而不再重述 payload（周围的语义说明文字保留原位）。hook-protocol 合并成员上的两个误加的 `@mode emit` 标签已被移除——新门禁将它们作为类别错误拒绝。
 

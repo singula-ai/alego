@@ -1,10 +1,10 @@
-# @alego/web-search-perplexity
+# @singula-ai/alego-web-search-perplexity
 
 English | [中文](README.zh.md)
 
 A [Perplexity](https://perplexity.ai)-backed `WebSearchProvider` for the harness [web capability seam](../web/README.md) (`ctx.web`). It calls Perplexity's OpenAI-compatible `POST /chat/completions` endpoint and maps the generated answer plus citations into the seam's normalized `WebSearchResult`.
 
-This is an **implementation** package: it registers a provider into `ctx.web`, it does not own the key and it does not register a model-facing tool. Like `@alego/llm-deepseek`, it is a function/namespace plugin (`inject: ['web']`). The OpenAI-compatible wire shape is a provider-private detail — it does **not** make this provider depend on `ctx.llm`.
+This is an **implementation** package: it registers a provider into `ctx.web`, it does not own the key and it does not register a model-facing tool. Like `@singula-ai/alego-llm-deepseek`, it is a function/namespace plugin (`inject: ['web']`). The OpenAI-compatible wire shape is a provider-private detail — it does **not** make this provider depend on `ctx.llm`.
 
 ## Config
 
@@ -18,7 +18,7 @@ This is an **implementation** package: it registers a provider into `ctx.web`, i
 
 ```yaml
 - id: web-search-perplexity
-  name: '@alego/web-search-perplexity'
+  name: '@singula-ai/alego-web-search-perplexity'
   config:
     apiKey: !!js process.env.PERPLEXITY_API_KEY
 ```

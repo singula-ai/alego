@@ -2,10 +2,10 @@
  * Shared buffering, serialization, adoption, repair, and disposal orchestration
  * for first-party backends. Third-party backends may implement the public
  * persistence seam directly.
- * @module @alego/session-persistence/coordinator
+ * @module @singula-ai/alego-session-persistence/coordinator
  */
 
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import {
   adoptSessionEvent,
   interruptedTurnClosers,
@@ -14,9 +14,9 @@ import {
   SessionPreparation,
   snapshotJsonValue,
   snapshotSessionEvent,
-} from '@alego/session'
-import type { Session, SessionEvent, SessionId, SessionHeader } from '@alego/session'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+} from '@singula-ai/alego-session'
+import type { Session, SessionEvent, SessionId, SessionHeader } from '@singula-ai/alego-session'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 import type { SessionInspection, SessionLocation } from './index.ts'
 import type { SessionPersistenceRevision } from './revision.ts'
 import { observeQueuedAbort, SessionPreparations } from './preparations.ts'

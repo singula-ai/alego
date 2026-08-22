@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest'
 import {
   resolveRetryPolicy,
   RetryPolicySchema,
-} from '@alego/llm'
-import type { RetryPolicyConfig } from '@alego/llm'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+} from '@singula-ai/alego-llm'
+import type { RetryPolicyConfig } from '@singula-ai/alego-llm'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 
 describe('provider retry policy', () => {
   it('resolves immutable normal defaults', () => {

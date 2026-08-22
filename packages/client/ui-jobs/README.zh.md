@@ -1,4 +1,4 @@
-# @alego/client-ui-jobs
+# @singula-ai/alego-client-ui-jobs
 
 [English](README.md) | 中文
 

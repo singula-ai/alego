@@ -2,11 +2,11 @@
 
 [English](README.md) | 中文
 
-npm scope 为 `@alego/*`；Cordis `Service` 子类和函数插件通过 `ctx.effect()`、`ctx.on()` 或 `ctx.waterfall()` 注册。规则见[包](AGENTS.md)与[根规则](../AGENTS.md#conventions)。
+npm scope 为 `@singula-ai/alego-*`；Cordis `Service` 子类和函数插件通过 `ctx.effect()`、`ctx.on()` 或 `ctx.waterfall()` 注册。规则见[包](AGENTS.md)与[根规则](../AGENTS.md#conventions)。
 
 ## 层级结构
 
-包按组置于 `packages/<group>/<pkg>/`；包名仍为 `@alego/<pkg>`。**组 README 负责包／ctx 键映射。**
+包按组置于 `packages/<group>/<pkg>/`；包名仍为 `@singula-ai/alego-<pkg>`。**组 README 负责包／ctx 键映射。**
 
 | 组 | 职责 | 发布预期 |
 |---|---|---|

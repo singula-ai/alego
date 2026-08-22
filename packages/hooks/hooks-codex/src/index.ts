@@ -6,21 +6,21 @@
  * blocking decisions are honored. Shared execution and parsing live in
  * `alego-hook-protocol`; see the
  * [hook-bridges Agent Note](../../../../.agents/notes/implemented/feature/2026-06-30-hook-bridges.md).
- * @module @alego/hooks-codex
+ * @module @singula-ai/alego-hooks-codex
  */
 
 // Each dialect bridge keeps its complete dependency list visible at the entry
 // point; a cross-package facade for imports alone would add indirection.
 /* jscpd:ignore-start */
 import { readFileSync } from 'node:fs'
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent, PreStepDecision } from '@alego/agent'
-import { createUserMessage } from '@alego/llm'
-import type { ContentBlock, MessageSource } from '@alego/llm'
-import type { UserMessage } from '@alego/session'
-import type {} from '@alego/session-persistence'
-import type { PostToolDecision, PreToolDecision, ToolExecution, ToolExecutionResult } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent, PreStepDecision } from '@singula-ai/alego-agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type { ContentBlock, MessageSource } from '@singula-ai/alego-llm'
+import type { UserMessage } from '@singula-ai/alego-session'
+import type {} from '@singula-ai/alego-session-persistence'
+import type { PostToolDecision, PreToolDecision, ToolExecution, ToolExecutionResult } from '@singula-ai/alego-tools'
 import {
   appendHookInvoked,
   appendHookResult,
@@ -33,7 +33,7 @@ import {
   type HookOutput,
   type MatcherGroup,
   type MergedHookOutcome,
-} from '@alego/hook-protocol'
+} from '@singula-ai/alego-hook-protocol'
 import { parseCodexConfig, type CodexHookConfig } from './config.ts'
 /* jscpd:ignore-end */
 

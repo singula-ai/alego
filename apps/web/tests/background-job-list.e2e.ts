@@ -9,10 +9,10 @@ import { join } from 'node:path'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { Agent } from '@alego/agent'
-import { CallId } from '@alego/llm'
-import { SessionId } from '@alego/session'
-import { JobId } from '@alego/jobs'
+import type { Agent } from '@singula-ai/alego-agent'
+import { CallId } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
+import { JobId } from '@singula-ai/alego-jobs'
 import {
   assertFixtureInventory, captureStableAria, compareOrRefreshGolden,
   launchWebScaffold, seedSession, watchConsole, webSnapshotMode, type WebScaffold,

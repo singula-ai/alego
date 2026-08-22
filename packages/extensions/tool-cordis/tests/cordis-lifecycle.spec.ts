@@ -1,4 +1,4 @@
-import { Context, CordisError, FiberState, type Fiber } from '@alego/cordis'
+import { Context, CordisError, FiberState, type Fiber } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
 
 /**

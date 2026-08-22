@@ -18,9 +18,9 @@ harness 需要面向模型的 web 工具，但不能将模型约定绑定到某�
 
 Web 访问是一个一等能力 seam，遵循[能力 seam Agent Note](2026-06-13-capability-seams.zh.md)：
 
-1. `@alego/web`（`packages/web/web`）拥有 `ctx.web`、提供方注册、提供方选择、共享的请求/结果词汇，以及 web 特有的错误。
-2. 提供方包实现具体后端并向 `ctx.web` 注册能力，例如 `@alego/web-search-exa`、`@alego/web-search-perplexity`、`@alego/web-search-deepseek` 和 `@alego/web-fetch-http`。
-3. `@alego/tool-web`（`packages/web/tool-web`）拥有面向模型的 `web_search` 和 `web_fetch` 工具 schema、提示词段落、参数校验、结果格式化，以及通过 `ctx.web` 实现的工具展示。
+1. `@singula-ai/alego-web`（`packages/web/web`）拥有 `ctx.web`、提供方注册、提供方选择、共享的请求/结果词汇，以及 web 特有的错误。
+2. 提供方包实现具体后端并向 `ctx.web` 注册能力，例如 `@singula-ai/alego-web-search-exa`、`@singula-ai/alego-web-search-perplexity`、`@singula-ai/alego-web-search-deepseek` 和 `@singula-ai/alego-web-fetch-http`。
+3. `@singula-ai/alego-tool-web`（`packages/web/tool-web`）拥有面向模型的 `web_search` 和 `web_fetch` 工具 schema、提示词段落、参数校验、结果格式化，以及通过 `ctx.web` 实现的工具展示。
 
 提供方不注册工具。提供方注册能力。`alego-tool-web` 是面向模型的名称、描述、提示词引导、JSON Schema、展示的唯一所有者。
 
@@ -43,13 +43,13 @@ Web 访问是一个一等能力 seam，遵循[能力 seam Agent Note](2026-06-13
 依赖方向与 bash 和 filesystem 一致：
 
 ```text
-@alego/tool-web  --depends on-->  @alego/web  <--depends on--  @alego/web-search-exa
+@singula-ai/alego-tool-web  --depends on-->  @singula-ai/alego-web  <--depends on--  @singula-ai/alego-web-search-exa
         consumer                                 interface                       implementation
-                                                                 <--depends on--  @alego/web-search-perplexity
+                                                                 <--depends on--  @singula-ai/alego-web-search-perplexity
                                                                                   implementation
-                                                                 <--depends on--  @alego/web-search-deepseek
+                                                                 <--depends on--  @singula-ai/alego-web-search-deepseek
                                                                                   implementation
-                                                                 <--depends on--  @alego/web-fetch-http
+                                                                 <--depends on--  @singula-ai/alego-web-fetch-http
                                                                                   implementation
 ```
 
@@ -57,27 +57,27 @@ Web 访问是一个一等能力 seam，遵循[能力 seam Agent Note](2026-06-13
 
 ```mermaid
 flowchart LR
-  exa["@alego/web-search-exa"] -->|registerSearchProvider| web["@alego/web / ctx.web"]
-  perplexity["@alego/web-search-perplexity"] -->|registerSearchProvider| web
-  deepseek["@alego/web-search-deepseek"] -->|registerSearchProvider| web
-  fetchLocal["@alego/web-fetch-http"] -->|registerFetchProvider| web
-  toolWeb["@alego/tool-web"] -->|search/fetch| web
+  exa["@singula-ai/alego-web-search-exa"] -->|registerSearchProvider| web["@singula-ai/alego-web / ctx.web"]
+  perplexity["@singula-ai/alego-web-search-perplexity"] -->|registerSearchProvider| web
+  deepseek["@singula-ai/alego-web-search-deepseek"] -->|registerSearchProvider| web
+  fetchLocal["@singula-ai/alego-web-fetch-http"] -->|registerFetchProvider| web
+  toolWeb["@singula-ai/alego-tool-web"] -->|search/fetch| web
   toolWeb -->|ctx.tools.register| webSearch["tool: web_search"]
   toolWeb -->|ctx.tools.register| webFetch["tool: web_fetch"]
 ```
 
-`@alego/web` 仅依赖 Cordis 和底层 harness 支持。它声明 `ctx.web`、提供方接口、请求/结果类型、提供方可用性约定和错误码。它不导入工具、agent（智能体）、会话、LLM 或提供方包。
+`@singula-ai/alego-web` 仅依赖 Cordis 和底层 harness 支持。它声明 `ctx.web`、提供方接口、请求/结果类型、提供方可用性约定和错误码。它不导入工具、agent（智能体）、会话、LLM 或提供方包。
 
 提供方包仅依赖 `alego-web` 和 Cordis。它们拥有凭证、端点、协议格式映射、解析和 `WebError` 转换，使用平台 `fetch`。每个提供方注入共享服务并注册后端；只有 `alego-web` 拥有 `ctx.web` 键。提供方私有的协议形状不会产生对 `ctx.llm` 或 Cordis HTTP 服务的依赖。
 
-`@alego/tool-web` 依赖 `@alego/web`、`@alego/tools`、`@alego/system-prompt` 和 Cordis。它从不导入具体的提供方包。
+`@singula-ai/alego-tool-web` 依赖 `@singula-ai/alego-web`、`@singula-ai/alego-tools`、`@singula-ai/alego-system-prompt` 和 Cordis。它从不导入具体的提供方包。
 
 ## `ctx.web` 约定
 
 `ctx.web` 是一个提供方注册表加上一个带提供方选择的执行 API。注册表部分与 `LlmRuntime` 保持接近：每种能力类别一个 `Map<id, provider>`，`registerSearchProvider`/`registerFetchProvider` 方法返回 disposer，重复 id 抛出 `WebError`，执行时解析在选定提供方缺失或不可用时抛出异常。权威签名见 `packages/web/web/src/types.ts`；seam 的形状：
 
 ```ts
-import type { WebFetchRequest, WebFetchResult, WebSearchRequest, WebSearchResult } from '@alego/web'
+import type { WebFetchRequest, WebFetchResult, WebSearchRequest, WebSearchResult } from '@singula-ai/alego-web'
 
 interface WebSearchProvider {
   readonly id: string
@@ -128,25 +128,25 @@ interface WebRuntime {
 
 ```yaml
 - id: web
-  name: '@alego/web'
+  name: '@singula-ai/alego-web'
   config:
     searchProvider: exa
     fetchProvider: http
 
 - id: web-search-exa
-  name: '@alego/web-search-exa'
+  name: '@singula-ai/alego-web-search-exa'
 
 - id: web-search-perplexity
-  name: '@alego/web-search-perplexity'
+  name: '@singula-ai/alego-web-search-perplexity'
 
 - id: web-search-deepseek
-  name: '@alego/web-search-deepseek'
+  name: '@singula-ai/alego-web-search-deepseek'
 
 - id: web-fetch-http
-  name: '@alego/web-fetch-http'
+  name: '@singula-ai/alego-web-fetch-http'
 
 - id: tool-web
-  name: '@alego/tool-web'
+  name: '@singula-ai/alego-tool-web'
 ```
 
 运维覆盖走同一条显式选择路径：`ALEGO_WEB_SEARCH_PROVIDER=perplexity` 等同于配置 `searchProvider: perplexity`，而非 `alego-tool-web` 内部的隐式优先级链。

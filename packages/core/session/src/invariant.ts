@@ -1,18 +1,18 @@
 /**
  * Package-owned relational invariants for the session event log. Load this
- * companion beside `@alego/invariants` to enable the checks.
+ * companion beside `@singula-ai/alego-invariants` to enable the checks.
  *
- * @module @alego/session/invariant
+ * @module @singula-ai/alego-session/invariant
  */
 
-import type { Context } from '@alego/cordis'
-import { assertNever } from '@alego/llm'
-import type { CallId } from '@alego/llm'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
-import type { Session, SessionEvent } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import { assertNever } from '@singula-ai/alego-llm'
+import type { CallId } from '@singula-ai/alego-llm'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
 import { TOOL_NOT_STARTED } from './repair.ts'
 
-const PACKAGE_NAME = '@alego/session'
+const PACKAGE_NAME = '@singula-ai/alego-session'
 
 /** Cordis companion plugin name. */
 export const name = 'session-invariant'

@@ -1,22 +1,22 @@
 /**
  * Caller identity, workspace authorization, and visible lineage projection.
  *
- * @module @alego/tool-session-query/workspace-access
+ * @module @singula-ai/alego-tool-session-query/workspace-access
  */
 
-import type { Context } from '@alego/cordis'
-import { HarnessError } from '@alego/llm'
+import type { Context } from '@singula-ai/cordis'
+import { HarnessError } from '@singula-ai/alego-llm'
 import {
   SessionId,
   type SessionEvent,
   type SessionHeader,
   type SessionId as SessionIdValue,
-} from '@alego/session'
+} from '@singula-ai/alego-session'
 import type {
   SessionLineageNode,
   SessionRecord,
-} from '@alego/session-query'
-import type { ToolRunContext } from '@alego/tools'
+} from '@singula-ai/alego-session-query'
+import type { ToolRunContext } from '@singula-ai/alego-tools'
 import { serviceBoundary } from './service-boundary.ts'
 
 interface Caller {

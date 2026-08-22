@@ -15,7 +15,7 @@ That makes every future backend reimplement model-facing read semantics and obse
 
 This also creates a real UX dead-end: a windowed read records `view: partial`, and partial views cannot authorize `edit`. A model that reads lines 100-150 of a large file therefore cannot edit line 120 unless it first gets a `full` read, which may be impossible for a file past the read cap. Literal edit only needs freshness: the bytes being matched must still be from the version the model read.
 
-The old Agent Note already deferred a separate `@alego/fs-observation-policy` package. This decision builds that layer and keeps `ctx.fs` close to fsspec-style storage primitives (`info`/`cat`/`open`), without turning it into full fsspec.
+The old Agent Note already deferred a separate `@singula-ai/alego-fs-observation-policy` package. This decision builds that layer and keeps `ctx.fs` close to fsspec-style storage primitives (`info`/`cat`/`open`), without turning it into full fsspec.
 
 ## Decision
 
@@ -34,7 +34,7 @@ This Agent Note decided the four-layer split, the provider contract, and the fre
 
 ## Provider Contract
 
-`@alego/fs` shrinks to provider text IO plus guarded text mutation:
+`@singula-ai/alego-fs` shrinks to provider text IO plus guarded text mutation:
 
 ```ts ignore-check
 abstract resolve(path: string, opts?: { cwd?: string; signal?: AbortSignal }): Promise<FsTarget>
@@ -69,7 +69,7 @@ Deleted from `alego-fs`: `readPage`, `FsExpectation`, `FsView`, `FsStateSource`,
 
 ## Policy Contract
 
-`@alego/fs-observation-policy` is a plugin, not a service: it registers no `ctx.*` key and injects nothing. It owns the write/edit freshness policy and observed-state that do not belong on the `FileSystem` provider base class (where a sandboxed/remote backend would otherwise inherit model-facing observation policy it has no business carrying). It contributes that policy through the `fs/*` event gate the executor dispatches.
+`@singula-ai/alego-fs-observation-policy` is a plugin, not a service: it registers no `ctx.*` key and injects nothing. It owns the write/edit freshness policy and observed-state that do not belong on the `FileSystem` provider base class (where a sandboxed/remote backend would otherwise inherit model-facing observation policy it has no business carrying). It contributes that policy through the `fs/*` event gate the executor dispatches.
 
 Observed state lives here as `WeakMap<owner, Map<targetKey, FsVersion>>`. An entry exists iff the owner has read, written, OR edited that target (every success emits `fs/observed`), so its presence *is* the prior-observation record — there is no separate `hasRead` flag. The owner is derived structurally from the opaque event actor (`{ agent?: { session? } }`), a shape that lives in `alego-fs-observation-policy`, not `alego-fs`.
 

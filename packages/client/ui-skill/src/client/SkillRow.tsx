@@ -5,9 +5,9 @@
 import { useState, type KeyboardEvent, type ReactNode } from 'react'
 import {
   IconChevronDownOutline14, IconInspectOutline12, IconSkillOutline16, StateDot,
-} from '@alego/client-ui-primitives'
-import type { ToolCallViewProps } from '@alego/client-ui-tool/client'
-import type { PropsLocale } from '@alego/client-ui-slots'
+} from '@singula-ai/alego-client-ui-primitives'
+import type { ToolCallViewProps } from '@singula-ai/alego-client-ui-tool/client'
+import type { PropsLocale } from '@singula-ai/alego-client-ui-slots'
 import css from './SkillRow.module.css'
 
 /** Skill row lifecycle derived solely from the durable call slice. */

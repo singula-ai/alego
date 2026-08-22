@@ -3,12 +3,12 @@
  * fresh official package-local Codex wrapper with `app-server --stdio` in the
  * delegating Session's workspace and publishes only after an ephemeral thread exists.
  *
- * @module @alego/subagent-codex
+ * @module @singula-ai/alego-subagent-codex
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 import {
   assertPositiveFinite,
   NO_START_CAPABILITIES,
@@ -16,7 +16,7 @@ import {
   type ResolvedSubagentStartRequest,
   type SubagentCapabilities,
   type SubagentProvider,
-} from '@alego/subagent'
+} from '@singula-ai/alego-subagent'
 import {
   CODEX_PERMISSION_MODES,
   DEFAULT_CODEX_PERMISSION_MODE,

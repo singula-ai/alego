@@ -9,16 +9,16 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import AgentRegistry, { Inbox } from '@alego/agent'
-import type { Agent, AgentStatus } from '@alego/agent'
-import { createUserMessage } from '@alego/llm'
-import type { UserMessage } from '@alego/session'
-import SessionStore from '@alego/session'
-import type { Session } from '@alego/session'
-import SessionProjectionRegistry from '@alego/session-projection'
-import GoalService, { applyGoalProjection, foldGoal } from '@alego/goal'
-import type { GoalRef } from '@alego/goal'
+import { Context } from '@singula-ai/cordis'
+import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import type { Agent, AgentStatus } from '@singula-ai/alego-agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type { UserMessage } from '@singula-ai/alego-session'
+import SessionStore from '@singula-ai/alego-session'
+import type { Session } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import GoalService, { applyGoalProjection, foldGoal } from '@singula-ai/alego-goal'
+import type { GoalRef } from '@singula-ai/alego-goal'
 
 interface Bench {
   ctx: Context

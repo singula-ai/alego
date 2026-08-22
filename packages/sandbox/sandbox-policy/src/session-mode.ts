@@ -18,10 +18,10 @@
  * @module alego-sandbox-policy/session-mode
  */
 
-import type { Session, SessionEvent } from '@alego/session'
-import type { SandboxMode } from '@alego/sandbox'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import type { SandboxMode } from '@singula-ai/alego-sandbox'
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * The session's sandbox mode was switched — log-only (like `approval/*`;

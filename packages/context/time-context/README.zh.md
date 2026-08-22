@@ -1,4 +1,4 @@
-# @alego/time-context
+# @singula-ai/alego-time-context
 
 [English](README.md) | 中文
 
@@ -8,7 +8,7 @@
 
 ```yaml
 - id: time-context
-  name: '@alego/time-context'
+  name: '@singula-ai/alego-time-context'
   config:
     timeZone: Asia/Shanghai  # optional fallback when the request has no unique browser zone
     refreshIntervalMs: 60000 # optional; omit or set to 0 for every eligible attempt

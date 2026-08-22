@@ -1,14 +1,14 @@
 /**
  * Package-owned request-reconstruction invariant for loop-built LLM calls.
- * @module @alego/agent-loop/invariant
+ * @module @singula-ai/alego-agent-loop/invariant
  */
 
-import type { Context } from '@alego/cordis'
-import { isAgentLoopRequest, type GenerateOptions } from '@alego/llm'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
-import { foldRequestHeader } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import { isAgentLoopRequest, type GenerateOptions } from '@singula-ai/alego-llm'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
+import { foldRequestHeader } from '@singula-ai/alego-session'
 
-const PACKAGE_NAME = '@alego/agent-loop'
+const PACKAGE_NAME = '@singula-ai/alego-agent-loop'
 
 /** Cordis companion plugin name. */
 export const name = 'agent-loop-invariant'

@@ -14,7 +14,7 @@ Provider usage is not a complete answer. It describes one successful call under 
 
 ### One concrete LLM-family service
 
-`@alego/token-meter` is one concrete package under `packages/llm/` and registers `ctx.tokenMeter`. It is not split into an interface and backend before a second implementation exists. `TokenMeter` itself exposes `measure(session, requestHeader?)` and `estimateMessage(message)`; consumers call the singleton service directly.
+`@singula-ai/alego-token-meter` is one concrete package under `packages/llm/` and registers `ctx.tokenMeter`. It is not split into an interface and backend before a second implementation exists. `TokenMeter` itself exposes `measure(session, requestHeader?)` and `estimateMessage(message)`; consumers call the singleton service directly.
 
 The service has no configuration. Estimation uses a fixed four-characters-per-token heuristic plus structural overhead. There are no model profiles, capacity settings, density settings, tokenizer backends, or language-specific strategies. Exact provider/model capacity is a separate adapter-owned query, as specified by the [routed model context and compaction policy Agent Note](2026-07-20-routed-model-context-and-compaction-policy.md).
 

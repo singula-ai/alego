@@ -1,7 +1,7 @@
 {
-  "name": "@alego/node-addon-landlock-run-linux-x64",
+  "name": "@singula-ai/node-addon-landlock-run-linux-x64",
   "version": "0.1.1",
-  "description": "Prebuilt landlock-run Landlock launcher binary for linux-x64 (static musl) — resolved as a file path by @alego/node-addon-landlock-run, never imported",
+  "description": "Prebuilt landlock-run Landlock launcher binary for linux-x64 (static musl) — resolved as a file path by @singula-ai/node-addon-landlock-run, never imported",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/singula-ai/alego.git",

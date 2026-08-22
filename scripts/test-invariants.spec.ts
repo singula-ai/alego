@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context, FiberState, Service, ValidationError } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import z from '@alego/schemastery'
-import InvariantRegistry from '@alego/invariants'
-import type { InvariantInstaller } from '@alego/invariants'
+import { Context, FiberState, Service, ValidationError } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import z from '@singula-ai/schemastery'
+import InvariantRegistry from '@singula-ai/alego-invariants'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 import { packageInvariantOwners } from './package-invariants.ts'
 import {
   TEST_INVARIANT_READY_SERVICE,
@@ -13,7 +13,7 @@ import {
   usesManualInvariantTree,
 } from './test-invariants.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     testInvariantProbe: TestInvariantProbe
   }

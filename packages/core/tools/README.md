@@ -66,8 +66,8 @@ First-party plugin authors can use the `defineTool()` helper (exported from this
 
 ```ts
 import { readFile } from 'node:fs/promises'
-import type { Context } from '@alego/cordis'
-import { defineTool } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import { defineTool } from '@singula-ai/alego-tools'
 
 declare const ctx: Context
 
@@ -148,7 +148,7 @@ Prefix-stable while visible definitions and their order are unchanged. Registrat
 
 #### What the model sees
 
-Code Mode exposes the generated [`run_code` schema](../../../docs/tool-catalog.md#alegotools), the SDK instructions below, and the generated exact SDK block for the loaded runtime's language (the TypeScript `declare const tools` block, or the Python `tools` declaration). `both` exposes normal schemas and this Code Mode API. Under `code` the prompt also carries the `tools:code-only` rule, ordered ahead of the per-tool guidance band so the model reads which tools it may call before it reads what each one is for; `both` renders it empty. The instructions and SDK block match the loaded runtime's language; the TypeScript version (via [`alego-code-runtime-worker-thread`](../../code-runtime/code-runtime-worker-thread/README.md)) is shown below, and the Python version (for any runtime reporting `language: 'python'`) has the same operations and types in Python syntax (`await tools.name(args)`, subscript access for exotic names, `print(...)` and top-level `return`).
+Code Mode exposes the generated [`run_code` schema](../../../docs/tool-catalog.md#singula-aialego-tools), the SDK instructions below, and the generated exact SDK block for the loaded runtime's language (the TypeScript `declare const tools` block, or the Python `tools` declaration). `both` exposes normal schemas and this Code Mode API. Under `code` the prompt also carries the `tools:code-only` rule, ordered ahead of the per-tool guidance band so the model reads which tools it may call before it reads what each one is for; `both` renders it empty. The instructions and SDK block match the loaded runtime's language; the TypeScript version (via [`alego-code-runtime-worker-thread`](../../code-runtime/code-runtime-worker-thread/README.md)) is shown below, and the Python version (for any runtime reporting `language: 'python'`) has the same operations and types in Python syntax (`await tools.name(args)`, subscript access for exotic names, `print(...)` and top-level `return`).
 
 ##### Code Mode SDK instructions
 
@@ -192,7 +192,7 @@ Append-only; newly visible content follows the reusable request prefix and does 
 - **Concurrency policy is not an event gate** — `executionMode()` reads the resolved tool definition directly; plugins can only declare a classifier on definitions they own.
 - **`tools/pre-execute` deliberately cannot rewrite `exec.arguments`** — logged and rendered args would desync from what ran; the rewrite design is [a proposed Agent Note](../../../.agents/notes/proposed/feature/2026-06-30-pre-tool-input-rewrite.md).
 - **Caller-defined subagent and workflow structured outputs remain object-rooted** — this is a consumer-level guard; the shared schema vocabulary and tool outputs support every JSON root.
-- **`timeoutMs` on a definition is declarative only** — the registry never enforces deadlines; enforcement requires the `@alego/tool-call-timeout-policy` wrapper.
+- **`timeoutMs` on a definition is declarative only** — the registry never enforces deadlines; enforcement requires the `@singula-ai/alego-tool-call-timeout-policy` wrapper.
 - **Code Mode's SDK language follows the one loaded runtime, and a presentation is per agent rather than per tool** — `mode: code`/`both` rejects prompt assembly unless `ctx.codeRuntime.language` has a registered SDK renderer (TypeScript or Python); scoped restrictions/shadows and `presentAs` choose each agent's visible bindings and their form, but within one agent no tool can be native-only while another is code-only.
 - **Code Mode intermediate values are execution-local and unbounded by bytes** — the canonical typed values cannot be reconstructed from session replay and may exhaust process or worker memory; only the outer `run_code` output has the worker's configurable hard cap. The durable log copy of each sub-call IS bounded: the `tools/code-dispatch-log` waterfall lets the spill policy replace an oversized `tool/code-dispatch` content with a preview + locator ([rationale](../../../.agents/notes/implemented/feature/2026-07-26-code-dispatch-log-spill.md)).
 - **`run_code` state is fresh per run** — a persistent REPL-style kernel is rejected for the MVP (cross-call state would be invisible to the log); see [the Code Mode Agent Note](../../../.agents/notes/implemented/feature/2026-06-15-code-mode.md).

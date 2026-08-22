@@ -4,7 +4,7 @@
 
 Agent 接口、注册表、进程本地发起方作用域，以及 `agent/*` 事件词汇。每个插件（UI、钩子、编排器）都面向此处定义的 `Agent` handle 编程；它不依赖循环，因此循环可以替换。
 
-可选配套包 `@alego/agent/invariant` 会向 `ctx.invariants` 注册此包的 agent（智能体）状态转换检查。根 agent 服务不会隐式加载诊断。
+可选配套包 `@singula-ai/alego-agent/invariant` 会向 `ctx.invariants` 注册此包的 agent（智能体）状态转换检查。根 agent 服务不会隐式加载诊断。
 
 ## 服务：`AgentRegistry`（ctx 键：`agents`）
 

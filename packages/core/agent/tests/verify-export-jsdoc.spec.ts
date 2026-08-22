@@ -154,7 +154,7 @@ describe('verify-export-jsdoc type-level exports', () => {
 
   it('skips `declare module` augmentation bodies (the cordis gate owns them)', () => {
     expect(collectExportJsdocViolations(make(
-      "declare module '@alego/cordis' {\n  interface Events {\n    'fix/x'(): void\n  }\n}\nexport {}\n",
+      "declare module '@singula-ai/cordis' {\n  interface Events {\n    'fix/x'(): void\n  }\n}\nexport {}\n",
     ))).toEqual([])
   })
 })

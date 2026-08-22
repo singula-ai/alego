@@ -1,14 +1,14 @@
 /**
  * Session-visible workspace instruction state and dynamic reconciliation.
  *
- * @module @alego/agent-instructions/state
+ * @module @singula-ai/alego-agent-instructions/state
  */
 
-import type { Agent } from '@alego/agent'
-import { createUserMessage } from '@alego/llm'
-import type { Message } from '@alego/llm'
-import type { Session, UserMessage } from '@alego/session'
-import type { FileSystem, FsVersion } from '@alego/fs'
+import type { Agent } from '@singula-ai/alego-agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type { Message } from '@singula-ai/alego-llm'
+import type { Session, UserMessage } from '@singula-ai/alego-session'
+import type { FileSystem, FsVersion } from '@singula-ai/alego-fs'
 import type { ResolvedConfig } from './config.ts'
 import { instructionContentSha1, trimmedInstructionDigest } from './digest.ts'
 import {
@@ -45,7 +45,7 @@ export interface AgentInstructionSource {
   changes: AgentInstructionChange[]
 }
 
-declare module '@alego/llm' {
+declare module '@singula-ai/alego-llm' {
   interface MessageSourceMap {
     'agent-instructions': AgentInstructionSource
   }

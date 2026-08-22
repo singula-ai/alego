@@ -1,17 +1,17 @@
 /**
  * Single replay-aware token-meter service for request and surface pressure.
  *
- * @module @alego/token-meter
+ * @module @singula-ai/alego-token-meter
  */
 
-import { Context, Service } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { BlockAssembler, deepFreeze } from '@alego/llm'
-import type { Message, TokenUsage } from '@alego/llm'
-import type { EpochHeader, Session, SessionEvent } from '@alego/session'
-import { canonicalHeader, headerEquals, isSurfaceEvent } from '@alego/session'
+import { Context, Service } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { BlockAssembler, deepFreeze } from '@singula-ai/alego-llm'
+import type { Message, TokenUsage } from '@singula-ai/alego-llm'
+import type { EpochHeader, Session, SessionEvent } from '@singula-ai/alego-session'
+import { canonicalHeader, headerEquals, isSurfaceEvent } from '@singula-ai/alego-session'
 // Type-only: resolves the optional projection registry Context declaration.
-import type {} from '@alego/session-projection'
+import type {} from '@singula-ai/alego-session-projection'
 import type {
   TokenMeasurement,
   TokenMeasurementBaseline,
@@ -64,7 +64,7 @@ function validateConfigKeys(config: TokenMeterConfig): void {
   }
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     tokenMeter: TokenMeter
   }

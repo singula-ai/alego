@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/client-ui-permission-presets`.
- * @module @alego/client-ui-permission-presets/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-client-ui-permission-presets`.
+ * @module @singula-ai/alego-client-ui-permission-presets/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/client-ui-permission-presets'
+const PACKAGE_NAME = '@singula-ai/alego-client-ui-permission-presets'
 
 /** Cordis companion plugin name. */
 export const name = 'client-ui-permission-presets-invariant'

@@ -5,14 +5,14 @@
  * for host consumers, `./client/types` (the browser half-entry's re-export)
  * for client aggregates — with zero content duplication.
  *
- * @module @alego/tool-todo/types
+ * @module @singula-ai/alego-tool-todo/types
  */
 
-import type { TodoItem } from '@alego/session/types'
+import type { TodoItem } from '@singula-ai/alego-session/types'
 
-export type { TodoItem } from '@alego/session/types'
+export type { TodoItem } from '@singula-ai/alego-session/types'
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionStateMap {
     todos: TodoItem[] | null
   }

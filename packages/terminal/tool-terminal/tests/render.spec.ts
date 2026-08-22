@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { TerminalSessionId } from '@alego/terminal'
-import { boundTerminalText, renderList, renderRead, renderSend, renderSendRead, renderSpawn } from '@alego/tool-terminal/src/render.ts'
+import { TerminalSessionId } from '@singula-ai/alego-terminal'
+import { boundTerminalText, renderList, renderRead, renderSend, renderSendRead, renderSpawn } from '@singula-ai/alego-tool-terminal/src/render.ts'
 
 describe('tool-terminal rendering', () => {
   it('renders spawn with and without names or MOTD', () => {

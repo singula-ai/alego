@@ -1,8 +1,8 @@
-# @alego/subprocess-local
+# @singula-ai/alego-subprocess-local
 
 [English](README.md) | 中文
 
-[`@alego/subprocess`](../subprocess/README.zh.md) seam 的本地 Service Provider。`LocalSubprocessRuntime` 解析本地可执行文件，以显式 stdio spawn 普通 detached 进程树，并通过 `node-pty` 加平台进程检查实现终端进程。该实现没有任何配置：每项处置方式、限制、终端尺寸、宽限期与目录都来自调用方能力 seam（[`alego-bash-local`](../../shell/bash-local/README.zh.md)、[`alego-lsp-stdio`](../../lsp/lsp-stdio/README.zh.md) 和 [`alego-terminal-bash`](../../terminal/terminal-bash/README.zh.md)）。
+[`@singula-ai/alego-subprocess`](../subprocess/README.zh.md) seam 的本地 Service Provider。`LocalSubprocessRuntime` 解析本地可执行文件，以显式 stdio spawn 普通 detached 进程树，并通过 `node-pty` 加平台进程检查实现终端进程。该实现没有任何配置：每项处置方式、限制、终端尺寸、宽限期与目录都来自调用方能力 seam（[`alego-bash-local`](../../shell/bash-local/README.zh.md)、[`alego-lsp-stdio`](../../lsp/lsp-stdio/README.zh.md) 和 [`alego-terminal-bash`](../../terminal/terminal-bash/README.zh.md)）。
 
 ## 行为
 

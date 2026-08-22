@@ -1,10 +1,10 @@
-/** Package-owned durable todo-snapshot invariants. @module @alego/tool-todo/invariant */
+/** Package-owned durable todo-snapshot invariants. @module @singula-ai/alego-tool-todo/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { Session, SessionEvent } from '@alego/session'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/tool-todo'
+const PACKAGE_NAME = '@singula-ai/alego-tool-todo'
 const TODO_STATUSES = new Set(['pending', 'in_progress', 'completed'])
 
 /** Cordis companion plugin name. */

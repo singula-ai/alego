@@ -6,15 +6,15 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import LlmRuntime, { createUserMessage, LlmError, ReasoningEffortId  } from '@alego/llm'
-import type { GenerateOptions, LlmModelReasoningInfo, LlmResolvedModelInfo, StreamChunk } from '@alego/llm'
-import SessionStore, { Session, SessionId, foldRequestHeader } from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime, { defineContentToolFixture } from '@alego/tools'
-import AgentRegistry, { type Agent } from '@alego/agent'
+import { Context } from '@singula-ai/cordis'
+import LlmRuntime, { createUserMessage, LlmError, ReasoningEffortId  } from '@singula-ai/alego-llm'
+import type { GenerateOptions, LlmModelReasoningInfo, LlmResolvedModelInfo, StreamChunk } from '@singula-ai/alego-llm'
+import SessionStore, { Session, SessionId, foldRequestHeader } from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { defineContentToolFixture } from '@singula-ai/alego-tools'
+import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
 
-import AgentLoop from '@alego/agent-loop'
+import AgentLoop from '@singula-ai/alego-agent-loop'
 import { MockAdapter, textResponse, toolCallResponse } from './mock-adapter.ts'
 
 async function harness(adapter: MockAdapter, persona = 'stable base') {

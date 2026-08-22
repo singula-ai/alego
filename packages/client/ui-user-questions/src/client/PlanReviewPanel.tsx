@@ -14,7 +14,7 @@
 // answer, not an escape hatch.
 
 import { useState } from 'react'
-import { Button, IconEditOutline16, MarkdownText } from '@alego/client-ui-primitives'
+import { Button, IconEditOutline16, MarkdownText } from '@singula-ai/alego-client-ui-primitives'
 import type { PendingQuestion, PlanReview, QuestionComposerProps } from './contract/slots.ts'
 import css from './PlanReviewPanel.module.css'
 

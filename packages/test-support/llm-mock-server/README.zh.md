@@ -1,4 +1,4 @@
-# `@alego/llm-mock-server`
+# `@singula-ai/alego-llm-mock-server`
 
 [English](README.md) | 中文
 

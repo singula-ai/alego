@@ -1,12 +1,12 @@
-/** Package-owned durable goal-stream invariants. @module @alego/goal/invariant */
+/** Package-owned durable goal-stream invariants. @module @singula-ai/alego-goal/invariant */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
-import type { Session, SessionEvent } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
 import { applyGoalEvent, emptyGoalFoldState } from './fold.ts'
 import type { GoalFoldState } from './fold.ts'
 
-const PACKAGE_NAME = '@alego/goal'
+const PACKAGE_NAME = '@singula-ai/alego-goal'
 
 /** Cordis companion plugin name. */
 export const name = 'goal-invariant'

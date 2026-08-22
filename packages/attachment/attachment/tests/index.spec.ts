@@ -1,4 +1,4 @@
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
 import AttachmentStore, {
   AttachmentError,

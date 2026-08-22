@@ -7,14 +7,14 @@
 
 import { randomBytes } from 'node:crypto'
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { unzipSync, strFromU8 } from 'fflate'
-import type { ImageAttachmentRef } from '@alego/attachment'
-import UserQuestionService from '@alego/user-questions'
-import type { SessionHeader, SessionId } from '@alego/session'
-import type { SessionLineageNode } from '@alego/session-query'
-import type { SessionRawArtifact } from '@alego/session-persistence'
-import ApiProxyService, { createApiProxy, toFetchHandler } from '@alego/host-apiproxy'
+import type { ImageAttachmentRef } from '@singula-ai/alego-attachment'
+import UserQuestionService from '@singula-ai/alego-user-questions'
+import type { SessionHeader, SessionId } from '@singula-ai/alego-session'
+import type { SessionLineageNode } from '@singula-ai/alego-session-query'
+import type { SessionRawArtifact } from '@singula-ai/alego-session-persistence'
+import ApiProxyService, { createApiProxy, toFetchHandler } from '@singula-ai/alego-host-apiproxy'
 
 const sid = (id: string): SessionId => id as SessionId
 

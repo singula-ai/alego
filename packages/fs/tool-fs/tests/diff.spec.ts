@@ -7,7 +7,7 @@
 
 import { describe, expect, it } from 'vitest'
 import { computeHunkDiffs, diffsFromMeta, DIFF_CONTEXT } from '../src/diff.ts'
-import type { JsonValue } from '@alego/session'
+import type { JsonValue } from '@singula-ai/alego-session'
 
 const lines = (n: number): string => Array.from({ length: n }, (_, i) => `line${i + 1}`).join('\n') + '\n'
 

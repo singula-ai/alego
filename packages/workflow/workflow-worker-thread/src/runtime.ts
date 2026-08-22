@@ -9,21 +9,21 @@
  * per-item nulls. Every returned promise has a rejection consumer so dropped script promises cannot
  * kill the worker. A cancelled script that never settles emits nothing; the host force-settles the
  * run within grace and terminates the thread.
- * @module @alego/workflow-worker-thread/runtime
+ * @module @singula-ai/alego-workflow-worker-thread/runtime
  */
 
 import * as vm from 'node:vm'
-import type { ContentBlock } from '@alego/llm'
-import { SessionId } from '@alego/session'
-import { assertObjectJsonSchema, JsonSchemaError } from '@alego/tools'
-import type { ObjectJsonSchema } from '@alego/tools'
-import { isFatalWorkflowError, WorkflowError } from '@alego/workflow'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
+import { assertObjectJsonSchema, JsonSchemaError } from '@singula-ai/alego-tools'
+import type { ObjectJsonSchema } from '@singula-ai/alego-tools'
+import { isFatalWorkflowError, WorkflowError } from '@singula-ai/alego-workflow'
 import type {
   WorkflowAgentEndInfo,
   WorkflowAgentInfo,
   WorkflowMeta,
   WorkflowResult,
-} from '@alego/workflow'
+} from '@singula-ai/alego-workflow'
 import { materializeFromRealm, MaterializeError, renderThrown } from './realm.ts'
 import type { ChildHandle, ChildPort, WorkerLimits } from './types.ts'
 

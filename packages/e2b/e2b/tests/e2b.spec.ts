@@ -1,15 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Mock } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import type { Sandbox as SandboxType } from 'e2b'
 import E2BRuntime, {
   e2bControlEnvs,
   FileType,
   SandboxNotFoundError,
   quoteE2BShellArg,
-} from '@alego/e2b'
+} from '@singula-ai/alego-e2b'
 import * as E2BInvariant from '../src/invariant.ts'
-import InvariantRegistry from '@alego/invariants'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 
 const sdk = vi.hoisted(() => ({
   create: vi.fn(),

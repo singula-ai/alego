@@ -1,5 +1,5 @@
 {
-  "name": "@alego/hooks-codex",
+  "name": "@singula-ai/alego-hooks-codex",
   "description": "Bridge plugin: run a Codex hooks.json hook config on the Alego interception seams",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -32,32 +32,32 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@alego/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:^"
   },
   "peerDependencies": {
-    "@alego/agent": "workspace:^",
-    "@alego/hook-protocol": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/session": "workspace:^",
-    "@alego/session-persistence": "workspace:^",
-    "@alego/tools": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-hook-protocol": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-session-persistence": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
-    "@alego/agent": "workspace:^",
-    "@alego/agent-loop": "workspace:^",
-    "@alego/agent-loop-testkit": "workspace:^",
-    "@alego/shell": "workspace:^",
-    "@alego/bash-local": "workspace:^",
-    "@alego/subprocess-local": "workspace:^",
-    "@alego/hook-protocol": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/session": "workspace:^",
-    "@alego/session-persistence": "workspace:^",
-    "@alego/session-persistence-jsonl": "workspace:^",
-    "@alego/tools": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-agent-loop": "workspace:^",
+    "@singula-ai/alego-agent-loop-testkit": "workspace:^",
+    "@singula-ai/alego-shell": "workspace:^",
+    "@singula-ai/alego-bash-local": "workspace:^",
+    "@singula-ai/alego-subprocess-local": "workspace:^",
+    "@singula-ai/alego-hook-protocol": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-session-persistence": "workspace:^",
+    "@singula-ai/alego-session-persistence-jsonl": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   }
 }

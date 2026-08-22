@@ -1,7 +1,7 @@
 /** Registers the sidebar shell into the layout-owned slot. */
-import type { ClientContext } from '@alego/client-runtime/client'
+import type { ClientContext } from '@singula-ai/alego-client-runtime/client'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
-import type {} from '@alego/client-locale/client'
+import type {} from '@singula-ai/alego-client-locale/client'
 import type { SidebarRootInjected } from './contract/slots.ts'
 import { SidebarRoot } from './SidebarRoot.tsx'
 import { en, zh, type SidebarKey } from './locales.ts'
@@ -12,7 +12,7 @@ export type {
 } from './contract/slots.ts'
 export type { SidebarKey } from './locales.ts'
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Sidebar shell controls copy. */
     sidebar: SidebarKey

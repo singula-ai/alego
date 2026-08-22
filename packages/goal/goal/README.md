@@ -1,4 +1,4 @@
-# @alego/goal
+# @singula-ai/alego-goal
 
 English | [中文](README.zh.md)
 
@@ -8,7 +8,7 @@ Event-sourced same-session goal state. The service retains one current completio
 
 ```yaml
 - id: goal
-  name: '@alego/goal'
+  name: '@singula-ai/alego-goal'
   config:
     defaultMaxGoalRounds: 256
 ```

@@ -3,22 +3,22 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import Include from '@alego/cordis-plugin-include'
-import { CallId } from '@alego/llm'
-import { Session, SessionId } from '@alego/session'
-import AgentRegistry, { Inbox } from '@alego/agent'
-import type { Agent } from '@alego/agent'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
-import TerminalSessionService from '@alego/terminal'
-import SandboxProvider from '@alego/sandbox'
-import type { ConfinedArgv, SandboxPolicy } from '@alego/sandbox'
-import SandboxPolicyService from '@alego/sandbox-policy'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
-import * as TerminalLocal from '@alego/terminal-bash'
-import * as ToolPty from '@alego/tool-terminal'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import Include from '@singula-ai/cordis-plugin-include'
+import { CallId } from '@singula-ai/alego-llm'
+import { Session, SessionId } from '@singula-ai/alego-session'
+import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import type { Agent } from '@singula-ai/alego-agent'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
+import TerminalSessionService from '@singula-ai/alego-terminal'
+import SandboxProvider from '@singula-ai/alego-sandbox'
+import type { ConfinedArgv, SandboxPolicy } from '@singula-ai/alego-sandbox'
+import SandboxPolicyService from '@singula-ai/alego-sandbox-policy'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
+import * as TerminalLocal from '@singula-ai/alego-terminal-bash'
+import * as ToolPty from '@singula-ai/alego-tool-terminal'
 
 let root: string | undefined
 let context: Context | undefined
@@ -64,17 +64,17 @@ suite('terminal real Loader composition through cordis.yml', () => {
     root = await mkdtemp(join(tmpdir(), 'alego-pty-loader-'))
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
-      "- name: '@alego/agent'",
-      "- name: '@alego/system-prompt'",
-      "- name: '@alego/tools'",
-      "- name: '@alego/terminal'",
-      "- name: '@alego/test-sandbox'",
-      "- name: '@alego/sandbox-policy'",
+      "- name: '@singula-ai/alego-agent'",
+      "- name: '@singula-ai/alego-system-prompt'",
+      "- name: '@singula-ai/alego-tools'",
+      "- name: '@singula-ai/alego-terminal'",
+      "- name: '@singula-ai/alego-test-sandbox'",
+      "- name: '@singula-ai/alego-sandbox-policy'",
       '  config:',
       '    mode: danger-full-access',
       `    workspaceRoot: ${JSON.stringify(root)}`,
-      "- name: '@alego/subprocess-local'",
-      "- name: '@alego/terminal-bash'",
+      "- name: '@singula-ai/alego-subprocess-local'",
+      "- name: '@singula-ai/alego-terminal-bash'",
       '  config:',
       '    pollIntervalMs: 10',
       '    exactProbeAfterMs: 20',
@@ -82,7 +82,7 @@ suite('terminal real Loader composition through cordis.yml', () => {
       '    handoffGraceMs: 250',
       '    timeoutMs: 2000',
       '    disposeGraceMs: 500',
-      "- name: '@alego/tool-terminal'",
+      "- name: '@singula-ai/alego-tool-terminal'",
       '',
     ].join('\n'))
 
@@ -91,15 +91,15 @@ suite('terminal real Loader composition through cordis.yml', () => {
     await context.plugin(Loader)
     context.loader.builtins.include = Include
     const modules = new Map<string, unknown>([
-      ['@alego/agent', AgentRegistry],
-      ['@alego/system-prompt', SystemPrompt],
-      ['@alego/tools', ToolRuntime],
-      ['@alego/terminal', TerminalSessionService],
-      ['@alego/test-sandbox', PassthroughSandbox],
-      ['@alego/sandbox-policy', SandboxPolicyService],
-      ['@alego/subprocess-local', LocalSubprocessRuntime],
-      ['@alego/terminal-bash', TerminalLocal],
-      ['@alego/tool-terminal', ToolPty],
+      ['@singula-ai/alego-agent', AgentRegistry],
+      ['@singula-ai/alego-system-prompt', SystemPrompt],
+      ['@singula-ai/alego-tools', ToolRuntime],
+      ['@singula-ai/alego-terminal', TerminalSessionService],
+      ['@singula-ai/alego-test-sandbox', PassthroughSandbox],
+      ['@singula-ai/alego-sandbox-policy', SandboxPolicyService],
+      ['@singula-ai/alego-subprocess-local', LocalSubprocessRuntime],
+      ['@singula-ai/alego-terminal-bash', TerminalLocal],
+      ['@singula-ai/alego-tool-terminal', ToolPty],
     ])
     context.loader.internal = {
       version: 'v2',

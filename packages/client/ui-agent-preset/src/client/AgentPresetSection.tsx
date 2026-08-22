@@ -14,9 +14,9 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import {
   Button, IconBrowseOutline16, IconCopyOutline16, IconFolderOpenOutline16, IconPlusOutline16, IconTrashOutline16, Modal, Tooltip,
-} from '@alego/client-ui-primitives'
-import type { SnapshotStore } from '@alego/client-runtime/client'
-import type { InjectFace, PropsLocale, PropsRuntime } from '@alego/client-ui-slots'
+} from '@singula-ai/alego-client-ui-primitives'
+import type { SnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import type { InjectFace, PropsLocale, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
 import { draftBlocker, type AgentPresetSectionState } from './section-store.ts'
 import { presetDisplayText, type AgentPresetSettingsKey } from './locales.ts'
 import css from './AgentPresetSection.module.css'

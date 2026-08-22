@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/settings`.
- * @module @alego/settings/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-settings`.
+ * @module @singula-ai/alego-settings/invariant
  */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantFailure, InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
 import { deepEqualJson } from './index.ts'
 
-const PACKAGE_NAME = '@alego/settings'
+const PACKAGE_NAME = '@singula-ai/alego-settings'
 
 /** Cordis companion plugin name. */
 export const name = 'settings-invariant'

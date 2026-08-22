@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { CommandDefinition, CommandInvocation } from '@alego/commands'
+import { Context } from '@singula-ai/cordis'
+import type { CommandDefinition, CommandInvocation } from '@singula-ai/alego-commands'
 import * as SessionLogDownload from '../src/index.ts'
 
 describe('/export Web download command', () => {

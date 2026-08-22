@@ -6,10 +6,10 @@ import {
   DEEPSEEK_DEFAULT_MAX_TOKENS,
   DEEPSEEK_DEFAULT_MAX_USES,
   DEEPSEEK_DEFAULT_MODEL,
-} from '@alego/web-search-deepseek'
+} from '@singula-ai/alego-web-search-deepseek'
 
 /** Construct the provider over a fixed options value; production passes a live thunk. */
-import type { DeepSeekSearchProviderOptions } from '@alego/web-search-deepseek'
+import type { DeepSeekSearchProviderOptions } from '@singula-ai/alego-web-search-deepseek'
 
 const searchProvider = (options: DeepSeekSearchProviderOptions): DeepSeekSearchProvider =>
   new DeepSeekSearchProvider(() => options)

@@ -1,12 +1,12 @@
 /** Durable Team mailbox admission, target-local dispatch, acknowledgement, and recovery. */
 
 import { randomUUID } from 'node:crypto'
-import type { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import { createUserMessage } from '@alego/llm'
-import type { ContentBlock } from '@alego/llm'
-import { SessionId } from '@alego/session'
-import type { Session, SessionEvent } from '@alego/session'
+import type { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
 import { errorMessage, TeamError } from './error.ts'
 import type { TeamJournal } from './journal.ts'
 import type { TeamRuntimeLifecycle } from './lifecycle.ts'

@@ -1,4 +1,4 @@
-import { Service } from '@alego/cordis'
+import { Service } from '@singula-ai/cordis'
 import type { ZodType } from 'zod'
 import type { AgentPhase, Box, Entity, Flags, Payload, Present, SyntaxZoo } from './models.ts'
 
@@ -95,7 +95,7 @@ export class DemoService extends Service {
   }
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     demo: DemoService
     aliased: AliasedService
@@ -130,7 +130,7 @@ declare module '@alego/cordis' {
   type IgnoredDeclaration = string
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     demo: DemoService
   }

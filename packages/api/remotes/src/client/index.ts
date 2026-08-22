@@ -1,35 +1,35 @@
 /** Platform-neutral assembly of generated Host Remote contributions. */
 
-import type { Context } from '@alego/cordis'
-import commandsRemote from '@alego/commands/remote'
-import goalsRemote from '@alego/goal/remote'
-import dynamicRemote from '@alego/cordis-host-runner/remote'
-import fileReferencesRemote from '@alego/file-reference/remote'
-import pluginInventoryRemote from '@alego/host-plugin-inventory/remote'
-import messageFeedbackRemote from '@alego/message-feedback/remote'
-import sessionReferencesRemote from '@alego/session-reference/remote'
-import type { TypertClientRemote } from '@alego/typert-protocol'
+import type { Context } from '@singula-ai/cordis'
+import commandsRemote from '@singula-ai/alego-commands/remote'
+import goalsRemote from '@singula-ai/alego-goal/remote'
+import dynamicRemote from '@singula-ai/alego-cordis-host-runner/remote'
+import fileReferencesRemote from '@singula-ai/alego-file-reference/remote'
+import pluginInventoryRemote from '@singula-ai/alego-host-plugin-inventory/remote'
+import messageFeedbackRemote from '@singula-ai/alego-message-feedback/remote'
+import sessionReferencesRemote from '@singula-ai/alego-session-reference/remote'
+import type { TypertClientRemote } from '@singula-ai/alego-typert-protocol'
 
-export type { TypertClientRemote as ClientRemote } from '@alego/typert-protocol'
-export type { PluginInventorySnapshot } from '@alego/host-plugin-inventory/types'
-export type {} from '@alego/commands/remote'
-export type {} from '@alego/file-reference/remote'
-export type {} from '@alego/goal/remote'
-export type {} from '@alego/host-plugin-inventory/remote'
-export type {} from '@alego/message-feedback/remote'
-export type {} from '@alego/session-reference/remote'
+export type { TypertClientRemote as ClientRemote } from '@singula-ai/alego-typert-protocol'
+export type { PluginInventorySnapshot } from '@singula-ai/alego-host-plugin-inventory/types'
+export type {} from '@singula-ai/alego-commands/remote'
+export type {} from '@singula-ai/alego-file-reference/remote'
+export type {} from '@singula-ai/alego-goal/remote'
+export type {} from '@singula-ai/alego-host-plugin-inventory/remote'
+export type {} from '@singula-ai/alego-message-feedback/remote'
+export type {} from '@singula-ai/alego-session-reference/remote'
 // The forwarded-event allowlist's selection seat: without it in the consumer's
 // compilation face `TypertRemoteEvent` is `never` and every `$on` call fails.
 export type { ApiRemoteForwardedEvent } from '../types.ts'
 // The owner packages' client-safe `./types` exports supply the `Events`
 // signatures `$on` hands to a listener, so a consumer reads the very
 // declaration the Host emits rather than a flattened restatement of it.
-export type {} from '@alego/commands/types'
-export type {} from '@alego/cordis-host-runner/types'
-export type {} from '@alego/credentials/types'
-export type {} from '@alego/llm/types'
-export type {} from '@alego/agent-presets/types'
-export type {} from '@alego/settings/types'
+export type {} from '@singula-ai/alego-commands/types'
+export type {} from '@singula-ai/alego-cordis-host-runner/types'
+export type {} from '@singula-ai/alego-credentials/types'
+export type {} from '@singula-ai/alego-llm/types'
+export type {} from '@singula-ai/alego-agent-presets/types'
+export type {} from '@singula-ai/alego-settings/types'
 
 /**
  * The carrier's Client-facing types, re-exported so a business package names one
@@ -45,9 +45,9 @@ export type {
   SessionSummary, SettingsNamespaceView, SettingsPathOpView, SkillEntry, StreamChunk,
   SubagentAddress, SubagentCatalog, JobView, ToolCallView, ToolEventView, ToolResultView,
   WorkspaceId, WorkspaceView,
-} from '@alego/client-connection/client'
-export type {} from '@alego/api-gateway/client'
-export type {} from '@alego/cordis-host-runner/remote'
+} from '@singula-ai/alego-client-connection/client'
+export type {} from '@singula-ai/alego-api-gateway/client'
+export type {} from '@singula-ai/alego-cordis-host-runner/remote'
 
 // The payload vocabulary of the selected namespaces, re-exported so a Client
 // contribution can name what it sends and receives without importing a Host
@@ -85,17 +85,17 @@ export type {
   DynamicCordisStopResponse,
   DynamicCordisUndefineReceipt,
   RequestRunOutcome,
-} from '@alego/cordis-host-runner/types'
+} from '@singula-ai/alego-cordis-host-runner/types'
 // The JSON vocabulary those payloads are built from, re-exported for the same
 // reason: a Client contribution names what it sends without importing a Host
 // package, and this assembly is where both planes legitimately meet.
-export type { JsonValue } from '@alego/session/types'
+export type { JsonValue } from '@singula-ai/alego-session/types'
 // Reference-discovery result vocabulary for the fileReferences and
 // sessionReferenceResolver namespaces.
-export type { FileReferenceCandidate } from '@alego/file-reference/types'
-export type { SessionReferenceMentionCandidate } from '@alego/session-reference/types'
+export type { FileReferenceCandidate } from '@singula-ai/alego-file-reference/types'
+export type { SessionReferenceMentionCandidate } from '@singula-ai/alego-session-reference/types'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     /** Generated Remote namespaces selected by this Client assembly. */
     remote: TypertClientRemote

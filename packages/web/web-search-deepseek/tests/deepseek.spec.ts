@@ -2,21 +2,21 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import { credentialRef } from '@alego/credentials'
-import LocalCredentialProvider from '@alego/credentials-local'
-import WebRuntime from '@alego/web'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import { credentialRef } from '@singula-ai/alego-credentials'
+import LocalCredentialProvider from '@singula-ai/alego-credentials-local'
+import WebRuntime from '@singula-ai/alego-web'
 import {
   DeepSeekSearchProvider,
   DEEPSEEK_PROVIDER_ID,
-} from '@alego/web-search-deepseek'
-import * as deepseekPlugin from '@alego/web-search-deepseek'
+} from '@singula-ai/alego-web-search-deepseek'
+import * as deepseekPlugin from '@singula-ai/alego-web-search-deepseek'
 import { citationSnippets, mapAnthropicResponse } from '../src/provider.ts'
-import type { AnthropicResponse } from '@alego/web-search-deepseek/src/types.ts'
+import type { AnthropicResponse } from '@singula-ai/alego-web-search-deepseek/src/types.ts'
 
 /** Construct the provider over a fixed options value; production passes a live thunk. */
-import type { DeepSeekSearchProviderOptions } from '@alego/web-search-deepseek'
+import type { DeepSeekSearchProviderOptions } from '@singula-ai/alego-web-search-deepseek'
 
 const searchProvider = (options: DeepSeekSearchProviderOptions): DeepSeekSearchProvider =>
   new DeepSeekSearchProvider(() => options)

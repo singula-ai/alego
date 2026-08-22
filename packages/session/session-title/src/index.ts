@@ -1,20 +1,20 @@
 /**
  * Log-backed session title service, deterministic fallback, and provider contract.
- * @module @alego/session-title
+ * @module @singula-ai/alego-session-title
  */
 
-import { Context, FiberState, Service, type Fiber } from '@alego/cordis'
-import z from '@alego/schemastery'
+import { Context, FiberState, Service, type Fiber } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import { z as zod } from 'zod'
-import type { Branded } from '@alego/brand'
-import { assertNever, deepFreeze, isAgentLoopRequest } from '@alego/llm'
-import type { GenerateOptions } from '@alego/llm'
+import type { Branded } from '@singula-ai/alego-brand'
+import { assertNever, deepFreeze, isAgentLoopRequest } from '@singula-ai/alego-llm'
+import type { GenerateOptions } from '@singula-ai/alego-llm'
 import type {
   Session,
   SessionEvent,
-} from '@alego/session'
+} from '@singula-ai/alego-session'
 // Type-only: resolves ctx.sessionProjections for the optional unit child.
-import type {} from '@alego/session-projection'
+import type {} from '@singula-ai/alego-session-projection'
 // The `title` projection-key declaration lives in src/types.ts (its one home);
 // this re-export projects the type face onto the package root AND keeps the
 // module edge in the emitted index.d.ts, so aggregate programs consuming the
@@ -85,13 +85,13 @@ export interface Config {
   readonly maxTitleBytes: number
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     sessionTitle: SessionTitleService
   }
 }
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * Latest-wins session title snapshot. Log-only: it never enters the model

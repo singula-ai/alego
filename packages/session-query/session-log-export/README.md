@@ -1,4 +1,4 @@
-# @alego/session-log-export
+# @singula-ai/alego-session-log-export
 
 English | [中文](README.zh.md)
 
@@ -21,7 +21,7 @@ The modal reports preparation, download start, or failure. Closing it does not c
 
 ```yaml
 - id: session-log-download
-  name: '@alego/session-log-export'
+  name: '@singula-ai/alego-session-log-export'
 ```
 
 The Web bundle mounts the package beside `alego-host-apiproxy`, `alego-commands`, `alego-client-ui-commands`, and `alego-client-ui-conversation`. The package contributes its button and modal to the right-aligned `conversation.session.header.utilities` list, independently of the title-adjacent mode, Subagent, and Task entries in `conversation.session.header.actions`; Trajectory carries no export control.

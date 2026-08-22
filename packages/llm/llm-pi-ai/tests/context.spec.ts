@@ -1,13 +1,13 @@
 import { describe, expect, it, vi } from 'vitest'
-import { AttachmentId, ImageVariantId } from '@alego/attachment'
+import { AttachmentId, ImageVariantId } from '@singula-ai/alego-attachment'
 import type {
   AttachmentStore,
   ImageAttachmentRef,
   ImageRequestPolicy,
   RequestImageAttachment,
-} from '@alego/attachment'
-import { CallId, createMessage, createUserMessage, OFFLOADED_IMAGE_TEXT } from '@alego/llm'
-import type { ContentBlock, GenerateOptions, Message } from '@alego/llm'
+} from '@singula-ai/alego-attachment'
+import { CallId, createMessage, createUserMessage, OFFLOADED_IMAGE_TEXT } from '@singula-ai/alego-llm'
+import type { ContentBlock, GenerateOptions, Message } from '@singula-ai/alego-llm'
 import { toPiContext } from '../src/context.ts'
 import { toPiAssistant } from '../src/replay.ts'
 

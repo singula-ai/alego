@@ -2,14 +2,14 @@
  * Opt-in request clock context. Eligible steps add durable,
  * source-attributed time readings to the request history.
  *
- * @module @alego/time-context
+ * @module @singula-ai/alego-time-context
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent, PreStepDecision } from '@alego/agent'
-import { createUserMessage } from '@alego/llm'
-import type { UserMessage } from '@alego/llm'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent, PreStepDecision } from '@singula-ai/alego-agent'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type { UserMessage } from '@singula-ai/alego-llm'
 import {
   deriveBrowserTimeZoneContext,
   renderBrowserTimeZoneContext,

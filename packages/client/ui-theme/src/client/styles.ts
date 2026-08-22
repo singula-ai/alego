@@ -1,11 +1,11 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import base from '../styles/base.css?inline'
 import designPlatform from '../styles/design-platform.css?inline'
 import scrollbar from '../styles/scrollbar.css?inline'
 import gradientShadowText from '../styles/gradient-shadow-text.css?inline'
 import shiki from '../styles/shiki.css?inline'
 
-const PLUGIN_ID = '@alego/client-ui-theme'
+const PLUGIN_ID = '@singula-ai/alego-client-ui-theme'
 
 const STYLES = [
   ['base.css', base],

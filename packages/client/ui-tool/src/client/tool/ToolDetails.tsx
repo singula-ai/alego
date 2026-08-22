@@ -1,5 +1,5 @@
 /** Card-aware output body for the selected Tool call in details. */
-import { DiffBlock, ReadBlock, SearchBlock, TerminalBlock, WebBlock } from '@alego/client-ui-primitives'
+import { DiffBlock, ReadBlock, SearchBlock, TerminalBlock, WebBlock } from '@singula-ai/alego-client-ui-primitives'
 import type { ToolDetailsProps } from '../contract/slots.ts'
 import { diffCardModel } from './models/diff-card-model.ts'
 import { readCardModel } from './models/read-card-model.ts'

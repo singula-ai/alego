@@ -14,8 +14,8 @@ import { readFile, readdir } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
-import { type SessionEvent } from '@alego/session'
-import { resolveExampleLaunch, runLoaderSmoke } from '@alego/loader-smoke'
+import { type SessionEvent } from '@singula-ai/alego-session'
+import { resolveExampleLaunch, runLoaderSmoke } from '@singula-ai/alego-loader-smoke'
 
 const fixtureDir = new URL('../../../../examples/jsonrpc-agent/tests/fixtures/subagent/subagent-alego-sdk/', import.meta.url)
 const driver = fileURLToPath(new URL('driver.ts', fixtureDir))

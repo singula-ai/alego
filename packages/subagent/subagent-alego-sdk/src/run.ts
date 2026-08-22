@@ -1,23 +1,23 @@
 /**
  * Fresh-process SDK subagent client. Drives one child Alego
- * runtime over stdio JSON-RPC through `@alego/sdk-client` and owns
+ * runtime over stdio JSON-RPC through `@singula-ai/alego-sdk-client` and owns
  * cancellation and quiescent disposal. Structure mirrors the ACP backend
- * (`@alego/subagent-acp`): publish after the child handshake,
+ * (`@singula-ai/alego-subagent-acp`): publish after the child handshake,
  * flatten child failures into stop reasons, tear down to quiescence. The
  * child is spawned BY the SDK client rather than through `ctx.subprocess` —
  * the subprocess seam's documented exception for SDK-managed transports —
  * so this driver applies the seam's shared env scrub itself.
  *
- * @module @alego/subagent-alego-sdk/run
+ * @module @singula-ai/alego-subagent-alego-sdk/run
  */
 
 import { randomUUID } from 'node:crypto'
-import { Alego, type HarnessNotification } from '@alego/sdk-client'
-import type { ContentBlock } from '@alego/llm'
-import { SessionId, type SessionEvent, type TurnEndReason } from '@alego/session'
-import type { SubagentResult, SubagentRun, SubagentStartRequest, SubagentStopReason } from '@alego/subagent'
-import { AssistantOutputFold, settleRunResult, subprocessRunHandle } from '@alego/subagent'
-import { scrubbedParentEnv } from '@alego/subprocess'
+import { Alego, type HarnessNotification } from '@singula-ai/alego-sdk-client'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import { SessionId, type SessionEvent, type TurnEndReason } from '@singula-ai/alego-session'
+import type { SubagentResult, SubagentRun, SubagentStartRequest, SubagentStopReason } from '@singula-ai/alego-subagent'
+import { AssistantOutputFold, settleRunResult, subprocessRunHandle } from '@singula-ai/alego-subagent'
+import { scrubbedParentEnv } from '@singula-ai/alego-subprocess'
 
 /** Resolved spawn spec for an SDK runtime child process (no defaults — see Config). */
 export interface SdkRunSpec {

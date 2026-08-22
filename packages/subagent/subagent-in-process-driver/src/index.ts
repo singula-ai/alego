@@ -8,15 +8,15 @@
  * composes and drives them directly, so this driver owns exactly one turn with
  * one result.
  *
- * @module @alego/subagent-in-process-driver
+ * @module @singula-ai/alego-subagent-in-process-driver
  */
 
 import { randomUUID } from 'node:crypto'
-import type { Context } from '@alego/cordis'
-import { foldConsumedWork } from '@alego/agent'
-import type { Agent, AgentHandle } from '@alego/agent'
-import { SessionId, type SessionEvent, type TurnEndReason } from '@alego/session'
-import { createUserMessage, type ContentBlock } from '@alego/llm'
+import type { Context } from '@singula-ai/cordis'
+import { foldConsumedWork } from '@singula-ai/alego-agent'
+import type { Agent, AgentHandle } from '@singula-ai/alego-agent'
+import { SessionId, type SessionEvent, type TurnEndReason } from '@singula-ai/alego-session'
+import { createUserMessage, type ContentBlock } from '@singula-ai/alego-llm'
 import {
   appendDelegatedPolicyOverrides,
   applyChildComposition,
@@ -26,14 +26,14 @@ import {
   finalAssistantOutput,
   resolveChildAgentOptions,
   resolveChildDepth,
-} from '@alego/subagent'
+} from '@singula-ai/alego-subagent'
 import type {
   ResolvedSubagentStartRequest,
   SubagentDescriptorData,
   SubagentResult,
   SubagentRun,
   SubagentStopReason,
-} from '@alego/subagent'
+} from '@singula-ai/alego-subagent'
 import {
   attachStructuredRuntime,
   type StructuredAttachment,

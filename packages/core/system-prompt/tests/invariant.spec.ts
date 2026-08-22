@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { PromptAssembly } from '@alego/system-prompt'
-import * as SystemPromptInvariant from '@alego/system-prompt/invariant'
-import InvariantRegistry from '@alego/invariants'
+import { Context } from '@singula-ai/cordis'
+import type { PromptAssembly } from '@singula-ai/alego-system-prompt'
+import * as SystemPromptInvariant from '@singula-ai/alego-system-prompt/invariant'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

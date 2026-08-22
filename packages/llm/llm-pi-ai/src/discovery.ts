@@ -22,9 +22,9 @@
  * @module alego-llm-pi-ai/discovery
  */
 
-import { INVALID_CREDENTIAL_CODE, LlmError, normalizeApiKey } from '@alego/llm'
-import type { LlmDiscoveredModel, LlmModelDiscoveryRequest } from '@alego/llm'
-import { attributionHeaders } from '@alego/llm'
+import { INVALID_CREDENTIAL_CODE, LlmError, normalizeApiKey } from '@singula-ai/alego-llm'
+import type { LlmDiscoveredModel, LlmModelDiscoveryRequest } from '@singula-ai/alego-llm'
+import { attributionHeaders } from '@singula-ai/alego-llm'
 import { catalogModels } from './catalog.ts'
 
 /**

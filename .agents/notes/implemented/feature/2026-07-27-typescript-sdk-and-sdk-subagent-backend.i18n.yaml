@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-27-typescript-sdk-and-sdk-subagent-backend.md
-2026-07-27-typescript-sdk-and-sdk-subagent-backend.md: b3722ad6fcd7c228f822b79f99591c1f5c95cd08
-2026-07-27-typescript-sdk-and-sdk-subagent-backend.zh.md: 65b85c01f6d063801e6b21a1c91ef599c68193a1
+2026-07-27-typescript-sdk-and-sdk-subagent-backend.md: 77d471c52918582f8ff278fe5c603a9633912b5e
+2026-07-27-typescript-sdk-and-sdk-subagent-backend.zh.md: 23cb6654ef906611c00050fee5416d0c42af494f

@@ -1,9 +1,9 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
 import type {
   ConversationEventInput, ConversationNodeDefinition, ConversationViewDefinition,
-} from '@alego/client-runtime/client'
-import { ConversationNodeAssembler } from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
+import { ConversationNodeAssembler } from '@singula-ai/alego-client-runtime/client'
 import { registerTrajectoryAssistantDefinition } from '../src/client/trajectory-assistant-definition.ts'
 import { registerTrajectoryCompactionDefinitions } from '../src/client/trajectory-compaction-definition.ts'
 import type { TrajectorySnapshot } from '../src/client/trajectory-contract.ts'

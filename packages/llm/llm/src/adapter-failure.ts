@@ -1,7 +1,7 @@
 /**
  * Normalization for values thrown by a final LLM adapter boundary.
  *
- * @module @alego/llm/adapter-failure
+ * @module @singula-ai/alego-llm/adapter-failure
  */
 
 import { HarnessError } from './error.ts'

@@ -12,7 +12,7 @@ A shared mechanism must remain a UI concern rather than a model tool or agent-lo
 
 ## Decision
 
-`@alego/commands` in `packages/interaction/commands/` is the product command registry. The TUI app bundle mounts it beside its consuming front end; the [automation-only ACP app](../simplification/2026-07-23-acp-automation-only-protocol.md) and the executor-less, UI-less agent spine omit it. TUI injects the service, while command producers depend only on the registry and any domain they operate.
+`@singula-ai/alego-commands` in `packages/interaction/commands/` is the product command registry. The TUI app bundle mounts it beside its consuming front end; the [automation-only ACP app](../simplification/2026-07-23-acp-automation-only-protocol.md) and the executor-less, UI-less agent spine omit it. TUI injects the service, while command producers depend only on the registry and any domain they operate.
 
 ### Registry contract
 

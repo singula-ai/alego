@@ -18,8 +18,8 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { SessionEvent, SessionId } from '@alego/session'
-import type { Agent } from '@alego/agent'
+import type { SessionEvent, SessionId } from '@singula-ai/alego-session'
+import type { Agent } from '@singula-ai/alego-agent'
 import {
   acknowledgeReloadConnectionLoss, assertFixtureInventory, captureStableAria, compareOrRefreshGolden,
   launchWebScaffold, watchConsole, webSnapshotMode, type WebScaffold,

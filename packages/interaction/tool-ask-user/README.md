@@ -1,4 +1,4 @@
-# @alego/tool-ask-user
+# @singula-ai/alego-tool-ask-user
 
 English | [中文](README.zh.md)
 
@@ -27,7 +27,7 @@ This is the Consumer package for the user-questions seam. It does not render UI 
 
 #### What the model sees
 
-The model sees the generated [`ask_user_question` schema](../../../docs/tool-catalog.md#alegotool-ask-user), including question ids, prompts, headings, options, and multi-select flags.
+The model sees the generated [`ask_user_question` schema](../../../docs/tool-catalog.md#singula-aialego-tool-ask-user), including question ids, prompts, headings, options, and multi-select flags.
 
 #### Token effect
 

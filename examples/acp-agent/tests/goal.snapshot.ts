@@ -8,9 +8,9 @@ import {
   type AgentUnderTest,
   type InputScript,
   type NormalizeContext,
-} from '@alego/acp-snapshot'
-import { foldGoal } from '@alego/goal'
-import type { SessionEvent } from '@alego/session'
+} from '@singula-ai/alego-acp-snapshot'
+import { foldGoal } from '@singula-ai/alego-goal'
+import type { SessionEvent } from '@singula-ai/alego-session'
 import { describe, expect, it } from 'vitest'
 
 // This lifecycle proof has goal-specific timestamp normalization and semantic

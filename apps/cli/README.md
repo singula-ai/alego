@@ -1,4 +1,4 @@
-# `@alego/cli`
+# `@singula-ai/alego`
 
 English | [中文](README.zh.md)
 
@@ -36,7 +36,7 @@ The tree composes over an empty root:
 - then the profile's `cordis.patch.yml`, then the home-level `$ALEGO_HOME/cordis.patch.yml`
 - then `--patch` overlays
 
-Bundles named in `alego.profile.bundles` resolve from the alego installation first (`@alego/base`, `@alego/web-app`, `@alego/headless`), then from the profile's own `node_modules`, where pnpm installs out-of-tree plugins.
+Bundles named in `alego.profile.bundles` resolve from the alego installation first (`@singula-ai/alego-base`, `@singula-ai/alego-web-app`, `@singula-ai/alego-headless`), then from the profile's own `node_modules`, where pnpm installs out-of-tree plugins.
 
 Use `--dump-default-config` and `--dump-config` to inspect the composed tree without booting it.
 

@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/typert-generator`.
- * @module @alego/typert-generator/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-typert-generator`.
+ * @module @singula-ai/alego-typert-generator/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/typert-generator'
+const PACKAGE_NAME = '@singula-ai/alego-typert-generator'
 
 /** Cordis companion plugin name. */
 export const name = 'typert-generator-invariant'

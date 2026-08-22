@@ -2,15 +2,15 @@
  * Model-facing full-file write. It obtains an optional intent from the single policy slot, calls
  * `ctx.fs.writeText` without a stat, then records the resulting version; no policy means an
  * unconditional atomic create-or-overwrite.
- * @module @alego/tool-fs/src/write
+ * @module @singula-ai/alego-tool-fs/src/write
  */
 
-import type { Context } from '@alego/cordis'
-import { defineTool } from '@alego/tools'
-import type { DiffCallView, DiffResultView, ToolResult } from '@alego/tools'
-import type { FsWriteOutcome } from '@alego/fs'
-import type {} from '@alego/fs'
-import type {} from '@alego/system-prompt'
+import type { Context } from '@singula-ai/cordis'
+import { defineTool } from '@singula-ai/alego-tools'
+import type { DiffCallView, DiffResultView, ToolResult } from '@singula-ai/alego-tools'
+import type { FsWriteOutcome } from '@singula-ai/alego-fs'
+import type {} from '@singula-ai/alego-fs'
+import type {} from '@singula-ai/alego-system-prompt'
 import { computeHunkDiffs, diffsFromMeta } from './diff.ts'
 import { remediateFsError } from './error.ts'
 import { sessionResolveOptions } from './session-cwd.ts'

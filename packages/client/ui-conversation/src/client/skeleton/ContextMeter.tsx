@@ -5,10 +5,10 @@
  * capacity. */
 
 import { useEffect, useRef, useState } from 'react'
-import type { UseProjection } from '@alego/client-runtime/client'
+import type { UseProjection } from '@singula-ai/alego-client-runtime/client'
 // Type-only: the `contextPressure` / `contextBreakdown` projection key merges.
-import type {} from '@alego/token-meter/client'
-import { Tooltip } from '@alego/client-ui-primitives'
+import type {} from '@singula-ai/alego-token-meter/client'
+import { Tooltip } from '@singula-ai/alego-client-ui-primitives'
 import type { ComposerBarProps } from '../contract/slots.ts'
 import { contextOccupancy, formatTokens } from '../chat/StatsLine.tsx'
 import css from './ContextMeter.module.css'

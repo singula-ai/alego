@@ -7,11 +7,11 @@
  * select the accumulated assistant text. Selection is independent of the
  * run's stop reason.
  *
- * @module @alego/subagent/assistant-output
+ * @module @singula-ai/alego-subagent/assistant-output
  */
 
-import type { ContentBlock } from '@alego/llm'
-import type { SessionEvent } from '@alego/session'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { SessionEvent } from '@singula-ai/alego-session'
 
 /**
  * Incremental fold of the selection rule, for backends that observe a child's

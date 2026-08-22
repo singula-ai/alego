@@ -10,7 +10,7 @@ Status: implemented
 
 ## 决策
 
-`@alego/tool-session-query` 是 `ctx.sessionQuery` 面向模型的消费方。它注册五个职责单一的只读工具：`session_search`、`session_event_search`、`session_trace`、`session_event_trace` 和 `session_event_read`。该包依赖接口而非 SQLite 实现，负责模型参数校验与易读文本渲染，并贡献一个精简的提示词段，说明历史搜索以及从搜索转向追踪／读取的工作流。
+`@singula-ai/alego-tool-session-query` 是 `ctx.sessionQuery` 面向模型的消费方。它注册五个职责单一的只读工具：`session_search`、`session_event_search`、`session_trace`、`session_event_trace` 和 `session_event_read`。该包依赖接口而非 SQLite 实现，负责模型参数校验与易读文本渲染，并贡献一个精简的提示词段，说明历史搜索以及从搜索转向追踪／读取的工作流。
 
 该包入口仅作为配置、提示词注册与工具注册的公开组合根。内部模块沿执行边界划分：`input.ts` 负责模型 schema、规范化与过滤条件构造；`service-boundary.ts` 包含提供方调用与面向模型的安全错误转换；`workspace-access.ts` 负责调用者身份、工作区授权、标题访问与谱系投影；`operations.ts` 编排五个服务工作流；`presentation.ts` 渲染工具结果与调用卡片。这样可让策略留在其所属层，同时不改变包约定。
 

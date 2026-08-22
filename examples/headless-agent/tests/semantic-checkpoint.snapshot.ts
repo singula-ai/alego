@@ -1,12 +1,12 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { Context } from '@alego/cordis'
-import { normalizeSessionSnapshot, type NormalizeContext } from '@alego/acp-snapshot'
-import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@alego/loader-smoke'
-import { createUserMessage, CallId , createMessage } from '@alego/llm'
-import SessionStore, { SESSION_FORMAT_VERSION, SessionId, type SessionEvent, type SessionHeader } from '@alego/session'
-import JsonlSessionPersistence from '@alego/session-persistence-jsonl'
+import { Context } from '@singula-ai/cordis'
+import { normalizeSessionSnapshot, type NormalizeContext } from '@singula-ai/alego-acp-snapshot'
+import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@singula-ai/alego-loader-smoke'
+import { createUserMessage, CallId , createMessage } from '@singula-ai/alego-llm'
+import SessionStore, { SESSION_FORMAT_VERSION, SessionId, type SessionEvent, type SessionHeader } from '@singula-ai/alego-session'
+import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import { describe, expect, it } from 'vitest'
 
 const fixtureDir = join(dirname(fileURLToPath(import.meta.url)), 'semantic-checkpoint-snapshots/tool-outcome-unknown')

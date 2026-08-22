@@ -1,13 +1,13 @@
 /** Direct one-shot Agent driving, durable aggregation, flushing, and exit mapping. */
 
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import AgentRegistry, { Inbox } from '@alego/agent'
-import type { Agent, AgentHandle, CreateAgentOptions } from '@alego/agent'
-import AgentDefaultModelConfig from '@alego/agent-default-model'
-import { createAssistantMessage } from '@alego/llm'
-import SessionStore from '@alego/session'
-import type { Session, UserMessage } from '@alego/session'
+import { Context } from '@singula-ai/cordis'
+import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import type { Agent, AgentHandle, CreateAgentOptions } from '@singula-ai/alego-agent'
+import AgentDefaultModelConfig from '@singula-ai/alego-agent-default-model'
+import { createAssistantMessage } from '@singula-ai/alego-llm'
+import SessionStore from '@singula-ai/alego-session'
+import type { Session, UserMessage } from '@singula-ai/alego-session'
 import { apply, Config, internals } from '../src/index.ts'
 
 const originalInternals = { ...internals }

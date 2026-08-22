@@ -1,6 +1,6 @@
 /** Browser download state shared by the Session Header button and `/export`. */
 
-import { createSnapshotStore, type SessionId, type SnapshotStore } from '@alego/client-runtime/client'
+import { createSnapshotStore, type SessionId, type SnapshotStore } from '@singula-ai/alego-client-runtime/client'
 
 /** Download phases presented by the shared modal. */
 export type SessionLogDownloadStatus = 'downloading' | 'success' | 'error'

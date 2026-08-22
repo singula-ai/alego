@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { apply, inject, name } from '../src/invariant.ts'
 
-describe('@alego/session-log-export/invariant', () => {
+describe('@singula-ai/alego-session-log-export/invariant', () => {
   it('registers the package-owned empty companion', async () => {
     const register = vi.fn(() => vi.fn())
     const ctx = new Context()
@@ -10,7 +10,7 @@ describe('@alego/session-log-export/invariant', () => {
     const dispose = await apply(ctx)
     expect(name).toBe('session-export-invariant')
     expect(inject).toEqual(['invariants'])
-    expect(register).toHaveBeenCalledWith('@alego/session-log-export', expect.any(Function))
+    expect(register).toHaveBeenCalledWith('@singula-ai/alego-session-log-export', expect.any(Function))
     dispose()
   })
 })

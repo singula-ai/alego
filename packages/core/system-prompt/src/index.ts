@@ -1,16 +1,16 @@
 /**
  * Registry for ordered system sections, dynamic context, tool schemas, and prompt variables.
  *
- * @module @alego/system-prompt
+ * @module @singula-ai/alego-system-prompt
  */
 
-import { Context, Service } from '@alego/cordis'
-import z from '@alego/schemastery'
-import { AnonymousEntries, NamedEntries, ScopedLayers, scopeTarget } from '@alego/scope'
-import type { ScopeKey, ScopeLayer, Scoped } from '@alego/scope'
-import type { ContextSnapshotSection, ToolSchema } from '@alego/llm'
+import { Context, Service } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import { AnonymousEntries, NamedEntries, ScopedLayers, scopeTarget } from '@singula-ai/alego-scope'
+import type { ScopeKey, ScopeLayer, Scoped } from '@singula-ai/alego-scope'
+import type { ContextSnapshotSection, ToolSchema } from '@singula-ai/alego-llm'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     systemPrompt: SystemPrompt
   }
@@ -18,7 +18,7 @@ declare module '@alego/cordis' {
   interface Events {
     /**
      * Expert waterfall over the assembled sections, contexts, tools, and variables.
-     * Scope-filtered dispatch (`@alego/scope`): scoped listeners
+     * Scope-filtered dispatch (`@singula-ai/alego-scope`): scoped listeners
      * receive only that scope's assemblies. The returned value is authoritative.
      * A supplied signal controls only this explicit assembly request and must not
      * be retained to control later turns. A registered complete section is

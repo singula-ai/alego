@@ -1,9 +1,9 @@
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
-import { SettingsProvider, settingsNamespace, type SettingsNamespace } from '@alego/settings'
+import { SettingsProvider, settingsNamespace, type SettingsNamespace } from '@singula-ai/alego-settings'
 import {
   CONVERSATION_SETTINGS_NAMESPACE, DEFAULT_BUSY_ENTER_BEHAVIOR, apply,
-} from '@alego/client-ui-conversation'
+} from '@singula-ai/alego-client-ui-conversation'
 
 class MemorySettings extends SettingsProvider {
   readonly writable = true

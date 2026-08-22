@@ -1,15 +1,15 @@
 /**
  * Durable agent session-event vocabulary shared with type-only consumers.
  *
- * @module @alego/agent/types
+ * @module @singula-ai/alego-agent/types
  */
 
-import type { UserMessage } from '@alego/llm/types'
+import type { UserMessage } from '@singula-ai/alego-llm/types'
 
 /** One of the two ordered pending-message lists owned by an agent. */
 export type InboxTarget = 'next-turn' | 'next-step'
 
-declare module '@alego/session/types' {
+declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * One normalized mutation of an agent's durable pending-message lists.

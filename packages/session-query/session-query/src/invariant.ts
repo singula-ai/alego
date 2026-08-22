@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/session-query`.
- * @module @alego/session-query/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-session-query`.
+ * @module @singula-ai/alego-session-query/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/session-query'
+const PACKAGE_NAME = '@singula-ai/alego-session-query'
 
 /** Cordis companion plugin name. */
 export const name = 'session-query-invariant'

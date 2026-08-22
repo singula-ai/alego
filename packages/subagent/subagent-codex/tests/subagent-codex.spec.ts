@@ -2,21 +2,21 @@ import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { PassThrough } from 'node:stream'
 import { fileURLToPath } from 'node:url'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
 import * as yaml from 'js-yaml'
 import { describe, expect, it, vi } from 'vitest'
-import type { Agent } from '@alego/agent'
-import type { InvariantInstaller } from '@alego/invariants'
-import type { ContentBlock } from '@alego/llm'
-import SubagentRuntime from '@alego/subagent'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import SubagentRuntime from '@singula-ai/alego-subagent'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 import type {
   SubprocessHandle,
   SubprocessOutcome,
   SubprocessSpawnSpec,
-} from '@alego/subprocess'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
+} from '@singula-ai/alego-subprocess'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 import * as codex from '../src/index.ts'
 import * as invariant from '../src/invariant.ts'
 import {
@@ -368,11 +368,11 @@ describe('task admission and package contracts', () => {
     expect(manifest.alego?.bundle?.patch).toBe('./cordis.patch.yml')
     expect(manifest.files).toContain('cordis.patch.yml')
     expect(manifest.dependencies).toHaveProperty(
-      '@alego/sdk-protocol',
+      '@singula-ai/alego-sdk-protocol',
       'workspace:^',
     )
     expect(manifest.dependencies).toHaveProperty('@openai/codex', CODEX_VERSION)
-    expect(manifest.dependencies).not.toHaveProperty('@alego/subagent-claude-code')
+    expect(manifest.dependencies).not.toHaveProperty('@singula-ai/alego-subagent-claude-code')
 
     const codexPackageJson = fileURLToPath(import.meta.resolve('@openai/codex/package.json'))
     const codexManifest = JSON.parse(readFileSync(codexPackageJson, 'utf8')) as {
@@ -410,7 +410,7 @@ describe('task admission and package contracts', () => {
       : []
     expect(rows).toEqual([{
       id: 'subagent-codex',
-      name: '@alego/subagent-codex',
+      name: '@singula-ai/alego-subagent-codex',
     }])
     expect(JSON.stringify(rows)).not.toContain('tool-subagent')
   })
@@ -665,7 +665,7 @@ describe('task admission and package contracts', () => {
     const ctx = { invariants: { register } } as unknown as Context
     await expect(invariant.apply(ctx)).resolves.toBe(dispose)
     expect(register).toHaveBeenCalledWith(
-      '@alego/subagent-codex',
+      '@singula-ai/alego-subagent-codex',
       expect.any(Function),
     )
     const install = register.mock.calls[0]![1]

@@ -1,13 +1,13 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import AgentRegistry, { Inbox } from '@alego/agent'
-import type { Agent, AgentStatus } from '@alego/agent'
-import CommandRuntime from '@alego/commands'
-import GoalService from '@alego/goal'
-import type { GoalRef } from '@alego/goal'
-import SessionStore, { Session, SessionId } from '@alego/session'
-import * as commandGoal from '@alego/command-goal'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import type { Agent, AgentStatus } from '@singula-ai/alego-agent'
+import CommandRuntime from '@singula-ai/alego-commands'
+import GoalService from '@singula-ai/alego-goal'
+import type { GoalRef } from '@singula-ai/alego-goal'
+import SessionStore, { Session, SessionId } from '@singula-ai/alego-session'
+import * as commandGoal from '@singula-ai/alego-command-goal'
 
 interface Harness {
   readonly ctx: Context
@@ -85,7 +85,7 @@ function ref(goal: NonNullable<ReturnType<GoalService['get']>>): GoalRef {
   return { id: goal.id, revision: goal.revision }
 }
 
-describe('@alego/command-goal registration', () => {
+describe('@singula-ai/alego-command-goal registration', () => {
   it('registers one global command with Loader-safe exports and disposes it', async () => {
     const test = await harness()
     expect(commandGoal.name).toBe('command-goal')

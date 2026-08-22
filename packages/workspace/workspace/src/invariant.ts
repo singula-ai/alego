@@ -1,14 +1,14 @@
 /**
- * Package-owned invariant companion for `@alego/workspace`.
- * @module @alego/workspace/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-workspace`.
+ * @module @singula-ai/alego-workspace/invariant
  */
 
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
-import type { DomainChanged } from '@alego/storage-domain'
-import { WorkspaceId } from '@alego/workspace'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
+import type { DomainChanged } from '@singula-ai/alego-storage-domain'
+import { WorkspaceId } from '@singula-ai/alego-workspace'
 
-const PACKAGE_NAME = '@alego/workspace'
+const PACKAGE_NAME = '@singula-ai/alego-workspace'
 
 /** Cordis companion plugin name. */
 export const name = 'workspace-invariant'

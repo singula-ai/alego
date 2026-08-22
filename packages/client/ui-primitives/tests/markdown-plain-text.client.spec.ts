@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { extractMarkdownPlainText } from '@alego/client-ui-primitives'
+import { extractMarkdownPlainText } from '@singula-ai/alego-client-ui-primitives'
 
 const MARKDOWN = [
   '# Release notes',

@@ -4,14 +4,14 @@
  */
 
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { mkdirSync, mkdtempSync, realpathSync, rmSync, symlinkSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve, sep } from 'node:path'
-import { CallId } from '@alego/llm'
-import SystemPrompt, { renderPrompt } from '@alego/system-prompt'
-import ToolRuntime, { type ToolResult } from '@alego/tools'
-import { FileSystem, FsError, FsTargetKey, FsVersion } from '@alego/fs'
+import { CallId } from '@singula-ai/alego-llm'
+import SystemPrompt, { renderPrompt } from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { type ToolResult } from '@singula-ai/alego-tools'
+import { FileSystem, FsError, FsTargetKey, FsVersion } from '@singula-ai/alego-fs'
 import type {
   FsDirEntry,
   FsEditOutcome,
@@ -21,16 +21,16 @@ import type {
   FsTarget,
   FsWriteIntent,
   FsWriteOutcome,
-} from '@alego/fs'
-import * as FsPolicy from '@alego/fs-observation-policy'
-import * as ToolFs from '@alego/tool-fs'
+} from '@singula-ai/alego-fs'
+import * as FsPolicy from '@singula-ai/alego-fs-observation-policy'
+import * as ToolFs from '@singula-ai/alego-tool-fs'
 import { STREAM_MIN_SIZE } from '../src/read.ts'
 import { formatReadOutput } from '../src/read-render.ts'
 import type { FileReadOutcome } from '../src/read-render.ts'
 import { sessionCwd } from '../src/session-cwd.ts'
-import ApprovalService from '@alego/user-approval'
-import type { SandboxExecutionPolicy, SandboxMode } from '@alego/sandbox'
-import SandboxPolicyService from '@alego/sandbox-policy'
+import ApprovalService from '@singula-ai/alego-user-approval'
+import type { SandboxExecutionPolicy, SandboxMode } from '@singula-ai/alego-sandbox'
+import SandboxPolicyService from '@singula-ai/alego-sandbox-policy'
 
 const testToolSignal = new AbortController().signal
 

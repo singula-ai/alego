@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import LlmRuntime, { CallId, LlmAdapter } from '@alego/llm'
-import type { GenerateOptions, StreamChunk } from '@alego/llm'
-import * as LlmInvariant from '@alego/llm/invariant'
-import InvariantRegistry from '@alego/invariants'
+import { Context } from '@singula-ai/cordis'
+import LlmRuntime, { CallId, LlmAdapter } from '@singula-ai/alego-llm'
+import type { GenerateOptions, StreamChunk } from '@singula-ai/alego-llm'
+import * as LlmInvariant from '@singula-ai/alego-llm/invariant'
+import InvariantRegistry from '@singula-ai/alego-invariants'
 
 async function setup(): Promise<Context> {
   const ctx = new Context()

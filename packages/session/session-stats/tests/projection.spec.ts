@@ -11,14 +11,14 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { createMessage } from '@alego/llm'
-import SessionStore, { SessionId } from '@alego/session'
-import type { Session, SessionEvent } from '@alego/session'
-import SessionProjectionRegistry from '@alego/session-projection'
-import * as SessionStatsPlugin from '@alego/session-stats'
-import { sessionStatsProjectionDefinition } from '@alego/session-stats/src/projection.ts'
-import type { SessionStatsProjection } from '@alego/session-stats/types'
+import { Context } from '@singula-ai/cordis'
+import { createMessage } from '@singula-ai/alego-llm'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import * as SessionStatsPlugin from '@singula-ai/alego-session-stats'
+import { sessionStatsProjectionDefinition } from '@singula-ai/alego-session-stats/src/projection.ts'
+import type { SessionStatsProjection } from '@singula-ai/alego-session-stats/types'
 
 async function harness(withStatsPlugin: boolean): Promise<{ ctx: Context; session: Session }> {
   const ctx = new Context()

@@ -9,9 +9,9 @@ A **service** is a named capability one plugin provides and other plugins consum
 Create `greeter.ts` in `tmp/cordis-tutorial`:
 
 ```ts
-import { Service, type Context } from '@alego/cordis'
+import { Service, type Context } from '@singula-ai/cordis'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     greeter: GreeterService
   }
@@ -37,7 +37,7 @@ export function apply(ctx: Context) {
 Two pieces work together:
 
 - **Runtime**: `super(ctx, 'greeter')` registers the instance under the name `greeter`. From then on, any plugin can reach it as `ctx.greeter`. The registration is an effect — unloading the provider removes the service.
-- **Compile time**: the `declare module '@alego/cordis'` block is TypeScript declaration merging. It adds `greeter` to the `Context` interface so `ctx.greeter` typechecks everywhere. It generates no code; without it the service still works at runtime, but consumers lose type safety.
+- **Compile time**: the `declare module '@singula-ai/cordis'` block is TypeScript declaration merging. It adds `greeter` to the `Context` interface so `ctx.greeter` typechecks everywhere. It generates no code; without it the service still works at runtime, but consumers lose type safety.
 
 A `Service` subclass is itself a plugin (the class form from chapter 1), so `ctx.plugin(GreeterService)` mounts it like any other.
 
@@ -46,7 +46,7 @@ A `Service` subclass is itself a plugin (the class form from chapter 1), so `ctx
 Create `consumer.ts`:
 
 ```ts
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 
 export const name = 'consumer'
 export const inject = ['greeter']

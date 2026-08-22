@@ -2,14 +2,14 @@
  * SQLite storage backend for the storage hub: one database file hosts every
  * routed unit, document-per-row (`key TEXT` / `value TEXT` JSON). Registers
  * as backend `sqlite`; the disposer unregisters first, then closes the medium.
- * @module @alego/storage-sqlite
+ * @module @singula-ai/alego-storage-sqlite
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
 import type { DatabaseSync } from 'node:sqlite'
-import { StorageError, UNIT_NAME_RE, storageBackendServiceKey } from '@alego/storage'
-import type { KvFacet, KvUnit, KvUnitDescriptor, StorageBackend } from '@alego/storage'
+import { StorageError, UNIT_NAME_RE, storageBackendServiceKey } from '@singula-ai/alego-storage'
+import type { KvFacet, KvUnit, KvUnitDescriptor, StorageBackend } from '@singula-ai/alego-storage'
 import { openDatabase, recordTableName, type JournalMode } from './schema.ts'
 import { SqliteKvUnit } from './unit.ts'
 

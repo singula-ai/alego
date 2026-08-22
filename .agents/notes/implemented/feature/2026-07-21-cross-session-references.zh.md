@@ -10,7 +10,7 @@ Web 用户需要把另一场对话中的相关工作带入一条新消息，但�
 
 ## 决策
 
-`@alego/session-reference` 是注册在 `ctx.sessionReferenceResolver` 上的单一上下文消费服务。它的外层 `agent/pre-step` 监听器会解析已接受直接用户消息中的规范 mention，并调用 `prepare()`，宿主网关无需添加引用行为。该服务返回分离的可读内容和一份可选的、带标识且冻结的 `UserMessage` 快照；核心 agent 包既不解析会话 URI，也不读取其他日志。
+`@singula-ai/alego-session-reference` 是注册在 `ctx.sessionReferenceResolver` 上的单一上下文消费服务。它的外层 `agent/pre-step` 监听器会解析已接受直接用户消息中的规范 mention，并调用 `prepare()`，宿主网关无需添加引用行为。该服务返回分离的可读内容和一份可选的、带标识且冻结的 `UserMessage` 快照；核心 agent 包既不解析会话 URI，也不读取其他日志。
 
 `alego-session:<base64url(JSON.stringify(sessionId))>` 是与宿主无关的规范标识符。系统先执行 JSON 字符串编码，再执行 base64url 编码，因此引号、正斜杠、反斜杠、Unicode、换行符以及其他任意 JavaScript 字符串值都能无损往返，不会因分隔符产生歧义。Web 接收由 Host 生成、包含该 URI 的 `@[label](uri)` 提及标记，并把它封装为原子 session chip；纯文本客户端可以使用同一种行内提及标记。显式 Markdown 提及标记会拒绝格式错误的 URI。裸文本只有在负载非空且形状符合 base64url 时才会成为引用，而且解码过程仍须通过规范性校验；空负载或只含标点符号的用法仍按普通讨论文本处理。
 

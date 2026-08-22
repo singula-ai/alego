@@ -1,10 +1,10 @@
 /**
  * Shared insertion-ordered storage and effect ownership for scope-aware registries.
  *
- * @module @alego/scope
+ * @module @singula-ai/alego-scope
  */
 
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import { scopeChainOf, scopeOf } from './index.ts'
 import type { ScopeKey } from './index.ts'
 

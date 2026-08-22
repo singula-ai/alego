@@ -5,7 +5,7 @@
  * resumes an Agent.
  */
 
-import type { SessionId } from '@alego/session/types'
+import type { SessionId } from '@singula-ai/alego-session/types'
 import type { RpcRequest, RpcResponse } from './rpc.ts'
 
 /** Skill catalog row (wire projection of the host SkillSummary; provider/source vocabulary stays host-side). */

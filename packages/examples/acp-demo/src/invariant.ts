@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/acp-demo`.
- * @module @alego/acp-demo/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-acp-demo`.
+ * @module @singula-ai/alego-acp-demo/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/acp-demo'
+const PACKAGE_NAME = '@singula-ai/alego-acp-demo'
 
 /** Cordis companion plugin name. */
 export const name = 'acp-demo-invariant'

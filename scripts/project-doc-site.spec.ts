@@ -364,9 +364,9 @@ describe('docsPages locale routes', () => {
 
   it('places the shared todo fragment alias on the translated todo section', () => {
     const catalog = readFileSync(resolve(repositoryRoot, 'docs/tool-catalog.zh.md'), 'utf8')
-    expect(catalog.match(/<a id="alegotool-todo"><\/a>/g)).toHaveLength(1)
+    expect(catalog.match(/<a id="singula-aialego-tool-todo"><\/a>/g)).toHaveLength(1)
     expect(catalog).toContain(
-      '<a id="alegotool-todo"></a>\n\n## `@alego/tool-todo`',
+      '<a id="singula-aialego-tool-todo"></a>\n\n## `@singula-ai/alego-tool-todo`',
     )
   })
 

@@ -1,4 +1,4 @@
-# @alego/command-goal
+# @singula-ai/alego-command-goal
 
 English | [中文](README.zh.md)
 
@@ -27,11 +27,11 @@ The producer injects `commands` and `goals`. A custom app mounts their owners pl
 
 ```yaml
 - id: commands
-  name: '@alego/commands'
+  name: '@singula-ai/alego-commands'
 - id: goal
-  name: '@alego/goal'
+  name: '@singula-ai/alego-goal'
 - id: command-goal
-  name: '@alego/command-goal'
+  name: '@singula-ai/alego-command-goal'
 ```
 
 The shipped `alego` base enables the persisted-goal stack and this command; the Web client provides its interactive adapter. The ACP automation app enables the domain and model tools without a command adapter; `goals: false` removes that stack. The UI-less `agent-spine-demo` requires an explicit `goals: {}` so headless one-shot callers do not silently change from one physical turn to a multi-round operation.

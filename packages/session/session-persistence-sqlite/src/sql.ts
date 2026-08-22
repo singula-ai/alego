@@ -1,6 +1,6 @@
 /**
  * Closed, package-owned SQL resource loading for SQLite.
- * @module @alego/session-persistence-sqlite/sql
+ * @module @singula-ai/alego-session-persistence-sqlite/sql
  */
 
 import { readFileSync } from 'node:fs'

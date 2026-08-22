@@ -9,12 +9,12 @@
  * document language rather than merely looking untidy.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { SlotRegistry } from '@alego/client-runtime/client'
-import { apply as settingsApply, inject as settingsInject } from '@alego/client-ui-settings/client'
-import { TestRemote } from '@alego/client-test-runtime'
-import { apply, inject } from '@alego/client-locale/client'
-import type { LocaleRuntime } from '@alego/client-locale/client'
+import { Context } from '@singula-ai/cordis'
+import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import { apply as settingsApply, inject as settingsInject } from '@singula-ai/alego-client-ui-settings/client'
+import { TestRemote } from '@singula-ai/alego-client-test-runtime'
+import { apply, inject } from '@singula-ai/alego-client-locale/client'
+import type { LocaleRuntime } from '@singula-ai/alego-client-locale/client'
 import { LOCALE_SETTINGS_NAMESPACE, LocaleSettingsSchema } from '../src/locale-settings.ts'
 
 /** Boot the plugin over a stub Host settings document. */

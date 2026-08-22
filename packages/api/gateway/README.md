@@ -1,8 +1,8 @@
-# @alego/api-gateway
+# @singula-ai/alego-api-gateway
 
 English | [中文](README.zh.md)
 
-Two-sided Typert RPC endpoint for Host and Client Cordis environments. The Host entry provides `ctx.typertGateway`, while `@alego/api-gateway/client` provides `ctx.remote`; both consume the same generated `InvocationDescriptor` contract and leave business selection to API Remotes and transport, request correlation, trust, and response envelopes to Connection.
+Two-sided Typert RPC endpoint for Host and Client Cordis environments. The Host entry provides `ctx.typertGateway`, while `@singula-ai/alego-api-gateway/client` provides `ctx.remote`; both consume the same generated `InvocationDescriptor` contract and leave business selection to API Remotes and transport, request correlation, trust, and response envelopes to Connection.
 
 ## Host service: `TypertGatewayService` (ctx key: `typertGateway`)
 

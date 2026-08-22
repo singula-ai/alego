@@ -1,12 +1,12 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { apply as nodeApply } from '@alego/client-locale'
-import { apply as clientApply, COMMON_NS, LocaleRuntime, inject } from '@alego/client-locale/client'
-import * as LocaleInvariant from '@alego/client-locale/invariant'
-import { SlotRegistry } from '@alego/client-runtime/client'
-import InvariantRegistry from '@alego/invariants'
-import { stubSettingsScope } from '@alego/client-test-runtime'
+import { Context } from '@singula-ai/cordis'
+import { apply as nodeApply } from '@singula-ai/alego-client-locale'
+import { apply as clientApply, COMMON_NS, LocaleRuntime, inject } from '@singula-ai/alego-client-locale/client'
+import * as LocaleInvariant from '@singula-ai/alego-client-locale/invariant'
+import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import InvariantRegistry from '@singula-ai/alego-invariants'
+import { stubSettingsScope } from '@singula-ai/alego-client-test-runtime'
 
 describe('invariant companion', () => {
   it('registers under the package name with an empty installer', async () => {

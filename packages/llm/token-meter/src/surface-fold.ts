@@ -8,11 +8,11 @@
  * price is derived from THIS fold's nodes by the replace producer. A
  * projection replacement without a claim deliberately folds with zero delta.
  *
- * @module @alego/token-meter/surface-fold
+ * @module @singula-ai/alego-token-meter/surface-fold
  */
 
-import { deriveEventMessage } from '@alego/session'
-import type { SurfaceEvent } from '@alego/session'
+import { deriveEventMessage } from '@singula-ai/alego-session'
+import type { SurfaceEvent } from '@singula-ai/alego-session'
 import type { TokenSurfaceNode } from './types.ts'
 import { estimateMessage } from './estimate.ts'
 

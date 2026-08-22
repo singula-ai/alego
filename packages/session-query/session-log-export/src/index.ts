@@ -1,7 +1,7 @@
 /** Web Session-log download command over the host endpoint owned by ApiProxy. */
 
-import type { Context } from '@alego/cordis'
-import type { CommandResult } from '@alego/commands'
+import type { Context } from '@singula-ai/cordis'
+import type { CommandResult } from '@singula-ai/alego-commands'
 
 export const name = 'session-log-download'
 export const inject = ['commands']

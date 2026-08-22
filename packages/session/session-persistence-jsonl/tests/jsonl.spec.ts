@@ -1,12 +1,12 @@
-import { MessageId, createUserMessage, createMessage } from '@alego/llm'
+import { MessageId, createUserMessage, createMessage } from '@singula-ai/alego-llm'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { appendFile, mkdtemp, mkdir, rm, readFile, writeFile, readdir, stat, symlink } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path'
-import SessionStore, { SessionId } from '@alego/session'
-import type { Session, SessionEvent, SessionHeader } from '@alego/session'
-import JsonlSessionPersistence from '@alego/session-persistence-jsonl'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import type { Session, SessionEvent, SessionHeader } from '@singula-ai/alego-session'
+import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import {
   encodeSegment, eventLines, logPath, projectDir, projectKey, scanLog, sessionDir, SessionLogScanner, toHeaderLine,
 } from '../src/format.ts'

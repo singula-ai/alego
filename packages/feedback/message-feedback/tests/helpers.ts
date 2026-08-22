@@ -1,25 +1,25 @@
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@alego/cordis'
-import { createAssistantMessage, createUserMessage } from '@alego/llm'
-import type { MessageId } from '@alego/llm/brand'
+import { Context } from '@singula-ai/cordis'
+import { createAssistantMessage, createUserMessage } from '@singula-ai/alego-llm'
+import type { MessageId } from '@singula-ai/alego-llm/brand'
 import SessionStore, {
   SESSION_FORMAT_VERSION,
   Session,
   SessionId,
   type SessionEvent,
   type SessionHeader,
-} from '@alego/session'
+} from '@singula-ai/alego-session'
 import SessionPersistence, {
   SessionPersistenceRevision,
   type SessionInspection,
   type SessionLocation,
   type SessionPersistenceSnapshot,
-} from '@alego/session-persistence'
-import Storage from '@alego/storage'
-import * as StorageDomain from '@alego/storage-domain'
-import * as StorageJson from '@alego/storage-json'
+} from '@singula-ai/alego-session-persistence'
+import Storage from '@singula-ai/alego-storage'
+import * as StorageDomain from '@singula-ai/alego-storage-domain'
+import * as StorageJson from '@singula-ai/alego-storage-json'
 import MessageFeedbackService from '../src/index.ts'
 
 export interface MessageFixture {

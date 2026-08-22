@@ -12,7 +12,7 @@ harness 曾存在多种形似消息的表示，各自采用不同的标识规则
 
 ## 决策
 
-`@alego/llm` 持有唯一一种 `Message` 值，其 `id`、`role`、`content` 和 `source` 均为必填。`MessageId` 是不透明标识，由用户消息、assistant 消息和工具结果消息共享。消息在创建时就会获得 id，早于 inbox 路由、领取、pre-step 改写、持久追加或请求投影。同一个 id 会跨越每个表示边界。
+`@singula-ai/alego-llm` 持有唯一一种 `Message` 值，其 `id`、`role`、`content` 和 `source` 均为必填。`MessageId` 是不透明标识，由用户消息、assistant 消息和工具结果消息共享。消息在创建时就会获得 id，早于 inbox 路由、领取、pre-step 改写、持久追加或请求投影。同一个 id 会跨越每个表示边界。
 
 `createMessage(input)` 是角色通用的规范创建边界。它会生成 `MessageId`，将传入的角色、内容和来源与调用方对象解除引用关系，并在返回完整值前将其深度冻结。`createUserMessage({ content, source })` 为提示词和上下文生产方固定 user 角色。`createAssistantMessage({ content, source })` 同时固定 assistant 角色与模型来源类别，因此模型输出生产方只需提供内容，以及提供方、模型和可选的回放状态。所有创建辅助函数的输入都不包含 id，因此调用方不会意外地把新消息的创建伪装成已有消息的导入。`freezeMessage(message)` 是独立的导入或转换边界：它会将已有标识的消息与调用方对象解除引用关系并深度冻结，不会生成替代标识。
 

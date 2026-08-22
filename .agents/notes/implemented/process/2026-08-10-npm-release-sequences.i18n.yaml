@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-08-10-npm-release-sequences.md
-2026-08-10-npm-release-sequences.md: cfff9725128879ea51a52d88923fd08d987a0c1f
-2026-08-10-npm-release-sequences.zh.md: 790e2bbb54c289c75c045d02fcccf53e0b2a3a28
+2026-08-10-npm-release-sequences.md: d918d2e6f58cb319d72140479f20242f0ba32363
+2026-08-10-npm-release-sequences.zh.md: 042e88ed7a82fd70ef54d6cb3c609b3d0b27c235

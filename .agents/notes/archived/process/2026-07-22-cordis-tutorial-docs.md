@@ -13,7 +13,7 @@ The repo documents Cordis at two levels: the condensed [cordis-primer](../../../
 
 `docs/cordis-tutorial/` holds a seven-chapter hands-on tutorial (first plugin → lifecycle/effects → services → events → config → composition/HMR → harness tool). Its properties, in decreasing order of load-bearing-ness:
 
-- **Every transcript is real.** Each chapter's files run in the gitignored `tmp/cordis-tutorial/` scratch directory via `node --import tsx ../../vendor/cordis/bin.js`, and the shown output is what those commands print. The chapter that uses harness packages (`@alego/tools` and `@alego/llm`) runs keylessly.
+- **Every transcript is real.** Each chapter's files run in the gitignored `tmp/cordis-tutorial/` scratch directory via `node --import tsx ../../vendor/cordis/bin.js`, and the shown output is what those commands print. The chapter that uses harness packages (`@singula-ai/alego-tools` and `@singula-ai/alego-llm`) runs keylessly.
 - **alego-flavored, not pure Cordis**: later chapters use real harness services and events (`ctx.tools`, `tools/result`) so the tutorial lands the reader inside this repo's actual composition model, per the requesting user's choice.
 - **English-only, published to both website locales** through `mirroredPages()` in [website/docs.ts](../../../../website/docs.ts) under a `Cordis 教程` / `Cordis tutorial` section of the develop sidebar — the same pattern as the reference pages, so a Chinese pair can ratchet in later without route changes.
 - Code fences compile under `doc-typecheck` except the two fences that import scratch-relative files (`./stats.ts`) or intentionally throw, which carry `ignore-check`.

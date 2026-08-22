@@ -1,12 +1,12 @@
 # Add Code Mode and Cordis tools to the base spawn/workflow stack, exercising
 # all four boundaries in one ACP snapshot.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: acp-agent
-        name: '@alego/acp-demo'
+        name: '@singula-ai/alego-acp-demo'
         config:
           provider: deepseek-official
           model: deepseek-v4-pro
@@ -22,8 +22,8 @@
             Verify your work by running the code or tests. Keep answers brief and factual.
       - insert:
           - id: code-runtime
-            name: '@alego/code-runtime-worker-thread'
+            name: '@singula-ai/alego-code-runtime-worker-thread'
           - id: cordis-host-runner
-            name: '@alego/cordis-host-runner'
+            name: '@singula-ai/alego-cordis-host-runner'
           - id: tool-cordis
-            name: '@alego/tool-cordis'
+            name: '@singula-ai/alego-tool-cordis'

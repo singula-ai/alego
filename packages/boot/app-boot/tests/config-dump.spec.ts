@@ -12,7 +12,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 import * as yaml from 'js-yaml'
-import { entryListSchema } from '@alego/cordis-plugin-include'
+import { entryListSchema } from '@singula-ai/cordis-plugin-include'
 import { loadOverlayPatches, renderConfigDump } from '../src/index.ts'
 
 const NAME = 'alego-test-bin'

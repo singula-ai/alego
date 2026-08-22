@@ -23,7 +23,7 @@ agent preset 已经能按会话组装一个 agent 的工具，却管不了这些
 
 SDK 提示词段由 code 模式的部署全局注册（不变），并由 `presentAs` 额外按 scope 注册一份，后者按名字遮蔽前者。它的正文对 native scope 渲染为空，而提示词渲染器会丢弃空段——正是这一点让「在 code 模式部署下选择退出」的 agent 不带 SDK 段。
 
-preset 用一行来表达这个选择：`@alego/agent-tool-presentation`，其全部内容就是一次 `presentAs` 调用。code 类模式通过 `ctx.inject` 等待 `ctx.codeRuntime` 而非假定它存在：运行时在宿主平面，而一个 pending 的行正是 `alego-agent-presets` 已经会报告的「不可用挂载」并会指名该行——于是在无运行时的部署上选择 Code Mode 的 preset，会在操作者能够动手的地方失败。
+preset 用一行来表达这个选择：`@singula-ai/alego-agent-tool-presentation`，其全部内容就是一次 `presentAs` 调用。code 类模式通过 `ctx.inject` 等待 `ctx.codeRuntime` 而非假定它存在：运行时在宿主平面，而一个 pending 的行正是 `alego-agent-presets` 已经会报告的「不可用挂载」并会指名该行——于是在无运行时的部署上选择 Code Mode 的 preset，会在操作者能够动手的地方失败。
 
 ## 考虑过的替代方案
 

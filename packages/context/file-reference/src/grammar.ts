@@ -1,7 +1,7 @@
 /**
  * Browser-safe `@file` token grammar shared by terminal and web clients.
  *
- * @module @alego/file-reference/grammar
+ * @module @singula-ai/alego-file-reference/grammar
  */
 
 import type { FileReferenceCandidate } from './types.ts'

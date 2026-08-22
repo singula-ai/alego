@@ -1,5 +1,5 @@
 /**
- * Integration tests: the REAL `@alego/pwsh-local` executor plus the
+ * Integration tests: the REAL `@singula-ai/alego-pwsh-local` executor plus the
  * `pwsh` tool, exercised through `ctx.tools.execute()` with a real PowerShell
  * process. These verify the world — actual commands run, stdout/stderr come
  * back, exit codes render, timeouts abort, background jobs settle through the
@@ -14,16 +14,16 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { spawnSync } from 'node:child_process'
-import { Context } from '@alego/cordis'
-import { CallId } from '@alego/llm'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime, { TOOL_ABORTED } from '@alego/tools'
-import LocalJobRegistry from '@alego/jobs-local'
-import * as ToolTasks from '@alego/tool-jobs'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
-import { PwshLocalExecutor, resolvePwshPath } from '@alego/pwsh-local'
-import * as ToolPwsh from '@alego/tool-pwsh'
-import * as BashEnvPlugin from '@alego/shell-env'
+import { Context } from '@singula-ai/cordis'
+import { CallId } from '@singula-ai/alego-llm'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { TOOL_ABORTED } from '@singula-ai/alego-tools'
+import LocalJobRegistry from '@singula-ai/alego-jobs-local'
+import * as ToolTasks from '@singula-ai/alego-tool-jobs'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
+import { PwshLocalExecutor, resolvePwshPath } from '@singula-ai/alego-pwsh-local'
+import * as ToolPwsh from '@singula-ai/alego-tool-pwsh'
+import * as BashEnvPlugin from '@singula-ai/alego-shell-env'
 
 const testToolSignal = new AbortController().signal
 

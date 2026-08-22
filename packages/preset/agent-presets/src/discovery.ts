@@ -11,14 +11,14 @@
  * path refuses the name while no surface shows anything to delete — and a
  * malformed composition would otherwise read as an ordinary preset until the
  * first session fails to mount it.
- * @module @alego/agent-presets/discovery
+ * @module @singula-ai/alego-agent-presets/discovery
  */
 
 import { readdir, readFile, stat } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { load } from 'js-yaml'
-import { entryListSchema } from '@alego/cordis-plugin-include'
-import { expandHomePath } from '@alego/home-paths'
+import { entryListSchema } from '@singula-ai/cordis-plugin-include'
+import { expandHomePath } from '@singula-ai/alego-home-paths'
 import { readPresetMetadata } from './metadata.ts'
 import { PRESET_ID, type AgentPreset, type PresetRoot } from './preset.ts'
 

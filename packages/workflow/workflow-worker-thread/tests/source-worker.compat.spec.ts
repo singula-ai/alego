@@ -5,12 +5,12 @@
  */
 
 import { expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import SubagentRuntime from '@alego/subagent'
-import type { SubagentProvider } from '@alego/subagent'
+import { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import SubagentRuntime from '@singula-ai/alego-subagent'
+import type { SubagentProvider } from '@singula-ai/alego-subagent'
 import WorkerThreadWorkflowEngine from '../src/index.ts'
-import { SessionId } from '@alego/session'
+import { SessionId } from '@singula-ai/alego-session'
 
 // A fresh thread compiles the source runtime. Leave contention headroom on
 // shared CI runners without weakening any engine-level timeout assertion.

@@ -2,12 +2,12 @@
  * Public request, value, and failure vocabulary for per-message feedback.
  * This module contains types only so generated Remote clients can consume it
  * without importing Host runtime code.
- * @module @alego/message-feedback/types
+ * @module @singula-ai/alego-message-feedback/types
  */
 
-import type { Branded } from '@alego/brand'
-import type { MessageId } from '@alego/llm/brand'
-import type { SessionId } from '@alego/session/types'
+import type { Branded } from '@singula-ai/alego-brand'
+import type { MessageId } from '@singula-ai/alego-llm/brand'
+import type { SessionId } from '@singula-ai/alego-session/types'
 
 /** Opaque compare-and-set token for one exact feedback item revision. */
 export type MessageFeedbackVersion = Branded<'MessageFeedbackVersion'>

@@ -1,5 +1,5 @@
 {
-  "name": "@alego/subagent",
+  "name": "@singula-ai/alego-subagent",
   "description": "Abstract subagent seam (ctx.subagents): named-provider registry for delegating to child agents",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -40,67 +40,67 @@
     "zod": "^4.4.3"
   },
   "peerDependencies": {
-    "@alego/agent": "workspace:^",
-    "@alego/agent-presets": "workspace:^",
-    "@alego/brand": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/sandbox": "workspace:^",
-    "@alego/sandbox-policy": "workspace:^",
-    "@alego/scope": "workspace:^",
-    "@alego/session": "workspace:^",
-    "@alego/session-persistence": "workspace:^",
-    "@alego/session-projection": "workspace:^",
-    "@alego/session-projection-cache": "workspace:^",
-    "@alego/jobs": "workspace:^",
-    "@alego/tools": "workspace:^",
-    "@alego/user-approval": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-agent-presets": "workspace:^",
+    "@singula-ai/alego-brand": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-sandbox": "workspace:^",
+    "@singula-ai/alego-sandbox-policy": "workspace:^",
+    "@singula-ai/alego-scope": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-session-persistence": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^",
+    "@singula-ai/alego-session-projection-cache": "workspace:^",
+    "@singula-ai/alego-jobs": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/alego-user-approval": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "peerDependenciesMeta": {
-    "@alego/agent-presets": {
+    "@singula-ai/alego-agent-presets": {
       "optional": true
     },
-    "@alego/sandbox": {
+    "@singula-ai/alego-sandbox": {
       "optional": true
     },
-    "@alego/sandbox-policy": {
+    "@singula-ai/alego-sandbox-policy": {
       "optional": true
     },
-    "@alego/session-persistence": {
+    "@singula-ai/alego-session-persistence": {
       "optional": true
     },
-    "@alego/session-projection": {
+    "@singula-ai/alego-session-projection": {
       "optional": true
     },
-    "@alego/session-projection-cache": {
+    "@singula-ai/alego-session-projection-cache": {
       "optional": true
     },
-    "@alego/jobs": {
+    "@singula-ai/alego-jobs": {
       "optional": true
     },
-    "@alego/user-approval": {
+    "@singula-ai/alego-user-approval": {
       "optional": true
     }
   },
   "devDependencies": {
-    "@alego/agent": "workspace:^",
-    "@alego/agent-presets": "workspace:^",
-    "@alego/brand": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/sandbox": "workspace:^",
-    "@alego/sandbox-policy": "workspace:^",
-    "@alego/scope": "workspace:^",
-    "@alego/session": "workspace:^",
-    "@alego/session-persistence": "workspace:^",
-    "@alego/session-projection": "workspace:^",
-    "@alego/session-projection-cache": "workspace:^",
-    "@alego/storage": "workspace:^",
-    "@alego/storage-domain": "workspace:^",
-    "@alego/jobs": "workspace:^",
-    "@alego/tools": "workspace:^",
-    "@alego/user-approval": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-agent-presets": "workspace:^",
+    "@singula-ai/alego-brand": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-sandbox": "workspace:^",
+    "@singula-ai/alego-sandbox-policy": "workspace:^",
+    "@singula-ai/alego-scope": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-session-persistence": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^",
+    "@singula-ai/alego-session-projection-cache": "workspace:^",
+    "@singula-ai/alego-storage": "workspace:^",
+    "@singula-ai/alego-storage-domain": "workspace:^",
+    "@singula-ai/alego-jobs": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/alego-user-approval": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   }
 }

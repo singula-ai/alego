@@ -1,20 +1,20 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import type { Agent } from '@alego/agent'
-import { createUserMessage, CallId  } from '@alego/llm'
+import type { Agent } from '@singula-ai/alego-agent'
+import { createUserMessage, CallId  } from '@singula-ai/alego-llm'
 import SessionStore, {
   SESSION_FORMAT_VERSION,
   SessionId,
   type Session,
-} from '@alego/session'
-import JsonlSessionPersistence from '@alego/session-persistence-jsonl'
-import SqliteSessionQueryEngine from '@alego/session-query-sqlite'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
-import * as ToolSessionQuery from '@alego/tool-session-query'
+} from '@singula-ai/alego-session'
+import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import SqliteSessionQueryEngine from '@singula-ai/alego-session-query-sqlite'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
+import * as ToolSessionQuery from '@singula-ai/alego-tool-session-query'
 
 const temporaryDirectories: string[] = []
 const contexts: Context[] = []

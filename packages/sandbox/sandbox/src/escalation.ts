@@ -1,6 +1,6 @@
 /**
  * The escalation vocabulary and choreography shared by every sandbox-enforcing
- * tool family (`@alego/tool-bash`, `@alego/tool-fs`): the
+ * tool family (`@singula-ai/alego-tool-bash`, `@singula-ai/alego-tool-fs`): the
  * strictly-wider ladder, the argument-pairing validation, the model-facing
  * denial/hint markers, and {@link approveEscalation} — the ordered fail-closed
  * sequence that resolves a `sandbox_permissions` request through a
@@ -16,7 +16,7 @@
  * @module alego-sandbox/escalation
  */
 
-import { assertNever } from '@alego/llm'
+import { assertNever } from '@singula-ai/alego-llm'
 import type { SandboxMode } from './index.ts'
 
 /**

@@ -1,12 +1,12 @@
 /**
  * Durable storage-domain declaration for lifecycle-bound message feedback.
- * @module @alego/message-feedback/src/spec
+ * @module @singula-ai/alego-message-feedback/src/spec
  */
 
 import { z } from 'zod'
-import type { MessageId } from '@alego/llm/brand'
-import type { SessionId } from '@alego/session/types'
-import { defineDomain, domainTable } from '@alego/storage-domain'
+import type { MessageId } from '@singula-ai/alego-llm/brand'
+import type { SessionId } from '@singula-ai/alego-session/types'
+import { defineDomain, domainTable } from '@singula-ai/alego-storage-domain'
 import type { MessageFeedbackItem, MessageFeedbackRating, MessageFeedbackVersion } from './types.ts'
 
 const nonNegativeSafeInteger = z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER)

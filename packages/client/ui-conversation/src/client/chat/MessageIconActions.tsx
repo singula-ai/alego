@@ -4,7 +4,7 @@
 import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import {
   IconBranchOutline16, IconCheckOutline16, IconCopyOutline16, Tooltip, writeClipboard,
-} from '@alego/client-ui-primitives'
+} from '@singula-ai/alego-client-ui-primitives'
 import type { ChatViewSlotProps } from '../contract/slots.ts'
 import { formatLatencySeconds, formatMessageClock, formatRunDuration, formatTokensPerSecond } from './message-chrome.ts'
 import { useCalendarDay } from './use-calendar-day.ts'

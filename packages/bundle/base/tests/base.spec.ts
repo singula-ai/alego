@@ -8,8 +8,8 @@ import { fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import * as yaml from 'js-yaml'
-import { entryListSchema } from '@alego/cordis-plugin-include'
-import { evaluate } from '@alego/cordis-plugin-loader'
+import { entryListSchema } from '@singula-ai/cordis-plugin-include'
+import { evaluate } from '@singula-ai/cordis-plugin-loader'
 
 describe('alego-base bundle', () => {
   it('declares a parseable patch list through the alego.bundle.patch manifest field', () => {
@@ -37,8 +37,8 @@ describe('alego-base bundle', () => {
     })
     expect(rows.filter(row => row.id === 'subagent-codex')).toHaveLength(0)
     expect(rows.filter(row => row.id === 'subagent-claude-code')).toHaveLength(0)
-    expect(manifest.dependencies).not.toHaveProperty('@alego/subagent-codex')
-    expect(manifest.dependencies).not.toHaveProperty('@alego/subagent-claude-code')
+    expect(manifest.dependencies).not.toHaveProperty('@singula-ai/alego-subagent-codex')
+    expect(manifest.dependencies).not.toHaveProperty('@singula-ai/alego-subagent-claude-code')
   })
 
   it('gates each shell stack by platform with a symmetric disabled expression', () => {

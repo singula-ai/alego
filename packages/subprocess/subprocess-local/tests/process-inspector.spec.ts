@@ -3,9 +3,9 @@ import {
   createProcessInspector,
   linuxProcessGroupHasLiveMembers,
   parseProcStat,
-} from '@alego/subprocess-local/src/process-inspector.ts'
-import type { ProcessInspectorInternals } from '@alego/subprocess-local/src/process-inspector.ts'
-import { WindowsProcessInspector } from '@alego/subprocess-local/src/windows-inspector.ts'
+} from '@singula-ai/alego-subprocess-local/src/process-inspector.ts'
+import type { ProcessInspectorInternals } from '@singula-ai/alego-subprocess-local/src/process-inspector.ts'
+import { WindowsProcessInspector } from '@singula-ai/alego-subprocess-local/src/windows-inspector.ts'
 
 function stat(pid: number, pgrp: number, session: number, tpgid: number, started: string, parentPid = 1, state = 'S'): string {
   const rest = [state, String(parentPid), String(pgrp), String(session), '99', String(tpgid)]

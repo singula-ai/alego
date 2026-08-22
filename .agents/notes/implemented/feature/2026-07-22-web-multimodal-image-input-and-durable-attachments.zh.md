@@ -44,7 +44,7 @@ Status: implemented
 每个会话的 `InputMachine` 状态在实时草稿旁保存仅限运行时的有序附件标识符。框架持有的 chat store 只接收草稿的纯文本持久化镜像，`ConversationController` 则持有相应的浏览器专用 `File` 与对象 URL 注册表：
 
 ```ts
-import type { Branded } from '@alego/brand'
+import type { Branded } from '@singula-ai/alego-brand'
 
 type DraftAttachmentId = Branded<'DraftAttachmentId'>
 
@@ -78,7 +78,7 @@ interface ComposerAttachment {
 附件 seam公开不可变图片写入和经过校验的读取操作。规范元数据刻意比通用文件记录更窄：
 
 ```ts
-import type { Branded } from '@alego/brand'
+import type { Branded } from '@singula-ai/alego-brand'
 
 type AttachmentId = Branded<'AttachmentId'>
 

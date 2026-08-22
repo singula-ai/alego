@@ -13,13 +13,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, render } from '@testing-library/react'
 import { useSyncExternalStore } from 'react'
-import { AppFrame } from '@alego/client-ui-layout/src/client/AppFrame.tsx'
-import type { AppFrameProps } from '@alego/client-ui-layout/src/client/AppFrame.tsx'
-import { SIDEBAR_COLLAPSED } from '@alego/client-ui-layout/src/client/columns.ts'
-import { createLayoutStore } from '@alego/client-ui-layout/src/client/stores.ts'
+import { AppFrame } from '@singula-ai/alego-client-ui-layout/src/client/AppFrame.tsx'
+import type { AppFrameProps } from '@singula-ai/alego-client-ui-layout/src/client/AppFrame.tsx'
+import { SIDEBAR_COLLAPSED } from '@singula-ai/alego-client-ui-layout/src/client/columns.ts'
+import { createLayoutStore } from '@singula-ai/alego-client-ui-layout/src/client/stores.ts'
 import type {
   SessionId, SessionListState, WorkspaceListState,
-} from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
 
 // Session selection controls for the SessionProvider and useSessions stubs.
 const selectedSession = { current: 's-test' as SessionId | undefined }

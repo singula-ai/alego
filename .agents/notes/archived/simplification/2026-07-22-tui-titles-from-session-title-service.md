@@ -13,7 +13,7 @@ A per-session title makes terminal panes and tabs distinguishable, but a TUI-loc
 
 The session-title service is the one title source. The TUI contains no `autoTitle` config, title-model request, latch, abort controller, prompt, or output cap. It folds the latest logged title on mount (`foldSessionTitle`), renders it as the banner subtitle, and calls `runtime.terminal.setTitle` with `<session title> — <configured title>` on every accepted `session/title` event. The same terminal-safe OSC 0 path handles the configured fallback title, resumed sessions, and live revisions without renaming tmux windows or adding another terminal-control surface.
 
-Model-made titles are a composition choice: `examples/tui-agent/cordis.yml` (and the scripted PTY fixture) mount `@alego/session-title-first-message-llm`, which inherits the main request's route and replaces the spine's deterministic fallback with a short model summary. Deployments without the provider keep the fallback title from `alego-agent-spine-demo`'s bundled `SessionTitleService`.
+Model-made titles are a composition choice: `examples/tui-agent/cordis.yml` (and the scripted PTY fixture) mount `@singula-ai/alego-session-title-first-message-llm`, which inherits the main request's route and replaces the spine's deterministic fallback with a short model summary. Deployments without the provider keep the fallback title from `alego-agent-spine-demo`'s bundled `SessionTitleService`.
 
 ## Alternatives considered
 

@@ -12,7 +12,7 @@ The acceptance bar is stronger than "the socket connects": each reference must s
 
 ## Decision
 
-Ship three default-off Cordis overlay examples under `examples/mcp-memory`: Memorix, MCP Reference Memory, and Engram. Every file inserts exactly one `@alego/mcp-client` row. None is referenced by the shipped composition, and the CLI declares the generic bridge only so an explicitly selected overlay can resolve it.
+Ship three default-off Cordis overlay examples under `examples/mcp-memory`: Memorix, MCP Reference Memory, and Engram. Every file inserts exactly one `@singula-ai/alego-mcp-client` row. None is referenced by the shipped composition, and the CLI declares the generic bridge only so an explicitly selected overlay can resolve it.
 
 These third-party configurations are provided as interoperability examples only. Their inclusion does not imply endorsement, recommendation, partnership, or ongoing support by DeepSeek. There is no memory preset registry, vendor-specific ALEGO plugin, universal memory service, installation UI, migration layer, health checker, or reconnect controller. Another memory MCP server uses the same documented stdio or Streamable HTTP row.
 
@@ -43,7 +43,7 @@ Project identity remains provider-owned: Memorix and Engram use the ALEGO workin
 
 ## Model guidance
 
-The examples do not patch `@alego/system-prompt`: a config patch replaces a row's complete config and could erase an existing persona. The README instead offers one optional additive instruction:
+The examples do not patch `@singula-ai/alego-system-prompt`: a config patch replaces a row's complete config and could erase an existing persona. The README instead offers one optional additive instruction:
 
 > When the user asks you to remember something, call a memory write tool. When historical information may be relevant, search memory and use relevant results.
 

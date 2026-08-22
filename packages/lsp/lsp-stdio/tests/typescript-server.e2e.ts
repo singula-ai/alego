@@ -9,11 +9,11 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { mkdtemp, mkdir, rm, writeFile, realpath } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { Context } from '@alego/cordis'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
-import LocalFileSystem from '@alego/fs-local'
-import Lsp, { type LspQueryRequest, type LspQueryResult } from '@alego/lsp'
-import * as LspLocal from '@alego/lsp-stdio'
+import { Context } from '@singula-ai/cordis'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
+import LocalFileSystem from '@singula-ai/alego-fs-local'
+import Lsp, { type LspQueryRequest, type LspQueryResult } from '@singula-ai/alego-lsp'
+import * as LspLocal from '@singula-ai/alego-lsp-stdio'
 
 // The server binary is a dev dependency of this package; resolve its pnpm-hoisted .bin path.
 const serverBin = join(

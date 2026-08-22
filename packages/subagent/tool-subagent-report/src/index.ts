@@ -3,16 +3,16 @@
  * continuable in-process child's unpublished context. Roots, one-shot children,
  * remote providers, and agentless executions never see the registration.
  *
- * @module @alego/tool-subagent-report
+ * @module @singula-ai/alego-tool-subagent-report
  */
 
-import type { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent } from '@alego/agent'
-import type { ContentBlock } from '@alego/llm'
-import type { SubagentReportDelivery } from '@alego/subagent'
-import type {} from '@alego/system-prompt'
-import { defineTool } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { SubagentReportDelivery } from '@singula-ai/alego-subagent'
+import type {} from '@singula-ai/alego-system-prompt'
+import { defineTool } from '@singula-ai/alego-tools'
 
 export const name = 'tool-subagent-report'
 // The contribution registers only through childCtx.tools and

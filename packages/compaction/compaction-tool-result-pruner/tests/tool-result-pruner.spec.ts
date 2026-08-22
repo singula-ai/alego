@@ -1,22 +1,22 @@
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { CallId , createMessage, createToolResultMessage } from '@alego/llm'
-import type { ContentBlock } from '@alego/llm'
+import { Context } from '@singula-ai/cordis'
+import { CallId , createMessage, createToolResultMessage } from '@singula-ai/alego-llm'
+import type { ContentBlock } from '@singula-ai/alego-llm'
 import SessionStore, {
   Session,
   SessionId,
-} from '@alego/session'
-import type { SurfaceEvent } from '@alego/session'
-import * as SessionInvariant from '@alego/session/invariant'
-import InvariantRegistry from '@alego/invariants'
-import TokenMeter from '@alego/token-meter'
+} from '@singula-ai/alego-session'
+import type { SurfaceEvent } from '@singula-ai/alego-session'
+import * as SessionInvariant from '@singula-ai/alego-session/invariant'
+import InvariantRegistry from '@singula-ai/alego-invariants'
+import TokenMeter from '@singula-ai/alego-token-meter'
 import ToolResultPruner, {
   codePointLength,
   DEFAULTS,
   PRUNE_MARKER,
   resolveConfig,
-} from '@alego/compaction-tool-result-pruner'
-import type { ToolResultPruneConfig } from '@alego/compaction-tool-result-pruner'
+} from '@singula-ai/alego-compaction-tool-result-pruner'
+import type { ToolResultPruneConfig } from '@singula-ai/alego-compaction-tool-result-pruner'
 
 const MODEL = 'test-model'
 const SMALL: ToolResultPruneConfig = {

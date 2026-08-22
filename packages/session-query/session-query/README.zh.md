@@ -1,4 +1,4 @@
-# @alego/session-query
+# @singula-ai/alego-session-query
 
 [English](README.md) | 中文
 
@@ -29,7 +29,7 @@
 
 `SessionQueryEngine.searchSessions(request, exec?)` 按匹配最强的事件对逻辑语料库分组；`searchEvents(request, exec?)` 搜索一个逻辑会话。这两个是服务仅有的抽象方法。两者都返回分页结果，其延续信息是由服务持有的带品牌 `SessionSearchCursor`；接受可选取消，并在不使用提供方专用数值分数的情况下提供摘录。事件搜索分页结果还携带来自与命中相同索引世代的克隆目标 header，使授权消费方可将策略绑定到此次载荷观察。搜索请求只接受事件元数据过滤器，因为字面文本过滤使用上文所述扫描路径。
 
-该包没有提供方协调器、回退实现或独立具体插件。具体服务后端继承已实现的读取、过滤和跟踪，同时负责全文观察、对账、排名、游标世代和查询执行；第一个实现是 [`@alego/session-query-sqlite`](../session-query-sqlite/README.zh.md)。
+该包没有提供方协调器、回退实现或独立具体插件。具体服务后端继承已实现的读取、过滤和跟踪，同时负责全文观察、对账、排名、游标世代和查询执行；第一个实现是 [`@singula-ai/alego-session-query-sqlite`](../session-query-sqlite/README.zh.md)。
 
 `SessionQueryError.code` 是一个封闭联合，覆盖请求验证、缺失目标、格式错误的表层、来源冲突、持久化/索引失败、取消，以及无效或陈旧游标；精确字面值在 [`src/config.ts`](src/config.ts) 中定义。
 

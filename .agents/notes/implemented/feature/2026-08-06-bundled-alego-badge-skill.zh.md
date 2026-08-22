@@ -10,7 +10,7 @@ Status: implemented
 
 ## 决策
 
-`@alego/skill-badge` 是一个原生 Cordis 插件，会在 `ctx.skills` 上注册一个不可变的内置提供方。该提供方负责 `alego-badge` 的摘要、指令正文和 PNG 资源基底；`alego-tool-skill` 仍是面向模型的目录与 loader 渲染的唯一归属方。
+`@singula-ai/alego-skill-badge` 是一个原生 Cordis 插件，会在 `ctx.skills` 上注册一个不可变的内置提供方。该提供方负责 `alego-badge` 的摘要、指令正文和 PNG 资源基底；`alego-tool-skill` 仍是面向模型的目录与 loader 渲染的唯一归属方。
 
 交付的 CLI 组合将 `skill-badge` 声明为禁用。启用这个现有配置行就是显式选择加入；禁用它的安装实例不会公开任何徽章 skill（技能），也不会获得任何模型可见内容。
 

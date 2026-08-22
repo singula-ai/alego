@@ -1,20 +1,20 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@alego/tools'
-import type { ToolExecutionResult, ToolExecutionToken } from '@alego/tools'
-import type { Agent } from '@alego/agent'
-import { WorkflowRunId, WorkflowEngine } from '@alego/workflow'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@singula-ai/alego-tools'
+import type { ToolExecutionResult, ToolExecutionToken } from '@singula-ai/alego-tools'
+import type { Agent } from '@singula-ai/alego-agent'
+import { WorkflowRunId, WorkflowEngine } from '@singula-ai/alego-workflow'
 import type {
   WorkflowAgentEndInfo, WorkflowAgentInfo, WorkflowResult, WorkflowRun,
   WorkflowRunId as WorkflowRunIdType, WorkflowStartRequest,
-} from '@alego/workflow'
-import { CallId } from '@alego/llm'
-import SubagentRuntime from '@alego/subagent'
-import WorkerThreadWorkflowEngine from '@alego/workflow-worker-thread'
+} from '@singula-ai/alego-workflow'
+import { CallId } from '@singula-ai/alego-llm'
+import SubagentRuntime from '@singula-ai/alego-subagent'
+import WorkerThreadWorkflowEngine from '@singula-ai/alego-workflow-worker-thread'
 import * as toolWorkflow from '../src/index.ts'
-import { Session, SessionId } from '@alego/session'
+import { Session, SessionId } from '@singula-ai/alego-session'
 
 const testToolSignal = new AbortController().signal
 

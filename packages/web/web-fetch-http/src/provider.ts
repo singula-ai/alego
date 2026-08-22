@@ -1,16 +1,16 @@
 /**
  * Safe HTTP(S) retrieval for `ctx.web`: validates URLs, follows only same-origin redirects,
  * enforces time and size limits, classifies and decodes text, and leaves presentation to
- * `@alego/tool-web`. Requests carry no browser cookies or ambient credentials.
+ * `@singula-ai/alego-tool-web`. Requests carry no browser cookies or ambient credentials.
  *
  * Private-network and SSRF protection is not implemented; do not enable this provider where
  * it can reach sensitive internal targets.
- * @module @alego/web-fetch-http/provider
+ * @module @singula-ai/alego-web-fetch-http/provider
  */
 
-import { WebError } from '@alego/web'
-import type { WebFetchBody, WebFetchProvider, WebFetchRequest, WebFetchResult } from '@alego/web'
-import { deadline, timeoutOf } from '@alego/timeout'
+import { WebError } from '@singula-ai/alego-web'
+import type { WebFetchBody, WebFetchProvider, WebFetchRequest, WebFetchResult } from '@singula-ai/alego-web'
+import { deadline, timeoutOf } from '@singula-ai/alego-timeout'
 import { classifyContentType, decoderForCharset, isSameOrigin, parseCharset, validateFetchUrl } from './policy.ts'
 
 /** Resolved provider limits (the plugin's schemastery Config supplies defaults). */

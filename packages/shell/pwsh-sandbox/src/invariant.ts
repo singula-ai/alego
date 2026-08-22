@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/pwsh-sandbox`.
- * @module @alego/pwsh-sandbox/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-pwsh-sandbox`.
+ * @module @singula-ai/alego-pwsh-sandbox/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/pwsh-sandbox'
+const PACKAGE_NAME = '@singula-ai/alego-pwsh-sandbox'
 
 /** Cordis companion plugin name. */
 export const name = 'pwsh-sandbox-invariant'

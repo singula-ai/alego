@@ -1,4 +1,4 @@
-# @alego/llm-replay
+# @singula-ai/alego-llm-replay
 
 English | [中文](README.zh.md)
 
@@ -34,7 +34,7 @@ Replay keys every call by its calling session id (`GenerateOptions.sessionId`, s
 
 ```yaml
 - id: llm-replay
-  name: '@alego/llm-replay'
+  name: '@singula-ai/alego-llm-replay'
   config:
     providers:
       - id: deepseek-official

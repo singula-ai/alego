@@ -3,16 +3,16 @@ import { randomUUID } from 'node:crypto'
 import { mkdtemp } from 'node:fs/promises'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import { agentEvents } from '@alego/agent'
-import { TOOL_ORDER_REST } from '@alego/system-prompt'
-import type { Message } from '@alego/llm'
-import { SessionId } from '@alego/session'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import { agentEvents } from '@singula-ai/alego-agent'
+import { TOOL_ORDER_REST } from '@singula-ai/alego-system-prompt'
+import type { Message } from '@singula-ai/alego-llm'
+import { SessionId } from '@singula-ai/alego-session'
 import * as acpAgent from '../src/index.ts'
 
 /**
- * In-process unit coverage for the @alego/acp-demo composition:
+ * In-process unit coverage for the @singula-ai/alego-acp-demo composition:
  * mounting it brings up the agent-spine-demo spine + JSONL persistence + the ACP
  * bridge in one `ctx.plugin`. It loads no Loader-only plugin (no hmr), so it
  * mounts in a plain Context.

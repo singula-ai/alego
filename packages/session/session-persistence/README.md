@@ -1,4 +1,4 @@
-# @alego/session-persistence
+# @singula-ai/alego-session-persistence
 
 English | [中文](README.zh.md)
 

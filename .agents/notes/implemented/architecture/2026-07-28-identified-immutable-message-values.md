@@ -12,7 +12,7 @@ This made identity a routing side effect rather than a message invariant. Produc
 
 ## Decision
 
-`@alego/llm` owns one `Message` value with required `id`, `role`, `content`, and `source`. `MessageId` is opaque and shared by user, assistant, and tool-result messages. A message receives its id at creation, before inbox routing, claim, pre-step rewriting, durable append, or request projection. The same id survives every representation boundary.
+`@singula-ai/alego-llm` owns one `Message` value with required `id`, `role`, `content`, and `source`. `MessageId` is opaque and shared by user, assistant, and tool-result messages. A message receives its id at creation, before inbox routing, claim, pre-step rewriting, durable append, or request projection. The same id survives every representation boundary.
 
 `createMessage(input)` is the canonical role-generic creation boundary. It mints a `MessageId`, detaches the supplied role, content, and source, and deep-freezes the complete value before returning it. `createUserMessage({ content, source })` fixes the user role for prompt and context producers. `createAssistantMessage({ content, source })` fixes both the assistant role and the model source kind, so model-output producers supply only content plus provider, model, and optional replay state. All creation helpers exclude an input id so callers cannot accidentally present creation as import. `freezeMessage(message)` is the separate import or transformation boundary: it detaches and deep-freezes a message whose identity already exists, without minting a replacement.
 

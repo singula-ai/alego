@@ -13,7 +13,7 @@ A second ACP example wanting snapshot coverage — the sandbox/approval composit
 
 ## Decision
 
-The machinery lives in [`packages/support/acp-snapshot`](../../../../packages/support/acp-snapshot/README.md) (`@alego/acp-snapshot`); an example's `*.snapshot.ts` is its scenario table, its agent paths, and one factory call, over its own `snapshots/` fixtures and `cordis.snapshot.yml` overlay ([single-source replay config](../../archived/testing/2026-07-04-single-source-acp-replay-config.md)). Reading `ALEGO_SNAPSHOT` stays at that edge — the library takes a resolved `mode`.
+The machinery lives in [`packages/support/acp-snapshot`](../../../../packages/support/acp-snapshot/README.md) (`@singula-ai/alego-acp-snapshot`); an example's `*.snapshot.ts` is its scenario table, its agent paths, and one factory call, over its own `snapshots/` fixtures and `cordis.snapshot.yml` overlay ([single-source replay config](../../archived/testing/2026-07-04-single-source-acp-replay-config.md)). Reading `ALEGO_SNAPSHOT` stays at that edge — the library takes a resolved `mode`.
 
 **`src/launcher.ts`** — `launchAcpTestAgent` owns the common unbuilt-process boundary: absolute tsx loader resolution, `TSX_TSCONFIG_PATH`, isolated harness homes, stdio wiring, a raw-byte stdout tee, stderr and update capture, fail-closed permission fallback, update waiters, and graceful or signalled shutdown. Snapshot scenarios and ordinary e2e suites supply the same `AgentUnderTest` (`binScript`, `configPath`, `tsconfigPath`); a test that plays a user supplies only its permission handler. The ACP and hook e2e suites plus the sandbox/approval e2e suite use this launcher instead of rebuilding the SDK client boundary.
 

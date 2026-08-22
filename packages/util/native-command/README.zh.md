@@ -11,7 +11,7 @@
 ## 接口面
 
 ```ts
-import { runNativeCommand, type NativeCommandRunner } from '@alego/native-command'
+import { runNativeCommand, type NativeCommandRunner } from '@singula-ai/alego-native-command'
 ```
 
 ## 模型体验

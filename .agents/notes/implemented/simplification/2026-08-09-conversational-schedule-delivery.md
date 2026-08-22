@@ -16,7 +16,7 @@ A due reminder waits for the Agent's idle maintenance phase and calls `followup(
 
 `schedule/change` remains the only durable Schedule state. Its dispatch operation records that the follow-up was synchronously queued, which prevents ordinary restart replay after the dispatch is durable. Dispatch does not claim model success, user acknowledgement, or an external notification. The narrow crash interval between enqueue and durable dispatch remains at-least-once.
 
-Schedule exposes no presentation projection, Host sidecar, browser event node, keyed event slot, or client renderer. Session persistence retains its shared `flush()` contract and has no Schedule-driven success event. The opt-in Web overlay loads only `@alego/schedule`.
+Schedule exposes no presentation projection, Host sidecar, browser event node, keyed event slot, or client renderer. Session persistence retains its shared `flush()` contract and has no Schedule-driven success event. The opt-in Web overlay loads only `@singula-ai/alego-schedule`.
 
 ## Alternatives considered
 

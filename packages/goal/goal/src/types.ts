@@ -7,10 +7,10 @@
  * aggregates — with zero content duplication. Host-coupled domain
  * vocabulary (message sources, events, fold shapes) lives in ./domain.ts.
  *
- * @module @alego/goal/types
+ * @module @singula-ai/alego-goal/types
  */
 
-import type { Branded } from '@alego/brand'
+import type { Branded } from '@singula-ai/alego-brand'
 
 /** Identifies one goal across its durable revisions. */
 export type GoalId = Branded<'GoalId'>
@@ -99,7 +99,7 @@ export interface GoalProjection {
   readonly updatedAt: number
 }
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionStateMap {
     goal: GoalProjection | null
   }

@@ -3,19 +3,19 @@
  *
  * This package owns the Service Definition role of the skill capability seam.
  * Concrete
- * providers such as `@alego/skill-filesystem` decide where skills come
+ * providers such as `@singula-ai/alego-skill-filesystem` decide where skills come
  * from; this service only merges provider catalogs, resolves the winning skill
  * for a name, and exposes the winning summaries and definitions to consumers.
  *
- * @module @alego/skill
+ * @module @singula-ai/alego-skill
  */
 
-import { Context, Service } from '@alego/cordis'
-import { assertNever } from '@alego/llm'
-import { NamedEntries, ScopedLayers, scopeChainOf, scopeOf } from '@alego/scope'
-import type { ScopeKey, ScopeLayer } from '@alego/scope'
-import z from '@alego/schemastery'
-import type Schema from '@alego/schemastery'
+import { Context, Service } from '@singula-ai/cordis'
+import { assertNever } from '@singula-ai/alego-llm'
+import { NamedEntries, ScopedLayers, scopeChainOf, scopeOf } from '@singula-ai/alego-scope'
+import type { ScopeKey, ScopeLayer } from '@singula-ai/alego-scope'
+import z from '@singula-ai/schemastery'
+import type Schema from '@singula-ai/schemastery'
 
 const SKILL_NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 const DEFAULT_COLLECT_CACHE_ENTRIES = 128
@@ -152,7 +152,7 @@ export interface SkillInvocationSource {
   readonly form: 'instructions'
 }
 
-declare module '@alego/llm' {
+declare module '@singula-ai/alego-llm' {
   interface MessageSourceMap {
     /** A user-explicit skill invocation injected by the host. */
     'skill-invocation': SkillInvocationSource
@@ -281,7 +281,7 @@ export interface Config {
   readonly collectCacheMaxEntries?: number
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     skills: SkillRegistry
   }

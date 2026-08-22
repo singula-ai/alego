@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/persona`.
- * @module @alego/persona/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-persona`.
+ * @module @singula-ai/alego-persona/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/persona'
+const PACKAGE_NAME = '@singula-ai/alego-persona'
 
 /** Cordis companion plugin name. */
 export const name = 'persona-invariant'

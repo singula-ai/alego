@@ -4,19 +4,19 @@
  * version this controller last observed, and a `version-conflict` reply carries
  * the authoritative item, so a lost race reconciles from the reply itself
  * instead of refetching the whole Session.
- * @module @alego/client-ui-message-feedback/client/controller
+ * @module @singula-ai/alego-client-ui-message-feedback/client/controller
  */
 
-import type { RemoteResult } from '@alego/typert-protocol'
-import type { HostObservable } from '@alego/client-ui-slots'
-import type { MessageId, SessionId } from '@alego/client-connection/client'
+import type { RemoteResult } from '@singula-ai/alego-typert-protocol'
+import type { HostObservable } from '@singula-ai/alego-client-ui-slots'
+import type { MessageId, SessionId } from '@singula-ai/alego-client-connection/client'
 import type {
   MessageFeedbackDeleteResult,
   MessageFeedbackItem,
   MessageFeedbackListResult,
   MessageFeedbackPutResult,
   MessageFeedbackRating,
-} from '@alego/message-feedback/types'
+} from '@singula-ai/alego-message-feedback/types'
 
 /**
  * The three Remote calls this controller needs. The generated face wraps every

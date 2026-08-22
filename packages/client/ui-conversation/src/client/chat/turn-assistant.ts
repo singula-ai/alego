@@ -1,4 +1,4 @@
-import type { AssistantBlock } from '@alego/client-runtime/client'
+import type { AssistantBlock } from '@singula-ai/alego-client-runtime/client'
 
 /**
  * Collect visible prose from one Assistant lifecycle.

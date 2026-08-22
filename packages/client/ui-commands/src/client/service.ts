@@ -7,25 +7,25 @@
  * addresses the session's agent by sessionId — sessions are always
  * agent-backed.
  */
-import { Service } from '@alego/cordis'
-import type { Context } from '@alego/cordis'
+import { Service } from '@singula-ai/cordis'
+import type { Context } from '@singula-ai/cordis'
 // Type-only: pulls the ctx.remote merge and the forwarded-event key face
 // (`commands/change` rides the allowlist) into this program.
-import type {} from '@alego/api-remotes/client'
-import type { CommandResult } from '@alego/commands/types'
-import type { ClientContext, ISessions, SessionId } from '@alego/client-runtime/client'
-import type { TranslateNS } from '@alego/client-locale/client'
+import type {} from '@singula-ai/alego-api-remotes/client'
+import type { CommandResult } from '@singula-ai/alego-commands/types'
+import type { ClientContext, ISessions, SessionId } from '@singula-ai/alego-client-runtime/client'
+import type { TranslateNS } from '@singula-ai/alego-client-locale/client'
 import type {
   CandidateRequest, ClientSessionContext, CommandClaim, PickOutcome, InputTriggerCandidate, InputTriggerPick,
   SubmitEnvelope, SubmitImageAttachment, SubmitOutcome,
-} from '@alego/client-ui-input-trigger/client'
+} from '@singula-ai/alego-client-ui-input-trigger/client'
 import type { CommandContribution, CommandDecoration, CommandUiContract } from './contract.ts'
 import type { CommandDescriptor } from './directory.ts'
 import { CommandDirectory } from './directory.ts'
 import { PopupSelectController } from './popup.ts'
 import type { TokenSegment } from './popup.ts'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Events {
     /**
      * This browser client completed one admitted Host command execution.

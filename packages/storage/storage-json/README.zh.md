@@ -1,4 +1,4 @@
-# @alego/storage-json
+# @singula-ai/alego-storage-json
 
 [English](README.md) | 中文
 

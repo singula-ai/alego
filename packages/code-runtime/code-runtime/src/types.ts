@@ -3,7 +3,7 @@
  * {@link ../index.ts | CodeRuntime} and what it gets back. Pure types — no
  * runtime code lives here.
  *
- * @module @alego/code-runtime/src/types
+ * @module @singula-ai/alego-code-runtime/src/types
  */
 
 /**

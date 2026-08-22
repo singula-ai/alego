@@ -1,16 +1,16 @@
 /**
  * Default model selection for an Agent without a session-specific selection.
  *
- * @module @alego/agent-default-model
+ * @module @singula-ai/alego-agent-default-model
  */
 
-import { Context, Service } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { ModelSelection } from '@alego/agent'
-import { ReasoningEffortId } from '@alego/llm'
-import { installSettingsSection, settingsNamespace } from '@alego/settings'
+import { Context, Service } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { ModelSelection } from '@singula-ai/alego-agent'
+import { ReasoningEffortId } from '@singula-ai/alego-llm'
+import { installSettingsSection, settingsNamespace } from '@singula-ai/alego-settings'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     /** Default model selection for Agents created without an explicit model. */
     agentDefaultModel: AgentDefaultModelConfig

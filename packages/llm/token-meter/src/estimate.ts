@@ -3,11 +3,11 @@
  * pure context-breakdown projection, so both surfaces price identical content
  * to identical numbers.
  *
- * @module @alego/token-meter/estimate
+ * @module @singula-ai/alego-token-meter/estimate
  */
 
-import type { ContentBlock, Message } from '@alego/llm'
-import type { EpochHeader } from '@alego/session'
+import type { ContentBlock, Message } from '@singula-ai/alego-llm'
+import type { EpochHeader } from '@singula-ai/alego-session'
 
 /** Fixed text-density estimate used until exact tokenization is needed. */
 const CHARS_PER_TOKEN = 4

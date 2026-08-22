@@ -4,11 +4,11 @@
  * collected stdio, and one terminal-process primitive. Command defaulting,
  * shell semantics, deadlines, protocol framing, terminal readiness, and
  * presentation belong to consumers. The local implementation lives in
- * `@alego/subprocess-local`.
- * @module @alego/subprocess
+ * `@singula-ai/alego-subprocess-local`.
+ * @module @singula-ai/alego-subprocess
  */
 
-import { Context, Service } from '@alego/cordis'
+import { Context, Service } from '@singula-ai/cordis'
 import { ALEGO_ENV_PREFIX } from './types.ts'
 import type { SubprocessHandle, SubprocessSpawnSpec } from './types.ts'
 import type { SubprocessTerminalHandle, SubprocessTerminalSpawnSpec } from './types.ts'
@@ -65,7 +65,7 @@ export function scrubbedParentEnv(): Record<string, string> {
   return env
 }
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     subprocess: SubprocessRuntime
   }

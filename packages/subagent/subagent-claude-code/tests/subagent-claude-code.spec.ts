@@ -10,8 +10,8 @@ import type {
   SDKResultMessage,
   SpawnOptions,
 } from '@anthropic-ai/claude-agent-sdk'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
 import * as yaml from 'js-yaml'
 import {
   afterEach,
@@ -22,17 +22,17 @@ import {
   type Mock,
   vi,
 } from 'vitest'
-import type { Agent } from '@alego/agent'
-import type { InvariantInstaller } from '@alego/invariants'
-import type { ContentBlock } from '@alego/llm'
-import SubagentRuntime from '@alego/subagent'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import SubagentRuntime from '@singula-ai/alego-subagent'
 import type {
   SubprocessHandle,
   SubprocessOutcome,
   SubprocessSpawnSpec,
-} from '@alego/subprocess'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
+} from '@singula-ai/alego-subprocess'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 import * as claudeCode from '../src/index.ts'
 import * as invariant from '../src/invariant.ts'
 import {
@@ -359,7 +359,7 @@ describe('task admission and package contracts', () => {
       '^1.29.0',
     )
     expect(manifest.dependencies).toHaveProperty('zod', '^4.4.3')
-    expect(manifest.dependencies).not.toHaveProperty('@alego/subagent-codex')
+    expect(manifest.dependencies).not.toHaveProperty('@singula-ai/alego-subagent-codex')
 
     const sdkRoot = dirname(fileURLToPath(
       import.meta.resolve('@anthropic-ai/claude-agent-sdk'),
@@ -396,7 +396,7 @@ describe('task admission and package contracts', () => {
       : []
     expect(rows).toEqual([{
       id: 'subagent-claude-code',
-      name: '@alego/subagent-claude-code',
+      name: '@singula-ai/alego-subagent-claude-code',
     }])
     expect(JSON.stringify(rows)).not.toContain('tool-subagent')
   })
@@ -704,7 +704,7 @@ describe('task admission and package contracts', () => {
     const ctx = { invariants: { register } } as unknown as Context
     await expect(invariant.apply(ctx)).resolves.toBe(dispose)
     expect(register).toHaveBeenCalledWith(
-      '@alego/subagent-claude-code',
+      '@singula-ai/alego-subagent-claude-code',
       expect.any(Function),
     )
     const install = register.mock.calls[0]![1]

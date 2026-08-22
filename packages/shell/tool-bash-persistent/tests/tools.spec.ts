@@ -1,10 +1,10 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { CallId } from '@alego/llm'
-import { Session, SessionId } from '@alego/session'
-import AgentRegistry, { Inbox } from '@alego/agent'
-import type { Agent } from '@alego/agent'
-import TerminalSessionService from '@alego/terminal'
+import { Context } from '@singula-ai/cordis'
+import { CallId } from '@singula-ai/alego-llm'
+import { Session, SessionId } from '@singula-ai/alego-session'
+import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import type { Agent } from '@singula-ai/alego-agent'
+import TerminalSessionService from '@singula-ai/alego-terminal'
 import type {
   TerminalBackend,
   TerminalBackendSession,
@@ -14,10 +14,10 @@ import type {
   TerminalSessionStatus,
   TerminalSignal,
   TerminalWaitReason,
-} from '@alego/terminal'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
-import * as ToolBashPersistent from '@alego/tool-bash-persistent'
+} from '@singula-ai/alego-terminal'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
+import * as ToolBashPersistent from '@singula-ai/alego-tool-bash-persistent'
 
 const contexts: Context[] = []
 let callNumber = 0

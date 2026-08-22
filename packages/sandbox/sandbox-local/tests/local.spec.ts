@@ -11,14 +11,14 @@ import { mkdtempSync, realpathSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { LAUNCHER_FAILURE_EXIT } from '@alego/node-addon-landlock-run'
-import { SANDBOX_UNAVAILABLE, SandboxUnavailableError } from '@alego/sandbox'
-import type { SandboxPolicy } from '@alego/sandbox'
+import { Context } from '@singula-ai/cordis'
+import { LAUNCHER_FAILURE_EXIT } from '@singula-ai/node-addon-landlock-run'
+import { SANDBOX_UNAVAILABLE, SandboxUnavailableError } from '@singula-ai/alego-sandbox'
+import type { SandboxPolicy } from '@singula-ai/alego-sandbox'
 import {
   LocalSandboxProvider,
-} from '@alego/sandbox-local'
-import type { Config } from '@alego/sandbox-local'
+} from '@singula-ai/alego-sandbox-local'
+import type { Config } from '@singula-ai/alego-sandbox-local'
 import { bwrapProfileArgs, landlockProfileArgs, seatbeltProfileArgs } from '../src/profiles.ts'
 
 const RO: SandboxPolicy = { mode: 'read-only', workspaceRoot: '/ws' }
@@ -220,7 +220,7 @@ describe('the platform chains', () => {
   })
 
   // The win32 chain's argv contract, denial dialect, and runner-failure rules
-  // live in @alego/sandbox-windows-acl/tests/provider-chain.spec.ts
+  // live in @singula-ai/alego-sandbox-windows-acl/tests/provider-chain.spec.ts
   // (platform-independent assertions that run in every CI lane, including
   // Windows where this package's POSIX-only suites are excluded).
 

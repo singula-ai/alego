@@ -1,5 +1,5 @@
-import { composeError, Context } from '@alego/cordis'
-import { isNonNullable, type Dict } from '@alego/cosmokit'
+import { composeError, Context } from '@singula-ai/cordis'
+import { isNonNullable, type Dict } from '@singula-ai/cosmokit'
 import { Entry, type EntryOptions } from './entry.ts'
 import { EntryGroup } from './group.ts'
 

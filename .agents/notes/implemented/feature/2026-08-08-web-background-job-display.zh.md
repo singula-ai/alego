@@ -29,7 +29,7 @@ mux 流中的一帧：
 `JobView` 是浏览器安全类型，由载体在 [`packages/host/apiproxy/src/api/jobs.ts`](../../../../packages/host/apiproxy/src/api/jobs.ts) 里拥有，与其他领域契约并列，线路 schema 就在旁边的 `jobs.schema.ts`：
 
 ```ts
-import type { JobId } from '@alego/jobs/brand'
+import type { JobId } from '@singula-ai/alego-jobs/brand'
 
 export interface JobView {
   id: JobId
@@ -42,7 +42,7 @@ export interface JobView {
 }
 ```
 
-`JobId` 取自不依赖 cordis 的 [`@alego/jobs/brand`](../../../../packages/jobs/jobs/src/brand.ts) 叶子——与 `api/subagents.ts` 已经在用的 `@alego/llm/brand` 导入是同一种安排，因为 `alego-jobs` 根出口会牵到 `alego-agent`，即便只作类型也无法被客户端程序触及。和本仓库其他每一个非根子路径一样，它带有显式的 `tsconfig.base.json` `paths` 条目；没有这一条，Typert 分析器会把该 specifier 解析到 `lib/types/` 并判定该引用未被导出。
+`JobId` 取自不依赖 cordis 的 [`@singula-ai/alego-jobs/brand`](../../../../packages/jobs/jobs/src/brand.ts) 叶子——与 `api/subagents.ts` 已经在用的 `@singula-ai/alego-llm/brand` 导入是同一种安排，因为 `alego-jobs` 根出口会牵到 `alego-agent`，即便只作类型也无法被客户端程序触及。和本仓库其他每一个非根子路径一样，它带有显式的 `tsconfig.base.json` `paths` 条目；没有这一条，Typert 分析器会把该 specifier 解析到 `lib/types/` 并判定该引用未被导出。
 
 线路上的 `kind` 是 `string` 而非 `JobKind`。kind 映射由生产者插件按声明合并扩展，客户端构建无法枚举这个闭集；遇到无法识别的 kind，呈现层走一条有文档的默认分支。
 
@@ -87,7 +87,7 @@ abstract onJobsChanged(listener: JobsChangedListener): () => void
 
 ### header 入口
 
-[`@alego/client-ui-jobs`](../../../../packages/client/ui-jobs/README.zh.md) 在 `conversation.session.header.actions` 注册一个条目，排在 subagent 目录之后。呈现契约归它自己的 README；值得记在这里的决策是：会话没有任务时控件根本不渲染；活跃角标为零时省略，让只剩历史的会话保留一个安静的入口；终态行保持可见，因为失败任务的 `detail` 是其失败唯一可读之处。
+[`@singula-ai/alego-client-ui-jobs`](../../../../packages/client/ui-jobs/README.zh.md) 在 `conversation.session.header.actions` 注册一个条目，排在 subagent 目录之后。呈现契约归它自己的 README；值得记在这里的决策是：会话没有任务时控件根本不渲染；活跃角标为零时省略，让只剩历史的会话保留一个安静的入口；终态行保持可见，因为失败任务的 `detail` 是其失败唯一可读之处。
 
 因此一个运行中的一次性后台 subagent 会同时出现在那里和 subagent 目录里。两者回答不同的问题——目录负责进入子会话的 transcript，而这个列表是中断能力唯一可能附着的句柄——在这里屏蔽 `kind: 'subagent'` 会让中断那一期恰好对这批任务没有入口。
 
@@ -133,4 +133,4 @@ abstract onJobsChanged(listener: JobsChangedListener): () => void
 
 **一个运行中的 subagent 有两个入口。** 这是刻意接受的，且被限制在一次性后台委派这一种情况。如果实际用起来读着像噪声，修法是呈现层的——可以让目录行引用那个任务，而不是让任务列表隐藏这个 kind。
 
-**新增非根子路径必须补 `paths` 条目。** `@alego/jobs/brand` 得先登记进 `tsconfig.base.json`，Typert 分析器才会接受该引用。它的故障表现是一条来自远离改动处的生成器的、令人困惑的「not exported by」错误，所以这个条目是新增子路径的组成部分，而不是优化。
+**新增非根子路径必须补 `paths` 条目。** `@singula-ai/alego-jobs/brand` 得先登记进 `tsconfig.base.json`，Typert 分析器才会接受该引用。它的故障表现是一条来自远离改动处的生成器的、令人困惑的「not exported by」错误，所以这个条目是新增子路径的组成部分，而不是优化。

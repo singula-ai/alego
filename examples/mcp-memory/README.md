@@ -2,7 +2,7 @@
 
 English | [中文](README.zh.md)
 
-These three **default-off reference configurations** connect one memory system to ALEGO through [`@alego/mcp-client`](../../packages/mcp/mcp-client/README.md). Pick one, or copy the same generic MCP row for another server.
+These three **default-off reference configurations** connect one memory system to ALEGO through [`@singula-ai/alego-mcp-client`](../../packages/mcp/mcp-client/README.md). Pick one, or copy the same generic MCP row for another server.
 
 These third-party configurations are provided as interoperability examples only. Their inclusion does not imply endorsement, recommendation, partnership, or ongoing support by DeepSeek.
 
@@ -88,7 +88,7 @@ Copy the same entry fields and use a unique `id` and `serverName`:
 ```yaml
 - insert:
     - id: memory-my-server
-      name: '@alego/mcp-client'
+      name: '@singula-ai/alego-mcp-client'
       config:
         serverName: my-memory
         transport: stdio

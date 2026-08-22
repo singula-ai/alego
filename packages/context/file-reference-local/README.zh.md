@@ -1,4 +1,4 @@
-# `@alego/file-reference-local`
+# `@singula-ai/alego-file-reference-local`
 
 [English](README.md) | 中文
 

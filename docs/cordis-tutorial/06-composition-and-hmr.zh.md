@@ -22,24 +22,24 @@ Cordis 配置项除了 `name` 和 `config`，还接受其他元数据：
 
 ## 热模块替换
 
-卸载会释放 effect（[第 2 章](02-lifecycle-and-effects.zh.md)），加载则遵循依赖关系（[第 3 章](03-services.zh.md)），因此 HMR 可以先卸载、再加载，以替换正在运行的插件。`@alego/cordis-plugin-hmr` 插件会监视文件，并在保存时执行这一过程。
+卸载会释放 effect（[第 2 章](02-lifecycle-and-effects.zh.md)），加载则遵循依赖关系（[第 3 章](03-services.zh.md)），因此 HMR 可以先卸载、再加载，以替换正在运行的插件。`@singula-ai/cordis-plugin-hmr` 插件会监视文件，并在保存时执行这一过程。
 
 在 `tmp/cordis-tutorial` 中编写 `cordis.yml`：
 
 ```yaml
 - id: logger
-  name: '@alego/cordis-plugin-logger-console'
+  name: '@singula-ai/cordis-plugin-logger-console'
 - id: timer
-  name: '@alego/cordis-plugin-timer'
+  name: '@singula-ai/cordis-plugin-timer'
 - id: hmr
-  name: '@alego/cordis-plugin-hmr'
+  name: '@singula-ai/cordis-plugin-hmr'
   config:
     root: ['.']
 - id: hello
   name: './hello.ts'
 ```
 
-列表中增加了两个辅助插件：HMR 通过 Cordis logger 服务记录日志，因此没有控制台导出器时看不到其消息；它还会 `inject` `timer` 服务来实现去抖，如果没有 `@alego/cordis-plugin-timer`，它就会永远停在 PENDING，而且不发出任何提示。下一节就讨论这种静默状态。
+列表中增加了两个辅助插件：HMR 通过 Cordis logger 服务记录日志，因此没有控制台导出器时看不到其消息；它还会 `inject` `timer` 服务来实现去抖，如果没有 `@singula-ai/cordis-plugin-timer`，它就会永远停在 PENDING，而且不发出任何提示。下一节就讨论这种静默状态。
 
 HMR 通过 Loader 的原生辅助工具读取 Node 的 loader 内部结构。请在 tsx 下运行 Cordis：
 
@@ -65,7 +65,7 @@ hello from my EDITED plugin
 你可以直接查看这些状态。每个上下文都能枚举插件注册表；创建 `diagnose.ts`：
 
 ```ts
-import { FiberState, type Context } from '@alego/cordis'
+import { FiberState, type Context } from '@singula-ai/cordis'
 
 export const name = 'diagnose'
 
@@ -85,7 +85,7 @@ export function apply(ctx: Context) {
 再创建一个依赖无法满足的插件 `needs-timer.ts`：
 
 ```ts
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 
 export const name = 'needs-timer'
 export const inject = ['timer']
@@ -106,7 +106,7 @@ export function apply(ctx: Context) {
 needs-timer is PENDING — a required service is missing
 ```
 
-`inject: ['timer']` 没有提供方。向列表添加 `- name: '@alego/cordis-plugin-timer'` 后，插件就会加载。如果插件既不执行任何操作，也不报告任何内容，请检查其 fiber 状态。不加 PENDING 过滤条件进行迭代时，还会看到 loader 自身的插件（Loader、Include）处于 ACTIVE，因为配置文件本身也是通过插件挂载的。
+`inject: ['timer']` 没有提供方。向列表添加 `- name: '@singula-ai/cordis-plugin-timer'` 后，插件就会加载。如果插件既不执行任何操作，也不报告任何内容，请检查其 fiber 状态。不加 PENDING 过滤条件进行迭代时，还会看到 loader 自身的插件（Loader、Include）处于 ACTIVE，因为配置文件本身也是通过插件挂载的。
 
 下一章：[进入 harness](07-into-the-harness.zh.md)：把相同模式用于真实的 harness 服务。
 

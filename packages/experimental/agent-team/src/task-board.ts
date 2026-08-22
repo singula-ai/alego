@@ -1,6 +1,6 @@
 /** Shared Team task DAG commands and runtime-enriched views. */
 
-import type { Agent } from '@alego/agent'
+import type { Agent } from '@singula-ai/alego-agent'
 import type { TeamMembership } from './roster.ts'
 import { TeamError } from './error.ts'
 import type { TeamFoldState } from './fold.ts'

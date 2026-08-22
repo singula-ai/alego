@@ -1,18 +1,18 @@
 /**
  * Persistent shell PTY backend over the subprocess terminal primitive, shared
  * sandbox policy, bounded output, and provider-owned session cleanup.
- * @module @alego/terminal-bash
+ * @module @singula-ai/alego-terminal-bash
  */
 
-import { Context } from '@alego/cordis'
-import type { Agent } from '@alego/agent'
-import type { Session, SessionEvent } from '@alego/session'
-import { TerminalBackendCleanupError } from '@alego/terminal'
-import type { TerminalBackend, TerminalBackendSpawnSpec } from '@alego/terminal'
-import type { SubprocessTerminalHandle, SubprocessTerminalSpawnSpec } from '@alego/subprocess'
-import type { SandboxExecutionPolicy } from '@alego/sandbox'
-import { effectiveSandboxMode } from '@alego/sandbox-policy'
-import { ENCODING_PREAMBLE } from '@alego/pwsh-local'
+import { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
+import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import { TerminalBackendCleanupError } from '@singula-ai/alego-terminal'
+import type { TerminalBackend, TerminalBackendSpawnSpec } from '@singula-ai/alego-terminal'
+import type { SubprocessTerminalHandle, SubprocessTerminalSpawnSpec } from '@singula-ai/alego-subprocess'
+import type { SandboxExecutionPolicy } from '@singula-ai/alego-sandbox'
+import { effectiveSandboxMode } from '@singula-ai/alego-sandbox-policy'
+import { ENCODING_PREAMBLE } from '@singula-ai/alego-pwsh-local'
 import { type Config, type ResolvedConfig, resolveConfig, type ShellDialect, validateConfig } from './config.ts'
 import { LocalPtySession } from './session.ts'
 import { CONTROLLED_PROMPT } from './sanitize.ts'

@@ -1,14 +1,14 @@
 # Replay counterpart to advanced.cordis.yml; only the live model is replaced.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         disabled: true
       - id: acp-agent
-        name: '@alego/acp-demo'
+        name: '@singula-ai/alego-acp-demo'
         config:
           provider: deepseek-official
           model: deepseek-v4-flash
@@ -24,13 +24,13 @@
             Verify your work by running the code or tests. Keep answers brief and factual.
       - insert:
           - id: code-runtime
-            name: '@alego/code-runtime-worker-thread'
+            name: '@singula-ai/alego-code-runtime-worker-thread'
           - id: cordis-host-runner
-            name: '@alego/cordis-host-runner'
+            name: '@singula-ai/alego-cordis-host-runner'
           - id: tool-cordis
-            name: '@alego/tool-cordis'
+            name: '@singula-ai/alego-tool-cordis'
           - id: llm-replay
-            name: '@alego/llm-replay'
+            name: '@singula-ai/alego-llm-replay'
             config:
               providers:
                 - id: deepseek-official

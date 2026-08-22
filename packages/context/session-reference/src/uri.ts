@@ -1,6 +1,6 @@
 /** Canonical session URI and inline mention encoding. */
 
-import { SessionId, type SessionId as SessionIdType } from '@alego/session'
+import { SessionId, type SessionId as SessionIdType } from '@singula-ai/alego-session'
 import { SessionReferenceError } from './config.ts'
 import type { SessionReferenceInput } from './types.ts'
 

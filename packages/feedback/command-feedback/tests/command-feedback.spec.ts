@@ -1,19 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import AgentRegistry, { Inbox } from '@alego/agent'
-import type { Agent, AgentStatus } from '@alego/agent'
-import CommandRuntime from '@alego/commands'
-import SessionStore, { foldSurface, Session, SessionId } from '@alego/session'
-import { SessionTelemetryBackend, type SessionTelemetrySharingStatus } from '@alego/session-telemetry'
-import * as commandFeedback from '@alego/command-feedback'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import type { Agent, AgentStatus } from '@singula-ai/alego-agent'
+import CommandRuntime from '@singula-ai/alego-commands'
+import SessionStore, { foldSurface, Session, SessionId } from '@singula-ai/alego-session'
+import { SessionTelemetryBackend, type SessionTelemetrySharingStatus } from '@singula-ai/alego-session-telemetry'
+import * as commandFeedback from '@singula-ai/alego-command-feedback'
 
 const { USER_ID, getOrCreateAnonymousUserId } = vi.hoisted(() => {
   const USER_ID = '01234567-89ab-4cde-8f01-23456789abcd'
   return { USER_ID, getOrCreateAnonymousUserId: vi.fn(() => USER_ID) }
 })
 
-vi.mock('@alego/anonymous-user-id', () => ({
+vi.mock('@singula-ai/alego-anonymous-user-id', () => ({
   getOrCreateAnonymousUserId,
 }))
 
@@ -99,7 +99,7 @@ function feedbackTexts(session: Session): string[] {
     .map(event => event.data.text)
 }
 
-describe('@alego/command-feedback registration', () => {
+describe('@singula-ai/alego-command-feedback registration', () => {
   it('registers one global command with Loader-safe exports and disposes it', async () => {
     const test = await harness()
     expect(commandFeedback.name).toBe('command-feedback')

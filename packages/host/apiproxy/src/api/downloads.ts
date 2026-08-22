@@ -5,7 +5,7 @@
  * `IApiClient` never exposes them.
  */
 
-import type { SessionId } from '@alego/session/types'
+import type { SessionId } from '@singula-ai/alego-session/types'
 
 /** Host-only download surfaces (no wire envelope; absent from IApiClient). */
 export interface DownloadsApi {

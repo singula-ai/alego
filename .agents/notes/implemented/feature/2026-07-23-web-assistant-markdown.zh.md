@@ -10,7 +10,7 @@ Web 对话通过会话事件、历史回放与流式累积保留 assistant Markd
 
 ## 决策
 
-`@alego/client-ui-primitives` 导出 `MarkdownText`，用作不受信任的 assistant 文本渲染器；`ui-conversation` 仅为 assistant `text` 块选择该渲染器。已完成的历史消息、流式输出尾部与被中断的部分输出已经共用 `AssistantMarkdown`，因此无需更改事件或快照，它们便会采用同一渲染器。用户消息与 steering 消息继续使用 `MessageText`，并保持按字面渲染。
+`@singula-ai/alego-client-ui-primitives` 导出 `MarkdownText`，用作不受信任的 assistant 文本渲染器；`ui-conversation` 仅为 assistant `text` 块选择该渲染器。已完成的历史消息、流式输出尾部与被中断的部分输出已经共用 `AssistantMarkdown`，因此无需更改事件或快照，它们便会采用同一渲染器。用户消息与 steering 消息继续使用 `MessageText`，并保持按字面渲染。
 
 `MarkdownText` 以 `mdast-util-from-markdown` 加 GFM micromark 扩展解析，并经包内自有渲染器渲染 mdast 树，轮次流式输出期间增量解析（[增量 AST 渲染器 Note](../architecture/2026-08-06-web-markdown-incremental-ast-renderer.zh.md) 拥有该机制及其 DOM 一致性约定）。它覆盖 CommonMark 块，以及 GFM 表格、任务列表、删除线与自动链接，且不解析原始 HTML。一个 micromark attention 扩展复用 CommonMark resolver，同时允许至少两个星号组成的连续序列在 Unicode 标点后闭合，前提是其后紧邻 CJK 文本。这一例外涵盖流式输出期间与完成后无空格 CJK 文本中以标点结尾的粗体；单星号强调、紧邻非 CJK 文本的情况、已转义源文本、代码与数学公式仍沿用上游解析行为。围栏代码经共享的 `CodeBlock` 路由；该组件用客户端的 shiki 单例（`--shiki-*` token）高亮已注册语法，否则回退为纯等宽文本。轮次流式输出期间，围栏停留在纯文本分支，以免每收到一个分片就对增长中的围栏重新分词。
 

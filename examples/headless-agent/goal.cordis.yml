@@ -1,11 +1,11 @@
 # Add the persisted goal domain and its model-facing tools to the real one-shot app.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ./cordis.yml
     patches:
       - insert:
           - id: goal
-            name: '@alego/goal'
+            name: '@singula-ai/alego-goal'
           - id: tool-goal
-            name: '@alego/tool-goal'
+            name: '@singula-ai/alego-tool-goal'

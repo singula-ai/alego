@@ -8,8 +8,8 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { SessionId } from '@alego/session'
-import type { SessionEvent, SessionHeader } from '@alego/session'
+import { SessionId } from '@singula-ai/alego-session'
+import type { SessionEvent, SessionHeader } from '@singula-ai/alego-session'
 import { resolveSessionPreset } from '../src/session.ts'
 
 /** A header carrying the creation-time preset, if any. */

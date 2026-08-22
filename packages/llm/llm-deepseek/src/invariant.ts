@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/llm-deepseek`.
- * @module @alego/llm-deepseek/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-llm-deepseek`.
+ * @module @singula-ai/alego-llm-deepseek/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/llm-deepseek'
+const PACKAGE_NAME = '@singula-ai/alego-llm-deepseek'
 
 /** Cordis companion plugin name. */
 export const name = 'llm-deepseek-invariant'

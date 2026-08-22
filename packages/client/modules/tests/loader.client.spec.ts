@@ -7,7 +7,7 @@
  * default transport hook, and the loud failure modes (duplicate
  * registration, cycles, table misses, double boot).
  */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   apply, createClientModuleSystem, parseBootManifest,
@@ -15,7 +15,7 @@ import {
   type ClientModuleLoader, type ClientModuleLoaderTarget, type AlegoWindow,
 } from '../src/client/index.ts'
 
-const MODULES_ID = '@alego/client-modules'
+const MODULES_ID = '@singula-ai/alego-client-modules'
 const win = globalThis as AlegoWindow
 const bootstrapExports = { apply, createClientModuleSystem }
 

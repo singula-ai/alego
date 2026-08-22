@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/jobs-local`.
- * @module @alego/jobs-local/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-jobs-local`.
+ * @module @singula-ai/alego-jobs-local/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/jobs-local'
+const PACKAGE_NAME = '@singula-ai/alego-jobs-local'
 
 /** Cordis companion plugin name. */
 export const name = 'jobs-local-invariant'
@@ -15,7 +15,7 @@ export const name = 'jobs-local-invariant'
 export const inject = ['invariants']
 
 /**
- * No runtime invariant: `@alego/jobs/invariant` owns per-snapshot identity, status,
+ * No runtime invariant: `@singula-ai/alego-jobs/invariant` owns per-snapshot identity, status,
  * timestamp, and owner checks. This provider's admission decision uses private configuration and
  * must fail before a backend starter runs; `LocalJobRegistry.start()` enforces it synchronously
  * for current producers. Repeating an aggregate after publication would expose private

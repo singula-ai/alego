@@ -1,5 +1,5 @@
 {
-  "name": "@alego/tool-fs",
+  "name": "@singula-ai/alego-tool-fs",
   "description": "Model-facing filesystem tools (read, write, edit) over the Alego filesystem seam (ctx.fs)",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -33,38 +33,38 @@
   "license": "MIT",
   "dependencies": {
     "diff": "^9.0.0",
-    "@alego/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:^"
   },
   "peerDependencies": {
-    "@alego/attachment": "workspace:^",
-    "@alego/fs": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/sandbox": "workspace:^",
-    "@alego/sandbox-policy": "workspace:^",
-    "@alego/session": "workspace:^",
-    "@alego/system-prompt": "workspace:^",
-    "@alego/tools": "workspace:^",
-    "@alego/user-approval": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-attachment": "workspace:^",
+    "@singula-ai/alego-fs": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-sandbox": "workspace:^",
+    "@singula-ai/alego-sandbox-policy": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-system-prompt": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/alego-user-approval": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
-    "@alego/agent": "workspace:^",
-    "@alego/agent-loop": "workspace:^",
-    "@alego/agent-loop-testkit": "workspace:^",
-    "@alego/attachment": "workspace:^",
-    "@alego/fs": "workspace:^",
-    "@alego/fs-local": "workspace:^",
-    "@alego/fs-observation-policy": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/llm-deepseek": "workspace:^",
-    "@alego/sandbox": "workspace:^",
-    "@alego/sandbox-policy": "workspace:^",
-    "@alego/session": "workspace:^",
-    "@alego/system-prompt": "workspace:^",
-    "@alego/tools": "workspace:^",
-    "@alego/user-approval": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-agent-loop": "workspace:^",
+    "@singula-ai/alego-agent-loop-testkit": "workspace:^",
+    "@singula-ai/alego-attachment": "workspace:^",
+    "@singula-ai/alego-fs": "workspace:^",
+    "@singula-ai/alego-fs-local": "workspace:^",
+    "@singula-ai/alego-fs-observation-policy": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-llm-deepseek": "workspace:^",
+    "@singula-ai/alego-sandbox": "workspace:^",
+    "@singula-ai/alego-sandbox-policy": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-system-prompt": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/alego-user-approval": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   }
 }

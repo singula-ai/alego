@@ -2,12 +2,12 @@
 # local provider endpoint is supplied by the snapshot test; the real attachment
 # store and ACP bridge carry two uploaded images into one model request.
 - id: base
-  name: '@alego/cordis-plugin-include'
+  name: '@singula-ai/cordis-plugin-include'
   config:
     path: ../../cordis.yml
     patches:
       - id: llm-deepseek
-        name: '@alego/llm-deepseek'
+        name: '@singula-ai/alego-llm-deepseek'
         config:
           apiKeyEnv: ALEGO_SNAPSHOT_API_KEY
           baseURL: !!js process.env.ALEGO_SNAPSHOT_BASE_URL
@@ -20,7 +20,7 @@
               maxTokens: 1024
               inputModalities: [text, image]
       - id: acp-agent
-        name: '@alego/acp-demo'
+        name: '@singula-ai/alego-acp-demo'
         config:
           provider: deepseek-official
           model: deepseek-v4-flash-vision-exp
@@ -34,4 +34,4 @@
             Keep answers brief and factual.
       - insert:
           - id: attachment-local
-            name: '@alego/attachment-local'
+            name: '@singula-ai/alego-attachment-local'

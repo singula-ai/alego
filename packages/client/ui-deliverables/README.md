@@ -1,4 +1,4 @@
-# @alego/client-ui-deliverables
+# @singula-ai/alego-client-ui-deliverables
 
 English | [中文](README.zh.md)
 

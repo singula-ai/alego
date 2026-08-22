@@ -4,12 +4,12 @@
  * NOT queued here — per the backend contract, write ordering belongs to the
  * caller (the domain layer's write chain); this unit only guarantees that
  * each single call publishes a complete, durable file.
- * @module @alego/storage-json/src/unit
+ * @module @singula-ai/alego-storage-json/src/unit
  */
 
 import { readFile } from 'node:fs/promises'
-import { StorageError } from '@alego/storage'
-import type { KvUnit, KvUnitDescriptor } from '@alego/storage'
+import { StorageError } from '@singula-ai/alego-storage'
+import type { KvUnit, KvUnitDescriptor } from '@singula-ai/alego-storage'
 import { writeAtomic } from './atomic.ts'
 import { parse, serialize } from './format.ts'
 import type { UnitState } from './format.ts'

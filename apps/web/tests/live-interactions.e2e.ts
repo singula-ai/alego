@@ -17,10 +17,10 @@ import { join } from 'node:path'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterEach, describe, expect, it, onTestFailed } from 'vitest'
-import type { RetryPolicyConfig } from '@alego/llm'
-import { deriveReplayScript, parseSessionLog } from '@alego/llm-replay'
-import type { ReplayEntry, ReplayOverrideDoc } from '@alego/llm-replay'
-import type { SessionEvent } from '@alego/session'
+import type { RetryPolicyConfig } from '@singula-ai/alego-llm'
+import { deriveReplayScript, parseSessionLog } from '@singula-ai/alego-llm-replay'
+import type { ReplayEntry, ReplayOverrideDoc } from '@singula-ai/alego-llm-replay'
+import type { SessionEvent } from '@singula-ai/alego-session'
 import {
   assertFixtureInventory, captureStableAria, compareOrRefreshGolden, fixtureUserPrompts,
   launchWebScaffold, recordFixture, watchConsole, webSnapshotMode, type WebScaffold,

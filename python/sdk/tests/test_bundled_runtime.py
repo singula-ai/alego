@@ -21,25 +21,25 @@ _MINIMAL_CONFIG = _REPO_ROOT / "examples" / "jsonrpc-agent" / "minimal.cordis.ym
 # The config must include the JSON-RPC serving plugin.
 _CORDIS_YML = """\
 - id: sdk-jsonrpc-server
-  name: '@alego/sdk-jsonrpc-server'
+  name: '@singula-ai/alego-sdk-jsonrpc-server'
 - id: agent-core
-  name: '@alego/agent-spine-demo'
+  name: '@singula-ai/alego-agent-spine-demo'
   config:
     workspaceContext: false
 - id: sessions
-  name: '@alego/session-persistence-jsonl'
+  name: '@singula-ai/alego-session-persistence-jsonl'
   config:
     root: './sessions'
 - id: session-checkpoints
-  name: '@alego/session-checkpoint-policy'
+  name: '@singula-ai/alego-session-checkpoint-policy'
 - id: subprocess
-  name: '@alego/subprocess-local'
+  name: '@singula-ai/alego-subprocess-local'
 - id: bash
-  name: '@alego/bash-local'
+  name: '@singula-ai/alego-bash-local'
   config:
     cwd: '.'
 - id: todo
-  name: '@alego/tool-todo'
+  name: '@singula-ai/alego-tool-todo'
   config:
     allowParallelInProgress: true
 """
@@ -110,7 +110,7 @@ def test_python_sdk_boots_minimal_jsonrpc_config(tmp_path: Path, mode: str) -> N
 def test_bundled_runtime_surfaces_unbundled_plugin_failure(tmp_path: Path, mode: str) -> None:
     launch_args = _launch_args(mode)
     (tmp_path / "cordis.yml").write_text(
-        "- id: missing\n  name: '@alego/does-not-exist'\n"
+        "- id: missing\n  name: '@singula-ai/alego-does-not-exist'\n"
     )
 
     client = _client(tmp_path, launch_args)
@@ -121,7 +121,7 @@ def test_bundled_runtime_surfaces_unbundled_plugin_failure(tmp_path: Path, mode:
     finally:
         client.close()
 
-    assert "@alego/does-not-exist" in str(excinfo.value)
+    assert "@singula-ai/alego-does-not-exist" in str(excinfo.value)
 
 
 @pytest.mark.parametrize("mode", _MODES)

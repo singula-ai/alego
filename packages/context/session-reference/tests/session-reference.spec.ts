@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
-import { agentEvents, type Agent } from '@alego/agent'
-import { CompactionId, compactCheckpointSource } from '@alego/compaction'
-import { createUserMessage, CallId , createMessage, createToolResultMessage } from '@alego/llm'
-import SessionStore, { Session, SessionId } from '@alego/session'
-import SessionQueryEngine from '@alego/session-query'
+import { Context } from '@singula-ai/cordis'
+import { agentEvents, type Agent } from '@singula-ai/alego-agent'
+import { CompactionId, compactCheckpointSource } from '@singula-ai/alego-compaction'
+import { createUserMessage, CallId , createMessage, createToolResultMessage } from '@singula-ai/alego-llm'
+import SessionStore, { Session, SessionId } from '@singula-ai/alego-session'
+import SessionQueryEngine from '@singula-ai/alego-session-query'
 import SessionReferenceResolver, {
   decodeSessionReferenceUri,
   encodeSessionReferenceUri,
@@ -12,7 +12,7 @@ import SessionReferenceResolver, {
   parseSessionReferenceText,
   type Config,
   type SessionReferenceErrorCode,
-} from '@alego/session-reference'
+} from '@singula-ai/alego-session-reference'
 import { stringifyTagSafeJson } from '../src/serialization.ts'
 
 class TestSessionQueryEngine extends SessionQueryEngine {

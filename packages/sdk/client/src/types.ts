@@ -2,11 +2,11 @@
  * Types for the TypeScript SDK client: launch options, notification shapes,
  * and owned activity results.
  *
- * @module @alego/sdk-client/types
+ * @module @singula-ai/alego-sdk-client/types
  */
 
-import type { ContentBlock } from '@alego/llm'
-import type { SessionEvent } from '@alego/session'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { SessionEvent } from '@singula-ai/alego-session'
 
 /** One server-to-client notification as received off the wire. */
 export interface HarnessNotification {
@@ -30,7 +30,7 @@ export interface HarnessClientOptions {
   /**
    * The complete child environment. `undefined` inherits the parent env
    * verbatim; passing an object replaces it entirely, so callers own
-   * credential policy (see `scrubbedParentEnv` in `@alego/subprocess`
+   * credential policy (see `scrubbedParentEnv` in `@singula-ai/alego-subprocess`
    * for the shared scrub-then-merge base).
    */
   env?: NodeJS.ProcessEnv

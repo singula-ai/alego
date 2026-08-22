@@ -50,5 +50,5 @@ export function isCordisGroupEntry(value: unknown): value is Record<string, unkn
     && value !== null
     && Array.isArray((value as Record<string, unknown>).config)
     && ((value as Record<string, unknown>).group === true
-      || (value as Record<string, unknown>).name === '@alego/cordis-plugin-group')
+      || (value as Record<string, unknown>).name === '@singula-ai/cordis-plugin-group')
 }

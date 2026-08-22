@@ -1,13 +1,13 @@
 /**
- * Package-owned invariant companion for `@alego/repeat-tool-reminder`.
- * @module @alego/repeat-tool-reminder/invariant
+ * Package-owned invariant companion for `@singula-ai/alego-repeat-tool-reminder`.
+ * @module @singula-ai/alego-repeat-tool-reminder/invariant
  */
 
 /* jscpd:ignore-start */
-import type { Context } from '@alego/cordis'
-import type { InvariantInstaller } from '@alego/invariants'
+import type { Context } from '@singula-ai/cordis'
+import type { InvariantInstaller } from '@singula-ai/alego-invariants'
 
-const PACKAGE_NAME = '@alego/repeat-tool-reminder'
+const PACKAGE_NAME = '@singula-ai/alego-repeat-tool-reminder'
 
 /** Cordis companion plugin name. */
 export const name = 'repeat-tool-reminder-invariant'

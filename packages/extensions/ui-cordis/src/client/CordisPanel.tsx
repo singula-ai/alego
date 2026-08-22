@@ -5,11 +5,11 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import {
   IconCheckOutline16, IconCloseOutline16, IconCordisPluginOutline14, IconPlayOutline16,
   IconStopFill16, IconTrashOutline16, Tooltip, useDismissOnOutsidePointer,
-} from '@alego/client-ui-primitives'
-import type { InjectFace, PropsLocale, PropsRuntime } from '@alego/client-ui-slots'
-import type {} from '@alego/client-ui-sidebar/client'
-import type { CordisRunActivity } from '@alego/cordis-client-runner/client'
-import type { SessionId } from '@alego/client-connection/client'
+} from '@singula-ai/alego-client-ui-primitives'
+import type { InjectFace, PropsLocale, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
+import type {} from '@singula-ai/alego-client-ui-sidebar/client'
+import type { CordisRunActivity } from '@singula-ai/alego-cordis-client-runner/client'
+import type { SessionId } from '@singula-ai/alego-client-connection/client'
 import type { CordisInventoryRow } from './dynamic-port.ts'
 import type { CordisPanelFace } from './slots.ts'
 import type { CordisKey } from './locales.ts'

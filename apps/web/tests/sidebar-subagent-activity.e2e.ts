@@ -4,12 +4,12 @@ import { fileURLToPath } from 'node:url'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { AgentHandle } from '@alego/agent'
-import { createUserMessage, LlmAdapter } from '@alego/llm'
-import type { GenerateOptions, StreamChunk } from '@alego/llm'
-import { SessionId, type SessionId as SessionIdValue } from '@alego/session'
-import type {} from '@alego/subagent'
-import type {} from '@alego/workspace'
+import type { AgentHandle } from '@singula-ai/alego-agent'
+import { createUserMessage, LlmAdapter } from '@singula-ai/alego-llm'
+import type { GenerateOptions, StreamChunk } from '@singula-ai/alego-llm'
+import { SessionId, type SessionId as SessionIdValue } from '@singula-ai/alego-session'
+import type {} from '@singula-ai/alego-subagent'
+import type {} from '@singula-ai/alego-workspace'
 import {
   assertFixtureInventory,
   captureStableAria,

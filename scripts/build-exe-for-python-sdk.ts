@@ -18,7 +18,7 @@ const root = resolve(import.meta.dirname, '..')
 /** The closure manifest whose dependencies define the executable. */
 const DEPLOY_ROOT_PACKAGE = 'alego-jsonrpc-agent-pkg'
 /** The closed-runtime app entry inside the deployed closure. */
-const ENTRY_BIN = 'node_modules/@alego/sdk-jsonrpc-demo/lib/packaged-bin.js'
+const ENTRY_BIN = 'node_modules/@singula-ai/alego-sdk-jsonrpc-demo/lib/packaged-bin.js'
 const OUTPUT_BASENAME = 'alego-jsonrpc-agent-pkg'
 /** Default Node major; SEA mode requires at least Node 22. */
 const DEFAULT_NODE_RANGE = 'node24'

@@ -1,10 +1,10 @@
 /** Request-header canonicalization, equality, snapshot folding, and format rejection. */
 
 import { describe, expect, it } from 'vitest'
-import { Session, SessionId, canonicalHeader, foldRequestHeader, headerEquals } from '@alego/session'
-import type { EpochHeader, SessionEvent } from '@alego/session'
-import { createUserMessage, ReasoningEffortId } from '@alego/llm'
-import type { ToolSchema } from '@alego/llm'
+import { Session, SessionId, canonicalHeader, foldRequestHeader, headerEquals } from '@singula-ai/alego-session'
+import type { EpochHeader, SessionEvent } from '@singula-ai/alego-session'
+import { createUserMessage, ReasoningEffortId } from '@singula-ai/alego-llm'
+import type { ToolSchema } from '@singula-ai/alego-llm'
 
 const CONFIG = { provider: 'mock', model: 'm' }
 

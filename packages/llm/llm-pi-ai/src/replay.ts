@@ -8,8 +8,8 @@
  * @module alego-llm-pi-ai/replay
  */
 
-import { LlmError } from '@alego/llm'
-import type { Message, ModelMessageSource, ReplayEnvelope } from '@alego/llm'
+import { LlmError } from '@singula-ai/alego-llm'
+import type { Message, ModelMessageSource, ReplayEnvelope } from '@singula-ai/alego-llm'
 import type { Api, AssistantMessage, Usage as PiUsage } from '@earendil-works/pi-ai'
 
 /** Per-block half of the pi-ai replay envelope, one entry per content block. */

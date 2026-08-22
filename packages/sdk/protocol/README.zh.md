@@ -1,4 +1,4 @@
-# @alego/sdk-protocol
+# @singula-ai/alego-sdk-protocol
 
 [English](README.md) | 中文
 

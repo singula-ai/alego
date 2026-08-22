@@ -12,12 +12,12 @@ Status: implemented
 
 新的 `subprocess/` 能力家族拥有「运行并管理一个进程」；bash 家族保留「运行一条 bash 命令」，并成为前者的消费方：
 
-- **`@alego/subprocess`（Service Definition）**——拥有 `ctx.subprocess` 的抽象 `SubprocessRuntime`：可执行文件查找、完全显式的普通 spawn，以及[可移植执行环境决策](2026-07-28-portable-execution-world-consumers.zh.md)新增的终端原语。每条 stdio 流独立选择 `'pipe'`、`'inherit'` 或有界收集 `{ maxBytes, spill? }`；stdin 选择 `'ignore'`、`'pipe'` 或 `{ data }`。`SubprocessOutcome` 只承载刻意不含超时／取消分类的退出事实，收集输出在结算后仍留在句柄上。该 Service Definition 还拥有进程与终端句柄、共享凭据清除，以及 `ALEGO_ENV_PREFIX`/`AlegoEnvironment`/`CollectedOutput`；`argv` 绝不经过 shell 解释。
-- **`@alego/subprocess-local`（Service Provider）**——`LocalSubprocessRuntime` 构建在原 `run.ts` 管道（现为 `spawn.ts`）与 `node-pty` 之上：detached 进程组、有界收集与私有 spill 文件、可执行文件查找、前台／会话检查，以及终止每个受管进程并等待其退出的 dispose。`terminate()` 拥有面向进程树的 TERM→宽限→KILL，`waitForExit()` 观察进程树存活性，可注入的 `taskkill /T` 覆盖 Windows。普通与终端 spawn 都先应用 Service Definition 对 `KEY`/`PASSWORD`/`SECRET`/`TOKEN` 不区分大小写的清除，再合并显式 env。该 Service Provider 没有配置；每项限制都随 spec 到达，Bash 与 PTY 的呈现环境覆盖仍归各自 Consumer 所有。
+- **`@singula-ai/alego-subprocess`（Service Definition）**——拥有 `ctx.subprocess` 的抽象 `SubprocessRuntime`：可执行文件查找、完全显式的普通 spawn，以及[可移植执行环境决策](2026-07-28-portable-execution-world-consumers.zh.md)新增的终端原语。每条 stdio 流独立选择 `'pipe'`、`'inherit'` 或有界收集 `{ maxBytes, spill? }`；stdin 选择 `'ignore'`、`'pipe'` 或 `{ data }`。`SubprocessOutcome` 只承载刻意不含超时／取消分类的退出事实，收集输出在结算后仍留在句柄上。该 Service Definition 还拥有进程与终端句柄、共享凭据清除，以及 `ALEGO_ENV_PREFIX`/`AlegoEnvironment`/`CollectedOutput`；`argv` 绝不经过 shell 解释。
+- **`@singula-ai/alego-subprocess-local`（Service Provider）**——`LocalSubprocessRuntime` 构建在原 `run.ts` 管道（现为 `spawn.ts`）与 `node-pty` 之上：detached 进程组、有界收集与私有 spill 文件、可执行文件查找、前台／会话检查，以及终止每个受管进程并等待其退出的 dispose。`terminate()` 拥有面向进程树的 TERM→宽限→KILL，`waitForExit()` 观察进程树存活性，可注入的 `taskkill /T` 覆盖 Windows。普通与终端 spawn 都先应用 Service Definition 对 `KEY`/`PASSWORD`/`SECRET`/`TOKEN` 不区分大小写的清除，再合并显式 env。该 Service Provider 没有配置；每项限制都随 spec 到达，Bash 与 PTY 的呈现环境覆盖仍归各自 Consumer 所有。
 - **`alego-bash-local`（Consumer）**——`inject: ['subprocess']`；把每个解析后的 `ShellExecSpec` 映射为一个 `SubprocessSpawnSpec`（`['bash', '-c', command]`），并保留自身配置、`resolve()` 默认值补全、基于融合 deadline 的 `timedOut`/`aborted` 分类、带 `[stderr]` 标记的后台读取合并及其消费游标，以及 `onProcessDone` 子类钩子。`alego-bash-sandbox` 除了重新声明继承来的 inject 之外没有变化；它仍在命令字符串层面做包装，并重新进入继承的 spawn 路径。
 - **`alego-shell`（Service Definition）**——把迁走的词汇从 `alego-subprocess` 重导出，因此没有任何 bash Consumer 需要改动导入；`ShellExecRequest`/`ShellExecSpec`/`ShellProcess` 与沙箱事实仍归 bash 所有。
 
-每个加载 bash 执行器的组合都同时加载 `@alego/subprocess-local`：CLI（命令行界面）、各示例、Python 捆绑运行时以及各内联测试配置。
+每个加载 bash 执行器的组合都同时加载 `@singula-ai/alego-subprocess-local`：CLI（命令行界面）、各示例、Python 捆绑运行时以及各内联测试配置。
 
 后台进程的存续期从执行器移到了服务：执行器不再保有存活进程集合，于是重载执行器后，后台工作会继续运行且仍可读取，而组合拆除（服务的 dispose）仍是先终止再等待退出的边界。一条行为约定随之挪动：后台 spawn 失败不再能在管道内部被缓冲成伪造的 stderr（对一个从未真正运行的进程，服务会 reject `done`，且不缓冲任何内容），因此执行器把 `spawn failed: …` 提示注入恰好一个 `readOutput()` 增量。
 

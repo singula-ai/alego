@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-06-17-filesystem-tool-schemas.md
-2026-06-17-filesystem-tool-schemas.md: ee5f7ae3caaebb405c203d7312d461aafcd4ca15
-2026-06-17-filesystem-tool-schemas.zh.md: 9913c2954e72299a2c3a7798a32da1c647eb219b
+2026-06-17-filesystem-tool-schemas.md: 2805262630f727d3fc9457a619fb0beb44b830b1
+2026-06-17-filesystem-tool-schemas.zh.md: 18a321c3e747b96fed1c24039eb9988145fddf34

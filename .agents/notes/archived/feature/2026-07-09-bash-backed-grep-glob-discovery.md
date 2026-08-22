@@ -13,17 +13,17 @@ Search output also has two distinct budgets. The tool needs enough raw `rg` outp
 
 ## Decision
 
-`glob` and `grep` are conditional model-facing tools in `@alego/tool-fs-search`, backed by the bash seam, not by new `ctx.fs` provider methods. At plugin load, the package checks `command -v rg >/dev/null 2>&1` through `ctx.bash.resolve(request)` followed by `ctx.bash.run(spec)`; if the command exits nonzero, the package logs a warning and registers neither tools nor prompt sections. A probe that cannot start, times out, aborts, is killed, or produces no exit code fails plugin load loudly because that is a broken bash executor rather than an absent optional binary. When registered, execution uses the same `ctx.bash.resolve(request)` followed by `ctx.bash.run(spec)` flow with fixed `rg` command templates assembled by the tool. The tool layer owns schemas, argument validation, shell quoting, result parsing, result formatting, retention, formatted-result spill handoff, and timeout declaration. The bash executor owns request defaulting/capping, subprocess execution, process-group termination, environment scrubbing, raw output capture, and backend substitution across local, sandboxed, or remote bash implementations.
+`glob` and `grep` are conditional model-facing tools in `@singula-ai/alego-tool-fs-search`, backed by the bash seam, not by new `ctx.fs` provider methods. At plugin load, the package checks `command -v rg >/dev/null 2>&1` through `ctx.bash.resolve(request)` followed by `ctx.bash.run(spec)`; if the command exits nonzero, the package logs a warning and registers neither tools nor prompt sections. A probe that cannot start, times out, aborts, is killed, or produces no exit code fails plugin load loudly because that is a broken bash executor rather than an absent optional binary. When registered, execution uses the same `ctx.bash.resolve(request)` followed by `ctx.bash.run(spec)` flow with fixed `rg` command templates assembled by the tool. The tool layer owns schemas, argument validation, shell quoting, result parsing, result formatting, retention, formatted-result spill handoff, and timeout declaration. The bash executor owns request defaulting/capping, subprocess execution, process-group termination, environment scrubbing, raw output capture, and backend substitution across local, sandboxed, or remote bash implementations.
 
-The tools do not use `ctx.bash.start()` and do not create model-visible background tasks. They run as ordinary foreground tools from the agent loop's perspective: the tool call returns only after the `rg` command exits, times out, is aborted, or fails. `defineTool({ timeoutMs })` declares the cooperative tool-call budget, `@alego/timeout-policy` enforces it through `exec.signal`, and the tool forwards that signal into the bash request before `resolve()` / `run()`. The bash backend's own timeout remains a second safety cap; whichever aborts first wins.
+The tools do not use `ctx.bash.start()` and do not create model-visible background tasks. They run as ordinary foreground tools from the agent loop's perspective: the tool call returns only after the `rg` command exits, times out, is aborted, or fails. `defineTool({ timeoutMs })` declares the cooperative tool-call budget, `@singula-ai/alego-timeout-policy` enforces it through `exec.signal`, and the tool forwards that signal into the bash request before `resolve()` / `run()`. The bash backend's own timeout remains a second safety cap; whichever aborts first wins.
 
 The tools align `path` with Claude Code's search tools while binding resolution to the bash workdir, not to `ctx.fs`. The tool derives the bash request workdir from `exec.agent?.session.header.cwd`, mirroring `alego-tool-bash` and `alego-tool-fs`; when no session cwd exists, it omits `request.workdir` so the bash implementation applies its configured cwd or process cwd through `resolve()`. For `grep`, `path` is an optional ripgrep target and may be a file or directory; omitted means the resolved bash workdir. For `glob`, `path` is an optional directory search root; omitted means the resolved bash workdir. Relative `path` values resolve against that workdir. Returned paths are displayed relative to the resolved bash workdir when possible and are intended to be follow-up-readable only in co-located deployments where the bash workdir and filesystem `read` root are the same workspace. v1 documents that deployment requirement but does not perform runtime cross-service validation. Remote or virtual filesystem search is deferred until there is a shared workspace/root contract or a provider-specific search backend.
 
-The package does not inject `fs`. It injects `tools`, `systemPrompt`, and `bash`; it deliberately reads `spillStore` with `ctx.get('spillStore')` instead of static inject because formatted-result spill is optional. Existing `@alego/tool-fs` deployments that only want `read` / `write` / `edit` do not need to load bash. Deployments that load search need `rg` available in the bash executor environment for the tools to enter the model-visible schema.
+The package does not inject `fs`. It injects `tools`, `systemPrompt`, and `bash`; it deliberately reads `spillStore` with `ctx.get('spillStore')` instead of static inject because formatted-result spill is optional. Existing `@singula-ai/alego-tool-fs` deployments that only want `read` / `write` / `edit` do not need to load bash. Deployments that load search need `rg` available in the bash executor environment for the tools to enter the model-visible schema.
 
 ### Package shape
 
-The v1 package stays small. Inside `@alego/tool-fs-search`, the source layout is:
+The v1 package stays small. Inside `@singula-ai/alego-tool-fs-search`, the source layout is:
 
 ```text
 src/index.ts
@@ -56,7 +56,7 @@ interface GrepArgs {
 }
 ```
 
-Routine budgets stay out of the model-facing schema. `@alego/tool-fs-search` owns these defaulted, validated config fields:
+Routine budgets stay out of the model-facing schema. `@singula-ai/alego-tool-fs-search` owns these defaulted, validated config fields:
 
 | Field | Default | Role |
 |---|---:|---|
@@ -64,7 +64,7 @@ Routine budgets stay out of the model-facing schema. `@alego/tool-fs-search` own
 | `grepMaxMatches` | `250` | Max flat matches retained inline; matches Claude Code's default `GrepTool` `head_limit`. |
 | `grepMaxLineBytes` | `2000` | Max bytes retained for one matched-line preview, applied with `TextRetainer({ kind: 'head', maxBytes: grepMaxLineBytes })`. |
 | `rawOutputMaxBytes` | `20000000` | Max complete raw `rg` stdout the tool will parse; matches Claude Code's ripgrep raw buffer. |
-| `timeoutMs` | `30000` | Tool-call timeout attached to both tool definitions and enforced by `@alego/timeout-policy`. |
+| `timeoutMs` | `30000` | Tool-call timeout attached to both tool definitions and enforced by `@singula-ai/alego-timeout-policy`. |
 
 `globMaxResults` and `grepMaxMatches` use `ItemRetainer({ kind: 'head' })`. `grepMaxLineBytes` uses `TextRetainer({ kind: 'head', maxBytes: grepMaxLineBytes })` for each matched line so preview cuts preserve UTF-8 boundaries. This follows the [tool result retention library](../architecture/2026-07-06-tool-result-retention-library.md) mapping for discovery items: collect the complete result, retain head items inline, and keep path mapping, grouping, and per-line preview outside the retainer. `grep` does not expose `case_insensitive`, `head_limit`, `offset`, `count`, multiline, context lines, output modes, or file type filters in v1. A model that needs surrounding context reads the matched file with `read`; a model that needs later results follows the returned spill locator's retrieval hint.
 
@@ -153,7 +153,7 @@ If the complete logical result fits under the inline cap, no formatted spill art
 
 ## Consequences
 
-- `glob` and `grep` are conditional model-facing tools in `@alego/tool-fs-search`, not `ctx.fs` provider methods and not part of the existing `@alego/tool-fs` root plugin. They register only when the bash executor can find `rg`; the package injects `tools`, `systemPrompt`, and `bash`, does not inject `fs`, and keeps `ctx.spillStore` optional via `ctx.get('spillStore')`.
+- `glob` and `grep` are conditional model-facing tools in `@singula-ai/alego-tool-fs-search`, not `ctx.fs` provider methods and not part of the existing `@singula-ai/alego-tool-fs` root plugin. They register only when the bash executor can find `rg`; the package injects `tools`, `systemPrompt`, and `bash`, does not inject `fs`, and keeps `ctx.spillStore` optional via `ctx.get('spillStore')`.
 - The schemas are exactly `glob(pattern, path?)` and `grep(pattern, path?, include?)`; search caps and timeout are defaulted, validated Config fields (`globMaxResults`, `grepMaxMatches`, `grepMaxLineBytes`, `rawOutputMaxBytes`, `timeoutMs`).
 - The tools execute through `ctx.bash.resolve(request)` → `ctx.bash.run(spec)`, forward `exec.signal`, never call `ctx.bash.start()`, and never expose a bash task id. The bash request workdir comes from `exec.agent?.session.header.cwd` when available; the resolved `spec.workdir` drives execution and relative-path display.
 - The tools request `stdoutMaxBytes: rawOutputMaxBytes` from the bash seam, parse only untruncated stdout within that cap, and treat over-cap or still-truncated raw output as a clear search failure; raw `rg` output is never exposed to the model.

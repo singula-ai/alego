@@ -5,8 +5,8 @@ import type {
   ClientResponse, HostFrame, IApiClient, ModelSelection, MuxFrame,
   RpcError, RpcReceipt, RpcRequest, RpcResponse, SessionId, SessionModels, SessionSearchItem, SkillEntry,
   WorkspaceId, WorkspaceView,
-} from '@alego/api-remotes/client'
-import { RpcId } from '@alego/client-connection/client'
+} from '@singula-ai/alego-api-remotes/client'
+import { RpcId } from '@singula-ai/alego-client-connection/client'
 import type { SessionRemotes } from '../src/client/sessions/remotes.ts'
 
 /** Programmable-default workspace row (branded id, ISO-ish times). */

@@ -2,17 +2,17 @@
  * Cross-session snapshot preparation. Hosts adapt mentions into structured
  * references; this service owns exact reads, projection, budgets, and durable context.
  *
- * @module @alego/session-reference
+ * @module @singula-ai/alego-session-reference
  */
 
-import { Context } from '@alego/cordis'
-import z from '@alego/schemastery'
-import type { Agent, PreStepDecision } from '@alego/agent'
-import { Remote, TypertRemoteService } from '@alego/typert-protocol'
-import { createUserMessage, freezeMessage } from '@alego/llm'
-import type { ContentBlock, UserMessage } from '@alego/llm'
-import type { SessionId } from '@alego/session'
-import type { SessionSurfaceSnapshot, SessionTitleObservationResult } from '@alego/session-query'
+import { Context } from '@singula-ai/cordis'
+import z from '@singula-ai/schemastery'
+import type { Agent, PreStepDecision } from '@singula-ai/alego-agent'
+import { Remote, TypertRemoteService } from '@singula-ai/alego-typert-protocol'
+import { createUserMessage, freezeMessage } from '@singula-ai/alego-llm'
+import type { ContentBlock, UserMessage } from '@singula-ai/alego-llm'
+import type { SessionId } from '@singula-ai/alego-session'
+import type { SessionSurfaceSnapshot, SessionTitleObservationResult } from '@singula-ai/alego-session-query'
 import {
   DEFAULT_CANDIDATE_LIMIT,
   DEFAULT_MAX_REFERENCE_BYTES,
@@ -55,7 +55,7 @@ user explicitly repeats them.
 `
 const PROMPT_SUFFIX = '\n</referenced-sessions>'
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Context {
     sessionReferenceResolver: SessionReferenceResolver
   }

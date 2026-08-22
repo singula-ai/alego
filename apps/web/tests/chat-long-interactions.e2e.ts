@@ -8,9 +8,9 @@ import { join } from 'node:path'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
-import type { StreamChunk } from '@alego/llm'
-import type { ReplayEntry, ReplayOverrideDoc } from '@alego/llm-replay'
-import { SessionId, type SessionEvent } from '@alego/session'
+import type { StreamChunk } from '@singula-ai/alego-llm'
+import type { ReplayEntry, ReplayOverrideDoc } from '@singula-ai/alego-llm-replay'
+import { SessionId, type SessionEvent } from '@singula-ai/alego-session'
 import { createChatScrollFixture } from './chat-scroll-fixture.ts'
 import {
   launchWebScaffold,

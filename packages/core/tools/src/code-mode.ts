@@ -3,14 +3,14 @@
  * tools through nested executions scheduled under the native concurrency
  * contract; each sub-dispatch is logged for reconstruction, while only the
  * outer curated result enters model history.
- * @module @alego/tools/src/code-mode
+ * @module @singula-ai/alego-tools/src/code-mode
  */
 
-import { CallId, createUserMessage, HarnessError } from '@alego/llm'
-import type { ContentBlock } from '@alego/llm'
-import type { CodeBindingFunction, CodeRunResult, CodeRuntime } from '@alego/code-runtime'
-import { snapshotJsonValue } from '@alego/session'
-import type { JsonValue } from '@alego/session'
+import { CallId, createUserMessage, HarnessError } from '@singula-ai/alego-llm'
+import type { ContentBlock } from '@singula-ai/alego-llm'
+import type { CodeBindingFunction, CodeRunResult, CodeRuntime } from '@singula-ai/alego-code-runtime'
+import { snapshotJsonValue } from '@singula-ai/alego-session'
+import type { JsonValue } from '@singula-ai/alego-session'
 import { defineTool, parameterSchemaSpecToJsonSchema } from './schema.ts'
 import { TOOL_RUNTIME_SCHEDULER } from './index.ts'
 import type { CodeDispatchLog, ToolDefinition, ToolExecutionResult, ToolRuntime, ToolRunContext } from './index.ts'

@@ -1,5 +1,5 @@
 /**
- * Real-load-path guard for @alego/tool-fs-search. `tool-fs-search` is
+ * Real-load-path guard for @singula-ai/alego-tool-fs-search. `tool-fs-search` is
  * a NAMESPACE plugin with `inject` — so a stray `export default apply` would
  * make the cordis Loader's `unwrapExports` (`exports.default ?? exports`)
  * collapse the module to the bare `apply` function, DROPPING `inject`. The
@@ -15,12 +15,12 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import Loader from '@alego/cordis-plugin-loader'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
-import * as toolFsSearch from '@alego/tool-fs-search'
+import { Context } from '@singula-ai/cordis'
+import Loader from '@singula-ai/cordis-plugin-loader'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
+import * as toolFsSearch from '@singula-ai/alego-tool-fs-search'
 
 describe('alego-tool-fs-search real-load-path guard', () => {
   it('has no default export and keeps name/inject/Config through unwrapExports', () => {

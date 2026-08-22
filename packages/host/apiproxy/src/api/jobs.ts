@@ -4,7 +4,7 @@
  * per push.
  */
 
-import type { JobId } from '@alego/jobs/brand'
+import type { JobId } from '@singula-ai/alego-jobs/brand'
 
 /**
  * One background job as the client sees it.

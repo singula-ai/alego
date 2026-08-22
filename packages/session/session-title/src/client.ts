@@ -4,7 +4,7 @@
  * discipline), so `./client` projects the same single-source content
  * `./types` serves to host consumers — zero duplication.
  *
- * @module @alego/session-title/client
+ * @module @singula-ai/alego-session-title/client
  */
 
 export type * from './types.ts'

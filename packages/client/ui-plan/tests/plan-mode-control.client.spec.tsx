@@ -7,12 +7,12 @@
  */
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { createSnapshotStore } from '@alego/client-runtime/client'
-import { bindSnapshotSelector } from '@alego/client-test-runtime'
-import type { PlanProjection } from '@alego/plan-mode/client'
+import { createSnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import { bindSnapshotSelector } from '@singula-ai/alego-client-test-runtime'
+import type { PlanProjection } from '@singula-ai/alego-plan-mode/client'
 import { PlanChip, type PlanChipProps } from '../src/client/PlanModeControl.tsx'
-import { makeTranslate } from '@alego/client-test-runtime'
-import { zh as commonZh } from '@alego/client-locale/src/locales/zh.ts'
+import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
 import { zh } from '../src/client/locales.ts'
 
 afterEach(cleanup)

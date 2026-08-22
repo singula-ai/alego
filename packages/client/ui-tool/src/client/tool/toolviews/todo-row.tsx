@@ -7,9 +7,9 @@
 // narrow row never clips it; the durable list itself renders in the TodoPanel
 // above the composer, so the row stays one line until expanded.
 
-import { IconChecklistOutline14 } from '@alego/client-ui-primitives'
-import type { Context } from '@alego/cordis'
-import type { PropsLocale } from '@alego/client-ui-slots'
+import { IconChecklistOutline14 } from '@singula-ai/alego-client-ui-primitives'
+import type { Context } from '@singula-ai/cordis'
+import type { PropsLocale } from '@singula-ai/alego-client-ui-slots'
 import type { ToolCallViewProps } from '../../contract/slots.ts'
 import { toolRowModel } from '../models/tool-call-model.ts'
 import { ToolRow } from '../components/ToolRow.tsx'

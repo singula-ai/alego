@@ -2,11 +2,11 @@
  * Crash-recovery repair for an interrupted session log. It preserves a fully
  * written final turn and supplies the missing tool, step, and turn boundaries
  * needed to resume with a provider-valid transcript.
- * @module @alego/session/repair
+ * @module @singula-ai/alego-session/repair
  */
 
-import { MessageId, freezeMessage, type CallId } from '@alego/llm'
-import type { ToolResultMessage } from '@alego/llm'
+import { MessageId, freezeMessage, type CallId } from '@singula-ai/alego-llm'
+import type { ToolResultMessage } from '@singula-ai/alego-llm'
 import type { SessionEvent } from './types.ts'
 
 /** Recovery code for an assistant tool request that never reached a recorded call start. */

@@ -80,7 +80,7 @@ You never write a profile manifest by hand: `alego plugin` creates and maintains
 alego plugin --profile demo add ./hello-plugin
 ```
 
-The first use initializes the profile (with `@alego/base` as its first bundle), pnpm links the checkout, and `alego` appends the bundle to `alego.profile.bundles` because the package declares `alego.bundle`:
+The first use initializes the profile (with `@singula-ai/alego-base` as its first bundle), pnpm links the checkout, and `alego` appends the bundle to `alego.profile.bundles` because the package declares `alego.bundle`:
 
 ```json
 {
@@ -92,7 +92,7 @@ The first use initializes the profile (with `@alego/base` as its first bundle), 
   "alego": {
     "profile": {
       "bundles": [
-        "@alego/base",
+        "@singula-ai/alego-base",
         "alego-hello-plugin"
       ]
     }
@@ -113,7 +113,7 @@ alego --profile demo
 
 The effective configuration composes over an empty root by applying, in order:
 
-1. Each bundle patch named in the profile's `alego.profile.bundles` list, in list order — `@alego/base` first, then each installed bundle in the order it was added.
+1. Each bundle patch named in the profile's `alego.profile.bundles` list, in list order — `@singula-ai/alego-base` first, then each installed bundle in the order it was added.
 2. The profile's own `cordis.patch.yml`.
 3. The home-level `$ALEGO_HOME/cordis.patch.yml` — machine-local preferences shared by every profile.
 4. Each `--patch <path>` overlay, in argv order.
@@ -125,7 +125,7 @@ Later layers win per row, and a patch replaces a row's entire `config` value rat
 - Your patch can override rows from earlier layers by `id` — the same way [the `alego-web-app` bundle](../../../../packages/bundle/web-app/cordis.patch.yml) overrides `alego-base` rows — but must restate every key the row needs, not just the changed one.
 - Users can override your rows in their profile's `cordis.patch.yml` without touching your package, so prefer configuration defaults users are likely to keep and let the schema carry the rest.
 
-In-box bundle names always resolve from the alego installation itself; pnpm manages only out-of-tree packages, so your bundle can rely on `@alego/base` being present and current.
+In-box bundle names always resolve from the alego installation itself; pnpm manages only out-of-tree packages, so your bundle can rely on `@singula-ai/alego-base` being present and current.
 
 ## Give a surface bundle its own command line
 
@@ -136,7 +136,7 @@ A bundle that defines a runnable app mounts an ordinary provider plugin:
   name: 'alego-hello-plugin/startup'
 ```
 
-The plugin exports `inject = ['cmdlineArgs']`, calls `parseCmdline` from [`@alego/cmdline`](../../../../packages/boot/cmdline/README.md) with its own commander program, and provides its app-owned service from the program's action. The launcher hands every plugin the same immutable arguments after launcher flags, so app-specific flags need no launcher change and multiple plugins may parse the snapshot. The Loader row needs no launcher marker or special kind.
+The plugin exports `inject = ['cmdlineArgs']`, calls `parseCmdline` from [`@singula-ai/alego-cmdline`](../../../../packages/boot/cmdline/README.md) with its own commander program, and provides its app-owned service from the program's action. The launcher hands every plugin the same immutable arguments after launcher flags, so app-specific flags need no launcher change and multiple plugins may parse the snapshot. The Loader row needs no launcher marker or special kind.
 
 Rows configured by those arguments inject the provider's service and read it from their own `!!js` options, with the deployment value beside it as the fallback:
 

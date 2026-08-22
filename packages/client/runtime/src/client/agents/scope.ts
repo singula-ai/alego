@@ -15,10 +15,10 @@
  * — a cold session's host Agent is already disposed while its client actx
  * stays alive for history viewing.
  */
-import { Context as CordisContext } from '@alego/cordis'
-import type { Context, Fiber } from '@alego/cordis'
-import type { SessionId } from '@alego/api-remotes/client'
-import type { TypertClientRemote, TypertRemoteScopeApi } from '@alego/typert-protocol'
+import { Context as CordisContext } from '@singula-ai/cordis'
+import type { Context, Fiber } from '@singula-ai/cordis'
+import type { SessionId } from '@singula-ai/alego-api-remotes/client'
+import type { TypertClientRemote, TypertRemoteScopeApi } from '@singula-ai/alego-typert-protocol'
 
 /** Client Cordis Context carrying one Agent identity and its scoped Remote namespaces. */
 export type AgentContext = Omit<Context, 'remote'> & {

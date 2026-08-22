@@ -1,4 +1,4 @@
-# @alego/typert-generator
+# @singula-ai/alego-typert-generator
 
 English | [中文](README.zh.md)
 

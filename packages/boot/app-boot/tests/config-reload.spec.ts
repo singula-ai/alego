@@ -8,8 +8,8 @@ import { mkdtempSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import type { Include } from '@alego/cordis-plugin-include'
+import { Context } from '@singula-ai/cordis'
+import type { Include } from '@singula-ai/cordis-plugin-include'
 import { boot } from '../src/index.ts'
 
 const NAME = 'alego-test-bin'
@@ -391,7 +391,7 @@ describe('shipped builtins', () => {
   it('lets a booted composition share one isolate realm across a group of rows', async () => {
     // The reason `boot()` registers `cordis:group`: a composition — notably an
     // agent preset living outside this workspace, which cannot resolve
-    // `@alego/cordis-plugin-group` by name — gives a provider and its consumer one
+    // `@singula-ai/cordis-plugin-group` by name — gives a provider and its consumer one
     // named realm so the service stays out of the root realm while remaining
     // visible to the rows that need it.
     const { ctx } = await bootTree([

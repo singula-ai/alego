@@ -1,15 +1,15 @@
-import { createUserMessage, createMessage } from '@alego/llm'
+import { createUserMessage, createMessage } from '@singula-ai/alego-llm'
 import { describe, expect, it, vi } from 'vitest'
-import { Context, type Fiber } from '@alego/cordis'
-import SessionStore, { SESSION_FORMAT_VERSION, SessionId } from '@alego/session'
-import type { SessionEvent, SessionHeader, SessionId as SessionIdType } from '@alego/session'
-import SessionPersistence, { SessionPersistenceCorruptionError, SessionPersistenceRevision } from '@alego/session-persistence'
+import { Context, type Fiber } from '@singula-ai/cordis'
+import SessionStore, { SESSION_FORMAT_VERSION, SessionId } from '@singula-ai/alego-session'
+import type { SessionEvent, SessionHeader, SessionId as SessionIdType } from '@singula-ai/alego-session'
+import SessionPersistence, { SessionPersistenceCorruptionError, SessionPersistenceRevision } from '@singula-ai/alego-session-persistence'
 import SessionQueryEngine, {
   SESSION_QUERY_DEFAULT_PERSISTED_INSPECT_CONCURRENCY,
   type SessionEventSurface,
   type SessionQueryErrorCode,
-} from '@alego/session-query'
-import { SessionTitleProviderId } from '@alego/session-title'
+} from '@singula-ai/alego-session-query'
+import { SessionTitleProviderId } from '@singula-ai/alego-session-title'
 import { TestSessionQueryEngine } from './test-service.ts'
 
 function header(id: string, createdAt = 1, extra: Partial<SessionHeader> = {}): SessionHeader {

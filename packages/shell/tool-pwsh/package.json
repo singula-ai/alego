@@ -1,5 +1,5 @@
 {
-  "name": "@alego/tool-pwsh",
+  "name": "@singula-ai/alego-tool-pwsh",
   "description": "Model-facing pwsh tool over the bash executor seam",
   "version": "0.1.1-rc.2",
   "publishConfig": {
@@ -32,39 +32,39 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@alego/agent": "workspace:^",
-    "@alego/shell": "workspace:^",
-    "@alego/shell-env": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/sandbox": "workspace:^",
-    "@alego/sandbox-policy": "workspace:^",
-    "@alego/system-prompt": "workspace:^",
-    "@alego/jobs": "workspace:^",
-    "@alego/tools": "workspace:^",
-    "@alego/user-approval": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-shell": "workspace:^",
+    "@singula-ai/alego-shell-env": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-sandbox": "workspace:^",
+    "@singula-ai/alego-sandbox-policy": "workspace:^",
+    "@singula-ai/alego-system-prompt": "workspace:^",
+    "@singula-ai/alego-jobs": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/alego-user-approval": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "dependencies": {
-    "@alego/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:^"
   },
   "devDependencies": {
-    "@alego/agent": "workspace:^",
-    "@alego/shell": "workspace:^",
-    "@alego/shell-env": "workspace:^",
-    "@alego/invariants": "workspace:^",
-    "@alego/llm": "workspace:^",
-    "@alego/loader-smoke": "workspace:^",
-    "@alego/pwsh-local": "workspace:^",
-    "@alego/sandbox": "workspace:^",
-    "@alego/sandbox-policy": "workspace:^",
-    "@alego/subprocess-local": "workspace:^",
-    "@alego/system-prompt": "workspace:^",
-    "@alego/jobs": "workspace:^",
-    "@alego/jobs-local": "workspace:^",
-    "@alego/tool-jobs": "workspace:^",
-    "@alego/tools": "workspace:^",
-    "@alego/user-approval": "workspace:^",
-    "@alego/cordis": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-shell": "workspace:^",
+    "@singula-ai/alego-shell-env": "workspace:^",
+    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-loader-smoke": "workspace:^",
+    "@singula-ai/alego-pwsh-local": "workspace:^",
+    "@singula-ai/alego-sandbox": "workspace:^",
+    "@singula-ai/alego-sandbox-policy": "workspace:^",
+    "@singula-ai/alego-subprocess-local": "workspace:^",
+    "@singula-ai/alego-system-prompt": "workspace:^",
+    "@singula-ai/alego-jobs": "workspace:^",
+    "@singula-ai/alego-jobs-local": "workspace:^",
+    "@singula-ai/alego-tool-jobs": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/alego-user-approval": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   }
 }

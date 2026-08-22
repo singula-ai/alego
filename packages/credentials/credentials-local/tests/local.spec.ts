@@ -1,11 +1,11 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
-import { credentialRef } from '@alego/credentials'
-import { createLaunchEnvironmentSnapshot, ALEGO_LAUNCH_ENVIRONMENT_KEY } from '@alego/launch-environment'
-import type { CredentialRef } from '@alego/credentials'
+import { credentialRef } from '@singula-ai/alego-credentials'
+import { createLaunchEnvironmentSnapshot, ALEGO_LAUNCH_ENVIRONMENT_KEY } from '@singula-ai/alego-launch-environment'
+import type { CredentialRef } from '@singula-ai/alego-credentials'
 import { LocalCredentialProvider, resolveSpec } from '../src/index.ts'
 
 /** Credential documents are seeded owner-only, exactly as the provider creates them. */

@@ -1,5 +1,5 @@
 /**
- * Real-process tests for `@alego/pwsh-local`: the LOCAL subprocess
+ * Real-process tests for `@singula-ai/alego-pwsh-local`: the LOCAL subprocess
  * service plus a REAL pwsh executable, exercised through the executor seam
  * (`resolve` → `run`/`start`). These verify the world — actual PowerShell
  * runs, output capture, truncation and spill, deadlines, kill escalation, and
@@ -14,13 +14,13 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { spawnSync } from 'node:child_process'
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import { PwshLocalExecutor, ENCODING_PREAMBLE, candidatePwshPaths, resolvePwshPath } from '@alego/pwsh-local'
-import LocalSubprocessRuntime from '@alego/subprocess-local'
-import SubprocessRuntime from '@alego/subprocess'
-import type { SubprocessHandle, SubprocessOutputReader, SubprocessSpawnSpec } from '@alego/subprocess'
-import { MAX_TIMER_DELAY_MS } from '@alego/timeout'
-import type { ShellProcess } from '@alego/shell'
+import { Context } from '@singula-ai/cordis'
+import { PwshLocalExecutor, ENCODING_PREAMBLE, candidatePwshPaths, resolvePwshPath } from '@singula-ai/alego-pwsh-local'
+import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
+import SubprocessRuntime from '@singula-ai/alego-subprocess'
+import type { SubprocessHandle, SubprocessOutputReader, SubprocessSpawnSpec } from '@singula-ai/alego-subprocess'
+import { MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
+import type { ShellProcess } from '@singula-ai/alego-shell'
 
 const spillDir = mkdtempSync(join(tmpdir(), 'alego-pwsh-exec-spec-'))
 

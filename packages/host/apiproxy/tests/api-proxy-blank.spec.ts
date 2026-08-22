@@ -8,20 +8,20 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import AgentRegistry from '@alego/agent'
-import type { Agent } from '@alego/agent'
-import SessionStore from '@alego/session'
-import type { Session } from '@alego/session'
-import UserQuestionService from '@alego/user-questions'
-import { CommandId } from '@alego/commands/brand'
+import { Context } from '@singula-ai/cordis'
+import AgentRegistry from '@singula-ai/alego-agent'
+import type { Agent } from '@singula-ai/alego-agent'
+import SessionStore from '@singula-ai/alego-session'
+import type { Session } from '@singula-ai/alego-session'
+import UserQuestionService from '@singula-ai/alego-user-questions'
+import { CommandId } from '@singula-ai/alego-commands/brand'
 // Side-effect type imports: the knob-event SessionEventMap merges.
-import type {} from '@alego/permission-presets'
-import type {} from '@alego/sandbox-policy'
-import type {} from '@alego/user-approval'
-import type { ApiProxy, RpcRequest } from '@alego/host-apiproxy/api'
-import { RpcId } from '@alego/host-apiproxy/api/rpc'
-import { createApiProxy } from '@alego/host-apiproxy'
+import type {} from '@singula-ai/alego-permission-presets'
+import type {} from '@singula-ai/alego-sandbox-policy'
+import type {} from '@singula-ai/alego-user-approval'
+import type { ApiProxy, RpcRequest } from '@singula-ai/alego-host-apiproxy/api'
+import { RpcId } from '@singula-ai/alego-host-apiproxy/api/rpc'
+import { createApiProxy } from '@singula-ai/alego-host-apiproxy'
 
 let nextRpc = 1
 function request<P>(payload: P): RpcRequest<P> {

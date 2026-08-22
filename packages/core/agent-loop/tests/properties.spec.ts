@@ -10,16 +10,16 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import LlmRuntime from '@alego/llm'
-import { createUserMessage, LlmAdapter } from '@alego/llm'
-import type { GenerateOptions, StreamChunk } from '@alego/llm'
-import SessionStore, { SessionId } from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime from '@alego/tools'
-import AgentRegistry, { type Agent } from '@alego/agent'
+import { Context } from '@singula-ai/cordis'
+import LlmRuntime from '@singula-ai/alego-llm'
+import { createUserMessage, LlmAdapter } from '@singula-ai/alego-llm'
+import type { GenerateOptions, StreamChunk } from '@singula-ai/alego-llm'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime from '@singula-ai/alego-tools'
+import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
 
-import AgentLoop from '@alego/agent-loop'
+import AgentLoop from '@singula-ai/alego-agent-loop'
 import fc from 'fast-check'
 
 /** A never-exhausting adapter: every model call returns the same short reply. */

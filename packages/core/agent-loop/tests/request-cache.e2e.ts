@@ -1,14 +1,14 @@
-import { createUserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
 import { afterEach, describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import LlmRuntime from '@alego/llm'
-import SessionStore, { SessionId } from '@alego/session'
-import SystemPrompt from '@alego/system-prompt'
-import ToolRuntime, { defineContentToolFixture } from '@alego/tools'
-import AgentRegistry, { type Agent } from '@alego/agent'
+import { Context } from '@singula-ai/cordis'
+import LlmRuntime from '@singula-ai/alego-llm'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import SystemPrompt from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { defineContentToolFixture } from '@singula-ai/alego-tools'
+import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
 
-import AgentLoop from '@alego/agent-loop'
-import * as LlmDeepSeek from '@alego/llm-deepseek'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek'
 
 /**
  * With-key proof that log-derived requests translate into real provider cache hits: a

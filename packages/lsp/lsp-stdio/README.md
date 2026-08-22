@@ -1,4 +1,4 @@
-# @alego/lsp-stdio
+# @singula-ai/alego-lsp-stdio
 
 English | [中文](README.zh.md)
 

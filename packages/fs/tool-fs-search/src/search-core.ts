@@ -16,18 +16,18 @@
  * artifact is the formatted result saved through `ctx.spillStore.saveText()`
  * ({@link trySaveFormattedResult}).
  *
- * @module @alego/tool-fs-search/search-core
+ * @module @singula-ai/alego-tool-fs-search/search-core
  */
 
 import { existsSync } from 'node:fs'
 import { isAbsolute, relative, sep } from 'node:path'
-import type { Context } from '@alego/cordis'
-import { HarnessError } from '@alego/llm'
-import { ItemRetainer, TextRetainer } from '@alego/output-retention'
-import type { RetainedItems } from '@alego/output-retention'
-import type { SubprocessHandle, SubprocessOutcome, SubprocessOutputRead, SubprocessSpawnSpec } from '@alego/subprocess'
-import type { SaveTextSpill, SpillRef } from '@alego/spill'
-import type { ToolExecution } from '@alego/tools'
+import type { Context } from '@singula-ai/cordis'
+import { HarnessError } from '@singula-ai/alego-llm'
+import { ItemRetainer, TextRetainer } from '@singula-ai/alego-output-retention'
+import type { RetainedItems } from '@singula-ai/alego-output-retention'
+import type { SubprocessHandle, SubprocessOutcome, SubprocessOutputRead, SubprocessSpawnSpec } from '@singula-ai/alego-subprocess'
+import type { SaveTextSpill, SpillRef } from '@singula-ai/alego-spill'
+import type { ToolExecution } from '@singula-ai/alego-tools'
 
 /**
  * Default cap on the complete raw `rg` stdout the tools will parse (the
@@ -38,7 +38,7 @@ export const RAW_OUTPUT_MAX_BYTES = 20_000_000
 /**
  * Default cooperative tool-call timeout budget in milliseconds (the `timeoutMs`
  * config), attached to both tool definitions for
- * `@alego/tool-call-timeout-policy` to enforce through `exec.signal`.
+ * `@singula-ai/alego-tool-call-timeout-policy` to enforce through `exec.signal`.
  */
 export const SEARCH_TIMEOUT_MS = 30_000
 
@@ -182,7 +182,7 @@ export function resolveRgPath(): Promise<string> {
  * complete raw stdout. The working directory is the calling agent's session
  * cwd (`exec.agent.session.header.cwd`) when available, else
  * `process.cwd()`. `exec.signal` is forwarded so the cooperative tool timeout
- * (`@alego/tool-call-timeout-policy`) and caller cancellation terminate the
+ * (`@singula-ai/alego-tool-call-timeout-policy`) and caller cancellation terminate the
  * process tree.
  *
  * The spawn is unconfined (a plain `ctx.subprocess` call), so `--no-config`
@@ -324,9 +324,9 @@ export function previewLine(line: string, maxBytes: number): string {
 /**
  * Apply the shared inline cap to a canonical `grep` match list: preview each
  * retained line to `maxLineBytes` and keep the first `maxMatches`. The single
- * retention pass both the model-facing render ({@link module:@alego/tool-fs-search/grep}
+ * retention pass both the model-facing render ({@link module:@singula-ai/alego-tool-fs-search/grep}
  * `formatGrepOutput`) and the search-card projection
- * ({@link module:@alego/tool-fs-search/presentation} `grepSearchMeta`)
+ * ({@link module:@singula-ai/alego-tool-fs-search/presentation} `grepSearchMeta`)
  * consume, so text and card never disagree about which matches survived.
  *
  * @param matches - every match the search parsed (the canonical value's matches).

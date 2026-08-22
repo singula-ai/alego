@@ -5,7 +5,7 @@
  */
 
 import { z } from 'zod'
-import type { AskUserQuestionAnswer } from '@alego/user-questions/types'
+import type { AskUserQuestionAnswer } from '@singula-ai/alego-user-questions/types'
 import type { QuestionResponsePayload } from './questions.ts'
 import type { Wire } from './rpc.schema.ts'
 import { sessionIdSchema } from './sessions.schema.ts'

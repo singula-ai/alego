@@ -1,15 +1,15 @@
 /** Read-only Host plugin inventory registered into Web Settings. */
 
-import type {} from '@alego/client-locale/client'
-import type { ClientContext } from '@alego/client-runtime/client'
-import type {} from '@alego/client-ui-settings/client'
+import type {} from '@singula-ai/alego-client-locale/client'
+import type { ClientContext } from '@singula-ai/alego-client-runtime/client'
+import type {} from '@singula-ai/alego-client-ui-settings/client'
 import { PluginInventorySettingsTab, type PluginInventorySettingsTabInjected } from './PluginInventorySettingsTab.tsx'
 import { en, zh, type PluginInventoryLocaleKey } from './locales.ts'
 
 export type { PluginInventorySettingsTabInjected, PluginInventorySettingsTabProps } from './PluginInventorySettingsTab.tsx'
 export type { PluginInventoryLocaleKey } from './locales.ts'
 
-declare module '@alego/client-ui-slots' {
+declare module '@singula-ai/alego-client-ui-slots' {
   interface LocaleNamespaceMap {
     /** Read-only Host plugin inventory copy. */
     'settings.pluginInventory': PluginInventoryLocaleKey

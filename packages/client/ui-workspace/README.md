@@ -1,4 +1,4 @@
-# @alego/client-ui-workspace
+# @singula-ai/alego-client-ui-workspace
 
 English | [中文](README.zh.md)
 

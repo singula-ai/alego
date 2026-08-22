@@ -1,4 +1,4 @@
-import { createUserMessage } from '@alego/llm'
+import { createUserMessage } from '@singula-ai/alego-llm'
 /**
  * Loop-level tool-order determinism: the request/header event — and therefore the frozen
  * request the adapter receives — carries the assembly's canonical tool order (system-prompt's
@@ -8,15 +8,15 @@ import { createUserMessage } from '@alego/llm'
  */
 
 import { describe, expect, it } from 'vitest'
-import { Context } from '@alego/cordis'
-import LlmRuntime from '@alego/llm'
-import SessionStore, { SessionId, foldRequestHeader } from '@alego/session'
-import SystemPrompt, { TOOL_ORDER_REST } from '@alego/system-prompt'
-import type { Config as SystemPromptConfig } from '@alego/system-prompt'
-import ToolRuntime, { defineContentToolFixture } from '@alego/tools'
-import AgentRegistry, { type Agent } from '@alego/agent'
+import { Context } from '@singula-ai/cordis'
+import LlmRuntime from '@singula-ai/alego-llm'
+import SessionStore, { SessionId, foldRequestHeader } from '@singula-ai/alego-session'
+import SystemPrompt, { TOOL_ORDER_REST } from '@singula-ai/alego-system-prompt'
+import type { Config as SystemPromptConfig } from '@singula-ai/alego-system-prompt'
+import ToolRuntime, { defineContentToolFixture } from '@singula-ai/alego-tools'
+import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
 
-import AgentLoop from '@alego/agent-loop'
+import AgentLoop from '@singula-ai/alego-agent-loop'
 import { MockAdapter, textResponse } from './mock-adapter.ts'
 
 async function harness(adapter: MockAdapter, toolOrder?: SystemPromptConfig['toolOrder']) {

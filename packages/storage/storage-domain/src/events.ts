@@ -4,7 +4,7 @@
  * and an operation discriminant — never the old value (a diffing consumer
  * keeps its own previous snapshot). This is the event source for cross-process
  * change push (RPC frames) in a later phase.
- * @module @alego/storage-domain/src/events
+ * @module @singula-ai/alego-storage-domain/src/events
  */
 
 /** Shared location fields of one durable domain change. */
@@ -33,7 +33,7 @@ export interface DomainChangedDeleted extends DomainChangedBase {
 /** One durable domain change; a closed union — switch on `operation`. */
 export type DomainChanged = DomainChangedPut | DomainChangedDeleted
 
-declare module '@alego/cordis' {
+declare module '@singula-ai/cordis' {
   interface Events {
     /**
      * A domain record or the global singleton changed, emitted once per write

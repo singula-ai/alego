@@ -2,10 +2,10 @@
  * Generic-task adaptation for background pwsh process handles — the shell-agnostic
  * twin of `alego-tool-bash`'s background adaptation.
  *
- * @module @alego/tool-pwsh/background
+ * @module @singula-ai/alego-tool-pwsh/background
  */
 
-import type { ShellProcess } from '@alego/shell'
+import type { ShellProcess } from '@singula-ai/alego-shell'
 
 /* jscpd:ignore-start -- deliberate twin of alego-tool-bash/background.ts (Agent Note). */
 

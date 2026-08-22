@@ -3,16 +3,16 @@
  * highlight contents). It maps the first non-blank highlight to `snippet`, maps
  * `publishedDate` to `publishedAt`, drops entries without a snippet, and omits `content`
  * because Exa returns no generated answer.
- * @module @alego/web-search-exa/provider
+ * @module @singula-ai/alego-web-search-exa/provider
  */
 
-import { WebError } from '@alego/web'
+import { WebError } from '@singula-ai/alego-web'
 import type {
   WebSearchProvider,
   WebSearchRequest,
   WebSearchResult,
   WebSearchSource,
-} from '@alego/web'
+} from '@singula-ai/alego-web'
 import type { ExaError, ExaResult, ExaSearchResponse } from './types.ts'
 
 /** Stable id this provider registers under. */

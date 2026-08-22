@@ -1,11 +1,11 @@
 /** Host BFF policy for resolving Remote Agent and Session identities. */
 
-import type { Context } from '@alego/cordis'
-import type { Agent, AgentOptions, AgentSetup } from '@alego/agent'
-import type { Session, SessionEvent, SessionHeader, SessionId } from '@alego/session'
-import type {} from '@alego/session-persistence'
-import { TypertLookupFailure } from '@alego/typert-protocol'
-import type {} from '@alego/typert-registry'
+import type { Context } from '@singula-ai/cordis'
+import type { Agent, AgentOptions, AgentSetup } from '@singula-ai/alego-agent'
+import type { Session, SessionEvent, SessionHeader, SessionId } from '@singula-ai/alego-session'
+import type {} from '@singula-ai/alego-session-persistence'
+import { TypertLookupFailure } from '@singula-ai/alego-typert-protocol'
+import type {} from '@singula-ai/alego-typert-registry'
 
 /** Caller-facing failures preserved by the Gateway's RPC adapter. */
 export type ApiRemoteLookupError =

@@ -1,16 +1,16 @@
 /**
  * Same-session goal-round driver over public agent, session, and goal services.
- * @module @alego/goal-round-driver
+ * @module @singula-ai/alego-goal-round-driver
  */
 
 import { isDeepStrictEqual } from 'node:util'
-import { FiberState } from '@alego/cordis'
-import type { Context } from '@alego/cordis'
-import type { Agent, PreStepDecision } from '@alego/agent'
-import type { GoalMessageSource, GoalRef, GoalView } from '@alego/goal'
-import { createUserMessage } from '@alego/llm'
-import type { ContentBlock, MessageId, MessageSource } from '@alego/llm'
-import type { Session, SessionEvent, UserMessage } from '@alego/session'
+import { FiberState } from '@singula-ai/cordis'
+import type { Context } from '@singula-ai/cordis'
+import type { Agent, PreStepDecision } from '@singula-ai/alego-agent'
+import type { GoalMessageSource, GoalRef, GoalView } from '@singula-ai/alego-goal'
+import { createUserMessage } from '@singula-ai/alego-llm'
+import type { ContentBlock, MessageId, MessageSource } from '@singula-ai/alego-llm'
+import type { Session, SessionEvent, UserMessage } from '@singula-ai/alego-session'
 import { renderGoalRoundPrompt } from './prompt.ts'
 
 export { renderGoalRoundPrompt } from './prompt.ts'

@@ -2,7 +2,7 @@
  * Connection plugin browser-half apply: ctx.connection handle mounting, mode
  * selection off the page URL, and the single-consumer stream-loop ownership.
  */
-import { Context } from '@alego/cordis'
+import { Context } from '@singula-ai/cordis'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { apply, type ConnectionHandle } from '../src/client/index.ts'
 import type { RpcMessage } from '../src/client/api.ts'

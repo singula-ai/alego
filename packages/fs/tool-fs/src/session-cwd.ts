@@ -5,11 +5,11 @@
  * `alego-tool-bash` defaults a bash `workdir` to the session cwd.
  * Non-agent calls return `undefined`, leaving the fallback in the provider rather than reading
  * `process.cwd()` at the tool boundary.
- * @module @alego/tool-fs/session-cwd
+ * @module @singula-ai/alego-tool-fs/session-cwd
  */
 
-import type { ToolExecution } from '@alego/tools'
-import { canonicalPath } from '@alego/sandbox'
+import type { ToolExecution } from '@singula-ai/alego-tools'
+import { canonicalPath } from '@singula-ai/alego-sandbox'
 
 const PARENT_PATH_SEGMENT = /(?:^|[\\/])\.\.(?:[\\/]|$)/
 

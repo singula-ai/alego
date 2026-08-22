@@ -1,9 +1,9 @@
 /**
  * Bounded sharing and exclusive reservation of unpublished Sessions.
- * @module @alego/session-persistence/preparations
+ * @module @singula-ai/alego-session-persistence/preparations
  */
 
-import type { Session, SessionId } from '@alego/session'
+import type { Session, SessionId } from '@singula-ai/alego-session'
 
 interface PreparedSource {
   readonly session: Session

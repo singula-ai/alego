@@ -14,11 +14,11 @@ It is a **library, not a service or plugin**: no `ctx`, registers nothing, emits
 import {
   ItemRetainer, TextRetainer,
   describeOmitted, formatRetentionNotice,
-} from '@alego/output-retention'
+} from '@singula-ai/alego-output-retention'
 import type {
   Omitted, PushDecision, RetainedItems, RetainedText,
   ItemRetentionStrategy, TextRetentionStrategy, RetentionNotice,
-} from '@alego/output-retention'
+} from '@singula-ai/alego-output-retention'
 ```
 
 | Export | Role |

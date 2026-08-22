@@ -11,7 +11,7 @@ Cordis 插件可能因修改配置、热重载、显式资源释放或所需服�
 创建 `lifecycle.ts`，将它放在 `tmp/cordis-tutorial` 中：
 
 ```ts
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 
 export const name = 'lifecycle-demo'
 

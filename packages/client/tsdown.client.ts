@@ -55,21 +55,21 @@ function styleInjectionModule(
 /**
  * Wire/type layers a client bundle may inline: browser-safe contracts
  * with no runtime identity to share (no Symbol/instanceof/singleton state).
- * Everything else under @alego/* is either a module-table entry
+ * Everything else under @singula-ai/alego-* is either a module-table entry
  * (external) or a leak the purity gate rejects.
  */
-export const INLINE_SAFE = /^@alego\/(host-apiproxy|file-reference|session|llm|tools|brand)(\/|$)/
+export const INLINE_SAFE = /^@singula-ai\/alego-(host-apiproxy|file-reference|session|llm|tools|brand)(\/|$)/
 
 /**
- * Vendored framework libraries: rescoped into @alego, so the gate below
+ * Vendored framework libraries: rescoped into @singula-ai, so the gate below
  * would read them as plugin packages. They carry no cross-plugin runtime
  * identity to share — the framework itself is a requested module-table row
  * (external), while these are ordinary libraries a browser bundle inlines.
  */
-const VENDORED_LIBRARY = /^@alego\/(cosmokit|schemastery)(\/|$)/
+const VENDORED_LIBRARY = /^@singula-ai\/(cosmokit|schemastery)(\/|$)/
 
 /** Generated descriptor/codec contribution with no shared runtime identity. */
-const GENERATED_REMOTE = /^@alego\/[a-z0-9]+(?:-[a-z0-9]+)*\/remote$/
+const GENERATED_REMOTE = /^@singula-ai\/alego-[a-z0-9]+(?:-[a-z0-9]+)*\/remote$/
 
 /**
  * Workspace mode replaces an empty config array with the root defaults. A
@@ -479,13 +479,13 @@ function clientConfig(id: string, entry: string): UserConfig {
     plugins: [{
       // Bundle purity gate (build-time mirror of the module-edge rules): the
       // baseline and package-specific requests stay external, inline-safe wire layers
-      // inline, and every other @alego value import is a build error — a
+      // inline, and every other @singula-ai value import is a build error — a
       // cross-plugin value import either inlines a duplicate runtime instance
       // or requires a specifier the module table cannot answer for this package.
       // Cross-plugin collaboration goes through cordis services instead.
       name: 'alego-client-bundle-purity',
       resolveId(source: string) {
-        if (!source.startsWith('@alego/')) return null
+        if (!source.startsWith('@singula-ai/')) return null
         if (isRequested(source)) return null // requested module-table row: external wins
         if (VENDORED_LIBRARY.test(source)) return null // vendored library: inline, no shared identity
         if (INLINE_SAFE.test(source) || GENERATED_REMOTE.test(source)) return null // wire contribution: inline is the point

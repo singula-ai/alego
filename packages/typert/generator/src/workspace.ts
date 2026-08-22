@@ -1,6 +1,6 @@
 /**
  * Workspace-level discovery and model-driven Typert generation.
- * @module @alego/typert-generator/workspace
+ * @module @singula-ai/alego-typert-generator/workspace
  */
 
 import { readFileSync } from 'node:fs'

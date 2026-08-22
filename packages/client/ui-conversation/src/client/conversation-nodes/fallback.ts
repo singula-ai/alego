@@ -1,11 +1,11 @@
-import type { Context } from '@alego/cordis'
+import type { Context } from '@singula-ai/cordis'
 import type {
   ConversationNodeDefinition, UnknownSurfaceNode,
-} from '@alego/client-runtime/client'
-import { isAppendSurfaceEvent } from '@alego/client-runtime/client'
+} from '@singula-ai/alego-client-runtime/client'
+import { isAppendSurfaceEvent } from '@singula-ai/alego-client-runtime/client'
 import { chatNode } from './common.ts'
 
-declare module '@alego/client-ui-conversation/client' {
+declare module '@singula-ai/alego-client-ui-conversation/client' {
   interface ChatNodeDataMap {
     /** Generic presentation of an unclaimed append-surface event. */
     unknown: UnknownSurfaceNode

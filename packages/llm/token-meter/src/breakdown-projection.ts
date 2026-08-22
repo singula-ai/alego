@@ -6,14 +6,14 @@
  */
 
 import { z } from 'zod'
-import { canonicalHeader } from '@alego/session'
-import type { ProjectionDefinition } from '@alego/session-projection'
+import { canonicalHeader } from '@singula-ai/alego-session'
+import type { ProjectionDefinition } from '@singula-ai/alego-session-projection'
 import { estimateSystemTokens, estimateToolsTokens } from './estimate.ts'
 import { foldSurfaceProjection } from './surface-projection.ts'
 // Import for the `contextBreakdown` SessionProjectionStateMap key merge.
 import type {} from './projection.ts'
 
-declare module '@alego/session-projection/types' {
+declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionStateMap {
     contextBreakdown: ContextBreakdownState
   }

@@ -1,4 +1,4 @@
-import { Formatter } from '@alego/cordis'
+import { Formatter } from '@singula-ai/cordis'
 import { inspect } from 'node:util'
 import supportsColor from 'supports-color'
 import { ConsoleExporter as Base } from './shared.ts'

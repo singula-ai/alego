@@ -3,7 +3,7 @@
 
 - insert:
     - id: time-context
-      name: '@alego/time-context'
+      name: '@singula-ai/alego-time-context'
 
     - id: schedule
-      name: '@alego/schedule'
+      name: '@singula-ai/alego-schedule'
