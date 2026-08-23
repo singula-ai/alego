@@ -219,7 +219,6 @@ export async function startDeepSeekResponsesBridge(
         response.end()
         return
       }
-      seenRequests += 1
       const authorization = request.headers.authorization
       if (
         typeof authorization !== 'string'
@@ -233,6 +232,11 @@ export async function startDeepSeekResponsesBridge(
       if (!task.includes(nonce)) {
         throw new Error('Codex DeepSeek bridge request omitted the expected nonce')
       }
+      // Counted only once the request is accepted. Counting a rejected request
+      // spends the single-request budget on it, so Codex's retry of a request
+      // the bridge never served answers 409 and reports contention instead of
+      // the rejection that actually ended the run.
+      seenRequests += 1
       const text = await completeWithDeepSeek(authorization, task)
       completedRequests += 1
       response.writeHead(200, {
