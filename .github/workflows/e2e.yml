@@ -30,7 +30,7 @@ name: E2E (real DeepSeek API)
 on:
   workflow_dispatch:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
   schedule:
     # 00:17 UTC nightly = 08:17 Asia/Shanghai — off the top-of-hour cron stampede.
@@ -108,7 +108,7 @@ jobs:
 
       # Real-API end-to-end tests only. The keyless gates (lint/typecheck/
       # coverage/snapshot/etc.) already run in ci.yml (pull requests) and
-      # ci-master.yml (master push standby).
+      # ci-master.yml (main push standby).
       # DEEPSEEK_BASE_URL is pinned to the external API; the secret is scoped to
       # this step (and preflight) only — never exposed to checkout/setup/install.
       - name: E2E tests (real DeepSeek API)

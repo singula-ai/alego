@@ -122,7 +122,7 @@ Use inline TODO/FIXME/XXX only for small, local cleanups that are clearly useful
 
 ## When Folding Another PR Or Branch
 
-Diff the sibling branch against `origin/master`, not against the current PR branch, so you see its independent contribution. For each item:
+Diff the sibling branch against `origin/main`, not against the current PR branch, so you see its independent contribution. For each item:
 
 - Port non-overlapping Agent Notes or TODOs that meet the quality bar.
 - Consolidate overlapping material into the existing Agent Note that owns the topic.

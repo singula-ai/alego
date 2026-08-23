@@ -7,7 +7,7 @@
 #
 # The build signal does not depend on this workflow. Every pull request builds
 # the production site through `check:ci:static`, and ci-master.yml builds it
-# again on master.
+# again on main.
 name: Deploy documentation
 
 on:
