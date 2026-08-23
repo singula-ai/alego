@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-brand-official",
   "description": "Official Alego brand occupants for the Web client's sidebar and conversation Hero slots",
-  "version": "0.1.1-rc.2",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },

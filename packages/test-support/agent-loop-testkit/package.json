@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-agent-loop-testkit",
   "description": "Shared prerequisite mounting for tests that exercise the concrete agent loop",
-  "version": "0.1.1-rc.2",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },

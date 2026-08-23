@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-pwsh-sandbox",
   "description": "Sandbox-consuming implementation of the Alego PowerShell executor seam (confines every command via ctx.sandbox, reports denial/enforcement result facts)",
-  "version": "0.1.1-rc.2",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },
