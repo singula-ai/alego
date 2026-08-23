@@ -36,7 +36,7 @@ describe('CI workflow', () => {
     }
   })
 
-  it('keeps a required Wine Windows job, a non-blocking native Windows job with failover, and a master-only standby', () => {
+  it('keeps a required Wine Windows job, a non-blocking native Windows job with failover, and a main-only standby', () => {
     const workflow = loadWorkflow('.github/workflows/ci.yml')
     const masterWorkflow = loadWorkflow('.github/workflows/ci-master.yml')
     if (!isRecord(workflow.jobs)
@@ -92,12 +92,12 @@ describe('CI workflow', () => {
     ))
     expect(nativeCommandSteps.map(step => step.run)).toContain('pnpm run check:ci:windows-complete')
 
-    // wine-apt-cache: master-only, seeds the Wine apt cache, lives in ci-master.
-    expect(wineAptCache.if).toBe("github.event_name == 'push' && github.ref == 'refs/heads/master'")
+    // wine-apt-cache: main-only, seeds the Wine apt cache, lives in ci-master.
+    expect(wineAptCache.if).toBe("github.event_name == 'push' && github.ref == 'refs/heads/main'")
     expect(wineAptCache['runs-on']).toBe('ubuntu-latest')
 
-    // serial-windows: master-only standby, self-hosted, non-blocking, lives in ci-master.
-    expect(serialWindows.if).toBe("github.event_name == 'push' && github.ref == 'refs/heads/master'")
+    // serial-windows: main-only standby, self-hosted, non-blocking, lives in ci-master.
+    expect(serialWindows.if).toBe("github.event_name == 'push' && github.ref == 'refs/heads/main'")
     expect(serialWindows['runs-on']).toEqual(['self-hosted', 'alego-win-ci', 'windows'])
     expect(serialWindows.name).toBe('serial / windows (self-hosted standby)')
 
@@ -120,7 +120,7 @@ describe('CI workflow', () => {
     expect(aggregate['runs-on']).toContain('vm-backup')
   })
 
-  it('exempts push from cancellation in ci-master, so one master merge does not cancel the running drill', () => {
+  it('exempts push from cancellation in ci-master, so one main merge does not cancel the running drill', () => {
     const workflow = loadWorkflow('.github/workflows/ci-master.yml')
     const prWorkflow = loadWorkflow('.github/workflows/ci.yml')
     if (!isRecord(workflow.jobs) || !isRecord(workflow.concurrency)) {
@@ -133,10 +133,10 @@ describe('CI workflow', () => {
     // Cancellation applies to the whole superseded RUN, so this has to be
     // decided at workflow level and gated on the event: a job-level group
     // cannot exempt its job from its run being cancelled. Only push is exempt —
-    // a drill takes longer than the interval between master merges. The negated
+    // a drill takes longer than the interval between main merges. The negated
     // form is load-bearing: `== 'pull_request'` would also stop cancelling
     // workflow_dispatch, and a re-dispatched runner benchmark holds up to 12
-    // larger runners for 15 minutes in this same group on master.
+    // larger runners for 15 minutes in this same group on main.
     expect(workflow.concurrency['cancel-in-progress']).toBe("${{ github.event_name != 'push' }}")
 
     // The PR-only ci.yml still cancels a superseded run on a new push, so a
@@ -146,8 +146,8 @@ describe('CI workflow', () => {
       'cancel-in-progress': true,
     })
 
-    // The exact event sets are what keep master-only jobs out of the PR check
-    // panel: ci-master triggers only on push(master) + workflow_dispatch and
+    // The exact event sets are what keep main-only jobs out of the PR check
+    // panel: ci-master triggers only on push(main) + workflow_dispatch and
     // never on pull_request; ci.yml is exactly pull_request-only. Assert the
     // full sets so losing the wrong event, or gaining an extra one, fails.
     if (!isRecord(workflow.on) || !isRecord(prWorkflow.on)) {
@@ -162,11 +162,11 @@ describe('CI workflow', () => {
       const job = workflow.jobs[name]
       if (!isRecord(job)) throw new TypeError(`${name} must be defined`)
       expect(job.concurrency).toBeUndefined()
-      // Both stay master-push-only; that is what makes the push carve-out safe.
-      expect(job.if).toBe("github.event_name == 'push' && github.ref == 'refs/heads/master'")
+      // Both stay main-push-only; that is what makes the push carve-out safe.
+      expect(job.if).toBe("github.event_name == 'push' && github.ref == 'refs/heads/main'")
     }
 
-    // What bounds the cost of exempting push: a master push may only carry the
+    // What bounds the cost of exempting push: a main push may only carry the
     // cache seeder and the two drills. Any job reachable on push would start
     // accumulating uncancelled runs, so the set is pinned here.
     const NOT_PUSH_REACHABLE = new Set([
@@ -186,7 +186,7 @@ describe('CI workflow', () => {
     expect(pushReachable).toEqual(['serial-linux-selfhosted', 'serial-windows', 'wine-apt-cache'])
 
     // Why workflow_dispatch must keep cancelling: each benchmark fans out to a
-    // dozen larger runners at once, in this same group on master. If it stopped
+    // dozen larger runners at once, in this same group on main. If it stopped
     // cancelling, a re-dispatch would queue ahead of a drill instead of
     // replacing the stale measurement.
     for (const name of ['larger-runner-benchmark', 'consolidated-runner-benchmark']) {
@@ -460,7 +460,7 @@ describe('Issue lifecycle workflow', () => {
 
 describe('npm release workflows', () => {
   it('keeps publication dispatch-only and pack in the PR workflow', () => {
-    // pack stays in the PR/master release workflows so a PR proves the set packs.
+    // pack stays in the PR/main release workflows so a PR proves the set packs.
     for (const file of ['release.yml', 'release-vendor.yml']) {
       const workflow = loadWorkflow(`.github/workflows/${file}`)
       if (!isRecord(workflow.jobs)) throw new TypeError(`${file} must define jobs`)

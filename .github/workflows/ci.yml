@@ -32,7 +32,7 @@ jobs:
   # three onto the in-house
   # vm-backup pool and re-running the failed jobs is the entire switch —
   # see .agents/notes/implemented/process/2026-07-26-ci-failover-runbook.md. The
-  # in-house pool's readiness is re-proven on every master push by the
+  # in-house pool's readiness is re-proven on every main push by the
   # serial-linux-selfhosted standby lane in ci-master.yml. The Windows failover
   # switch is the separate ALEGO_CI_FAILOVER_WINDOWS variable on the windows-native
   # job below.
@@ -188,7 +188,7 @@ jobs:
           echo "path=$store_path" >> "$GITHUB_OUTPUT"
 
       # Pull requests restore the pnpm store and Playwright caches without paying
-      # compression and upload on the required path. No master job saves these
+      # compression and upload on the required path. No job on main saves these
       # hosted cache keys, so each restore-keys fallback hits the matching archived
       # entry until it evicts, after which the store is cold. Skipped under failover
       # — the self-hosted VM's persistent store is already warm.
@@ -349,7 +349,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-${{ env.PRIMARY_NODE_VERSION }}-pnpm-
 
-      # Master's wine-apt-cache job in ci-master.yml seeds the default-branch
+      # The wine-apt-cache job in ci-master.yml seeds the default-branch
       # scope every pull request can read; a save from this job only reaches
       # reruns of the same merge ref.
       - name: Compose Wine apt cache key
@@ -459,7 +459,7 @@ jobs:
   # node versions evolve. Every blocking job in THIS workflow must be listed in
   # `needs`. The required Wine job is listed as `windows`; `windows-native` is
   # deliberately absent so its independent result never delays or changes this
-  # verdict. (`needs` cannot reach across workflow files; the master-only jobs in
+  # verdict. (`needs` cannot reach across workflow files; the main-only jobs in
   # ci-master.yml are intentionally not part of this PR verdict.)
   # `if: always()` is load-bearing: without it a failed dependency
   # would SKIP this job, and GitHub counts a skipped required check as passing

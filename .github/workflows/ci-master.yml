@@ -2,7 +2,7 @@ name: CI master
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
     inputs:
       suite:
@@ -14,8 +14,8 @@ on:
           - larger-runner-benchmark
           - consolidated-runner-benchmark
 
-# A master push may carry only the two self-hosted standby drills and the Wine
-# apt cache seeder; those drills outlast the interval between master merges, so
+# A main push may carry only the two self-hosted standby drills and the Wine
+# apt cache seeder; those drills outlast the interval between main merges, so
 # push is exempt from cancellation (see ci-failover-runbook). workflow_dispatch
 # keeps cancelling: a re-dispatched runner benchmark holds up to 12 larger
 # runners for 15 minutes in this same group.
@@ -38,7 +38,7 @@ jobs:
   # pull-request runs are scoped to their own merge ref and help nobody
   # else. Runs in seconds when the image version already has a cache.
   wine-apt-cache:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     name: wine apt cache
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -62,7 +62,7 @@ jobs:
           cp /var/cache/apt/archives/*.deb "$HOME/wine-debs/"
           du -sh "$HOME/wine-debs"
 
-  # Hot-standby drill for the in-house self-hosted pool: every master move
+  # Hot-standby drill for the in-house self-hosted pool: every main move
   # re-runs the complete unsharded aggregate on the persistent 64-core VM,
   # continuously proving that environment can take over a required lane if
   # the hosted pools degrade (the switch is then setting the writer-manageable
@@ -73,7 +73,7 @@ jobs:
   # persistent pnpm store and tool caches make them redundant (and saving here
   # would poison the hosted cache namespace with self-hosted paths).
   serial-linux-selfhosted:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     name: serial / linux (self-hosted standby)
     runs-on: [self-hosted, linux, x64, vm-backup]
     steps:
@@ -120,7 +120,7 @@ jobs:
 
   # TODO(hosted-serial-ci): Re-enable the one remaining disabled hosted serial
   # reference job (serial-macos) before release. Re-enabling serial-macos does
-  # not restore a Linux hosted-cache producer: decide whether to add a master
+  # not restore a Linux hosted-cache producer: decide whether to add a main
   # seeder or remove the restore-only steps if cold starts become a concern.
   serial-macos:
     if: false
@@ -149,7 +149,7 @@ jobs:
           ALEGO_SNAPSHOT_MAX_CONCURRENCY: '1'
         run: pnpm run check:ci
 
-  # Hot-standby drill for the in-house self-hosted Windows pool: every master
+  # Hot-standby drill for the in-house self-hosted Windows pool: every main
   # move re-runs the complete unsharded Windows gate inventory on the persistent
   # VM, continuously proving that environment can take over the required
   # `windows` lane if the hosted pool degrades (the switch is setting the
@@ -161,7 +161,7 @@ jobs:
   # (and saving here would poison the hosted cache namespace with self-hosted
   # paths).
   serial-windows:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     name: serial / windows (self-hosted standby)
     runs-on: [self-hosted, alego-win-ci, windows]
     timeout-minutes: 120

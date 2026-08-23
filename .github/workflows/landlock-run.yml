@@ -14,7 +14,7 @@ on:
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
   push:
-    branches: [master]
+    branches: [main]
     paths:
       - '.github/workflows/landlock-run.yml'
       - '.github/workflows/landlock-run-release.yml'

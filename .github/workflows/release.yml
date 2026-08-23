@@ -2,7 +2,7 @@
 # entries, all on one version. The vendored framework and the native packages are
 # separate sequences with their own workflows and version lines.
 #
-# Pack runs without credentials on every pull request and master push, so a
+# Pack runs without credentials on every pull request and main push, so a
 # pull request proves the whole publish set still packs. Publication is a manual
 # workflow_dispatch of release-publish.yml from an alego-v* tag.
 name: Release (alego)
@@ -10,7 +10,7 @@ name: Release (alego)
 on:
   pull_request:
   push:
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
