@@ -14,11 +14,11 @@ import {
 } from './policy.mjs'
 
 const withDetails = (summary) =>
-  `${summary}\n\n<details><summary>验收与细节</summary>待补充。</details>`
+  `${summary}\n\n<details><summary>Acceptance and detail</summary>TBD.</details>`
 
 const legalIssue = {
-  title: '完成议题管理校验',
-  body: withDetails('完成议题管理校验。'),
+  title: 'Complete issue management validation',
+  body: withDetails('Complete issue management validation.'),
   assignees: [],
   labels: [],
   type: 'Idea',
@@ -73,18 +73,18 @@ test('counts only text outside details', () => {
 })
 
 test('requires a balanced default-collapsed details region', () => {
-  assert.deepEqual(validateBody({ body: '完成工作。', assignees: [] }), [
+  assert.deepEqual(validateBody({ body: 'Complete the work.', assignees: [] }), [
     'body must contain a collapsed <details> section',
   ])
   assert.deepEqual(
     validateBody({
-      body: '完成工作。\n\n<details open><summary>细节</summary>待补充。</details>',
+      body: 'Complete the work.\n\n<details open><summary>Detail</summary>TBD.</details>',
       assignees: [],
     }),
     ['details must be collapsed by default; open is not allowed'],
   )
   assert.deepEqual(
-    validateBody({ body: '完成工作。\n\n<details><summary>细节</summary>', assignees: [] }),
+    validateBody({ body: 'Complete the work.\n\n<details><summary>Detail</summary>', assignees: [] }),
     ['details tags must be balanced'],
   )
 })
@@ -92,7 +92,7 @@ test('requires a balanced default-collapsed details region', () => {
 test('requires Owner for multiple assignees', () => {
   assert.deepEqual(
     validateBody({
-      body: withDetails('完成工作。'),
+      body: withDetails('Complete the work.'),
       assignees: ['tianyicui', 'tianyicui-bot'],
     }),
     ['with multiple assignees the first non-blank line must be Owner: @login'],
@@ -102,14 +102,14 @@ test('requires Owner for multiple assignees', () => {
 test('accepts an intended Owner while assignment permission is pending', () => {
   assert.deepEqual(
     validateBody({
-      body: withDetails('Owner: @octocat\n\n完成工作。'),
+      body: withDetails('Owner: @octocat\n\nComplete the work.'),
       assignees: [],
     }),
     [],
   )
   assert.deepEqual(
     validateBody({
-      body: withDetails('Owner: @octocat\n\n完成工作。'),
+      body: withDetails('Owner: @octocat\n\nComplete the work.'),
       assignees: ['hubot'],
     }),
     ['with zero or one assignee an Owner line is not allowed'],
@@ -124,7 +124,7 @@ test('allows optional metadata in every open Status', () => {
 })
 
 test('rejects metadata prefixes in an Issue title', () => {
-  const errors = validateIssue({ ...legalIssue, title: '[Bug] 修复恢复错误' })
+  const errors = validateIssue({ ...legalIssue, title: '[Bug] Fix the restore error' })
   assert.ok(errors.includes('Issue title must not carry a Type, Priority, Status, area, or Owner prefix'))
 })
 

@@ -292,7 +292,6 @@ export function validateIssue(issue) {
     (label) => label.startsWith('kind/') || LEGACY_LABELS.has(label),
   )
 
-  if (!/\p{Script=Han}/u.test(issue.title)) errors.push('Issue title must contain Chinese')
   if (invalidLabels.length > 0) {
     errors.push(`Issue must not use PR kind or legacy labels: ${invalidLabels.join(', ')}`)
   }
