@@ -43,6 +43,33 @@
   grid-column: 2;
 }
 
+/* The brand word in the headline. `color` is the fallback that paints
+   wherever `background-clip: text` is unsupported, so the word is never
+   invisible; where the clip applies it wins and the gradient shows through
+   the glyphs. Stops are fixed hues rather than theme tokens because the
+   spectrum is the point — they read on both themes. */
+.brandWord {
+  background-image: linear-gradient(
+    90deg,
+    #f2385a 0%,
+    #f5a524 20%,
+    #7ac74f 40%,
+    #35b8c4 60%,
+    #4f7cf2 80%,
+    #9b5de5 100%
+  );
+  color: var(--dsw-alias-label-primary);
+  font-weight: 600;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .brandWord {
+    color: transparent;
+  }
+}
+
 .previewBadge {
   grid-row: 1;
   grid-column: 3;

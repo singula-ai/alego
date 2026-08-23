@@ -77,14 +77,14 @@ describe('alego badge assembled snapshot', () => {
       </skill_resources>
 
       <skill_instructions>
-      # alego Badge
+      # Alego Badge
 
       Add the official “powered by alego” badge without recreating or restyling it.
 
       ## Assets
 
       - Local PNG: [\`alego-badge.png\`](alego-badge.png), 726×120 source image; render at 121×20
-      - Shields.io image URL: \`https://img.shields.io/badge/powered_by-alego-4D6BFE?style=flat-square&logo=deepseek&logoColor=white\`
+      - Shields.io image URL: \`https://img.shields.io/badge/powered_by-alego-F5A524?style=flat-square\`
       - Project URL: \`https://github.com/singula-ai/alego\`
 
       ## Markdown
@@ -92,13 +92,13 @@ describe('alego badge assembled snapshot', () => {
       Use this linked badge in Markdown:
 
       \`\`\`markdown
-      [![](https://img.shields.io/badge/powered_by-alego-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/singula-ai/alego)
+      [![](https://img.shields.io/badge/powered_by-alego-F5A524?style=flat-square)](https://github.com/singula-ai/alego)
       \`\`\`
 
       If attribution should not be linked, use:
 
       \`\`\`markdown
-      ![](https://img.shields.io/badge/powered_by-alego-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)
+      ![](https://img.shields.io/badge/powered_by-alego-F5A524?style=flat-square)
       \`\`\`
 
       ## Usage rules
@@ -116,14 +116,14 @@ describe('alego badge assembled snapshot', () => {
           ],
           "isError": false,
           "value": {
-            "content": "# alego Badge
+            "content": "# Alego Badge
 
       Add the official “powered by alego” badge without recreating or restyling it.
 
       ## Assets
 
       - Local PNG: [\`alego-badge.png\`](alego-badge.png), 726×120 source image; render at 121×20
-      - Shields.io image URL: \`https://img.shields.io/badge/powered_by-alego-4D6BFE?style=flat-square&logo=deepseek&logoColor=white\`
+      - Shields.io image URL: \`https://img.shields.io/badge/powered_by-alego-F5A524?style=flat-square\`
       - Project URL: \`https://github.com/singula-ai/alego\`
 
       ## Markdown
@@ -131,13 +131,13 @@ describe('alego badge assembled snapshot', () => {
       Use this linked badge in Markdown:
 
       \`\`\`markdown
-      [![](https://img.shields.io/badge/powered_by-alego-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/singula-ai/alego)
+      [![](https://img.shields.io/badge/powered_by-alego-F5A524?style=flat-square)](https://github.com/singula-ai/alego)
       \`\`\`
 
       If attribution should not be linked, use:
 
       \`\`\`markdown
-      ![](https://img.shields.io/badge/powered_by-alego-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)
+      ![](https://img.shields.io/badge/powered_by-alego-F5A524?style=flat-square)
       \`\`\`
 
       ## Usage rules

@@ -13,6 +13,25 @@ import { workspaceTitleOf } from '@singula-ai/alego-client-runtime/client'
 import type { ConversationSlotProps } from '../contract/slots.ts'
 import css from './HeroShell.module.css'
 
+/**
+ * The brand word inside the headline. Both dictionaries embed it literally so
+ * each language keeps its own word order while the word itself stays a single
+ * token the renderer can style.
+ */
+const BRAND_WORD = 'ALEGO'
+
+/**
+ * Split a headline around {@link BRAND_WORD} so the brand carries its own ink.
+ * A dictionary that omits the word renders as ordinary text.
+ * @param headline - the translated headline.
+ * @returns the headline's nodes, with the brand word wrapped when present.
+ */
+function headlineNodes(headline: string): ReactNode {
+  const [before, ...rest] = headline.split(BRAND_WORD)
+  if (rest.length === 0) return headline
+  return <>{before}<span className={css.brandWord}>{BRAND_WORD}</span>{rest.join(BRAND_WORD)}</>
+}
+
 /** The owner's locale seat type, passed to hero chrome as a plain prop. */
 type HeroTranslate = ConversationSlotProps['t']
 
@@ -125,7 +144,7 @@ export function HeroShell({ t, renderSlot, children }: HeroShellProps) {
               fallback: <AlegoMark size={34} className={css.mark} />,
             })}
           </span>
-          <span className={css.headlineText}>{t('hero.headline')}</span>
+          <span className={css.headlineText}>{headlineNodes(t('hero.headline'))}</span>
           <span className={css.previewBadge}>{t('hero.preview')}</span>
         </div>
         <div className={css.body}>
