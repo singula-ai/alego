@@ -45,7 +45,7 @@ describe('web e2e: /goal human transcript presentation', () => {
 
   it('shows the bare input and result from a fresh session without a model turn', async () => {
     onTestFailed(() => saveFailureShot(page, 'web-e2e-goal-command-presentation'))
-    await expect.poll(() => page.getByText('Into the Unknown', { exact: false }).count(), {
+    await expect.poll(() => page.getByText('Build AI Agents with ALEGO Blocks', { exact: false }).count(), {
       timeout: 15_000,
     }).toBe(1)
     const input = page.locator('textarea').first()
@@ -78,7 +78,7 @@ describe('web e2e: /goal human transcript presentation', () => {
     await expect.poll(() => resultRow.count(), { timeout: 10_000 }).toBe(1)
     expect(await resultRow.getByText('goal', { exact: true }).count()).toBe(1)
     await expect.poll(() => page.locator('[data-phase="active"]').count()).toBe(1)
-    expect(await page.getByText('Into the Unknown', { exact: false }).count()).toBe(0)
+    expect(await page.getByText('Build AI Agents with ALEGO Blocks', { exact: false }).count()).toBe(0)
 
     const run = events.find(event => event.type === 'command/run')
     expect(run).toMatchObject({

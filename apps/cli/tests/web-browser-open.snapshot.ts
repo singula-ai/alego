@@ -81,9 +81,9 @@ describe.skipIf(!builtArtifactsExist)('alego web browser-open assembled snapshot
       stderr: result.stderr,
     }).toMatchInlineSnapshot(`
       {
+        "alegoHomePresent": false,
         "apiKeyPresent": false,
         "bootManifest": true,
-        "alegoHomePresent": false,
         "exitCode": 0,
         "openedUrl": "http://127.0.0.1:{{port}}",
         "opening": true,
