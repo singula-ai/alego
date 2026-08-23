@@ -42,9 +42,14 @@ const codexEntry = resolve(dirname(codexPackageJson), codexPackage.bin.codex)
  * @returns Provider diagnostic and bridge failures, or a note that neither exists.
  */
 function failureDetail(result: SubagentResult, bridge: DeepSeekResponsesBridge): string {
+  // Codex retries hard, so one cause can appear dozens of times; the counted
+  // set keeps the message bounded while still naming every distinct reason.
+  const counted = new Map<string, number>()
+  for (const failure of bridge.failures) counted.set(failure, (counted.get(failure) ?? 0) + 1)
+  const summary = [...counted].map(([reason, times]) => `${String(times)}x ${reason}`).join('; ')
   const parts = [
     result.diagnostic === undefined ? undefined : `diagnostic: ${result.diagnostic}`,
-    bridge.failures.length === 0 ? undefined : `bridge: ${bridge.failures.join('; ')}`,
+    summary === '' ? undefined : `bridge: ${summary}`,
   ].filter((part): part is string => part !== undefined)
   return parts.length === 0 ? 'no provider diagnostic and no bridge failure' : parts.join(' | ')
 }
