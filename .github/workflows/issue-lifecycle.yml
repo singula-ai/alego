@@ -55,7 +55,7 @@ jobs:
         with:
           client-id: ${{ vars.ALEGO_ISSUE_APP_CLIENT_ID }}
           private-key: ${{ secrets.ALEGO_ISSUE_APP_PRIVATE_KEY }}
-          owner: alego
+          owner: singula-ai
           repositories: alego
       - name: Handle repository event
         if: ${{ github.event_name != 'pull_request_review' || github.event.review.state == 'changes_requested' }}
