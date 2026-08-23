@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-connection",
   "description": "Wire consumer layer: HTTP-up/WebSocket-down client, ConnectionController dual streams with reconnect, and fixture api",
-  "version": "0.1.1-rc.2",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },

@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-llm-mock-server",
   "description": "Scriptable OpenAI-compatible HTTP/SSE fault server for LLM recovery tests",
-  "version": "0.1.1-rc.2",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },

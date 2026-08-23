@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-workspace",
   "description": "Workspace entity registry (ctx.workspaceRegistry): durable workspace records with validated session attachment over the domain data form for the Alego",
-  "version": "0.1.1-rc.2",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },

@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-jobs-local",
   "description": "Process-local implementation of the Alego background job registry seam",
-  "version": "0.1.1-rc.2",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },

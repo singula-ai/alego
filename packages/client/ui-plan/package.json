@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-plan",
   "description": "Plan-mode composer control: the conversation.input.plan seat over the plan projection and the /plan command channel",
-  "version": "0.1.1-rc.2",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },

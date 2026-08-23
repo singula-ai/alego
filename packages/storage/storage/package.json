@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-storage",
   "description": "Storage hub (ctx.storage): named backend registry plus mounted data-form facilities for the Alego",
-  "version": "0.1.1-rc.2",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },

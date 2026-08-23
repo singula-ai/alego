@@ -159,24 +159,9 @@ importers:
       '@singula-ai/alego-compaction-tool-result-pruner':
         specifier: workspace:^
         version: link:../../packages/compaction/compaction-tool-result-pruner
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../vendor/cordis
       '@singula-ai/alego-cordis-client-runner':
         specifier: workspace:^
         version: link:../../packages/extensions/cordis-client-runner
-      '@singula-ai/cordis-plugin-hmr':
-        specifier: workspace:^
-        version: link:../../vendor/hmr
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../vendor/loader
-      '@singula-ai/cordis-plugin-timer':
-        specifier: workspace:^
-        version: link:../../vendor/timer
       '@singula-ai/alego-fs-local':
         specifier: workspace:^
         version: link:../../packages/fs/fs-local
@@ -303,6 +288,21 @@ importers:
       '@singula-ai/alego-workflow-worker-thread':
         specifier: workspace:^
         version: link:../../packages/workflow/workflow-worker-thread
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../vendor/cordis
+      '@singula-ai/cordis-plugin-hmr':
+        specifier: workspace:^
+        version: link:../../vendor/hmr
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../vendor/loader
+      '@singula-ai/cordis-plugin-timer':
+        specifier: workspace:^
+        version: link:../../vendor/timer
       commander:
         specifier: ^15.0.0
         version: 15.0.0
@@ -373,12 +373,12 @@ importers:
       '@singula-ai/alego-cmdline':
         specifier: workspace:^
         version: link:../../packages/boot/cmdline
-      '@singula-ai/cordis-plugin-group':
-        specifier: workspace:^
-        version: link:../../vendor/group
       '@singula-ai/alego-pwsh-local':
         specifier: workspace:^
         version: link:../../packages/shell/pwsh-local
+      '@singula-ai/cordis-plugin-group':
+        specifier: workspace:^
+        version: link:../../vendor/group
       '@types/node':
         specifier: ^22.0.0
         version: 22.20.0
@@ -466,18 +466,6 @@ importers:
       '@singula-ai/alego-cordis-host-runner':
         specifier: workspace:*
         version: link:../packages/extensions/cordis-host-runner
-      '@singula-ai/cordis-plugin-hmr':
-        specifier: workspace:*
-        version: link:../vendor/hmr
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:*
-        version: link:../vendor/include
-      '@singula-ai/cordis-plugin-logger-console':
-        specifier: workspace:*
-        version: link:../vendor/logger-console
-      '@singula-ai/cordis-plugin-timer':
-        specifier: workspace:*
-        version: link:../vendor/timer
       '@singula-ai/alego-credentials-local':
         specifier: workspace:*
         version: link:../packages/credentials/credentials-local
@@ -562,9 +550,6 @@ importers:
       '@singula-ai/alego-sandbox-policy':
         specifier: workspace:^
         version: link:../packages/sandbox/sandbox-policy
-      '@singula-ai/schemastery':
-        specifier: link:../vendor/schemastery
-        version: link:../vendor/schemastery
       '@singula-ai/alego-scope':
         specifier: workspace:*
         version: link:../packages/core/scope
@@ -751,6 +736,21 @@ importers:
       '@singula-ai/alego-workflow-worker-thread':
         specifier: workspace:*
         version: link:../packages/workflow/workflow-worker-thread
+      '@singula-ai/cordis-plugin-hmr':
+        specifier: workspace:*
+        version: link:../vendor/hmr
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:*
+        version: link:../vendor/include
+      '@singula-ai/cordis-plugin-logger-console':
+        specifier: workspace:*
+        version: link:../vendor/logger-console
+      '@singula-ai/cordis-plugin-timer':
+        specifier: workspace:*
+        version: link:../vendor/timer
+      '@singula-ai/schemastery':
+        specifier: link:../vendor/schemastery
+        version: link:../vendor/schemastery
 
   native/landlock-run:
     devDependencies:
@@ -801,9 +801,6 @@ importers:
       '@singula-ai/alego-attachment':
         specifier: workspace:^
         version: link:../../attachment/attachment
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -819,6 +816,9 @@ importers:
       '@singula-ai/alego-user-approval':
         specifier: workspace:^
         version: link:../../interaction/user-approval
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/api/gateway:
     dependencies:
@@ -829,9 +829,6 @@ importers:
       '@singula-ai/alego-client-connection':
         specifier: workspace:^
         version: link:../../client/connection
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-host-webserver':
         specifier: workspace:^
         version: link:../../host/webserver
@@ -841,6 +838,9 @@ importers:
       '@singula-ai/alego-typert-registry':
         specifier: workspace:^
         version: link:../../typert/registry
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       zod:
         specifier: ^4.4.3
         version: 4.4.3
@@ -863,9 +863,6 @@ importers:
       '@singula-ai/alego-commands':
         specifier: workspace:^
         version: link:../../interaction/commands
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-cordis-host-runner':
         specifier: workspace:^
         version: link:../../extensions/cordis-host-runner
@@ -905,18 +902,21 @@ importers:
       '@singula-ai/alego-typert-registry':
         specifier: workspace:^
         version: link:../../typert/registry
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/attachment/attachment:
     devDependencies:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/attachment/attachment-local:
     dependencies:
@@ -930,15 +930,15 @@ importers:
       '@singula-ai/alego-attachment':
         specifier: workspace:^
         version: link:../attachment
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-home-paths':
         specifier: workspace:^
         version: link:../../util/home-paths
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/boot/app-boot:
     dependencies:
@@ -946,6 +946,18 @@ importers:
         specifier: ^4.2.0
         version: 4.2.0
     devDependencies:
+      '@singula-ai/alego-home-paths':
+        specifier: workspace:^
+        version: link:../../util/home-paths
+      '@singula-ai/alego-invariants':
+        specifier: workspace:^
+        version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/alego-launch-environment':
+        specifier: workspace:^
+        version: link:../../util/launch-environment
+      '@singula-ai/alego-system-prompt':
+        specifier: workspace:^
+        version: link:../../core/system-prompt
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
@@ -964,24 +976,15 @@ importers:
       '@singula-ai/cordis-plugin-timer':
         specifier: workspace:^
         version: link:../../../vendor/timer
-      '@singula-ai/alego-home-paths':
-        specifier: workspace:^
-        version: link:../../util/home-paths
-      '@singula-ai/alego-invariants':
-        specifier: workspace:^
-        version: link:../../runtime-diagnostics/invariants
-      '@singula-ai/alego-launch-environment':
-        specifier: workspace:^
-        version: link:../../util/launch-environment
-      '@singula-ai/alego-system-prompt':
-        specifier: workspace:^
-        version: link:../../core/system-prompt
       '@types/js-yaml':
         specifier: ^4.0.9
         version: 4.0.9
 
   packages/boot/cmdline:
     devDependencies:
+      '@singula-ai/alego-invariants':
+        specifier: workspace:^
+        version: link:../../runtime-diagnostics/invariants
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
@@ -991,9 +994,6 @@ importers:
       '@singula-ai/cordis-plugin-loader':
         specifier: workspace:^
         version: link:../../../vendor/loader
-      '@singula-ai/alego-invariants':
-        specifier: workspace:^
-        version: link:../../runtime-diagnostics/invariants
       commander:
         specifier: ^15.0.0
         version: 15.0.0
@@ -1039,12 +1039,6 @@ importers:
       '@singula-ai/alego-compaction-tool-result-pruner':
         specifier: workspace:^
         version: link:../../compaction/compaction-tool-result-pruner
-      '@singula-ai/cordis-plugin-hmr':
-        specifier: workspace:^
-        version: link:../../../vendor/hmr
-      '@singula-ai/cordis-plugin-timer':
-        specifier: workspace:^
-        version: link:../../../vendor/timer
       '@singula-ai/alego-credentials-local':
         specifier: workspace:^
         version: link:../../credentials/credentials-local
@@ -1231,13 +1225,19 @@ importers:
       '@singula-ai/alego-workflow-worker-thread':
         specifier: workspace:^
         version: link:../../workflow/workflow-worker-thread
-    devDependencies:
-      '@singula-ai/cordis':
+      '@singula-ai/cordis-plugin-hmr':
         specifier: workspace:^
-        version: link:../../../vendor/cordis
+        version: link:../../../vendor/hmr
+      '@singula-ai/cordis-plugin-timer':
+        specifier: workspace:^
+        version: link:../../../vendor/timer
+    devDependencies:
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/bundle/headless:
     dependencies:
@@ -1260,12 +1260,6 @@ importers:
       '@singula-ai/alego-agent-default-model':
         specifier: workspace:^
         version: link:../../core/agent-default-model
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -1275,6 +1269,12 @@ importers:
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/bundle/web-app:
     dependencies:
@@ -1446,9 +1446,6 @@ importers:
       '@singula-ai/alego-message-feedback':
         specifier: workspace:^
         version: link:../../feedback/message-feedback
-      '@singula-ai/schemastery':
-        specifier: link:../../../vendor/schemastery
-        version: link:../../../vendor/schemastery
       '@singula-ai/alego-session-log-export':
         specifier: workspace:^
         version: link:../../session-query/session-log-export
@@ -1479,6 +1476,9 @@ importers:
       '@singula-ai/alego-workspace':
         specifier: workspace:^
         version: link:../../workspace/workspace
+      '@singula-ai/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
       commander:
         specifier: ^15.0.0
         version: 15.0.0
@@ -1486,12 +1486,6 @@ importers:
         specifier: ^11.0.0
         version: 11.0.0
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -1501,6 +1495,12 @@ importers:
       '@singula-ai/alego-system-prompt':
         specifier: workspace:^
         version: link:../../core/system-prompt
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/client/connection:
     dependencies:
@@ -1517,9 +1517,6 @@ importers:
       '@singula-ai/alego-commands':
         specifier: workspace:^
         version: link:../../interaction/commands
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-host-apiproxy':
         specifier: workspace:^
         version: link:../../host/apiproxy
@@ -1538,6 +1535,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/ws':
         specifier: ^8.18.1
         version: 8.18.1
@@ -1551,18 +1551,18 @@ importers:
       '@singula-ai/alego-client-modules':
         specifier: workspace:^
         version: link:../modules
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-host-webserver':
         specifier: workspace:^
         version: link:../../host/webserver
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/client/locale:
     dependencies:
@@ -1591,15 +1591,15 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-settings':
         specifier: workspace:^
         version: link:../../settings/settings
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -1609,18 +1609,18 @@ importers:
 
   packages/client/modules:
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-host-webserver':
         specifier: workspace:^
         version: link:../../host/webserver
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/client/runtime:
     dependencies:
@@ -1649,9 +1649,6 @@ importers:
       '@singula-ai/alego-commands':
         specifier: workspace:^
         version: link:../../interaction/commands
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-host-apiproxy':
         specifier: workspace:^
         version: link:../../host/apiproxy
@@ -1685,6 +1682,9 @@ importers:
       '@singula-ai/alego-typert-registry':
         specifier: workspace:^
         version: link:../../typert/registry
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -1721,12 +1721,12 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -1755,12 +1755,12 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -1788,12 +1788,12 @@ importers:
       '@singula-ai/alego-client-ui-sidebar':
         specifier: workspace:^
         version: link:../ui-sidebar
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@testing-library/react':
         specifier: ^16.1.0
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1843,12 +1843,12 @@ importers:
       '@singula-ai/alego-commands':
         specifier: workspace:^
         version: link:../../interaction/commands
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -1910,9 +1910,6 @@ importers:
       '@singula-ai/alego-compaction':
         specifier: workspace:^
         version: link:../../compaction/compaction
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-goal':
         specifier: workspace:^
         version: link:../../goal/goal
@@ -1946,6 +1943,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -1976,15 +1976,15 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-system-prompt':
         specifier: workspace:^
         version: link:../../core/system-prompt
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2016,12 +2016,12 @@ importers:
       '@singula-ai/alego-client-ui-workspace':
         specifier: workspace:^
         version: link:../ui-workspace
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@testing-library/react':
         specifier: ^16.1.0
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2043,12 +2043,12 @@ importers:
       '@singula-ai/alego-client-ui-workspace':
         specifier: workspace:^
         version: link:../ui-workspace
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@testing-library/react':
         specifier: ^16.1.0
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2088,9 +2088,6 @@ importers:
       '@singula-ai/alego-commands':
         specifier: workspace:^
         version: link:../../interaction/commands
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-goal':
         specifier: workspace:^
         version: link:../../goal/goal
@@ -2103,6 +2100,9 @@ importers:
       '@singula-ai/alego-typert-protocol':
         specifier: workspace:^
         version: link:../../typert/protocol
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@testing-library/react':
         specifier: ^16.1.0
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2137,15 +2137,15 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-file-reference':
         specifier: workspace:^
         version: link:../../context/file-reference
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2173,12 +2173,12 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2200,12 +2200,12 @@ importers:
       '@singula-ai/alego-client-ui-theme':
         specifier: workspace:^
         version: link:../ui-theme
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2239,9 +2239,6 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -2251,6 +2248,9 @@ importers:
       '@singula-ai/alego-typert-protocol':
         specifier: workspace:^
         version: link:../../typert/protocol
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@testing-library/react':
         specifier: ^16.1.0
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2303,12 +2303,12 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2348,15 +2348,15 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-permission-presets':
         specifier: workspace:^
         version: link:../../interaction/permission-presets
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2387,15 +2387,15 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-plan-mode':
         specifier: workspace:^
         version: link:../../plan/plan-mode
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2466,12 +2466,12 @@ importers:
         specifier: ^4.3.1
         version: 4.3.1
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2496,9 +2496,6 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-file-reference':
         specifier: workspace:^
         version: link:../../context/file-reference
@@ -2511,6 +2508,9 @@ importers:
       '@singula-ai/alego-typert-protocol':
         specifier: workspace:^
         version: link:../../typert/protocol
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/client/ui-renderer:
     dependencies:
@@ -2527,12 +2527,12 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2567,15 +2567,15 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-settings':
         specifier: workspace:^
         version: link:../../settings/settings
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2619,15 +2619,15 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-settings':
         specifier: workspace:^
         version: link:../../settings/settings
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2661,12 +2661,12 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2697,12 +2697,12 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@testing-library/react':
         specifier: ^16.1.0
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2746,12 +2746,12 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2783,12 +2783,12 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2825,12 +2825,12 @@ importers:
       '@singula-ai/alego-client-ui-tool':
         specifier: workspace:^
         version: link:../ui-tool
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@testing-library/react':
         specifier: ^16.1.0
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2846,12 +2846,12 @@ importers:
 
   packages/client/ui-slots:
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2879,9 +2879,6 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -2891,6 +2888,9 @@ importers:
       '@singula-ai/alego-token-meter':
         specifier: workspace:^
         version: link:../../llm/token-meter
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2937,9 +2937,6 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-host-webserver':
         specifier: workspace:^
         version: link:../../host/webserver
@@ -2949,6 +2946,9 @@ importers:
       '@singula-ai/alego-settings':
         specifier: workspace:^
         version: link:../../settings/settings
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -2986,12 +2986,12 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@testing-library/react':
         specifier: ^16.1.0
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3038,15 +3038,15 @@ importers:
       '@singula-ai/alego-compaction':
         specifier: workspace:^
         version: link:../../compaction/compaction
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -3090,9 +3090,6 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3105,6 +3102,9 @@ importers:
       '@singula-ai/alego-user-questions':
         specifier: workspace:^
         version: link:../../interaction/user-questions
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -3132,9 +3132,6 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3147,6 +3144,9 @@ importers:
       '@singula-ai/alego-workflow':
         specifier: workspace:^
         version: link:../../workflow/workflow
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -3184,12 +3184,12 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -3211,15 +3211,15 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../ui-slots
+      '@singula-ai/alego-invariants':
+        specifier: workspace:^
+        version: link:../../runtime-diagnostics/invariants
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
       '@singula-ai/cordis-plugin-loader':
         specifier: workspace:^
         version: link:../../../vendor/loader
-      '@singula-ai/alego-invariants':
-        specifier: workspace:^
-        version: link:../../runtime-diagnostics/invariants
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -3238,21 +3238,21 @@ importers:
 
   packages/code-runtime/code-runtime:
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/code-runtime/code-runtime-python:
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/code-runtime/code-runtime-worker-thread:
     dependencies:
@@ -3263,9 +3263,6 @@ importers:
       '@singula-ai/alego-code-runtime':
         specifier: workspace:^
         version: link:../code-runtime
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3275,6 +3272,9 @@ importers:
       '@singula-ai/alego-timeout':
         specifier: workspace:^
         version: link:../../util/timeout
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/compaction/command-compact:
     devDependencies:
@@ -3287,6 +3287,15 @@ importers:
       '@singula-ai/alego-compaction':
         specifier: workspace:^
         version: link:../compaction
+      '@singula-ai/alego-invariants':
+        specifier: workspace:^
+        version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/alego-llm':
+        specifier: workspace:^
+        version: link:../../llm/llm
+      '@singula-ai/alego-session':
+        specifier: workspace:^
+        version: link:../../core/session
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
@@ -3296,15 +3305,6 @@ importers:
       '@singula-ai/cordis-plugin-loader':
         specifier: workspace:^
         version: link:../../../vendor/loader
-      '@singula-ai/alego-invariants':
-        specifier: workspace:^
-        version: link:../../runtime-diagnostics/invariants
-      '@singula-ai/alego-llm':
-        specifier: workspace:^
-        version: link:../../llm/llm
-      '@singula-ai/alego-session':
-        specifier: workspace:^
-        version: link:../../core/session
 
   packages/compaction/compaction:
     devDependencies:
@@ -3314,9 +3314,6 @@ importers:
       '@singula-ai/alego-commands':
         specifier: workspace:^
         version: link:../../interaction/commands
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3326,6 +3323,9 @@ importers:
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/compaction/compaction-basic:
     dependencies:
@@ -3351,15 +3351,6 @@ importers:
       '@singula-ai/alego-compaction-tool-result-pruner':
         specifier: workspace:^
         version: link:../compaction-tool-result-pruner
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3378,6 +3369,15 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/compaction/compaction-tool-result-pruner:
     dependencies:
@@ -3388,15 +3388,6 @@ importers:
       '@singula-ai/alego-compaction':
         specifier: workspace:^
         version: link:../compaction
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3409,6 +3400,15 @@ importers:
       '@singula-ai/alego-token-meter':
         specifier: workspace:^
         version: link:../../llm/token-meter
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/context/agent-instructions:
     dependencies:
@@ -3422,12 +3422,6 @@ importers:
       '@singula-ai/alego-agent-loop':
         specifier: workspace:^
         version: link:../../core/agent-loop
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-fs':
         specifier: workspace:^
         version: link:../../fs/fs
@@ -3458,6 +3452,12 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/context/file-reference:
     dependencies:
@@ -3468,15 +3468,15 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-typert-protocol':
         specifier: workspace:^
         version: link:../../typert/protocol
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/context/file-reference-local:
     dependencies:
@@ -3487,9 +3487,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-file-reference':
         specifier: workspace:^
         version: link:../file-reference
@@ -3502,6 +3499,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/context/session-reference:
     dependencies:
@@ -3518,9 +3518,6 @@ importers:
       '@singula-ai/alego-compaction':
         specifier: workspace:^
         version: link:../../compaction/compaction
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3539,6 +3536,9 @@ importers:
       '@singula-ai/alego-typert-protocol':
         specifier: workspace:^
         version: link:../../typert/protocol
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/context/time-context:
     dependencies:
@@ -3555,9 +3555,6 @@ importers:
       '@singula-ai/alego-agent-loop-testkit':
         specifier: workspace:^
         version: link:../../test-support/agent-loop-testkit
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3576,6 +3573,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/context/tmux-context:
     dependencies:
@@ -3586,9 +3586,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3604,12 +3601,12 @@ importers:
       '@singula-ai/alego-system-prompt':
         specifier: workspace:^
         version: link:../../core/system-prompt
-
-  packages/core/agent:
-    devDependencies:
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
+
+  packages/core/agent:
+    devDependencies:
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3631,6 +3628,9 @@ importers:
       '@singula-ai/alego-typert-registry':
         specifier: workspace:^
         version: link:../../typert/registry
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/core/agent-default-model:
     dependencies:
@@ -3641,9 +3641,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3653,6 +3650,9 @@ importers:
       '@singula-ai/alego-settings':
         specifier: workspace:^
         version: link:../../settings/settings
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/core/agent-loop:
     dependencies:
@@ -3663,9 +3663,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3693,6 +3690,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/core/agent-tool-presentation:
     dependencies:
@@ -3706,9 +3706,6 @@ importers:
       '@singula-ai/alego-code-runtime':
         specifier: workspace:^
         version: link:../../code-runtime/code-runtime
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3724,24 +3721,24 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../tools
-
-  packages/core/scope:
-    devDependencies:
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
+
+  packages/core/scope:
+    devDependencies:
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/core/session:
     devDependencies:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3757,6 +3754,9 @@ importers:
       '@singula-ai/alego-typert-registry':
         specifier: workspace:^
         version: link:../../typert/registry
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/core/system-prompt:
     dependencies:
@@ -3764,9 +3764,6 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3776,6 +3773,9 @@ importers:
       '@singula-ai/alego-scope':
         specifier: workspace:^
         version: link:../scope
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/core/tools:
     dependencies:
@@ -3789,9 +3789,6 @@ importers:
       '@singula-ai/alego-code-runtime':
         specifier: workspace:^
         version: link:../../code-runtime/code-runtime
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3810,12 +3807,12 @@ importers:
       '@singula-ai/alego-user-approval':
         specifier: workspace:^
         version: link:../../interaction/user-approval
-
-  packages/credentials/authorization:
-    devDependencies:
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
+
+  packages/credentials/authorization:
+    devDependencies:
       '@singula-ai/alego-credentials':
         specifier: workspace:^
         version: link:../credentials
@@ -3825,18 +3822,21 @@ importers:
       '@singula-ai/alego-llm':
         specifier: workspace:^
         version: link:../../llm/llm
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/credentials/credentials:
     devDependencies:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/credentials/credentials-local:
     dependencies:
@@ -3853,9 +3853,6 @@ importers:
       '@singula-ai/alego-atomic-write':
         specifier: workspace:^
         version: link:../../util/atomic-write
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-credentials':
         specifier: workspace:^
         version: link:../credentials
@@ -3868,6 +3865,9 @@ importers:
       '@singula-ai/alego-launch-environment':
         specifier: workspace:^
         version: link:../../util/launch-environment
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/e2b/e2b:
     dependencies:
@@ -3878,9 +3878,6 @@ importers:
         specifier: 2.29.1
         version: 2.29.1
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3890,12 +3887,12 @@ importers:
       '@singula-ai/alego-sandbox-policy':
         specifier: workspace:^
         version: link:../../sandbox/sandbox-policy
-
-  packages/e2b/fs-e2b:
-    devDependencies:
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
+
+  packages/e2b/fs-e2b:
+    devDependencies:
       '@singula-ai/alego-e2b':
         specifier: workspace:^
         version: link:../e2b
@@ -3905,6 +3902,9 @@ importers:
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/e2b/subprocess-e2b:
     dependencies:
@@ -3912,9 +3912,6 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-e2b':
         specifier: workspace:^
         version: link:../e2b
@@ -3927,6 +3924,9 @@ importers:
       '@singula-ai/alego-timeout':
         specifier: workspace:^
         version: link:../../util/timeout
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/examples/acp-demo:
     dependencies:
@@ -3949,15 +3949,6 @@ importers:
       '@singula-ai/alego-app-boot':
         specifier: workspace:^
         version: link:../../boot/app-boot
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -3979,6 +3970,15 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/examples/agent-spine-demo:
     dependencies:
@@ -4001,12 +4001,6 @@ importers:
       '@singula-ai/alego-bash-sandbox':
         specifier: workspace:^
         version: link:../../shell/bash-sandbox
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-timer':
-        specifier: workspace:^
-        version: link:../../../vendor/timer
       '@singula-ai/alego-fs-local':
         specifier: workspace:^
         version: link:../../fs/fs-local
@@ -4040,9 +4034,6 @@ importers:
       '@singula-ai/alego-llm-retry':
         specifier: workspace:^
         version: link:../../llm/llm-retry
-      '@singula-ai/node-addon-landlock-run':
-        specifier: workspace:^
-        version: link:../../../native/landlock-run/packages/entry
       '@singula-ai/alego-sandbox-local':
         specifier: workspace:^
         version: link:../../sandbox/sandbox-local
@@ -4091,6 +4082,15 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-timer':
+        specifier: workspace:^
+        version: link:../../../vendor/timer
+      '@singula-ai/node-addon-landlock-run':
+        specifier: workspace:^
+        version: link:../../../native/landlock-run/packages/entry
 
   packages/examples/jsonrpc-demo:
     dependencies:
@@ -4098,12 +4098,12 @@ importers:
         specifier: workspace:^
         version: link:../../boot/app-boot
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/experimental/agent-team:
     dependencies:
@@ -4126,9 +4126,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -4156,6 +4153,9 @@ importers:
       '@singula-ai/alego-subagent-spawn-in-process':
         specifier: workspace:^
         version: link:../../subagent/subagent-spawn-in-process
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/experimental/tool-agent-team:
     dependencies:
@@ -4172,9 +4172,6 @@ importers:
       '@singula-ai/alego-agent-loop-testkit':
         specifier: workspace:^
         version: link:../../test-support/agent-loop-testkit
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-experimental-agent-team':
         specifier: workspace:^
         version: link:../agent-team
@@ -4208,6 +4205,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/extensions/cordis-client-runner:
     devDependencies:
@@ -4226,15 +4226,15 @@ importers:
       '@singula-ai/alego-client-ui-theme':
         specifier: workspace:^
         version: link:../../client/ui-theme
+      '@singula-ai/alego-invariants':
+        specifier: workspace:^
+        version: link:../../runtime-diagnostics/invariants
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
       '@singula-ai/cordis-plugin-loader':
         specifier: workspace:^
         version: link:../../../vendor/loader
-      '@singula-ai/alego-invariants':
-        specifier: workspace:^
-        version: link:../../runtime-diagnostics/invariants
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -4257,12 +4257,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-timer':
-        specifier: workspace:^
-        version: link:../../../vendor/timer
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -4281,21 +4275,21 @@ importers:
       '@singula-ai/alego-typert-protocol':
         specifier: workspace:^
         version: link:../../typert/protocol
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-timer':
+        specifier: workspace:^
+        version: link:../../../vendor/timer
 
   packages/extensions/tool-cordis:
     devDependencies:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-cordis-host-runner':
         specifier: workspace:^
         version: link:../cordis-host-runner
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -4314,6 +4308,12 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/extensions/ui-cordis:
     devDependencies:
@@ -4344,15 +4344,15 @@ importers:
       '@singula-ai/alego-client-ui-tool':
         specifier: workspace:^
         version: link:../../client/ui-tool
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-cordis-client-runner':
         specifier: workspace:^
         version: link:../cordis-client-runner
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -4371,15 +4371,6 @@ importers:
       '@singula-ai/alego-commands':
         specifier: workspace:^
         version: link:../../interaction/commands
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -4392,6 +4383,15 @@ importers:
       '@singula-ai/alego-session-telemetry':
         specifier: workspace:^
         version: link:../../session/session-telemetry
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/feedback/message-feedback:
     dependencies:
@@ -4405,15 +4405,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -4441,15 +4432,21 @@ importers:
       '@singula-ai/alego-typert-protocol':
         specifier: workspace:^
         version: link:../../typert/protocol
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/fs/fs:
     devDependencies:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -4459,6 +4456,9 @@ importers:
       '@singula-ai/alego-sandbox':
         specifier: workspace:^
         version: link:../../sandbox/sandbox
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/fs/fs-local:
     dependencies:
@@ -4469,9 +4469,6 @@ importers:
         specifier: ^3.1.0
         version: 3.1.1
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-fs':
         specifier: workspace:^
         version: link:../fs
@@ -4481,12 +4478,12 @@ importers:
       '@singula-ai/alego-llm':
         specifier: workspace:^
         version: link:../../llm/llm
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/fs/fs-observation-policy:
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-fs':
         specifier: workspace:^
         version: link:../fs
@@ -4496,12 +4493,12 @@ importers:
       '@singula-ai/alego-llm':
         specifier: workspace:^
         version: link:../../llm/llm
-
-  packages/fs/fs-sandbox:
-    devDependencies:
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
+
+  packages/fs/fs-sandbox:
+    devDependencies:
       '@singula-ai/alego-fs':
         specifier: workspace:^
         version: link:../fs
@@ -4517,6 +4514,9 @@ importers:
       '@singula-ai/alego-sandbox-policy':
         specifier: workspace:^
         version: link:../../sandbox/sandbox-policy
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/fs/tool-fs:
     dependencies:
@@ -4539,9 +4539,6 @@ importers:
       '@singula-ai/alego-attachment':
         specifier: workspace:^
         version: link:../../attachment/attachment
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-fs':
         specifier: workspace:^
         version: link:../fs
@@ -4578,6 +4575,9 @@ importers:
       '@singula-ai/alego-user-approval':
         specifier: workspace:^
         version: link:../../interaction/user-approval
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/fs/tool-fs-search:
     dependencies:
@@ -4591,9 +4591,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -4624,6 +4621,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/fs/tool-str-replace-editor:
     dependencies:
@@ -4634,9 +4634,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-fs':
         specifier: workspace:^
         version: link:../fs
@@ -4670,6 +4667,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/goal/command-goal:
     devDependencies:
@@ -4679,12 +4679,6 @@ importers:
       '@singula-ai/alego-commands':
         specifier: workspace:^
         version: link:../../interaction/commands
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-goal':
         specifier: workspace:^
         version: link:../goal
@@ -4697,6 +4691,12 @@ importers:
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/goal/goal:
     dependencies:
@@ -4713,9 +4713,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -4737,6 +4734,9 @@ importers:
       '@singula-ai/alego-typert-protocol':
         specifier: workspace:^
         version: link:../../typert/protocol
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/goal/goal-round-driver:
     devDependencies:
@@ -4749,9 +4749,6 @@ importers:
       '@singula-ai/alego-agent-loop-testkit':
         specifier: workspace:^
         version: link:../../test-support/agent-loop-testkit
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-goal':
         specifier: workspace:^
         version: link:../goal
@@ -4770,6 +4767,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/goal/tool-goal:
     dependencies:
@@ -4780,12 +4780,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-goal':
         specifier: workspace:^
         version: link:../goal
@@ -4804,6 +4798,12 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/guard/repeat-tool-reminder:
     dependencies:
@@ -4820,9 +4820,6 @@ importers:
       '@singula-ai/alego-agent-loop-testkit':
         specifier: workspace:^
         version: link:../../test-support/agent-loop-testkit
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -4835,12 +4832,12 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
-
-  packages/guard/timeout-policy:
-    devDependencies:
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
+
+  packages/guard/timeout-policy:
+    devDependencies:
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -4853,12 +4850,12 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
-
-  packages/hooks/hook-protocol:
-    devDependencies:
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
+
+  packages/hooks/hook-protocol:
+    devDependencies:
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -4868,6 +4865,9 @@ importers:
       '@singula-ai/alego-shell':
         specifier: workspace:^
         version: link:../../shell/shell
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/hooks/hooks-claude-code:
     dependencies:
@@ -4887,9 +4887,6 @@ importers:
       '@singula-ai/alego-bash-local':
         specifier: workspace:^
         version: link:../../shell/bash-local
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-hook-protocol':
         specifier: workspace:^
         version: link:../hook-protocol
@@ -4920,6 +4917,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/hooks/hooks-codex:
     dependencies:
@@ -4939,9 +4939,6 @@ importers:
       '@singula-ai/alego-bash-local':
         specifier: workspace:^
         version: link:../../shell/bash-local
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-hook-protocol':
         specifier: workspace:^
         version: link:../hook-protocol
@@ -4969,6 +4966,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/host/apiproxy:
     dependencies:
@@ -5008,9 +5008,6 @@ importers:
       '@singula-ai/alego-native-command':
         specifier: workspace:^
         version: link:../../util/native-command
-      '@singula-ai/schemastery':
-        specifier: link:../../../vendor/schemastery
-        version: link:../../../vendor/schemastery
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
@@ -5050,6 +5047,9 @@ importers:
       '@singula-ai/alego-workspace':
         specifier: workspace:^
         version: link:../../workspace/workspace
+      '@singula-ai/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
       fflate:
         specifier: ^0.8.2
         version: 0.8.3
@@ -5060,9 +5060,6 @@ importers:
       '@singula-ai/alego-agent-presets':
         specifier: workspace:^
         version: link:../../preset/agent-presets
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-cordis-host-runner':
         specifier: workspace:^
         version: link:../../extensions/cordis-host-runner
@@ -5081,15 +5078,18 @@ importers:
       '@singula-ai/alego-typert-registry':
         specifier: workspace:^
         version: link:../../typert/registry
-
-  packages/host/directory-picker:
-    devDependencies:
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
+
+  packages/host/directory-picker:
+    devDependencies:
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/host/directory-picker-auto:
     devDependencies:
@@ -5099,15 +5099,6 @@ importers:
       '@singula-ai/alego-client-ui-directory-picker-native':
         specifier: workspace:^
         version: link:../../client/ui-directory-picker-native
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-host-directory-picker':
         specifier: workspace:^
         version: link:../directory-picker
@@ -5123,6 +5114,15 @@ importers:
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/host/directory-picker-browse:
     dependencies:
@@ -5133,12 +5133,12 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/host/directory-picker-native:
     dependencies:
@@ -5152,12 +5152,12 @@ importers:
         specifier: ^3.1.0
         version: 3.1.1
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       tsx:
         specifier: ^4.19.2
         version: 4.22.4
@@ -5168,18 +5168,18 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-host-webserver':
         specifier: workspace:^
         version: link:../webserver
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/host/plugin-inventory:
     dependencies:
@@ -5190,18 +5190,18 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-typert-protocol':
         specifier: workspace:^
         version: link:../../typert/protocol
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/host/webserver:
     dependencies:
@@ -5209,27 +5209,27 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/identity/anonymous-user-id:
     devDependencies:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-home-paths':
         specifier: workspace:^
         version: link:../../util/home-paths
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/interaction/commands:
     dependencies:
@@ -5246,9 +5246,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -5264,6 +5261,9 @@ importers:
       '@singula-ai/alego-typert-protocol':
         specifier: workspace:^
         version: link:../../typert/protocol
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/interaction/permission-presets:
     dependencies:
@@ -5277,9 +5277,6 @@ importers:
       '@singula-ai/alego-commands':
         specifier: workspace:^
         version: link:../commands
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -5304,15 +5301,15 @@ importers:
       '@singula-ai/alego-user-approval':
         specifier: workspace:^
         version: link:../user-approval
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/interaction/tool-ask-user:
     devDependencies:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -5328,6 +5325,9 @@ importers:
       '@singula-ai/alego-user-questions':
         specifier: workspace:^
         version: link:../user-questions
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/interaction/user-approval:
     dependencies:
@@ -5341,9 +5341,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -5359,21 +5356,24 @@ importers:
       '@singula-ai/alego-system-prompt':
         specifier: workspace:^
         version: link:../../core/system-prompt
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/interaction/user-questions:
     devDependencies:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-llm':
         specifier: workspace:^
         version: link:../../llm/llm
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/jobs/jobs:
     devDependencies:
@@ -5383,15 +5383,15 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/jobs/jobs-local:
     dependencies:
@@ -5405,15 +5405,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -5429,6 +5420,15 @@ importers:
       '@singula-ai/alego-timeout':
         specifier: workspace:^
         version: link:../../util/timeout
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/jobs/tool-jobs:
     dependencies:
@@ -5439,9 +5439,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -5466,6 +5463,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/llm/llm:
     dependencies:
@@ -5479,15 +5479,15 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-timeout':
         specifier: workspace:^
         version: link:../../util/timeout
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/llm/llm-deepseek:
     dependencies:
@@ -5510,9 +5510,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-credentials':
         specifier: workspace:^
         version: link:../../credentials/credentials
@@ -5534,15 +5531,18 @@ importers:
       '@singula-ai/alego-timeout':
         specifier: workspace:^
         version: link:../../util/timeout
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/llm/llm-pi-ai:
     dependencies:
-      '@singula-ai/schemastery':
-        specifier: link:../../../vendor/schemastery
-        version: link:../../../vendor/schemastery
       '@earendil-works/pi-ai':
         specifier: ^0.82.1
         version: 0.82.1(@modelcontextprotocol/sdk@1.29.0(zod@4.4.3))(ws@8.21.0)(zod@4.4.3)
+      '@singula-ai/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
     devDependencies:
       '@singula-ai/alego-attachment':
         specifier: workspace:^
@@ -5550,9 +5550,6 @@ importers:
       '@singula-ai/alego-authorization':
         specifier: workspace:^
         version: link:../../credentials/authorization
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-credentials':
         specifier: workspace:^
         version: link:../../credentials/credentials
@@ -5574,6 +5571,9 @@ importers:
       '@singula-ai/alego-timeout':
         specifier: workspace:^
         version: link:../../util/timeout
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/llm/llm-retry:
     dependencies:
@@ -5593,15 +5593,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -5632,6 +5623,15 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/llm/token-meter:
     dependencies:
@@ -5645,9 +5645,6 @@ importers:
       '@singula-ai/alego-compaction':
         specifier: workspace:^
         version: link:../../compaction/compaction
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -5660,21 +5657,24 @@ importers:
       '@singula-ai/alego-session-projection':
         specifier: workspace:^
         version: link:../../session/session-projection
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/lsp/lsp:
     devDependencies:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-llm':
         specifier: workspace:^
         version: link:../../llm/llm
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/lsp/lsp-stdio:
     dependencies:
@@ -5685,9 +5685,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-fs':
         specifier: workspace:^
         version: link:../../fs/fs
@@ -5712,6 +5709,9 @@ importers:
       '@singula-ai/alego-timeout':
         specifier: workspace:^
         version: link:../../util/timeout
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -5728,9 +5728,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-fs-local':
         specifier: workspace:^
         version: link:../../fs/fs-local
@@ -5764,28 +5761,34 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/mcp/mcp-client:
     dependencies:
-      '@singula-ai/schemastery':
-        specifier: link:../../../vendor/schemastery
-        version: link:../../../vendor/schemastery
       '@modelcontextprotocol/sdk':
         specifier: ^1.12.0
         version: 1.29.0(zod@4.4.3)
+      '@singula-ai/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
       zod:
         specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
+      '@modelcontextprotocol/server-everything':
+        specifier: ^2026.7.4
+        version: 2026.7.4
+      '@modelcontextprotocol/server-filesystem':
+        specifier: ^2026.7.4
+        version: 2026.7.10(zod@4.4.3)
       '@singula-ai/alego-attachment':
         specifier: workspace:^
         version: link:../../attachment/attachment
       '@singula-ai/alego-attachment-local':
         specifier: workspace:^
         version: link:../../attachment/attachment-local
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -5801,12 +5804,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
-      '@modelcontextprotocol/server-everything':
-        specifier: ^2026.7.4
-        version: 2026.7.4
-      '@modelcontextprotocol/server-filesystem':
-        specifier: ^2026.7.4
-        version: 2026.7.10(zod@4.4.3)
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/plan/plan-mode:
     dependencies:
@@ -5826,9 +5826,6 @@ importers:
       '@singula-ai/alego-commands':
         specifier: workspace:^
         version: link:../../interaction/commands
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -5850,6 +5847,9 @@ importers:
       '@singula-ai/alego-user-questions':
         specifier: workspace:^
         version: link:../../interaction/user-questions
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/preset/agent-presets:
     dependencies:
@@ -5869,15 +5869,6 @@ importers:
       '@singula-ai/alego-atomic-write':
         specifier: workspace:^
         version: link:../../util/atomic-write
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-home-paths':
         specifier: workspace:^
         version: link:../../util/home-paths
@@ -5905,6 +5896,15 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/preset/persona:
     dependencies:
@@ -5912,9 +5912,6 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -5924,6 +5921,9 @@ importers:
       '@singula-ai/alego-system-prompt':
         specifier: workspace:^
         version: link:../../core/system-prompt
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/runtime-diagnostics/invariants:
     dependencies:
@@ -5937,9 +5937,6 @@ importers:
 
   packages/sandbox/sandbox:
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -5949,22 +5946,22 @@ importers:
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/sandbox/sandbox-local:
     dependencies:
-      '@singula-ai/node-addon-landlock-run':
-        specifier: workspace:^
-        version: link:../../../native/landlock-run/packages/entry
       '@singula-ai/alego-sandbox-windows-acl':
         specifier: workspace:^
         version: link:../sandbox-windows-acl
+      '@singula-ai/node-addon-landlock-run':
+        specifier: workspace:^
+        version: link:../../../native/landlock-run/packages/entry
       '@singula-ai/schemastery':
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -5977,6 +5974,9 @@ importers:
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/sandbox/sandbox-policy:
     dependencies:
@@ -5987,9 +5987,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6002,6 +5999,9 @@ importers:
       '@singula-ai/alego-system-prompt':
         specifier: workspace:^
         version: link:../../core/system-prompt
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/sandbox/sandbox-windows-acl:
     dependencies:
@@ -6009,9 +6009,6 @@ importers:
         specifier: ^3.1.0
         version: 3.1.1
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6021,6 +6018,9 @@ importers:
       '@singula-ai/alego-sandbox-local':
         specifier: workspace:^
         version: link:../sandbox-local
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/schedule/schedule:
     devDependencies:
@@ -6036,12 +6036,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6063,12 +6057,15 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
-
-  packages/sdk/client:
-    devDependencies:
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
+
+  packages/sdk/client:
+    devDependencies:
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6081,12 +6078,12 @@ importers:
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
-
-  packages/sdk/protocol:
-    devDependencies:
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
+
+  packages/sdk/protocol:
+    devDependencies:
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6099,6 +6096,9 @@ importers:
       '@singula-ai/alego-subagent':
         specifier: workspace:^
         version: link:../../subagent/subagent
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/sdk/server:
     dependencies:
@@ -6112,12 +6112,6 @@ importers:
       '@singula-ai/alego-agent-spine-demo':
         specifier: workspace:^
         version: link:../../examples/agent-spine-demo
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6142,6 +6136,12 @@ importers:
       '@singula-ai/alego-subagent':
         specifier: workspace:^
         version: link:../../subagent/subagent
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/session-query/session-log-export:
     devDependencies:
@@ -6169,18 +6169,18 @@ importers:
       '@singula-ai/alego-commands':
         specifier: workspace:^
         version: link:../../interaction/commands
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -6193,9 +6193,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6211,6 +6208,9 @@ importers:
       '@singula-ai/alego-session-title':
         specifier: workspace:^
         version: link:../../session/session-title
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/session-query/session-query-sqlite:
     dependencies:
@@ -6218,12 +6218,6 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6239,6 +6233,12 @@ importers:
       '@singula-ai/alego-session-query':
         specifier: workspace:^
         version: link:../session-query
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/session-query/tool-session-query:
     dependencies:
@@ -6249,9 +6249,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6288,6 +6285,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/session/session-checkpoint-policy:
     devDependencies:
@@ -6300,12 +6300,6 @@ importers:
       '@singula-ai/alego-agent-loop-testkit':
         specifier: workspace:^
         version: link:../../test-support/agent-loop-testkit
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6327,15 +6321,18 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/session/session-persistence:
     devDependencies:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6348,6 +6345,9 @@ importers:
       '@singula-ai/alego-timeout':
         specifier: workspace:^
         version: link:../../util/timeout
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/session/session-persistence-jsonl:
     dependencies:
@@ -6358,9 +6358,6 @@ importers:
         specifier: ^3.1.0
         version: 3.1.1
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6370,6 +6367,9 @@ importers:
       '@singula-ai/alego-session-persistence':
         specifier: workspace:^
         version: link:../session-persistence
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/session/session-persistence-sqlite:
     dependencies:
@@ -6377,15 +6377,6 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6398,6 +6389,15 @@ importers:
       '@singula-ai/alego-session-persistence':
         specifier: workspace:^
         version: link:../session-persistence
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -6408,15 +6408,15 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/session/session-projection-cache:
     dependencies:
@@ -6427,9 +6427,6 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6448,6 +6445,9 @@ importers:
       '@singula-ai/alego-storage-domain':
         specifier: workspace:^
         version: link:../../storage/storage-domain
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/session/session-stats:
     dependencies:
@@ -6455,15 +6455,6 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6476,27 +6467,33 @@ importers:
       '@singula-ai/alego-session-projection':
         specifier: workspace:^
         version: link:../session-projection
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/session/session-telemetry:
     devDependencies:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/session/session-telemetry-otel:
     dependencies:
-      '@singula-ai/schemastery':
-        specifier: link:../../../vendor/schemastery
-        version: link:../../../vendor/schemastery
       '@opentelemetry/api':
         specifier: ^1.9.1
         version: 1.9.1
@@ -6515,6 +6512,9 @@ importers:
       '@opentelemetry/sdk-logs':
         specifier: ^0.220.0
         version: 0.220.0(@opentelemetry/api@1.9.1)
+      '@singula-ai/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
     devDependencies:
       '@singula-ai/alego-anonymous-user-id':
         specifier: workspace:^
@@ -6522,12 +6522,6 @@ importers:
       '@singula-ai/alego-command-feedback':
         specifier: workspace:^
         version: link:../../feedback/command-feedback
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6540,6 +6534,12 @@ importers:
       '@singula-ai/alego-session-telemetry':
         specifier: workspace:^
         version: link:../session-telemetry
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/session/session-title:
     dependencies:
@@ -6553,9 +6553,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6574,6 +6571,9 @@ importers:
       '@singula-ai/alego-session-projection':
         specifier: workspace:^
         version: link:../session-projection
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/session/session-title-all-prompts-llm:
     dependencies:
@@ -6581,9 +6581,6 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6599,6 +6596,9 @@ importers:
       '@singula-ai/alego-session-title-llm':
         specifier: workspace:^
         version: link:../session-title-llm
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/session/session-title-first-prompt-llm:
     dependencies:
@@ -6606,15 +6606,6 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6633,6 +6624,15 @@ importers:
       '@singula-ai/alego-session-title-llm':
         specifier: workspace:^
         version: link:../session-title-llm
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/session/session-title-llm:
     dependencies:
@@ -6640,9 +6640,6 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6658,6 +6655,9 @@ importers:
       '@singula-ai/alego-timeout':
         specifier: workspace:^
         version: link:../../util/timeout
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/settings/settings:
     dependencies:
@@ -6668,12 +6668,12 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/settings/settings-file:
     dependencies:
@@ -6690,9 +6690,6 @@ importers:
       '@singula-ai/alego-atomic-write':
         specifier: workspace:^
         version: link:../../util/atomic-write
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-home-paths':
         specifier: workspace:^
         version: link:../../util/home-paths
@@ -6702,6 +6699,9 @@ importers:
       '@singula-ai/alego-settings':
         specifier: workspace:^
         version: link:../settings
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/shell/bash-local:
     dependencies:
@@ -6709,9 +6709,6 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6730,21 +6727,18 @@ importers:
       '@singula-ai/alego-timeout':
         specifier: workspace:^
         version: link:../../util/timeout
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/shell/bash-sandbox:
     devDependencies:
       '@singula-ai/alego-bash-local':
         specifier: workspace:^
         version: link:../bash-local
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
-      '@singula-ai/node-addon-landlock-run':
-        specifier: workspace:^
-        version: link:../../../native/landlock-run/packages/entry
       '@singula-ai/alego-sandbox':
         specifier: workspace:^
         version: link:../../sandbox/sandbox
@@ -6760,6 +6754,12 @@ importers:
       '@singula-ai/alego-subprocess-local':
         specifier: workspace:^
         version: link:../../subprocess/subprocess-local
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/node-addon-landlock-run':
+        specifier: workspace:^
+        version: link:../../../native/landlock-run/packages/entry
 
   packages/shell/pwsh-local:
     dependencies:
@@ -6767,9 +6767,6 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6788,12 +6785,12 @@ importers:
       '@singula-ai/alego-timeout':
         specifier: workspace:^
         version: link:../../util/timeout
-
-  packages/shell/pwsh-sandbox:
-    devDependencies:
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
+
+  packages/shell/pwsh-sandbox:
+    devDependencies:
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6815,12 +6812,12 @@ importers:
       '@singula-ai/alego-subprocess-local':
         specifier: workspace:^
         version: link:../../subprocess/subprocess-local
-
-  packages/shell/shell:
-    devDependencies:
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
+
+  packages/shell/shell:
+    devDependencies:
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6833,6 +6830,9 @@ importers:
       '@singula-ai/alego-subprocess':
         specifier: workspace:^
         version: link:../../subprocess/subprocess
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/shell/shell-env:
     dependencies:
@@ -6843,9 +6843,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-home-paths':
         specifier: workspace:^
         version: link:../../util/home-paths
@@ -6864,6 +6861,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/shell/tool-bash:
     dependencies:
@@ -6883,9 +6883,6 @@ importers:
       '@singula-ai/alego-bash-local':
         specifier: workspace:^
         version: link:../bash-local
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6931,6 +6928,9 @@ importers:
       '@singula-ai/alego-user-approval':
         specifier: workspace:^
         version: link:../../interaction/user-approval
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/shell/tool-bash-persistent:
     dependencies:
@@ -6941,15 +6941,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -6983,6 +6974,15 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/shell/tool-pwsh:
     dependencies:
@@ -6993,9 +6993,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7041,6 +7038,9 @@ importers:
       '@singula-ai/alego-user-approval':
         specifier: workspace:^
         version: link:../../interaction/user-approval
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/shell/tool-pwsh-persistent:
     dependencies:
@@ -7051,15 +7051,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7096,6 +7087,15 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/skill/skill:
     dependencies:
@@ -7103,9 +7103,6 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7115,18 +7112,21 @@ importers:
       '@singula-ai/alego-scope':
         specifier: workspace:^
         version: link:../../core/scope
-
-  packages/skill/skill-badge:
-    devDependencies:
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
+
+  packages/skill/skill-badge:
+    devDependencies:
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-skill':
         specifier: workspace:^
         version: link:../skill
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/skill/skill-filesystem:
     dependencies:
@@ -7140,9 +7140,6 @@ importers:
         specifier: ^2.4.2
         version: 2.9.0
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-fs':
         specifier: workspace:^
         version: link:../../fs/fs
@@ -7155,6 +7152,9 @@ importers:
       '@singula-ai/alego-skill':
         specifier: workspace:^
         version: link:../skill
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/skill/tool-skill:
     dependencies:
@@ -7165,9 +7165,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7189,15 +7186,15 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/spill/spill:
     devDependencies:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7207,6 +7204,9 @@ importers:
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/spill/spill-local:
     dependencies:
@@ -7217,9 +7217,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7232,6 +7229,9 @@ importers:
       '@singula-ai/alego-spill':
         specifier: workspace:^
         version: link:../spill
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/spill/spill-policy:
     dependencies:
@@ -7245,9 +7245,6 @@ importers:
       '@singula-ai/alego-code-runtime-worker-thread':
         specifier: workspace:^
         version: link:../../code-runtime/code-runtime-worker-thread
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7266,15 +7263,18 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
-
-  packages/storage/storage:
-    devDependencies:
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
+
+  packages/storage/storage:
+    devDependencies:
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/storage/storage-domain:
     dependencies:
@@ -7285,15 +7285,15 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-storage':
         specifier: workspace:^
         version: link:../storage
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/storage/storage-json:
     dependencies:
@@ -7301,15 +7301,15 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-storage':
         specifier: workspace:^
         version: link:../storage
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/storage/storage-sqlite:
     dependencies:
@@ -7317,15 +7317,15 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-storage':
         specifier: workspace:^
         version: link:../storage
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/subagent/subagent:
     dependencies:
@@ -7342,9 +7342,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7387,6 +7384,9 @@ importers:
       '@singula-ai/alego-user-approval':
         specifier: workspace:^
         version: link:../../interaction/user-approval
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/subagent/subagent-acp:
     dependencies:
@@ -7400,12 +7400,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7430,6 +7424,12 @@ importers:
       '@singula-ai/alego-timeout':
         specifier: workspace:^
         version: link:../../util/timeout
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/subagent/subagent-alego-sdk:
     dependencies:
@@ -7440,12 +7440,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7470,12 +7464,15 @@ importers:
       '@singula-ai/alego-subprocess':
         specifier: workspace:^
         version: link:../../subprocess/subprocess
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/subagent/subagent-claude-code:
     dependencies:
-      '@singula-ai/schemastery':
-        specifier: link:../../../vendor/schemastery
-        version: link:../../../vendor/schemastery
       '@anthropic-ai/claude-agent-sdk':
         specifier: 0.3.220
         version: 0.3.220(@anthropic-ai/sdk@0.93.0(zod@4.4.3))(@modelcontextprotocol/sdk@1.29.0(zod@4.4.3))(zod@4.4.3)
@@ -7485,6 +7482,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.29.0
         version: 1.29.0(zod@4.4.3)
+      '@singula-ai/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
       zod:
         specifier: ^4.4.3
         version: 4.4.3
@@ -7492,9 +7492,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7519,52 +7516,55 @@ importers:
       '@singula-ai/alego-timeout':
         specifier: workspace:^
         version: link:../../util/timeout
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/subagent/subagent-codex:
     dependencies:
-      '@singula-ai/schemastery':
-        specifier: link:../../../vendor/schemastery
-        version: link:../../../vendor/schemastery
-      '@singula-ai/alego-sdk-protocol':
-        specifier: workspace:^
-        version: link:../../sdk/protocol
       '@openai/codex':
         specifier: 0.147.0
         version: 0.147.0
+      '@singula-ai/alego-sdk-protocol':
+        specifier: workspace:^
+        version: link:../../sdk/protocol
+      '@singula-ai/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
     devDependencies:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
+      '@singula-ai/alego-invariants':
+        specifier: workspace:^
+        version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/alego-llm':
+        specifier: workspace:^
+        version: link:../../llm/llm
+      '@singula-ai/alego-loader-smoke':
+        specifier: workspace:^
+        version: link:../../test-support/loader-smoke
+      '@singula-ai/alego-session':
+        specifier: workspace:^
+        version: link:../../core/session
+      '@singula-ai/alego-subagent':
+        specifier: workspace:^
+        version: link:../subagent
+      '@singula-ai/alego-subprocess':
+        specifier: workspace:^
+        version: link:../../subprocess/subprocess
+      '@singula-ai/alego-subprocess-local':
+        specifier: workspace:^
+        version: link:../../subprocess/subprocess-local
+      '@singula-ai/alego-timeout':
+        specifier: workspace:^
+        version: link:../../util/timeout
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
       '@singula-ai/cordis-plugin-loader':
         specifier: workspace:^
         version: link:../../../vendor/loader
-      '@singula-ai/alego-invariants':
-        specifier: workspace:^
-        version: link:../../runtime-diagnostics/invariants
-      '@singula-ai/alego-llm':
-        specifier: workspace:^
-        version: link:../../llm/llm
-      '@singula-ai/alego-loader-smoke':
-        specifier: workspace:^
-        version: link:../../test-support/loader-smoke
-      '@singula-ai/alego-session':
-        specifier: workspace:^
-        version: link:../../core/session
-      '@singula-ai/alego-subagent':
-        specifier: workspace:^
-        version: link:../subagent
-      '@singula-ai/alego-subprocess':
-        specifier: workspace:^
-        version: link:../../subprocess/subprocess
-      '@singula-ai/alego-subprocess-local':
-        specifier: workspace:^
-        version: link:../../subprocess/subprocess-local
-      '@singula-ai/alego-timeout':
-        specifier: workspace:^
-        version: link:../../util/timeout
 
   packages/subagent/subagent-fork-in-process:
     dependencies:
@@ -7581,12 +7581,6 @@ importers:
       '@singula-ai/alego-agent-loop-testkit':
         specifier: workspace:^
         version: link:../../test-support/agent-loop-testkit
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7605,6 +7599,12 @@ importers:
       '@singula-ai/alego-subagent-spawn-in-process':
         specifier: workspace:^
         version: link:../subagent-spawn-in-process
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/subagent/subagent-in-process-driver:
     devDependencies:
@@ -7620,15 +7620,6 @@ importers:
       '@singula-ai/alego-agent-presets':
         specifier: workspace:^
         version: link:../../preset/agent-presets
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-fs-sandbox':
         specifier: workspace:^
         version: link:../../fs/fs-sandbox
@@ -7659,6 +7650,15 @@ importers:
       '@singula-ai/alego-user-approval':
         specifier: workspace:^
         version: link:../../interaction/user-approval
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/subagent/subagent-spawn-in-process:
     dependencies:
@@ -7678,12 +7678,6 @@ importers:
       '@singula-ai/alego-bash-local':
         specifier: workspace:^
         version: link:../../shell/bash-local
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7711,6 +7705,12 @@ importers:
       '@singula-ai/alego-tool-subagent':
         specifier: workspace:^
         version: link:../tool-subagent
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/subagent/tool-subagent:
     dependencies:
@@ -7721,12 +7721,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7763,6 +7757,12 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/subagent/tool-subagent-control:
     devDependencies:
@@ -7775,9 +7775,6 @@ importers:
       '@singula-ai/alego-agent-loop-testkit':
         specifier: workspace:^
         version: link:../../test-support/agent-loop-testkit
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7805,6 +7802,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/subagent/tool-subagent-report:
     dependencies:
@@ -7821,9 +7821,6 @@ importers:
       '@singula-ai/alego-agent-loop-testkit':
         specifier: workspace:^
         version: link:../../test-support/agent-loop-testkit
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7854,15 +7851,18 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
-
-  packages/subprocess/subprocess:
-    devDependencies:
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../../../vendor/cordis
+
+  packages/subprocess/subprocess:
+    devDependencies:
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/subprocess/subprocess-local:
     dependencies:
@@ -7873,9 +7873,6 @@ importers:
         specifier: 1.2.0-beta.15
         version: 1.2.0-beta.15(patch_hash=a5ed6ecd0db450ce363a37114d4cef63f0c05366bf7df152b3b0f18dc2297207)
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7888,6 +7885,9 @@ importers:
       '@singula-ai/alego-timeout':
         specifier: workspace:^
         version: link:../../util/timeout
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/terminal/terminal:
     devDependencies:
@@ -7897,15 +7897,15 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/terminal/terminal-bash:
     dependencies:
@@ -7919,9 +7919,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -7943,6 +7940,9 @@ importers:
       '@singula-ai/alego-terminal':
         specifier: workspace:^
         version: link:../terminal
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/terminal/tool-terminal:
     dependencies:
@@ -7953,15 +7953,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -8004,6 +7995,15 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/test-support/acp-snapshot:
     dependencies:
@@ -8017,15 +8017,15 @@ importers:
         specifier: ^4.1.8
         version: 4.1.8(@opentelemetry/api@1.9.0)(@types/node@25.9.3)(@vitest/coverage-v8@4.1.8)(jsdom@29.1.1)(vite@8.0.16(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.22.4)(yaml@2.9.0))
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/test-support/agent-loop-testkit:
     devDependencies:
@@ -8035,9 +8035,6 @@ importers:
       '@singula-ai/alego-agent-loop':
         specifier: workspace:^
         version: link:../../core/agent-loop
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -8053,6 +8050,9 @@ importers:
       '@singula-ai/alego-tools':
         specifier: workspace:^
         version: link:../../core/tools
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/test-support/client-runtime:
     dependencies:
@@ -8075,15 +8075,15 @@ importers:
       '@singula-ai/alego-client-ui-slots':
         specifier: workspace:^
         version: link:../../client/ui-slots
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-host-apiproxy':
         specifier: workspace:^
         version: link:../../host/apiproxy
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/react':
         specifier: ~18.3.1
         version: 18.3.31
@@ -8099,21 +8099,18 @@ importers:
 
   packages/test-support/llm-mock-server:
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/test-support/llm-replay:
     devDependencies:
       '@singula-ai/alego-compaction':
         specifier: workspace:^
         version: link:../../compaction/compaction
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -8123,6 +8120,9 @@ importers:
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/test-support/loader-smoke:
     dependencies:
@@ -8136,9 +8136,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -8148,6 +8145,9 @@ importers:
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/todo/tool-todo:
     dependencies:
@@ -8167,15 +8167,6 @@ importers:
       '@singula-ai/alego-agent-loop-testkit':
         specifier: workspace:^
         version: link:../../test-support/agent-loop-testkit
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-host-apiproxy':
         specifier: workspace:^
         version: link:../../host/apiproxy
@@ -8200,6 +8191,15 @@ importers:
       '@singula-ai/alego-user-questions':
         specifier: workspace:^
         version: link:../../interaction/user-questions
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/typert/generator:
     dependencies:
@@ -8210,9 +8210,6 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -8222,6 +8219,9 @@ importers:
       '@singula-ai/alego-typert-registry':
         specifier: workspace:^
         version: link:../registry
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       zod:
         specifier: ^4.4.3
         version: 4.4.3
@@ -8232,30 +8232,30 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-typert-registry':
         specifier: workspace:^
         version: link:../registry
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
       zod:
         specifier: ^4.4.3
         version: 4.4.3
 
   packages/typert/protocol:
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/typert/registry:
     dependencies:
@@ -8266,84 +8266,84 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/util/atomic-write:
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/util/brand:
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/util/home-paths:
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/util/launch-environment:
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/util/native-command:
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/util/output-retention:
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/util/timeout:
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/web/tool-web:
     dependencies:
-      '@singula-ai/schemastery':
-        specifier: link:../../../vendor/schemastery
-        version: link:../../../vendor/schemastery
       '@joplin/turndown-plugin-gfm':
         specifier: ^1.0.67
         version: 1.0.67
+      '@singula-ai/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
       turndown:
         specifier: ^7.2.4
         version: 7.2.4
@@ -8351,9 +8351,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -8387,6 +8384,9 @@ importers:
       '@singula-ai/alego-web-search-exa':
         specifier: workspace:^
         version: link:../web-search-exa
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       '@types/turndown':
         specifier: ^5.0.6
         version: 5.0.6
@@ -8397,15 +8397,15 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
       '@singula-ai/alego-llm':
         specifier: workspace:^
         version: link:../../llm/llm
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/web/web-fetch-http:
     dependencies:
@@ -8413,9 +8413,6 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -8425,6 +8422,9 @@ importers:
       '@singula-ai/alego-web':
         specifier: workspace:^
         version: link:../web
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/web/web-search-deepseek:
     dependencies:
@@ -8435,9 +8435,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-credentials':
         specifier: workspace:^
         version: link:../../credentials/credentials
@@ -8459,6 +8456,9 @@ importers:
       '@singula-ai/alego-web':
         specifier: workspace:^
         version: link:../web
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/web/web-search-exa:
     dependencies:
@@ -8466,9 +8466,6 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -8478,6 +8475,9 @@ importers:
       '@singula-ai/alego-web':
         specifier: workspace:^
         version: link:../web
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/web/web-search-perplexity:
     dependencies:
@@ -8485,9 +8485,6 @@ importers:
         specifier: link:../../../vendor/schemastery
         version: link:../../../vendor/schemastery
     devDependencies:
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -8497,6 +8494,9 @@ importers:
       '@singula-ai/alego-web':
         specifier: workspace:^
         version: link:../web
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/workflow/tool-ralph:
     dependencies:
@@ -8513,12 +8513,6 @@ importers:
       '@singula-ai/alego-agent-loop-testkit':
         specifier: workspace:^
         version: link:../../test-support/agent-loop-testkit
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../../vendor/loader
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -8549,6 +8543,12 @@ importers:
       '@singula-ai/alego-workflow-worker-thread':
         specifier: workspace:^
         version: link:../workflow-worker-thread
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../../vendor/loader
 
   packages/workflow/tool-workflow:
     dependencies:
@@ -8559,9 +8559,6 @@ importers:
       '@singula-ai/alego-agent':
         specifier: workspace:^
         version: link:../../core/agent
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -8586,6 +8583,9 @@ importers:
       '@singula-ai/alego-workflow-worker-thread':
         specifier: workspace:^
         version: link:../workflow-worker-thread
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/workflow/workflow:
     devDependencies:
@@ -8595,9 +8595,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -8607,6 +8604,9 @@ importers:
       '@singula-ai/alego-session':
         specifier: workspace:^
         version: link:../../core/session
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   packages/workflow/workflow-worker-thread:
     dependencies:
@@ -8626,9 +8626,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -8653,6 +8650,9 @@ importers:
       '@singula-ai/alego-workflow':
         specifier: workspace:^
         version: link:../workflow
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
       tsx:
         specifier: ^4.19.2
         version: 4.22.4
@@ -8666,9 +8666,6 @@ importers:
       '@singula-ai/alego-brand':
         specifier: workspace:^
         version: link:../../util/brand
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../../vendor/cordis
       '@singula-ai/alego-invariants':
         specifier: workspace:^
         version: link:../../runtime-diagnostics/invariants
@@ -8684,6 +8681,9 @@ importers:
       '@singula-ai/alego-storage-domain':
         specifier: workspace:^
         version: link:../../storage/storage-domain
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../../vendor/cordis
 
   python/sdk-runtime:
     dependencies:
@@ -8750,27 +8750,9 @@ importers:
       '@singula-ai/alego-compaction-tool-result-pruner':
         specifier: workspace:^
         version: link:../../packages/compaction/compaction-tool-result-pruner
-      '@singula-ai/cordis':
-        specifier: workspace:^
-        version: link:../../vendor/cordis
       '@singula-ai/alego-cordis-host-runner':
         specifier: workspace:^
         version: link:../../packages/extensions/cordis-host-runner
-      '@singula-ai/cordis-plugin-group':
-        specifier: workspace:^
-        version: link:../../vendor/group
-      '@singula-ai/cordis-plugin-include':
-        specifier: workspace:^
-        version: link:../../vendor/include
-      '@singula-ai/cordis-plugin-loader':
-        specifier: workspace:^
-        version: link:../../vendor/loader
-      '@singula-ai/cordis-plugin-timer':
-        specifier: workspace:^
-        version: link:../../vendor/timer
-      '@singula-ai/cosmokit':
-        specifier: link:../../vendor/cosmokit
-        version: link:../../vendor/cosmokit
       '@singula-ai/alego-credentials':
         specifier: workspace:^
         version: link:../../packages/credentials/credentials
@@ -8858,9 +8840,6 @@ importers:
       '@singula-ai/alego-sandbox-policy':
         specifier: workspace:^
         version: link:../../packages/sandbox/sandbox-policy
-      '@singula-ai/schemastery':
-        specifier: link:../../vendor/schemastery
-        version: link:../../vendor/schemastery
       '@singula-ai/alego-scope':
         specifier: workspace:^
         version: link:../../packages/core/scope
@@ -9041,6 +9020,27 @@ importers:
       '@singula-ai/alego-workflow-worker-thread':
         specifier: workspace:^
         version: link:../../packages/workflow/workflow-worker-thread
+      '@singula-ai/cordis':
+        specifier: workspace:^
+        version: link:../../vendor/cordis
+      '@singula-ai/cordis-plugin-group':
+        specifier: workspace:^
+        version: link:../../vendor/group
+      '@singula-ai/cordis-plugin-include':
+        specifier: workspace:^
+        version: link:../../vendor/include
+      '@singula-ai/cordis-plugin-loader':
+        specifier: workspace:^
+        version: link:../../vendor/loader
+      '@singula-ai/cordis-plugin-timer':
+        specifier: workspace:^
+        version: link:../../vendor/timer
+      '@singula-ai/cosmokit':
+        specifier: link:../../vendor/cosmokit
+        version: link:../../vendor/cosmokit
+      '@singula-ai/schemastery':
+        specifier: link:../../vendor/schemastery
+        version: link:../../vendor/schemastery
 
   vendor/cordis:
     dependencies:
@@ -9070,6 +9070,9 @@ importers:
 
   vendor/hmr:
     dependencies:
+      '@babel/code-frame':
+        specifier: ^7.29.0
+        version: 7.29.7
       '@singula-ai/cordis':
         specifier: workspace:^
         version: link:../cordis
@@ -9082,9 +9085,6 @@ importers:
       '@singula-ai/schemastery':
         specifier: link:../schemastery
         version: link:../schemastery
-      '@babel/code-frame':
-        specifier: ^7.29.0
-        version: 7.29.7
       chokidar:
         specifier: ^4.0.3
         version: 4.0.3

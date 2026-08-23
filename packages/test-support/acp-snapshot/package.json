@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-acp-snapshot",
   "description": "ACP test kit: shared subprocess launcher, snapshot scenario harness, expected-output normalizers, and suite factory",
-  "version": "0.1.1-rc.2",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },

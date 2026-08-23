@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-skill",
   "description": "Web skill references and the dedicated skill tool row",
-  "version": "0.1.1-rc.2",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },
