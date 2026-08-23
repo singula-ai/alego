@@ -15,6 +15,7 @@ import { Context } from '@singula-ai/cordis'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { Agent } from '@singula-ai/alego-agent'
 import SubagentRuntime from '@singula-ai/alego-subagent'
+import type { SubagentResult } from '@singula-ai/alego-subagent'
 import type { SubprocessHandle } from '@singula-ai/alego-subprocess'
 import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 import * as codex from '../src/index.ts'
@@ -30,6 +31,23 @@ const codexPackage = JSON.parse(readFileSync(
   'utf8',
 )) as { version: string; bin: { codex: string } }
 const codexEntry = resolve(dirname(codexPackageJson), codexPackage.bin.codex)
+
+/**
+ * Describe why a run did not complete, for the assertion that reports it.
+ *
+ * A bare `expected 'error' to be 'completed'` names no cause, and the provider
+ * diagnostic and the bridge's own refusals are the only records of one.
+ * @param result - the settled run result.
+ * @param bridge - the bridge that served the run.
+ * @returns Provider diagnostic and bridge failures, or a note that neither exists.
+ */
+function failureDetail(result: SubagentResult, bridge: DeepSeekResponsesBridge): string {
+  const parts = [
+    result.diagnostic === undefined ? undefined : `diagnostic: ${result.diagnostic}`,
+    bridge.failures.length === 0 ? undefined : `bridge: ${bridge.failures.join('; ')}`,
+  ].filter((part): part is string => part !== undefined)
+  return parts.length === 0 ? 'no provider diagnostic and no bridge failure' : parts.join(' | ')
+}
 
 const roots: string[] = []
 const contexts: Context[] = []
@@ -127,7 +145,7 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY)(
       const result = await run.result
       await run.dispose()
 
-      expect(result.stopReason).toBe('completed')
+      expect(result.stopReason, failureDetail(result, bridge)).toBe('completed')
       const text = result.output
         .filter(block => block.type === 'text')
         .map(block => block.text)
