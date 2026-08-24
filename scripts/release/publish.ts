@@ -30,8 +30,25 @@ import { packedIdentity, readPublishOrder } from './tarball.ts'
  */
 const TRANSIENT_PUBLISH_CODES = ['E409', 'E429', 'E500', 'E502', 'E503', 'E504', 'ETIMEDOUT', 'ECONNRESET', 'EAI_AGAIN'] as const
 
-/** How many times one tarball's publish is attempted before the run fails. */
+/** How many times one tarball's publish is attempted for a transient failure other than a rate limit. */
 const PUBLISH_ATTEMPTS = 4
+
+/**
+ * Attempts and first backoff for a rate-limited publish (`E429`).
+ *
+ * The registry meters new-package creation over windows of minutes, not
+ * seconds: the first alego release saw `E429` persist across retries spaced
+ * 2–8 seconds while npm's own in-client retries had already waited about a
+ * minute per invocation, so a short ladder turns one metering window into a
+ * failed run. Five doubling waits from one minute total ~31 minutes — long
+ * enough to ride out metering, while a hard quota still fails within the
+ * publish job's time budget
+ * ([incident](../../.agents/notes/implemented/process/2026-08-24-npm-publish-rate-limit-recovery.md)).
+ */
+const RATE_LIMIT_ATTEMPTS = 6
+
+/** First wait after a rate-limited attempt; each further wait doubles it. */
+const RATE_LIMIT_BACKOFF_MS = 60_000
 
 /**
  * Shortest gap between two publishes, and the first retry backoff.
@@ -94,10 +111,52 @@ function registryState(name: string, version: string): RegistryState {
  * @param name - package name the tarball declares.
  * @param version - package version the tarball declares.
  */
+/** One retryable failed publish attempt: how long to wait, and under which budget. */
+export interface PublishRetryDirective {
+  /** Milliseconds to wait before the next attempt. */
+  readonly delayMs: number
+  /** True when the failure was the registry's rate limit rather than another transient code. */
+  readonly rateLimited: boolean
+  /** One-based number of the attempt that just failed, within its budget. */
+  readonly attempt: number
+  /** Total attempts that budget allows. */
+  readonly budget: number
+}
+
+/**
+ * Decide whether a failed publish attempt is retried, and after how long.
+ *
+ * A rate limit waits minutes on its own budget, because the registry meters
+ * new-package creation over windows that outlast the seconds-scale ladder;
+ * every other transient code keeps the short ladder that answers `E409`
+ * packument settling. The two budgets are independent, so metering cannot
+ * consume the settling attempts nor the reverse.
+ * @param output - combined npm output of the failed attempt.
+ * @param transientFailures - prior failed attempts with a non-rate-limit transient code.
+ * @param rateLimitedFailures - prior failed attempts with `E429`.
+ * @returns The retry directive, or undefined when the failure is terminal — a
+ * non-transient code, or the matching budget is exhausted.
+ */
+export function publishRetryDirective(
+  output: string,
+  transientFailures: number,
+  rateLimitedFailures: number,
+): PublishRetryDirective | undefined {
+  if (!isTransientFailure(output)) return undefined
+  const rateLimited = output.includes('code E429')
+  const attempt = (rateLimited ? rateLimitedFailures : transientFailures) + 1
+  const budget = rateLimited ? RATE_LIMIT_ATTEMPTS : PUBLISH_ATTEMPTS
+  if (attempt >= budget) return undefined
+  const base = rateLimited ? RATE_LIMIT_BACKOFF_MS : PUBLISH_SPACING_MS
+  return { delayMs: base * 2 ** (attempt - 1), rateLimited, attempt, budget }
+}
+
 async function publishTarball(tarball: string, name: string, version: string): Promise<void> {
   // A prerelease version never takes the latest dist-tag.
   const tagArgs = version.includes('-') ? ['--tag', 'next'] : []
-  for (let tries = 1; tries <= PUBLISH_ATTEMPTS; tries += 1) {
+  let transientFailures = 0
+  let rateLimitedFailures = 0
+  for (;;) {
     // No --access: the sequences do not share one access level, so a
     // command-line flag could not serve both and would override the manifest
     // that does. Each packed manifest decides, and
@@ -111,15 +170,17 @@ async function publishTarball(tarball: string, name: string, version: string): P
       console.log(`release publish: ${name}@${version} landed despite a reported failure, continuing`)
       return
     }
-    if (tries === PUBLISH_ATTEMPTS || !isTransientFailure(output)) {
+    const retry = publishRetryDirective(output, transientFailures, rateLimitedFailures)
+    if (retry === undefined) {
       throw new Error(`npm publish ${name}@${version} failed:\n${output}`)
     }
-    const backoff = PUBLISH_SPACING_MS * 2 ** (tries - 1)
+    if (retry.rateLimited) rateLimitedFailures += 1
+    else transientFailures += 1
     console.log(
-      `release publish: ${name}@${version} hit a transient registry failure`
-      + ` (attempt ${String(tries)} of ${String(PUBLISH_ATTEMPTS)}), retrying in ${String(backoff)}ms`,
+      `release publish: ${name}@${version} ${retry.rateLimited ? 'is rate limited' : 'hit a transient registry failure'}`
+      + ` (attempt ${String(retry.attempt)} of ${String(retry.budget)}), retrying in ${String(retry.delayMs)}ms`,
     )
-    await sleep(backoff)
+    await sleep(retry.delayMs)
   }
 }
 
