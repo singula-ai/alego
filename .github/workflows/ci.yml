@@ -72,7 +72,7 @@ jobs:
       # Pull requests consume the default-branch cache but do not put cache
       # compression and upload on the paid latency-critical path. Skipped
       # under failover — see the coverage lane's identical rationale.
-      - uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v6
         if: vars.ALEGO_CI_FAILOVER_LINUX != 'selfhosted' || github.event.pull_request.user.login == 'dependabot[bot]'
         with:
           path: ${{ steps.pnpm-store.outputs.path }}
@@ -126,7 +126,7 @@ jobs:
       # Skipped under failover: the self-hosted VM's persistent pnpm store
       # already serves warm installs, while restoring the hosted archive
       # would spend ~52 s pulling ~180 MB into that populated store.
-      - uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v6
         if: vars.ALEGO_CI_FAILOVER_LINUX != 'selfhosted' || github.event.pull_request.user.login == 'dependabot[bot]'
         with:
           path: ${{ steps.pnpm-store.outputs.path }}
@@ -192,7 +192,7 @@ jobs:
       # hosted cache keys, so each restore-keys fallback hits the matching archived
       # entry until it evicts, after which the store is cold. Skipped under failover
       # — the self-hosted VM's persistent store is already warm.
-      - uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v6
         if: vars.ALEGO_CI_FAILOVER_LINUX != 'selfhosted' || github.event.pull_request.user.login == 'dependabot[bot]'
         with:
           path: ${{ steps.pnpm-store.outputs.path }}
@@ -201,7 +201,7 @@ jobs:
             ${{ runner.os }}-node-${{ env.PRIMARY_NODE_VERSION }}-pnpm-
 
       # Skipped under failover: the VM's persistent browser cache is already warm.
-      - uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v6
         if: vars.ALEGO_CI_FAILOVER_LINUX != 'selfhosted' || github.event.pull_request.user.login == 'dependabot[bot]'
         with:
           path: ~/.cache/ms-playwright
@@ -342,7 +342,7 @@ jobs:
           store_path=$(PNPM_CONFIG_STORE_DIR="$store_root" pnpm store path --silent)
           echo "path=$store_path" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v6
         with:
           path: ${{ steps.pnpm-store.outputs.path }}
           key: ${{ runner.os }}-node-${{ env.PRIMARY_NODE_VERSION }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
@@ -356,7 +356,7 @@ jobs:
         id: wine-cache-key
         run: echo "key=wine-debs-${ImageOS:-linux}-${ImageVersion:-v0}" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ~/wine-debs
           key: ${{ steps.wine-cache-key.outputs.key }}
