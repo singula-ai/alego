@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-settings-file",
   "description": "File-backed settings provider (settings.yaml) for the Alego",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

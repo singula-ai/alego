@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-agent",
   "description": "Agent interface, registry, initiator scope, and event vocabulary for the Alego",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

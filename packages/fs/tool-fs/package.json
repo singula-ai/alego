@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-tool-fs",
   "description": "Model-facing filesystem tools (read, write, edit) over the Alego filesystem seam (ctx.fs)",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

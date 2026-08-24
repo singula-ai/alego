@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-compaction-basic",
   "description": "Token-meter-driven compaction policy and LLM summarization backend for the Alego",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

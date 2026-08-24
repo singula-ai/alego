@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-typert-registry",
   "description": "Runtime registry for generated package reflection and Zod schemas",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

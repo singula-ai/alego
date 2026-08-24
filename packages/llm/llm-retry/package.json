@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-llm-retry",
   "description": "Provider-routed LLM request retry policy for the Alego",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

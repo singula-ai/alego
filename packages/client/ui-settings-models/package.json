@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-settings-models",
   "description": "Models settings and shared product-onboarding dialogs over existing settings and credential joins",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

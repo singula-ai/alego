@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-subprocess-e2b",
   "description": "E2B subprocess implementation for Alego",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

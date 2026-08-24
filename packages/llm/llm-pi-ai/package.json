@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-llm-pi-ai",
   "description": "pi-ai-backed DeepSeek adapter for the Alego LLM seam (design-verification twin of alego-llm-deepseek)",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

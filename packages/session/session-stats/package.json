@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-session-stats",
   "description": "Whole-log conversation counts and wall times projection (sessionStats) for the Alego",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

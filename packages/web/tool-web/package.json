@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-tool-web",
   "description": "Model-facing web tools (web_search, web_fetch) over the Alego web capability seam (ctx.web)",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

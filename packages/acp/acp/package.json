@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-acp",
   "description": "Automation-only Agent Client Protocol server for driving Alego agents over JSON-RPC stdio",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

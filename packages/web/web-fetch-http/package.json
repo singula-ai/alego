@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-web-fetch-http",
   "description": "Anonymous public HTTP(S) fetch provider for the Alego web capability seam (ctx.web)",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

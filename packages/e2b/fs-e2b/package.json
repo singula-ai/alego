@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-fs-e2b",
   "description": "E2B filesystem implementation for Alego",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-input-trigger",
   "description": "Input trigger pipeline: '/' and '@' detection, candidate menu, pick routing to registered sources",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

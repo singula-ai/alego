@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-web-search-exa",
   "description": "Exa-backed search provider for the Alego web capability seam (ctx.web)",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },
