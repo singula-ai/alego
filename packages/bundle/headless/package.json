@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-headless",
   "description": "The alego one-shot bundle: a direct core Agent/Session runner over alego-base with no Host, HTTP, or browser layer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

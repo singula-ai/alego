@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-token-meter",
   "description": "Replay-aware token measurement service (ctx.tokenMeter) for the Alego",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

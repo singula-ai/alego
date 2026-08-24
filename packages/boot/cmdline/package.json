@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-cmdline",
   "description": "Immutable command-line handoff from an alego launcher to any app plugin that injects cmdlineArgs",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

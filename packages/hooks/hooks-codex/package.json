@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-hooks-codex",
   "description": "Bridge plugin: run a Codex hooks.json hook config on the Alego interception seams",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-anonymous-user-id",
   "description": "Shared anonymous user identity for Alego telemetry and feedback correlation",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

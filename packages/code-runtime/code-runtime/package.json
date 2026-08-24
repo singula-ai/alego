@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-code-runtime",
   "description": "Abstract code-execution seam (ctx.codeRuntime) for the Alego",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

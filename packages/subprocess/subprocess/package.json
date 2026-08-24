@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-subprocess",
   "description": "Subprocess seam (ctx.subprocess) for the Alego — managed process groups, bounded spill-backed output, and escalated kills behind one abstract service",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },

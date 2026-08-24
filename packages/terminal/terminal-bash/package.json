@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-terminal-bash",
   "description": "Persistent shell PTY backend over the Alego subprocess terminal primitive",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },
