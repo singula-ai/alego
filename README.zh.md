@@ -30,7 +30,15 @@ npx @singula-ai/alego web
 
 ### 从源码运行
 
-如需从仓库源码运行：
+在 Linux/macOS 上，一条命令即可完成安装（需要 `git` 与 Node.js `^22.19.0 || >=24`；缺少 pnpm 时会通过 corepack 提供）：
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/singula-ai/alego/main/install.sh | bash
+```
+
+该脚本会把仓库克隆到 `~/.alego-src`，安装依赖并构建运行时与 Web UI，然后在 `~/.local/bin` 写入 `alego` 启动器；之后运行 `alego web` 即可。重复运行同一命令会更新检出并重新构建。`ALEGO_SRC_DIR`、`ALEGO_BIN_DIR`、`ALEGO_REPO`、`ALEGO_REF` 可覆盖默认值；卸载时删除启动器和检出目录即可。
+
+如需手动从仓库检出运行：
 
 ```sh
 git clone https://github.com/singula-ai/alego.git

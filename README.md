@@ -26,7 +26,15 @@ The command starts the Web UI at `http://127.0.0.1:3080` by default and opens it
 
 ### Run from source
 
-To run from a repository checkout:
+One command installs it on Linux/macOS (requires `git` and Node.js `^22.19.0 || >=24`; pnpm is provided through corepack when missing):
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/singula-ai/alego/main/install.sh | bash
+```
+
+The script clones the repository into `~/.alego-src`, installs dependencies, builds the runtime and Web UI, and writes an `alego` launcher into `~/.local/bin`; run `alego web` afterwards. Re-running the same command updates the checkout and rebuilds. `ALEGO_SRC_DIR`, `ALEGO_BIN_DIR`, `ALEGO_REPO`, and `ALEGO_REF` override the defaults; uninstall by removing the launcher and the checkout directory.
+
+To run from a repository checkout manually:
 
 ```sh
 git clone https://github.com/singula-ai/alego.git
