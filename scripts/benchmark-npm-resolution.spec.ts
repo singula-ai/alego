@@ -13,6 +13,9 @@ import {
 } from './benchmark-npm-resolution.ts'
 
 const roots: string[] = []
+// Cold npm startup and package-lock generation share the 90-second process-test
+// allowance; the child leaves time for forced exit and registry cleanup.
+const NPM_RESOLUTION_TIMEOUT_MS = 60_000
 
 afterEach(() => {
   for (const root of roots.splice(0)) rmSync(root, { recursive: true, force: true })
@@ -42,7 +45,7 @@ function processCanExecute(pid: number): boolean {
   }
 }
 
-describe('npm resolution benchmark', () => {
+describe('npm resolution benchmark', { timeout: 90_000 }, () => {
   it('parses repeat, timeout, threshold, and ref options', () => {
     expect(parseBenchmarkOptions([])).toEqual({ runs: 1, timeoutMs: 300_000 })
     expect(parseBenchmarkOptions([
@@ -94,7 +97,7 @@ describe('npm resolution benchmark', () => {
       '@singula-ai/alego',
       new Map([['0.1.0', { name: '@singula-ai/alego', version: '0.1.0' }]]),
     ]])
-    const result = await benchmarkNpmResolution(index, '0.1.0', 10_000)
+    const result = await benchmarkNpmResolution(index, '0.1.0', NPM_RESOLUTION_TIMEOUT_MS)
 
     expect(result.durationMs).toBeGreaterThan(0)
     expect(result.registryRequests).toBeGreaterThan(0)
@@ -114,7 +117,7 @@ describe('npm resolution benchmark', () => {
     const result = await resolveNpmPackageLock(index, {
       '@singula-ai/alego': '0.2.0',
       'alego-previous': 'npm:@singula-ai/alego@0.1.0',
-    }, 10_000)
+    }, NPM_RESOLUTION_TIMEOUT_MS)
 
     expect(result.archiveRequests).toBe(0)
     expect(result.packageLock.packages['node_modules/@singula-ai/alego']?.version).toBe('0.2.0')
@@ -150,7 +153,7 @@ describe('npm resolution benchmark', () => {
         }]])],
       ])
 
-      const result = await resolveNpmPackageLock(index, { '@singula-ai/alego': '0.1.0' }, 10_000)
+      const result = await resolveNpmPackageLock(index, { '@singula-ai/alego': '0.1.0' }, NPM_RESOLUTION_TIMEOUT_MS)
 
       expect(result.archiveRequests).toBe(0)
       expect(result.packageLock.packages['node_modules/@singula-ai/alego-peer']?.version).toBe('1.0.0')

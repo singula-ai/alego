@@ -40,11 +40,13 @@ Self-hosted standby drills require `ALEGO_SELF_HOSTED_STANDBY_ENABLED`; the repo
 
 The E2E workflow's opt-in `record_brand_demo` input selects the existing real-host, real-model first-send smoke and uploads empty, typed, and completed frames from one isolated run, with the server origin and fresh state directories recorded alongside them. Ordinary runs retain the full E2E suite. The capture acknowledges the fresh-user welcome notice through the UI, then waits for the durable Assistant response and its exact rendered text, not the prompt's echoed marker. The UI-copy gate permits the literal `alego` wordmark across locales but still rejects untranslated phrases containing it.
 
-Hosted Linux and Windows jobs use [four-CPU runners](https://docs.github.com/en/actions/reference/runners/github-hosted-runners). Coverage uses two instrumented single-worker partitions and one exempt-suite worker, leaving subprocess headroom. The Linux consumer job runs one gate at a time while retaining parallelism inside each gate. Test assertions, deadlines, and coverage thresholds remain unchanged.
+Hosted Linux and Windows jobs use [four-CPU runners](https://docs.github.com/en/actions/reference/runners/github-hosted-runners). Coverage uses two instrumented single-worker partitions and one exempt-suite worker, leaving subprocess headroom. The Linux consumer job runs one gate at a time while retaining parallelism inside each gate. Product deadlines and coverage thresholds remain unchanged.
 
 Web snapshot browsers use `Asia/Shanghai` to match the retained `clientTimeZone` fields independently of the host timezone. PowerShell recordings include the current headless profile's policy events, system prompt, and tool schemas. Both adjustments preserve application behavior and compare the complete persisted replay without adding normalization exceptions.
 
 The persistent PowerShell backend requires prompt-marker readiness during startup, as documented in the [pwsh decision](2026-08-11-pwsh-persistent-pty.md); ordinary command readiness and deadlines remain unchanged. The mailbox recovery fixture awaits its admitted dispatches before disposing the restored Lead, so an in-memory acknowledgement cannot stand in for completed persistence.
+
+PowerShell real-shell fixtures poll empty input after `inferred_idle` until verified readiness, under one command deadline; they never resubmit the command. Workspace-creation fixtures wait for the new Session's durable attachment and selected sidebar row before another interaction can race that layout update. The npm-resolution fixture gives cold npm startup and package-lock generation 60 seconds inside the Windows coverage lane's 90-second test budget, retaining time for process exit and registry cleanup; it does not impose a performance threshold on the metadata-only assertions.
 
 ## Alternatives considered
 

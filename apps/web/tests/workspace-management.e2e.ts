@@ -75,6 +75,17 @@ describe('web e2e: workspace management (create / rename / flat view / hover aff
       () => scaffold.ctx.workspaceRegistry.resolveByPath(join(parent, name)),
       { timeout: 10_000 },
     ).not.toBeUndefined()
+    const workspace = await scaffold.ctx.workspaceRegistry.resolveByPath(join(parent, name))
+    if (workspace === undefined) throw new Error('created Workspace registration disappeared')
+    // The picker closes before its blank Session attaches and moves the sidebar rows.
+    await expect.poll(() => workspace.sessionIds.length, { timeout: 10_000 }).toBe(1)
+    const row = page.locator('[role="treeitem"]').filter({
+      has: page.getByRole('button', { name: `Workspace actions for ${name}`, includeHidden: true, exact: true }),
+    })
+    const group = row.locator('xpath=ancestor::*[contains(@class, "groupSection")][1]')
+    await expect.poll(() => group.locator('[role="treeitem"][aria-selected="true"]').count(), {
+      timeout: 10_000,
+    }).toBe(1)
   }
 
   /**
