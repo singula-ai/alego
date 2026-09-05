@@ -146,6 +146,7 @@ jobs:
             .artifacts/w5-02-empty-state.png
             .artifacts/w5-03-typed.png
             .artifacts/w5-04-round-complete.png
+            .artifacts/w5-provenance.json
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 14

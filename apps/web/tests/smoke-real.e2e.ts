@@ -738,9 +738,9 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY || notReady.length > 0)('web smoke
 
   it('empty-state first send completes a real model round', async () => {
     onTestFailed(() => saveFailureShot(page, 'w5-first-round'))
-    // This scenario spawns its own server against a fresh $ALEGO_HOME with the
-    // DeepSeek credential inherited from the environment, so no onboarding
-    // step mounts and the page is immediately interactive.
+    const welcome = page.getByRole('dialog', { name: 'Internal Testing Notice', exact: true })
+    await welcome.getByRole('button', { name: 'Continue', exact: true }).click()
+    await welcome.waitFor({ state: 'detached', timeout: 15_000 })
     // Fresh world: connect a Workspace so the composer starts live.
     await connectFreshWorkspace(page, sessionsDir)
     const input = page.locator('[data-composer-input]').first()
@@ -793,6 +793,16 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY || notReady.length > 0)('web smoke
     await renderedReply.waitFor({ timeout: 10_000 })
     expect(await renderedReply.count()).toBe(1)
     await screen(page, '04-round-complete')
+    writeFileSync(join(REPO_ROOT, '.artifacts', 'w5-provenance.json'), `${JSON.stringify({
+      origin: new URL(baseUrl).origin,
+      tree: REPO_ROOT,
+      harnessHome: join(sessionsDir, '.alego'),
+      agentsHome: join(sessionsDir, '.agents'),
+      workspace: join(sessionsDir, 'workspace'),
+      sessionId,
+      viewport: page.viewportSize(),
+      locale: await page.evaluate(() => navigator.language),
+    }, null, 2)}\n`)
   }, 150_000)
 
   it('view tabs: Chat and Trajectory switch', async () => {

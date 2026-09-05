@@ -410,7 +410,10 @@ describe('DeepSeek e2e workflow', () => {
     })
     expect(steps.find(step => step.name === 'Upload branding demo frames')).toMatchObject({
       if: 'inputs.record_brand_demo',
-      with: { 'if-no-files-found': 'error' },
+      with: {
+        'if-no-files-found': 'error',
+        'path': expect.stringContaining('.artifacts/w5-provenance.json') as unknown,
+      },
     })
   })
 

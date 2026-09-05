@@ -38,7 +38,7 @@ The sidebar and hero use the same Alego block mark. The hero retains the upstrea
 
 Self-hosted standby drills require `ALEGO_SELF_HOSTED_STANDBY_ENABLED`; the repository has no configured standby runners. The upstream-only CDN publication record is archived with its original infrastructure identities. Local validation requires explicit Vue resolution for the documentation build and disposal of the subagent-list test contexts before removing their session directories; neither changes application behavior.
 
-The E2E workflow's opt-in `record_brand_demo` input selects the existing real-host, real-model first-send smoke and uploads empty, typed, and completed frames from one isolated run. Ordinary runs retain the full E2E suite. The capture waits for the durable Assistant response and its exact rendered text, not the prompt's echoed marker. The UI-copy gate permits the literal `alego` wordmark across locales but still rejects untranslated phrases containing it.
+The E2E workflow's opt-in `record_brand_demo` input selects the existing real-host, real-model first-send smoke and uploads empty, typed, and completed frames from one isolated run, with the server origin and fresh state directories recorded alongside them. Ordinary runs retain the full E2E suite. The capture acknowledges the fresh-user welcome notice through the UI, then waits for the durable Assistant response and its exact rendered text, not the prompt's echoed marker. The UI-copy gate permits the literal `alego` wordmark across locales but still rejects untranslated phrases containing it.
 
 ## Alternatives considered
 
