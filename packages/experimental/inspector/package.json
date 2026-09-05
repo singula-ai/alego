@@ -40,7 +40,7 @@
     "@singula-ai/alego-brand": "workspace:^",
     "@singula-ai/alego-util-crypto": "workspace:^",
     "@singula-ai/schemastery": "workspace:^",
-    "ws": "^8.21.0"
+    "ws": "^8.21.2"
   },
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:^",
