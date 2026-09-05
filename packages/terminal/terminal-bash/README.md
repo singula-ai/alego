@@ -83,7 +83,7 @@ This section explains the design behind the backend and points at the code that 
 
 ### Design concept
 
-One backend serves both dialects: bash and pwsh share the same session machinery — sanitizer, bounded buffers, readiness polling, cancellation, and teardown — and differ only in argv, environment, and prompt installation. Bash receives a private marker through `PS1` plus `PROMPT_COMMAND`. Pwsh writes a prompt function, pins UTF-8 console encoding, and publishes startup only after the backend reports `stdin_read`; echoed setup text cannot publish the shell. A zero-scrollback `@xterm/headless` instance consumes raw PTY data and returns terminal-protocol replies through the same handle, while the line sanitizer remains the only output projection.
+One backend serves both dialects: bash and pwsh share the same session machinery — sanitizer, bounded buffers, readiness polling, cancellation, and teardown — and differ only in argv, environment, and prompt installation. Bash receives a private marker through `PS1` plus `PROMPT_COMMAND`. Pwsh writes a prompt function, pins UTF-8 console encoding, and publishes startup only after verifying the controlled prompt marker and its exact printable tail; a byte-level stdin wait while setup is being echoed cannot publish the shell. A zero-scrollback `@xterm/headless` instance consumes raw PTY data and returns terminal-protocol replies through the same handle, while the line sanitizer remains the only output projection.
 
 ### Source map
 

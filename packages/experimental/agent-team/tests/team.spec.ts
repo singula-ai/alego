@@ -23,9 +23,12 @@ import { TestSessionQuery } from './test-session-query.ts'
 
 const SIGNAL = new AbortController().signal
 const roots: string[] = []
+const contexts: Context[] = []
 
-afterEach(() => {
+afterEach(async () => {
   vi.useRealTimers()
+  vi.restoreAllMocks()
+  for (const ctx of contexts.splice(0).reverse()) await ctx.fiber.dispose()
   for (const root of roots.splice(0)) rmSync(root, { recursive: true, force: true })
 })
 
@@ -61,6 +64,7 @@ async function setup(
   config: ConstructorParameters<typeof TeamService>[1] = {},
 ) {
   const ctx = new Context()
+  contexts.push(ctx)
   await mountAgentLoopTestDependencies(ctx)
   await ctx.plugin(SessionProjectionRegistry)
   const storageRoot = mkdtempSync(join(tmpdir(), 'alego-team-'))
@@ -169,6 +173,7 @@ describe('Team identity and provisioning', () => {
 
   it('supports direct-constructor defaults and recovers roots that already exist', async () => {
     const ctx = new Context()
+    contexts.push(ctx)
     await mountAgentLoopTestDependencies(ctx)
     await ctx.plugin(SessionProjectionRegistry)
     const storageRoot = mkdtempSync(join(tmpdir(), 'alego-team-direct-'))
@@ -1410,6 +1415,7 @@ describe('Team mailbox and waiting', () => {
 
   it('waits for one change, supports cancellation, times out, and releases waiters on HMR disposal', async () => {
     const ctx = new Context()
+    contexts.push(ctx)
     await mountAgentLoopTestDependencies(ctx)
     await ctx.plugin(SessionProjectionRegistry)
     const storageRoot = mkdtempSync(join(tmpdir(), 'alego-team-wait-'))

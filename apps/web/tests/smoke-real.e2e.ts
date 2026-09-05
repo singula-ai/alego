@@ -802,6 +802,7 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY || notReady.length > 0)('web smoke
       sessionId,
       viewport: page.viewportSize(),
       locale: await page.evaluate(() => navigator.language),
+      timeZone: await page.evaluate(() => Intl.DateTimeFormat().resolvedOptions().timeZone),
     }, null, 2)}\n`)
   }, 150_000)
 

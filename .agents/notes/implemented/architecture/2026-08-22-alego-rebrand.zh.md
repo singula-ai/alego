@@ -36,11 +36,15 @@ scope 命名的是公司，但用户实际输入的一切都没有随之改变�
 
 侧栏和首屏使用相同的 Alego 积木标志。首屏保留上游 slot 及遵循减少动画偏好的悬停动画，以积木图形替换鲸鱼路径形变。GitHub 源码链接和 push 工作流指向 `singula-ai/alego` 的 `main`；必需 CI 使用本仓库可用的托管 runner。Cloudflare 预览要求仓库显式启用 `ALEGO_CLOUDFLARE_PREVIEW_ENABLED`。
 
-自托管备用演练要求启用 `ALEGO_SELF_HOSTED_STANDBY_ENABLED`；本仓库没有配置备用 runner。Issue 和 Project 自动化仅在仓库启用 Issues 时运行；该功能关闭时不申请 App token，也不要求关联 Issue。仅适用于上游的 CDN 发布记录以原始基础设施身份归档。本地验证要求文档构建显式解析 Vue，并在删除会话目录前释放 subagent-list 测试的 context；两者均不改变应用行为。
+自托管备用演练要求启用 `ALEGO_SELF_HOSTED_STANDBY_ENABLED`；本仓库没有配置备用 runner。Issue 和 Project 自动化仅在仓库启用 Issues 时运行；该功能关闭时不申请 App token，也不要求关联 Issue。仅适用于上游的 CDN 发布记录以原始基础设施身份归档。本地验证要求文档构建显式解析 Vue，并在删除会话目录前释放 subagent-list 与 Agent Teams 测试的 context；两者均不改变应用行为。
 
 E2E 工作流的可选 `record_brand_demo` 输入选择现有的真实 Host、真实模型首轮发送冒烟测试，并上传同一次隔离运行的空白、输入完成和回复完成画面，同时记录服务器源地址和全新状态目录。普通运行保留完整 E2E 套件。截图流程通过 UI 确认新用户欢迎声明，然后等待持久化的 Assistant 回复及其精确渲染文本，而非提示词回显中的标记。UI 文案门禁允许各语言共用字面量 `alego` 字标，但仍拒绝包含它的未翻译短语。
 
 托管 Linux 和 Windows 任务使用[四核 runner](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)。覆盖率检查采用两个单 worker 插桩分区和一个豁免套件 worker，为子进程保留余量。Linux 消费端任务每次运行一个门禁，同时保留各门禁内部的并行执行。测试断言、超时限制和覆盖率阈值保持不变。
+
+Web 快照浏览器使用 `Asia/Shanghai`，使其与保留的 `clientTimeZone` 字段一致，不受宿主时区影响。PowerShell 录制包含当前 headless profile 的策略事件、系统提示词和工具 schema。这两项调整均保持应用行为不变，并比较完整的持久化回放，不增加归一化例外。
+
+持久 PowerShell 后端在启动期间要求提示符标记证明就绪，详见 [pwsh 决策](2026-08-11-pwsh-persistent-pty.zh.md)；普通命令的就绪规则和截止时间保持不变。邮箱恢复 fixture 在销毁恢复后的 Lead 前等待已准入的派发完成，避免用内存中的确认代替已完成的持久化。
 
 ## Alternatives considered
 

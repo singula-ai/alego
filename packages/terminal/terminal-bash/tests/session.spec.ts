@@ -153,6 +153,26 @@ async function initialize(session: LocalPtySession, terminal: FakeTerminal): Pro
 }
 
 describe('LocalPtySession readiness and output', () => {
+  it('requires the controlled prompt for setup even when the shell waits for another input byte', async () => {
+    vi.useFakeTimers()
+    const terminal = new FakeTerminal()
+    const inspector = new FakeInspector()
+    const session = makeSession(terminal, inspector, config())
+    const operation = session.startSend({ text: "function prompt { 'alego> ' }", submit: true }, true)
+    let settled = false
+    void operation.done.then(() => { settled = true })
+    await vi.advanceTimersByTimeAsync(0)
+    terminal.emitData("function prompt { 'alego> ' }")
+    inspector.waiting = true
+    await vi.advanceTimersByTimeAsync(20)
+    expect(settled).toBe(false)
+
+    terminal.emitData('\x1b]133;D;0\x07alego> ')
+    await vi.advanceTimersByTimeAsync(10)
+    expect((await operation.done).waitReason).toBe('stdin_read')
+    await session.close('test complete')
+  })
+
   it('answers split cursor-position queries before publishing prompt readiness', async () => {
     vi.useFakeTimers()
     const terminal = new FakeTerminal()

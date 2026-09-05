@@ -17,6 +17,7 @@ import * as SubagentSpawn from '@singula-ai/alego-subagent-spawn-in-process'
 import { MockAdapter, textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import TeamService, { TeamId, TeamMessageId } from '../src/index.ts'
 import { teamProjectionDefinition } from '../src/projection.ts'
+import type { TeamMailbox } from '../src/mailbox.ts'
 import type { TeamMemberSnapshot, TeamMessageSnapshot, TeamTaskSnapshot } from '../src/index.ts'
 import { TestSessionQuery } from './test-session-query.ts'
 
@@ -390,6 +391,12 @@ for (const backend of backends) {
         agentOptions: { provider: 'mock', model: 'mock' },
       })
       await vi.waitFor(() => { expect(durable(rootHandle.agent).pendingMessages).toEqual([]) })
+      // The in-memory acknowledgement precedes the dispatch's durable completion.
+      const mailbox = (second.ctx.agentTeams as unknown as { mailbox: TeamMailbox }).mailbox
+      await Promise.all(mailbox.pendingDispatches())
+      const acknowledged = await storedEvents(second.ctx, rootId)
+      expect(acknowledged.some(event => event.type === 'team/message/delivered'
+        && event.data.messageId === messageId)).toBe(true)
       expect(second.ctx.agents.get(started.member.id)).toBeUndefined()
       expect(second.adapter.requests).toEqual([])
 

@@ -23,12 +23,17 @@ export const ZH_BROWSER_LOCALE = 'zh-CN'
  * settings document free to override the provisional browser-derived locale;
  * scenarios asserting the Chinese surface advertise
  * {@link ZH_BROWSER_LOCALE} instead.
+ * The browser timezone matches recorded clientTimeZone values on every host.
  * @param browser - Playwright browser owning the page.
  * @param height - Viewport height; width is fixed to the lane baseline.
  * @returns the initialized page.
  */
 export async function newEnglishPage(browser: Browser, height = 1000): Promise<Page> {
-  return await browser.newPage({ viewport: { width: 1680, height }, locale: 'en-US' })
+  return await browser.newPage({
+    viewport: { width: 1680, height },
+    locale: 'en-US',
+    timezoneId: 'Asia/Shanghai',
+  })
 }
 
 /**

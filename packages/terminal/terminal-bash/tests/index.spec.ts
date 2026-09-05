@@ -360,10 +360,12 @@ describe('BashTerminalBackend startup rollback', () => {
     await ctx.plugin(SandboxPolicyService, { mode: 'danger-full-access', workspaceRoot: '/workspace' })
     let spawned: SubprocessTerminalSpawnSpec | undefined
     let sent: TerminalSendRequest | undefined
+    let promptRequired: boolean | undefined
     const session = {
       motd: '',
-      startSend: (request: TerminalSendRequest) => {
+      startSend: (request: TerminalSendRequest, requireControlledPrompt: boolean) => {
         sent = request
+        promptRequired = requireControlledPrompt
         return {
           done: Promise.resolve({
             viewport: 'setup-echo alego> ', waitReason: 'stdin_read' as const,
@@ -383,6 +385,7 @@ describe('BashTerminalBackend startup rollback', () => {
     )
     expect(await backend.spawn(spec(agent(ctx)))).toBe(session)
     expect(sent).toMatchObject({ text: ENCODING_PREAMBLE + PWSH_PROMPT_SETUP, submit: true })
+    expect(promptRequired).toBe(true)
     expect(session.motd).toBe('setup-echo alego> ')
     expect(spawned?.env).toMatchObject({
       TERM: 'dumb', NO_COLOR: '1', ALEGO_SHELL: '1', ALEGO_SESSION_ID: 'agent', ALEGO_PTY_SESSION_ID: 'pty-1',

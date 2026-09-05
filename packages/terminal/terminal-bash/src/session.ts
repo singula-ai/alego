@@ -91,6 +91,7 @@ class LocalSendOperation implements TerminalSendOperation {
     maxBytes: number,
     readonly startedAt: number,
     private readonly onCancel: () => void,
+    readonly requireControlledPrompt: boolean,
   ) {
     this.output = new BoundedTextBuffer(maxBytes)
     this.promise = Promise.withResolvers<TerminalSendResult>()
@@ -248,7 +249,13 @@ export class LocalPtySession implements TerminalBackendSession {
     }
   }
 
-  startSend(request: TerminalSendRequest): TerminalSendOperation {
+  /**
+   * Start a send, optionally requiring prompt-marker evidence during shell setup.
+   * @param request - terminal input and cancellation options.
+   * @param requireControlledPrompt - reject byte-level stdin waits as setup completion.
+   * @returns the owned send operation.
+   */
+  startSend(request: TerminalSendRequest, requireControlledPrompt = false): TerminalSendOperation {
     if (this.closing) throw new Error('PTY session is closing')
     if (this.statusValue.kind === 'exited') throw new Error('PTY session has exited')
     if (this.active !== undefined) {
@@ -265,6 +272,7 @@ export class LocalPtySession implements TerminalBackendSession {
       this.config.maxReadBytes,
       Date.now(),
       () => { this.interrupt(operation) },
+      requireControlledPrompt,
     )
     this.active = operation
     this.resetReadinessEvidence()
@@ -496,7 +504,7 @@ export class LocalPtySession implements TerminalBackendSession {
       }
       const elapsed = Date.now() - operation.startedAt
       const startupHasOutput = !this.initializing || this.scrollback.snapshot().text.length > 0
-      const acceptsStdinWait = startupHasOutput && foreground !== undefined
+      const acceptsStdinWait = !operation.requireControlledPrompt && startupHasOutput && foreground !== undefined
         && operation.acceptsStdinWait(foreground.processGroupId, foreground.inputWaiting)
       if (elapsed >= this.config.exactProbeAfterMs && acceptsStdinWait) {
         this.settleActive('stdin_read')
