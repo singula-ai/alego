@@ -40,6 +40,8 @@ scope 命名的是公司，但用户实际输入的一切都没有随之改变�
 
 E2E 工作流的可选 `record_brand_demo` 输入选择现有的真实 Host、真实模型首轮发送冒烟测试，并上传同一次隔离运行的空白、输入完成和回复完成画面，同时记录服务器源地址和全新状态目录。普通运行保留完整 E2E 套件。截图流程通过 UI 确认新用户欢迎声明，然后等待持久化的 Assistant 回复及其精确渲染文本，而非提示词回显中的标记。UI 文案门禁允许各语言共用字面量 `alego` 字标，但仍拒绝包含它的未翻译短语。
 
+托管 Linux 和 Windows 任务使用[四核 runner](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)。覆盖率检查采用两个单 worker 插桩分区和一个豁免套件 worker，为子进程保留余量。Linux 消费端任务每次运行一个门禁，同时保留各门禁内部的并行执行。测试断言、超时限制和覆盖率阈值保持不变。
+
 ## Alternatives considered
 
 **按产品划分 scope（`@alego/<name>`，CLI 为 `@alego/cli`）。** 先落地、随后被替换。它在 import 处更短，也贴合单产品工具生态的命名习惯，但它把公司与产品压缩成了一个 token。此前有三道门禁依赖这一区分来把 MIT 产品与重新 scope 的 vendor 树、采用 BSD-3-Clause 的 Landlock addon 以及不发布的 website 分开，它们都不得不改为按目录识别包；恢复前缀后，这三处全部回退为上游的逻辑。它还让 CLI 以所在层级而非产品命名——`npx @alego/cli web`——并且在 Singula AI 拥有多个产品的情况下，公司 scope 意味着只需拥有、保护并审计一个 npm organization，而不是每个产品一个。

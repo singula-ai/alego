@@ -11,31 +11,22 @@ env:
   # into apps/cli/cordis.yml (AppCLIEntry disables the row when set).
   ALEGO_TELEMETRY_DISABLED: '1'
 
-# Cancel a superseded pull-request run on a new push so a fresh head does not
-# queue a second full 9-job run behind a stale one (paid enterprise runners
-# would otherwise stack with no auto-cancellation).
+# New commits supersede the previous pull-request run.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
 
-  # Three enterprise jobs isolate coverage, static analysis, and the
+  # Three jobs isolate coverage, static analysis, and the
   # build-backed consumer tail. The consumer job owns the only Linux build so
   # all three jobs enter runner allocation independently.
   #
-  # FAILOVER (Linux): each Linux enterprise job resolves its pool through the
-  # ALEGO_CI_FAILOVER_LINUX repository variable. Unset (normal), the expressions
-  # pick the hosted enterprise pools below. Setting the variable to
-  # 'selfhosted' (repo Settings → Actions → Variables; writer-manageable
-  # repository state — not PR-editable, no merge required) retargets all
-  # three onto the in-house
-  # vm-backup pool and re-running the failed jobs is the entire switch —
-  # see .agents/notes/implemented/process/2026-07-26-ci-failover-runbook.md. The
-  # in-house pool's readiness is re-proven on every master push by the
-  # serial-linux-selfhosted standby lane in ci-master.yml. The Windows failover
-  # switch is the separate ALEGO_CI_FAILOVER_WINDOWS variable on the windows-native
-  # job below.
+  # Hosted runners are the default. ALEGO_CI_FAILOVER_LINUX=selfhosted selects
+  # vm-backup; Windows uses the separate ALEGO_CI_FAILOVER_WINDOWS variable.
+  # These repository variables cannot be changed by a pull request. Standby
+  # drills in ci-master.yml require ALEGO_SELF_HOSTED_STANDBY_ENABLED.
+  # See .agents/notes/implemented/process/2026-07-26-ci-failover-runbook.md.
   node-24:
     if: github.event_name == 'pull_request'
     runs-on: >-
@@ -100,10 +91,10 @@ jobs:
           || 'ubuntu-24.04' }}
     name: node 24 / coverage
     env:
-      # Partitioning replaces the instrumented share; this budget gives the
-      # exempt-heavy gate two workers on both hosted and failover runners.
-      ALEGO_COVERAGE_MAX_WORKERS: '6'
-      ALEGO_COVERAGE_PARTITIONS: '4'
+      # Two instrumented workers and one exempt worker leave headroom for
+      # their subprocesses on the hosted four-CPU runner.
+      ALEGO_COVERAGE_MAX_WORKERS: '3'
+      ALEGO_COVERAGE_PARTITIONS: '2'
       ALEGO_GATE_CONCURRENCY: '3'
       # A gate failure aborts the sibling gate instead of waiting out its
       # multi-minute instrumented run.
@@ -165,17 +156,16 @@ jobs:
           || 'ubuntu-24.04' }}
     name: node 24 / snapshots and artifacts
     env:
-      ALEGO_GATE_CONCURRENCY: '10'
+      # Each consumer gate owns parallel subprocesses; the four-CPU hosted
+      # runner executes one gate at a time while retaining that inner parallelism.
+      ALEGO_GATE_CONCURRENCY: '1'
       ALEGO_NODE_COMPAT_SKIP_TYPECHECK: '1'
-      ALEGO_OXLINT_THREADS: '8'
-      ALEGO_PUBLINT_CONCURRENCY: '8'
-      ALEGO_WEB_SNAPSHOT_WORKERS: '6'
-      # A failing gate aborts its running siblings: a failing build stops the
-      # independent Node compatibility smoke, and a failing reader (e.g.
-      # publint) stops the remaining artifact consumers.
+      ALEGO_OXLINT_THREADS: '4'
+      ALEGO_PUBLINT_CONCURRENCY: '4'
+      ALEGO_WEB_SNAPSHOT_WORKERS: '2'
+      # A failed gate stops the remaining consumer inventory.
       ALEGO_GATE_FAIL_FAST: '1'
-      # Failover halves snapshot concurrency for the shared 64-core VM.
-      ALEGO_SNAPSHOT_MAX_CONCURRENCY: ${{ vars.ALEGO_CI_FAILOVER_LINUX == 'selfhosted' && github.event.pull_request.user.login != 'dependabot[bot]' && '12' || '32' }}
+      ALEGO_SNAPSHOT_MAX_CONCURRENCY: '2'
     steps:
       - uses: actions/checkout@v6
         with:
@@ -483,8 +473,8 @@ jobs:
     name: windows node 24 / coverage
     timeout-minutes: 120
     env:
-      ALEGO_COVERAGE_MAX_WORKERS: '6'
-      ALEGO_COVERAGE_PARTITIONS: '4'
+      ALEGO_COVERAGE_MAX_WORKERS: '3'
+      ALEGO_COVERAGE_PARTITIONS: '2'
       ALEGO_COVERAGE_TEST_TIMEOUT_MS: '90000'
       ALEGO_GATE_CONCURRENCY: '3'
       # A gate failure aborts the sibling gate instead of waiting out its

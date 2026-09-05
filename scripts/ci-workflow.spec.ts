@@ -148,9 +148,18 @@ describe('CI workflow', () => {
       expect(install!.run).not.toContain('$cloneFlag')
     }
 
-    // windows-coverage uses the lower 4-partition profile.
+    // Hosted coverage shares its worker budget with the subprocess-heavy suites.
     expect(windowsCoverage.name).toBe('windows node 24 / coverage')
-    expect(windowsCoverage.env).toMatchObject({ ALEGO_COVERAGE_PARTITIONS: '4' })
+    for (const coverageJob of [node24Coverage, windowsCoverage]) {
+      expect(coverageJob.env).toMatchObject({ ALEGO_COVERAGE_MAX_WORKERS: '3', ALEGO_COVERAGE_PARTITIONS: '2' })
+    }
+    expect(node24Consumers.env).toMatchObject({
+      ALEGO_GATE_CONCURRENCY: '1',
+      ALEGO_OXLINT_THREADS: '4',
+      ALEGO_PUBLINT_CONCURRENCY: '4',
+      ALEGO_WEB_SNAPSHOT_WORKERS: '2',
+      ALEGO_SNAPSHOT_MAX_CONCURRENCY: '2',
+    })
     const coverageSteps = windowsCoverage.steps as unknown[]
     const coverageCommands = coverageSteps.filter((step): step is Record<string, unknown> & { run: string } => (
       isRecord(step) && typeof step.run === 'string'
