@@ -1494,23 +1494,31 @@ export function taskkillArgs(rootPid: number, descendants: number[]): string[][]
   return [rootPid, ...descendants].map(pid => ['/PID', String(pid), '/T', '/F'])
 }
 
-/** Breadth-first walk of the pid/ppid rows starting at `root`. */
-function collectDescendants(root: number, rows: Array<[number, number]>): number[] {
+/**
+ * Collect reachable process IDs in breadth-first order, excluding the root.
+ * @param root - process whose descendants are requested.
+ * @param rows - captured pid/ppid pairs; retained parent IDs can form cycles after PID reuse.
+ * @returns each reachable descendant once, in discovery order.
+ */
+export function collectDescendants(root: number, rows: Array<[number, number]>): number[] {
   const byParent = new Map<number, number[]>()
   for (const [pid, ppid] of rows) {
     const children = byParent.get(ppid) ?? []
     children.push(pid)
     byParent.set(ppid, children)
   }
-  const result: number[] = []
-  const queue = byParent.get(root) ?? []
+  const seen = new Set([root])
+  const queue = [root]
   for (let index = 0; index < queue.length; index += 1) {
     const pid = queue[index]
     if (pid === undefined) continue
-    result.push(pid)
-    queue.push(...(byParent.get(pid) ?? []))
+    for (const child of byParent.get(pid) ?? []) {
+      if (seen.has(child)) continue
+      seen.add(child)
+      queue.push(child)
+    }
   }
-  return result
+  return queue.slice(1)
 }
 
 /**

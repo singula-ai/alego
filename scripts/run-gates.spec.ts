@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs'
 import { describe, expect, it, vi, type MockInstance } from 'vitest'
 import {
   cliGateOptions,
+  collectDescendants,
   defaultConcurrency,
   formatGateResultReason,
   gatesForMode,
@@ -889,6 +890,25 @@ describe('process-table parsing', () => {
 
   it('drops blank and malformed lines', () => {
     expect(parsePidPpidLines('  123   1\n\ncommand not found\n999 abc\n')).toEqual([[123, 1]])
+  })
+})
+
+describe('process-table descendants', () => {
+  it('walks only the root subtree in breadth-first order', () => {
+    expect(collectDescendants(100, [[301, 201], [201, 100], [202, 100], [401, 999]]))
+      .toEqual([201, 202, 301])
+    expect(collectDescendants(999, [])).toEqual([])
+  })
+
+  it('visits duplicate and cyclic retained parent IDs once, excluding the root', () => {
+    expect(collectDescendants(100, [[201, 100], [201, 100], [100, 201], [202, 201], [202, 202]]))
+      .toEqual([201, 202])
+  })
+
+  it('walks a wide child list without passing it as call arguments', () => {
+    const children = Array.from({ length: 150_000 }, (_, index) => index + 1000)
+    const rows: Array<[number, number]> = [[201, 100], ...children.map((pid): [number, number] => [pid, 201])]
+    expect(collectDescendants(100, rows)).toEqual([201, ...children])
   })
 })
 

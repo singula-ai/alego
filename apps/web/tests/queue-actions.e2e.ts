@@ -241,9 +241,15 @@ describe('web e2e: queue row actions', () => {
     await compareOrRefreshGolden(LAYOUT_EXPECTED, layoutSnapshot, MODE)
 
     const expectAlignedContextPanels = async () => {
-      const queuePanelBox = await page.locator('[data-queue-dock] > div').boundingBox()
-      const todoBox = await page.locator('[data-testid="todo-panel"]').boundingBox()
-      const goalBox = await page.locator('[data-goal-bar] > div').boundingBox()
+      // Shared layout animations can advance between separate browser calls.
+      const [queuePanelBox, todoBox, goalBox] = await page.evaluate(() => [
+        '[data-queue-dock] > div',
+        '[data-testid="todo-panel"]',
+        '[data-goal-bar] > div',
+      ].map((selector) => {
+        const rect = document.querySelector(selector)?.getBoundingClientRect()
+        return rect === undefined ? null : { x: rect.x, y: rect.y, width: rect.width }
+      }))
       expect(queuePanelBox).not.toBeNull()
       expect(todoBox).not.toBeNull()
       expect(goalBox).not.toBeNull()

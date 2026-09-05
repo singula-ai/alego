@@ -22,6 +22,8 @@ The option is enabled through `ALEGO_GATE_FAIL_FAST` (accepted values: `1` or un
 
 The `windows-observational` lane stays complete: it is `continue-on-error` by design and exists to collect as much Windows-native evidence per run as possible, so the first failure must not truncate the rest. The `windows` Wine lane and `windows-native-tests` run a single script or Vitest command rather than a run-gates aggregate, so the scheduler option does not apply to them. The master serial standby lanes (`serial-linux-selfhosted`, `serial-windows`) and the manual runner benchmarks do not set the flag: they are completeness drills that must execute the full aggregate to prove pool readiness.
 
+The process-table walk visits each PID at most once and excludes the root from its descendants. Windows retains parent IDs after exit, and [PID reuse can make them refer to unrelated processes](https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-process); the captured rows are therefore not guaranteed to form a tree. A visited set bounds traversal through cycles, and iterative appends avoid JavaScript's call-argument limit on wide child lists. The pure walker tests cover duplicate rows, cycles, and large fan-out without requiring a Windows host.
+
 ## Consequences
 
 A red pull-request run ends sooner. The largest saving is in `ci-coverage`: a failing exempt-heavy gate aborts the multi-minute instrumented coverage gate instead of letting it run out.

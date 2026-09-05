@@ -45,6 +45,14 @@ async function settledSourceOption(menu: Locator): Promise<Locator> {
   return source
 }
 
+/** Replace a query in one input event so matching rows cannot belong to an earlier prefix. */
+async function writeFolderQuery(page: Page, input: Locator, menu: Locator, text: string): Promise<void> {
+  await writeComposerDraft(page, input, '')
+  await menu.waitFor({ state: 'detached' })
+  await input.click()
+  await page.keyboard.insertText(text)
+}
+
 /** Build one closed source session with a stable title for reference discovery. */
 function sourceSessionFixture(): string {
   const session = Session.create(SessionId(SOURCE_SESSION_ID))
@@ -286,7 +294,7 @@ describe.skipIf(MODE === 'record')('web e2e: file and session references through
 
     // Settle: Enter on the highlighted folder row resolves the folder itself
     // as an atomic chip — folder glyph, no trigger character, one unit.
-    await writeComposerDraft(page, input, '@folderx')
+    await writeFolderQuery(page, input, menu, '@folderx')
     // First folder query on this page: allow the Host index a cold start.
     await menu.getByRole('option', { name: /^folderx\// }).waitFor({ timeout: 60_000 })
     await page.keyboard.press('Enter')
@@ -297,7 +305,7 @@ describe.skipIf(MODE === 'record')('web e2e: file and session references through
 
     // Tab drills: the literal descent text stays editable and the open menu
     // lists the folder's children.
-    await writeComposerDraft(page, input, '@folderx')
+    await writeFolderQuery(page, input, menu, '@folderx')
     await menu.getByRole('option', { name: /^folderx\// }).waitFor()
     await page.keyboard.press('Tab')
     await expect.poll(() => input.textContent()).toBe('@folderx/')
@@ -305,7 +313,7 @@ describe.skipIf(MODE === 'record')('web e2e: file and session references through
 
     // The row chevron drills the same way by pointer, header included: a
     // pointer descent reaches the same listing a Tab descent does.
-    await writeComposerDraft(page, input, '@folderx')
+    await writeFolderQuery(page, input, menu, '@folderx')
     const row = menu.getByRole('option', { name: /^folderx\// })
     await row.waitFor()
     await row.getByRole('button', { name: 'Browse folder' }).click()
@@ -330,12 +338,12 @@ describe.skipIf(MODE === 'record')('web e2e: file and session references through
     const crumbs = page.getByRole('navigation', { name: 'Folder navigation' })
 
     // A path the user typed carries its own context: no header.
-    await writeComposerDraft(page, input, '@folderx/')
+    await writeFolderQuery(page, input, menu, '@folderx/')
     await menu.getByRole('option', { name: /child\.txt/ }).waitFor({ timeout: 60_000 })
     await expect.poll(() => crumbs.count()).toBe(0)
 
     // The same listing reached by drilling owes the user the way back.
-    await writeComposerDraft(page, input, '@folderx')
+    await writeFolderQuery(page, input, menu, '@folderx')
     await menu.getByRole('option', { name: /^folderx\// }).waitFor()
     await page.keyboard.press('Tab')
     await menu.getByRole('option', { name: /child\.txt/ }).waitFor()
@@ -350,7 +358,7 @@ describe.skipIf(MODE === 'record')('web e2e: file and session references through
 
     // A crumb above the current step re-lists that directory and keeps the
     // header, which now names the step it returned to.
-    await writeComposerDraft(page, input, '@folderx/nested')
+    await writeFolderQuery(page, input, menu, '@folderx/nested')
     const nested = menu.getByRole('option', { name: /^nested\// })
     await nested.waitFor()
     await nested.getByRole('button', { name: 'Browse folder' }).click()

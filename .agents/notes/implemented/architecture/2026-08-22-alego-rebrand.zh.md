@@ -48,6 +48,8 @@ Web 快照浏览器使用 `Asia/Shanghai`，使其与保留的 `clientTimeZone` 
 
 PowerShell 真实 shell fixture 在收到 `inferred_idle` 后以空输入继续轮询，直到确认就绪，且整个命令共用一个截止时间；它们不会重新提交命令。工作区创建 fixture 等待新 Session 的持久化关联和已选中的侧栏行，再进行下一次交互，避免与布局更新竞争。npm 解析 fixture 在 Windows 覆盖率任务的 90 秒测试预算内，为 npm 冷启动和 package-lock 生成分配 60 秒，并为进程退出和注册表清理保留时间；它不为仅验证元数据的断言设置性能阈值。
 
+浏览器布局 fixture 在同一次浏览器任务中读取相关面板的矩形，避免共享动画在测量之间推进。文件夹导航 fixture 在插入完整查询前清除上一轮触发菜单；细化查询期间保留的前缀匹配结果不能证明就绪。上游对待完成查询中选择操作的处理保持不变。CI 进程表遍历允许保留的父进程 ID 形成环，并支持宽子列表，详见[门禁运行器决策](../process/2026-08-27-gate-runner-fail-fast.zh.md)。
+
 ## Alternatives considered
 
 **按产品划分 scope（`@alego/<name>`，CLI 为 `@alego/cli`）。** 先落地、随后被替换。它在 import 处更短，也贴合单产品工具生态的命名习惯，但它把公司与产品压缩成了一个 token。此前有三道门禁依赖这一区分来把 MIT 产品与重新 scope 的 vendor 树、采用 BSD-3-Clause 的 Landlock addon 以及不发布的 website 分开，它们都不得不改为按目录识别包；恢复前缀后，这三处全部回退为上游的逻辑。它还让 CLI 以所在层级而非产品命名——`npx @alego/cli web`——并且在 Singula AI 拥有多个产品的情况下，公司 scope 意味着只需拥有、保护并审计一个 npm organization，而不是每个产品一个。

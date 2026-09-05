@@ -22,6 +22,8 @@ GitHub Actions 不提供原生的跨作业取消：`fail-fast` 只作用于矩�
 
 `windows-observational` 车道保持完整执行：它按设计是 `continue-on-error`，存在的意义是每次运行尽量收集 Windows 原生证据，因此首个失败不应截断其余部分。`windows` Wine 车道和 `windows-native-tests` 运行的是单个脚本或 Vitest 命令，不是 run-gates 聚合流程，因此调度选项不适用于它们。master 串行备用车道（`serial-linux-selfhosted`、`serial-windows`）和手动运行器基准测试不设置该标志：它们是完整性演练，必须执行完整聚合流程以证明池的可用性。
 
+进程表遍历最多访问每个 PID 一次，并从后代列表中排除根进程。Windows 在进程退出后保留父进程 ID，而 [PID 复用可能使其指向无关进程](https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-process)；因此，捕获的记录不保证构成树。已访问集合限制有环记录的遍历，逐项追加避免宽子列表触及 JavaScript 的调用参数数量限制。纯遍历函数的测试覆盖重复记录、环和大量直接子进程，无需 Windows 宿主。
+
 ## 结果
 
 红色拉取请求运行会更早结束。最大节省在 `ci-coverage`：失败的豁免重型门禁会中止多分钟的插桩覆盖率门禁，而不是让它跑完。
