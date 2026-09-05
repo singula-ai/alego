@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-agent-presets",
   "description": "Per-session agent composition from preset cordis.yml files for the Alego",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -26,14 +26,31 @@
       "types": "./lib/types/types.d.ts",
       "default": "./lib/types/types.js"
     },
+    "./display": {
+      "types": "./lib/types/display.d.ts",
+      "default": "./lib/types/display.js"
+    },
+    "./typert": {
+      "types": "./lib/typert.host.d.ts",
+      "default": "./lib/typert.host.js"
+    },
+    "./remote": {
+      "types": "./lib/typert.remote-client.d.ts",
+      "default": "./lib/typert.remote-client.js"
+    },
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
   "files": [
     "lib/index.js",
     "lib/invariant.js",
+    "presets",
     "lib/types/**/*.js",
-    "lib/types/**/*.d.ts"
+    "lib/types/**/*.d.ts",
+    "lib/typert.host.js",
+    "lib/typert.host.d.ts",
+    "lib/typert.remote-client.js",
+    "lib/typert.remote-client.d.ts"
   ],
   "license": "MIT",
   "peerDependencies": {
@@ -45,15 +62,20 @@
     "@singula-ai/alego-home-paths": "workspace:^",
     "@singula-ai/alego-scope": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^",
     "@singula-ai/alego-settings": "workspace:^",
     "@singula-ai/alego-system-prompt": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/alego-typert-protocol": "workspace:^",
     "@singula-ai/cordis": "workspace:^"
   },
   "dependencies": {
     "js-yaml": "^4.1.0",
-    "@singula-ai/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:^",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@singula-ai/cordis-plugin-group": "workspace:^",
     "@singula-ai/cordis-plugin-include": "workspace:^",
     "@singula-ai/cordis-plugin-loader": "workspace:^",
     "@singula-ai/alego-agent": "workspace:^",
@@ -64,10 +86,12 @@
     "@singula-ai/alego-home-paths": "workspace:^",
     "@singula-ai/alego-scope": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^",
     "@singula-ai/alego-settings": "workspace:^",
     "@singula-ai/alego-settings-file": "workspace:^",
     "@singula-ai/alego-system-prompt": "workspace:^",
     "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/alego-typert-protocol": "workspace:^",
     "@singula-ai/cordis": "workspace:^"
   }
 }

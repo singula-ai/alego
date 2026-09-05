@@ -7,7 +7,7 @@
 #
 # The build signal does not depend on this workflow. Every pull request builds
 # the production site through `check:ci:static`, and ci-master.yml builds it
-# again on main.
+# again on master.
 name: Deploy documentation
 
 on:
@@ -28,7 +28,7 @@ env:
   # release commit, so its master never carries unreleased work, and it retains
   # only the most recent tags — following the tag would leave every projected
   # source link on an older deploy unresolvable.
-  DOCS_REPOSITORY_REF: master
+  DOCS_REPOSITORY_REF: main
   # CI runs must never report to the production telemetry endpoint baked
   # into apps/cli/cordis.yml (AppCLIEntry disables the row when set).
   ALEGO_TELEMETRY_DISABLED: '1'

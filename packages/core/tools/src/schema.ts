@@ -2,7 +2,7 @@
 
 import { HarnessError } from '@singula-ai/alego-llm'
 import type { ContentBlock } from '@singula-ai/alego-llm'
-import type { JsonValue } from '@singula-ai/alego-session'
+import type { JsonValue } from '@singula-ai/alego-util-values'
 import type { ToolDefinition, ToolExecution, ToolExecutionResult, ToolRunContext, ToolResult } from './index.ts'
 import { assertSupportedJsonSchema, isJsonSchemaRecord, isPlainJsonArray, JsonSchemaError, validateJsonSchemaValue } from './json-schema.ts'
 import type { JsonSchemaNode, JsonSchemaScalar, ObjectJsonSchema } from './json-schema.ts'

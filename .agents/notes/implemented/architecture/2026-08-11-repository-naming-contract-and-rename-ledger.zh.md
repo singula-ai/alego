@@ -89,7 +89,7 @@ PascalCase 标识符中的首字母缩略词使用首字母大写格式：`Ui`�
 | `@singula-ai/alego-jsonrpc` | `@singula-ai/alego-sdk-jsonrpc-server` | 它是 SDK 协议的服务器端。单独使用 `jsonrpc` 只说明编码；`sdk-jsonrpc-server` 则同时说明所属系列、机制和职责。 |
 | `HarnessSdkServer` | `HarnessSdkJsonRpcServer` | 该类是 JSON-RPC 服务器的一种实现，并不代表所有可能的 SDK 服务器。 |
 
-保留 `@singula-ai/alego-sdk-client`、`@singula-ai/alego-sdk-protocol` 和 `alego-sdk-runtime`。排除 `@singula-ai/alego-create-sdk`、`@singula-ai/alego-scripts`、`@singula-ai/alego-helper` 和 `@singula-ai/alego-telemetry`；单独的移除决策负责删除这些包及其支撑依赖图。
+保留 `@singula-ai/alego-sdk-client`、`@singula-ai/alego-sdk-protocol` 和 `alego-sdk-runtime`。排除 `@singula-ai/create-sdk`、`@singula-ai/alego-scripts`、`@singula-ai/alego-helper` 和 `@singula-ai/alego-telemetry`；单独的移除决策负责删除这些包及其支撑依赖图。
 
 ### Shell 与终端
 
@@ -274,10 +274,14 @@ PascalCase 标识符中的首字母缩略词使用首字母大写格式：`Ui`�
 | `E2BSandboxService` | `E2BRuntime` | 该类创建、复用和释放文件系统与子进程适配器所使用的 E2B 执行环境。它比单个沙箱句柄的职责更广，又比通用所有者更具体。保留 `@singula-ai/alego-e2b`、`ctx.e2b` 和 `e2b/` 组。 |
 | `@singula-ai/alego-frontend-static` | `@singula-ai/alego-host-frontend-static` | 该包是提供前端资源的 Host 插件。此前缀可将它与前端应用代码区分开。 |
 | `PluginInventoryService` | `PluginInventoryGateway` | 该类只负责把实时 Loader 树适配到 `pluginInventory/list` RPC。它不拥有同进程服务、缓存、历史或修改路径。`Gateway` 准确说明现有角色。 |
-| `@singula-ai/alego-jsonrpc-demo` | `@singula-ai/alego-sdk-jsonrpc-demo` | 该示例演示通过 JSON-RPC 使用运行时 SDK，属于 SDK 的唯一含义。 |
+| `@singula-ai/alego-jsonrpc-demo`、`@singula-ai/alego-sdk-jsonrpc-demo`、`@singula-ai/alego-sdk-python-runtime` | 已删除 | Python 运行时打包现有 `@singula-ai/alego` CLI 与其 `sdk` profile；私有应用包会重新产生第二个启动器。 |
+| `packages/examples/jsonrpc-demo/`、`packages/sdk/python-runtime/` | 已删除 | Python 运行时 wheel 的闭包 manifest 负责打包，无需独立应用包。 |
+| `examples/jsonrpc-agent/` | `python/sdk/examples/` | 该示例演示 Python 使用 `sdk` profile 与有序 patch。 |
+| `@singula-ai/alego-acp-demo` | `@singula-ai/alego-acp-app` | 该包是 ACP profile 的应用组合包，不是独立 demo bin。 |
+| 部署根 manifest `alego-jsonrpc-agent-pkg`、`alego-sdk-python-runtime-closure` | `alego-python-runtime-closure` | 该零代码 manifest 定义 Python 运行时 wheel 的完整 `alego` 依赖闭包，不再命名独立 SDK 应用。 |
 | `@singula-ai/alego-frontend` | `@singula-ai/alego-web-frontend` | 该应用是 Web 前端。保留其物理目录 `apps/web/`。 |
 
-保留 atomic-write、brand、native-command、timeout 实用工具、目录选择器、`alego-base`、`alego-web-app`、应用启动、CLI（命令行界面）名称，以及 `headless` 包、组合包和示例身份。`headless` 是预期的产品本质，未来也可以支持不止一次性执行。
+保留 atomic-write、brand、native-command、timeout 实用工具、目录选择器、`alego-base`、`alego-web-app`、`alego-sdk-app`、`alego-acp-app`、应用启动、CLI（命令行界面）名称，以及 `headless` 包、组合包和示例身份。`headless` 是预期的产品本质，未来也可以支持不止一次性执行。
 
 ### 客户端运行时与 UI
 
@@ -309,7 +313,7 @@ PascalCase 标识符中的首字母缩略词使用首字母大写格式：`Ui`�
 | `ConversationService` | `ConversationController` | 该对象控制当前对话状态和用户操作。 |
 | `InputService` | `SessionInputResolver` | 该接口为一个会话作用域解析输入外观。它既不是全局输入注册表，也不是执行服务。保留 `InputHub` 作为具体中枢，并保留 `ctx.conversation.input` 作为对外接口。 |
 
-PascalCase 标识符内部使用 `Ui`，不要使用 `UI`。除非清单明确要求重命名，否则保留其余客户端包名。暂时保留已弃用的客户端连接和 Host `ApiProxy` 词汇；API 平面将替换它们，而在计划移除的表面上重命名只会增加改动量。
+PascalCase 标识符内部使用 `Ui`，不要使用 `UI`。除非清单明确要求重命名，否则保留其余客户端包名。在 API 平面移除相关表层之前，保留已弃用的客户端连接与 Host `ApiProxy` 词汇；提前重命名只会增加改动量，不会建立持久名称。
 
 ## 明确保留的名称
 

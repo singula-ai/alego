@@ -2,15 +2,15 @@
  * alego-llm's owned branded ids: tool-call correlation and provider request
  * diagnostics.
  *
- * The `Branded<B>` primitive itself lives in `@singula-ai/alego-brand` (a
- * zero-dependency type-only package) so every owner of a cross-boundary id can
- * brand it without depending on alego-llm; see that package's README for the
+ * The `Branded<B>` primitive and stateless constructor live in
+ * `@singula-ai/alego-brand` so every owner of a cross-boundary id can brand it
+ * without depending on alego-llm; see that package's README for the
  * nominal-typing policy.
  *
  * @module @singula-ai/alego-llm/brand
  */
 
-import type { Branded } from '@singula-ai/alego-brand'
+import { brandString, type Branded } from '@singula-ai/alego-brand'
 
 /** Stable identity carried by one message across inbox, log, and model-request boundaries. */
 export type MessageId = Branded<'MessageId'>
@@ -18,25 +18,25 @@ export type MessageId = Branded<'MessageId'>
 /**
  * Brand a message identifier.
  * @param id - the opaque message identifier.
- * @returns the same string, branded; no validation is performed.
+ * @returns the same string with the message-id brand.
  */
 export function MessageId(id: string): MessageId {
-  return id as MessageId
+  return brandString<MessageId>(id)
 }
 
 /**
  * Correlates a model-issued tool call with its result. Provider-issued for
  * real adapters; synthesized by mocks/assembler fallbacks.
  */
-export type CallId = Branded<'CallId'>
+export type ToolCallId = Branded<'ToolCallId'>
 
 /**
- * Brand a string as a {@link CallId}.
- * @param id - the provider-issued (or synthesized) call id.
- * @returns the same string, branded; no validation is performed.
+ * Brand a string as a {@link ToolCallId}.
+ * @param id - the provider-issued or synthesized call id.
+ * @returns the same string with the tool-call-id brand.
  */
-export function CallId(id: string): CallId {
-  return id as CallId
+export function ToolCallId(id: string): ToolCallId {
+  return brandString<ToolCallId>(id)
 }
 
 /** Provider-issued request identifier retained for diagnostics across package boundaries. */
@@ -48,7 +48,19 @@ export type ProviderRequestId = Branded<'ProviderRequestId'>
  * @returns the same string, branded; no validation is performed.
  */
 export function ProviderRequestId(id: string): ProviderRequestId {
-  return id as ProviderRequestId
+  return brandString<ProviderRequestId>(id)
+}
+
+/** Identity of one model streaming attempt, unique within one Agent lifecycle. */
+export type LlmAttemptId = Branded<'LlmAttemptId'>
+
+/**
+ * Brand one loop-owned streaming attempt identifier.
+ * @param id - the opaque Agent-lifecycle-local identifier.
+ * @returns the same string with the attempt-id brand.
+ */
+export function LlmAttemptId(id: string): LlmAttemptId {
+  return brandString<LlmAttemptId>(id)
 }
 
 /** Adapter-owned identifier for one model's selectable reasoning effort. */
@@ -60,5 +72,5 @@ export type ReasoningEffortId = Branded<'ReasoningEffortId'>
  * @returns the same string, branded; no validation is performed.
  */
 export function ReasoningEffortId(id: string): ReasoningEffortId {
-  return id as ReasoningEffortId
+  return brandString<ReasoningEffortId>(id)
 }

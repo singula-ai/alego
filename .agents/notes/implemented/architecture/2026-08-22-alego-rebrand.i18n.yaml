@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-22-alego-rebrand.md
-2026-08-22-alego-rebrand.md: fcf478ca0a6df67b59520f3d15c703d8ba1fc194
-2026-08-22-alego-rebrand.zh.md: eac47c1d9fca91eb9807453581343008648ce825
+2026-08-22-alego-rebrand.md: 7eb25d35aa93986b1680137e4ddbc71109e1ca19
+2026-08-22-alego-rebrand.zh.md: d3d8640a6c882ba033eeb0d3b442e572fda4d706

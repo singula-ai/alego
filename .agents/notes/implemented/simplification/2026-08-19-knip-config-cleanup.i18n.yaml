@@ -1,6 +1,0 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-08-19-knip-config-cleanup.md
-2026-08-19-knip-config-cleanup.md: 8f68ef62f36c014c8c5f8f7c5ca0090ac5395364
-2026-08-19-knip-config-cleanup.zh.md: 742d19e99bbf497c06063fa8c5d6f8bd98e6a810

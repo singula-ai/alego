@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-24-single-harness-home-resolver.md
-2026-07-24-single-harness-home-resolver.md: ef35c60fad75abd2d5263bf842746211e129fb97
-2026-07-24-single-harness-home-resolver.zh.md: 5a3ebdc541cf4b1fe323d435106dae8efd946b4b
+2026-07-24-single-harness-home-resolver.md: a20f189aa96262cc2a748ec974ebc8f42b79df5f
+2026-07-24-single-harness-home-resolver.zh.md: 729b92ab6471dc1f89ffc3ba7208f82e669fccc0

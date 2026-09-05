@@ -1,74 +1,135 @@
+---
+description: "面向用户与维护者的持久会话存储 seam 说明，用于选择持久化后端、恢复会话，或按共享服务约定构建后端。"
+kind: "package-reference"
+---
+
 # @singula-ai/alego-session-persistence
 
 [English](README.md) | 中文
 
-会话持久化是一项能力 seam。抽象的 `SessionPersistence` 服务（`ctx.sessionPersistence`）是其 Service Definition。它要求持久化后端持久存储、重新加载和列出会话，但不规定具体存储实现。该 seam 采用与 `alego-shell` 相同的角色划分（见[能力 seam](../../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.zh.md)）：本包负责 Service Definition，同级包负责 Service Provider，Consumer 注入该服务。
+## 概述
 
-持久化单元就是现有 `SessionEvent`（事件溯源模型：日志是唯一真源），因此不存在另一套并行的「持久消息」类型。不属于可回放对话状态的元数据（格式版本、cwd、血缘、种子边界、origin、委托深度）作为 `SessionHeader` 单独传输，该类型归 `alego-session` 所有，并在此重新导出。
+`alego-session-persistence` 持久存储会话的事件日志，并通过一个逐会话句柄寻址每个已存储会话：后端无关服务（`ctx.sessionPersistence`）暴露 `create`/`open`/`stat`/`list`，`create`/`open` 返回承载全部日志读写与单写者所有权的 `SessionHandle`。持久化单元就是现有 `SessionEvent` 日志——不存在另一套并行的存储消息类型——不可回放的元数据（格式版本、工作目录、血缘、种子边界）作为 `SessionHeader` 单独传输。后端拥有自己的存储，seam 拥有语义：仅追加的连续日志、以显式 `flush` 持久性屏障托底的尽力而为 append、绝不到达读取方的撕裂物理尾部、失败即关闭的存储记录校验，以及进程内排除第二个写入方。挂载随产品交付的 [JSONL 后端](../session-persistence-jsonl/README.zh.md)（每个会话一份产物），agent-loop 就会持久化并恢复会话，loop 与模型无需知道下面是哪个后端。
 
-## 服务 API（`ctx.sessionPersistence`）
+## 目录
 
-| 方法 | 约定 |
+- [使用本包](#use-this-package)
+- [理解实现](#understand-the-implementation)
+- [进一步探索](#further-exploration)
+- [模型体验](#model-experience)
+- [已知限制与延期工作](#known-limitations-and-deferred-work)
+- [开发备注](#dev-note)
+
+-----
+
+<a id="use-this-package"></a>
+## 使用本包
+
+挂载一个持久化后端即可让会话持久化。后端把自己注册为 `ctx.sessionPersistence`，并把每个已发布会话的实时事件路由进该会话的活跃写句柄；agent-loop——会话在生产环境中的发布点——在发布之前获取每个会话的写句柄，因此组合中的其他部分不变。
+
+### 选择后端
+
+seam 随产品交付 [JSONL](../session-persistence-jsonl/README.zh.md) 后端。它把每个 Session 存为一份仅追加 `.jsonl.zstd` 产物。第三方后端可以直接实现该服务；必须遵守的[后端约定](#understand-the-implementation)见下文。
+
+### 服务提供什么
+
+挂载后端后，五个服务方法寻址已存储会话：
+
+```text
+const handle = await ctx.sessionPersistence.create(header)     // store a new session, take write ownership
+const handle = await ctx.sessionPersistence.open(id, 'write')  // claim single-writer ownership of an existing session
+const reader = await ctx.sessionPersistence.open(id, 'read')   // observe without ownership
+const snap = await ctx.sessionPersistence.stat(id)             // header + revision (+ eventCount / sizeBytes) without a log read
+const all = await ctx.sessionPersistence.list()                // one snapshot per visible stored session
+await ctx.sessionPersistence.flush()                           // backend-wide durability barrier over every active write handle
+```
+
+服务级 `flush()` 排空每个活跃写句柄已路由的事件并把其会话实体化，效果与各句柄自己的 `flush` 完全相同；失败按会话聚合为一个 `AggregateError` 而不中途放弃清扫，清扫途中被关闭的句柄视同已 flush，因为 close 本身会持久排空。
+
+每一次日志读写都流经返回的 `SessionHandle`；不存在按 id 寻址的 append 或 load 方法。`handle.read(offset?, length?)` 返回经过验证的连续前缀切片——绝不返回撕裂尾部，且同一句柄上的重复读取绝不会观察到比先前读取更旧的状态；写句柄能读到自己成功的 append。`handle.append(events)` 追加一个连续批次，其第一个 `seq` 等于已存储 next-seq；完成时的持久化是尽力而为的——批次被接受、有序，并对同一后端实例上的读取可见，只有完成的 `flush` 才承诺它在崩溃后依然存在（交付的 JSONL 后端恰好会立即持久化每个批次）。`handle.flush()` 是持久性屏障，同时把空的已创建会话实体化，使其可被持久列出。`handle.close()` 幂等且不可取消：读句柄释放本地资源，写句柄完成待处理的持久化并释放写所有权。一旦某次 `append` 或 `flush` 完成，其后在同一后端实例上开始的读取——无论经由任何句柄，还是经由 `stat`/`list`——至少能观察到该前缀。
+
+### 所有权与可见性
+
+`create` 与 `open(id, 'write')` 取得进程内单写者所有权：在持有者活跃期间第二次以写模式打开会以 `SessionAlreadyOwnedError` 拒绝，对已占用 id 执行 `create` 会以 `SessionAlreadyExistsError` 拒绝，在 `read` 句柄上执行修改会以 `SessionReadOnlyError` 拒绝——一种句柄类型，运行时拒绝。对已关闭句柄的任何操作会以 `SessionHandleClosedError` 拒绝，`SessionOwnershipLostError` 标记写所有权已永久丢失的写句柄（关闭并重新打开）。已创建的会话自 `create` 完成之刻起即可在本进程内被观察到，而后端可以把物理实体化推迟到第一次 `append` 或 `flush`；其他进程只能看到已实体化的会话，一个在崩溃前从未实体化的会话等于从未存在。
+
+### 实时写路径与关闭排空
+
+实时写路径由后端自持：它一次性安装会话监听器，把每个已发布会话的事件按 id 路由到该会话的活跃写句柄——`session/event` 复制进有界的内部批处理窗口，`session/flush` 是即时的持久性与错误观察屏障，`session/disposed` 执行最终排空并关闭句柄。没有活跃写句柄的已发布会话不做任何持久化。后台写入失败时按序保留其事件、暂停自动路径并记入日志；下一次显式 flush 会重试并响亮地拒绝。`close()` 本身会先经由仍然打开的存储排空路由缓冲区再释放所有权，因此即便根 fiber 的 dispose 并发运行各 fiber 的 disposer，后端 teardown 的关闭清扫也能保证应用关闭不丢数据。
+
+### 恢复与崩溃恢复
+
+持久化返回物理上有效的日志；语义修复属于读方。中途崩溃的会话保留其未闭合的最终轮次——单个轮次可能很大，而这些事件在崩溃前已持久追加；只有从未确认的撕裂尾部中不完整的碎片会被丢弃——从中恢复的完整记录由写路径在句柄的第一次新 append 之前持久重写。恢复（agent-loop）通过其写句柄读取已存储日志，计算 `interruptedTurnClosers`——合成 `tool/result` 错误、任何未闭合的 `step/end`，以及 `turn/end {interrupted}`——并把它们作为普通批次通过同一句柄追加。只读观察方（session-query）仅在内存中用同样的 closer 配平被中断的冷日志。
+
+### 失败与恢复
+
+当前构建无法忠实解读的存储日志会以方向感知的错误被拒绝，绝不错读。`SessionHandle` 只暴露当前逻辑 v1 记录；provider 必须在返回句柄前转换任何受支持的历史存储，随产品交付的 JSONL provider 会通过静态 catalog 迁移已发布 v0。更高格式会要求操作者升级 harness。本构建不认识的事件类型会被拒绝，除非其信封标记为 `ignorable`；已提交前缀中的损坏以 `SessionPersistenceCorruptionError` 拒绝。
+
+-----
+
+<a id="understand-the-implementation"></a>
+## 理解实现
+
+<details>
+<summary>实现细节——点击展开</summary>
+
+本节说明 seam 如何实现持久存储以及后端如何接入；可观察约定见[使用本包](#use-this-package)与生成的 [Cordis API](../../../docs/subsystems/persistence.zh.md#cordis-surface)。
+
+### 设计理念
+
+本包是 seam，而不是后端框架：它只导出抽象 `SessionPersistence` 服务、`SessionHandle` 约定、消费方捕获的稳定 error 类、纯函数的存储记录校验辅助（`storage-contract`）以及带品牌类型的 revision——再无其他。每个 provider 拥有自己完整的存储运行时（句柄类、修改排序、单写者记账、实时事件路由、teardown），`tests/` 下的两套共享测试套件——`runPersistenceContract` 与 `runLiveWritePathContract`——钉住每个 provider 都必须一致的可观察行为。有意为之的后果：各 provider 在存储恰好相似之处可以彼此相像，但没有任何实现机制跨越包边界。
+
+### 每个后端必须遵守的不变量
+
+- **仅追加，连续 `seq`。** 已提交事件绝不重写；`append` 的第一个 `seq` 必须等于已存储 next-seq，缺口会被拒绝。
+- **撕裂的物理尾部绝不到达读取方。** 它属于一次从未完成的 append；写路径在第一次新 append 之前将其持久截断。
+- **无损 JSON 数据。** 批次与 header 经过共享的单遍校验并快照边界（`materializeAppendBatch`/`materializeCreateHeader`）；无法序列化的载荷在调用处被拒绝。
+- **持久性。** `append` 尽力而为地持久化；`flush`——逐句柄或服务级——是承诺存储并同时把空会话实体化的屏障。
+- **失败即关闭的读取。** `validateStoredEvents` 拒绝未知事件词汇与已废弃的预发布形态；`assertVersion` 拒绝外来格式版本。
+- **每个后端实例单写者。** provider 的进程内认领在 `create`/`open('write')` 时取得，在句柄关闭时释放。
+
+### 源码地图
+
+| 文件 | 职责 |
 |---|---|
-| `locate(meta): SessionLocation \| undefined` | 在不执行 I/O 或实体化的情况下解析每个会话的绝对产物目标。没有独立本地产物的后端返回 `undefined`。 |
-| `supportsRawArtifacts: boolean` | 明确说明该后端是否为每个会话暴露一份逐字工件。Consumer 在调用 `readRaw` 前检查此能力；`false` 并不表示会话缺失。 |
-| `readRaw(id, signal?): Promise<SessionRawArtifact \| undefined>` | 读取受支持后端自身的逐字工件文本；只解码物理编码，绝不从事件重建。`undefined` 仅表示所请求工件缺失；不支持的后端会拒绝。 |
-| `create(meta): Promise<void>` | 注册新会话元数据。可以将物理写入延迟到第一次 `append`（延迟实体化）。 |
-| `append(id, events): Promise<void>` | 持久保存一个批次。仅追加；任何修复后，第一个事件 `seq` == 已存储 next-seq；非 JSON 可序列化数据会被拒绝，并命名违规类型。 |
-| `prepare(id, signal?): Promise<SessionPreparation>` | 预留恢复所使用的那个未发布 Session。协调器会尽可能复用之前的检查结果、提交待处理恢复，并在 dispose（资源释放）时将未发布 reservation 释放回有界缓存。 |
-| `load(id): Promise<{ meta; events }>` | 转换同一格式版本中受支持的旧记录后，返回不可变、平衡的逻辑日志，并提交冷恢复。实时 load 先 flush 其快照，并在轮次开放时拒绝；冷 load 保留中断的最终轮次，并用合成 `tool/result`/`step/end?`/`turn/end {interrupted}` 事件持久关闭它。只丢弃撕裂尾部碎片；已提交损坏和格式错误的记录以 `SessionPersistenceCorruptionError` 拒绝，不支持的格式 `version` 或本构建不认识且信封未带 `ignorable` 标记的事件类型以 `SessionFormatUnsupportedError` 拒绝，消息说明拒绝方向，并在后端为每个会话保留独立文件时给出原始日志路径。 |
-| `inspect(id, signal?): Promise<{ meta; events }>` | 返回已经升级、验证和深度冻结的逻辑视图，但不提交恢复或发布 Session。冷视图会获得仅存在于内存的合成恢复 closer，物理撕裂尾部保持不变；实时状态下的视图则是当前不可变快照，可能包含开放的轮次。基于协调器的实现会在有界 LRU 中保留该冷状态下未发布的 Session 本身，供后续 `prepare` 使用，但已存储修订值变化后会丢弃并重新读取。同 id 检查共享进行中的读取。 |
-| `readFrom(id, fromSeq, signal?): Promise<{ meta; events }>` | 返回 `seq >= fromSeq` 的有效已存储事件，不进入 preparation 缓存、不截断、不合成 closer，也不发布协调器状态。`fromSeq` 达到或超过已存储末尾时返回空事件列表；负数或非安全整数 `fromSeq` 会被拒绝。可寻址后端（SQLite）只读后缀，除非转换受支持的旧记录需要读取更早的记录；顺序后端（JSONL）解析整个产物并向前跳过。未知类型拒绝遵循同一读取方式：寻址读取只检查返回的后缀，顺序回退路径还会拒绝窗口以下的未知必需事件。供 checkpoint 消费方只应用已存序号之后的事件。 |
-| `list(signal?): Promise<SessionHeader[]>` | 从元数据轻量列出，不解析完整日志。可选信号取消后端列表工作。零事件延迟实体化会话不在 `list` 中。 |
-| `listSnapshots(signal?): Promise<SessionPersistenceSnapshot[]>` | 返回轻量元数据和每份日志一个不透明、带品牌类型的修订值，不加载事件日志。日志及其后端存储不变时，修订保持相等；append 或变更性 load 修复后会改变；不会仅因两个存储使用相同本地计数器而冲突。可选信号请求取消后端发现工作；第一方后端会先等待所有已启动的列出工作结束，再予以拒绝，因此调用返回拒绝时，相关工作已完全停稳。 |
+| [`src/index.ts`](src/index.ts) | 插件入口：抽象 `SessionPersistence` 服务与重新导出的 seam 词汇 |
+| [`src/handle.ts`](src/handle.ts) | `SessionHandle` 约定：read/append/flush/close 语义与新鲜度规则 |
+| [`src/storage-contract.ts`](src/storage-contract.ts) | 共享校验：版本门、失败即关闭词汇表、批次实体化、连续性 |
+| [`src/errors.ts`](src/errors.ts) | 稳定的句柄/所有权失败与格式拒绝 |
+| [`src/revision.ts`](src/revision.ts) | 带品牌类型的不透明修订值 token |
+| — | 不发布运行时不变式伴生入口；持久化正确性需要后端往返与崩溃尾部测试；本包不暴露可持续观察的进程内关系。 |
 
-## 每个后端必须遵守的不变量
+### 写入路径概览
 
-- **仅追加；崩溃轮次会被关闭，而非截断。** 已 flush 事件绝不重写。崩溃可留下未关闭最终轮次，其事件真实且可能很大；`load` 保留它们，并持久追加合成 closer（为每个未获回答的 assistant 调用添加一个带风险分类错误的 `tool/result`，再添加 `step/end?`+`turn/end {interrupted}`），以平衡日志，并确保重新载入的历史仍是有效的提供方 transcript（文本记录）。只丢弃从未完整写入的撕裂尾部碎片。
-- **连续 seq。**`load` 拒绝日志中间的 `seq` 缺口/解析错误；`append` 的第一个 `seq` 必须等于已存储 next-seq。
-- **JSON 可序列化数据。**`append` 通过共享单遍无损 JSON 边界实体化每个直接/回放批次。活动 `Session` 事件已深度冻结，但写入协调器仍将每个事件复制到持久化自有缓冲区。
-- **持久性。**`append` 只在批次持久后返回。
+写入器会话的每个 `session/event` 都复制进该句柄的内部缓冲。第一个待处理事件开启固定批处理窗口；后续事件加入但不重置截止时间。窗口到期后经由句柄的修改链排空待处理前缀；排空期间接纳的事件按顺序合并进下一个链上的批次。`session/flush` 取消等待并排空至完全停稳，随后运行 `handle.flush()`，因此 loop 在下一轮次前把它用作排序与错误观察检查点。被拒绝的后台排空保留其事件并暂停自动计时器；显式 flush、写入器 close 或后端 teardown 会立即重试并响亮地拒绝。构造 seed 事件绝不发出 `session/event`，因此发布前通过句柄追加的 seed 绝不会被重新入队。
 
-## 写入协调器
+### 存储记录校验
 
-`PersistenceCoordinator` 负责每 id 状态和串行化、每个活动会话各自的有界写入 controller、延迟实体化、崩溃尾部修复、会话接管和完全停稳的 dispose。第一方后端组合一个协调器，实现小型 `PersistenceBackend` 存储钩子接口，并委托其有状态方法。因此 JSONL 和 SQLite 共享生命周期正确性，同时保留不同存储原语；见[协调器 Agent Note](../../../.agents/notes/implemented/architecture/2026-06-18-shared-persistence-write-coordinator.zh.md)、[flush controller 简化](../../../.agents/notes/implemented/simplification/2026-07-23-collapse-persistence-flush-state.zh.md)和[有界批处理决策](../../../.agents/notes/implemented/architecture/2026-08-08-bounded-session-persistence-write-batching.zh.md)。
+seam 的共享辅助函数校验当前逻辑 v1 记录，append 只写当前格式（[理由](../../../.agents/notes/implemented/architecture/2026-08-31-released-session-format-migrations.zh.md)）。历史解码与不可变后继发布属于各 provider 内部，并在其返回句柄前完成。每个后端都在句柄读取与写 open 预热时运行 `storage-contract` 校验，把未知事件类型作为 `SessionFormatUnsupportedError` 拒绝，把 malformed 当前记录作为 `SessionPersistenceCorruptionError` 拒绝，并在后端为每个会话保留一份产物时附上原始日志的 `SessionLocation`。
 
-每个 `session/event` 将事件复制到会话 controller。第一个待处理事件会开启固定批处理窗口；后续事件会加入该批次，但不会重置截止时间。配置的 `writeBatchMaxDelayMs` 只限制这段有意等待，而不限制事件循环、初始化、串行化操作或后端延迟。写入期间接纳的事件会形成一个新的有界批次。`session/flush` 会取消等待，并作为共享的完全停稳屏障，排空屏障运行期间接纳的事件。后台写入失败只记录一次日志，保留顺序不变的批次，并暂停自动重试；新事件会开启新的固定窗口，而显式 flush 或后端拆卸会立即重试，并在失败再次发生时向调用方暴露失败。
+</details>
+-----
 
-崩溃修复只适用于冷状态。对于已有活动会话的 id，`load(id)` 为权威内存日志制作快照，等待该快照持久，并只在平衡时返回；活动会话中开放的轮次会被拒绝，而不会收到合成中断 closer。对于冷 id，检查只读取、验证、冻结并构造一次未发布 Session；只有来源修订值仍然是当前值时，重复检查才会复用该对象图。`prepare(id)` 在修复前执行相同校验，预留该 Session 本身，提交任何待处理的撕裂尾部或中断轮次修复，并将其返回用于发布。HMR（热模块替换）接管通过 `loadStored` 读取，应用协调器 cwd 检查，并绝不关闭活动轮次。
+<a id="further-exploration"></a>
+## 进一步探索
 
-后端读取会在验证当前记录前，转换同一格式版本中明确受支持的旧记录。消息标识机制引入前的消息会获得确定性的 id `legacy-message:<session-id>:<event-seq>`；工具结果的内容替换会继承其目标导入后的 id。react-loop 引入前的 `turn/start` 会移除过时的 trigger，已移除的 steering（中途引导）事件 `steering/message` 会转换为同一条带标识的 `user/message`；旧版 `turn/end` 会映射终止原因，但不会虚构旧记录中没有记载的调用方。协调器对 `load`、`inspect`、`readFrom`、无所有者状态的认领和 HMR 前缀接管使用同一份转换后视图。存储仍然仅追加：读取不会重写旧记录，此后追加的事件使用当前格式。这些是[消息标识机制引入前的消息](../../../.agents/notes/implemented/bug-fix/2026-07-28-load-pre-identity-session-messages.zh.md)与 [react-loop 引入前会话](../../../.agents/notes/implemented/bug-fix/2026-08-04-load-pre-react-loop-sessions.zh.md)决策所规定的范围受限的导入例外，并不构成通用的 v0 迁移承诺。
+当包级约定不够用时阅读以下页面。它们从共享持久性模型逐步进入随产品交付的后端与决策证据。
 
-活动会话发出 `session/disposed` 时，协调器等待其 controller，以串行方式执行最终 drain，然后释放该精确 `Session` 对象拥有的状态。失败退役会将 controller 保留在活动会话 map 中，使后端拆卸可重试。后端拆卸先停止事件接纳，flush 每个剩余 controller，等待每 id 操作，最后才关闭存储句柄。
+- [会话持久化子系统](../../../docs/subsystems/persistence.zh.md)——完整服务约定、句柄语义、flush 检查点、崩溃恢复与生成的 Cordis API。
+- [基于句柄的持久化 Agent Note](../../../.agents/notes/implemented/architecture/2026-08-27-handle-based-session-persistence.zh.md)——seam 设计及其所有权模型。
+- [JSONL 持久化后端](../session-persistence-jsonl/README.zh.md)——随产品交付、按会话存储文件的后端。
+- [会话检查点策略](../session-checkpoint-policy/README.zh.md)——在语义边界上经由 `session/flush` 刷新的插件。
+- [会话包映射](../README.zh.md)——相邻的持久化、投影、标题与遥测包。
 
-无副作用 `locate`、轻量 `listSnapshots` 和按 id 查询的 `readStoredRevision` 仍由后端负责，因为它们描述存储拓扑和修订身份，而非写入编排。`listSnapshots(signal?)` 将调用方传入的同一个信号传给后端发现流程，使观察者可在不脱离该工作的情况下取消。
+-----
 
-`PersistenceBackend<TornMarker>` 钩子（协调器与存储之间的唯一约定）：
-
-| 钩子 | 职责 |
-|---|---|
-| `name` | dispose 失败 `AggregateError` 的后端标签。 |
-| `loadStored(id, signal?)` | 在全部存储范围中按 id 读取已存储前缀。用于恢复／加载、非修改式 inspect、活动会话接管和 create 冲突探测。可选信号属于仅观察读取。返回元数据标识 `id`；`revision` 精确标识返回的 header 和事件；当且仅当必须截断撕裂尾部时才存在不透明 `tornMarker`。 |
-| `readStoredRevision(id, signal?)` | 在不加载事件日志的情况下读取一个 id 当前的来源限定修订值。它使用与 `loadStored` 相同的修订值表示；id 不存在时返回 `undefined`。 |
-| `loadStoredFrom?(id, fromSeq, signal?)` | 服务 `readFrom` 背后的可选可寻址后缀读取：返回 header 和 `seq >= fromSeq` 的已存储事件，非修改式、无撕裂标记。SQLite 实现它（`WHERE seq >= ?`）；不实现的后端使用协调器回退——`loadStored` 加向前跳过。 |
-| `appendBatch(meta, events, isMaterialized)` | 持久追加连续批次；尚未实体化时以原子方式延迟实体化。 |
-| `commitRepair(meta, tornMarker, closers)` | 使崩溃修复持久：截断撕裂尾部（当且仅当 `tornMarker !== undefined`；标记可为 falsy，例如 seq/offset `0`），并追加 `closers`。不要求原子性。由 load（截断 + closer）和活动会话接管（仅截断）使用。 |
-| `list(signal?)` | 列出全部已存储元数据，并遵循可选的取消信号。 |
-| `close?()` | 可选生命周期拆卸（例如关闭 db 句柄），在 dispose drain 后等待其完成。 |
-
-协调器断言已存储 id，并在修复或活动会话接管前比较已存储/活动会话 cwd。其 `inspect()` 路径取得新鲜后端值的所有权，只验证和冻结一次，并在不调用 `commitRepair` 的情况下最多保留配置数量的未发布 Session。只有保留源的修订值仍等于 `readStoredRevision` 时，系统才会复用或修复它；否则协调器会重新读取。该新鲜性校验不会增加跨进程写入排他。持久日志在一次读取与复核往返内保持不变时，修订值重试才能收敛；持续的外部写入可能延迟 `load`、`inspect` 或 `prepare`。`tornMarker` 完全不透明：协调器只测试 `!== undefined`，并将其原样往返给 `commitRepair`，绝不检查值（JSONL 后端使用待截断字节偏移，SQLite 后端使用待删除 seq）。第三方后端可以不用协调器直接实现抽象服务，但必须提供相同的非修改式检查和可信轻量快照修订。详见[写入协调器 Agent Note](../../../.agents/notes/implemented/architecture/2026-06-18-shared-persistence-write-coordinator.zh.md)。
-
-## 元数据与位置类型
-
-从 `alego-session` 重新导出：`SessionHeader`（不可变会话元数据：`version`、`id`、`createdAt`、`cwd?`、`parentSession?`、`seedLength?`、`origin?`、`delegationDepth?`）。`SessionLocation` 是 `{ readonly kind: string; readonly path: string }`；其 path 是绝对后端目标，不证明产物已存在或包含未 flush 轮次。
-
+<a id="model-experience"></a>
 ## 模型体验
 
 ### 恢复的对话历史
 
-#### 模型所见
+#### 模型看到什么
 
-该 seam 不添加提示词或 schema。恢复会将已存储的表层事件还原为消息历史；已存储请求 header 重建较早调用，新 loop 则为下一次请求组合当前系统提示词、工具和会话前缀。崩溃修复将没有持久调用的 assistant 请求标记为 `TOOL_NOT_STARTED`；有持久调用但无结果时变为 `TOOL_OUTCOME_UNKNOWN`，其文本允许模型重试只读或幂等工作，但要求验证副作用或询问用户，而不是盲目重试。
+seam 不添加提示词或 schema。恢复会将已存储的表层事件还原为消息历史；已存储请求 header 重建较早调用，新 loop 则为下一次请求组合当前系统提示词、工具与会话前缀。崩溃修复将没有持久调用的 assistant 请求标记为 `TOOL_NOT_STARTED`；有持久调用但无结果时变为 `TOOL_OUTCOME_UNKNOWN`，其文本允许模型重试只读或幂等工作，但要求验证副作用或询问用户，而不是盲目重试。
 
 #### Token 影响
 
@@ -76,10 +137,28 @@
 
 #### KV Cache 影响
 
-持久化不修改当前请求前缀。只有当重建历史、当前 envelope 和模型路由匹配时，恢复 loop 才能重用提供方缓存；崩溃修复结果仅追加，不重写较早历史。
+持久化不修改实时请求前缀。只有当重建历史、当前 envelope 与模型路由匹配时，恢复 loop 才能重用提供方缓存；崩溃修复结果仅追加，不重写较早历史。
 
-## 已知限制与暂缓事项
+## 已知限制与延期工作
 
-- **无删除或保留接口**：剪枝已存储会话是带外后端维护。
-- **`list()` 无分页且无过滤**：它返回每个已存储会话的 header；适合本地存储，大规模时无索引。
-- **修复时合成 closer 是唯一崩溃方案**：后端必须在 load 时合成 `tool/result`/`step/end`/`turn/end` closer；没有继续中断轮次而不先关闭它的部分轮次恢复。
+<a id="known-limitations-and-deferred-work"></a>
+
+
+这些限制界定 seam 保证的终点。它们是当前包约束，不是任务积压。
+
+- **写所有权仅限进程内**——provider 的写入器表只在单个后端实例内排除第二个写入方；持久的跨进程租约是计划在同一句柄形态上叠加的下一层，在它落地之前另一进程不得写入同一会话。
+- **在有活跃会话时重载后端插件会使其写入器响亮地失败**——重载后的后端无法服务旧实例签发的句柄；写入会持续失败直到会话重启，没有任何机制静默重新接管日志。
+- **只有通过句柄获取的会话才会持久化**——仅靠 `ctx.sessions.create` + `session/flush` 不存储任何内容；agent-loop 是生产环境的获取点，测试通过 `create`/`append`/`close` 播种存储。
+- **无删除或保留接口**——剪枝已存储会话属于带外后端维护。
+- **`list()` 无分页且无过滤**——它返回每个已存储会话的快照；适合本地存储，大规模时无索引。
+- **合成 closer 是唯一崩溃方案**——恢复通过写句柄追加 `interruptedTurnClosers`；没有继续中断轮次而不先关闭它的部分轮次恢复。
+
+<a id="dev-note"></a>
+### 开发备注
+
+<details>
+<summary>维护者的工作上下文——点击展开</summary>
+
+无。
+
+</details>

@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-connection",
-  "description": "Wire consumer layer: HTTP-up/WebSocket-down client, ConnectionController dual streams with reconnect, and fixture api",
-  "version": "0.1.2",
+  "description": "Authenticated RPC transport, generation lifecycle, and browser fixture",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -17,10 +17,6 @@
     ".": {
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
-    },
-    "./invariant": {
-      "types": "./lib/types/invariant.d.ts",
-      "default": "./lib/invariant.js"
     },
     "./client": {
       "types": "./lib/types/client/index.d.ts",
@@ -38,36 +34,30 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@singula-ai/alego-credentials": "workspace:^",
     "@singula-ai/schemastery": "workspace:^",
-    "ws": "^8.21.0"
+    "zod": "^4.4.3"
   },
   "files": [
     "lib/index.js",
-    "lib/invariant.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"
   ],
   "peerDependencies": {
-    "@singula-ai/alego-host-webserver": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-attachment": "workspace:^",
-    "@singula-ai/alego-host-apiproxy": "workspace:^",
-    "@singula-ai/alego-commands": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/alego-session": "workspace:^",
-    "@singula-ai/alego-tools": "workspace:^"
+    "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
-    "@singula-ai/alego-host-webserver": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
-    "@types/ws": "^8.18.1",
     "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-api-session-controller": "workspace:^",
     "@singula-ai/alego-attachment": "workspace:^",
-    "@singula-ai/alego-host-apiproxy": "workspace:^",
+    "@singula-ai/alego-brand": "workspace:^",
     "@singula-ai/alego-commands": "workspace:^",
+    "@singula-ai/alego-host-directory-picker": "workspace:^",
+    "@singula-ai/alego-host-webserver": "workspace:^",
     "@singula-ai/alego-llm": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
-    "@singula-ai/alego-tools": "workspace:^"
+    "@singula-ai/alego-settings": "workspace:^",
+    "@singula-ai/alego-tool-todo": "workspace:^",
+    "@singula-ai/alego-util-values": "workspace:^"
   }
 }

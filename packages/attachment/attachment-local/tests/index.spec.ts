@@ -1,6 +1,7 @@
 import { Context } from '@singula-ai/cordis'
+import { AttachmentId } from '@singula-ai/alego-attachment'
 import { existsSync } from 'node:fs'
-import { mkdtemp, rm } from 'node:fs/promises'
+import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
@@ -8,6 +9,7 @@ import sharp from 'sharp'
 import LocalAttachmentStore, {
   DEFAULT_NORMALIZED_IMAGE_MAX_BYTES,
   DEFAULT_NORMALIZED_IMAGE_MAX_DIMENSION,
+  DEFAULT_NORMALIZED_IMAGE_MAX_PIXELS,
   DEFAULT_IMAGE_COMPRESSION_CONCURRENCY,
   DEFAULT_MAX_IMAGE_BYTES,
   DEFAULT_MAX_IMAGE_DIMENSION,
@@ -33,10 +35,26 @@ describe('local attachment service', () => {
       mediaTypes: ['image/png', 'image/jpeg', 'image/webp', 'image/gif'],
     })
     expect(service.normalizationPolicy).toEqual({
+      maxPixels: DEFAULT_NORMALIZED_IMAGE_MAX_PIXELS,
       maxDimension: DEFAULT_NORMALIZED_IMAGE_MAX_DIMENSION,
       maxBytes: DEFAULT_NORMALIZED_IMAGE_MAX_BYTES,
     })
     expect(service.imageCompressionConcurrency).toBe(DEFAULT_IMAGE_COMPRESSION_CONCURRENCY)
+    const ref = {
+      attachmentId: AttachmentId(`sha256:${'a'.repeat(64)}`),
+      mediaType: 'image/png' as const,
+      bytes: 1,
+      width: 1,
+      height: 1,
+    }
+    expect(service.imageHostPath(ref)).toBe(join(
+      service.root,
+      'objects',
+      'aa',
+      'a'.repeat(64),
+    ))
+    expect(() => service.imageHostPath({ ...ref, attachmentId: AttachmentId('invalid') }))
+      .toThrow(expect.objectContaining({ code: 'INVALID_ATTACHMENT_REF' }))
   })
 
   it('resolves and validates the instance image-compression concurrency', () => {
@@ -57,6 +75,33 @@ describe('local attachment service', () => {
       ))
       const ref = await service.saveImage({ data, mediaType: 'image/png' })
       await expect(service.readImage(ref)).resolves.toEqual({ ref, data })
+      const hostPath = service.imageHostPath(ref)
+      expect(hostPath).toBe(join(
+        alegoHome,
+        'attachments',
+        'v1',
+        'objects',
+        String(ref.attachmentId).slice('sha256:'.length, 'sha256:'.length + 2),
+        String(ref.attachmentId).slice('sha256:'.length),
+      ))
+      await expect(readFile(hostPath)).resolves.toEqual(Buffer.from(data))
+      const request = await service.readImageRequest(ref, { maxPixels: 1, maxBytes: 1024 })
+      expect(request).not.toHaveProperty('access')
+
+      const fileData = Uint8Array.of(0, 1, 2, 255)
+      const fileRef = await service.saveFile({ data: fileData, name: 'notes.bin' })
+      const filePath = service.fileHostPath(fileRef)
+      expect(filePath).toContain(join('files', String(fileRef.attachmentId).slice(7, 9)))
+      await expect(readFile(filePath)).resolves.toEqual(Buffer.from(fileData))
+
+      const streamRef = await service.saveFileStream({
+        data: (async function* (): AsyncIterable<Uint8Array> { yield fileData })(),
+        name: 'stream.bin',
+      })
+      await expect(readFile(service.fileHostPath(streamRef))).resolves.toEqual(Buffer.from(fileData))
+      const streamed: Uint8Array[] = []
+      for await (const chunk of service.readFileStream(streamRef)) streamed.push(chunk)
+      expect(Buffer.concat(streamed)).toEqual(Buffer.from(fileData))
     } finally {
       await rm(alegoHome, { recursive: true, force: true })
     }
@@ -108,15 +153,15 @@ describe('local attachment service', () => {
   it('prepares every batch member before any write', async () => {
     const alegoHome = await mkdtemp(join(tmpdir(), 'alego-attachment-batch-'))
     try {
-      const service = new LocalAttachmentStore(new Context(), { alegoHome, normalizedImageMaxBytes: 1 })
+      const service = new LocalAttachmentStore(new Context(), { alegoHome })
       const valid = Uint8Array.from(Buffer.from(
         'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAADElEQVQImWNgZGIGAAAOAAeCcsnOAAAAAElFTkSuQmCC',
         'base64',
       ))
       await expect(service.saveImages([
         { data: valid, mediaType: 'image/png' },
-        { data: valid, mediaType: 'image/png' },
-      ])).rejects.toMatchObject({ code: 'IMAGE_TOO_LARGE' })
+        { data: Uint8Array.of(1, 2, 3), mediaType: 'image/png' },
+      ])).rejects.toThrow(/Unsupported or malformed image data/)
       expect(existsSync(service.root)).toBe(false)
     } finally {
       await rm(alegoHome, { recursive: true, force: true })

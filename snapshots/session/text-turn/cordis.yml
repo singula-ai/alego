@@ -1,0 +1,80 @@
+# Live-recording patch shared by the ordinary headless snapshot composition.
+# The shipped profile owns application startup; this patch fixes only the
+# deterministic test composition and raw persistence needed for recording.
+
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  config:
+    thinking: enabled
+    reasoningEffort: max
+    models:
+      - id: deepseek-v4-flash
+      - id: deepseek-v4-pro
+      - id: deepseek-v4-flash-vision-exp
+        inputModalities: [text, image]
+
+- id: sandbox-policy
+  name: '@singula-ai/alego-sandbox-policy'
+  config:
+    mode: !!js "process.env.ALEGO_PERMISSION_MODE ?? (process.env.ALEGO_SNAPSHOT === undefined ? 'workspace-write' : 'danger-full-access')"
+    workspaceRoot: !!js process.cwd()
+
+- id: approval
+  name: '@singula-ai/alego-user-approval'
+  config:
+    policy: !!js "(process.env.ALEGO_PERMISSION_MODE ?? (process.env.ALEGO_SNAPSHOT === undefined ? 'workspace-write' : 'danger-full-access')) === 'danger-full-access' ? 'never' : 'ask'"
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: none
+
+- id: session-title-llm
+  disabled: true
+
+- id: system-prompt
+  name: '@singula-ai/alego-system-prompt'
+  config:
+    persona: |
+      You are a coding assistant powered by the {{model}} model. Your working directory is {{cwd}}. Your bash tool runs under a file sandbox — a `[sandbox: file access denied …]` result is policy, not a command bug.
+
+      Verify your work by running the code or tests. Keep answers brief and factual.
+
+- id: agent-instructions
+  name: '@singula-ai/alego-agent-instructions'
+  config:
+    maxBytes: 65536
+
+- id: tool-subagent
+  name: '@singula-ai/alego-tool-subagent'
+  config:
+    provider: spawn
+    toolName: subagent
+    backgroundMode: continuable
+    maxDepth: 1
+
+- id: tool-subagent-fork
+  name: '@singula-ai/alego-tool-subagent'
+  config:
+    provider: fork
+    toolName: subagent_fork
+    backgroundMode: one-shot
+    enableRunInBackground: false
+    maxDepth: 1
+
+- id: fs-sandbox
+  name: '@singula-ai/alego-fs-sandbox'
+  config:
+    cwd: !!js process.cwd()
+
+- insert:
+    - id: hooks-claude-code
+      name: '@singula-ai/alego-hooks-claude-code'
+      config:
+        configPath: ./hooks.json
+
+    - id: hooks-codex
+      name: '@singula-ai/alego-hooks-codex'
+      config:
+        configPath: ./codex-hooks.json

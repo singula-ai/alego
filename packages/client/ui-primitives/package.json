@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-primitives",
   "description": "Pure React atoms for the alego web UI: controls, icons, markdown, and JSON inspectors (zero cordis)",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -17,10 +17,6 @@
     ".": {
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
-    },
-    "./invariant": {
-      "types": "./lib/types/invariant.d.ts",
-      "default": "./lib/invariant.js"
     },
     "./src/*": "./src/*",
     "./package.json": "./package.json"
@@ -49,19 +45,16 @@
     "shiki": "^4.3.1"
   },
   "devDependencies": {
-    "@singula-ai/alego-invariants": "workspace:^",
     "@types/react": "~18.3.1",
     "@types/react-dom": "~18.3.0",
     "@singula-ai/cordis": "workspace:^"
   },
   "files": [
     "lib/index.js",
-    "lib/invariant.js",
     "lib/**/*.css",
     "lib/types/**/*.d.ts"
   ],
   "peerDependencies": {
-    "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/cordis": "workspace:^"
   }
 }

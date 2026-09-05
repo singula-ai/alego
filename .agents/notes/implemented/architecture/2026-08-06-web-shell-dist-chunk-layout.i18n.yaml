@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-06-web-shell-dist-chunk-layout.md
-2026-08-06-web-shell-dist-chunk-layout.md: 707ff8dbd014b6a2d70c763f55c6392637c2761f
-2026-08-06-web-shell-dist-chunk-layout.zh.md: d66bdb232502674dae51dd988aabba0df1f62167
+2026-08-06-web-shell-dist-chunk-layout.md: 32edc5d6a7f70ce3ae9e4d1cf3fed802457415f8
+2026-08-06-web-shell-dist-chunk-layout.zh.md: b7a578eab748575741047c786432414b2d6577e2

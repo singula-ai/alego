@@ -6,8 +6,8 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import Loader from '@singula-ai/cordis-plugin-loader'
 import Include from '@singula-ai/cordis-plugin-include'
-import { CallId } from '@singula-ai/alego-llm'
-import { Session, SessionId } from '@singula-ai/alego-session'
+import { ToolCallId } from '@singula-ai/alego-llm'
+import { SESSION_FORMAT_VERSION, Session, SessionId } from '@singula-ai/alego-session'
 import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
 import type { Agent } from '@singula-ai/alego-agent'
 import TerminalSessionService from '@singula-ai/alego-terminal'
@@ -15,6 +15,7 @@ import * as TerminalLocal from '@singula-ai/alego-terminal-bash'
 import SandboxProvider from '@singula-ai/alego-sandbox'
 import type { ConfinedArgv, SandboxPolicy } from '@singula-ai/alego-sandbox'
 import SandboxPolicyService from '@singula-ai/alego-sandbox-policy'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime from '@singula-ai/alego-tools'
@@ -39,7 +40,9 @@ class PassthroughSandbox extends SandboxProvider {
 function agent(ctx: Context, cwd: string): Agent {
   const id = SessionId('persistent-bash-loader-agent')
   const scope = ctx.plugin(() => {})
-  const session = Session.create(id, [], { version: 0, id, createdAt: 0, cwd })
+  const session = Session.create(id, [], {
+    version: SESSION_FORMAT_VERSION, id, createdAt: 0, cwd, isSeeded: false,
+  })
   const value: Agent = {
     id,
     options: {},
@@ -75,6 +78,7 @@ suite('persistent Bash through a real cordis.yml Loader composition', () => {
       "- name: '@singula-ai/alego-tools'",
       "- name: '@singula-ai/alego-terminal'",
       "- name: '@singula-ai/alego-test-sandbox'",
+      "- name: '@singula-ai/alego-session-projection'",
       "- name: '@singula-ai/alego-sandbox-policy'",
       '  config:',
       '    mode: danger-full-access',
@@ -108,6 +112,7 @@ suite('persistent Bash through a real cordis.yml Loader composition', () => {
       ['@singula-ai/alego-tools', ToolRuntime],
       ['@singula-ai/alego-terminal', TerminalSessionService],
       ['@singula-ai/alego-test-sandbox', PassthroughSandbox],
+      ['@singula-ai/alego-session-projection', SessionProjectionRegistry],
       ['@singula-ai/alego-sandbox-policy', SandboxPolicyService],
       ['@singula-ai/alego-subprocess-local', LocalSubprocessRuntime],
       ['@singula-ai/alego-terminal-bash', TerminalLocal],
@@ -127,7 +132,7 @@ suite('persistent Bash through a real cordis.yml Loader composition', () => {
     const signal = new AbortController().signal
     const execute = (id: string, command: string) => context!.tools.execute({
       signal,
-      callId: CallId(id),
+      callId: ToolCallId(id),
       name: 'bash',
       arguments: { command },
       agent: owner,
@@ -151,6 +156,12 @@ suite('persistent Bash through a real cordis.yml Loader composition', () => {
       "cat <<'EOF'\nalpha\nbeta\nEOF",
     ))
     expect(heredoc).toBe('alpha\nbeta')
+
+    const pipeline = text(await execute(
+      'pipeline',
+      '{ sleep 0.1; printf "delayed\\n"; } | cat',
+    ))
+    expect(pipeline).toBe('delayed')
 
     const large = text(await execute('large-output', 'seq 1 12050'))
     expect(large.startsWith('1\n2\n3\n')).toBe(true)

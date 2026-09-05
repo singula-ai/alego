@@ -1,11 +1,23 @@
-import { existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
+import { SESSION_FORMAT_VERSION, SessionSeq } from '@singula-ai/alego-session'
 import type { SessionEvent } from '@singula-ai/alego-session'
 import { CompactionId } from '@singula-ai/alego-compaction'
-import LlmRuntime, { CallId, createUserMessage, GenerateOptions, LlmAdapter, StreamChunk } from '@singula-ai/alego-llm'
+import DeepSeekLlmApiExtensionRegistry from '@singula-ai/alego-deepseek-llm-api-extensions'
+import LlmRuntime, {
+  AssistantStreamAccumulator,
+  BlockAssembler,
+  ToolCallId,
+  createAssistantMessage,
+  createToolResultMessage,
+  createUserMessage,
+  GenerateOptions,
+  LlmAdapter,
+  StreamChunk,
+} from '@singula-ai/alego-llm'
 import {
   type Config,
   type ReplayEntry,
@@ -19,8 +31,16 @@ import {
   name,
   parseSessionHeader,
   parseSessionLog,
+  prepareSessionEventNotificationsForComparison,
+  prepareSessionSnapshotFixtureForComparison,
   resolveScriptedEntry,
 } from '../src/index.ts'
+
+declare module '@singula-ai/alego-deepseek-llm-api-extensions/types' {
+  interface DeepSeekLlmApiExtensionMap {
+    test_replay: { readonly version: 1 }
+  }
+}
 
 /**
  * Unit tests for the replay llm/stream plugin. These drive the listener through
@@ -40,20 +60,130 @@ const TEXT_CHUNKS: StreamChunk[] = [
 const COMPACTION_ID = CompactionId('replay-compaction')
 
 /** Build a minimal session-JSONL string: a header line + the given events. */
-function sessionJsonl(events: SessionEvent[], header?: { id?: string; createdAt?: number; seedLength?: number }): string {
+function sessionJsonl(
+  events: SessionEvent[],
+  header?: { id?: string; createdAt?: number; seedLength?: number; version?: 0 | 1 | 2 },
+): string {
+  const version = header?.version ?? 0
   const headerLine = JSON.stringify({
     type: 'session',
-    version: 0,
+    version,
     id: header?.id ?? 's1',
     createdAt: header?.createdAt ?? 0,
+    ...version === 2 ? { isSeeded: false } : {},
     ...header?.seedLength !== undefined ? { seedLength: header.seedLength } : {},
+    delegationDepth: 0,
   })
-  return [headerLine, ...events.map(e => JSON.stringify(e))].join('\n') + '\n'
+  return [headerLine, ...events.map(event => JSON.stringify(event))].join('\n') + '\n'
 }
 
-/** A SessionEvent of type assistant/chunk for (turn, step). */
-function chunkEvent(seq: number, turn: number, step: number, chunk: StreamChunk): SessionEvent {
-  return { type: 'assistant/chunk', seq, time: 0, data: { turn, step, chunk } }
+/** Build a valid one-turn Session around recorded model calls. */
+function replaySessionJsonl(
+  calls: readonly StreamChunk[][],
+  header?: { id?: string; createdAt?: number; seedLength?: number; version?: 0 | 1 | 2 },
+): string {
+  const version = header?.version ?? 2
+  const events: SessionEvent[] = []
+  let seq = 0
+  const push = (type: string, data: SessionEvent['data']): void => {
+    events.push({ type, seq: SessionSeq(seq++), time: 0, data } as SessionEvent)
+  }
+  push('turn/start', { turn: 1 })
+  for (const [index, chunks] of calls.entries()) {
+    const step = index + 1
+    push('step/start', { turn: 1, step })
+    if (version === 2) {
+      events.push(streamEvent(seq++, 1, step, chunks))
+      for (const chunk of chunks) {
+        if (chunk.type !== 'block-end' || chunk.block.type !== 'tool-call') continue
+        push('tool/call', {
+          turn: 1,
+          step,
+          callId: chunk.block.id,
+          name: chunk.block.name,
+          arguments: chunk.block.arguments,
+        })
+        events.push({
+          type: 'tool/result',
+          seq: SessionSeq(seq++),
+          time: 0,
+          data: {
+            turn: 1,
+            step,
+            message: createToolResultMessage({ callId: chunk.block.id, content: [], isError: false }),
+          },
+          surfaceOp: 'append',
+        })
+      }
+    } else {
+      for (const chunk of chunks) events.push(legacyChunkEvent(seq++, 1, step, chunk))
+    }
+    push('step/end', { turn: 1, step })
+  }
+  push('turn/end', { turn: 1, reason: { kind: 'completed' } })
+  return sessionJsonl(events, { ...header, version })
+}
+
+/** Remove persistence envelopes to produce the committed snapshot projection. */
+function projectSessionJsonl(complete: string): string {
+  return complete.split('\n').map((line, index) => {
+    if (index === 0 || line.length === 0) return line
+    const { seq: _seq, time: _time, ...projected } = JSON.parse(line) as Record<string, unknown>
+    return JSON.stringify(projected)
+  }).join('\n')
+}
+
+/** One current durable Assistant stream event for a model attempt. */
+function streamEvent(
+  seq: number,
+  turn: number,
+  step: number,
+  chunks: readonly StreamChunk[],
+  time0 = 1_000,
+): SessionEvent<'assistant/message'> | SessionEvent<'assistant/attempt'> {
+  const accumulator = new AssistantStreamAccumulator()
+  const assembler = new BlockAssembler()
+  for (const [index, chunk] of chunks.entries()) {
+    accumulator.push({ time: time0 + index * 7, chunk })
+    assembler.push(chunk)
+  }
+  const time = time0 + Math.max(0, chunks.length - 1) * 7
+  const common = {
+    seq: SessionSeq(seq),
+    time,
+    data: { turn, step, stream: [...accumulator.snapshot()] },
+  }
+  const finish = chunks.at(-1)
+  if (finish?.type !== 'finish' || finish.reason.kind === 'error') {
+    return { type: 'assistant/attempt', ...common }
+  }
+  return {
+    type: 'assistant/message',
+    ...common,
+    data: {
+      ...common.data,
+      message: createAssistantMessage({
+        content: assembler.blocks(),
+        source: {
+          provider: 'mock',
+          model: 'mock',
+          ...assembler.replayState === undefined ? {} : { replayState: assembler.replayState },
+        },
+      }),
+      ...assembler.usage === undefined ? {} : { usage: assembler.usage },
+    },
+    surfaceOp: 'append',
+  }
+}
+
+/** One released v0/v1 raw chunk event used only at migration inputs. */
+function legacyChunkEvent(seq: number, turn: number, step: number, chunk: StreamChunk): SessionEvent {
+  return {
+    type: 'assistant/chunk',
+    seq: SessionSeq(seq),
+    time: 0,
+    data: { turn, step, chunk },
+  } as unknown as SessionEvent
 }
 
 let dir: string
@@ -61,11 +191,8 @@ let file: string
 
 /** Write a session log file and return its path. */
 function writeSession(filename: string, header: { id: string; createdAt: number }, calls: StreamChunk[][]): string {
-  let seq = 1
-  const events: SessionEvent[] = []
-  calls.forEach((chunks, step) => { for (const c of chunks) events.push(chunkEvent(seq++, 1, step + 1, c)) })
   const path = join(dir, filename)
-  writeFileSync(path, sessionJsonl(events, header), 'utf8')
+  writeFileSync(path, replaySessionJsonl(calls, header), 'utf8')
   return path
 }
 
@@ -84,16 +211,229 @@ async function drain(iter: AsyncIterable<StreamChunk>): Promise<StreamChunk[]> {
   return out
 }
 
+describe('Session format package parity', () => {
+  it('refuses catalog and Session version skew at module load', async () => {
+    vi.resetModules()
+    vi.doMock('@singula-ai/alego-session-format-catalog', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('@singula-ai/alego-session-format-catalog')>()
+      return {
+        ...actual,
+        sessionFormatCatalog: {
+          ...actual.sessionFormatCatalog,
+          currentVersion: SESSION_FORMAT_VERSION + 1,
+        },
+      }
+    })
+    try {
+      await expect(import('../src/index.ts'))
+        .rejects.toThrow(`format catalog v${SESSION_FORMAT_VERSION + 1} does not match Session v${SESSION_FORMAT_VERSION}`)
+    } finally {
+      vi.doUnmock('@singula-ai/alego-session-format-catalog')
+      vi.resetModules()
+    }
+  })
+})
+
+describe('fixture format diagnostics', () => {
+  it('attaches the header line to a non-Error catalog failure', async () => {
+    vi.resetModules()
+    vi.doMock('@singula-ai/alego-session-format-catalog', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('@singula-ai/alego-session-format-catalog')>()
+      return {
+        ...actual,
+        sessionFormatCatalog: {
+          ...actual.sessionFormatCatalog,
+          decodeArtifact(): never {
+            const failure: unknown = 'decoder exploded'
+            throw failure
+          },
+        },
+      }
+    })
+    try {
+      const replay = await import('../src/index.ts')
+
+      expect(() => replay.parseSessionLog(sessionJsonl([])))
+        .toThrow('session snapshot line 1: decoder exploded')
+    } finally {
+      vi.doUnmock('@singula-ai/alego-session-format-catalog')
+      vi.resetModules()
+    }
+  })
+
+  it('falls back to the header when a source-range diagnostic has no matching physical prefix', async () => {
+    vi.resetModules()
+    vi.doMock('@singula-ai/alego-session-format-catalog', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('@singula-ai/alego-session-format-catalog')>()
+      return {
+        ...actual,
+        sessionFormatCatalog: {
+          ...actual.sessionFormatCatalog,
+          decodeArtifact(): never {
+            throw new Error('sourceEventSeqs synthetic unmatched failure')
+          },
+        },
+      }
+    })
+    try {
+      const replay = await import('../src/index.ts')
+
+      expect(() => replay.parseSessionLog(sessionJsonl([])))
+        .toThrow('session snapshot line 1: sourceEventSeqs synthetic unmatched failure')
+    } finally {
+      vi.doUnmock('@singula-ai/alego-session-format-catalog')
+      vi.resetModules()
+    }
+  })
+
+  it('maps a matching non-Error source-range prefix failure to its physical row', async () => {
+    vi.resetModules()
+    vi.doMock('@singula-ai/alego-session-format-catalog', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('@singula-ai/alego-session-format-catalog')>()
+      let callCount = 0
+      return {
+        ...actual,
+        sessionFormatCatalog: {
+          ...actual.sessionFormatCatalog,
+          decodeArtifact(): never {
+            callCount += 1
+            if (callCount === 1) throw new Error('sourceEventSeqs synthetic prefix failure')
+            const failure: unknown = callCount === 2
+              ? 'sourceEventSeqs different prefix failure'
+              : 'sourceEventSeqs synthetic prefix failure'
+            throw failure
+          },
+        },
+      }
+    })
+    try {
+      const replay = await import('../src/index.ts')
+      const events: SessionEvent[] = [
+        { type: 'turn/start', seq: SessionSeq(0), time: 0, data: { turn: 1 } },
+        { type: 'permission/preset', seq: SessionSeq(1), time: 0, data: { preset: 'auto' } },
+      ]
+
+      expect(() => replay.parseSessionLog(sessionJsonl(events)))
+        .toThrow('session snapshot line 3: sourceEventSeqs synthetic prefix failure')
+    } finally {
+      vi.doUnmock('@singula-ai/alego-session-format-catalog')
+      vi.resetModules()
+    }
+  })
+
+  it('falls back to the header for an out-of-range physical-row diagnostic', async () => {
+    vi.resetModules()
+    vi.doMock('@singula-ai/alego-session-format-catalog', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('@singula-ai/alego-session-format-catalog')>()
+      return {
+        ...actual,
+        sessionFormatCatalog: {
+          ...actual.sessionFormatCatalog,
+          decodeArtifact(): never {
+            throw new Error('released Session row 99 is malformed')
+          },
+        },
+      }
+    })
+    try {
+      const replay = await import('../src/index.ts')
+      const event: SessionEvent = { type: 'turn/start', seq: SessionSeq(0), time: 0, data: { turn: 1 } }
+
+      expect(() => replay.parseSessionLog(sessionJsonl([event])))
+        .toThrow('session snapshot line 1: released Session row 99 is malformed')
+    } finally {
+      vi.doUnmock('@singula-ai/alego-session-format-catalog')
+      vi.resetModules()
+    }
+  })
+
+  it('falls back to the header for an out-of-range logical-event diagnostic', async () => {
+    vi.resetModules()
+    vi.doMock('@singula-ai/alego-session-format-catalog', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('@singula-ai/alego-session-format-catalog')>()
+      return {
+        ...actual,
+        sessionFormatCatalog: {
+          ...actual.sessionFormatCatalog,
+          migrate(): never {
+            throw new Error('Session event 99 is malformed')
+          },
+        },
+      }
+    })
+    try {
+      const replay = await import('../src/index.ts')
+      const event: SessionEvent = { type: 'turn/start', seq: SessionSeq(0), time: 0, data: { turn: 1 } }
+
+      expect(() => replay.parseSessionLog(sessionJsonl([event])))
+        .toThrow('session snapshot line 1: Session event 99 is malformed')
+    } finally {
+      vi.doUnmock('@singula-ai/alego-session-format-catalog')
+      vi.resetModules()
+    }
+  })
+})
+
 describe('parseSessionLog', () => {
+  it('reports invalid JSON at its physical source line', () => {
+    const header = JSON.stringify({ type: 'session', version: 0, id: 's1', createdAt: 0 })
+
+    expect(() => parseSessionLog(`${header}\n{"type":\n`))
+      .toThrow('session snapshot line 2 contains invalid JSON')
+  })
+
   it('skips the header line and parses each event', () => {
-    const events = [chunkEvent(1, 1, 1, TEXT_CHUNKS[0] as StreamChunk)]
+    const events: SessionEvent[] = [{ type: 'turn/start', seq: SessionSeq(0), time: 0, data: { turn: 1 } }]
     expect(parseSessionLog(sessionJsonl(events))).toEqual(events)
   })
 
   it('ignores blank lines', () => {
     const header = JSON.stringify({ type: 'session', version: 0, id: 's1', createdAt: 0 })
-    const ev = chunkEvent(1, 1, 1, TEXT_CHUNKS[0] as StreamChunk)
+    const ev: SessionEvent = { type: 'turn/start', seq: SessionSeq(0), time: 0, data: { turn: 1 } }
     expect(parseSessionLog(`${header}\n\n${JSON.stringify(ev)}\n\n`)).toEqual([ev])
+  })
+
+  it('expands range-encoded source provenance', () => {
+    const header = JSON.stringify({ type: 'session', version: 0, id: 's1', createdAt: 0 })
+    const events = Array.from({ length: 5 }, (_, seq) => ({
+      type: 'user/message',
+      seq,
+      time: 0,
+      data: { role: 'user', id: `message-${seq}`, content: [], source: { kind: 'user' } },
+      surfaceOp: 'append',
+      ...(seq === 4 ? { sourceEventSeqs: [[0, 2], 3] } : {}),
+    }))
+    const parsed = parseSessionLog(`${header}\n${events.map(event => JSON.stringify(event)).join('\n')}\n`)
+    expect(parsed[4]).toEqual({ ...events[4], sourceEventSeqs: [0, 1, 2, 3] })
+  })
+
+  it('reports malformed range provenance with its source line', () => {
+    const header = JSON.stringify({ type: 'session', version: 0, id: 's1', createdAt: 0 })
+    const events = Array.from({ length: 5 }, (_, seq) => ({
+      type: 'user/message',
+      seq,
+      time: 0,
+      data: { role: 'user', id: `message-${seq}`, content: [], source: { kind: 'user' } },
+      surfaceOp: 'append',
+      ...(seq === 4 ? { sourceEventSeqs: [[3, 1]] } : {}),
+    }))
+    expect(() => parseSessionLog(`${header}\n${events.map(event => JSON.stringify(event)).join('\n')}\n`))
+      .toThrow(/session snapshot line 6: sourceEventSeqs range/)
+  })
+
+  it('locates malformed range provenance with a materialized v0 seedLength header', () => {
+    const header = JSON.stringify({ type: 'session', version: 0, id: 's1', createdAt: 0, seedLength: 0 })
+    const events = Array.from({ length: 3 }, (_, seq) => ({
+      type: 'user/message',
+      seq,
+      time: 0,
+      data: { role: 'user', id: `message-${seq}`, content: [], source: { kind: 'user' } },
+      surfaceOp: 'append',
+      ...(seq === 2 ? { sourceEventSeqs: [[2, 1]] } : {}),
+    }))
+
+    expect(() => parseSessionLog(`${header}\n${events.map(event => JSON.stringify(event)).join('\n')}\n`))
+      .toThrow(/session snapshot line 4: sourceEventSeqs range/)
   })
 
   it('rejects non-object body rows with their source line', () => {
@@ -102,37 +442,483 @@ describe('parseSessionLog', () => {
       .toThrow('session snapshot line 2 must be a JSON object')
   })
 
+  it('rejects partial and mixed projected envelopes at their source lines', () => {
+    const header = JSON.stringify({
+      type: 'session', version: 0, id: 's1', createdAt: 0, delegationDepth: 0,
+    })
+    const partial = JSON.stringify({ type: 'turn/start', seq: 0, data: { turn: 1 } })
+    expect(() => parseSessionLog(`${header}\n${partial}\n`))
+      .toThrow('session snapshot line 2 must contain both seq and time, or neither')
+
+    const projected = JSON.stringify({ type: 'turn/start', data: { turn: 1 } })
+    const complete = JSON.stringify({ type: 'permission/preset', seq: 1, time: 0, data: { preset: 'auto' } })
+    expect(() => parseSessionLog(`${header}\n${projected}\n${complete}\n`))
+      .toThrow('session snapshot line 3 cannot mix projected and complete body rows')
+  })
+
   it('expands a packed chunk row into its events (a fixture recorded with packChunks on)', () => {
     const header = JSON.stringify({ type: 'session', version: 0, id: 's1', createdAt: 0 })
+    const turn = JSON.stringify({ type: 'turn/start', seq: 0, time: 0, data: { turn: 1 } })
+    const step = JSON.stringify({ type: 'step/start', seq: 1, time: 0, data: { turn: 1, step: 1 } })
     const row = JSON.stringify({
-      type: 'text-chunks', seq0: 1, time0: 0,
+      type: 'text-chunks', seq0: 2, time0: 0,
       data: { turn: 1, step: 1, index: 0, dt: [0, 0], texts: ['a', 'b', 'c'] },
     })
-    expect(parseSessionLog(`${header}\n${row}\n`)).toEqual([
-      chunkEvent(1, 1, 1, { type: 'text-delta', index: 0, text: 'a' }),
-      chunkEvent(2, 1, 1, { type: 'text-delta', index: 0, text: 'b' }),
-      chunkEvent(3, 1, 1, { type: 'text-delta', index: 0, text: 'c' }),
-    ])
+    expect(parseSessionLog(`${header}\n${turn}\n${step}\n${row}\n`).slice(2)).toEqual([{
+      type: 'assistant/attempt',
+      seq: 2,
+      time: 0,
+      data: {
+        turn: 1,
+        step: 1,
+        stream: [{ type: 'text-chunks', time0: 0, index: 0, dt: [0, 0], texts: ['a', 'b', 'c'] }],
+      },
+    }])
   })
 
   it('synthesizes omitted ordinary and packed snapshot envelopes', () => {
     const header = JSON.stringify({ type: 'session', version: 0, id: 's1', createdAt: 7 })
     const ordinary = JSON.stringify({ type: 'turn/start', data: { turn: 1 } })
+    const step = JSON.stringify({ type: 'step/start', data: { turn: 1, step: 1 } })
     const packed = JSON.stringify({
       type: 'text-chunks',
       data: { turn: 1, step: 1, index: 0, dt: [3], texts: ['a', 'b'] },
     })
-    expect(parseSessionLog(`${header}\n${ordinary}\n${packed}\n`)).toEqual([
+    expect(parseSessionLog(`${header}\n${ordinary}\n${step}\n${packed}\n`)).toEqual([
       { type: 'turn/start', seq: 0, time: 0, data: { turn: 1 } },
-      chunkEvent(1, 1, 1, { type: 'text-delta', index: 0, text: 'a' }),
-      { ...chunkEvent(2, 1, 1, { type: 'text-delta', index: 0, text: 'b' }), time: 3 },
+      { type: 'step/start', seq: 1, time: 0, data: { turn: 1, step: 1 } },
+      {
+        type: 'assistant/attempt',
+        seq: 2,
+        time: 3,
+        data: {
+          turn: 1,
+          step: 1,
+          stream: [{ type: 'text-chunks', time0: 0, index: 0, dt: [3], texts: ['a', 'b'] }],
+        },
+      },
     ])
+  })
+
+  it('materializes tokenized request tools before released-format validation', () => {
+    const source = [
+      JSON.stringify({ type: 'session', version: 0, id: 'tokens', createdAt: 7, delegationDepth: 0 }),
+      JSON.stringify({ type: 'turn/start', data: { turn: 1 } }),
+      JSON.stringify({
+        type: 'request/header',
+        data: {
+          header: { config: { provider: 'mock', model: 'mock' }, system: '{{system}}', tools: '{{tools}}' },
+          reason: 'initial',
+        },
+      }),
+    ].join('\n')
+
+    expect(parseSessionLog(source)[1]).toMatchObject({
+      type: 'request/header',
+      data: { header: { system: '{{system}}', tools: [] } },
+    })
+  })
+
+  it('materializes Python snapshot tool-name projections before format validation', () => {
+    const source = [
+      JSON.stringify({ type: 'session', version: 0, id: 'tool-names', createdAt: 7, delegationDepth: 0 }),
+      JSON.stringify({ type: 'turn/start', data: { turn: 1 } }),
+      JSON.stringify({
+        type: 'request/header',
+        data: {
+          header: { config: { provider: 'mock', model: 'mock' }, tools: ['bash', 'workflow'] },
+          reason: 'initial',
+        },
+      }),
+    ].join('\n')
+
+    expect(parseSessionLog(source)[1]).toMatchObject({
+      type: 'request/header',
+      data: { header: { tools: [
+        { name: 'bash', description: '', parameters: {} },
+        { name: 'workflow', description: '', parameters: {} },
+      ] } },
+    })
+  })
+
+  it.each([
+    ['non-object request data', null],
+    ['non-object request header', { header: [] }],
+    ['unsupported tools projection', { header: { tools: [42] } }],
+  ])('keeps %s unchanged so released-format validation rejects its source line', (_name, data) => {
+    const source = [
+      JSON.stringify({ type: 'session', version: 0, id: 'malformed-request', createdAt: 7, delegationDepth: 0 }),
+      JSON.stringify({ type: 'request/header', data }),
+    ].join('\n')
+
+    expect(() => parseSessionLog(source)).toThrow(/session snapshot line 2:/)
+  })
+
+  it('synthesizes projected tool-call chunk envelopes from their argument count', () => {
+    const callId = ToolCallId('call-1')
+    const source = [
+      JSON.stringify({ type: 'session', version: 0, id: 'packed-tool', createdAt: 0 }),
+      JSON.stringify({ type: 'turn/start', data: { turn: 1 } }),
+      JSON.stringify({ type: 'step/start', data: { turn: 1, step: 1 } }),
+      JSON.stringify({
+        type: 'tool-call-chunks',
+        data: { turn: 1, step: 1, index: 0, id: 'call-1', name: 'read', dt: [0], args: ['{', '}'] },
+      }),
+    ].join('\n')
+
+    expect(parseSessionLog(source).slice(2)).toEqual([{
+      type: 'assistant/attempt',
+      seq: 2,
+      time: 0,
+      data: {
+        turn: 1,
+        step: 1,
+        stream: [{
+          type: 'tool-call-chunks',
+          time0: 0,
+          index: 0,
+          dt: [0],
+          id: callId,
+          name: 'read',
+          args: ['{', '}'],
+        }],
+      },
+    }])
+  })
+
+  it.each([
+    ['non-object packed data', { type: 'text-chunks', data: null }],
+    ['empty packed payload', {
+      type: 'text-chunks',
+      data: { turn: 1, step: 1, index: 0, dt: [], texts: [] },
+    }],
+  ])('reports %s at its one synthesized event line', (_name, row) => {
+    const source = [
+      JSON.stringify({ type: 'session', version: 0, id: 'malformed-packed', createdAt: 0 }),
+      JSON.stringify(row),
+    ].join('\n')
+
+    expect(() => parseSessionLog(source)).toThrow(/session snapshot line 2:/)
+  })
+
+  it('migrates projected v0 legacy messages through the released catalog before returning events', () => {
+    const source = [
+      JSON.stringify({ type: 'session', version: 0, id: 'legacy', createdAt: 7, delegationDepth: 0 }),
+      JSON.stringify({ type: 'turn/start', data: { turn: 1 } }),
+      JSON.stringify({ type: 'step/start', data: { turn: 1, step: 1 } }),
+      JSON.stringify({
+        type: 'assistant/message',
+        data: {
+          turn: 1,
+          step: 1,
+          content: [{ type: 'text', text: 'migrated' }],
+          provenance: { provider: 'mock', model: 'mock' },
+        },
+        surfaceOp: 'append',
+      }),
+    ].join('\n')
+
+    expect(parseSessionLog(source)[2]).toEqual({
+      type: 'assistant/message',
+      seq: 2,
+      time: 0,
+      data: {
+        turn: 1,
+        step: 1,
+        message: {
+          id: 'legacy-message:legacy:2',
+          role: 'assistant',
+          content: [{ type: 'text', text: 'migrated' }],
+          source: { kind: 'model', provider: 'mock', model: 'mock' },
+        },
+        stream: [],
+      },
+      surfaceOp: 'append',
+    })
+  })
+
+  it('takes the direct v1 path and rejects v0-only message fields', () => {
+    const current = projectSessionJsonl(replaySessionJsonl([TEXT_CHUNKS], { version: 1 }))
+    expect(deriveReplayScript(parseSessionLog(current))).toEqual([{ kind: 'chunks', chunks: TEXT_CHUNKS }])
+
+    const source = [
+      JSON.stringify({ type: 'session', version: 1, id: 'current', createdAt: 7, delegationDepth: 0 }),
+      JSON.stringify({
+        type: 'assistant/message',
+        data: {
+          turn: 1,
+          step: 1,
+          content: [{ type: 'text', text: 'legacy-only' }],
+          provenance: { provider: 'mock', model: 'mock' },
+        },
+        surfaceOp: 'append',
+      }),
+    ].join('\n')
+
+    expect(() => parseSessionLog(source)).toThrow(/assistant\/message.*unexpected member "content"/)
+  })
+
+  it('refuses a retired v0 event through the released migration policy', () => {
+    const source = [
+      JSON.stringify({ type: 'session', version: 0, id: 'legacy', createdAt: 7, delegationDepth: 0 }),
+      JSON.stringify({ type: 'mode/set', data: { mode: 'plan' } }),
+    ].join('\n')
+
+    expect(() => parseSessionLog(source)).toThrow(/unsupported legacy mode\/set event at seq 0/)
+  })
+})
+
+describe('prepareSessionSnapshotFixtureForComparison', () => {
+  it('encodes a migrated fixture without inventing a trailing newline and retains its cwd token', () => {
+    const projected = projectSessionJsonl(replaySessionJsonl([TEXT_CHUNKS])).trimEnd()
+    const [headerLine, ...bodyLines] = projected.split('\n')
+    const header = { ...(JSON.parse(headerLine!) as Record<string, unknown>), cwd: '{{cwd}}/workspace' }
+    const source = [JSON.stringify(header), ...bodyLines].join('\n')
+
+    const prepared = prepareSessionSnapshotFixtureForComparison(source)
+    const [preparedHeader] = prepared.split('\n')
+
+    expect(JSON.parse(preparedHeader!)).toMatchObject({ version: SESSION_FORMAT_VERSION, cwd: '{{cwd}}/workspace' })
+    expect(prepared.endsWith('\n')).toBe(false)
+  })
+
+  it('applies current Session format validation before comparison', () => {
+    const source = [
+      JSON.stringify({
+        type: 'session',
+        version: 2,
+        id: 'invalid-current',
+        createdAt: 0,
+        cwd: '{{cwd}}',
+        isSeeded: false,
+        delegationDepth: 0,
+        agentPreset: 'standard',
+      }),
+      JSON.stringify({ type: 'turn/start', data: { turn: 1 } }),
+      JSON.stringify({
+        type: 'user/message',
+        data: {
+          role: 'assistant',
+          content: [{ type: 'text', text: 'Show the active reminders.' }],
+          source: { kind: 'user' },
+          id: 'message-1',
+        },
+        surfaceOp: 'append',
+      }),
+    ].join('\n')
+    expect(() => prepareSessionSnapshotFixtureForComparison(source))
+      .toThrow('message must have role "user"')
+  })
+})
+
+describe('prepareSessionEventNotificationsForComparison', () => {
+  const wrapHeadlessEvent = (event: Record<string, unknown>) => JSON.stringify({
+    type: 'session_event', sessionId: 'session-1', event,
+  })
+
+  it('migrates a v1 notification tail while retaining non-event protocol rows', () => {
+    const events = [
+      { type: 'turn/start', seq: 3, time: 0, data: { turn: 1 } },
+      { type: 'step/start', seq: 4, time: 0, data: { turn: 1, step: 1 } },
+      { type: 'assistant/chunk', seq: 5, time: 5, data: {
+        turn: 1, step: 1, chunk: { type: 'block-start', index: 0, blockType: 'text' },
+      } },
+      { type: 'assistant/chunk', seq: 6, time: 6, data: {
+        turn: 1, step: 1, chunk: { type: 'text-delta', index: 0, text: 'done' },
+      } },
+      { type: 'assistant/chunk', seq: 7, time: 7, data: {
+        turn: 1, step: 1, chunk: { type: 'block-end', index: 0, block: { type: 'text', text: 'done' } },
+      } },
+      { type: 'assistant/chunk', seq: 8, time: 8, data: {
+        turn: 1, step: 1, chunk: { type: 'finish', reason: { kind: 'stop' } },
+      } },
+      { type: 'assistant/message', seq: 9, time: 9, data: {
+        turn: 1,
+        step: 1,
+        message: {
+          role: 'assistant',
+          content: [{ type: 'text', text: 'done' }],
+          source: { kind: 'model', provider: 'fixture', model: 'fixture' },
+          id: 'message-1',
+        },
+      }, sourceEventSeqs: [5, 6, 7, 8], surfaceOp: 'append' },
+      { type: 'step/end', seq: 10, time: 10, data: { turn: 1, step: 1 } },
+      { type: 'turn/end', seq: 11, time: 11, data: { turn: 1, reason: { kind: 'completed' } } },
+    ]
+    const source = [
+      ...events.map(event => ({ type: 'session_event', sessionId: 'session-1', event })),
+      { type: 'session_event', sessionId: 'session-1', event: {
+        type: 'turn/end', seq: 2, time: 12, data: { turn: 1, reason: { kind: 'completed' } },
+      } },
+      { type: 'session_event', sessionId: 'session-1', event: {
+        type: 'feedback/record', seq: 12, time: 13, data: { text: 'resumed parent' },
+      } },
+      { type: 'result', status: 'completed' },
+    ].map(row => JSON.stringify(row)).join('\n') + '\n'
+
+    const prepared = prepareSessionEventNotificationsForComparison(source)
+    const rows = prepared.trimEnd().split('\n').map(line => JSON.parse(line) as Record<string, unknown>)
+    const migrated = rows.flatMap((row) => {
+      const event = row['event']
+      return event !== null && typeof event === 'object' ? [event] : []
+    })
+
+    expect(migrated.some(event => 'type' in event && event.type === 'assistant/chunk')).toBe(false)
+    expect(migrated.find(event => 'type' in event && event.type === 'assistant/message')).toMatchObject({
+      seq: 5,
+      data: { stream: expect.any(Array) as unknown },
+    })
+    expect(rows.at(-1)).toEqual({ type: 'result', status: 'completed' })
+    expect(prepared.endsWith('\n')).toBe(true)
+  })
+
+  it('leaves a current notification stream byte-identical', () => {
+    const current = `${JSON.stringify({
+      method: 'session.event',
+      params: {
+        sessionId: 'session-1',
+        event: { type: 'assistant/attempt', seq: 0, time: 0, data: { turn: 1, step: 1, stream: [] } },
+      },
+    })}\n`
+
+    expect(prepareSessionEventNotificationsForComparison(current)).toBe(current)
+  })
+
+  it('omits generation-dependent delivery cursors', () => {
+    const source = `${JSON.stringify({
+      method: 'session.event',
+      params: {
+        sessionId: 'session-1',
+        event: {
+          type: 'session-log-deepseek/delivery-accepted',
+          seq: 3,
+          time: 0,
+          data: { sessionId: 'source-1', sessionFormatVersion: 1, throughSeq: 21 },
+        },
+      },
+    })}\n`
+
+    expect(JSON.parse(prepareSessionEventNotificationsForComparison(source))).toMatchObject({
+      params: { event: { data: { sessionId: 'source-1' } } },
+    })
+  })
+
+  it.each([
+    { tools: '{{tools}}', expected: '{{tools}}' },
+    { tools: ['read'], expected: [{ name: 'read', description: '', parameters: {} }] },
+  ])('migrates a projected request header with tools $tools', ({ tools, expected }) => {
+    const events = [
+      { type: 'turn/start', seq: 0, time: 0, data: { turn: 1 } },
+      { type: 'step/start', seq: 1, time: 0, data: { turn: 1, step: 1 } },
+      {
+        type: 'request/header',
+        seq: 2,
+        time: 0,
+        data: {
+          header: {
+            config: { provider: 'fixture', model: 'fixture' },
+            system: '{{system}}',
+            tools,
+          },
+          reason: 'initial',
+        },
+      },
+      {
+        type: 'assistant/chunk',
+        seq: 3,
+        time: 0,
+        data: { turn: 1, step: 1, chunk: { type: 'block-start', index: 0, blockType: 'text' } },
+      },
+      { type: 'step/end', seq: 4, time: 0, data: { turn: 1, step: 1 } },
+    ]
+    const source = events.map(event => JSON.stringify({
+      type: 'session_event',
+      sessionId: 'session-1',
+      event,
+    })).join('\n')
+
+    const rows = prepareSessionEventNotificationsForComparison(source).split('\n')
+      .map(line => JSON.parse(line) as { event: Record<string, unknown> })
+    const request = rows.find(row => row.event['type'] === 'request/header') as {
+      event: { data: { header: { tools: unknown } } }
+    }
+
+    expect(request.event.data.header.tools).toEqual(expected)
+    expect(rows.some(row => row.event['type'] === 'assistant/chunk')).toBe(false)
+    expect(rows.some(row => row.event['type'] === 'assistant/attempt')).toBe(true)
+  })
+
+  it('assigns an unterminated final chunk group to its last source row', () => {
+    const events = [
+      { type: 'turn/start', seq: 0, time: 0, data: { turn: 1 } },
+      { type: 'step/start', seq: 1, time: 0, data: { turn: 1, step: 1 } },
+      {
+        type: 'assistant/chunk',
+        seq: 2,
+        time: 0,
+        data: { turn: 1, step: 1, chunk: { type: 'block-start', index: 0, blockType: 'text' } },
+      },
+    ]
+    const source = events.map(event => JSON.stringify({
+      method: 'session.event',
+      params: { sessionId: 'session-1', event },
+    })).join('\n')
+
+    const rows = prepareSessionEventNotificationsForComparison(source).split('\n')
+      .map(line => JSON.parse(line) as { params: { event: Record<string, unknown> } })
+
+    expect(rows).toHaveLength(3)
+    expect(rows.at(-1)?.params.event['type']).toBe('assistant/attempt')
+    expect(prepareSessionEventNotificationsForComparison('{"type":"result"}')).toBe('{"type":"result"}')
+  })
+
+  it('keeps malformed SDK wrappers and delivery payloads outside migration unchanged', () => {
+    const rows = [
+      { method: 'session.event', params: { sessionId: 7, event: {} } },
+      { method: 'session.event', params: { sessionId: 'session-1' } },
+      {
+        method: 'session.event',
+        params: {
+          sessionId: 'session-1',
+          event: { type: 'session-log-deepseek/delivery-accepted', seq: 0, time: 0, data: null },
+        },
+      },
+    ]
+    const source = rows.map(row => JSON.stringify(row)).join('\n')
+
+    expect(prepareSessionEventNotificationsForComparison(source)).toBe(source)
+  })
+
+  it('rejects malformed notification rows and invalid v1 tails before migration', () => {
+    expect(() => prepareSessionEventNotificationsForComparison('null'))
+      .toThrow('session event comparison line 1 must be an object')
+
+    expect(() => prepareSessionEventNotificationsForComparison(wrapHeadlessEvent({
+      type: 'assistant/chunk', seq: -1, time: 0, data: {},
+    }))).toThrow('session event comparison requires a non-negative first seq')
+    expect(() => prepareSessionEventNotificationsForComparison([
+      wrapHeadlessEvent({ type: 'assistant/chunk', seq: 0, time: 0, data: {} }),
+      wrapHeadlessEvent({ type: 7, seq: 1, time: 0, data: {} }),
+    ].join('\n'))).toThrow('session event comparison requires a contiguous event tail for session-1')
+  })
+
+  it('delegates malformed request headers to the released-format validator', () => {
+    const source = [
+      wrapHeadlessEvent({ type: 'turn/start', seq: 0, time: 0, data: { turn: 1 } }),
+      wrapHeadlessEvent({ type: 'request/header', seq: 1, time: 0, data: null }),
+      wrapHeadlessEvent({ type: 'assistant/chunk', seq: 2, time: 0, data: {
+        turn: 1, step: 1, chunk: { type: 'block-start', index: 0, blockType: 'text' },
+      } }),
+    ].join('\n')
+
+    expect(() => prepareSessionEventNotificationsForComparison(source))
+      .toThrow(/request\/header 1 data must be a JSON object/)
   })
 })
 
 describe('deriveReplayScript', () => {
-  it('groups one finished assistant/chunk stream into one replay entry', () => {
-    const events: SessionEvent[] = TEXT_CHUNKS.map((c, i) => chunkEvent(i + 1, 1, 1, c))
+  it('expands one finished embedded Assistant stream into one replay entry', () => {
+    const events: SessionEvent[] = [streamEvent(1, 1, 1, TEXT_CHUNKS)]
     expect(deriveReplayScript(events)).toEqual([{ kind: 'chunks', chunks: TEXT_CHUNKS }])
   })
 
@@ -141,10 +927,9 @@ describe('deriveReplayScript', () => {
       { type: 'usage', usage: { inputTokens: 0, outputTokens: 0 } },
       { type: 'finish', reason: { kind: 'error', failure: { message: 'empty', code: 'EMPTY_RESPONSE' } } },
     ]
-    let seq = 1
     const events: SessionEvent[] = [
-      ...failed.map(chunk => chunkEvent(seq++, 1, 1, chunk)),
-      ...TEXT_CHUNKS.map(chunk => chunkEvent(seq++, 1, 1, chunk)),
+      streamEvent(1, 1, 1, failed),
+      streamEvent(2, 1, 1, TEXT_CHUNKS),
     ]
     expect(deriveReplayScript(events)).toEqual([
       { kind: 'chunks', chunks: failed },
@@ -159,10 +944,9 @@ describe('deriveReplayScript', () => {
       { type: 'text-delta', index: 0, text: 'two' },
       { type: 'finish', reason: { kind: 'stop' } },
     ]
-    let seq = 1
     const events: SessionEvent[] = [
-      ...callA.map(c => chunkEvent(seq++, 1, 1, c)),
-      ...callB.map(c => chunkEvent(seq++, 1, 2, c)), // same turn, next step
+      streamEvent(1, 1, 1, callA),
+      streamEvent(2, 1, 2, callB), // same turn, next step
     ]
     expect(deriveReplayScript(events)).toEqual([
       { kind: 'chunks', chunks: callA },
@@ -171,26 +955,26 @@ describe('deriveReplayScript', () => {
   })
 
   it('separates calls across turns too', () => {
-    let seq = 1
     const events: SessionEvent[] = [
-      ...TEXT_CHUNKS.map(c => chunkEvent(seq++, 1, 1, c)),
-      ...TEXT_CHUNKS.map(c => chunkEvent(seq++, 2, 1, c)), // new turn, step resets to 1
+      streamEvent(1, 1, 1, TEXT_CHUNKS),
+      streamEvent(2, 2, 1, TEXT_CHUNKS), // new turn, step resets to 1
     ]
     expect(deriveReplayScript(events)).toHaveLength(2)
   })
 
-  it('ignores non-assistant/chunk events', () => {
+  it('ignores non-Assistant-stream events', () => {
     let seq = 1
     const events: SessionEvent[] = [
-      { type: 'turn/start', seq: seq++, time: 0, data: { turn: 1 } },
-      ...TEXT_CHUNKS.map(c => chunkEvent(seq++, 1, 1, c)),
-      { type: 'turn/end', seq: seq++, time: 0, data: { turn: 1, reason: { kind: 'completed' } } },
+      { type: 'turn/start', seq: SessionSeq(seq++), time: 0, data: { turn: 1 } },
+      streamEvent(seq++, 1, 1, TEXT_CHUNKS),
+      { type: 'turn/end', seq: SessionSeq(seq++), time: 0, data: { turn: 1, reason: { kind: 'completed' } } },
     ]
     expect(deriveReplayScript(events)).toEqual([{ kind: 'chunks', chunks: TEXT_CHUNKS }])
   })
 
-  it('returns an empty script for a log with no assistant/chunk events', () => {
+  it('returns an empty script for a log with no Assistant stream events', () => {
     expect(deriveReplayScript([])).toEqual([])
+    expect(deriveReplayScript([streamEvent(1, 1, 1, [])])).toEqual([])
   })
 
   it('keeps a finish-error chunk in the derived entry (replays naturally)', () => {
@@ -198,7 +982,7 @@ describe('deriveReplayScript', () => {
       { type: 'block-start', index: 0, blockType: 'text' },
       { type: 'finish', reason: { kind: 'error', failure: { message: 'boom', code: 'X' } } },
     ]
-    const events = errChunks.map((c, i) => chunkEvent(i + 1, 1, 1, c))
+    const events = [streamEvent(1, 1, 1, errChunks)]
     expect(deriveReplayScript(events)).toEqual([{ kind: 'chunks', chunks: errChunks }])
   })
 
@@ -217,31 +1001,31 @@ describe('deriveReplayScript', () => {
     ]
     let seq = 1
     const events: SessionEvent[] = [
-      ...overflow.map(chunk => chunkEvent(seq++, 1, 2, chunk)),
+      streamEvent(seq++, 1, 2, overflow),
       {
         type: 'compaction/start',
-        seq: seq++,
+        seq: SessionSeq(seq++),
         time: 0,
         data: { compactionId: COMPACTION_ID, turn: 1 },
       },
       {
         type: 'compaction/summary',
-        seq: seq++,
+        seq: SessionSeq(seq++),
         time: 0,
         data: {
           compactionId: COMPACTION_ID,
           summary: rawOutput,
           rawOutput,
           llmStreamCall: true,
-          shadowedRange: { start: 1, end: 1 },
-          shadowedSeqs: [1],
+          shadowedRange: { start: SessionSeq(1), end: SessionSeq(1) },
+          shadowedSeqs: [SessionSeq(1)],
           shadowedTokenCount: 20,
           provider: 'mock',
           model: 'mock',
           usage,
         },
       },
-      ...TEXT_CHUNKS.map(chunk => chunkEvent(seq++, 1, 2, chunk)),
+      streamEvent(seq++, 1, 2, TEXT_CHUNKS),
     ]
 
     expect(deriveReplayScript(events)).toEqual([
@@ -254,13 +1038,13 @@ describe('deriveReplayScript', () => {
   it('does not infer an LLM call from compaction/summary without raw output', () => {
     const event: SessionEvent<'compaction/summary'> = {
       type: 'compaction/summary',
-      seq: 1,
+      seq: SessionSeq(1),
       time: 0,
       data: {
         compactionId: COMPACTION_ID,
         summary: [{ type: 'text', text: 'template result' }],
-        shadowedRange: { start: 1, end: 1 },
-        shadowedSeqs: [1],
+        shadowedRange: { start: SessionSeq(1), end: SessionSeq(1) },
+        shadowedSeqs: [SessionSeq(1)],
         shadowedTokenCount: 20,
         provider: 'template',
         model: 'template',
@@ -274,14 +1058,14 @@ describe('deriveReplayScript', () => {
     const block = { type: 'text' as const, text: 'remote summary' }
     const event: SessionEvent<'compaction/summary'> = {
       type: 'compaction/summary',
-      seq: 1,
+      seq: SessionSeq(1),
       time: 0,
       data: {
         compactionId: COMPACTION_ID,
         summary: [block],
         rawOutput: [block],
-        shadowedRange: { start: 1, end: 1 },
-        shadowedSeqs: [1],
+        shadowedRange: { start: SessionSeq(1), end: SessionSeq(1) },
+        shadowedSeqs: [SessionSeq(1)],
         shadowedTokenCount: 20,
         provider: 'remote',
         model: 'remote',
@@ -291,43 +1075,65 @@ describe('deriveReplayScript', () => {
     expect(deriveReplayScript([event])).toEqual([])
   })
 
+  it('rejects a durable compact stream marker whose complete output is absent', () => {
+    const event = {
+      type: 'compaction/summary',
+      seq: SessionSeq(1),
+      time: 0,
+      data: { llmStreamCall: true },
+    } as unknown as SessionEvent
+
+    expect(() => deriveReplayScript([event]))
+      .toThrow('llm-replay: compaction/summary marks an LLM stream call without rawOutput')
+  })
+
   it('rejects a persisted marked compact LLM call without its complete output', () => {
-    const [event] = parseSessionLog([
-      JSON.stringify({ type: 'session', version: 0, id: 'invalid-compact', createdAt: 0 }),
+    const source = [
+      JSON.stringify({
+        type: 'session', version: 0, id: 'invalid-compact', createdAt: 0, delegationDepth: 0,
+      }),
+      JSON.stringify({
+        type: 'user/message', seq: 0, time: 0,
+        data: { role: 'user', id: 'source', content: [], source: { kind: 'user' } },
+        surfaceOp: 'append',
+      }),
+      JSON.stringify({
+        type: 'compaction/start', seq: 1, time: 0,
+        data: { compactionId: COMPACTION_ID, turn: 1 },
+      }),
       JSON.stringify({
         type: 'compaction/summary',
-        seq: 1,
+        seq: 2,
         time: 0,
         data: {
           compactionId: COMPACTION_ID,
           summary: [{ type: 'text', text: 'missing source events' }],
           llmStreamCall: true,
-          shadowedRange: { start: 1, end: 1 },
-          shadowedSeqs: [1],
+          shadowedRange: { start: 0, end: 0 },
+          shadowedSeqs: [0],
           shadowedTokenCount: 20,
           provider: 'mock',
           model: 'mock',
         },
       }),
-    ].join('\n'))
+    ].join('\n')
 
-    expect(() => deriveReplayScript(event === undefined ? [] : [event]))
-      .toThrow(/LLM stream call without rawOutput/)
+    expect(() => parseSessionLog(source)).toThrow(/llmStreamCall requires rawOutput/)
   })
 
   it('derives a compaction/summary stream when usage is unavailable', () => {
     const block = { type: 'text' as const, text: 'summary without usage' }
     const event: SessionEvent<'compaction/summary'> = {
       type: 'compaction/summary',
-      seq: 1,
+      seq: SessionSeq(1),
       time: 0,
       data: {
         compactionId: COMPACTION_ID,
         summary: [block],
         rawOutput: [block],
         llmStreamCall: true,
-        shadowedRange: { start: 1, end: 1 },
-        shadowedSeqs: [1],
+        shadowedRange: { start: SessionSeq(1), end: SessionSeq(1) },
+        shadowedSeqs: [SessionSeq(1)],
         shadowedTokenCount: 20,
         provider: 'mock',
         model: 'mock',
@@ -347,40 +1153,42 @@ describe('deriveReplayScript', () => {
   it('throws on a group that lacks a terminal finish chunk (a thrown stream)', () => {
     // A thrown stream(): prefix chunks logged, then turn/end (error reason), NO finish.
     const events: SessionEvent[] = [
-      chunkEvent(1, 1, 1, { type: 'block-start', index: 0, blockType: 'text' }),
-      chunkEvent(2, 1, 1, { type: 'text-delta', index: 0, text: 'par' }),
-      { type: 'turn/end', seq: 3, time: 0, data: { turn: 1, reason: { kind: 'error', error: { message: 'x', code: 'UNKNOWN' } } } },
+      streamEvent(1, 1, 1, [
+        { type: 'block-start', index: 0, blockType: 'text' },
+        { type: 'text-delta', index: 0, text: 'par' },
+      ]),
+      { type: 'turn/end', seq: SessionSeq(3), time: 0, data: { turn: 1, reason: { kind: 'error', error: { message: 'x', code: 'UNKNOWN' } } } },
     ]
     expect(() => deriveReplayScript(events)).toThrow(/without a finish chunk.*replay\.override\.json/s)
   })
 
   it('names the offending (turn, step) when a group is incomplete', () => {
     const events: SessionEvent[] = [
-      chunkEvent(1, 2, 3, { type: 'block-start', index: 0, blockType: 'text' }),
+      streamEvent(1, 2, 3, [{ type: 'block-start', index: 0, blockType: 'text' }]),
     ]
     expect(() => deriveReplayScript(events)).toThrow(/2\/3/)
   })
 
   it('rejects an unfinished call before consuming chunks from a new step', () => {
     const events: SessionEvent[] = [
-      chunkEvent(1, 1, 1, { type: 'block-start', index: 0, blockType: 'text' }),
-      chunkEvent(2, 1, 2, { type: 'finish', reason: { kind: 'stop' } }),
+      streamEvent(1, 1, 1, [{ type: 'block-start', index: 0, blockType: 'text' }]),
+      streamEvent(2, 1, 2, [{ type: 'finish', reason: { kind: 'stop' } }]),
     ]
     expect(() => deriveReplayScript(events)).toThrow(/model call 1\/1 ended without a finish chunk/)
   })
 
   it('rejects an unfinished call at a compact summary boundary', () => {
     const events: SessionEvent[] = [
-      chunkEvent(1, 1, 1, { type: 'block-start', index: 0, blockType: 'text' }),
+      streamEvent(1, 1, 1, [{ type: 'block-start', index: 0, blockType: 'text' }]),
       {
         type: 'compaction/summary',
-        seq: 2,
+        seq: SessionSeq(2),
         time: 0,
         data: {
           compactionId: COMPACTION_ID,
           summary: [{ type: 'text', text: 'external checkpoint' }],
-          shadowedRange: { start: 1, end: 1 },
-          shadowedSeqs: [1],
+          shadowedRange: { start: SessionSeq(1), end: SessionSeq(1) },
+          shadowedSeqs: [SessionSeq(1)],
           shadowedTokenCount: 20,
           provider: 'external',
           model: 'external',
@@ -394,8 +1202,17 @@ describe('deriveReplayScript', () => {
 
 describe('loadReplayScript', () => {
   it('derives from the session JSONL when no override is present', () => {
-    writeFileSync(file, sessionJsonl(TEXT_CHUNKS.map((c, i) => chunkEvent(i + 1, 1, 1, c))), 'utf8')
+    writeFileSync(file, replaySessionJsonl([TEXT_CHUNKS]), 'utf8')
     expect(loadReplayScript({ file })).toEqual([{ kind: 'chunks', chunks: TEXT_CHUNKS }])
+  })
+
+  it('never rewrites a projected source fixture while migrating it in memory', () => {
+    const source = projectSessionJsonl(replaySessionJsonl([TEXT_CHUNKS]))
+    writeFileSync(file, source, 'utf8')
+
+    expect(loadReplayScript({ file })).toEqual([{ kind: 'chunks', chunks: TEXT_CHUNKS }])
+    expect(JSON.parse(prepareSessionSnapshotFixtureForComparison(source).split('\n')[0] as string)).toMatchObject({ version: 2 })
+    expect(readFileSync(file, 'utf8')).toBe(source)
   })
 
   it('uses the sidecar override when present, ignoring the JSONL', () => {
@@ -406,8 +1223,16 @@ describe('loadReplayScript', () => {
     expect(loadReplayScript({ file, overrideFile })).toEqual(override)
   })
 
+  it('uses a whole-script override reused as the primary fixture path', () => {
+    const overrideFile = join(dir, 'replay.override.json')
+    const override: ReplayEntry[] = [{ kind: 'hang' }]
+    writeFileSync(overrideFile, JSON.stringify(override), 'utf8')
+
+    expect(loadReplayScript({ file: overrideFile, overrideFile })).toEqual(override)
+  })
+
   it('falls back to the JSONL when the override path is set but absent', () => {
-    writeFileSync(file, sessionJsonl(TEXT_CHUNKS.map((c, i) => chunkEvent(i + 1, 1, 1, c))), 'utf8')
+    writeFileSync(file, replaySessionJsonl([TEXT_CHUNKS]), 'utf8')
     expect(loadReplayScript({ file, overrideFile: join(dir, 'nope.json') }))
       .toEqual([{ kind: 'chunks', chunks: TEXT_CHUNKS }])
   })
@@ -429,11 +1254,7 @@ describe('loadReplayScript', () => {
       { type: 'text-delta', index: 0, text: 'two' },
       { type: 'finish', reason: { kind: 'stop' } },
     ]
-    let seq = 1
-    writeFileSync(file, sessionJsonl([
-      ...TEXT_CHUNKS.map(c => chunkEvent(seq++, 1, 1, c)),
-      ...callB.map(c => chunkEvent(seq++, 1, 2, c)),
-    ]), 'utf8')
+    writeFileSync(file, replaySessionJsonl([TEXT_CHUNKS, callB]), 'utf8')
     const overrideFile = join(dir, 'replay.override.json')
     writeFileSync(overrideFile, JSON.stringify({
       patches: [{ at: 0, entry: { kind: 'throw', chunks: [], message: 'transient', code: 'SERVER' } }],
@@ -445,7 +1266,7 @@ describe('loadReplayScript', () => {
   })
 
   it('patches form: at == derived length appends (the retry-attempt slot)', () => {
-    writeFileSync(file, sessionJsonl(TEXT_CHUNKS.map((c, i) => chunkEvent(i + 1, 1, 1, c))), 'utf8')
+    writeFileSync(file, replaySessionJsonl([TEXT_CHUNKS]), 'utf8')
     const overrideFile = join(dir, 'replay.override.json')
     writeFileSync(overrideFile, JSON.stringify({
       patches: [
@@ -460,7 +1281,7 @@ describe('loadReplayScript', () => {
   })
 
   it('patches form: an out-of-range index fails loud with the derived length', () => {
-    writeFileSync(file, sessionJsonl(TEXT_CHUNKS.map((c, i) => chunkEvent(i + 1, 1, 1, c))), 'utf8')
+    writeFileSync(file, replaySessionJsonl([TEXT_CHUNKS]), 'utf8')
     const overrideFile = join(dir, 'replay.override.json')
     writeFileSync(overrideFile, JSON.stringify({ patches: [{ at: 2, entry: { kind: 'hang' } }] }), 'utf8')
     expect(() => loadReplayScript({ file, overrideFile })).toThrow(/patch index 2 out of range.*1 call/s)
@@ -492,7 +1313,7 @@ describe('loadReplayScript', () => {
   })
 
   it('rejects duplicate patch indexes instead of silently taking the last one', () => {
-    writeFileSync(file, sessionJsonl(TEXT_CHUNKS.map((c, i) => chunkEvent(i + 1, 1, 1, c))), 'utf8')
+    writeFileSync(file, replaySessionJsonl([TEXT_CHUNKS]), 'utf8')
     const overrideFile = join(dir, 'replay.override.json')
     writeFileSync(overrideFile, JSON.stringify({
       patches: [
@@ -506,12 +1327,7 @@ describe('loadReplayScript', () => {
 
 describe('installLlmReplay (through the real LlmRuntime)', () => {
   function writeLog(...calls: StreamChunk[][]): void {
-    let seq = 1
-    const events: SessionEvent[] = []
-    calls.forEach((chunks, step) => {
-      for (const c of chunks) events.push(chunkEvent(seq++, 1, step + 1, c))
-    })
-    writeFileSync(file, sessionJsonl(events), 'utf8')
+    writeFileSync(file, replaySessionJsonl(calls), 'utf8')
   }
 
   it('serves derived chunks back, short-circuiting the adapter', async () => {
@@ -532,8 +1348,8 @@ describe('installLlmReplay (through the real LlmRuntime)', () => {
     function scriptedCall(argumentsDelta: string): StreamChunk[] {
       return [
         { type: 'block-start', index: 0, blockType: 'tool-call' },
-        { type: 'tool-call-delta', index: 0, id: CallId('c1'), name: 'update_goal', argumentsDelta },
-        { type: 'block-end', index: 0, block: { type: 'tool-call', id: CallId('c1'), name: 'update_goal', arguments: argumentsDelta } },
+        { type: 'tool-call-delta', index: 0, id: ToolCallId('c1'), name: 'update_goal', argumentsDelta },
+        { type: 'block-end', index: 0, block: { type: 'tool-call', id: ToolCallId('c1'), name: 'update_goal', arguments: argumentsDelta } },
         { type: 'finish', reason: { kind: 'tool-calls' } },
       ]
     }
@@ -700,6 +1516,90 @@ describe('installLlmReplay (through the real LlmRuntime)', () => {
     installLlmReplay(ctx, { file })
     expect(await drain(ctx.llm.stream({ provider: 'm', model: 'm', messages: [] }))).toEqual(TEXT_CHUNKS)
     expect(await drain(ctx.llm.stream({ provider: 'm', model: 'm', messages: [] }))).toEqual(second)
+  })
+
+  it('settles official DeepSeek request extensions before replayed chunks', async () => {
+    writeLog(TEXT_CHUNKS, TEXT_CHUNKS, TEXT_CHUNKS)
+    const ctx = new Context()
+    await ctx.plugin(LlmRuntime)
+    await ctx.plugin(DeepSeekLlmApiExtensionRegistry)
+    const accepted = vi.fn()
+    ctx.deepseekLlmApiExtensions.register('test_replay', {
+      prepare: () => ({ value: { version: 1 }, accept: accepted }),
+    })
+    installLlmReplay(ctx, { file })
+
+    const sessionId = 'deepseek-replay' as NonNullable<GenerateOptions['sessionId']>
+    await drain(ctx.llm.stream({ provider: 'deepseek-official', model: 'm', messages: [], sessionId }))
+    expect(accepted).toHaveBeenCalledOnce()
+    await drain(ctx.llm.stream({
+      provider: 'deepseek-official',
+      model: 'm',
+      messages: [],
+      sessionId,
+      signal: new AbortController().signal,
+      purpose: 'compaction',
+    }))
+    expect(accepted).toHaveBeenCalledTimes(2)
+    await drain(ctx.llm.stream({ provider: 'another-provider', model: 'm', messages: [], sessionId }))
+    expect(accepted).toHaveBeenCalledTimes(2)
+  })
+
+  it('accepts anonymous official extensions and tolerates an absent optional registry', async () => {
+    writeLog(TEXT_CHUNKS)
+    const withRegistry = new Context()
+    await withRegistry.plugin(LlmRuntime)
+    await withRegistry.plugin(DeepSeekLlmApiExtensionRegistry)
+    const accepted = vi.fn()
+    withRegistry.deepseekLlmApiExtensions.register('test_replay', {
+      prepare: () => ({ value: { version: 1 }, accept: accepted }),
+    })
+    installLlmReplay(withRegistry, { file })
+    await drain(withRegistry.llm.stream({ provider: 'deepseek-official', model: 'm', messages: [] }))
+    expect(accepted).toHaveBeenCalledOnce()
+
+    const withoutRegistry = new Context()
+    await withoutRegistry.plugin(LlmRuntime)
+    installLlmReplay(withoutRegistry, { file })
+    await expect(drain(withoutRegistry.llm.stream({ provider: 'deepseek-official', model: 'm', messages: [] })))
+      .resolves.toEqual(TEXT_CHUNKS)
+  })
+
+  it('accepts only throw entries that reached the post-2xx point', async () => {
+    writeFileSync(file, sessionJsonl([]), 'utf8')
+    const overrideFile = join(dir, 'replay.override.json')
+    writeFileSync(overrideFile, JSON.stringify([
+      { kind: 'throw', chunks: [{ type: 'block-start', index: 0, blockType: 'text' }], message: 'partial', code: 'STREAM_CLOSED' },
+      { kind: 'throw', chunks: [], message: 'unauthorized', code: 'AUTH' },
+      { kind: 'throw', chunks: [], message: 'empty body', code: 'EMPTY_RESPONSE', accepted: true },
+    ]), 'utf8')
+    const ctx = new Context()
+    await ctx.plugin(LlmRuntime)
+    await ctx.plugin(DeepSeekLlmApiExtensionRegistry)
+    const accepted = vi.fn()
+    ctx.deepseekLlmApiExtensions.register('test_replay', {
+      prepare: () => ({ value: { version: 1 }, accept: accepted }),
+    })
+    installLlmReplay(ctx, { file, overrideFile })
+    const request = { provider: 'deepseek-official', model: 'm', messages: [] }
+
+    await expect(drain(ctx.llm.stream(request))).rejects.toThrow('partial')
+    expect(accepted).toHaveBeenCalledOnce()
+    await expect(drain(ctx.llm.stream(request))).rejects.toThrow('unauthorized')
+    expect(accepted).toHaveBeenCalledOnce()
+    await expect(drain(ctx.llm.stream(request))).rejects.toThrow('empty body')
+    expect(accepted).toHaveBeenCalledTimes(2)
+  })
+
+  it('rejects a non-boolean throw acceptance override', async () => {
+    writeFileSync(file, sessionJsonl([]), 'utf8')
+    const overrideFile = join(dir, 'replay.override.json')
+    writeFileSync(overrideFile, JSON.stringify([
+      { kind: 'throw', chunks: [], message: 'bad', code: 'X', accepted: 'yes' },
+    ]), 'utf8')
+    const ctx = new Context()
+    await ctx.plugin(LlmRuntime)
+    expect(() => { installLlmReplay(ctx, { file, overrideFile }) }).toThrow(/accepted must be a boolean/)
   })
 
   it('replays a sidecar throw-entry as an LlmError with its stable code, after its prefix chunks', async () => {
@@ -924,10 +1824,7 @@ describe('installLlmReplay (through the real LlmRuntime)', () => {
   it('assertConsumed reports recorded scripts no live session ever bound', async () => {
     writeLog(TEXT_CHUNKS)
     const childFile = join(dir, 'session.1.jsonl')
-    writeFileSync(childFile, sessionJsonl(
-      TEXT_CHUNKS.map((chunk, i) => chunkEvent(i + 1, 1, 1, chunk)),
-      { id: 'child', createdAt: 10 },
-    ), 'utf8')
+    writeFileSync(childFile, replaySessionJsonl([TEXT_CHUNKS], { id: 'child', createdAt: 10 }), 'utf8')
     const ctx = new Context()
     await ctx.plugin(LlmRuntime)
     const handle = installLlmReplay(ctx, { file, childFiles: [childFile] })
@@ -938,22 +1835,37 @@ describe('installLlmReplay (through the real LlmRuntime)', () => {
 })
 
 describe('parseSessionHeader', () => {
-  it('reads id, createdAt, and seedLength off the header line', () => {
+  it('reads id, createdAt, and the inherited event count off the v0 header line', () => {
     expect(parseSessionHeader(sessionJsonl([], { id: 'abc', createdAt: 42 })))
-      .toEqual({ id: 'abc', createdAt: 42, seedLength: 0 })
+      .toEqual({ id: 'abc', createdAt: 42, inheritedEventCount: 0 })
   })
 
-  it('reads a non-zero seedLength (a fork child header)', () => {
-    expect(parseSessionHeader('{"type":"session","version":0,"id":"child","createdAt":7,"seedLength":4}\n'))
-      .toEqual({ id: 'child', createdAt: 7, seedLength: 4 })
+  it('reads a non-zero v0 seedLength as the inherited event count', () => {
+    const events: SessionEvent[] = Array.from({ length: 4 }, (_, seq) => ({
+      type: 'permission/preset', seq: SessionSeq(seq), time: 0, data: { preset: 'workspace-write' },
+    }))
+    expect(parseSessionHeader(sessionJsonl(events, { id: 'child', createdAt: 7, seedLength: 4 })))
+      .toEqual({ id: 'child', createdAt: 7, inheritedEventCount: 4 })
   })
 
-  it('falls back to id="" / createdAt=0 / seedLength=0 when the header lacks them', () => {
-    expect(parseSessionHeader('{"type":"session","version":0}\n')).toEqual({ id: '', createdAt: 0, seedLength: 0 })
+  it('materializes omitted v0 delegation depth and tokenized cwd for projected validation', () => {
+    expect(parseSessionHeader(
+      '{"type":"session","version":0,"id":"projected","createdAt":7,"cwd":"{{cwd}}/workspace"}\n',
+    )).toEqual({ id: 'projected', createdAt: 7, inheritedEventCount: 0 })
   })
 
-  it('falls back on an empty buffer (no header line)', () => {
-    expect(parseSessionHeader('')).toEqual({ id: '', createdAt: 0, seedLength: 0 })
+  it('rejects a projected header that lacks required identity fields', () => {
+    expect(() => parseSessionHeader('{"type":"session","version":0}\n')).toThrow(/lacks required member "id"/)
+  })
+
+  it('rejects an empty fixture instead of inventing header identity', () => {
+    expect(() => parseSessionHeader('')).toThrow(/must start with a session header/)
+  })
+
+  it.each([-1, 0.5, Number.MAX_SAFE_INTEGER + 1])('rejects invalid v0 seedLength %s', (seedLength) => {
+    expect(() => parseSessionHeader(JSON.stringify({
+      type: 'session', version: 0, id: 'invalid', createdAt: 0, seedLength, delegationDepth: 0,
+    }))).toThrow(/seedLength/)
   })
 })
 
@@ -989,16 +1901,32 @@ describe('loadSessionScripts', () => {
     const parentChunk: StreamChunk = { type: 'text-delta', index: 0, text: 'PARENT-RESPONSE' }
     const childChunks: StreamChunk[] = [{ type: 'text-delta', index: 0, text: 'CHILD-RESPONSE' }, { type: 'finish', reason: { kind: 'stop' } }]
     const f = writeSession('session.jsonl', { id: 'parent', createdAt: 100 }, [TEXT_CHUNKS])
-    // The child fixture: 2 seeded parent events (a chunk + its finish) then the
-    // child's own turn. seedLength = 2 marks where the inherited prefix ends.
+    // The child fixture contains one complete inherited turn followed by its own turn.
+    // seedLength = 6 marks the exact cut between those lifecycles.
     const childEvents: SessionEvent[] = [
-      chunkEvent(0, 1, 1, parentChunk),
-      chunkEvent(1, 1, 1, { type: 'finish', reason: { kind: 'stop' } }),
-      chunkEvent(2, 2, 1, childChunks[0]!),
-      chunkEvent(3, 2, 1, childChunks[1]!),
+      { type: 'turn/start', seq: SessionSeq(0), time: 0, data: { turn: 1 } },
+      { type: 'step/start', seq: SessionSeq(1), time: 0, data: { turn: 1, step: 1 } },
+      legacyChunkEvent(2, 1, 1, parentChunk),
+      legacyChunkEvent(3, 1, 1, { type: 'finish', reason: { kind: 'stop' } }),
+      { type: 'step/end', seq: SessionSeq(4), time: 0, data: { turn: 1, step: 1 } },
+      {
+        type: 'turn/end', seq: SessionSeq(5), time: 0,
+        data: { turn: 1, reason: { kind: 'completed' } },
+      },
+      { type: 'turn/start', seq: SessionSeq(6), time: 0, data: { turn: 2 } },
+      { type: 'step/start', seq: SessionSeq(7), time: 0, data: { turn: 2, step: 1 } },
+      legacyChunkEvent(8, 2, 1, childChunks[0]!),
+      legacyChunkEvent(9, 2, 1, childChunks[1]!),
+      { type: 'step/end', seq: SessionSeq(10), time: 0, data: { turn: 2, step: 1 } },
+      {
+        type: 'turn/end', seq: SessionSeq(11), time: 0,
+        data: { turn: 2, reason: { kind: 'completed' } },
+      },
     ]
     const childPath = join(dir, 'session.1.jsonl')
-    writeFileSync(childPath, sessionJsonl(childEvents, { id: 'child', createdAt: 200, seedLength: 2 }), 'utf8')
+    writeFileSync(childPath, sessionJsonl(childEvents, {
+      id: 'child', createdAt: 200, seedLength: 6, version: 0,
+    }), 'utf8')
 
     const scripts = loadSessionScripts({ file: f, childFiles: [childPath] })
     // The child script is ONLY the child's own model call — the parent's seeded
@@ -1025,6 +1953,20 @@ describe('loadSessionScripts', () => {
     const scripts = loadSessionScripts({ file: join(dir, 'absent.jsonl'), overrideFile })
     expect(scripts).toHaveLength(1)
     expect(scripts[0]).toMatchObject({ recordedId: '', createdAt: 0, primary: true })
+  })
+
+  it('does not parse a whole-script override reused as the primary fixture path', () => {
+    const overrideFile = join(dir, 'replay.override.json')
+    writeFileSync(overrideFile, JSON.stringify([{ kind: 'hang' }]), 'utf8')
+
+    const scripts = loadSessionScripts({ file: overrideFile, overrideFile })
+
+    expect(scripts).toEqual([{
+      recordedId: '',
+      createdAt: 0,
+      entries: [{ kind: 'hang' }],
+      primary: true,
+    }])
   })
 
   it('orders two same-createdAt children deterministically after the primary', () => {
@@ -1091,6 +2033,96 @@ describe('installLlmReplay (per-session keying)', () => {
     expect(await drain(ctx.llm.stream(live('B')))).toEqual(b2)
   })
 
+  it('materializes typed session tokens after the matching live child binds', async () => {
+    const reference: StreamChunk[] = [
+      {
+        type: 'block-end',
+        index: 0,
+        block: {
+          type: 'tool-call',
+          id: ToolCallId('send-child'),
+          name: 'send_message',
+          arguments: '{"agent_id":"{{session:2}}"}',
+        },
+      },
+      { type: 'finish', reason: { kind: 'stop' } },
+    ]
+    const parentFile = writeSession('session.jsonl', { id: '{{session:1}}', createdAt: 1 }, [TEXT_CHUNKS, reference])
+    const childFile = writeSession('session.1.jsonl', { id: '{{session:2}}', createdAt: 2 }, [second])
+    const ctx = new Context()
+    await ctx.plugin(LlmRuntime)
+    installLlmReplay(ctx, { file: parentFile, childFiles: [childFile] })
+
+    expect(await drain(ctx.llm.stream(live('live-parent')))).toEqual(TEXT_CHUNKS)
+    expect(await drain(ctx.llm.stream(live('live-child')))).toEqual(second)
+    expect(await drain(ctx.llm.stream(live('live-parent')))).toEqual([
+      {
+        type: 'block-end',
+        index: 0,
+        block: {
+          type: 'tool-call',
+          id: ToolCallId('send-child'),
+          name: 'send_message',
+          arguments: '{"agent_id":"live-child"}',
+        },
+      },
+      { type: 'finish', reason: { kind: 'stop' } },
+    ])
+  })
+
+  it('rejects a session token before that recorded child binds', async () => {
+    const reference: StreamChunk[] = [
+      { type: 'text-delta', index: 0, text: '{{session:2}}' },
+      { type: 'finish', reason: { kind: 'stop' } },
+    ]
+    const parentFile = writeSession('session.jsonl', { id: '{{session:1}}', createdAt: 1 }, [reference])
+    const childFile = writeSession('session.1.jsonl', { id: '{{session:2}}', createdAt: 2 }, [second])
+    const ctx = new Context()
+    await ctx.plugin(LlmRuntime)
+    installLlmReplay(ctx, { file: parentFile, childFiles: [childFile] })
+
+    await expect(drain(ctx.llm.stream(live('live-parent')))).rejects.toThrow(/used before.*bound/)
+  })
+
+  it('learns a background child id from its started-subagent tool result', async () => {
+    const reference: StreamChunk[] = [
+      { type: 'text-delta', index: 0, text: '{{session:2}}' },
+      { type: 'finish', reason: { kind: 'stop' } },
+    ]
+    const parentFile = writeSession('session.jsonl', { id: '{{session:1}}', createdAt: 1 }, [reference])
+    const childFile = writeSession('session.1.jsonl', { id: '{{session:2}}', createdAt: 2 }, [second])
+    const ctx = new Context()
+    await ctx.plugin(LlmRuntime)
+    installLlmReplay(ctx, { file: parentFile, childFiles: [childFile] })
+    const options: GenerateOptions = {
+      ...live('live-parent'),
+      messages: [createUserMessage({
+        content: [{ type: 'text', text: 'started subagent live-child-before-call started subagent live-child-before-call' }],
+        source: { kind: 'user' },
+      })],
+    }
+
+    expect(await drain(ctx.llm.stream(options))).toEqual([
+      { type: 'text-delta', index: 0, text: 'live-child-before-call' },
+      { type: 'finish', reason: { kind: 'stop' } },
+    ])
+  })
+
+  it('ignores started-subagent text after every recorded session has bound', async () => {
+    const parentFile = writeSession('session.jsonl', { id: '{{session:1}}', createdAt: 1 }, [TEXT_CHUNKS])
+    const ctx = new Context()
+    await ctx.plugin(LlmRuntime)
+    installLlmReplay(ctx, { file: parentFile })
+
+    expect(await drain(ctx.llm.stream({
+      ...live('live-parent'),
+      messages: [createUserMessage({
+        content: [{ type: 'text', text: 'started subagent unrecorded-child' }],
+        source: { kind: 'user' },
+      })],
+    }))).toEqual(TEXT_CHUNKS)
+  })
+
   it('treats a call with no sessionId as the single anonymous (primary) session', async () => {
     const parentFile = writeSession('session.jsonl', { id: 'p', createdAt: 1 }, [TEXT_CHUNKS])
     const ctx = new Context()
@@ -1132,7 +2164,7 @@ describe('apply (the plugin entry)', () => {
   })
 
   it('installs replay and its catalog from explicit config', async () => {
-    writeFileSync(file, sessionJsonl(TEXT_CHUNKS.map((c, i) => chunkEvent(i + 1, 1, 1, c))), 'utf8')
+    writeFileSync(file, replaySessionJsonl([TEXT_CHUNKS]), 'utf8')
     const ctx = new Context()
     await ctx.plugin(LlmRuntime)
     apply(ctx, {
@@ -1146,6 +2178,56 @@ describe('apply (the plugin entry)', () => {
     expect(ctx.llm.listProviders()).toEqual([{ id: 'm', name: 'm' }, { id: 'empty', name: 'empty' }])
     await expect(ctx.llm.resolveModelInfo('m', 'm')).resolves.toMatchObject({ inputModalities: ['image'] })
     expect(await drain(ctx.llm.stream({ provider: 'm', model: 'm', messages: [] }))).toEqual(TEXT_CHUNKS)
+  })
+
+  it('declares flat image request pricing only for models that configure it', async () => {
+    writeFileSync(file, replaySessionJsonl([TEXT_CHUNKS]), 'utf8')
+    const ctx = new Context()
+    await ctx.plugin(LlmRuntime)
+    installLlmReplay(ctx, {
+      file,
+      providers: [{
+        id: 'deepseek',
+        models: [
+          { id: 'vision', inputModalities: ['text', 'image'], imageRequestTokens: 384 },
+          { id: 'plain' },
+        ],
+      }],
+    })
+    const pricing = ctx.llm.imageRequestPricing('deepseek', 'vision')
+    expect(pricing).toBeDefined()
+    const ref = {
+      attachmentId: 'sha256:aaaaaaaa',
+      mediaType: 'image/png',
+      bytes: 10,
+      width: 640,
+      height: 480,
+    } as never
+    const priced = pricing?.priceImages([ref, ref])
+    expect(priced?.map(price => price.visualTokens)).toEqual([384, 384])
+    expect(priced?.every(price => price.text.includes('640x480px'))).toBe(true)
+    expect(ctx.llm.imageRequestPricing('deepseek', 'plain')).toBeUndefined()
+  })
+
+  it('rejects imageRequestTokens on a model without the image modality during load', () => {
+    const ctx = new Context()
+    const providers = [{ id: 'm', models: [{ id: 'm', imageRequestTokens: 384 }] }] as unknown as
+      NonNullable<Config['providers']>
+    expect(() => { apply(ctx, { file, providers }) }).toThrow(
+      'llm-replay: provider "m" model "m" imageRequestTokens requires inputModalities to include "image"',
+    )
+  })
+
+  it.each([
+    ['zero', 0],
+    ['a float', 1.5],
+  ])('rejects imageRequestTokens configured as %s during load', (_case, imageRequestTokens) => {
+    const ctx = new Context()
+    const providers = [{ id: 'm', models: [{ id: 'm', imageRequestTokens }] }] as unknown as
+      NonNullable<Config['providers']>
+    expect(() => { apply(ctx, { file, providers }) }).toThrow(
+      'llm-replay: provider "m" model "m" imageRequestTokens must be a positive safe integer',
+    )
   })
 
   it.each([
@@ -1173,7 +2255,7 @@ describe('apply (the plugin entry)', () => {
   })
 
   it('uses only the file when no override path is configured or in the env', async () => {
-    writeFileSync(file, sessionJsonl(TEXT_CHUNKS.map((c, i) => chunkEvent(i + 1, 1, 1, c))), 'utf8')
+    writeFileSync(file, replaySessionJsonl([TEXT_CHUNKS]), 'utf8')
     process.env.ALEGO_SNAPSHOT_FILE = file
     delete process.env.ALEGO_SNAPSHOT_OVERRIDE
     const ctx = new Context()
@@ -1202,9 +2284,9 @@ describe('apply (the plugin entry)', () => {
       { type: 'text-delta', index: 0, text: 'kid' },
       { type: 'finish', reason: { kind: 'stop' } },
     ]
-    writeFileSync(file, sessionJsonl(TEXT_CHUNKS.map((c, i) => chunkEvent(i + 1, 1, 1, c)), { id: 'p', createdAt: 1 }), 'utf8')
+    writeFileSync(file, replaySessionJsonl([TEXT_CHUNKS], { id: 'p', createdAt: 1 }), 'utf8')
     const childFile = join(dir, 'session.1.jsonl')
-    writeFileSync(childFile, sessionJsonl(childSecond.map((c, i) => chunkEvent(i + 1, 1, 1, c)), { id: 'c', createdAt: 2 }), 'utf8')
+    writeFileSync(childFile, replaySessionJsonl([childSecond], { id: 'c', createdAt: 2 }), 'utf8')
     const ctx = new Context()
     await ctx.plugin(LlmRuntime)
     apply(ctx, { file, childFiles: [childFile] })
@@ -1220,9 +2302,9 @@ describe('apply (the plugin entry)', () => {
       { type: 'text-delta', index: 0, text: 'env-kid' },
       { type: 'finish', reason: { kind: 'stop' } },
     ]
-    writeFileSync(file, sessionJsonl(TEXT_CHUNKS.map((c, i) => chunkEvent(i + 1, 1, 1, c)), { id: 'p', createdAt: 1 }), 'utf8')
+    writeFileSync(file, replaySessionJsonl([TEXT_CHUNKS], { id: 'p', createdAt: 1 }), 'utf8')
     const childFile = join(dir, 'session.1.jsonl')
-    writeFileSync(childFile, sessionJsonl(childChunks.map((c, i) => chunkEvent(i + 1, 1, 1, c)), { id: 'c', createdAt: 2 }), 'utf8')
+    writeFileSync(childFile, replaySessionJsonl([childChunks], { id: 'c', createdAt: 2 }), 'utf8')
     process.env.ALEGO_SNAPSHOT_FILE = file
     process.env.ALEGO_SNAPSHOT_CHILD_FILES = childFile // single entry, no delimiter needed
     const ctx = new Context()
@@ -1235,7 +2317,7 @@ describe('apply (the plugin entry)', () => {
   })
 
   it('ignores an empty $ALEGO_SNAPSHOT_CHILD_FILES (single-session)', async () => {
-    writeFileSync(file, sessionJsonl(TEXT_CHUNKS.map((c, i) => chunkEvent(i + 1, 1, 1, c)), { id: 'p', createdAt: 1 }), 'utf8')
+    writeFileSync(file, replaySessionJsonl([TEXT_CHUNKS], { id: 'p', createdAt: 1 }), 'utf8')
     process.env.ALEGO_SNAPSHOT_FILE = file
     process.env.ALEGO_SNAPSHOT_CHILD_FILES = ''
     const ctx = new Context()

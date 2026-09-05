@@ -1,13 +1,15 @@
 /** Web subagent catalog, navigation, and addressed-session composer owner. */
-import type {
-  ClientContext, SessionId, SubagentAddress,
-} from '@singula-ai/alego-client-runtime/client'
+import type { Context as ClientContext } from '@singula-ai/cordis'
+import type { SubagentAddress } from '@singula-ai/alego-subagent/client'
+import type { SessionId } from '@singula-ai/alego-session/types'
 import type { ComposerChainProps } from '@singula-ai/alego-client-ui-conversation/client'
 import { SubagentHeaderLineage, type SubagentCatalogInjected } from './SubagentHeaderLineage.tsx'
 import {
   SubagentReadOnlyComposer, type SubagentReadOnlyMatch,
 } from './SubagentReadOnlyComposer.tsx'
 import type {} from '@singula-ai/alego-client-locale/client'
+import type {} from '@singula-ai/alego-client-ui-renderer/client'
+import type {} from '@singula-ai/alego-client-ui-session/client'
 import { en, NS, zh, type SubagentKey } from './locales.ts'
 
 declare module '@singula-ai/alego-client-ui-slots' {
@@ -32,7 +34,10 @@ function selectReadOnlySubagent(owner: ComposerChainProps): SubagentReadOnlyMatc
   const subagent = owner.session?.subagent
   if (subagent === undefined || subagent === null) return null
   if (subagent.address.mode === 'one-shot') return { reason: 'one-shot' }
-  if (subagent.parentAvailable) return null
+  // The parent catalog is fetched ahead of the selected Session. Until it
+  // resolves, leave the normal disabled composer in place instead of briefly
+  // claiming that the parent is offline.
+  if (subagent.parentAvailable !== false) return null
   // A RUNNING parent-offline continuable child keeps the default composer:
   // its input is disabled there, but the same primary Stop stays available so
   // the child can be interrupted. Once it stops, this takeover returns.

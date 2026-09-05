@@ -1,8 +1,10 @@
 {
   "name": "@singula-ai/alego-session-log-export",
   "description": "Web Session-log export command and shared download dialog",
-  "version": "0.1.2",
-  "publishConfig": { "access": "public" },
+  "version": "0.1.3-alpha.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/singula-ai/alego.git",
@@ -12,37 +14,56 @@
   "main": "lib/index.js",
   "types": "lib/types/index.d.ts",
   "exports": {
-    ".": { "types": "./lib/types/index.d.ts", "default": "./lib/index.js" },
-    "./invariant": { "types": "./lib/types/invariant.d.ts", "default": "./lib/invariant.js" },
-    "./client": { "types": "./lib/types/client/index.d.ts", "default": "./lib/client.js" },
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
-  "files": ["lib/index.js", "lib/invariant.js", "lib/client.js", "lib/types/**/*.d.ts"],
-  "scripts": { "bundle": "tsdown", "watch": "tsdown --watch" },
+  "files": [
+    "lib/index.js",
+    "lib/client.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "scripts": {
+    "bundle": "tsdown",
+    "watch": "tsdown --watch"
+  },
   "license": "MIT",
+  "dependencies": {
+    "@singula-ai/alego-session-format": "workspace:^",
+    "@singula-ai/schemastery": "workspace:^",
+    "fflate": "^0.8.2",
+    "@singula-ai/alego-brand": "workspace:^"
+  },
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-runtime": "workspace:^",
-    "@singula-ai/alego-client-ui-commands": "workspace:^",
-    "@singula-ai/alego-client-ui-conversation": "workspace:^",
-    "@singula-ai/alego-commands": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^"
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-session-persistence": "workspace:^"
   },
   "devDependencies": {
     "@singula-ai/cordis": "workspace:^",
     "@singula-ai/cordis-plugin-loader": "workspace:^",
     "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-attachment": "workspace:^",
+    "@singula-ai/alego-client-connection": "workspace:^",
     "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-runtime": "workspace:^",
+    "@singula-ai/alego-client-store": "workspace:^",
     "@singula-ai/alego-client-ui-commands": "workspace:^",
     "@singula-ai/alego-client-ui-conversation": "workspace:^",
     "@singula-ai/alego-client-ui-primitives": "workspace:^",
+    "@singula-ai/alego-client-ui-renderer": "workspace:^",
+    "@singula-ai/alego-client-ui-session": "workspace:^",
     "@singula-ai/alego-client-ui-slots": "workspace:^",
     "@singula-ai/alego-commands": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-session-persistence": "workspace:^",
+    "@singula-ai/alego-session-query": "workspace:^",
     "@types/react": "~18.3.1",
     "react": "^18.2.0"
   },
@@ -50,9 +71,10 @@
     "client": {
       "inject": [
         "@singula-ai/alego-client-locale",
-        "@singula-ai/alego-client-runtime",
         "@singula-ai/alego-client-ui-commands",
-        "@singula-ai/alego-client-ui-conversation"
+        "@singula-ai/alego-client-ui-conversation",
+        "@singula-ai/alego-client-ui-renderer",
+        "@singula-ai/alego-client-ui-session"
       ],
       "platform": "web"
     }

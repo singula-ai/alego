@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { Context, Service } from '@singula-ai/cordis'
-import SessionStore, { type Session, type SessionEvent } from '@singula-ai/alego-session'
+import SessionStore, { SessionSeq, type Session, type SessionEvent } from '@singula-ai/alego-session'
 import * as PermissionInvariant from '@singula-ai/alego-permission-presets/invariant'
 import InvariantRegistry from '@singula-ai/alego-invariants'
 
@@ -22,7 +22,7 @@ async function setup(): Promise<Context> {
 }
 
 function presetEvent(preset: string): SessionEvent {
-  return { type: 'permission/preset', seq: 0, time: 0, data: { preset } }
+  return { type: 'permission/preset', seq: SessionSeq(0), time: 0, data: { preset } }
 }
 
 describe('permission invariants', () => {
@@ -30,7 +30,7 @@ describe('permission invariants', () => {
     const ctx = await setup()
     expect(() => { ctx.emit('session/event', {} as Session, presetEvent('safe')) }).not.toThrow()
     expect(() => { ctx.emit('session/event', {} as Session, {
-      type: 'turn/end', seq: 0, time: 0, data: {},
+      type: 'turn/end', seq: SessionSeq(0), time: 0, data: {},
     } as SessionEvent) }).not.toThrow()
     expect(() => { ctx.emit('tools/change') }).not.toThrow()
   })

@@ -6,7 +6,6 @@
  */
 
 import { Context, Service } from '@singula-ai/cordis'
-import { settingsNamespace } from '@singula-ai/alego-settings'
 import type { SandboxMode } from '@singula-ai/alego-sandbox'
 import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellRunResult } from './types.ts'
 
@@ -19,7 +18,7 @@ import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellRunResult } fr
  * registering it twice, and a settings document carried between platforms
  * keeps resolving on both.
  */
-export const SHELL_SETTINGS_NAMESPACE = settingsNamespace('shell')
+export const SHELL_SETTINGS_NAMESPACE = 'shell'
 
 export { ALEGO_ENV_PREFIX } from './types.ts'
 export type {

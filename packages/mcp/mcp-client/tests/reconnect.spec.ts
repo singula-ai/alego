@@ -8,7 +8,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime from '@singula-ai/alego-tools'
-import { CallId } from '@singula-ai/alego-llm'
+import { ToolCallId } from '@singula-ai/alego-llm'
 import type { Config } from '@singula-ai/alego-mcp-client'
 
 // ---- Mock MCP SDK ----
@@ -115,8 +115,8 @@ function listing(...names: string[]): { tools: { name: string; inputSchema: { ty
 }
 
 let callSeq = 0
-function nextCallId(): CallId {
-  return CallId(`reconnect-${++callSeq}`)
+function nextCallId(): ToolCallId {
+  return ToolCallId(`reconnect-${++callSeq}`)
 }
 
 // ---- Tests ----

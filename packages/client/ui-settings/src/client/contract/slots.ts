@@ -9,6 +9,7 @@
  * ui-settings-general too.
  */
 
+import type {} from '@singula-ai/alego-client-ui-slots'
 
 declare module '@singula-ai/alego-client-ui-slots' {
   interface SlotMap {

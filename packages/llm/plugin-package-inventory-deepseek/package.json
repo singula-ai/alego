@@ -1,0 +1,62 @@
+{
+  "name": "@singula-ai/alego-plugin-package-inventory-deepseek",
+  "description": "Active Loader-backed plugin package inventory for official DeepSeek LLM API requests",
+  "version": "0.1.3-alpha.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/llm/plugin-package-inventory-deepseek"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./types": {
+      "types": "./lib/types/types.d.ts",
+      "default": "./lib/types/types.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/types/**/*.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@singula-ai/alego-brand": "workspace:^",
+    "@singula-ai/schemastery": "workspace:^"
+  },
+  "peerDependencies": {
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/cordis-plugin-loader": "workspace:^",
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-agent-presets": "workspace:^",
+    "@singula-ai/alego-deepseek-llm-api-extensions": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^"
+  },
+  "peerDependenciesMeta": {
+    "@singula-ai/alego-agent-presets": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/cordis-plugin-include": "workspace:^",
+    "@singula-ai/cordis-plugin-loader": "workspace:^",
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-agent-presets": "workspace:^",
+    "@singula-ai/alego-deepseek-llm-api-extensions": "workspace:^",
+    "@singula-ai/alego-scope": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^"
+  }
+}

@@ -13,8 +13,8 @@
  * override equal to the composition default is still an override.
  */
 
-import type { SettingsScope, SettingsScopeSnapshot } from '@singula-ai/alego-client-runtime/client'
-import { createSnapshotStore, type SnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import { createSnapshotStore, type SnapshotStore } from '@singula-ai/alego-client-store'
+import type { SettingsScope, SettingsScopeSnapshot } from '@singula-ai/alego-client-ui-settings/client'
 
 /** The write one field's staged text performs when the card is saved. */
 export type FieldWrite =

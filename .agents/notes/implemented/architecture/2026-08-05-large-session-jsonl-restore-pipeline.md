@@ -30,7 +30,7 @@ The scanner stops retaining events at the first unparsable row or sequence gap b
 
 ### Restore admission
 
-Persistence transfers freshly materialized JSON values to `Session.fromRestore`. These values are detached, acyclic trees, and packed chunk rows expand into newly allocated events, so the restore-only path validates the fixed event envelope with one `for...in` and `switch`, dispatches current-shape checks by event discriminant, and iteratively freezes the owned graph with an explicit `pending` array and no cycle-tracking set. Surface validation records one transition plan and commits that plan when the exact candidate enters the log instead of planning the same event twice.
+Persistence transfers freshly materialized current JSON values to `Session.fromRestore`. These values are detached, acyclic trees; historical packed rows and adjacent migrations have already produced newly allocated v2 settlements. The restore-only path validates the fixed event envelope with one `for...in` and `switch`, dispatches current-shape checks by event discriminant, and iteratively freezes the owned graph with an explicit `pending` array and no cycle-tracking set. Surface validation records one transition plan and commits that plan when the exact candidate enters the log instead of planning the same event twice.
 
 Borrowed seeds used by ordinary creation and fork paths still take a JSON snapshot and use the generic cycle-safe deep freeze. The specialization therefore changes only durable restoration; it does not weaken acceptance for caller-owned values.
 
@@ -41,7 +41,7 @@ Borrowed seeds used by ordinary creation and fork paths still take a JSON snapsh
 - **Concatenate all plaintext before scanning** — rejected because it retains the compressed input, complete plaintext, whole-log UTF-8 string, line metadata, and parsed rows at the same time, and it rescans a torn-frame prefix.
 - **Implement a streaming JSON parser** — rejected because JSONL already provides record boundaries; native newline search plus `JSON.parse` removes the large intermediates without owning another parser or changing JSON semantics.
 - **Use a shared `WeakSet` while freezing restored events** — rejected because JSON materialization cannot produce cycles, and the set adds a lookup per object while retaining the complete graph during traversal.
-- **Skip validation or freezing for restored values** — rejected because durable storage is a runtime boundary and `Session.events` promises immutable accepted history. The optimized path specializes those operations around stronger ownership facts instead of removing them.
+- **Skip validation or freezing for restored values** — rejected because durable storage is a runtime boundary and Session read methods promise immutable accepted history. The optimized path specializes those operations around stronger ownership facts instead of removing them.
 
 ## Consequences
 

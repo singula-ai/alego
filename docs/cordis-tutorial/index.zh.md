@@ -59,4 +59,4 @@ node --import tsx ../../vendor/cordis/bin.js
 
 第 5 章还会使用 `interface` 描述配置对象的字段，并使用 `Schema<Config>` 这类泛型表示 schema 校验哪些对象字段。你可以直接照写这些声明；周围的正文会解释每项声明连接了什么。
 
-[![](https://img.shields.io/badge/powered_by-alego-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/singula-ai/alego)
+[![](https://img.shields.io/badge/powered_by-alego-F5A524?style=flat-square)](https://github.com/singula-ai/alego)

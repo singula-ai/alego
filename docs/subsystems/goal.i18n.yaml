@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/subsystems/goal.md
-goal.md: d04e98f35ad0e1d912681e88239d7e2cd449ef65
-goal.zh.md: 731e2c979e35d02ee3a6f37d8b6771e61048f825
+goal.md: 25147ae283182cff4773887c79f063116d80a9d7
+goal.zh.md: 40a62ae236b47155b7dbe1ac8117a05f35c20cbe

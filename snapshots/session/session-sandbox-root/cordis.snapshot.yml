@@ -1,0 +1,58 @@
+# Keyless replay counterpart of session-sandbox-root.cordis.yml: the replay
+# swap, recorded model pin, and distinct sandbox fallback form one profile patch.
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  disabled: true
+
+- id: agent-default-model
+  name: '@singula-ai/alego-agent-default-model'
+  config:
+    provider: deepseek-official
+    model: deepseek-v4-flash
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: none
+
+- id: agent-instructions
+  name: '@singula-ai/alego-agent-instructions'
+  config:
+    maxBytes: 65536
+
+- id: system-prompt
+  name: '@singula-ai/alego-system-prompt'
+  config:
+    persona: |
+      You are a coding assistant powered by the {{model}} model. Your working directory is {{cwd}}. Your bash tool runs under a file sandbox — a `[sandbox: file access denied …]` result is policy, not a command bug.
+
+      Verify your work by running the code or tests. Keep answers brief and factual.
+
+- id: sandbox
+  name: '@singula-ai/alego-sandbox-local'
+  config:
+    runnerCommand:
+      - bash
+      - -c
+      - while [ "$1" != "--" ]; do shift; done; shift; exec "$@"
+      - passthrough-runner
+    runnerFailureSignatures:
+      - 'passthrough-runner: profile rejected'
+
+- id: sandbox-policy
+  name: '@singula-ai/alego-sandbox-policy'
+  config:
+    mode: workspace-write
+    workspaceRoot: /tmp
+
+- insert:
+    - id: llm-replay
+      name: '@singula-ai/alego-llm-replay'
+      config:
+        providers:
+          - id: deepseek-official
+            name: DeepSeek
+            models:
+              - id: deepseek-v4-flash
+              - id: deepseek-v4-pro

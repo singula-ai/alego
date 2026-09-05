@@ -12,7 +12,7 @@ import type {
   HostObservable, InjectFace, PropsLocale, PropsRuntime,
 } from '@singula-ai/alego-client-ui-slots'
 import type {} from '@singula-ai/alego-client-ui-conversation/client'
-import type { MessageId } from '@singula-ai/alego-client-connection/client'
+import type { MessageId } from '@singula-ai/alego-api-remotes/client'
 import type { MessageFeedbackRating } from '@singula-ai/alego-message-feedback/types'
 // Type-only: pulls this package's LocaleNamespaceMap merge (the 'feedback' seat).
 import type {} from './locales.ts'

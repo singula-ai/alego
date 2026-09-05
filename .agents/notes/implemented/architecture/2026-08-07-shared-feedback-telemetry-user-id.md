@@ -12,7 +12,7 @@ The earlier [anonymous-user-id decision](../feature/2026-07-31-telemetry-anonymo
 
 ## Decision
 
-`@singula-ai/alego-anonymous-user-id` owns `getOrCreateAnonymousUserId()` and the `$ALEGO_HOME/.anonymous-user-id` storage contract. `session-telemetry-otel` uses the returned id as OpenTelemetry Resource `user.id`; the `/feedback` success acknowledgement reports `Feedback recorded for session {sessionId}` followed by `Anonymous user: {userId}` on a second line; and direct DeepSeek requests carry it as `x-alego-user-id`. Invalid feedback is rejected before resolving the id, and the DeepSeek adapter resolves it only after credentials succeed, so neither an empty command nor a credential failure creates `.anonymous-user-id`.
+`@singula-ai/alego-anonymous-user-id` owns `getOrCreateAnonymousUserId()` and the `$ALEGO_HOME/.anonymous-user-id` storage contract. `session-telemetry-otel` uses the returned id as OpenTelemetry Resource `user.id`; the `/feedback` success acknowledgement reports `Feedback recorded for session {sessionId}` followed by `Anonymous user: {userId}` on a second line; and direct DeepSeek requests carry it as `x-dsh-user-id`. Invalid feedback is rejected before resolving the id, and the DeepSeek adapter resolves it only after credentials succeed, so neither an empty command nor a credential failure creates `.anonymous-user-id`.
 
 The extraction preserves the existing random UUID, home resolution, process memo, exclusive-create concurrency, corruption replacement, and best-effort write semantics.
 

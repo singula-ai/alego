@@ -1,0 +1,33 @@
+# Keyless replay keeps the LSP composition intact and replaces only the model adapter.
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  disabled: true
+
+- insert:
+    - id: lsp
+      name: '@singula-ai/alego-lsp'
+    - id: lsp-stdio
+      name: '@singula-ai/alego-lsp-stdio'
+      config:
+        servers:
+          fixture:
+            command: !!js process.execPath
+            args: ['./lsp-server.mjs']
+            extensionToLanguage:
+              '.ts': typescript
+    - id: tool-lsp
+      name: '@singula-ai/alego-tool-lsp'
+      config:
+        maxLocations: 1
+    - id: llm-replay
+      name: '@singula-ai/alego-llm-replay'
+      config:
+        providers:
+          - id: deepseek-official
+            name: DeepSeek
+            models:
+              - id: deepseek-v4-flash
+              - id: deepseek-v4-pro
+
+- id: timeout-policy
+  name: '@singula-ai/alego-tool-call-timeout-policy'

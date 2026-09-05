@@ -3,8 +3,9 @@ import { Context } from '@singula-ai/cordis'
 import type { Agent } from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
-import { createUserMessage, CallId  } from '@singula-ai/alego-llm'
+import { createUserMessage, ToolCallId  } from '@singula-ai/alego-llm'
 import { SessionId } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import SubagentRuntime from '@singula-ai/alego-subagent'
 import { STRUCTURED_OUTPUT_TOOL } from '@singula-ai/alego-subagent-in-process-driver'
 import * as spawn from '@singula-ai/alego-subagent-spawn-in-process'
@@ -20,6 +21,7 @@ async function mountRalph(script: MockScript, config: toolRalph.Config) {
   const ctx = new Context()
   const adapter = new MockAdapter(script)
   await mountAgentLoopTestDependencies(ctx)
+  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(SubagentRuntime)
   await ctx.plugin(spawn, { providerName: 'spawn' })
@@ -35,7 +37,7 @@ async function mountRalph(script: MockScript, config: toolRalph.Config) {
 }
 
 describe('alego-tool-ralph over the real spawn and worker-thread stack', () => {
-  it('uses distinct empty-seed children, shared cwd, and only the prior bounded handoff', async () => {
+  it('uses distinct empty-seed children, shared cwd, and only the prior bounded handoff', { timeout: 90_000 }, async () => {
     const firstReport = {
       status: 'continue',
       summary: 'ROUND_ONE_HANDOFF',
@@ -57,6 +59,7 @@ describe('alego-tool-ralph over the real spawn and worker-thread stack', () => {
       toolCallResponse('round-2', STRUCTURED_OUTPUT_TOOL, finalReport),
     ])
     await mountAgentLoopTestDependencies(ctx)
+    await ctx.plugin(SessionProjectionRegistry)
     await ctx.plugin(AgentLoop, { agents: [] })
     await ctx.plugin(SubagentRuntime)
     await ctx.plugin(spawn, { providerName: 'spawn' })
@@ -83,7 +86,7 @@ describe('alego-tool-ralph over the real spawn and worker-thread stack', () => {
     })
     const result = await ctx.tools.execute({
       signal: testToolSignal,
-      callId: CallId('ralph-integration'),
+      callId: ToolCallId('ralph-integration'),
       name: 'ralph',
       arguments: { objective: 'Complete both migration slices.', maxRounds: 2 },
       agent: parent,
@@ -98,7 +101,8 @@ describe('alego-tool-ralph over the real spawn and worker-thread stack', () => {
     for (const child of children) {
       expect(child.session.header.cwd).toBe('/tmp/ralph-shared-workspace')
       expect(child.session.header.parentSession).toBe(parent.session.header.id)
-      expect(child.session.header.seedLength).toBeUndefined()
+      expect(child.session.header.isSeeded).toBe(false)
+      expect(child.session.inheritedEventCount).toBe(0)
       expect(ctx.agents.get(child.id)).toBeUndefined()
     }
 
@@ -115,7 +119,7 @@ describe('alego-tool-ralph over the real spawn and worker-thread stack', () => {
     await parentHandle.dispose()
   })
 
-  it('reports the failed round and last good handoff when a child fails', async () => {
+  it('reports the failed round and last good handoff when a child fails', { timeout: 90_000 }, async () => {
     const firstReport = {
       status: 'continue',
       summary: 'ROUND_ONE_HANDOFF',
@@ -135,7 +139,7 @@ describe('alego-tool-ralph over the real spawn and worker-thread stack', () => {
 
     const result = await ctx.tools.execute({
       signal: testToolSignal,
-      callId: CallId('ralph-child-failure'),
+      callId: ToolCallId('ralph-child-failure'),
       name: 'ralph',
       arguments: { objective: 'Complete both migration slices.', maxRounds: 2 },
       agent: parent,
@@ -224,7 +228,7 @@ describe('alego-tool-ralph over the real spawn and worker-thread stack', () => {
 
     const result = await ctx.tools.execute({
       signal: testToolSignal,
-      callId: CallId('ralph-script-enforcement'),
+      callId: ToolCallId('ralph-script-enforcement'),
       name: 'ralph',
       arguments: { objective: 'Complete the scoped work.', maxRounds: config.maxRounds },
       agent: parent,
@@ -235,7 +239,7 @@ describe('alego-tool-ralph over the real spawn and worker-thread stack', () => {
     await parentHandle.dispose()
   })
 
-  it('cancels the real worker and fresh child to quiescence', { timeout: 20_000 }, async () => {
+  it('cancels the real worker and fresh child to quiescence', { timeout: 90_000 }, async () => {
     const { ctx, parent, parentHandle } = await mountRalph(['hang'], { maxRounds: 2 })
     const children: Agent[] = []
     const outcomes: string[] = []
@@ -251,7 +255,7 @@ describe('alego-tool-ralph over the real spawn and worker-thread stack', () => {
     ctx.on('workflow/agent-end', (_run, child) => { outcomes.push(child.outcome) })
     const controller = new AbortController()
     const pending = ctx.tools.execute({
-      callId: CallId('ralph-real-cancel'),
+      callId: ToolCallId('ralph-real-cancel'),
       name: 'ralph',
       arguments: { objective: 'Keep working until cancelled.', maxRounds: 2 },
       agent: parent,

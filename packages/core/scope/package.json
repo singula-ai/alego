@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-scope",
   "description": "Scoped-context registration primitive (scope tags, scope-filtered event dispatch) for the Alego",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },

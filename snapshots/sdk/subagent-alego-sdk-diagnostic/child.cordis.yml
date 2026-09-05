@@ -1,0 +1,18 @@
+# SDK-profile patch for the deterministic diagnostic child runtime.
+
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  disabled: true
+
+- id: agent-instructions
+  name: '@singula-ai/alego-agent-instructions'
+  disabled: true
+
+- id: system-prompt
+  name: '@singula-ai/alego-system-prompt'
+  config:
+    persona: 'Return the scripted ALEGO SDK failure.'
+
+- insert:
+    - id: child-mock-llm
+      name: '../../../packages/subagent/subagent-alego-sdk/tests/fixtures/loader/child-mock-llm.ts'

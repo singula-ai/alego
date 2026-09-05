@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-workspace",
   "description": "Workspace picker plugin: one WorkspacePicker registered into the sidebar and empty-state workspace slots",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -18,10 +18,6 @@
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
     },
-    "./invariant": {
-      "types": "./lib/types/invariant.d.ts",
-      "default": "./lib/invariant.js"
-    },
     "./client": {
       "types": "./lib/types/client/index.d.ts",
       "default": "./lib/client.js"
@@ -32,10 +28,14 @@
   "alego": {
     "client": {
       "inject": [
+        "@singula-ai/alego-api-remotes",
+        "@singula-ai/alego-api-session-controller",
+        "@singula-ai/alego-api-workspace-controller",
         "@singula-ai/alego-client-connection",
         "@singula-ai/alego-client-locale",
-        "@singula-ai/alego-client-runtime",
         "@singula-ai/alego-client-ui-conversation",
+        "@singula-ai/alego-client-ui-renderer",
+        "@singula-ai/alego-client-ui-session",
         "@singula-ai/alego-client-ui-sidebar"
       ],
       "platform": "web"
@@ -50,31 +50,32 @@
     "clsx": "^2.0.0"
   },
   "peerDependencies": {
-    "@singula-ai/alego-client-connection": "workspace:^",
-    "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-runtime": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-client-ui-conversation": "workspace:^",
-    "@singula-ai/alego-client-ui-sidebar": "workspace:^"
+    "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
+    "@singula-ai/alego-api-remotes": "workspace:^",
+    "@singula-ai/alego-api-session-controller": "workspace:^",
+    "@singula-ai/alego-api-workspace-controller": "workspace:^",
     "@singula-ai/alego-client-connection": "workspace:^",
     "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-runtime": "workspace:^",
+    "@singula-ai/alego-client-store": "workspace:^",
     "@singula-ai/alego-client-test-runtime": "workspace:^",
     "@singula-ai/alego-client-ui-conversation": "workspace:^",
     "@singula-ai/alego-client-ui-primitives": "workspace:^",
+    "@singula-ai/alego-client-ui-renderer": "workspace:^",
+    "@singula-ai/alego-client-ui-session": "workspace:^",
     "@singula-ai/alego-client-ui-sidebar": "workspace:^",
     "@singula-ai/alego-client-ui-slots": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-schedule": "workspace:^",
+    "@singula-ai/alego-typert-protocol": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-util-workspace-path": "workspace:^",
     "@types/react": "~18.3.1",
     "@singula-ai/cordis": "workspace:^",
     "react": "^18.2.0"
   },
   "files": [
     "lib/index.js",
-    "lib/invariant.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"
   ]

@@ -12,7 +12,7 @@
 import { spawnSync } from 'node:child_process'
 import koffi from 'koffi'
 import type { SubprocessTerminalSignal } from '@singula-ai/alego-subprocess'
-import type { ProcessIdentity, ProcessInspector } from './process-inspector.ts'
+import type { ProcessIdentity, ProcessInspector, ProcessSnapshot } from './process-inspector.ts'
 
 /** One Toolhelp32 process-table row. */
 export interface ProcessEntry {
@@ -93,21 +93,30 @@ export class WindowsProcessInspector implements ProcessInspector {
     return shellPid
   }
 
-  isStdinWaiting(_pgid: number): boolean {
+  isStdinWaiting(_pgid: number, _shellPid: number): boolean {
     return false
-  }
-
-  processTree(rootPid: number): ProcessIdentity[] {
-    return windowsProcessTree(this.internals.snapshot(), rootPid, pid => this.internals.processState(pid)?.started)
-  }
-
-  processSession(_sessionId: number): ProcessIdentity[] {
-    return []
   }
 
   isAlive(identity: ProcessIdentity): boolean {
     const state = this.internals.processState(identity.pid)
     return state?.active === true && state.started === identity.started
+  }
+
+  snapshot(): ProcessSnapshot {
+    // Enumerated on the first question that reads the table. Liveness never
+    // does — wait state is a per-handle question here — so the Windows
+    // teardown poll, which asks only for liveness, pays no Toolhelp32 walk.
+    let entries: ProcessEntry[] | undefined
+    return {
+      tree: rootPid => windowsProcessTree(
+        entries ??= this.internals.snapshot(),
+        rootPid,
+        pid => this.internals.processState(pid)?.started,
+      ),
+      // Windows has no POSIX sessions; the shell pid stands in as a pseudo group.
+      session: () => [],
+      alive: identity => this.isAlive(identity),
+    }
   }
 
   signalGroup(pgid: number, signal: SubprocessTerminalSignal): void {
@@ -136,7 +145,10 @@ function taskkillTree(pid: number, force: boolean): void {
   if (pid <= 0) return
   // Outcome deliberately unchecked: an already-absent tree, exit races, and a
   // missing taskkill binary are as tolerable here as ESRCH is for POSIX.
-  spawnSync('taskkill', ['/PID', String(pid), '/T', ...(force ? ['/F'] : [])], { stdio: 'ignore' })
+  spawnSync('taskkill', ['/PID', String(pid), '/T', ...(force ? ['/F'] : [])], {
+    stdio: 'ignore',
+    windowsHide: true,
+  })
 }
 
 declare const nativePtr: unique symbol

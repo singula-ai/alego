@@ -21,6 +21,8 @@ const platforms = {
   'linux-x64': { tag: 'manylinux_2_28_x86_64', executable: 'runtime-linux-x64' },
   'linux-arm64': { tag: 'manylinux_2_28_aarch64', executable: 'runtime-linux-arm64' },
   'macos-arm64': { tag: 'macosx_14_0_arm64', executable: 'runtime-macos-arm64' },
+  'macos-x64': { tag: 'macosx_14_0_x86_64', executable: 'runtime-macos-x64' },
+  'win-x64': { tag: 'win_amd64', executable: 'runtime-win-x64.exe' },
 }
 
 function workspace(root: string, name: string, manifest: Record<string, unknown>): void {
@@ -35,11 +37,11 @@ afterEach(() => {
 })
 
 describe('verifyRuntimeClosure', () => {
-  it('requires only plugins active for a Linux or macOS target', async () => {
+  it('requires only plugins active for each published target', async () => {
     const root = fixture({
       'python/sdk-runtime/package.json': { name: 'runtime', dependencies: { '@scope/shared': 'workspace:^' } },
       'python/sdk-runtime/platforms.json': platforms,
-      'apps/cli/config/agent-presets/standard/agent.cordis.yml': `
+      'packages/preset/agent-presets/presets/standard/agent.cordis.yml': `
 - id: tools
   name: cordis:group
   group: true
@@ -52,6 +54,9 @@ describe('verifyRuntimeClosure', () => {
     - id: macos
       name: '@scope/macos'
       disabled: !!js process.platform !== 'darwin'
+    - id: windows
+      name: '@scope/windows'
+      disabled: !!js process.platform !== 'win32'
 `,
     })
 
@@ -60,7 +65,8 @@ describe('verifyRuntimeClosure', () => {
     expect(result.presetCount).toBe(1)
     expect(result.failures).toEqual([
       'standard preset -> @scope/linux (linux-arm64, linux-x64)',
-      'standard preset -> @scope/macos (macos-arm64)',
+      'standard preset -> @scope/macos (macos-arm64, macos-x64)',
+      'standard preset -> @scope/windows (win-x64)',
     ])
   })
 
@@ -68,7 +74,7 @@ describe('verifyRuntimeClosure', () => {
     const root = fixture({
       'python/sdk-runtime/package.json': { name: 'runtime', dependencies: {} },
       'python/sdk-runtime/platforms.json': platforms,
-      'apps/cli/config/agent-presets/standard/agent.cordis.yml': `
+      'packages/preset/agent-presets/presets/standard/agent.cordis.yml': `
 - id: conditional
   name: '@scope/conditional'
   disabled: !!js process.env.ALEGO_DISABLE_CONDITIONAL === '1'
@@ -78,7 +84,7 @@ describe('verifyRuntimeClosure', () => {
     const result = await verifyRuntimeClosure(root)
 
     expect(result.failures).toEqual([
-      'standard preset -> @scope/conditional (linux-arm64, linux-x64, macos-arm64)',
+      'standard preset -> @scope/conditional (linux-arm64, linux-x64, macos-arm64, macos-x64, win-x64)',
     ])
   })
 
@@ -86,7 +92,7 @@ describe('verifyRuntimeClosure', () => {
     const root = fixture({
       'python/sdk-runtime/package.json': { name: 'runtime', dependencies: { '@scope/plugin': 'workspace:^' } },
       'python/sdk-runtime/platforms.json': platforms,
-      'apps/cli/config/agent-presets/standard/agent.cordis.yml': `
+      'packages/preset/agent-presets/presets/standard/agent.cordis.yml': `
 - id: plugin
   name: '@scope/plugin'
   config:
@@ -103,7 +109,7 @@ describe('verifyRuntimeClosure', () => {
     const root = fixture({
       'python/sdk-runtime/package.json': { name: 'runtime', dependencies: { '@scope/plugin': '1.2.3' } },
       'python/sdk-runtime/platforms.json': platforms,
-      'apps/cli/config/agent-presets/standard/agent.cordis.yml': `
+      'packages/preset/agent-presets/presets/standard/agent.cordis.yml': `
 - id: plugin
   name: '@scope/plugin'
 `,
@@ -112,7 +118,7 @@ describe('verifyRuntimeClosure', () => {
     const result = await verifyRuntimeClosure(root)
 
     expect(result.failures).toEqual([
-      'standard preset -> @scope/plugin [runtime dependency is "1.2.3"; expected workspace:] (linux-arm64, linux-x64, macos-arm64)',
+      'standard preset -> @scope/plugin [runtime dependency is "1.2.3"; expected workspace:] (linux-arm64, linux-x64, macos-arm64, macos-x64, win-x64)',
     ])
   })
 
@@ -126,7 +132,7 @@ describe('verifyRuntimeClosure', () => {
 
     expect(result.presetCount).toBe(0)
     expect(result.failures).toEqual([
-      'no agent presets matched apps/cli/config/agent-presets/*/agent.cordis.yml',
+      'no agent presets matched packages/preset/agent-presets/presets/*/agent.cordis.yml',
     ])
   })
 
@@ -134,7 +140,7 @@ describe('verifyRuntimeClosure', () => {
     const root = fixture({
       'python/sdk-runtime/package.json': { name: 'runtime', dependencies: {} },
       'python/sdk-runtime/platforms.json': {},
-      'apps/cli/config/agent-presets/standard/agent.cordis.yml': '[]\n',
+      'packages/preset/agent-presets/presets/standard/agent.cordis.yml': '[]\n',
     })
 
     const result = await verifyRuntimeClosure(root)
@@ -148,7 +154,7 @@ describe('verifyRuntimeClosure', () => {
     const root = fixture({
       'python/sdk-runtime/package.json': { name: 'runtime', dependencies: { '@scope/root': 'workspace:^' } },
       'python/sdk-runtime/platforms.json': platforms,
-      'apps/cli/config/agent-presets/minimal/agent.cordis.yml': '[]\n',
+      'packages/preset/agent-presets/presets/minimal/agent.cordis.yml': '[]\n',
     })
     workspace(root, '@scope/root', {
       peerDependencies: { '@scope/required': 'workspace:^', '@scope/optional': 'workspace:^' },

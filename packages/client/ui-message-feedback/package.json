@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-message-feedback",
   "description": "Per-message feedback controls contributed to the assistant-message action strip, backed by the messageFeedback Host Remote",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -18,10 +18,6 @@
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
     },
-    "./invariant": {
-      "types": "./lib/types/invariant.d.ts",
-      "default": "./lib/invariant.js"
-    },
     "./client": {
       "types": "./lib/types/client/index.d.ts",
       "default": "./lib/client.js"
@@ -32,10 +28,10 @@
   "alego": {
     "client": {
       "inject": [
-        "@singula-ai/alego-client-runtime",
         "@singula-ai/alego-api-remotes",
         "@singula-ai/alego-client-locale",
-        "@singula-ai/alego-client-ui-conversation"
+        "@singula-ai/alego-client-ui-conversation",
+        "@singula-ai/alego-client-ui-renderer"
       ],
       "platform": "web"
     }
@@ -46,38 +42,31 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-api-remotes": "workspace:^",
-    "@singula-ai/alego-client-connection": "workspace:^",
-    "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-runtime": "workspace:^",
-    "@singula-ai/alego-client-ui-conversation": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
-    "@singula-ai/alego-message-feedback": "workspace:^",
-    "@singula-ai/alego-typert-protocol": "workspace:^",
     "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
     "@singula-ai/alego-api-remotes": "workspace:^",
     "@singula-ai/alego-client-connection": "workspace:^",
     "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-runtime": "workspace:^",
     "@singula-ai/alego-client-test-runtime": "workspace:^",
     "@singula-ai/alego-client-ui-conversation": "workspace:^",
     "@singula-ai/alego-client-ui-primitives": "workspace:^",
+    "@singula-ai/alego-client-ui-renderer": "workspace:^",
     "@singula-ai/alego-client-ui-slots": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-message-feedback": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/alego-typert-protocol": "workspace:^",
     "@singula-ai/cordis": "workspace:^",
     "@testing-library/react": "^16.1.0",
     "@types/react": "~18.3.1",
     "@types/react-dom": "~18.3.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "@singula-ai/alego-client-ui-chat": "workspace:^",
+    "@singula-ai/alego-client-ui-session": "workspace:^"
   },
   "files": [
     "lib/index.js",
-    "lib/invariant.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"
   ]

@@ -15,7 +15,6 @@ import { defineTool, TOOL_ABORTED } from '@singula-ai/alego-tools'
 import type { GenericCallView, TerminalCallView, ToolExecution, ToolResult, ToolResultView } from '@singula-ai/alego-tools'
 import { HarnessError } from '@singula-ai/alego-llm'
 import type { Agent } from '@singula-ai/alego-agent'
-import type {} from '@singula-ai/alego-system-prompt'
 import type {} from '@singula-ai/alego-jobs'
 import type {} from '@singula-ai/alego-user-approval'
 import type {} from '@singula-ai/alego-shell-env'
@@ -235,7 +234,7 @@ export function apply(ctx: Context, config: Config = {}): void {
   // Cross-call guidance belongs in the prompt rather than one-call schema prose.
   ctx.systemPrompt.section({
     name: 'tool:bash',
-    order: 105,
+    order: ctx.systemPrompt.getSectionOrder('TOOL_BASH'),
     text: 'Check the [exit code: N] marker on every bash result; investigate failures before moving on.',
   })
 

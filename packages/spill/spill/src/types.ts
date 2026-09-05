@@ -7,7 +7,7 @@
  */
 
 import type { Branded } from '@singula-ai/alego-brand'
-import type { CallId } from '@singula-ai/alego-llm'
+import type { ToolCallId } from '@singula-ai/alego-llm'
 import type { SessionId } from '@singula-ai/alego-session'
 
 /**
@@ -47,7 +47,7 @@ export interface SpillSource {
   /** The tool whose result was spilled (e.g. `web_fetch`). */
   toolName: string
   /** The model-issued call id the result belongs to. */
-  callId: CallId
+  callId: ToolCallId
   /** A short human label for the artifact (e.g. `result`). */
   label: string
 }

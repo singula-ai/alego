@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-hmr",
   "description": "Dev-only hot-reload driver for script-loaded client entries: SSE rebuilt frames → invalidate/prefetch → fiber swap through the vendored Loader entry",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -41,10 +41,6 @@
     "@singula-ai/schemastery": "workspace:^"
   },
   "peerDependencies": {
-    "@singula-ai/cordis-plugin-loader": "workspace:^",
-    "@singula-ai/alego-client-modules": "workspace:^",
-    "@singula-ai/alego-host-webserver": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {

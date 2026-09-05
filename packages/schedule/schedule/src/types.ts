@@ -219,3 +219,10 @@ declare module '@singula-ai/alego-session/types' {
     'schedule/change': ScheduleChange
   }
 }
+
+declare module '@singula-ai/alego-session-projection/types' {
+  interface SessionProjectionMap {
+    /** Complete active reminders owned by this Session's post-fork suffix. */
+    schedule: readonly ScheduleRecord[]
+  }
+}

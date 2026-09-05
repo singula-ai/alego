@@ -1,7 +1,10 @@
 /**
- * Pins shared client-bundle preset rules: the module-edge purity gate and
- * the physical watch dependencies hidden behind virtual CSS Modules.
+ * Pins shared client-bundle preset rules: module-edge purity, source-map
+ * chaining, and physical watch dependencies hidden behind virtual CSS Modules.
  */
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it, vi } from 'vitest'
 import { clientBundle, requestedExternals } from '../packages/client/tsdown.client.ts'
@@ -12,6 +15,11 @@ interface CssModulePlugin {
   name: string
   resolveId?: (source: string, importer: string | undefined) => null | string
   load?: (this: { addWatchFile: (id: string) => void }, id: string) => Promise<unknown>
+}
+
+interface SourceMapPlugin {
+  name: string
+  load?: (id: string) => Promise<unknown>
 }
 
 /** A representative dynamic bundle using the shared client baseline. */
@@ -59,13 +67,21 @@ function cssModulePlugin(): CssModulePlugin {
   return plugin
 }
 
+function sourceMapPlugin(): SourceMapPlugin {
+  const configs = clientConfigs()
+  const plugins = (configs[0] as { plugins: SourceMapPlugin[] }).plugins
+  const plugin = plugins.find(candidate => candidate.name === 'alego-tsc-sourcemap')
+  if (plugin?.load === undefined) throw new Error('tsc sourcemap plugin missing from client config')
+  return plugin
+}
+
 describe('client bundle purity gate', () => {
   const resolveId = purityResolveId()
 
   it('leaves default externals and non-scoped specifiers alone', () => {
+    expect(resolveId('@singula-ai/alego-client-store')).toBeNull()
     expect(resolveId('@singula-ai/alego-client-ui-slots')).toBeNull()
     expect(resolveId('@singula-ai/alego-client-ui-primitives')).toBeNull()
-    expect(resolveId('@singula-ai/alego-client-runtime/client')).toBeNull()
     expect(resolveId('react')).toBeNull()
     expect(resolveId('zod')).toBeNull()
   })
@@ -75,10 +91,14 @@ describe('client bundle purity gate', () => {
     expect(() => resolveId('@singula-ai/alego-client-web-react/store')).toThrow(/purity/)
   })
 
-  it('lets inline-safe wire layers inline', () => {
-    expect(resolveId('@singula-ai/alego-host-apiproxy/api')).toBeNull()
+  it('lets inline-safe libraries inline', () => {
     expect(resolveId('@singula-ai/alego-session/surface')).toBeNull()
     expect(resolveId('@singula-ai/alego-brand')).toBeNull()
+    expect(resolveId('@singula-ai/alego-deque')).toBeNull()
+    expect(resolveId('@singula-ai/alego-util-values')).toBeNull()
+    expect(resolveId('@singula-ai/alego-token-meter/client')).toBeNull()
+    expect(() => resolveId('@singula-ai/alego-token-meter')).toThrow(/purity/)
+    expect(() => resolveId('@singula-ai/alego-token-meter/client/internal')).toThrow(/purity/)
   })
 
   it('lets exact generated Remote contributions inline without admitting their package implementation', () => {
@@ -95,14 +115,14 @@ describe('client bundle purity gate', () => {
 
   it('throws on cross-plugin value imports — bare plugin names and /client subpaths alike', () => {
     expect(() => resolveId('@singula-ai/alego-client-connection')).toThrow(/purity/)
-    expect(() => resolveId('@singula-ai/alego-client-runtime')).toThrow(/purity/)
+    expect(() => resolveId('@singula-ai/alego-client-ui-session')).toThrow(/purity/)
     expect(() => resolveId('@singula-ai/alego-client-ui-layout/client')).toThrow(/purity/)
   })
 
-  it('admits the parser-preloaded runtime for every dynamic bundle', () => {
-    expect(resolveId('@singula-ai/alego-client-runtime/client')).toBeNull()
-    const withoutRequest = purityResolveId('@singula-ai/alego-client-ui-goal')
-    expect(withoutRequest('@singula-ai/alego-client-runtime/client')).toBeNull()
+  it('admits package-specific requests only for the declaring bundle', () => {
+    const requesting = purityResolveId('@singula-ai/alego-api-session-controller')
+    expect(requesting('@singula-ai/alego-api-gateway/client')).toBeNull()
+    expect(() => resolveId('@singula-ai/alego-api-gateway/client')).toThrow(/purity/)
   })
 
   it('externalizes the baseline independently of each package manifest', () => {
@@ -114,7 +134,7 @@ describe('client bundle purity gate', () => {
     expect(requesting.neverBundle('react')).toBe(true)
     expect(requesting.neverBundle('zod')).toBe(false)
     expect(plain.neverBundle('react')).toBe(true)
-    expect(plain.neverBundle('@singula-ai/alego-client-runtime/client')).toBe(true)
+    expect(plain.neverBundle('@singula-ai/alego-client-store')).toBe(true)
   })
 })
 
@@ -143,6 +163,28 @@ describe('client bundle debug artifacts', () => {
   it('emits source maps for plugin TS and TSX outside the Vite module graph', () => {
     const configs = clientConfigs()
     expect(configs[0]?.sourcemap).toBe(true)
+    expect(configs[0]?.outputOptions).toMatchObject({ sourcemapExcludeSources: false })
+  })
+
+  it('chains emitted tsc maps when the production Client build consumes lib/types', async () => {
+    const root = mkdtempSync(join(tmpdir(), 'alego-client-sourcemap-'))
+    try {
+      const entry = join(root, 'lib', 'types', 'client', 'index.js')
+      const source = join(root, 'src', 'client', 'index.ts')
+      const map = { version: 3, names: [], mappings: 'AAAA', sources: ['../../../src/client/index.ts'] }
+      mkdirSync(join(root, 'lib', 'types', 'client'), { recursive: true })
+      mkdirSync(join(root, 'src', 'client'), { recursive: true })
+      writeFileSync(entry, 'export const marker = true\n//# sourceMappingURL=index.js.map\n')
+      writeFileSync(`${entry}.map`, JSON.stringify(map))
+      writeFileSync(source, 'export const marker: true = true\n')
+
+      await expect(sourceMapPlugin().load!(entry)).resolves.toEqual({
+        code: 'export const marker = true',
+        map: { ...map, sourcesContent: ['export const marker: true = true\n'] },
+      })
+    } finally {
+      rmSync(root, { recursive: true, force: true })
+    }
   })
 
   it('maps first-party sources to their repository package paths', () => {
@@ -177,10 +219,10 @@ describe('client bundle debug artifacts', () => {
     if (transform === undefined) throw new Error('client sourcemap path transform missing')
 
     const sourceMapPath = clientSourceMapPath('client/connection')
-    const workspaceSource = transform('../../../host/apiproxy/src/api/rpc.ts', sourceMapPath)
-    expect(workspaceSource).toBe('../../../packages/host/apiproxy/src/api/rpc.ts')
+    const workspaceSource = transform('../src/rpc.ts', sourceMapPath)
+    expect(workspaceSource).toBe('../../../packages/client/connection/src/rpc.ts')
     const resolved = new URL(workspaceSource, 'https://alego.test/plugins/@singula-ai/alego-client-connection/client.js.map')
-    expect(resolved.pathname).toBe('/packages/host/apiproxy/src/api/rpc.ts')
+    expect(resolved.pathname).toBe('/packages/client/connection/src/rpc.ts')
 
     const dependencySource = '../../../../node_modules/.pnpm/zod@4.4.3/node_modules/zod/index.js'
     expect(transform(dependencySource, sourceMapPath)).toBe(dependencySource)

@@ -2,7 +2,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
-import type { SessionId, SessionListState, JobView } from '@singula-ai/alego-client-runtime/client'
+import type { SessionListState } from '@singula-ai/alego-api-session-controller/client'
+import type { SessionJob as JobView } from '@singula-ai/alego-api-session-controller/types'
+import type { SessionId } from '@singula-ai/alego-session/types'
 import { JobListAction, type JobListActionProps } from '../src/client/JobListAction.tsx'
 import { zh } from '../src/client/locales.ts'
 

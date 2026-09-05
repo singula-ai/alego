@@ -1,8 +1,8 @@
-import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { describe, expect, it, vi } from 'vitest'
+import { afterAll, describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import SystemPrompt, { renderPrompt } from '@singula-ai/alego-system-prompt'
 import {
@@ -13,7 +13,16 @@ import {
 
 const NAME = 'alego-test-bin'
 
-const tmp = (): string => mkdtempSync(join(tmpdir(), 'alego-app-boot-'))
+const tempRoots: string[] = []
+afterAll(() => {
+  for (const root of tempRoots.splice(0)) rmSync(root, { recursive: true, force: true })
+})
+
+const tmp = (): string => {
+  const dir = mkdtempSync(join(tmpdir(), 'alego-app-boot-'))
+  tempRoots.push(dir)
+  return dir
+}
 
 describe('resolveConfigPath', () => {
   it('resolves relative to the given cwd outside replay mode', () => {
@@ -145,6 +154,83 @@ describe('loadLayeredEnv', () => {
       expect(process.env[NAMES[1]]).toBeUndefined()
     } finally {
       clear()
+      vi.unstubAllEnvs()
+    }
+  })
+
+  const PROXY = ['HTTP_PROXY', 'http_proxy', 'HTTPS_PROXY', 'https_proxy', 'NO_PROXY', 'no_proxy'] as const
+  function clearProxy(): void {
+    for (const name of PROXY) Reflect.deleteProperty(process.env, name)
+  }
+
+  it('accepts the proxy names from the Harness-home .env, below an exported one', () => {
+    const home = tmp()
+    const project = tmp()
+    // Both casings, because a shell profile writes either and the rejection matches both. Each
+    // spelling gets its own name here: Windows folds `https_proxy` and `HTTPS_PROXY` into one
+    // variable, so which spelling a value lands under is the platform's to decide — that the file
+    // supplies it, and that the launching shell outranks the file, is not.
+    writeFileSync(join(home, '.env'), 'HTTP_PROXY=http://from-home:8080\nno_proxy=example.com\nHTTPS_PROXY=http://from-home:8443\n')
+    clear(); clearProxy()
+    vi.stubEnv('ALEGO_HOME', home)
+    vi.stubEnv('HTTPS_PROXY', 'http://exported:8080')
+    try {
+      const snapshot = loadLayeredEnv(NAME, project, vi.fn())
+      expect(snapshot.get('HTTP_PROXY')).toEqual({ value: 'http://from-home:8080', source: 'user-env', path: join(home, '.env') })
+      expect(snapshot.get('no_proxy')).toEqual({ value: 'example.com', source: 'user-env', path: join(home, '.env') })
+      // The launching shell still outranks the file for the same variable.
+      expect(snapshot.get('HTTPS_PROXY')).toEqual({ value: 'http://exported:8080', source: 'process' })
+      expect(process.env.HTTP_PROXY).toBe('http://from-home:8080')
+      expect(process.env.HTTPS_PROXY).toBe('http://exported:8080')
+    } finally {
+      clear(); clearProxy()
+      vi.unstubAllEnvs()
+    }
+  })
+
+  it('still refuses every other bootstrap name in the Harness-home .env', () => {
+    const home = tmp()
+    const project = tmp()
+    // A CA path sits in the same network group as the proxy names and changes what is trusted,
+    // not where traffic goes; the exemption must not widen to it.
+    writeFileSync(join(home, '.env'), 'SSL_CERT_FILE=/tmp/ca.pem\n')
+    clear()
+    vi.stubEnv('ALEGO_HOME', home)
+    try {
+      expect(() => loadLayeredEnv(NAME, project, vi.fn())).toThrow(/only the launching environment may set/)
+    } finally {
+      clear()
+      vi.unstubAllEnvs()
+    }
+  })
+
+  it('names the Harness-home file as the way out when a project .env sets a proxy', () => {
+    const home = tmp()
+    const project = tmp()
+    writeFileSync(join(project, '.env'), 'HTTP_PROXY=http://attacker.example\n')
+    clear(); clearProxy()
+    vi.stubEnv('ALEGO_HOME', home)
+    try {
+      expect(() => loadLayeredEnv(NAME, project, vi.fn()))
+        .toThrow(`export HTTP_PROXY, or put it in ${join(home, '.env')}, which does not travel with a repository`)
+      expect(process.env.HTTP_PROXY).toBeUndefined()
+    } finally {
+      clear(); clearProxy()
+      vi.unstubAllEnvs()
+    }
+  })
+
+  it('treats the invoking directory as the Harness home when they are the same directory', () => {
+    const home = tmp()
+    writeFileSync(join(home, '.env'), 'HTTP_PROXY=http://from-home:8080\n')
+    clear(); clearProxy()
+    vi.stubEnv('ALEGO_HOME', home)
+    try {
+      // Launched from inside the home itself, its one file is read as the project layer; the
+      // exemption follows the directory, not the layer name.
+      expect(loadLayeredEnv(NAME, home, vi.fn()).get('HTTP_PROXY')?.value).toBe('http://from-home:8080')
+    } finally {
+      clear(); clearProxy()
       vi.unstubAllEnvs()
     }
   })
@@ -771,6 +857,28 @@ describe('boot', () => {
     )
   })
 
+  it('expands a stackless aggregate at the deepest activation cause', async () => {
+    const dir = tmp()
+    const aggregate = new AggregateError([
+      new Error('first aggregate member'),
+      'second aggregate member',
+    ], 'aggregate activation failure')
+    delete (aggregate as { stack?: string }).stack
+    try {
+      await boot(NAME, join(dir, 'cordis.yml'), undefined, () => {
+        throw new Error('wrapped aggregate failure', { cause: aggregate })
+      })
+      expect.fail('boot should reject the aggregate activation failure')
+    } catch (error) {
+      expect(error).toBeInstanceOf(Error)
+      const message = (error as Error).message
+      expect(message).toContain(`${NAME}: host preparation failed: wrapped aggregate failure`)
+      expect(message).toContain('aggregate activation failure')
+      expect(message).toContain('first aggregate member')
+      expect(message).toContain('second aggregate member')
+    }
+  })
+
   it('reports a pending real Loader fiber and the service unresolved in its own context', async () => {
     const dir = tmp()
     writeFileSync(join(dir, 'waiting.mjs'), 'export const inject = ["neverProvided"]\nexport function apply() {}\n')
@@ -795,8 +903,8 @@ describe('addHarnessSourceSection', () => {
       const systemPrompt = ctx.get('systemPrompt')!
       const rendered = renderPrompt(await systemPrompt.assemble())
       expect(rendered).toContain(EXPECTED)
-      // Harness-owned opener (-100) → source (-99) → persona (0). The >= 0 guards
-      // keep a drifted opener/persona string from a false pass through `-1 < n`.
+      // The >= 0 guards keep a drifted opener/persona string from a false pass
+      // through `-1 < n`.
       const identityAt = rendered.indexOf('You are an AI agent powered by Alego.')
       const sourceAt = rendered.indexOf(EXPECTED)
       const personaAt = rendered.indexOf('You are a coding agent.')

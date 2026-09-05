@@ -16,10 +16,10 @@ import { readFileSync } from 'node:fs'
 import type { Context } from '@singula-ai/cordis'
 import z from '@singula-ai/schemastery'
 import type { Agent, PreStepDecision } from '@singula-ai/alego-agent'
+import type {} from '@singula-ai/alego-session-projection'
 import { createUserMessage } from '@singula-ai/alego-llm'
 import type { ContentBlock, MessageSource } from '@singula-ai/alego-llm'
 import type { UserMessage } from '@singula-ai/alego-session'
-import type {} from '@singula-ai/alego-session-persistence'
 import type { PostToolDecision, PreToolDecision, ToolExecution, ToolExecutionResult } from '@singula-ai/alego-tools'
 import {
   appendHookInvoked,
@@ -38,7 +38,7 @@ import { parseCodexConfig, type CodexHookConfig } from './config.ts'
 /* jscpd:ignore-end */
 
 export const name = 'hooks-codex'
-export const inject = ['shell']
+export const inject = ['shell', 'sessionProjections']
 
 /** Plugin config: where the Codex hooks.json lives + the model name for payloads. */
 export interface Config {
@@ -186,7 +186,7 @@ export function apply(ctx: Context, config: Config): void {
   // hook may miss the first request.
   // TODO(session-start-gating): add a startup gate before promising first-turn delivery.
   ctx.on('agent/session-start', ({ agent, source }) => {
-    detached.track(runPoint('SessionStart', source, { ...base(ctx, agent, 'SessionStart', model), source }, { agent, plainStdoutAsContext: true, signal: detached.signal })
+    detached.track(runPoint('SessionStart', source, { ...base(agent, 'SessionStart', model), source }, { agent, plainStdoutAsContext: true, signal: detached.signal })
       .then((merged) => {
         const context = contextFrom(merged)
         if (context) agent.inject(context)
@@ -199,7 +199,7 @@ export function apply(ctx: Context, config: Config): void {
   ctx.on('agent/pre-step', async ({ agent, messages, turn, signal }, next): Promise<PreStepDecision> => {
     if (messages.length === 0) return next()
     const payload = {
-      ...base(ctx, agent, 'UserPromptSubmit', model),
+      ...base(agent, 'UserPromptSubmit', model),
       turn_id: String(turn),
       prompt: blocksToText(messages.flatMap(message => message.content)),
     }
@@ -216,14 +216,14 @@ export function apply(ctx: Context, config: Config): void {
     const ours = contextFrom(merged)
     if (!ours || downstream.kind !== 'enter') return downstream
     return {
-      kind: 'enter',
+      ...downstream,
       messages: [...downstream.messages, ours],
     }
   })
 
   // PreToolUse → PreToolDecision. Codex blocks only (no allow/ask honored).
   ctx.on('tools/pre-execute', async (exec, next): Promise<PreToolDecision> => {
-    const turn = lastTurn(exec.agent)
+    const turn = lastTurn(ctx, exec.agent)
     const merged = await runPoint('PreToolUse', exec.name, preToolPayload(ctx, exec, model), { ...exec.agent ? { agent: exec.agent } : {}, turn, signal: exec.signal })
     /* jscpd:ignore-end */
     if (merged.decision === 'deny') return { kind: 'deny', reason: merged.reason ?? 'blocked by PreToolUse hook' }
@@ -232,7 +232,7 @@ export function apply(ctx: Context, config: Config): void {
 
   // PostToolUse → PostToolDecision (block with feedback, or attach context).
   ctx.on('tools/post-execute', async (exec, result, next): Promise<PostToolDecision> => {
-    const turn = lastTurn(exec.agent)
+    const turn = lastTurn(ctx, exec.agent)
     /* jscpd:ignore-start */
     const merged = await runPoint('PostToolUse', exec.name, postToolPayload(ctx, exec, result, model), { ...exec.agent ? { agent: exec.agent } : {}, turn, signal: exec.signal })
     const context = contextFrom(merged)
@@ -276,11 +276,10 @@ export function apply(ctx: Context, config: Config): void {
 // These small payload helpers intentionally remain next to the dialect shape;
 // sharing them would pull bridge-only agent/LLM dependencies into hook-protocol.
 /* jscpd:ignore-start */
-function lastTurn(agent: Agent | undefined): number {
+function lastTurn(ctx: Context, agent: Agent | undefined): number {
   if (!agent) return 0
-  const last = [...agent.session.events].findLast(e => e.type === 'turn/start')
-  /* v8 ignore next -- agent-present turnBase callers are tool/stop extension points inside an open turn. */
-  return last?.type === 'turn/start' ? last.data.turn : 0
+  /* v8 ignore next -- agent-present hook points run inside AgentLoop, which owns this projection. */
+  return ctx.sessionProjections.stateOf(agent.session, 'turnBoundary')?.lastTurn ?? 0
 }
 
 function blocksToText(content: ContentBlock[]): string {
@@ -289,12 +288,12 @@ function blocksToText(content: ContentBlock[]): string {
 /* jscpd:ignore-end */
 
 /** Base fields on every Codex payload (no turn_id). */
-function base(ctx: Context, agent: Agent | undefined, event: string, model: string): Record<string, unknown> {
+function base(agent: Agent | undefined, event: string, model: string): Record<string, unknown> {
   return {
     session_id: agent?.session.header.id ?? '',
-    transcript_path: agent === undefined
-      ? null
-      : ctx.get('sessionPersistence')?.locate(agent.session.header)?.path ?? null,
+    // The persistence seam exposes no artifact path; the field stays null
+    // (a durable consumer gap recorded in this package's README).
+    transcript_path: null,
     cwd: agent?.session.header.cwd ?? process.cwd(),
     hook_event_name: event,
     model,
@@ -304,7 +303,7 @@ function base(ctx: Context, agent: Agent | undefined, event: string, model: stri
 
 /** Base + turn_id, for the turn-scoped events (PreToolUse/PostToolUse/UserPromptSubmit/Stop). */
 function turnBase(ctx: Context, agent: Agent | undefined, event: string, model: string): Record<string, unknown> {
-  return { ...base(ctx, agent, event, model), turn_id: String(lastTurn(agent)) }
+  return { ...base(agent, event, model), turn_id: String(lastTurn(ctx, agent)) }
 }
 
 /** Extract a `command` string from a tool call's parsed arguments, else ''. */

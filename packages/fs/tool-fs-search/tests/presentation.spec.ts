@@ -9,7 +9,7 @@
  */
 
 import { describe, expect, it } from 'vitest'
-import type { JsonValue } from '@singula-ai/alego-session'
+import type { JsonValue } from '@singula-ai/alego-util-values'
 import {
   globSearchMeta,
   grepSearchMeta,

@@ -1,0 +1,10 @@
+version: 1
+scenario: subagent-alego-sdk-dynamic-route
+profile: sdk
+composition: sdk-alego-sdk-dynamic-route
+recording: authored
+header:
+  class: sdk-alego-sdk-dynamic-route
+  pin: true
+  childSystemPrompts: [1]
+  childToolSchemas: [1]

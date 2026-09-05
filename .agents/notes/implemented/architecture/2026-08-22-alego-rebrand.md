@@ -16,6 +16,8 @@ The rename could not be a blind substitution. `dsh` occurs inside ordinary words
 
 **`dsh` is renamed only as a whole identifier segment.** A segment is bounded by a separator or a case change: `dsh-`, `dsh_`, `DSH_`, `Dsh`, `dsh` before an uppercase letter, and bare `dsh` at a word boundary. Word-internal `dsh` is left alone, which is what keeps `handshake` intact.
 
+DeepSeek HTTP extensions retain the upstream wire names `x-dsh-user-id`, `x-dsh-session-id`, `x-dsh-compact`, `dsh_plugin_packages`, and `dsh_session_log`. These identify provider protocol fields, not Alego commands or configuration. The user-agent product and package identities still name Alego.
+
 **The scope names the company and the prefix names the product**, exactly as upstream had it. `@deepseek-ai/dsh-<name>` became `@singula-ai/alego-<name>`, and the CLI package — upstream's bare `@deepseek-ai/dsh` — became the bare `@singula-ai/alego`, so the published entry point is `npx @singula-ai/alego web`. Singula AI ships more than one product, so the scope belongs to the company and the product lives in the package name.
 
 **Packages upstream published without the product prefix keep none here.** The rescoped Cordis vendor tree (`@singula-ai/cordis`, `@singula-ai/schemastery`, `@singula-ai/cosmokit`, `@singula-ai/cordis-plugin-*`), the Landlock addon family, and the website carry no `alego-` prefix, because they are not the product. That is what lets one prefix test separate the MIT product from everything else sharing the scope.
@@ -26,9 +28,27 @@ The rename could not be a blind substitution. `dsh` occurs inside ordinary words
 
 The scope names the company; nothing the user types changed with it. The command stays `alego`, the environment prefix stays `ALEGO_`, the per-user directory stays `~/.alego`, the plugin manifest key stays `alego`, CSS custom properties stay `--alego-*`, and the JSDoc scan tag stays `@alegoScopeScan`. Third-party plugins are discovered as `alego-plugin-*` under the [`alego-plugin`](https://github.com/topics/alego-plugin) topic. npm package names are the one surface carrying the company name, which keeps the plugin ecosystem keyed on the product it extends.
 
-## The frozen archive was re-sealed
+## Upstream synchronization
 
-`archived/manifest.json` is append-only so archived Agent Notes cannot change. A repository-wide rename necessarily rewrites their text, so the manifest was re-sealed wholesale — the one edit the freeze does not anticipate. Nothing but brand tokens changed in those files; no archived decision was altered.
+The source baseline is [deepseek-ai/deepseek-harness at `d347e703908d0406b7a7ef80e3a0e594d86b2215`](https://github.com/deepseek-ai/deepseek-harness/commit/d347e703908d0406b7a7ef80e3a0e594d86b2215), version `0.1.3-alpha.1`. Imports include every tracked upstream file and remove obsolete source paths; naming, brand artwork, and repository targets are the fork's changes. Upstream owns runtime behavior, session migrations, package layout, and test structure. The source installer remains an Alego distribution convenience.
+
+Existing archived triplets retain their exact bytes and seals. Upstream adds new triplets without modifying old ones; new imports receive the same brand mapping before their first Alego seal. Neither binary images nor opaque encoded data are subject to text replacement. Source files containing literal NUL test inputs still receive identifier updates.
+
+The sidebar and hero use the same Alego block mark. The hero retains the upstream slot and reduced-motion-aware hover animation, with block artwork replacing the whale's path morph. GitHub source links and push workflows target `singula-ai/alego` on `main`; required CI uses hosted runners available to this repository. Cloudflare previews require the repository's explicit `ALEGO_CLOUDFLARE_PREVIEW_ENABLED` opt-in.
+
+Self-hosted standby drills require `ALEGO_SELF_HOSTED_STANDBY_ENABLED`; the repository has no configured standby runners. Issue and Project automation runs only when the repository enables Issues; it does not request App tokens or require linked Issues while that feature is disabled. The upstream-only CDN publication record is archived with its original infrastructure identities. Local validation requires explicit Vue resolution for the documentation build and disposal of the subagent-list and Agent Teams test contexts before removing their session directories; neither changes application behavior.
+
+The E2E workflow's opt-in `record_brand_demo` input selects the existing real-host, real-model first-send smoke and uploads empty, typed, and completed frames from one isolated run, with the server origin and fresh state directories recorded alongside them. Ordinary runs retain the full E2E suite. The capture acknowledges the fresh-user welcome notice through the UI, then waits for the durable Assistant response and its exact rendered text, not the prompt's echoed marker. The UI-copy gate permits the literal `alego` wordmark across locales but still rejects untranslated phrases containing it.
+
+Hosted Linux and Windows jobs use [four-CPU runners](https://docs.github.com/en/actions/reference/runners/github-hosted-runners). Coverage uses two instrumented single-worker partitions and one exempt-suite worker, leaving subprocess headroom. The Linux consumer job runs one gate at a time while retaining parallelism inside each gate. Product deadlines and coverage thresholds remain unchanged.
+
+Web snapshot browsers use `Asia/Shanghai` to match the retained `clientTimeZone` fields independently of the host timezone. PowerShell recordings include the current headless profile's policy events, system prompt, and tool schemas. Both adjustments preserve application behavior and compare the complete persisted replay without adding normalization exceptions.
+
+The persistent PowerShell backend requires prompt-marker readiness during startup, as documented in the [pwsh decision](2026-08-11-pwsh-persistent-pty.md); ordinary command readiness and deadlines remain unchanged. The mailbox recovery fixture awaits its admitted dispatches before disposing the restored Lead, so an in-memory acknowledgement cannot stand in for completed persistence.
+
+PowerShell real-shell fixtures poll empty input after `inferred_idle` until verified readiness, under one command deadline; they never resubmit the command. Workspace-creation fixtures wait for the new Session's durable attachment and selected sidebar row before another interaction can race that layout update. The npm-resolution fixture gives cold npm startup and package-lock generation 60 seconds inside the Windows coverage lane's 90-second test budget, retaining time for process exit and registry cleanup; it does not impose a performance threshold on the metadata-only assertions.
+
+Browser layout fixtures read related panel rectangles in one browser task, so a shared animation cannot advance between measurements. Folder-navigation fixtures clear the previous trigger menu before inserting a complete query; matching prefix results retained during refinement are not readiness evidence. The upstream pending-pick behavior remains unchanged. The CI process-table walker tolerates cyclic retained parent IDs and wide child lists, as documented in the [gate-runner decision](../process/2026-08-27-gate-runner-fail-fast.md).
 
 ## Alternatives considered
 
@@ -38,10 +58,10 @@ The scope names the company; nothing the user types changed with it. The command
 
 ## Consequences
 
-The harness carries no DeepSeek brand token, while every DeepSeek integration keeps working against the real API. Nothing about the plugin surface changed shape: [examples/hello-world](../../../../examples/hello-world/README.md) mounts a plugin from `cordis.yml`, and its keyless smoke asserts the tool is registered, published in the model-visible schema list, executable, and withdrawn when the plugin fiber is disposed.
+The product uses Alego identity while DeepSeek integrations retain their external service names. The upstream [built CLI tests](../../../../apps/cli/tests/built-bin.e2e.ts) exercise custom profiles and plugin installation through the published `alego` entry point. Recorded-session scenarios retain the upstream [snapshot layout](../../../../snapshots/AGENTS.md) and exercise the rebranded profiles, tool schemas, and SDK projections.
 
 Because the naming structure mirrors upstream one-for-one, [`verify-alego-package-licenses`](../../../../scripts/verify-alego-package-licenses.ts), [`verify-client-packages`](../../../../scripts/verify-client-packages.ts), and [`package-graph`](../../../../scripts/package-graph.ts) keep upstream's logic with only the two brand tokens substituted, so a future upstream sync has no naming divergence to reconcile.
 
 The cost is length: `@singula-ai/alego-client-ui-settings-plugin-inventory` at every import site, and the company name typed to reach the product.
 
-Package names, the `alego` command, `ALEGO_*`, the `alego` manifest key, and `~/.alego` all changed at once, so no on-disk state, environment, or composition written against the old names is readable. The pre-release stance in [AGENTS.md](../../../../AGENTS.md) permits exactly this, and there are no external consumers to migrate.
+Package names, the command, environment variables, manifest fields, and home directory consistently use Alego. Upstream's released-session migration rules remain intact; no compatibility aliases for the DeepSeek Harness product identity are introduced.

@@ -5,7 +5,7 @@
  */
 import { createElement } from 'react'
 import type { ReactElement } from 'react'
-import type { DirectoryListing } from '@singula-ai/alego-client-runtime/client'
+import type { DirectoryListing } from '@singula-ai/alego-api-remotes/client'
 import type { Translate } from '@singula-ai/alego-client-locale/client'
 // Type-only: the owner contract of the directory-flow holes.
 import type { DirectoryFlowOwnerProps } from '@singula-ai/alego-client-ui-workspace/client'

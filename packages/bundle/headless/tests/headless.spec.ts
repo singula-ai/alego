@@ -3,9 +3,9 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
-import type { Agent, AgentHandle, CreateAgentOptions } from '@singula-ai/alego-agent'
+import type { Agent, AgentHandle, AssistantStreamFrame, CreateAgentOptions } from '@singula-ai/alego-agent'
 import AgentDefaultModelConfig from '@singula-ai/alego-agent-default-model'
-import { createAssistantMessage } from '@singula-ai/alego-llm'
+import { LlmAttemptId, createAssistantMessage, type StreamChunk } from '@singula-ai/alego-llm'
 import SessionStore from '@singula-ai/alego-session'
 import type { Session, UserMessage } from '@singula-ai/alego-session'
 import { apply, Config, internals } from '../src/index.ts'
@@ -15,7 +15,30 @@ afterEach(() => { Object.assign(internals, originalInternals) })
 
 interface Script {
   before?(session: Session): void
-  afterPrompt(session: Session, message: UserMessage): Promise<void> | void
+  afterPrompt(session: Session, message: UserMessage, agent: Agent): Promise<void> | void
+}
+
+const frameStates = new WeakMap<Agent, { attemptId: ReturnType<typeof LlmAttemptId>; revision: number; index: number }>()
+
+function startFrames(agent: Agent, turn = 1, step = 1): void {
+  const state = { attemptId: LlmAttemptId(`${agent.id}:test`), revision: 1, index: 0 }
+  frameStates.set(agent, state)
+  agent.ctx.emit('agent/assistant-stream', {
+    agent,
+    frame: {
+      type: 'start', attemptId: state.attemptId, revision: state.revision, turn, step,
+    },
+  })
+}
+
+function emitChunk(agent: Agent, chunk: StreamChunk): void {
+  const state = frameStates.get(agent)
+  if (state === undefined) throw new Error('test Assistant frames have not started')
+  const frame: AssistantStreamFrame = {
+    type: 'chunk', attemptId: state.attemptId, revision: ++state.revision,
+    index: state.index++, time: Date.now(), chunk,
+  }
+  agent.ctx.emit('agent/assistant-stream', { agent, frame })
 }
 
 function appendTurn(
@@ -30,6 +53,7 @@ function appendTurn(
   session.append('user/message', message, { surfaceOp: 'append' })
   if (text !== undefined) {
     session.append('assistant/message', {
+      stream: [],
       turn,
       step: 1,
       message: createAssistantMessage({
@@ -50,9 +74,13 @@ function appendTurn(
 /** Mount the real registries around a small scripted Agent factory. */
 async function bench(script: Script): Promise<{
   ctx: Context
+  output(): { out: string; err: string; order: string[] }
   run(): Promise<{ code: number; out: string; err: string; order: string[] }>
 }> {
   const ctx = new Context()
+  let out = ''
+  let err = ''
+  const order: string[] = []
   await ctx.plugin(SessionStore)
   await ctx.plugin(AgentRegistry)
   await ctx.plugin(AgentDefaultModelConfig, { provider: 'test-provider', model: 'test-model' })
@@ -76,7 +104,7 @@ async function bench(script: Script): Promise<{
         send: () => {},
         followup: (message: UserMessage) => {
           agent.inbox.append('next-turn', message)
-          idle = Promise.resolve().then(() => script.afterPrompt(session, message))
+          idle = Promise.resolve().then(() => script.afterPrompt(session, message, agent))
         },
         steer: () => {},
         inject: () => {},
@@ -91,10 +119,8 @@ async function bench(script: Script): Promise<{
   })
   return {
     ctx,
+    output: () => ({ out, err, order: [...order] }),
     run: async () => {
-      let out = ''
-      let err = ''
-      const order: string[] = []
       ctx.on('session/flush', () => { order.push('flush') })
       internals.stdout = { write: (chunk: string) => { out += chunk; return true } }
       internals.stderr = { write: (chunk: string) => { err += chunk; return true } }
@@ -143,6 +169,114 @@ describe('headless runner', () => {
     await test.ctx.fiber.dispose()
   })
 
+  it('streams reasoning before the Agent becomes idle and terminates its stderr line', async () => {
+    const reasoningAppended = Promise.withResolvers<undefined>()
+    const release = Promise.withResolvers<undefined>()
+    const test = await bench({
+      async afterPrompt(session, message, agent) {
+        session.append('turn/start', { turn: 1 })
+        session.append('step/start', { turn: 1, step: 1 })
+        session.append('user/message', message, { surfaceOp: 'append' })
+        startFrames(agent)
+        emitChunk(agent, { type: 'block-start', index: 0, blockType: 'reasoning' })
+        emitChunk(agent, { type: 'reasoning-delta', index: 0, text: '' })
+        emitChunk(agent, { type: 'reasoning-delta', index: 0, text: 'checking the workspace' })
+        emitChunk(agent, { type: 'reasoning-delta', index: 0, text: ' safely\n' })
+        emitChunk(agent, { type: 'block-end', index: 0, block: { type: 'reasoning', text: 'checking the workspace safely\n' } })
+        emitChunk(agent, { type: 'usage', usage: { inputTokens: 1, outputTokens: 2, reasoningTokens: 2 } })
+        emitChunk(agent, { type: 'block-start', index: 1, blockType: 'reasoning' })
+        emitChunk(agent, { type: 'reasoning-delta', index: 1, text: 'second pass\n' })
+        reasoningAppended.resolve(undefined)
+        await release.promise
+        emitChunk(agent, { type: 'block-start', index: 2, blockType: 'text' })
+        emitChunk(agent, { type: 'text-delta', index: 2, text: 'done' })
+        emitChunk(agent, { type: 'block-end', index: 2, block: { type: 'text', text: 'done' } })
+        session.append('assistant/message', {
+          stream: [],
+          turn: 1,
+          step: 1,
+          message: createAssistantMessage({
+            content: [{ type: 'text', text: 'done' }],
+            source: { provider: 'test-provider', model: 'test-model' },
+          }),
+        }, { surfaceOp: 'append' })
+        session.append('step/end', { turn: 1, step: 1 })
+        session.append('turn/end', { turn: 1, reason: { kind: 'completed' } })
+      },
+    })
+    const running = test.run()
+    await reasoningAppended.promise
+    const other = test.ctx.sessions.create()
+    other.append('turn/start', { turn: 1 })
+    other.append('step/start', { turn: 1, step: 1 })
+    test.ctx.emit('agent/assistant-stream', {
+      agent: { session: other } as Agent,
+      frame: {
+        type: 'chunk', attemptId: LlmAttemptId('other'), revision: 1,
+        index: 0, time: Date.now(), chunk: { type: 'reasoning-delta', index: 0, text: 'other session' },
+      },
+    })
+    const streamed = test.output()
+    release.resolve(undefined)
+    const result = await running
+    expect(streamed).toEqual({
+      out: '',
+      err: 'alego: reasoning:\nchecking the workspace safely\nsecond pass\n',
+      order: [],
+    })
+    expect(result).toEqual({
+      code: 0,
+      out: 'done\n',
+      err: 'alego: reasoning:\nchecking the workspace safely\nsecond pass\n',
+      order: ['flush', 'exit'],
+    })
+    await test.ctx.fiber.dispose()
+  })
+
+  it('closes an unterminated reasoning line as soon as the attempt ends', async () => {
+    const reasoningAppended = Promise.withResolvers<undefined>()
+    const releaseEnd = Promise.withResolvers<undefined>()
+    const ended = Promise.withResolvers<undefined>()
+    const finish = Promise.withResolvers<undefined>()
+    const test = await bench({
+      async afterPrompt(session, message, agent) {
+        session.append('turn/start', { turn: 1 })
+        session.append('step/start', { turn: 1, step: 1 })
+        session.append('user/message', message, { surfaceOp: 'append' })
+        startFrames(agent)
+        emitChunk(agent, { type: 'reasoning-delta', index: 0, text: 'unfinished reasoning' })
+        reasoningAppended.resolve(undefined)
+        await releaseEnd.promise
+        const state = frameStates.get(agent)
+        if (state === undefined) throw new Error('test Assistant frames have not started')
+        agent.ctx.emit('agent/assistant-stream', {
+          agent,
+          frame: {
+            type: 'end', attemptId: state.attemptId, revision: ++state.revision,
+            index: state.index, outcome: { kind: 'abandoned' },
+          },
+        })
+        ended.resolve(undefined)
+        await finish.promise
+        session.append('step/end', { turn: 1, step: 1 })
+        session.append('turn/end', {
+          turn: 1, reason: { kind: 'aborted', reason: { kind: 'user' } },
+        })
+      },
+    })
+    const running = test.run()
+    await reasoningAppended.promise
+    expect(test.output().err).toBe('alego: reasoning:\nunfinished reasoning')
+
+    releaseEnd.resolve(undefined)
+    await ended.promise
+    expect(test.output().err).toBe('alego: reasoning:\nunfinished reasoning\n')
+
+    finish.resolve(undefined)
+    await expect(running).resolves.toMatchObject({ code: 1 })
+    await test.ctx.fiber.dispose()
+  })
+
   it('exits 1 when the final turn does not complete', async () => {
     const test = await bench({
       afterPrompt(session, message) { appendTurn(session, 1, message, undefined, false) },
@@ -172,9 +306,47 @@ describe('headless runner', () => {
     await test.ctx.fiber.dispose()
   })
 
+  it('separates an unterminated reasoning prefix from the terminal model failure', async () => {
+    const test = await bench({
+      afterPrompt(session, message, agent) {
+        session.append('turn/start', { turn: 1 })
+        session.append('step/start', { turn: 1, step: 1 })
+        session.append('user/message', message, { surfaceOp: 'append' })
+        startFrames(agent)
+        emitChunk(agent, { type: 'reasoning-delta', index: 0, text: 'trying recovery' })
+        session.append('step/end', { turn: 1, step: 1 })
+        session.append('turn/end', {
+          turn: 1,
+          reason: { kind: 'error', error: { code: 'SERVER', message: 'provider unavailable' } },
+        })
+      },
+    })
+    expect(await test.run()).toMatchObject({
+      code: 1,
+      out: '\n',
+      err: 'alego: reasoning:\ntrying recovery\nalego: SERVER: provider unavailable\n',
+    })
+    await test.ctx.fiber.dispose()
+  })
+
   it('exits 1 when the owned interval contains no turn', async () => {
     const test = await bench({ afterPrompt: () => {} })
     expect(await test.run()).toMatchObject({ code: 1, out: '\n', err: '' })
+    await test.ctx.fiber.dispose()
+  })
+
+  it('fails when an event below the captured Session length cannot be read', async () => {
+    const test = await bench({
+      afterPrompt(session, message) {
+        appendTurn(session, 1, message, 'unreachable', true)
+        Object.defineProperty(session, 'eventAt', { value: () => undefined })
+      },
+    })
+    expect(await test.run()).toMatchObject({
+      code: 1,
+      out: '',
+      err: 'alego: headless summary cannot read seq 0 below captured length 7\n',
+    })
     await test.ctx.fiber.dispose()
   })
 

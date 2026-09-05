@@ -2,7 +2,7 @@
 // atomic-view props. Generic slot-system duals live in ui-slots tests.
 import { describe, expect, it } from 'vitest'
 import type { ReactNode } from 'react'
-import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import { SlotRegistry } from '@singula-ai/alego-client-ui-renderer/client'
 import type { ToolCallViewProps } from '../src/client/contract/slots.ts'
 
 describe('toolview type negatives (compile-time; body never runs)', () => {

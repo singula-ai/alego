@@ -194,7 +194,7 @@ const sharedTheme: Pick<DefaultTheme.Config, 'search' | 'socialLinks' | 'editLin
       const data: unknown = frontmatter
       const editSource: unknown = typeof data === 'object' && data !== null ? Reflect.get(data, 'editSource') : undefined
       if (typeof editSource !== 'string') throw new Error('Projected documentation page has no editSource frontmatter.')
-      return `https://github.com/singula-ai/alego/edit/master/${editSource}`
+      return `https://github.com/singula-ai/alego/edit/main/${editSource}`
     },
     text: '在 GitHub 上编辑此页',
   },
@@ -357,7 +357,7 @@ export default withMermaid({
             const data: unknown = frontmatter
             const editSource: unknown = typeof data === 'object' && data !== null ? Reflect.get(data, 'editSource') : undefined
             if (typeof editSource !== 'string') throw new Error('Projected documentation page has no editSource frontmatter.')
-            return `https://github.com/singula-ai/alego/edit/master/${editSource}`
+            return `https://github.com/singula-ai/alego/edit/main/${editSource}`
           },
           text: 'Edit this page on GitHub',
         },

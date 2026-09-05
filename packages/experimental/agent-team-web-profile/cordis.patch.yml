@@ -1,0 +1,6 @@
+# Private Agent Teams Web layer. Apply after alego-web-app and the host-side
+# alego-agent-team-profile so the browser mounts only when the Team service is present.
+
+- insert:
+    - id: ui-agent-team
+      name: '@singula-ai/alego-experimental-client-ui-agent-team'

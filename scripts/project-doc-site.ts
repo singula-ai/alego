@@ -31,10 +31,10 @@ const generatedRoot = resolve(root, 'website/.generated')
  * Resolve the public repository ref used by projected source links.
  *
  * @param environment Build environment containing an optional explicit public ref.
- * @returns The configured public ref, or `master`.
+ * @returns The configured public ref, or `main`.
  */
 export function resolveRepositoryRef(environment: NodeJS.ProcessEnv): string {
-  return environment.DOCS_REPOSITORY_REF ?? 'master'
+  return environment.DOCS_REPOSITORY_REF ?? 'main'
 }
 
 interface Replacement {
@@ -140,7 +140,7 @@ function githubTarget(
   image: boolean,
 ): string {
   const path = repoPath(absPath, repoRoot)
-  if (image) return `https://raw.githubusercontent.com/deepseek-ai/alego/${repositoryRef}/${path}${suffix}`
+  if (image) return `https://raw.githubusercontent.com/singula-ai/alego/${repositoryRef}/${path}${suffix}`
   const kind = lstatSync(absPath).isDirectory() ? 'tree' : 'blob'
   const lineSuffix = line === undefined ? suffix : `#L${line}`
   return `${REPOSITORY_URL}/${kind}/${repositoryRef}/${path}${lineSuffix}`
@@ -299,7 +299,7 @@ function referencedImages(): string[] {
       route: page.route,
       pages: docsPages,
       repoRoot: root,
-      repositoryRef: 'master',
+      repositoryRef: 'main',
       placeImage: (absPath) => {
         const real = publishableImage(absPath, root)
         if (real !== undefined) found.add(real)

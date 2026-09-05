@@ -50,7 +50,7 @@ jobs:
           persist-credentials: false
       - name: Create project token
         id: app-token
-        if: ${{ github.event_name != 'pull_request_review' || github.event.review.state == 'changes_requested' }}
+        if: ${{ github.event.repository.has_issues && (github.event_name != 'pull_request_review' || github.event.review.state == 'changes_requested') }}
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
         with:
           client-id: ${{ vars.ALEGO_ISSUE_APP_CLIENT_ID }}
@@ -58,7 +58,7 @@ jobs:
           owner: singula-ai
           repositories: alego
       - name: Handle repository event
-        if: ${{ github.event_name != 'pull_request_review' || github.event.review.state == 'changes_requested' }}
+        if: ${{ github.event.repository.has_issues && (github.event_name != 'pull_request_review' || github.event.review.state == 'changes_requested') }}
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: node .github/issue-management/policy.mjs lifecycle

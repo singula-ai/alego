@@ -4,9 +4,11 @@
  * through the `jobsBySession` list mirror, so the plugin issues no RPC and
  * holds no state of its own beyond popover visibility.
  */
-import type { ClientContext } from '@singula-ai/alego-client-runtime/client'
+import type { Context as ClientContext } from '@singula-ai/cordis'
 import { JobListAction } from './JobListAction.tsx'
 import type {} from '@singula-ai/alego-client-locale/client'
+import type {} from '@singula-ai/alego-client-ui-renderer/client'
+import type {} from '@singula-ai/alego-client-ui-session/client'
 import { en, NS, zh, type JobKey } from './locales.ts'
 
 declare module '@singula-ai/alego-client-ui-slots' {

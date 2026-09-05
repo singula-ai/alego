@@ -5,6 +5,8 @@
   "projectTitle": "ALEGO Issue Management",
   "lifecycleActor": "alego-issue-management",
   "priorityField": "Priority",
+  "startDateField": "Start Date",
+  "projectTimeZone": "Asia/Shanghai",
   "allowUnassignedOwner": true,
   "statuses": [
     "Inbox",

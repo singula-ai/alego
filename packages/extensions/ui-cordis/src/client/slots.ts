@@ -1,6 +1,6 @@
 /** Injected faces and the Package-owned `tool.view.cordis` slot declaration. */
 
-import type { SessionId } from '@singula-ai/alego-client-connection/client'
+import type { SessionId } from '@singula-ai/alego-api-remotes/client'
 import type { HostObservable } from '@singula-ai/alego-client-ui-slots'
 import type {
   CordisRunActivity, CordisRunFailure, CordisUserRunRequest, DynamicCordisLivePackage,

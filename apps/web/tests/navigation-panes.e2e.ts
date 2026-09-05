@@ -14,20 +14,21 @@ import { chromium } from 'playwright'
 import { strFromU8, unzipSync } from 'fflate'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, onTestFailed, vi } from 'vitest'
 import { parseSessionLog } from '@singula-ai/alego-llm-replay'
-import type { SessionEvent } from '@singula-ai/alego-session'
+import { SESSION_FORMAT_VERSION, type SessionEvent } from '@singula-ai/alego-session'
 import {
   assertFixtureInventory, captureStableAria, compareOrRefreshGolden, fixtureUserPrompts,
   launchWebScaffold, recordFixture, seedSession, watchConsole, webSnapshotMode, type WebScaffold,
 } from './scaffold.ts'
-import { newEnglishPage, saveFailureShot } from './support.ts'
+import { expandOwningTurnProcess, newEnglishPage, saveFailureShot } from './support.ts'
 
-const SNAPSHOT_DIR = fileURLToPath(new URL('./snapshots/navigation-panes', import.meta.url))
-const SEED = join(SNAPSHOT_DIR, 'seed.jsonl')
+const SNAPSHOT_DIR = fileURLToPath(new URL('../../../snapshots/web/navigation-panes', import.meta.url))
+const SEED = join(SNAPSHOT_DIR, 'session.v2.jsonl')
 const TRAJECTORY_EXPECTED = join(SNAPSHOT_DIR, 'trajectory.expected.md')
 const SEARCH_EXPECTED = join(SNAPSHOT_DIR, 'search-results.expected.md')
 const TERMINAL_EXPECTED = join(SNAPSHOT_DIR, 'terminal-card.expected.md')
 const MODE = webSnapshotMode()
 const SEED_ID = 'navigation-panes-web-e2e'
+const EXPORTED_LOG_FILE = `session.v${SESSION_FORMAT_VERSION}.jsonl`
 
 // Turn 1 leads with a distinctive word: the session-title fallback takes the
 // first words of the first message, so the sidebar-search scenario has a
@@ -37,11 +38,10 @@ const PROMPT_TURN2 = 'Reply in markdown with: a level-2 heading "Navigation Summ
 
 async function baselineResponse(
   page: Page,
-  method: 'session.list' | 'workspace.list',
 ): Promise<Response> {
   return page.waitForResponse(response => (
     response.request().method() === 'POST'
-    && new URL(response.url()).pathname === `/api/${method}`
+    && new URL(response.url()).pathname === '/api/session/list'
   ), { timeout: 30_000 })
 }
 
@@ -111,19 +111,14 @@ describe('web e2e: navigation & panes over a rich seeded session', () => {
         slotErrors.push(message.text())
       }
     })
-    // Initial navigation and list ownership settle only after both independent
-    // RPC baselines succeed; arm before navigation so neither response is missed.
-    const sessionBaseline = baselineResponse(page, 'session.list')
-    const workspaceBaseline = baselineResponse(page, 'workspace.list')
-    const [, sessionResponse, workspaceResponse] = await Promise.all([
-      page.goto(scaffold.baseUrl, { waitUntil: 'load' }),
+    // Arm before navigation so the Session response cannot be missed. The
+    // Workspace stream settles through the user-visible Ungrouped barrier.
+    const sessionBaseline = baselineResponse(page)
+    const [, sessionResponse] = await Promise.all([
+      page.goto(scaffold.authenticatedUrl, { waitUntil: 'load' }),
       sessionBaseline,
-      workspaceBaseline,
     ])
-    await Promise.all([
-      assertBaselineSucceeded(sessionResponse, 'session.list'),
-      assertBaselineSucceeded(workspaceResponse, 'workspace.list'),
-    ])
+    await assertBaselineSucceeded(sessionResponse, 'session.list')
     await page.waitForSelector('[class*="frame"]', { timeout: 30_000 })
     // The frame mounts before the asynchronous session-list baseline lands.
     // Search must target the settled seeded row, not the startup input that
@@ -162,7 +157,7 @@ describe('web e2e: navigation & panes over a rich seeded session', () => {
 
   it.skipIf(MODE !== 'record')('records the two-turn seed live through the composer', async () => {
     onTestFailed(() => saveFailureShot(page, 'web-e2e-navigation-record'))
-    const input = page.locator('textarea').first()
+    const input = page.locator('[data-composer-input]').first()
     await input.waitFor({ timeout: 10_000 })
     let sessionId: Awaited<ReturnType<WebScaffold['whenTurnSettled']>> | undefined
     for (const prompt of [PROMPT_TURN1, PROMPT_TURN2]) {
@@ -213,14 +208,12 @@ describe('web e2e: navigation & panes over a rich seeded session', () => {
     await compareOrRefreshGolden(SEARCH_EXPECTED, snapshot, MODE)
 
     await result.click()
-    // Search navigation addresses the session, not a specific event, and the
-    // query remains until the user explicitly clears it.
-    await expect.poll(() => search.inputValue(), { timeout: 5_000 }).toBe('WATERFALL')
+    // Search navigation returns to the browser with the opened Session row exposed.
+    await expect.poll(() => search.inputValue(), { timeout: 5_000 }).toBe('')
+    const selectedRow = page.locator('[role="tree"][aria-label="Sessions"] [role="treeitem"][aria-selected="true"]')
+    await expect.poll(() => selectedRow.count(), { timeout: 10_000 }).toBe(1)
     await expect.poll(() => page.getByText('FIRST_DONE', { exact: true }).count(), { timeout: 15_000 }).toBeGreaterThanOrEqual(1)
     await expect.poll(() => page.getByRole('heading', { name: 'Navigation Summary' }).count(), { timeout: 15_000 }).toBe(1)
-    await page.getByRole('button', { name: 'Clear search' }).click()
-    await expect.poll(() => search.inputValue(), { timeout: 5_000 }).toBe('')
-    await expect.poll(() => page.locator('[role="treeitem"]').count(), { timeout: 10_000 }).toBeGreaterThanOrEqual(1)
   }, 90_000)
 
   it.skipIf(MODE === 'record')('renders the trajectory ledger and opens its local record inspector', async () => {
@@ -315,8 +308,11 @@ describe('web e2e: navigation & panes over a rich seeded session', () => {
     // The real host streamed the ZIP; its root entry is the persisted log
     // text verbatim (the assembled seam: real route, real persistence read).
     const files = unzipSync(await readFile(await download.path()))
-    expect(Object.keys(files)).toEqual(['session.jsonl'])
-    const content = strFromU8(files['session.jsonl'] as Uint8Array)
+    expect(Object.keys(files)).toEqual([EXPORTED_LOG_FILE])
+    const content = strFromU8(files[EXPORTED_LOG_FILE] as Uint8Array)
+    expect(JSON.parse(content.split('\n')[0] ?? '')).toMatchObject({
+      type: 'session', version: SESSION_FORMAT_VERSION,
+    })
     expect(content.split('\n')[0]).toContain(SEED_ID)
     expect(content).toContain('FIRST_DONE')
     await dialog.getByText('Close', { exact: true }).click()
@@ -331,22 +327,17 @@ describe('web e2e: navigation & panes over a rich seeded session', () => {
         observerSlotErrors.push(message.text())
       }
     })
-    const observerSessionBaseline = baselineResponse(observer, 'session.list')
-    const observerWorkspaceBaseline = baselineResponse(observer, 'workspace.list')
-    const [, observerSessionResponse, observerWorkspaceResponse] = await Promise.all([
-      observer.goto(scaffold.baseUrl, { waitUntil: 'load' }),
+    const observerSessionBaseline = baselineResponse(observer)
+    const [, observerSessionResponse] = await Promise.all([
+      observer.goto(scaffold.authenticatedUrl, { waitUntil: 'load' }),
       observerSessionBaseline,
-      observerWorkspaceBaseline,
     ])
-    await Promise.all([
-      assertBaselineSucceeded(observerSessionResponse, 'observer session.list'),
-      assertBaselineSucceeded(observerWorkspaceResponse, 'observer workspace.list'),
-    ])
+    await assertBaselineSucceeded(observerSessionResponse, 'observer session.list')
     await observer.getByText('Ungrouped', { exact: true }).waitFor({ timeout: 30_000 })
     await ensureSeedOpen(observer)
 
     try {
-      const input = page.locator('textarea').first()
+      const input = page.locator('[data-composer-input]').first()
       const slashDownloadPromise = page.waitForEvent('download', { timeout: 30_000 })
       await input.fill('/export')
       await page.getByRole('option', { name: /export/u }).waitFor({ timeout: 10_000 })
@@ -354,7 +345,11 @@ describe('web e2e: navigation & panes over a rich seeded session', () => {
       const slashDownload = await slashDownloadPromise
       expect(slashDownload.suggestedFilename()).toBe(download.suggestedFilename())
       const slashFiles = unzipSync(await readFile(await slashDownload.path()))
-      const slashContent = strFromU8(slashFiles['session.jsonl'] as Uint8Array)
+      expect(Object.keys(slashFiles)).toEqual([EXPORTED_LOG_FILE])
+      const slashContent = strFromU8(slashFiles[EXPORTED_LOG_FILE] as Uint8Array)
+      expect(JSON.parse(slashContent.split('\n')[0] ?? '')).toMatchObject({
+        type: 'session', version: SESSION_FORMAT_VERSION,
+      })
       const slashEvents = parseSessionLog(slashContent)
       const exportRun = slashEvents.findLast(event => event.type === 'command/run' && event.data.name === 'export')
       if (exportRun?.type !== 'command/run') throw new Error('slash ZIP has no export command/run')
@@ -401,6 +396,7 @@ describe('web e2e: navigation & panes over a rich seeded session', () => {
     onTestFailed(() => saveFailureShot(page, 'web-e2e-navigation-details'))
     await ensureSeedOpen(page)
     const bashRow = page.locator('[data-sample="bash"]').first()
+    await expandOwningTurnProcess(page, bashRow)
     await bashRow.waitFor({ timeout: 15_000 })
     const frame = page.locator('[style*="grid-template-columns"]').first()
     expect(await frame.getAttribute('data-details-collapsed')).toBe('true')
@@ -415,11 +411,8 @@ describe('web e2e: navigation & panes over a rich seeded session', () => {
     // Read summaries are host-open file links; they also must not open details.
     const fileLink = page.locator('[data-variant="read"] button').first()
     await fileLink.waitFor({ timeout: 10_000 })
-    const openPath = vi.spyOn(scaffold.ctx.apiProxy.host, 'openPath')
-      .mockImplementation(async (request, _signal) => ({
-        rpcId: request.rpcId,
-        result: { ok: true, value: { opened: true as const } },
-      }))
+    const openPath = vi.spyOn(scaffold.ctx.sessionController, 'openWorkspacePath')
+      .mockResolvedValue({ opened: true })
     try {
       await fileLink.click()
       await expect.poll(() => frame.getAttribute('data-details-collapsed'), { timeout: 5_000 }).toBe('true')
@@ -436,6 +429,7 @@ describe('web e2e: navigation & panes over a rich seeded session', () => {
     // Expanded, the recorded command's own output sits in the message flow,
     // derived from the logged call/result presentations alone.
     const bashRow = page.locator('[data-sample="bash"]').first()
+    await expandOwningTurnProcess(page, bashRow)
     await bashRow.waitFor({ timeout: 15_000 })
     if (await bashRow.getAttribute('aria-expanded') !== 'true') await bashRow.click()
     const card = page.locator('[data-sample="bash"] ~ div [data-terminal]').first()
@@ -515,7 +509,7 @@ describe('web e2e: navigation & panes over a rich seeded session', () => {
 
   it.skipIf(MODE === 'record')('keeps the recorded fixture inventory exact', async () => {
     await assertFixtureInventory(SNAPSHOT_DIR, [
-      'seed.jsonl', 'search-results.expected.md', 'trajectory.expected.md',
+      'session.v2.jsonl', 'search-results.expected.md', 'trajectory.expected.md',
       'terminal-card.expected.md',
     ])
   })

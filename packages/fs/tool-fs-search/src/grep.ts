@@ -16,7 +16,6 @@ import { defineTool } from '@singula-ai/alego-tools'
 import type { GenericCallView, SearchResultView, ToolResult } from '@singula-ai/alego-tools'
 import type { RetainedItems } from '@singula-ai/alego-output-retention'
 import type { SpillRef } from '@singula-ai/alego-spill'
-import type {} from '@singula-ai/alego-system-prompt'
 import type { GrepMatch } from './search-core.ts'
 import { SearchError, previewLine, retainGrepMatches, runRipgrep, toWorkdirRelative, trySaveFormattedResult } from './search-core.ts'
 import { grepSearchMeta, searchViewFromMeta } from './presentation.ts'
@@ -275,7 +274,7 @@ export function presentGrepResult(
 export function applyGrepTool(ctx: Context, caps: GrepToolCaps): void {
   ctx.systemPrompt.section({
     name: 'tool:grep',
-    order: 104,
+    order: ctx.systemPrompt.getSectionOrder('TOOL_GREP'),
     text: 'Use the grep tool — not shell grep or rg — to search file contents. Use read on a matched file when you need surrounding context.',
   })
 

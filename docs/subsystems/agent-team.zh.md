@@ -2,7 +2,7 @@
 
 [English](agent-team.md) | 中文
 
-实验性隐式 Root Team 领域、模型工具与宿主适配器共享的类型。[Agent Teams Agent Note](../../.agents/notes/implemented/feature/2026-08-05-agent-teams.zh.md)负责身份、mailbox、task 与共享 checkout 决策；本页记录 [`packages/experimental/agent-team/src/types.ts`](../../packages/experimental/agent-team/src/types.ts) 中的字面持久形式。
+实验性隐式 Root Team 领域、模型工具与宿主适配器共享的类型。[Agent Teams Agent Note](../../.agents/notes/implemented/feature/2026-08-05-agent-teams.zh.md)负责身份、mailbox、task 与共享 checkout 决策；[Team Steer 消息 Agent Note](../../.agents/notes/implemented/simplification/2026-08-30-team-send-message-steer.zh.md)负责消息调度；本页记录 [`packages/experimental/agent-team/src/types.ts`](../../packages/experimental/agent-team/src/types.ts) 中的字面持久形式。
 
 ## 身份与 roster
 
@@ -34,10 +34,11 @@ interface TeamMessageSnapshot {
   readonly senderId: SessionId
   readonly senderName: string
   readonly targetId: SessionId
-  readonly delivery: 'quiet' | 'wakeup'
   readonly content: ContentBlock[]
 }
 ```
+
+每条消息都会尝试 Steer 投递。running target 在最近的步骤边界收到消息，idle target 启动一个轮次，inactive teammate 则冷恢复。调用方不能选择其他模式，因此持久记录不存储调度方式。
 
 target Session 会在 pending inbox 条目和最终用户消息上保留消息身份与发送者归因。跨 inbox 与历史折叠该 source 构成 target 侧去重键；模型可见的 framing 会重复 id 和发送者。
 
@@ -74,7 +75,7 @@ interface TeamTaskSnapshot {
 
 ## 回放
 
-`foldTeam()` 把一个 Root Session 回放成每个 Team 操作所读取的 roster、任务板与 queued-minus-delivered mailbox。它按 `TeamId` 选取记录，因此普通 fork 继承的 event 保留 ancestor id，绝不会进入新 Root 的状态。Session event 的 `seq` 与 `time` 继续负责顺序和时间记录，Team snapshot 不再重复保存它们。roster 与 task 读取以 view 形式到达调用方，附带 owner name、readiness 与 write-scope 警告，而 pending 邮件仅供投递与恢复内部使用。包 [README](../../packages/experimental/agent-team/README.zh.md)负责 operation、authorization、recovery 和限制行为。
+`foldTeam()` 把一个 Root Session 回放成每个 Team 操作所读取的 roster、任务板与 queued-minus-delivered mailbox。它按 `TeamId` 选取记录，因此普通 fork 继承的 event 保留 ancestor id，绝不会进入新 Root 的状态。Session event 的 `seq` 与 `time` 继续负责顺序和时间记录，Team snapshot 不再重复保存它们。roster 与 task 读取以 view 形式到达调用方，而 pending 邮件仅供投递与恢复内部使用。包 [README](../../packages/experimental/agent-team/README.zh.md)负责 operation、authorization、recovery 和限制行为。
 
 <!-- BEGIN GENERATED cordis-surface (gen-cordis-catalog.ts) — do not edit between markers -->
 
@@ -116,7 +117,7 @@ async spawnTeammate(caller: Agent, request: SpawnTeammateRequest): Promise<Spawn
 /**
  * Queue one durable peer message, then attempt immediate delivery.
  * @param caller - exact live sending Team member.
- * @param request - target name, content, scheduling mode, and pre-queue cancellation.
+ * @param request - target name, content, and pre-queue cancellation.
  * @returns durable message identity and immediate-delivery observation.
  */
 async sendMessage(caller: Agent, request: SendTeamMessageRequest): Promise<SendTeamMessageResult>
@@ -175,6 +176,29 @@ interrupt(caller: Agent, targetName: string): { previousStatus: 'running' | 'idl
  * @returns Team membership, or undefined for non-Team subagents and stale identities.
  */
 tryMembership(agent: Agent): TeamMembership | undefined
+
+/**
+ * Read the current roster and non-deleted task board through the generated Remote API.
+ * @param agent - exact live Team member used as the authority credential.
+ * @returns detached current roster and task views.
+ */
+@Remote('view') remoteView(agent: Agent): TeamView
+
+/**
+ * Create one shared task through the generated Remote API.
+ * @param agent - exact live Team member creating the task.
+ * @param request - task text, blockers, and advisory write scopes.
+ * @returns the revision-one task or a typed Team rejection.
+ */
+@Remote('createTask') remoteCreateTask(agent: Agent, request: CreateTeamTaskRequest): Promise<TeamTaskMutationResult>
+
+/**
+ * Apply one task mutation and preserve Team rejections as business results.
+ * @param agent - exact live Team member authorizing the mutation.
+ * @param request - task identity, expected revision, action, and action fields.
+ * @returns the committed task or a typed Team rejection.
+ */
+@Remote('updateTask') remoteUpdateTask(agent: Agent, request: UpdateTeamTaskRequest): Promise<TeamTaskMutationResult>
 ```
 
 Types: [Agent](core.zh.md)

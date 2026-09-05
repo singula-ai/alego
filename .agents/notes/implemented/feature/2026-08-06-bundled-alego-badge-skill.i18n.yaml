@@ -1,6 +1,0 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-06-bundled-alego-badge-skill.md
-2026-08-06-bundled-alego-badge-skill.md: ebfc412ce2950607ed8aec488b3f388477271e08
-2026-08-06-bundled-alego-badge-skill.zh.md: 89b2a097eb3fb29b38348e20e9fc975365a58515

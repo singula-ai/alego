@@ -47,11 +47,21 @@ const IMPLEMENTATION_PULL_REQUEST_ACTIONS = new Set([
 ])
 
 for (const status of ['In progress', 'In review']) {
-  if (!ACTIVE_STATUS_ORDER.includes(status)) throw new Error(`config.statuses is missing ${status}`)
+  if (!ACTIVE_STATUS_ORDER.includes(status)) throw new Error(`config.statuses 缺少 ${status}`)
 }
 if (typeof config.lifecycleActor !== 'string' || !config.lifecycleActor) {
-  throw new Error('config.lifecycleActor is not set')
+  throw new Error('config.lifecycleActor 未设置')
 }
+if (typeof config.priorityField !== 'string' || !config.priorityField) {
+  throw new Error('config.priorityField 未设置')
+}
+if (typeof config.startDateField !== 'string' || !config.startDateField) {
+  throw new Error('config.startDateField 未设置')
+}
+if (typeof config.projectTimeZone !== 'string' || !config.projectTimeZone) {
+  throw new Error('config.projectTimeZone 未设置')
+}
+Intl.DateTimeFormat('en-US', { timeZone: config.projectTimeZone })
 
 /**
  * Return Markdown outside balanced details elements.
@@ -134,22 +144,22 @@ export function validateBody({
   const owner = firstNonblankLine(body)?.match(OWNER_LINE)?.[1] ?? null
   const normalized = [...new Set(assignees.map((login) => login.toLowerCase()))]
 
-  if (!count.balanced) errors.push('details tags must be balanced')
-  if (count.detailsCount === 0) errors.push('body must contain a collapsed <details> section')
-  if (!count.allCollapsed) errors.push('details must be collapsed by default; open is not allowed')
+  if (!count.balanced) errors.push('details 标签必须成对闭合')
+  if (count.detailsCount === 0) errors.push('正文必须包含默认收起的 <details> 区域')
+  if (!count.allCollapsed) errors.push('details 必须默认收起，不得设置 open')
   if (count.units > BODY_LIMIT) {
-    errors.push(`body exposes ${count.units} units outside details, over the 50-unit limit`)
+    errors.push(`正文外露部分为 ${count.units} 单位，超过 50 单位`)
   }
   if (normalized.length >= 2 && !owner) {
-    errors.push('with multiple assignees the first non-blank line must be Owner: @login')
+    errors.push('多个 Assignees 时首个非空行必须是 Owner: @login')
   } else if (normalized.length >= 2 && !normalized.includes(owner.toLowerCase())) {
-    errors.push('Owner must be one of the assignees')
+    errors.push('Owner 必须属于 Assignees')
   } else if (
     normalized.length < 2 &&
     owner &&
     !(normalized.length === 0 && allowUnassignedOwner)
   ) {
-    errors.push('with zero or one assignee an Owner line is not allowed')
+    errors.push('零或一个 Assignee 时不得写 Owner 行')
   }
   return errors
 }
@@ -201,7 +211,7 @@ export function nextResolvingIssueStatus(currentStatus, command, currentStatusAc
   let target
   if (command === 'review-requested') target = 'In review'
   else if (command === 'implementation' || command === 'changes-requested') target = 'In progress'
-  else throw new Error(`unknown lifecycle command: ${command}`)
+  else throw new Error(`未知 lifecycle command：${command}`)
 
   const currentIndex = ACTIVE_STATUS_ORDER.indexOf(currentStatus)
   const targetIndex = ACTIVE_STATUS_ORDER.indexOf(target)
@@ -213,6 +223,29 @@ export function nextResolvingIssueStatus(currentStatus, command, currentStatusAc
     return target
   }
   return currentIndex >= 0 && currentIndex < targetIndex ? target : null
+}
+
+/**
+ * Convert a GitHub timestamp to a Project date in one configured time zone.
+ * @param {string} timestamp ISO timestamp.
+ * @param {string} timeZone IANA time-zone name.
+ * @returns {string} Calendar date in YYYY-MM-DD form.
+ */
+export function projectDate(timestamp, timeZone = config.projectTimeZone) {
+  const instant = new Date(timestamp)
+  if (Number.isNaN(instant.getTime())) throw new Error(`无效的 PR 创建时间：${timestamp}`)
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat('en-US', {
+      timeZone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    })
+      .formatToParts(instant)
+      .filter((part) => part.type !== 'literal')
+      .map((part) => [part.type, part.value]),
+  )
+  return `${parts.year}-${parts.month}-${parts.day}`
 }
 
 function stripIgnoredMarkdown(body) {
@@ -292,32 +325,33 @@ export function validateIssue(issue) {
     (label) => label.startsWith('kind/') || LEGACY_LABELS.has(label),
   )
 
+  if (!/\p{Script=Han}/u.test(issue.title)) errors.push('Issue 标题必须包含中文')
   if (invalidLabels.length > 0) {
-    errors.push(`Issue must not use PR kind or legacy labels: ${invalidLabels.join(', ')}`)
+    errors.push(`Issue 不得使用 PR kind 或旧版标签：${invalidLabels.join(', ')}`)
   }
   if (
     /^\s*(?:\[(?:Idea|Feature|Bug|Research|Task|P[0-3]|Inbox|Backlog|Ready|In progress|In review|Done|No action|Owner|area\/[^\]]+)[^\]]*\]|(?:Idea|Feature|Bug|Research|Task|P[0-3]|Inbox|Backlog|Ready|In progress|In review|Done|No action|Owner|area\/[^:： ]+)\s*[:：-])/iu.test(
       issue.title,
     )
   ) {
-    errors.push('Issue title must not carry a Type, Priority, Status, area, or Owner prefix')
+    errors.push('Issue 标题不得带 Type、Priority、Status、area 或 Owner 前缀')
   }
-  if (!TYPES.has(issue.type ?? '')) errors.push('Type must be one of the five native Types')
-  if (!status || !config.statuses.includes(status)) errors.push('Issue must be in the Project with a valid Status')
+  if (!TYPES.has(issue.type ?? '')) errors.push('Type 必须是五种原生英文 Type 之一')
+  if (!status || !config.statuses.includes(status)) errors.push('Issue 必须在 Project 中且具有合法 Status')
   if (issue.priority !== null && !PRIORITIES.includes(issue.priority.toLowerCase())) {
-    errors.push('Priority must be empty or P0-P3')
+    errors.push('Priority 必须为空或为 P0–P3')
   }
   if (status === 'Done' && (issue.state !== 'closed' || issue.stateReason !== 'completed')) {
-    errors.push('Done requires the Completed close reason')
+    errors.push('Done 必须对应 Completed 关闭原因')
   }
   if (
     status === 'No action' &&
     (issue.state !== 'closed' || issue.stateReason !== 'not_planned')
   ) {
-    errors.push('No action requires the Not planned close reason')
+    errors.push('No action 必须对应 Not planned 关闭原因')
   }
   if (!['Done', 'No action'].includes(status ?? '') && issue.state !== 'open') {
-    errors.push(`${status} requires an open Issue`)
+    errors.push(`${status} 必须对应开放 Issue`)
   }
   return errors
 }
@@ -339,19 +373,19 @@ export function validatePullRequest(input) {
   const priorities = input.labels.filter((label) => PRIORITIES.includes(label))
   const areas = input.labels.filter((label) => label.startsWith('area/'))
 
-  if (input.references.all.length === 0) errors.push('PR body must reference at least one Issue in this repository')
+  if (input.references.all.length === 0) errors.push('PR 正文必须引用至少一个同仓库 Issue')
   if (kinds.length !== 1) {
-    errors.push(`PR must carry exactly one allowed kind/*, found ${kinds.length}`)
+    errors.push(`PR 必须恰好有一个允许的 kind/*，当前为 ${kinds.length}`)
   }
   if (unknownKinds.length > 0) {
-    errors.push(`PR carries unsupported kind/*: ${unknownKinds.join(', ')}`)
+    errors.push(`PR 含不支持的 kind/*：${unknownKinds.join(', ')}`)
   }
-  if (legacyLabels.length > 0) errors.push(`PR carries legacy labels: ${legacyLabels.join(', ')}`)
-  if (sourceLabels.length > 0) errors.push(`source/* applies to Issues only: ${sourceLabels.join(', ')}`)
-  if (priorities.length > 1) errors.push(`PR may carry at most one p0-p3, found ${priorities.length}`)
-  if (areas.length === 0) errors.push('PR must carry at least one area/*')
+  if (legacyLabels.length > 0) errors.push(`PR 含旧版标签：${legacyLabels.join(', ')}`)
+  if (sourceLabels.length > 0) errors.push(`source/* 仅用于 Issue：${sourceLabels.join(', ')}`)
+  if (priorities.length > 1) errors.push(`PR 最多有一个 p0–p3，当前为 ${priorities.length}`)
+  if (areas.length === 0) errors.push('PR 必须至少有一个 area/*')
   for (const number of input.references.all) {
-    if (!input.issues.has(number)) errors.push(`#${number} is not an Issue in this repository`)
+    if (!input.issues.has(number)) errors.push(`#${number} 不是同仓库 Issue`)
   }
 
   const resolving = input.references.resolving
@@ -366,22 +400,26 @@ export function validatePullRequest(input) {
     const highest = issuePriorities.sort(
       (left, right) => PRIORITIES.indexOf(left) - PRIORITIES.indexOf(right),
     )[0]
-    errors.push(`PR Priority must be ${highest}`)
+    errors.push(`PR Priority 应为 ${highest}`)
   } else if (priorities.length === 1 && issuePriorities.length !== resolving.length) {
-    errors.push('a resolving PR with a Priority requires every resolved Issue to set one')
+    errors.push('有 Priority 的解决型 PR 要求每个被解决 Issue 都设置 Priority')
   } else if (priorities.length === 1) {
     const highest = issuePriorities.sort(
       (left, right) => PRIORITIES.indexOf(left) - PRIORITIES.indexOf(right),
     )[0]
-    if (priorities[0] !== highest) errors.push(`PR Priority must be ${highest}`)
+    if (priorities[0] !== highest) errors.push(`PR Priority 应为 ${highest}`)
   }
   return errors
 }
 
 function token() {
   const value = process.env.GH_TOKEN || process.env.GITHUB_TOKEN
-  if (!value) throw new Error('GH_TOKEN or GITHUB_TOKEN is not set')
+  if (!value) throw new Error('GH_TOKEN 或 GITHUB_TOKEN 未设置')
   return value
+}
+
+function projectToken() {
+  return process.env.PROJECT_TOKEN || token()
 }
 
 async function api(path, options = {}) {
@@ -408,19 +446,25 @@ async function graphql(query, variables) {
   const result = await api('/graphql', {
     method: 'POST',
     body: JSON.stringify({ query, variables }),
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      Authorization: `Bearer ${projectToken()}`,
+      'Content-Type': 'application/json',
+    },
   })
   if (result.errors?.length) throw new Error(result.errors.map((error) => error.message).join('; '))
   return result.data
 }
 
-async function issueSnapshot(number, status = undefined) {
+/**
+ * Read one Issue together with its Project planning values.
+ * @param {number} number Same-repository Issue number.
+ * @param {string|null|undefined} status Optional known Project status.
+ * @returns {Promise<object|null>} Issue snapshot, or null when the number identifies a pull request.
+ */
+export async function issueSnapshot(number, status = undefined) {
   const issue = await api(`/repos/${config.organization}/${config.repository}/issues/${number}`)
   if (issue.pull_request) return null
-  const values = await api(
-    `/repos/${config.organization}/${config.repository}/issues/${number}/issue-field-values?per_page=100`,
-  )
-  const field = (name) => values.find((value) => value.issue_field_name === name)
+  const context = await projectContext(number)
   return {
     number,
     nodeId: issue.node_id,
@@ -429,14 +473,14 @@ async function issueSnapshot(number, status = undefined) {
     assignees: issue.assignees.map((assignee) => assignee.login),
     labels: issue.labels.map((label) => label.name),
     type: issue.type?.name ?? null,
-    priority: field(config.priorityField)?.single_select_option?.name ?? null,
-    status: status === undefined ? await projectStatus(number) : status,
+    priority: context.item?.priorityValue?.name ?? null,
+    status: status === undefined ? (context.item?.fieldValueByName?.name ?? null) : status,
     state: issue.state,
     stateReason: issue.state_reason ?? null,
   }
 }
 
-async function projectContext(number, includeStatusActor = false) {
+async function projectContext(number, includeStatusActor = false, includeStartDate = false) {
   const data = await graphql(
     `query(
       $organization: String!
@@ -444,6 +488,9 @@ async function projectContext(number, includeStatusActor = false) {
       $number: Int!
       $project: Int!
       $includeStatusActor: Boolean!
+      $includeStartDate: Boolean!
+      $priorityField: String!
+      $startDateField: String!
     ) {
       organization(login: $organization) {
         projectV2(number: $project) {
@@ -451,7 +498,19 @@ async function projectContext(number, includeStatusActor = false) {
           title
           fields(first: 50) {
             nodes {
-              ... on ProjectV2SingleSelectField { id name options { id name } }
+              ... on ProjectV2Field {
+                id
+                name
+                dataType
+                isIssueField
+              }
+              ... on ProjectV2SingleSelectField {
+                id
+                name
+                dataType
+                isIssueField
+                options { id name }
+              }
             }
           }
         }
@@ -476,6 +535,13 @@ async function projectContext(number, includeStatusActor = false) {
               fieldValueByName(name: "Status") {
                 ... on ProjectV2ItemFieldSingleSelectValue { name optionId }
               }
+              priorityValue: fieldValueByName(name: $priorityField) {
+                ... on ProjectV2ItemFieldSingleSelectValue { name optionId }
+              }
+              startDateValue: fieldValueByName(name: $startDateField)
+                @include(if: $includeStartDate) {
+                ... on ProjectV2ItemFieldDateValue { date }
+              }
             }
           }
         }
@@ -487,32 +553,50 @@ async function projectContext(number, includeStatusActor = false) {
       number,
       project: config.projectNumber,
       includeStatusActor,
+      includeStartDate,
+      priorityField: config.priorityField,
+      startDateField: config.startDateField,
     },
   )
   const project = data.organization?.projectV2
   const issue = data.repository?.issue
-  if (!project || project.title !== config.projectTitle) throw new Error('target Project is missing or its title does not match')
-  if (!issue) throw new Error(`#${number} does not exist`)
+  if (!project || project.title !== config.projectTitle) throw new Error('目标 Project 不存在或标题不匹配')
+  if (!issue) throw new Error(`#${number} 不存在`)
   const statusField = project.fields.nodes.find((field) => field?.name === 'Status')
-  if (!statusField) throw new Error('Project has no Status field')
+  if (!statusField) throw new Error('Project 缺少 Status 字段')
+  const priorityField = project.fields.nodes.find((field) => field?.name === config.priorityField)
+  if (!priorityField) throw new Error(`Project 缺少 ${config.priorityField} 字段`)
+  if (priorityField.dataType !== 'SINGLE_SELECT') {
+    throw new Error(`Project ${config.priorityField} 字段必须为 Single Select`)
+  }
+  if (priorityField.isIssueField) {
+    throw new Error(`Project ${config.priorityField} 字段必须为 Project custom field`)
+  }
+  const startDateField = includeStartDate
+    ? project.fields.nodes.find((field) => field?.name === config.startDateField)
+    : null
+  if (includeStartDate && !startDateField) {
+    throw new Error(`Project 缺少 ${config.startDateField} 字段`)
+  }
+  if (startDateField && startDateField.dataType !== 'DATE') {
+    throw new Error(`Project ${config.startDateField} 字段必须为 Date`)
+  }
+  if (startDateField?.isIssueField) {
+    throw new Error(`Project ${config.startDateField} 字段必须为 Project Date 字段`)
+  }
   const item = issue.projectItems.nodes.find((candidate) => candidate.project.id === project.id)
   const latestStatusEvent = issue.timelineItems?.nodes
     ?.filter((event) => event?.project?.id === project.id)
     .at(-1)
   const statusActor =
-    latestStatusEvent?.status === item?.fieldValueByName?.name
+    latestStatusEvent && latestStatusEvent.status === item?.fieldValueByName?.name
       ? (latestStatusEvent.actor?.login ?? null)
       : null
-  return { project, issue, statusField, item, statusActor }
+  return { project, issue, statusField, priorityField, startDateField, item, statusActor }
 }
 
-async function projectStatus(number) {
-  const context = await projectContext(number)
-  return context.item?.fieldValueByName?.name ?? null
-}
-
-async function ensureProjectItem(number) {
-  const context = await projectContext(number)
+async function ensureProjectItem(number, includeStartDate = false) {
+  const context = await projectContext(number, false, includeStartDate)
   if (context.item) return context
   const data = await graphql(
     `mutation($projectId: ID!, $contentId: ID!) {
@@ -524,13 +608,62 @@ async function ensureProjectItem(number) {
   )
   return {
     ...context,
-    item: { id: data.addProjectV2ItemById.item.id, fieldValueByName: null },
+    item: {
+      id: data.addProjectV2ItemById.item.id,
+      fieldValueByName: null,
+      priorityValue: null,
+      startDateValue: null,
+    },
   }
+}
+
+/**
+ * Initialize one Issue's Project Start Date when it is empty.
+ * @param {number} number Same-repository Issue number.
+ * @param {string} date Date in YYYY-MM-DD form.
+ * @returns {Promise<void>} Resolves after the conditional Project update.
+ */
+export async function initializeIssueStartDate(number, date) {
+  const context = await ensureProjectItem(number, true)
+  if (context.item.startDateValue?.date) return
+  await graphql(
+    `mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $date: Date!) {
+      updateProjectV2ItemFieldValue(input: {
+        projectId: $projectId,
+        itemId: $itemId,
+        fieldId: $fieldId,
+        value: {date: $date}
+      }) { projectV2Item { id } }
+    }`,
+    {
+      projectId: context.project.id,
+      itemId: context.item.id,
+      fieldId: context.startDateField.id,
+      date,
+    },
+  )
+}
+
+/**
+ * Initialize every referenced Issue from a newly opened PR.
+ * @param {{createdAt: string, references: {all: number[]}}} pull Pull-request snapshot.
+ * @param {string} action Pull-request event action.
+ * @param {(number: number, date: string) => Promise<void>} initialize Date writer.
+ * @returns {Promise<void>} Resolves after all eligible Issues are processed.
+ */
+export async function initializePullRequestStartDates(
+  pull,
+  action,
+  initialize = initializeIssueStartDate,
+) {
+  if (action !== 'opened') return
+  const date = projectDate(pull.createdAt)
+  for (const number of pull.references.all) await initialize(number, date)
 }
 
 async function updateStatus(context, status) {
   const option = context.statusField.options.find((candidate) => candidate.name === status)
-  if (!option) throw new Error(`Status does not exist: ${status}`)
+  if (!option) throw new Error(`Status 不存在：${status}`)
   if (context.item.fieldValueByName?.name === status) return
   await graphql(
     `mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
@@ -569,7 +702,7 @@ async function upsertAudit(number, errors) {
     }
     return
   }
-  const body = `${AUDIT_MARKER}\n⚠️ Issue policy failed:\n\n${errors.map((error) => `- ${error}`).join('\n')}`
+  const body = `${AUDIT_MARKER}\n⚠️ Issue policy 未通过：\n\n${errors.map((error) => `- ${error}`).join('\n')}`
   if (existing) {
     if (existing.body === body) return
     await api(`/repos/${config.organization}/${config.repository}/issues/comments/${existing.id}`, {
@@ -630,7 +763,10 @@ async function pullRequestSnapshot(number) {
 
 async function lifecyclePullRequestSnapshot(number) {
   const pull = await api(`/repos/${config.organization}/${config.repository}/pulls/${number}`)
-  return resolvingReferencesSnapshot(number, pull)
+  return {
+    ...(await resolvingReferencesSnapshot(number, pull)),
+    createdAt: pull.created_at,
+  }
 }
 
 async function transitionResolvingIssues(pull, command) {
@@ -654,10 +790,10 @@ async function runPullRequestCheck(event) {
   const errors = validatePullRequest(pull)
   if (errors.length > 0) {
     for (const error of errors) process.stdout.write(`::error::${error}\n`)
-    throw new Error(`Issue policy failed with ${errors.length} error(s)`)
+    throw new Error(`Issue policy 未通过，共 ${errors.length} 项`)
   }
   process.stdout.write(
-    requiresPullRequestPolicy(pull) ? 'Issue policy passed.\n' : 'PR is not yet in scope for Issue policy enforcement.\n',
+    requiresPullRequestPolicy(pull) ? 'Issue policy 通过。\n' : 'PR 尚未进入 Issue policy 强制范围。\n',
   )
 }
 
@@ -682,11 +818,14 @@ async function runLifecycle(eventName, event) {
     if (!command) return
     const pull = await lifecyclePullRequestSnapshot(event.pull_request.number)
     await transitionResolvingIssues(pull, command)
+    if (eventName === 'pull_request') {
+      await initializePullRequestStartDates(pull, event.action)
+    }
   }
 }
 
 function readEvent() {
-  if (!process.env.GITHUB_EVENT_PATH) throw new Error('GITHUB_EVENT_PATH is not set')
+  if (!process.env.GITHUB_EVENT_PATH) throw new Error('GITHUB_EVENT_PATH 未设置')
   return JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8'))
 }
 
@@ -694,7 +833,7 @@ async function main(argv) {
   const [command] = argv
   if (command === 'pr') await runPullRequestCheck(readEvent())
   else if (command === 'lifecycle') await runLifecycle(process.env.GITHUB_EVENT_NAME, readEvent())
-  else throw new Error('usage: policy.mjs pr|lifecycle')
+  else throw new Error('用法：policy.mjs pr|lifecycle')
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

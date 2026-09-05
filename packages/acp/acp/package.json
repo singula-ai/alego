@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-acp",
   "description": "Automation-only Agent Client Protocol server for driving Alego agents over JSON-RPC stdio",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -18,42 +18,49 @@
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
     },
-    "./invariant": {
-      "types": "./lib/types/invariant.d.ts",
-      "default": "./lib/invariant.js"
-    },
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
   "files": [
     "lib/index.js",
-    "lib/invariant.js",
     "lib/types/**/*.d.ts"
   ],
   "license": "MIT",
   "dependencies": {
-    "@agentclientprotocol/sdk": "0.25.1",
+    "@agentclientprotocol/sdk": "1.4.0",
+    "@singula-ai/alego-brand": "workspace:^",
     "@singula-ai/schemastery": "workspace:^"
   },
   "peerDependencies": {
-    "@singula-ai/alego-attachment": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
     "@singula-ai/alego-agent": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-attachment": "workspace:^",
     "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-mcp-client": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
-    "@singula-ai/alego-user-approval": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-session-persistence": "workspace:^",
+    "@singula-ai/alego-token-meter": "workspace:^",
+    "@singula-ai/alego-user-approval": "workspace:^"
+  },
+  "peerDependenciesMeta": {
+    "@singula-ai/alego-token-meter": {
+      "optional": true
+    }
   },
   "devDependencies": {
-    "@singula-ai/alego-attachment": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
     "@singula-ai/alego-agent": "workspace:^",
     "@singula-ai/alego-agent-loop": "workspace:^",
     "@singula-ai/alego-agent-loop-testkit": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
+    "@singula-ai/alego-attachment": "workspace:^",
     "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-mcp-client": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-session-persistence": "workspace:^",
+    "@singula-ai/alego-session-persistence-jsonl": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^",
+    "@singula-ai/alego-token-meter": "workspace:^",
     "@singula-ai/alego-tools": "workspace:^",
-    "@singula-ai/alego-user-approval": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-user-approval": "workspace:^"
   }
 }

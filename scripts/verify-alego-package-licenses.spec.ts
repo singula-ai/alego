@@ -28,7 +28,7 @@ function createWorkspace(): string {
 }
 
 describe('ALEGO package license gate', () => {
-  it('checks every repository-owned @singula-ai package while ignoring rescoped vendor sources', () => {
+  it('checks root, unhyphenated CLI, and alego-prefixed package names while ignoring other families', () => {
     const root = createWorkspace()
     writeManifest(root, 'apps/cli/package.json', { name: '@singula-ai/alego', license: 'MIT' })
     writeManifest(root, 'packages/core/agent/package.json', {

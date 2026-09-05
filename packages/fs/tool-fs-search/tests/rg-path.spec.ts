@@ -8,7 +8,7 @@
 
 import { describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
-import { CallId } from '@singula-ai/alego-llm'
+import { ToolCallId } from '@singula-ai/alego-llm'
 import type { ToolExecution } from '@singula-ai/alego-tools'
 import { resolveRgPath, runRipgrep } from '@singula-ai/alego-tool-fs-search'
 
@@ -24,7 +24,7 @@ describe('lazy packaged-ripgrep resolution', () => {
   it('fails the first search call with SEARCH_FAILED instead of failing module load', async () => {
     // The resolution rejects before any spawn, so no subprocess service is needed.
     const controller = new AbortController()
-    const exec = { signal: controller.signal, name: 'glob', callId: CallId('missing-platform-package') } as unknown as ToolExecution
+    const exec = { signal: controller.signal, name: 'glob', callId: ToolCallId('missing-platform-package') } as unknown as ToolExecution
 
     await expect(runRipgrep(new Context(), exec, 'glob', ['--files'], 1_000_000, 3_000, 64 * 1024))
       .rejects.toMatchObject({ name: 'SearchError', code: 'SEARCH_FAILED' })

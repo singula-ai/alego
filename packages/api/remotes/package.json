@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-api-remotes",
-  "description": "Remote BFF assembly and Host Agent/Session lookup policy",
-  "version": "0.1.2",
+  "description": "Remote BFF assembly for application-selected Host capabilities",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -17,10 +17,6 @@
     ".": {
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
-    },
-    "./invariant": {
-      "types": "./lib/types/invariant.d.ts",
-      "default": "./lib/invariant.js"
     },
     "./client": {
       "types": "./lib/types/client/index.d.ts",
@@ -49,52 +45,43 @@
   "license": "MIT",
   "files": [
     "lib/index.js",
-    "lib/invariant.js",
     "lib/client.js",
     "lib/types/**/*.js",
     "lib/types/**/*.d.ts"
   ],
   "dependencies": {
-    "@singula-ai/alego-typert-protocol": "workspace:^"
+    "@singula-ai/alego-deque": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-util-values": "workspace:^"
   },
   "peerDependencies": {
-    "@singula-ai/alego-agent": "workspace:^",
-    "@singula-ai/alego-agent-presets": "workspace:^",
-    "@singula-ai/alego-api-gateway": "workspace:^",
-    "@singula-ai/alego-commands": "workspace:^",
-    "@singula-ai/alego-cordis-host-runner": "workspace:^",
-    "@singula-ai/alego-credentials": "workspace:^",
-    "@singula-ai/alego-file-reference": "workspace:^",
-    "@singula-ai/alego-goal": "workspace:^",
-    "@singula-ai/alego-host-plugin-inventory": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/alego-message-feedback": "workspace:^",
-    "@singula-ai/alego-session": "workspace:^",
-    "@singula-ai/alego-session-persistence": "workspace:^",
-    "@singula-ai/alego-session-reference": "workspace:^",
-    "@singula-ai/alego-settings": "workspace:^",
-    "@singula-ai/alego-typert-registry": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-scope": "workspace:^"
   },
   "devDependencies": {
-    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
     "@singula-ai/alego-agent-presets": "workspace:^",
     "@singula-ai/alego-api-gateway": "workspace:^",
+    "@singula-ai/alego-api-settings-controller": "workspace:^",
+    "@singula-ai/alego-api-workspace-controller": "workspace:^",
     "@singula-ai/alego-commands": "workspace:^",
     "@singula-ai/alego-cordis-host-runner": "workspace:^",
     "@singula-ai/alego-credentials": "workspace:^",
     "@singula-ai/alego-file-reference": "workspace:^",
     "@singula-ai/alego-goal": "workspace:^",
     "@singula-ai/alego-host-plugin-inventory": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-llm": "workspace:^",
     "@singula-ai/alego-message-feedback": "workspace:^",
-    "@singula-ai/alego-session": "workspace:^",
-    "@singula-ai/alego-session-persistence": "workspace:^",
     "@singula-ai/alego-session-reference": "workspace:^",
     "@singula-ai/alego-settings": "workspace:^",
-    "@singula-ai/alego-typert-registry": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-subagent": "workspace:^",
+    "@singula-ai/alego-user-approval": "workspace:^",
+    "@singula-ai/alego-user-questions": "workspace:^",
+    "@singula-ai/alego-client-connection": "workspace:^",
+    "@singula-ai/alego-client-file-upload": "workspace:^",
+    "@singula-ai/alego-typert-protocol": "workspace:^",
+    "@singula-ai/alego-scope": "workspace:^",
+    "@singula-ai/alego-api-session-controller": "workspace:^",
+    "zod": "^4.4.3"
   }
 }

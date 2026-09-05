@@ -12,11 +12,12 @@
 
 import type { Context } from '@singula-ai/cordis'
 import type {
-  ApprovalRequestId, CordisDynamicPluginId, DynamicCordisInvokeResult, JsonValue,
+  ApprovalRequestId, CordisDynamicPluginId, DynamicCordisInvokeResult,
   DynamicCordisInventoryRow,
 } from '@singula-ai/alego-api-remotes/client'
 import type { ClientModuleSystem } from '@singula-ai/alego-client-modules/client'
-import type { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import type { SlotRegistry } from '@singula-ai/alego-client-ui-renderer/client'
+import type { JsonValue } from '@singula-ai/alego-util-values'
 // The Client Remote assembly is the one place the two planes meet: it mounts the
 // `dynamicCordisRunner` namespace and re-exports its payload vocabulary, so this
 // package names what it sends without importing a Host package.

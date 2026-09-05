@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-goal-round-driver",
   "description": "Race-fenced same-session goal-round driver",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -49,6 +49,7 @@
     "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/alego-system-prompt": "workspace:^",
     "@singula-ai/alego-tools": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^"
   }
 }

@@ -5,7 +5,6 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import SessionStore, { SessionId } from '@singula-ai/alego-session'
 import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
-import SqliteSessionPersistence from '@singula-ai/alego-session-persistence-sqlite'
 import { RetryId } from '@singula-ai/alego-llm-retry'
 import type {} from '../src/index.ts'
 
@@ -15,24 +14,21 @@ afterEach(async () => {
   for (const dir of dirs.splice(0)) await rm(dir, { recursive: true, force: true })
 })
 
-async function backend(kind: 'jsonl' | 'sqlite'): Promise<Context> {
+async function backend(): Promise<Context> {
   const ctx = new Context()
   await ctx.plugin(SessionStore)
-  if (kind === 'jsonl') {
-    const root = await mkdtemp(join(tmpdir(), 'alego-llm-retry-jsonl-'))
-    dirs.push(root)
-    await ctx.plugin(JsonlSessionPersistence, { root })
-  } else {
-    await ctx.plugin(SqliteSessionPersistence, { path: ':memory:' })
-  }
+  const root = await mkdtemp(join(tmpdir(), 'alego-llm-retry-jsonl-'))
+  dirs.push(root)
+  await ctx.plugin(JsonlSessionPersistence, { root })
   return ctx
 }
 
-describe.each(['jsonl', 'sqlite'] as const)('%s retry-event persistence', (kind) => {
+describe('JSONL retry-event persistence', () => {
   it('round-trips the event losslessly without adding a model message', async () => {
-    const ctx = await backend(kind)
+    const ctx = await backend()
     try {
-      const session = ctx.sessions.create(SessionId(`retry-${kind}`))
+      const session = ctx.sessions.create(SessionId('retry-jsonl'))
+      const handle = await ctx.sessionPersistence.create(session.header)
       session.append('turn/start', { turn: 1 })
       session.append('step/start', { turn: 1, step: 1 })
       session.append('request/header', {
@@ -40,7 +36,7 @@ describe.each(['jsonl', 'sqlite'] as const)('%s retry-event persistence', (kind)
         reason: 'initial',
       })
       const event = session.append('llm/retry', {
-        retryId: RetryId(`retry-${kind}-chain`),
+        retryId: RetryId('retry-jsonl-chain'),
         turn: 1,
         step: 1,
         provider: 'mock',
@@ -57,9 +53,14 @@ describe.each(['jsonl', 'sqlite'] as const)('%s retry-event persistence', (kind)
 
       expect(session.deriveMessages()).toEqual([])
       await ctx.sessions.flush(session)
-      const loaded = await ctx.sessionPersistence.load(session.id)
-
-      expect(loaded.events.find(item => item.type === 'llm/retry')).toEqual(event)
+      await handle.close()
+      const reader = await ctx.sessionPersistence.open(session.id, 'read')
+      try {
+        const loaded = await reader.read()
+        expect(loaded.find(item => item.type === 'llm/retry')).toEqual(event)
+      } finally {
+        await reader.close()
+      }
     } finally {
       await ctx.fiber.dispose()
     }

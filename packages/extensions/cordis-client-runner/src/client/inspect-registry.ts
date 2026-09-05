@@ -3,9 +3,9 @@
 import type { Context } from '@singula-ai/cordis'
 import type {
   CordisInspectProviderManifest, CordisInspectQueryRequest, CordisInspectQueryResolution,
-  CordisInspectRequestId, JsonValue,
+  CordisInspectRequestId, SessionId,
 } from '@singula-ai/alego-api-remotes/client'
-import type { SessionId } from '@singula-ai/alego-client-connection/client'
+import type { JsonValue } from '@singula-ai/alego-util-values'
 
 /** Context supplied to a Client inspect provider query. */
 export interface ClientCordisInspectQueryContext {

@@ -2,15 +2,16 @@
  * Integration: the real fetch backend (`alego-web-fetch-http`) + a real search provider
  * (`alego-web-search-exa`) + the real seam (`alego-web`) + the model tool (`alego-tool-web`) + the
  * tool-call timeout policy (`alego-tool-call-timeout-policy`), exercised through `ctx.tools.execute()` —
- * nothing bypasses the tool registry. Fetch verifies world effects against loopback HTTP; search
- * uses the real Exa provider with only its network boundary stubbed.
+ * nothing bypasses the tool registry. Fetch verifies world effects against loopback HTTP with
+ * public-address resolution replaced by the fixture address; search uses the real Exa provider
+ * with only its network boundary stubbed.
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http'
 import { AddressInfo } from 'node:net'
 import { Context } from '@singula-ai/cordis'
-import { CallId } from '@singula-ai/alego-llm'
+import { ToolCallId } from '@singula-ai/alego-llm'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime, { type ToolExecutionResult } from '@singula-ai/alego-tools'
 import WebRuntime from '@singula-ai/alego-web'
@@ -18,6 +19,7 @@ import * as WebFetchLocal from '@singula-ai/alego-web-fetch-http'
 import * as WebSearchExa from '@singula-ai/alego-web-search-exa'
 import * as ToolWeb from '@singula-ai/alego-tool-web'
 import * as TimeoutPolicy from '@singula-ai/alego-tool-call-timeout-policy'
+import { publicHttpNetwork } from '../../web-fetch-http/src/network.ts'
 
 const testToolSignal = new AbortController().signal
 
@@ -30,6 +32,7 @@ let ctx: Context
 let fiber: Awaited<ReturnType<Context['plugin']>>
 
 beforeEach(async () => {
+  vi.spyOn(publicHttpNetwork, 'resolve').mockResolvedValue([{ address: '127.0.0.1', family: 4 }])
   handler = (_req, res) => { res.writeHead(200, { 'content-type': 'text/html' }); res.end('<h1>Hello</h1><p>World</p>') }
   server = createServer((req, res) => { handler(req, res) })
   await new Promise<void>(resolve => server.listen(0, '127.0.0.1', resolve))
@@ -52,12 +55,13 @@ beforeEach(async () => {
 afterEach(async () => {
   await fiber.dispose()
   vi.unstubAllGlobals()
+  vi.restoreAllMocks()
   await new Promise<void>(resolve => server.close(() => { resolve() }))
 })
 
 let counter = 0
 function call(name: string, args: unknown): Promise<ToolExecutionResult> {
-  return ctx.tools.execute({ signal: testToolSignal, callId: CallId(`call-${++counter}`), name, arguments: args })
+  return ctx.tools.execute({ signal: testToolSignal, callId: ToolCallId(`call-${++counter}`), name, arguments: args })
 }
 
 describe('web_fetch integration over the real backend', () => {
@@ -149,7 +153,7 @@ describe('tool-call timeout returns TOOL_TIMEOUT (deadline wins over a slow fetc
   })
 
   it('returns a structured TOOL_TIMEOUT (not the provider WEB_FETCH_TIMEOUT) when the tool-call budget wins', async () => {
-    const out = await tctx.tools.execute({ signal: testToolSignal, callId: CallId('slow-1'), name: 'web_fetch', arguments: { url: slowBase } })
+    const out = await tctx.tools.execute({ signal: testToolSignal, callId: ToolCallId('slow-1'), name: 'web_fetch', arguments: { url: slowBase } })
     expect(out.isError).toBe(true)
     // The outer tool-call deadline won: TOOL_TIMEOUT, owned by alego-tool-call-timeout-policy,
     // NOT the provider's own WEB_FETCH_TIMEOUT (its 30s backstop never fired).
@@ -162,7 +166,6 @@ describe('tool-call timeout returns TOOL_TIMEOUT (deadline wins over a slow fetc
     // A direct provider caller bypasses tools/execute, so a short configured backstop
     // must produce provider-owned WEB_FETCH_TIMEOUT rather than TOOL_TIMEOUT.
     const direct = new WebFetchLocal.HttpFetchProvider({
-      maxUrlLength: 2048,
       maxResponseBytes: 5_000_000,
       maxBodyChars: 100_000,
       timeoutMs: 50,

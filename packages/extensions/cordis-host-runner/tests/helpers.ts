@@ -1,6 +1,6 @@
 import { Context } from '@singula-ai/cordis'
 import Timer from '@singula-ai/cordis-plugin-timer'
-import { CallId } from '@singula-ai/alego-llm'
+import { ToolCallId } from '@singula-ai/alego-llm'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRegistry from '@singula-ai/alego-tools'
 import type { ToolDefinition, ToolExecutionResult } from '@singula-ai/alego-tools'
@@ -147,7 +147,7 @@ let callCounter = 0
 export function call(ctx: Context, name: string, args: unknown): Promise<ToolExecutionResult> {
   return ctx.tools.execute({
     signal: new AbortController().signal,
-    callId: CallId(`call-${++callCounter}`),
+    callId: ToolCallId(`call-${++callCounter}`),
     name,
     arguments: args,
   })

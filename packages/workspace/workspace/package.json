@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-workspace",
   "description": "Workspace entity registry (ctx.workspaceRegistry): durable workspace records with validated session attachment over the domain data form for the Alego",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -37,24 +37,25 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-storage-domain": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
     "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/alego-session-persistence": "workspace:^",
     "@singula-ai/alego-storage": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-storage-domain": "workspace:^",
+    "@singula-ai/alego-typert-protocol": "workspace:^"
   },
   "dependencies": {
+    "@singula-ai/alego-brand": "workspace:^",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-storage-domain": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
     "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/alego-session-persistence": "workspace:^",
     "@singula-ai/alego-storage": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-storage-domain": "workspace:^",
+    "@singula-ai/alego-typert-protocol": "workspace:^"
   }
 }

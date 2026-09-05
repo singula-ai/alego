@@ -9,11 +9,11 @@ Python packages for driving Alego as a subprocess. The client SDK communicates w
 | Directory | Dist / module | Role |
 |---|---|---|
 | [sdk](sdk/README.md) | `alego-sdk` / `alego` | High-level turns API and lower-level JSON-RPC client |
-| [sdk-runtime](sdk-runtime/README.md) | `alego-runtime-bin` / `alego_runtime` | Bundled runtime binaries and default agent configuration |
+| [sdk-runtime](sdk-runtime/README.md) | `alego-runtime-bin` / `alego_runtime` | Bundled `alego` CLI executable and native sidecars |
 
 ## Behavior
 
-The SDK starts the matching bundled runtime unless the caller selects an explicit channel. The client selects the channel and supplies default configuration; the runtime itself always requires an explicit configuration. The [SDK reference](sdk/README.md) and [runtime carrier reference](sdk-runtime/README.md) own the complete runtime-selection and configuration contracts.
+The SDK starts the matching bundled `alego --profile sdk` runtime unless the caller selects another `alego` executable or profile. The runnable minimal example selects the shipped standalone `sdk-minimal` profile; the same runtime also packages `alego web` and its frontend assets for separate CLI use. Every launch requires an explicitly selected Harness home; Python never silently reads `~/.alego`. The [SDK reference](sdk/README.md) and [runtime carrier reference](sdk-runtime/README.md) own runtime selection, profiles, patches, and external plugin management.
 
 ## Contributor workflows
 

@@ -1,20 +1,20 @@
 ---
 name: Feature
-about: Add or deliberately change observable behavior
+about: 新增或有意改变可观察行为
 title: ''
 labels: ''
 assignees: ''
 type: Feature
 ---
 
-<!-- Title: one action or result sentence. Keep the body outside <details> under 50 units. -->
-One sentence stating the intended result.
+<!-- 标题写中文行动或结果句；外露正文不超过 50 单位。 -->
+一句话说明预期结果。
 
 <details>
-<summary>Acceptance and detail</summary>
+<summary>验收与细节</summary>
 
-- Acceptance criteria:
-- User- or model-visible change:
-- Test evidence:
+- 验收条件：
+- 用户或模型可见变化：
+- 测试证据：
 
 </details>

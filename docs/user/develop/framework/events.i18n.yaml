@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/user/develop/framework/events.md
-events.md: c678f3b0d91702bde9ce54974f2fd6bc8fb8944e
-events.zh.md: 041a61c087fee1056e4f3eef7dc64e0fa6c85932
+events.md: f13bee6e25c01389f577eb5e469849afdffbb9a0
+events.zh.md: c3cd3aa21e9ae2a9a4014ef9067a9a7bd80c7b7c

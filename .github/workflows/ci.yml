@@ -11,41 +11,35 @@ env:
   # into apps/cli/cordis.yml (AppCLIEntry disables the row when set).
   ALEGO_TELEMETRY_DISABLED: '1'
 
-# Cancel a superseded pull-request run on a new push so a fresh head does not
-# queue a second full 9-job run behind a stale one (paid enterprise runners
-# would otherwise stack with no auto-cancellation).
+# New commits supersede the previous pull-request run.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
 
-  # Three enterprise jobs isolate coverage, static analysis, and the
+  # Three jobs isolate coverage, static analysis, and the
   # build-backed consumer tail. The consumer job owns the only Linux build so
   # all three jobs enter runner allocation independently.
   #
-  # FAILOVER (Linux): each Linux enterprise job resolves its pool through the
-  # ALEGO_CI_FAILOVER_LINUX repository variable. Unset (normal), the expressions
-  # pick the hosted enterprise pools below. Setting the variable to
-  # 'selfhosted' (repo Settings → Actions → Variables; writer-manageable
-  # repository state — not PR-editable, no merge required) retargets all
-  # three onto the in-house
-  # vm-backup pool and re-running the failed jobs is the entire switch —
-  # see .agents/notes/implemented/process/2026-07-26-ci-failover-runbook.md. The
-  # in-house pool's readiness is re-proven on every main push by the
-  # serial-linux-selfhosted standby lane in ci-master.yml. The Windows failover
-  # switch is the separate ALEGO_CI_FAILOVER_WINDOWS variable on the windows-native
-  # job below.
+  # Hosted runners are the default. ALEGO_CI_FAILOVER_LINUX=selfhosted selects
+  # vm-backup; Windows uses the separate ALEGO_CI_FAILOVER_WINDOWS variable.
+  # These repository variables cannot be changed by a pull request. Standby
+  # drills in ci-master.yml require ALEGO_SELF_HOSTED_STANDBY_ENABLED.
+  # See .agents/notes/implemented/process/2026-07-26-ci-failover-runbook.md.
   node-24:
     if: github.event_name == 'pull_request'
     runs-on: >-
       ${{ vars.ALEGO_CI_FAILOVER_LINUX == 'selfhosted'
           && github.event.pull_request.user.login != 'dependabot[bot]'
           && fromJSON('["self-hosted", "linux", "x64", "vm-backup"]')
-          || 'alego-ubuntu-24-04-16core' }}
+          || 'ubuntu-24.04' }}
     name: node 24 / static
     env:
       ALEGO_GATE_CONCURRENCY: '8'
+      # Stop the aggregate at the first blocking gate failure so a red run
+      # does not keep burning enterprise runner time on the remaining gates.
+      ALEGO_GATE_FAIL_FAST: '1'
     steps:
       # Fetch complete history so the archive gate can read the trusted PR base from a reused shallow checkout.
       - uses: actions/checkout@v6
@@ -55,7 +49,7 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          dest: ${{ runner.temp }}/setup-pnpm
+          dest: ${{ runner.temp }}/setup-pnpm-${{ github.run_id }}-${{ github.run_attempt }}
 
       - uses: actions/setup-node@v6
         with:
@@ -94,14 +88,17 @@ jobs:
       ${{ vars.ALEGO_CI_FAILOVER_LINUX == 'selfhosted'
           && github.event.pull_request.user.login != 'dependabot[bot]'
           && fromJSON('["self-hosted", "linux", "x64", "vm-backup"]')
-          || 'alego-ubuntu-24-04-16core' }}
+          || 'ubuntu-24.04' }}
     name: node 24 / coverage
     env:
-      # Partitioning replaces the instrumented share; this budget gives the
-      # exempt-heavy gate two workers on both hosted and failover runners.
-      ALEGO_COVERAGE_MAX_WORKERS: '6'
-      ALEGO_COVERAGE_PARTITIONS: '4'
+      # Two instrumented workers and one exempt worker leave headroom for
+      # their subprocesses on the hosted four-CPU runner.
+      ALEGO_COVERAGE_MAX_WORKERS: '3'
+      ALEGO_COVERAGE_PARTITIONS: '2'
       ALEGO_GATE_CONCURRENCY: '3'
+      # A gate failure aborts the sibling gate instead of waiting out its
+      # multi-minute instrumented run.
+      ALEGO_GATE_FAIL_FAST: '1'
     steps:
       - uses: actions/checkout@v6
         with:
@@ -109,7 +106,7 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          dest: ${{ runner.temp }}/setup-pnpm
+          dest: ${{ runner.temp }}/setup-pnpm-${{ github.run_id }}-${{ github.run_attempt }}
 
       - uses: actions/setup-node@v6
         with:
@@ -156,16 +153,19 @@ jobs:
       ${{ vars.ALEGO_CI_FAILOVER_LINUX == 'selfhosted'
           && github.event.pull_request.user.login != 'dependabot[bot]'
           && fromJSON('["self-hosted", "linux", "x64", "vm-backup"]')
-          || 'alego-ubuntu-24-04-16core' }}
+          || 'ubuntu-24.04' }}
     name: node 24 / snapshots and artifacts
     env:
-      ALEGO_GATE_CONCURRENCY: '8'
+      # Each consumer gate owns parallel subprocesses; the four-CPU hosted
+      # runner executes one gate at a time while retaining that inner parallelism.
+      ALEGO_GATE_CONCURRENCY: '1'
       ALEGO_NODE_COMPAT_SKIP_TYPECHECK: '1'
-      ALEGO_OXLINT_THREADS: '8'
-      ALEGO_PUBLINT_CONCURRENCY: '8'
-      ALEGO_WEB_SNAPSHOT_WORKERS: '6'
-      # Failover halves snapshot concurrency for the shared 64-core VM.
-      ALEGO_SNAPSHOT_MAX_CONCURRENCY: ${{ vars.ALEGO_CI_FAILOVER_LINUX == 'selfhosted' && github.event.pull_request.user.login != 'dependabot[bot]' && '12' || '32' }}
+      ALEGO_OXLINT_THREADS: '4'
+      ALEGO_PUBLINT_CONCURRENCY: '4'
+      ALEGO_WEB_SNAPSHOT_WORKERS: '2'
+      # A failed gate stops the remaining consumer inventory.
+      ALEGO_GATE_FAIL_FAST: '1'
+      ALEGO_SNAPSHOT_MAX_CONCURRENCY: '2'
     steps:
       - uses: actions/checkout@v6
         with:
@@ -173,7 +173,7 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          dest: ${{ runner.temp }}/setup-pnpm
+          dest: ${{ runner.temp }}/setup-pnpm-${{ github.run_id }}-${{ github.run_attempt }}
 
       - uses: actions/setup-node@v6
         with:
@@ -188,7 +188,7 @@ jobs:
           echo "path=$store_path" >> "$GITHUB_OUTPUT"
 
       # Pull requests restore the pnpm store and Playwright caches without paying
-      # compression and upload on the required path. No job on main saves these
+      # compression and upload on the required path. No master job saves these
       # hosted cache keys, so each restore-keys fallback hits the matching archived
       # entry until it evicts, after which the store is cold. Skipped under failover
       # — the self-hosted VM's persistent store is already warm.
@@ -244,12 +244,22 @@ jobs:
     env:
       ALEGO_GATE_CONCURRENCY: ${{ matrix.gate_concurrency }}
       ALEGO_NODE_COMPAT_SKIP_TYPECHECK: '1'
+      # A failed smoke aborts the remaining compatibility gates instead of
+      # letting the build-backed legs run against an already-red aggregate.
+      ALEGO_GATE_FAIL_FAST: '1'
     strategy:
       fail-fast: false
       matrix:
         include:
           - node: '22.19'
             name: node 22.19
+            runner: ubuntu-latest
+            gate_concurrency: '1'
+          # Pinned inside 24.0-24.11.1: those releases carry the v1 internal
+          # loader while reporting major 24, and every other job tracks the
+          # latest 24, which is v2. A bare `24` here would retest that same v2.
+          - node: '24.9'
+            name: node 24.9
             runner: ubuntu-latest
             gate_concurrency: '1'
           - node: 26
@@ -261,7 +271,7 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          dest: ${{ runner.temp }}/setup-pnpm
+          dest: ${{ runner.temp }}/setup-pnpm-${{ github.run_id }}-${{ github.run_attempt }}
 
       - uses: actions/setup-node@v6
         with:
@@ -275,6 +285,12 @@ jobs:
         env:
           ALEGO_BUILD_CLIENT_PROFILE: official
         run: pnpm run check:node-compat
+
+      # Kept out of the gate aggregate: the shape a Node release carries only
+      # changes with the Node version, so this belongs to the version matrix
+      # rather than to every commit's checks.
+      - name: Check Loader internal shape detection
+        run: pnpm exec vitest run packages/boot/app-boot/tests/loader-shape.compat.spec.ts
 
   python-sdk:
     if: github.event_name == 'pull_request'
@@ -294,17 +310,18 @@ jobs:
       - name: Run complete keyless Python suite
         run: uv run --python 3.10 --group test --project python/sdk pytest
 
-  # One native target makes the complete release-shaped Python path required
-  # without duplicating platform-independent behavior across the release matrix.
-  # The reusable builder owns the executable, snapshot, wheel, clean-install,
-  # GLIBC, and manylinux checks; release validation retains all native targets.
+  # The reusable builder owns each published executable, wheel, clean-install,
+  # keyless black-box, and trusted real-API path. All native release targets are
+  # required because a platform wheel cannot be validated by another carrier.
   python-runtime:
     if: github.event_name == 'pull_request'
-    name: python runtime / release-shaped Linux x64
+    name: python runtime / release-shaped matrix
     uses: ./.github/workflows/build-exe-for-python-sdk.yml
     with:
-      targets: node24-linux-x64
+      targets: node24-linux-x64,node24-linux-arm64,node24-macos-arm64,node24-macos-x64,node24-win-x64
       ci: true
+    secrets:
+      DEEPSEEK_API_KEY_EXTERNAL: ${{ secrets.DEEPSEEK_API_KEY_EXTERNAL }}
 
   # The required pull-request Windows signal: the two blocking win32 surfaces
   # (workspace build, production site) execute with real, checksum-verified
@@ -328,7 +345,7 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          dest: ${{ runner.temp }}/setup-pnpm
+          dest: ${{ runner.temp }}/setup-pnpm-${{ github.run_id }}-${{ github.run_attempt }}
 
       - uses: actions/setup-node@v6
         with:
@@ -349,7 +366,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-${{ env.PRIMARY_NODE_VERSION }}-pnpm-
 
-      # The wine-apt-cache job in ci-master.yml seeds the default-branch
+      # Master's wine-apt-cache job in ci-master.yml seeds the default-branch
       # scope every pull request can read; a save from this job only reaches
       # reruns of the same merge ref.
       - name: Compose Wine apt cache key
@@ -396,70 +413,230 @@ jobs:
         if: always()
         run: wineserver -k 2>/dev/null || true
 
-  # Every pull request also gets a real Windows-kernel signal. This job keeps
-  # its own unmasked conclusion but is deliberately absent from
-  # all-checks-passed.needs, so it never delays or changes that required
-  # verdict. Under normal operation it runs on the hosted larger runner; under
-  # Windows failover (ALEGO_CI_FAILOVER_WINDOWS=selfhosted) it retargets onto the
-  # in-house self-hosted Windows pool. Dependabot PRs are excluded from the
-  # self-hosted pool and stay queued for the hosted runner — see the failover
-  # runbook. This Windows switch is independent of the Linux
-  # ALEGO_CI_FAILOVER_LINUX variable that retargets the three required Linux jobs
-  # and the all-checks-passed verdict above.
-  windows-native:
+  # Every pull request also gets real Windows-kernel signals. The former
+  # monolithic windows-native job is split into smaller jobs so one slow
+  # coverage gate does not hold up build/static results, while the total
+  # per-job process count stays lower. Observational checks are non-blocking.
+  # Dependabot PRs are excluded from the self-hosted pool and stay queued for
+  # the hosted runner.
+  windows-build:
     if: github.event_name == 'pull_request'
     runs-on: >-
       ${{ vars.ALEGO_CI_FAILOVER_WINDOWS == 'selfhosted'
           && github.event.pull_request.user.login != 'dependabot[bot]'
           && fromJSON('["self-hosted", "alego-win-ci", "windows"]')
-          || 'alego-windows-2025-16core' }}
-    name: windows node 24 / native complete
-    timeout-minutes: 120
+          || 'windows-2025' }}
+    name: windows node 24 / build
+    timeout-minutes: 60
     env:
-      ALEGO_COVERAGE_MAX_WORKERS: '6'
-      ALEGO_COVERAGE_PARTITIONS: '8'
-      # Instrumented process and polling fixtures can exceed Vitest's defaults
-      # under the complete lane's concurrent gate load.
-      ALEGO_COVERAGE_TEST_TIMEOUT_MS: '30000'
-      ALEGO_GATE_CONCURRENCY: '4'
-      ALEGO_PUBLINT_CONCURRENCY: '8'
+      # A failing build or site aborts the sibling gate on the same runner.
+      ALEGO_GATE_FAIL_FAST: '1'
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-
       - name: Enable Developer Mode (symlink support)
         shell: pwsh
         run: >-
           reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock"
           /t REG_DWORD /f /v "AllowDevelopmentWithoutDevLicense" /d "1"
-
       - uses: pnpm/action-setup@v4
         with:
-          dest: ${{ runner.temp }}/setup-pnpm-js
-
+          dest: ${{ runner.temp }}/setup-pnpm-js-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-
-      # Extracting the many-file pnpm store cache is slower than a clean
-      # install on hosted Windows runners, and saving it adds latency after
-      # the gates. The self-hosted VM's persistent store makes caching
-      # redundant.
       - name: Install (immutable)
         shell: pwsh
-        run: pnpm install --frozen-lockfile
-
-      - name: Run complete native Windows gate inventory
+        # See 2026-08-30-windows-refs-store-block-clone-install for the
+        # ReFS block-clone rationale; detect the workspace filesystem and
+        # pass --package-import-method=clone only on ReFS.
+        run: >-
+          $drive = (Split-Path -Qualifier $env:GITHUB_WORKSPACE).TrimEnd(':');
+          $fs = (Get-Volume -DriveLetter $drive).FileSystem;
+          if ($fs -eq 'ReFS') {
+            corepack pnpm install --frozen-lockfile --package-import-method=clone
+          } else {
+            pnpm install --frozen-lockfile
+          }
+      - name: Run blocking Windows builds
         shell: pwsh
-        run: pnpm run check:ci:windows-complete
+        run: pnpm run check:ci:windows-blocking
+
+  windows-coverage:
+    if: github.event_name == 'pull_request'
+    runs-on: >-
+      ${{ vars.ALEGO_CI_FAILOVER_WINDOWS == 'selfhosted'
+          && github.event.pull_request.user.login != 'dependabot[bot]'
+          && fromJSON('["self-hosted", "alego-win-ci", "windows"]')
+          || 'windows-2025' }}
+    name: windows node 24 / coverage
+    timeout-minutes: 120
+    env:
+      ALEGO_COVERAGE_MAX_WORKERS: '3'
+      ALEGO_COVERAGE_PARTITIONS: '2'
+      ALEGO_COVERAGE_TEST_TIMEOUT_MS: '90000'
+      ALEGO_GATE_CONCURRENCY: '3'
+      # A gate failure aborts the sibling gate instead of waiting out its
+      # multi-minute instrumented run.
+      ALEGO_GATE_FAIL_FAST: '1'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      # Checkout removes the gitignored duration history, so restore it from
+      # the GitHub cache before coverage and save the updated one afterwards.
+      # The coordinator then weights partitions by measured durations on the
+      # second run instead of degrading to a file-count split. GitHub cache
+      # entries are immutable, so the save key is unique per run and the
+      # restore matches the newest entry through the stable prefix.
+      - name: Restore coverage duration history
+        uses: actions/cache/restore@v4
+        with:
+          path: .coverage-times.json
+          key: coverage-times-${{ github.run_id }}
+          restore-keys: |
+            coverage-times-
+      - name: Enable Developer Mode (symlink support)
+        shell: pwsh
+        run: >-
+          reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock"
+          /t REG_DWORD /f /v "AllowDevelopmentWithoutDevLicense" /d "1"
+      - uses: pnpm/action-setup@v4
+        with:
+          dest: ${{ runner.temp }}/setup-pnpm-js-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Install (immutable)
+        shell: pwsh
+        # See 2026-08-30-windows-refs-store-block-clone-install for the
+        # ReFS block-clone rationale; detect the workspace filesystem and
+        # pass --package-import-method=clone only on ReFS.
+        run: >-
+          $drive = (Split-Path -Qualifier $env:GITHUB_WORKSPACE).TrimEnd(':');
+          $fs = (Get-Volume -DriveLetter $drive).FileSystem;
+          if ($fs -eq 'ReFS') {
+            corepack pnpm install --frozen-lockfile --package-import-method=clone
+          } else {
+            pnpm install --frozen-lockfile
+          }
+      # No build before coverage, matching the Linux lane: workspace imports
+      # resolve to src through the tsconfig paths map, and the lib-consuming
+      # suites (webworker-packer image-loadable, webworker-runtime
+      # transform-corpus, client ui-trajectory client-bundle) self-skip on
+      # unbuilt checkouts.
+      - name: Run Windows coverage
+        shell: pwsh
+        run: pnpm run check:ci:coverage
+      - name: Save coverage duration history
+        # Coverage flakes must not prevent the cache from building; the
+        # measured durations remain useful even when a partition failed. The
+        # per-run key keeps every save a fresh immutable cache entry.
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .coverage-times.json
+          key: coverage-times-${{ github.run_id }}
+
+  windows-native-tests:
+    if: github.event_name == 'pull_request'
+    runs-on: >-
+      ${{ vars.ALEGO_CI_FAILOVER_WINDOWS == 'selfhosted'
+          && github.event.pull_request.user.login != 'dependabot[bot]'
+          && fromJSON('["self-hosted", "alego-win-ci", "windows"]')
+          || 'windows-2025' }}
+    name: windows node 24 / native tests
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Enable Developer Mode (symlink support)
+        shell: pwsh
+        run: >-
+          reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock"
+          /t REG_DWORD /f /v "AllowDevelopmentWithoutDevLicense" /d "1"
+      - uses: pnpm/action-setup@v4
+        with:
+          dest: ${{ runner.temp }}/setup-pnpm-js-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Install (immutable)
+        shell: pwsh
+        # See 2026-08-30-windows-refs-store-block-clone-install for the
+        # ReFS block-clone rationale; detect the workspace filesystem and
+        # pass --package-import-method=clone only on ReFS.
+        run: >-
+          $drive = (Split-Path -Qualifier $env:GITHUB_WORKSPACE).TrimEnd(':');
+          $fs = (Get-Volume -DriveLetter $drive).FileSystem;
+          if ($fs -eq 'ReFS') {
+            corepack pnpm install --frozen-lockfile --package-import-method=clone
+          } else {
+            pnpm install --frozen-lockfile
+          }
+      - name: Run Windows-specific native tests
+        shell: pwsh
+        run: >-
+          pnpm exec vitest run
+          --no-file-parallelism
+          --testTimeout 90000
+          packages/shell/tool-pwsh/tests/loader.spec.ts
+          packages/workflow/workflow-worker-thread/tests/workflow-worker-thread.spec.ts
+          packages/workflow/tool-ralph/tests/integration.spec.ts
+          packages/subprocess/subprocess-local/tests/process-exit.spec.ts
+
+  windows-observational:
+    if: github.event_name == 'pull_request'
+    continue-on-error: true
+    runs-on: >-
+      ${{ vars.ALEGO_CI_FAILOVER_WINDOWS == 'selfhosted'
+          && github.event.pull_request.user.login != 'dependabot[bot]'
+          && fromJSON('["self-hosted", "alego-win-ci", "windows"]')
+          || 'windows-2025' }}
+    name: windows node 24 / observational
+    timeout-minutes: 60
+    env:
+      ALEGO_PUBLINT_CONCURRENCY: '8'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Enable Developer Mode (symlink support)
+        shell: pwsh
+        run: >-
+          reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock"
+          /t REG_DWORD /f /v "AllowDevelopmentWithoutDevLicense" /d "1"
+      - uses: pnpm/action-setup@v4
+        with:
+          dest: ${{ runner.temp }}/setup-pnpm-js-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Install (immutable)
+        shell: pwsh
+        # See 2026-08-30-windows-refs-store-block-clone-install for the
+        # ReFS block-clone rationale; detect the workspace filesystem and
+        # pass --package-import-method=clone only on ReFS.
+        run: >-
+          $drive = (Split-Path -Qualifier $env:GITHUB_WORKSPACE).TrimEnd(':');
+          $fs = (Get-Volume -DriveLetter $drive).FileSystem;
+          if ($fs -eq 'ReFS') {
+            corepack pnpm install --frozen-lockfile --package-import-method=clone
+          } else {
+            pnpm install --frozen-lockfile
+          }
+      - name: Run Windows observational gates
+        shell: pwsh
+        run: pnpm run check:ci:windows-observational
 
   # Single stable required check for branch protection: require "all checks
   # passed" instead of enumerating matrix legs whose names change as lanes and
   # node versions evolve. Every blocking job in THIS workflow must be listed in
   # `needs`. The required Wine job is listed as `windows`; `windows-native` is
   # deliberately absent so its independent result never delays or changes this
-  # verdict. (`needs` cannot reach across workflow files; the main-only jobs in
+  # verdict. (`needs` cannot reach across workflow files; the master-only jobs in
   # ci-master.yml are intentionally not part of this PR verdict.)
   # `if: always()` is load-bearing: without it a failed dependency
   # would SKIP this job, and GitHub counts a skipped required check as passing
@@ -478,7 +655,7 @@ jobs:
           && github.event.pull_request.user.login != 'dependabot[bot]'
           && fromJSON('["self-hosted", "linux", "x64", "vm-backup"]')
           || 'ubuntu-latest' }}
-    needs: [node-24, node-24-coverage, node-24-consumers, node-compat, python-sdk, python-runtime, windows]
+    needs: [node-24, node-24-coverage, node-24-consumers, node-compat, python-sdk, python-runtime, windows, windows-build, windows-native-tests]
     if: always() && github.event_name == 'pull_request'
     steps:
       - name: Fail if any needed job did not succeed

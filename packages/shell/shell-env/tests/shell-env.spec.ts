@@ -8,8 +8,9 @@ import { homedir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
-import { CallId } from '@singula-ai/alego-llm'
+import { ToolCallId } from '@singula-ai/alego-llm'
 import type { Agent } from '@singula-ai/alego-agent'
+import { SESSION_FORMAT_VERSION } from '@singula-ai/alego-session'
 import type { ToolExecution } from '@singula-ai/alego-tools'
 import { ShellEnvRegistry } from '@singula-ai/alego-shell-env'
 import * as BashEnvPlugin from '@singula-ai/alego-shell-env'
@@ -22,13 +23,19 @@ function execution(sessionId?: string): ToolExecution {
   return {
     signal: testToolSignal,
     token: Symbol('bash-env-test') as ToolExecution['token'],
-    callId: CallId('bash-env-call'),
-    rootCallId: CallId('bash-env-call'),
+    callId: ToolCallId('bash-env-call'),
+    rootCallId: ToolCallId('bash-env-call'),
     name: 'bash',
     arguments: { command: 'true' },
     ...(sessionId === undefined
       ? {}
-      : { agent: { session: { header: { version: 0, id: sessionId, createdAt: 0 } } } as Agent }),
+      : {
+        agent: {
+          session: {
+            header: { version: SESSION_FORMAT_VERSION, id: sessionId, createdAt: 0, isSeeded: false },
+          },
+        } as unknown as Agent,
+      }),
   }
 }
 
@@ -199,40 +206,10 @@ describe('ShellEnvRegistry', () => {
     expect(registry.collect(execution())).not.toHaveProperty('ALEGO_EXPLICIT_DISPOSAL')
   })
 
-  it('the plugin registers the service and the persistence contributor on load', async () => {
+  it('the plugin registers the service with no contributors on load', async () => {
     const ctx = new Context()
     await ctx.plugin(BashEnvPlugin)
     expect(ctx.shellEnv).toBeInstanceOf(ShellEnvRegistry)
-    expect(ctx.shellEnv.list()).toEqual([
-      {
-        contributor: 'session-persistence',
-        description: 'Absolute target path of the current session JSONL when the active persistence backend provides one.',
-        key: 'ALEGO_SESSION_JSONL',
-      },
-    ])
-  })
-
-  it('the persistence contributor resolves ALEGO_SESSION_JSONL only for a jsonl backend', async () => {
-    const ctx = new Context()
-    await ctx.plugin(BashEnvPlugin)
-    ctx.provide('sessionPersistence', {
-      locate: () => ({ kind: 'jsonl' as const, path: 'C:\\sessions\\s.jsonl' }),
-    })
-    expect(ctx.shellEnv.collect(execution('sess-p')).ALEGO_SESSION_JSONL).toBe('C:\\sessions\\s.jsonl')
-  })
-
-  it('the persistence contributor omits the variable for a non-jsonl backend', async () => {
-    const ctx = new Context()
-    await ctx.plugin(BashEnvPlugin)
-    ctx.provide('sessionPersistence', {
-      locate: () => ({ kind: 'sqlite' as const, path: 'C:\\sessions\\s.db' }),
-    })
-    expect(ctx.shellEnv.collect(execution('sess-p'))).not.toHaveProperty('ALEGO_SESSION_JSONL')
-  })
-
-  it('the persistence contributor omits the variable without a persistence backend', async () => {
-    const ctx = new Context()
-    await ctx.plugin(BashEnvPlugin)
-    expect(ctx.shellEnv.collect(execution('sess-p'))).not.toHaveProperty('ALEGO_SESSION_JSONL')
+    expect(ctx.shellEnv.list()).toEqual([])
   })
 })

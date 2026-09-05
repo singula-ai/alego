@@ -6,17 +6,17 @@ Status: implemented
 
 ## 问题
 
-当调用方提供 `GenerateOptions.sessionId` 时，直连 DeepSeek 请求已携带 `x-alego-session-id`，让提供方侧支持与诊断可以关联同一对话中的多个轮次。但请求缺少跨会话的稳定身份，而 harness 已为遥测与反馈持久化匿名用户 id。另行生成 id 会破坏关联；把它放进提供方无关的归属辅助函数，则会让每个 HTTP 适配器都发送稳定的逐用户标识。
+当调用方提供 `GenerateOptions.sessionId` 时，直连 DeepSeek 请求已携带 `x-dsh-session-id`，让提供方侧支持与诊断可以关联同一对话中的多个轮次。但请求缺少跨会话的稳定身份，而 harness 已为遥测与反馈持久化匿名用户 id。另行生成 id 会破坏关联；把它放进提供方无关的归属辅助函数，则会让每个 HTTP 适配器都发送稳定的逐用户标识。
 
 用户 id 是传输元数据，不是模型输入。它不得进入请求体、提示词、token 计量、KV cache 身份或会话日志。发送目标是适配器解析后的 `baseURL`，既可能是 DeepSeek 自身，也可能是配置的网关，因此必须明确隐私边界。
 
 ## 决策
 
-`alego-llm-deepseek` 在凭据解析成功后发出的每个提供方请求上发送 `x-alego-user-id`。该值来自 `@singula-ai/alego-anonymous-user-id`，因此与同一 `$ALEGO_HOME` 的 OpenTelemetry Resource `user.id` 及 `/feedback` 确认一致。适配器继续仅在存在 `GenerateOptions.sessionId` 时发送 `x-alego-session-id`；普通 agent、标题生成与压缩请求由 agent loop 提供当前持久化 `Session.id`。
+`alego-llm-deepseek` 在凭据解析成功后发出的每个提供方请求上发送 `x-dsh-user-id`。该值来自 `@singula-ai/alego-anonymous-user-id`，因此与同一 `$ALEGO_HOME` 的 OpenTelemetry Resource `user.id` 及 `/feedback` 确认一致。适配器继续仅在存在 `GenerateOptions.sessionId` 时发送 `x-dsh-session-id`；普通 agent、标题生成与压缩请求由 agent loop 提供当前持久化 `Session.id`。
 
 插件在凭据解析成功后惰性获取用户 id，并在该插件实例内缓存。缺少凭据不会创建 `.anonymous-user-id`；即使设置了 `ALEGO_TELEMETRY_DISABLED`，首个已授权的提供方请求仍可能创建它。直连适配器构造函数接收 `resolveUserId` 依赖，使线路行为可在单元测试中保持确定性。
 
-两个头部都是发送到解析后 `baseURL` 的模型不可见 HTTP 元数据。它们不在 JSON 请求体中，也不会成为模型可见输入或会话事件。配置的网关会收到它们。遥测共享只控制遥测导出，不会禁用提供方请求身份。
+两个头部都是发送到解析后 `baseURL` 的模型不可见 HTTP 元数据。身份值不在 JSON 请求体中，也不会成为模型可见输入或会话事件。配置的网关会收到它们。提供方特定正文扩展由 [DeepSeek LLM API 扩展决策](../architecture/2026-08-21-deepseek-llm-api-request-extensions.zh.md)单独拥有。遥测共享只控制遥测导出，不会禁用提供方请求身份。
 
 ## 验证
 
@@ -41,4 +41,4 @@ Status: implemented
 - DeepSeek 支持可以通过一个匿名 harness-home id 跨会话关联请求，并通过持久化 session id 关联同一对话。
 - 首个已授权 DeepSeek 请求可独立于遥测导出创建 `$ALEGO_HOME/.anonymous-user-id`。
 - 自定义 DeepSeek 网关会收到稳定用户 id 与可用的会话 id，因此运维方必须将配置的 `baseURL` 视为身份接收方。
-- 请求体、提示词、token 数、KV cache 身份和会话日志保持不变。
+- 身份头部不会改变请求体、提示词、token 数、KV cache 身份或会话日志；单独注册的 DeepSeek 正文扩展保留各自约定。

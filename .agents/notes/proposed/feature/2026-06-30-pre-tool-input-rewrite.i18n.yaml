@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/proposed/feature/2026-06-30-pre-tool-input-rewrite.md
-2026-06-30-pre-tool-input-rewrite.md: fe8745e6eda76e366094342df79b2f6b0e7a59ff
-2026-06-30-pre-tool-input-rewrite.zh.md: 4e19562497e49a860342cbb02a6b17e8c6d079c6
+2026-06-30-pre-tool-input-rewrite.md: ab6a3f7a27c155fb660921429671c5de254f333c
+2026-06-30-pre-tool-input-rewrite.zh.md: fc8180a21aa359c39298612e30db02c44154d3d8

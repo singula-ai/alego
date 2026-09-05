@@ -9,7 +9,7 @@ import {
 import type { InjectFace, PropsLocale, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
 import type {} from '@singula-ai/alego-client-ui-sidebar/client'
 import type { CordisRunActivity } from '@singula-ai/alego-cordis-client-runner/client'
-import type { SessionId } from '@singula-ai/alego-client-connection/client'
+import type { SessionId } from '@singula-ai/alego-api-remotes/client'
 import type { CordisInventoryRow } from './dynamic-port.ts'
 import type { CordisPanelFace } from './slots.ts'
 import type { CordisKey } from './locales.ts'

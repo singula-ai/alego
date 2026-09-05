@@ -1,7 +1,8 @@
 /** Shared top-level-call post-policy selection for search result spill. @module alego-tool-fs-search/direct-call */
 
 import type { Context } from '@singula-ai/cordis'
-import type { JsonValue, PostToolDecision, ToolDefinition, ToolExecution, ToolExecutionResult } from '@singula-ai/alego-tools'
+import type { PostToolDecision, ToolDefinition, ToolExecution, ToolExecutionResult } from '@singula-ai/alego-tools'
+import type { JsonValue } from '@singula-ai/alego-util-values'
 
 /**
  * Return the accepted canonical value only when this tool still owns a direct

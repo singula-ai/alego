@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-20-webworker-pack-lowering-and-preview.md
+2026-08-20-webworker-pack-lowering-and-preview.md: e5224f22e6dcdef3b34c7536f5f6e64ee9a6b352
+2026-08-20-webworker-pack-lowering-and-preview.zh.md: 51ac3aefe4c4eb77169e8836d0a603d32226134f

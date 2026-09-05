@@ -17,7 +17,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/singula-ai/alego"
-Documentation = "https://github.com/singula-ai/alego/blob/master/docs/user/guide/python-sdk.md"
+Documentation = "https://github.com/singula-ai/alego/blob/main/docs/user/guide/python-sdk.md"
 Issues = "https://github.com/singula-ai/alego/issues"
 Source = "https://github.com/singula-ai/alego"
 

@@ -15,7 +15,7 @@ import { Context } from '@singula-ai/cordis'
 import Loader from '@singula-ai/cordis-plugin-loader'
 import Include from '@singula-ai/cordis-plugin-include'
 import z from '@singula-ai/schemastery'
-import { settingsNamespace, type SettingsScope } from '@singula-ai/alego-settings'
+import { type SettingsScope } from '@singula-ai/alego-settings'
 import FileSettingsProvider from '../src/index.ts'
 
 interface ThemeConfig {
@@ -63,7 +63,7 @@ async function loadComposition(
       const base: Partial<ThemeConfig> = { fontSize: 16 }
       state.applied = ThemeSchema(base as ThemeConfig)
       ctx.inject(['settings'], (child: Context) => {
-        const scope = child.settings.register(settingsNamespace('ui-theme'), ThemeSchema, { base })
+        const scope = child.settings.register('ui-theme', ThemeSchema, { base })
         state.scope = scope
         state.applied = scope.get()
         scope.watch((next) => {

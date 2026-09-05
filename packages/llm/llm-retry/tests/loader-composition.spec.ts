@@ -11,6 +11,7 @@ import AgentLoop from '@singula-ai/alego-agent-loop'
 import LlmRuntime, { createUserMessage, LlmAdapter, LlmError, resolveRetryPolicy  } from '@singula-ai/alego-llm'
 import type { GenerateOptions, ResolvedRetryPolicy, StreamChunk } from '@singula-ai/alego-llm'
 import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime from '@singula-ai/alego-tools'
 import * as retry from '../src/index.ts'
@@ -60,6 +61,7 @@ async function loadYaml(lines: readonly string[]): Promise<Context> {
   const modules = new Map<string, unknown>([
     ['@singula-ai/alego-llm', LlmRuntime],
     ['@singula-ai/alego-session', SessionStore],
+    ['@singula-ai/alego-session-projection', SessionProjectionRegistry],
     ['@singula-ai/alego-system-prompt', SystemPrompt],
     ['@singula-ai/alego-tools', ToolRuntime],
     ['@singula-ai/alego-agent', AgentRegistry],
@@ -89,6 +91,7 @@ describe('real Loader composition', () => {
     const loaded = await loadYaml([
       "- name: '@singula-ai/alego-llm'",
       "- name: '@singula-ai/alego-session'",
+      "- name: '@singula-ai/alego-session-projection'",
       "- name: '@singula-ai/alego-system-prompt'",
       "- name: '@singula-ai/alego-tools'",
       "- name: '@singula-ai/alego-agent'",
@@ -104,12 +107,12 @@ describe('real Loader composition', () => {
 
     const adapter = new TransientOnceAdapter()
     loaded.llm.registerAdapter(['mock'], adapter)
-    const agent = loaded.agentLoop.create(SessionId('loader-retry'), { provider: 'mock', model: 'mock' })
+    const agent = await loaded.agentLoop.create(SessionId('loader-retry'), { provider: 'mock', model: 'mock' })
     agent.followup(createUserMessage({ content: [{ type: 'text', text: 'recover' }], source: { kind: 'user' } }))
     await agent.whenIdle()
 
     expect(adapter.requests).toBe(2)
-    expect(agent.session.events.filter(event => event.type === 'llm/retry')).toHaveLength(1)
+    expect(agent.session.snapshotEvents().filter(event => event.type === 'llm/retry')).toHaveLength(1)
     expect(agent.session.deriveMessages().at(-1)).toMatchObject({
       role: 'assistant',
       content: [{ type: 'text', text: 'recovered' }],

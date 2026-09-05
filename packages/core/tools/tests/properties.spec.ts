@@ -7,7 +7,7 @@
 
 import { describe, expect, it } from 'vitest'
 import fc from 'fast-check'
-import { isJsonValue } from '@singula-ai/alego-session'
+import { isJsonValue } from '@singula-ai/alego-util-values'
 import { parameterSchemaSpecToJsonSchema, validateArgs } from '@singula-ai/alego-tools'
 import type { ParameterPropertySpec, ParameterSchemaSpec, ValueSchemaSpec } from '@singula-ai/alego-tools'
 

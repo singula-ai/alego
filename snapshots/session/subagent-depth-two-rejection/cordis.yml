@@ -1,0 +1,9 @@
+# Depth-limit snapshot overlay: keep the default composition and allow two
+# generations of spawn children before runtime enforcement rejects another.
+- id: tool-subagent
+  name: '@singula-ai/alego-tool-subagent'
+  config:
+    provider: spawn
+    toolName: subagent
+    backgroundMode: continuable
+    maxDepth: 2

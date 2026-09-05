@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-sandbox-policy",
   "description": "Per-call sandbox policy resolver and current model context: deployment fallbacks plus each session's mode and workspace root, shared by every enforcing capability family",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -37,10 +37,12 @@
     "@singula-ai/alego-sandbox": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/alego-system-prompt": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^"
   },
   "dependencies": {
-    "@singula-ai/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:^",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@singula-ai/alego-agent": "workspace:^",
@@ -48,6 +50,7 @@
     "@singula-ai/alego-sandbox": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/alego-system-prompt": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^"
   }
 }

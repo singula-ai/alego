@@ -1,7 +1,7 @@
 import type {
-  ChatConversationViewNode, ConversationLocation, ConversationNodeContext,
-  ConversationNodeDefinition,
-} from '@singula-ai/alego-client-runtime/client'
+  ConversationLocation, ConversationNodeContext, ConversationNodeDefinition,
+} from '@singula-ai/alego-client-ui-conversation/client'
+import type { ChatConversationViewNode } from '@singula-ai/alego-client-ui-chat/client'
 import type { SessionId } from '@singula-ai/alego-session/types'
 import type {
   ToolWorkflowAgentEndData, ToolWorkflowAgentStartData,
@@ -34,7 +34,7 @@ export interface WorkflowRunChatData {
   readonly phases: readonly WorkflowRunPhaseData[]
 }
 
-declare module '@singula-ai/alego-client-ui-conversation/client' {
+declare module '@singula-ai/alego-client-ui-chat/client' {
   interface ChatNodeDataMap {
     /** Durable top-level workflow run and all members that actually started. */
     'workflow-run': WorkflowRunChatData

@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process'
-import { mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdtemp, realpath, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
@@ -7,8 +7,9 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import Loader from '@singula-ai/cordis-plugin-loader'
 import Include from '@singula-ai/cordis-plugin-include'
-import { CallId } from '@singula-ai/alego-llm'
-import { Session, SessionId } from '@singula-ai/alego-session'
+import { ToolCallId } from '@singula-ai/alego-llm'
+import { SESSION_FORMAT_VERSION, Session, SessionId } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
 import type { Agent } from '@singula-ai/alego-agent'
 import TerminalSessionService from '@singula-ai/alego-terminal'
@@ -46,7 +47,9 @@ class PassthroughSandbox extends SandboxProvider {
 function agent(ctx: Context, cwd: string): Agent {
   const id = SessionId('persistent-pwsh-loader-agent')
   const scope = ctx.plugin(() => {})
-  const session = Session.create(id, [], { version: 0, id, createdAt: 0, cwd })
+  const session = Session.create(id, [], {
+    version: SESSION_FORMAT_VERSION, id, createdAt: 0, cwd, isSeeded: false,
+  })
   const value: Agent = {
     id,
     options: {},
@@ -72,7 +75,7 @@ function text(result: { content: { type: string; text?: string }[] }): string {
 
 describe.skipIf(!hasPwsh)('persistent pwsh through a real cordis.yml Loader composition', () => {
   it('preserves cwd and environment across calls', async () => {
-    root = await mkdtemp(join(tmpdir(), 'alego-persistent-pwsh-loader-'))
+    root = await realpath(await mkdtemp(join(tmpdir(), 'alego-persistent-pwsh-loader-')))
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
       "- name: '@singula-ai/alego-agent'",
@@ -80,6 +83,7 @@ describe.skipIf(!hasPwsh)('persistent pwsh through a real cordis.yml Loader comp
       "- name: '@singula-ai/alego-tools'",
       "- name: '@singula-ai/alego-terminal'",
       "- name: '@singula-ai/alego-test-sandbox'",
+      "- name: '@singula-ai/alego-session-projection'",
       "- name: '@singula-ai/alego-sandbox-policy'",
       '  config:',
       '    mode: danger-full-access',
@@ -93,11 +97,19 @@ describe.skipIf(!hasPwsh)('persistent pwsh through a real cordis.yml Loader comp
       '    idleSilenceMs: 300',
       '    handoffGraceMs: 300',
       '    scrollbackLines: 20000',
-      '    timeoutMs: 8000',
+      // The first call pays the full pwsh cold-start latency (spawn + .NET +
+      // PSReadLine + Defender) inside the tool deadline; a 60s bound on the
+      // fully loaded self-hosted Windows pool is exceeded often enough to
+      // reset the session mid-test (2026-09-01, two runs ~62s each). 300s
+      // matches the alego-tool-pwsh-persistent product default; the
+      // alego-terminal-bash value bounds one send plus the complete startup
+      // sequence, so it covers the same cold start (its 30s product default
+      // would not).
+      '    timeoutMs: 300000',
       '    disposeGraceMs: 500',
       "- name: '@singula-ai/alego-tool-pwsh-persistent'",
       '  config:',
-      '    timeoutMs: 20000',
+      '    timeoutMs: 300000',
       '',
     ].join('\n'))
 
@@ -111,6 +123,7 @@ describe.skipIf(!hasPwsh)('persistent pwsh through a real cordis.yml Loader comp
       ['@singula-ai/alego-tools', ToolRegistry],
       ['@singula-ai/alego-terminal', TerminalSessionService],
       ['@singula-ai/alego-test-sandbox', PassthroughSandbox],
+      ['@singula-ai/alego-session-projection', SessionProjectionRegistry],
       ['@singula-ai/alego-sandbox-policy', SandboxPolicyService],
       ['@singula-ai/alego-subprocess-local', LocalSubprocessService],
       ['@singula-ai/alego-terminal-bash', TerminalBash],
@@ -130,7 +143,7 @@ describe.skipIf(!hasPwsh)('persistent pwsh through a real cordis.yml Loader comp
     const signal = new AbortController().signal
     const execute = (id: string, command: string) => context!.tools.execute({
       signal,
-      callId: CallId(id),
+      callId: ToolCallId(id),
       name: 'pwsh',
       arguments: { command },
       agent: owner,
@@ -163,5 +176,5 @@ describe.skipIf(!hasPwsh)('persistent pwsh through a real cordis.yml Loader comp
     const exited = text(await execute('exit', 'exit'))
     expect(exited).toContain('next pwsh call starts from the workspace')
     expect(text(await execute('after-exit', 'Write-Output "$PWD"'))).toBe(root)
-  }, 60_000)
+  }, 120_000)
 })

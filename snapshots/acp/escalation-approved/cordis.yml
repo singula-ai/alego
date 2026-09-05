@@ -1,0 +1,90 @@
+# ACP snapshot-record patch over the shipped `acp` profile. The alego
+# launcher owns environment loading, plugin resolution, and process shutdown;
+# stdout remains reserved for ACP JSON-RPC.
+
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  config:
+    thinking: enabled
+    reasoningEffort: max
+    models:
+      - id: deepseek-v4-flash
+      - id: deepseek-v4-pro
+      - id: deepseek-v4-flash-vision-exp
+        inputModalities: [text, image]
+
+- id: sandbox-policy
+  name: '@singula-ai/alego-sandbox-policy'
+  config:
+    mode: !!js "process.env.ALEGO_PERMISSION_MODE ?? (process.env.ALEGO_SNAPSHOT === undefined ? 'workspace-write' : 'danger-full-access')"
+    workspaceRoot: !!js process.cwd()
+
+- id: approval
+  name: '@singula-ai/alego-user-approval'
+  config:
+    policy: !!js "(process.env.ALEGO_PERMISSION_MODE ?? (process.env.ALEGO_SNAPSHOT === undefined ? 'workspace-write' : 'danger-full-access')) === 'danger-full-access' ? 'never' : 'ask'"
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js process.env.ALEGO_SNAPSHOT_SESSIONS_ROOT ?? alegoHomePath('sessions')
+    compression: !!js "process.env.ALEGO_SNAPSHOT === undefined ? 'zstd' : 'none'"
+
+- id: acp
+  name: '@singula-ai/alego-acp'
+  config:
+    provider: deepseek-official
+    model: deepseek-v4-flash
+
+- id: system-prompt
+  name: '@singula-ai/alego-system-prompt'
+  config:
+    persona: |
+      You are a coding assistant powered by the {{model}} model. Your working directory is {{cwd}}. Your bash tool runs under a file sandbox — a `[sandbox: file access denied …]` result is policy, not a command bug.
+
+      Verify your work by running the code or tests. Keep answers brief and factual.
+
+- id: agent-instructions
+  name: '@singula-ai/alego-agent-instructions'
+  config:
+    maxBytes: 65536
+
+- id: tool-subagent
+  name: '@singula-ai/alego-tool-subagent'
+  config:
+    provider: spawn
+    toolName: subagent
+    backgroundMode: continuable
+    maxDepth: 1
+
+# Fork omits model selection so provider/model stay equal to the parent and the
+# inherited history remains eligible for KV Cache reuse. It stays one-shot because
+# a continuable child's `report` tool and prompt section precede that history and
+# invalidate the same prefix. `run_in_background` is off as an explicit foreground-only
+# choice even though the shipped ACP profile mounts the generic Job runtime.
+# See .agents/notes/implemented/feature/2026-08-18-model-selected-subagent-routes.md
+# and .agents/notes/implemented/architecture/2026-08-10-fork-children-stay-one-shot.md.
+- id: tool-subagent-fork
+  name: '@singula-ai/alego-tool-subagent'
+  config:
+    provider: fork
+    toolName: subagent_fork
+    backgroundMode: one-shot
+    enableRunInBackground: false
+    maxDepth: 1
+
+- id: fs-sandbox
+  name: '@singula-ai/alego-fs-sandbox'
+  config:
+    cwd: !!js process.cwd()
+
+- insert:
+    - id: hooks-claude-code
+      name: '@singula-ai/alego-hooks-claude-code'
+      config:
+        configPath: ./hooks.json
+
+    - id: hooks-codex
+      name: '@singula-ai/alego-hooks-codex'
+      config:
+        configPath: ./codex-hooks.json

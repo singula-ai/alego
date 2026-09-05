@@ -39,5 +39,5 @@ The pwsh GUI rendering shipped earlier with the [pwsh UI presentation matches ba
 ## Verification
 
 - Unit: `apps/cli/tests/windows-shell.spec.ts` composes the REAL shipped bundle layers (alego-base + alego-web-app resolved from the app installation) through the boot's patch algorithm and pins the effective per-platform roster — the win32 pwsh roster, the POSIX bash roster, and the base-only profile — plus the preset-level shell-tool gates (`tool-bash`/`tool-pwsh`) and the cold-start resolution closure; `packages/bundle/base/tests/base.spec.ts` pins the four shell rows' symmetric `!!js` platform gates and that no separate platform patch ships.
-- Keyless: a `alego --profile <name> --dump-config` shows both stacks in the one shared patch layer, with each row's own `disabled` expression deciding the roster at mount.
+- Keyless: an `alego --profile <name> --dump-config` shows both stacks in the one shared patch layer, with each row's own `disabled` expression deciding the roster at mount.
 - The real-composition smoke boots the web profile on win32 with the pwsh stack mounted (the exact roster this note describes).

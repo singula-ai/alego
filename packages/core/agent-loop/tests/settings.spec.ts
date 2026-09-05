@@ -8,6 +8,7 @@ import SessionStore from '@singula-ai/alego-session'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime from '@singula-ai/alego-tools'
 import AgentRegistry from '@singula-ai/alego-agent'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { SettingsProvider } from '@singula-ai/alego-settings'
 import type { SettingsNamespace } from '@singula-ai/alego-settings'
 import AgentLoop, { AGENT_LOOP_SETTINGS_NAMESPACE } from '@singula-ai/alego-agent-loop'
@@ -34,6 +35,7 @@ async function boot(): Promise<{ ctx: Context; settingsFiber: Fiber; loopFiber: 
   const ctx = new Context()
   await ctx.plugin(LlmRuntime)
   await ctx.plugin(SessionStore)
+  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(SystemPrompt)
   await ctx.plugin(ToolRuntime)
   await ctx.plugin(AgentRegistry)

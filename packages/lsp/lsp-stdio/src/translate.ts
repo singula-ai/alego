@@ -12,7 +12,7 @@ import type {
   LspRange,
 } from '@singula-ai/alego-lsp'
 import { LspError } from '@singula-ai/alego-lsp'
-import { assertNever } from '@singula-ai/alego-llm'
+import { assertNever } from '@singula-ai/alego-util-values'
 import type {
   WireHover,
   WireLocation,

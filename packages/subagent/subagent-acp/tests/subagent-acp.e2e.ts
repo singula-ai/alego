@@ -6,34 +6,39 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import type { Agent } from '@singula-ai/alego-agent'
 import SubagentRuntime from '@singula-ai/alego-subagent'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 import { resolveExampleLaunch } from '@singula-ai/alego-loader-smoke'
 import * as acp from '../src/index.ts'
 
 /**
- * With-key cross-process boundary proof: the backend spawns the real acp-agent example, speaks ACP over
+ * With-key cross-process boundary proof: the backend spawns the real alego ACP profile, speaks ACP over
  * stdio, and returns its real model answer. This is the out-of-process counterpart to in-process
  * spawn coverage and self-skips without `DEEPSEEK_API_KEY`.
  */
 
-// The real acp-agent example: its bin + cordis.yml (the live DeepSeek config).
-const binScript = fileURLToPath(new URL('../../../examples/acp-demo/src/bin.ts', import.meta.url))
-const exampleConfig = fileURLToPath(new URL('../../../../examples/acp-agent/cordis.yml', import.meta.url))
+// The real ACP profile: alego plus the example's live DeepSeek patch.
+const binScript = fileURLToPath(new URL('../../../../apps/cli/src/bin.ts', import.meta.url))
+const exampleConfig = fileURLToPath(new URL('../../../../snapshots/acp/escalation-approved/cordis.yml', import.meta.url))
 const repoTsconfig = fileURLToPath(new URL('../../../../tsconfig.json', import.meta.url))
 
-// How to launch the child acp-agent (src via tsx / lib via plain node, per ALEGO_EXAMPLE_MODE).
+// How to launch the child ACP profile (src via tsx / lib via plain node, per ALEGO_EXAMPLE_MODE).
 // The subprocess seam scrubs ambient creds while spec.env merges after it, so the model key is
 // forwarded explicitly; TSX_TSCONFIG_PATH is added by the resolver in src mode only.
-const childLaunch = resolveExampleLaunch({
-  srcBin: binScript,
-  configArgs: ['--config', exampleConfig],
-  tsconfigPath: repoTsconfig,
-  env: {
-    ...process.env.DEEPSEEK_API_KEY !== undefined ? { DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY } : {},
-    ...process.env.DEEPSEEK_BASE_URL !== undefined ? { DEEPSEEK_BASE_URL: process.env.DEEPSEEK_BASE_URL } : {},
-    ALEGO_PERMISSION_MODE: 'danger-full-access',
-  },
-})
+function resolveChildLaunch(alegoHome: string) {
+  return resolveExampleLaunch({
+    srcBin: binScript,
+    sourceImport: 'tsx/esm',
+    configArgs: ['--profile', 'acp', '--patch', exampleConfig],
+    tsconfigPath: repoTsconfig,
+    env: {
+      ...process.env.DEEPSEEK_API_KEY !== undefined ? { DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY } : {},
+      ...process.env.DEEPSEEK_BASE_URL !== undefined ? { DEEPSEEK_BASE_URL: process.env.DEEPSEEK_BASE_URL } : {},
+      ALEGO_HOME: alegoHome,
+      ALEGO_PERMISSION_MODE: 'danger-full-access',
+    },
+  })
+}
 
 /** The ACP backend ignores the parent, but the seam requires one. */
 const fakeParent = { id: 'parent', session: { header: {} } } as unknown as Agent
@@ -51,7 +56,9 @@ afterEach(async () => {
 describe.skipIf(!process.env.DEEPSEEK_API_KEY)('ACP backend with-key e2e (drive our own acp-agent)', () => {
   it('drives the real acp-agent example process to answer a prompt', async () => {
     workdir = await mkdtemp(join(tmpdir(), 'alego-subagent-acp-e2e-'))
+    const childLaunch = resolveChildLaunch(join(workdir, '.alego-child'))
     ctx = new Context()
+    await ctx.plugin(SessionProjectionRegistry)
     await ctx.plugin(SubagentRuntime)
     await ctx.plugin(LocalSubprocessRuntime)
     await ctx.plugin(acp, {
@@ -81,7 +88,9 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY)('ACP backend with-key e2e (drive 
 
   it('drives the child to do real file work via its own bash tool', async () => {
     workdir = await mkdtemp(join(tmpdir(), 'alego-subagent-acp-e2e-'))
+    const childLaunch = resolveChildLaunch(join(workdir, '.alego-child'))
     ctx = new Context()
+    await ctx.plugin(SessionProjectionRegistry)
     await ctx.plugin(SubagentRuntime)
     await ctx.plugin(LocalSubprocessRuntime)
     await ctx.plugin(acp, {

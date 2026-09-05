@@ -5,6 +5,7 @@ import LlmRuntime from '@singula-ai/alego-llm'
 import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek'
 import SessionStore, { SessionId } from '@singula-ai/alego-session'
 import SessionTitleService from '@singula-ai/alego-session-title'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import * as FirstMessageTitleProvider from '@singula-ai/alego-session-title-first-prompt-llm'
 
 const contexts: Context[] = []
@@ -20,6 +21,7 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY)('first-prompt title provider with
     await ctx.plugin(LlmRuntime)
     await ctx.plugin(LlmDeepSeek, { thinking: 'disabled' })
     await ctx.plugin(SessionStore)
+    await ctx.plugin(SessionProjectionRegistry)
     await ctx.plugin(SessionTitleService, {
       fallbackMaxWords: 5,
       fallbackMaxBytes: 40,

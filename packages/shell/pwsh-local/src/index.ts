@@ -20,7 +20,7 @@ import z from '@singula-ai/schemastery'
 import { SHELL_SETTINGS_NAMESPACE, ShellExecutor } from '@singula-ai/alego-shell'
 import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellProcessRead, ShellRunResult, CollectedOutput } from '@singula-ai/alego-shell'
 import type { SubprocessCollect, SubprocessHandle, SubprocessOutputReader, SubprocessSpawnSpec } from '@singula-ai/alego-subprocess'
-import { installSettingsSection } from '@singula-ai/alego-settings'
+import type {} from '@singula-ai/alego-settings'
 import { clampTimeout, deadline, MAX_TIMER_DELAY_MS, timeoutOf } from '@singula-ai/alego-timeout'
 /* jscpd:ignore-end */
 import { resolvePwshPath } from './resolve.ts'
@@ -165,19 +165,21 @@ export class PwshLocalExecutor extends ShellExecutor {
     this.source = () => entry
     this.declaredPwshPath = entry.pwshPath
     this.resolvedPwshPath = resolvePwshPath(entry.pwshPath)
-    installSettingsSection(ctx, SHELL_SETTINGS_NAMESPACE, PwshLocalExecutor.Config, entry, {
-      validate: assertServiceablePwshConfig,
-      setSource: (current) => {
-        this.source = current as () => ResolvedConfig
-      },
-      // Probing the filesystem is the one fact derived from the source: every
-      // other field is read through the getter at each command.
-      onChange: () => {
-        const declared = this.source().pwshPath
-        if (declared === this.declaredPwshPath) return
-        this.declaredPwshPath = declared
-        this.resolvedPwshPath = resolvePwshPath(declared)
-      },
+    ctx.inject(['settings'], (settingsCtx) => {
+      settingsCtx.settings.installSection(ctx, SHELL_SETTINGS_NAMESPACE, PwshLocalExecutor.Config, entry, {
+        validate: assertServiceablePwshConfig,
+        setSource: (current) => {
+          this.source = current as () => ResolvedConfig
+        },
+        // Probing the filesystem is the one fact derived from the source: every
+        // other field is read through the getter at each command.
+        onChange: () => {
+          const declared = this.source().pwshPath
+          if (declared === this.declaredPwshPath) return
+          this.declaredPwshPath = declared
+          this.resolvedPwshPath = resolvePwshPath(declared)
+        },
+      })
     })
   }
 

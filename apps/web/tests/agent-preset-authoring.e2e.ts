@@ -22,13 +22,13 @@ import {
 } from './scaffold.ts'
 import { ZH_BROWSER_LOCALE, connectFreshWorkspaceZh, saveFailureShot } from './support.ts'
 
-const SNAPSHOT_DIR = fileURLToPath(new URL('./snapshots/agent-preset-authoring', import.meta.url))
+const SNAPSHOT_DIR = fileURLToPath(new URL('./expected/agent-preset-authoring', import.meta.url))
 const SECTION_EXPECTED = join(SNAPSHOT_DIR, 'section.expected.md')
 const COPY_DIALOG_EXPECTED = join(SNAPSHOT_DIR, 'copy-dialog.expected.md')
 const CREATED_EXPECTED = join(SNAPSHOT_DIR, 'created.expected.md')
 const DAMAGED_EXPECTED = join(SNAPSHOT_DIR, 'damaged.expected.md')
-/** The shipped roster, beside the composition that names it. */
-const SHIPPED_PRESETS = fileURLToPath(new URL('../../cli/config/agent-presets', import.meta.url))
+/** The shipped roster, bundled inside the `alego-agent-presets` package. */
+const SHIPPED_PRESETS = fileURLToPath(new URL('../../../packages/preset/agent-presets/presets', import.meta.url))
 const OVERLAY = fileURLToPath(new URL('./agent-preset-authoring.overlay.yml', import.meta.url))
 const MODE = webSnapshotMode()
 
@@ -44,26 +44,13 @@ describe('web e2e: agent-preset authoring is a host-side copy', () => {
     return page.getByRole('dialog', { name: '设置' })
   }
 
-  /** Tokenize the lane-owned preset root after general aria normalization. */
-  function withPresetRoot(snapshot: string): string {
-    const rootSuffix = `/${userRoot.split('/').pop()!}`
-    return snapshot.split('\n').map((line) => {
-      const rootStart = line.indexOf(rootSuffix)
-      if (rootStart === -1) return line
-      const pathStart = line.lastIndexOf(' ', rootStart) + 1
-      return `${line.slice(0, pathStart)}{{presetRoot}}${line.slice(rootStart + rootSuffix.length)}`
-    }).join('\n')
-  }
-
   beforeAll(async () => {
     userRoot = await realpath(await mkdtemp(join(tmpdir(), 'alego-web-e2e-presets-')))
     scaffold = await launchWebScaffold({
       extraOverlayPath: OVERLAY,
       agentPresets: {
-        roots: [
-          { path: SHIPPED_PRESETS, trust: 'system' },
-          { path: userRoot, trust: 'user' },
-        ],
+        // The shipped root is the plugin's own, prepended before this.
+        roots: [{ path: userRoot, trust: 'user' }],
         default: 'standard',
       },
     })
@@ -71,13 +58,14 @@ describe('web e2e: agent-preset authoring is a host-side copy', () => {
     // The scenario asserts the shipped Chinese copy, so the browser asks for it.
     page = await browser.newPage({ viewport: { width: 1680, height: 1000 }, locale: ZH_BROWSER_LOCALE })
     tripwire = watchConsole(page)
-    await page.goto(scaffold.baseUrl, { waitUntil: 'load' })
+    await page.goto(scaffold.authenticatedUrl, { waitUntil: 'load' })
     await page.waitForSelector('[class*="frame"]', { timeout: 30_000 })
   }, 120_000)
 
   afterAll(async () => {
     await browser?.close()
     await scaffold?.close()
+    await rm(userRoot, { recursive: true, force: true })
   })
 
   it('offers the roster with copy as the only way to create', async () => {
@@ -92,8 +80,8 @@ describe('web e2e: agent-preset authoring is a host-side copy', () => {
     const snapshot = await captureStableAria(page, '[role="dialog"]', scaffold.workspaceCwd)
 
     await compareOrRefreshGolden(SECTION_EXPECTED, snapshot, MODE)
-    // The intro carries the guidance a create button used to imply, and the
-    // shipped rows offer view/copy but never delete or a location — their
+    // The intro states the copy path directly, and the shipped rows offer
+    // view/copy but never delete or a location — their
     // install is overwritten by upgrades and is not the user's to manage.
     expect(snapshot).toContain('或用「创造模式」让 Agent 帮你创建')
     expect(snapshot).not.toContain('新建预设')
@@ -148,8 +136,9 @@ describe('web e2e: agent-preset authoring is a host-side copy', () => {
     // The copy dialog is detached, so the settings dialog is the only one
     // left (it names itself via aria-labelledby, which a CSS attribute
     // selector cannot address).
-    const snapshot = withPresetRoot(
-      await captureStableAria(page, '[role="dialog"]', scaffold.workspaceCwd))
+    const snapshot = await captureStableAria(page, '[role="dialog"]', scaffold.workspaceCwd, {
+      replacements: [[userRoot, '{{presetRoot}}']],
+    })
     await compareOrRefreshGolden(CREATED_EXPECTED, snapshot, MODE)
     expect(snapshot).toContain('{{presetRoot}}/my-agent')
 
@@ -198,8 +187,9 @@ describe('web e2e: agent-preset authoring is a host-side copy', () => {
     await dialog.getByRole('button', { name: 'Agent 预设' }).click()
     await dialog.getByText('加载失败').first().waitFor({ timeout: 10_000 })
 
-    const snapshot = withPresetRoot(
-      await captureStableAria(page, '[role="dialog"]', scaffold.workspaceCwd))
+    const snapshot = await captureStableAria(page, '[role="dialog"]', scaffold.workspaceCwd, {
+      replacements: [[userRoot, '{{presetRoot}}']],
+    })
     await compareOrRefreshGolden(DAMAGED_EXPECTED, snapshot, MODE)
     // Both damage shapes surface as marked, unselectable, uncopyable cards
     // that still carry their metadata and the discovery-reported reason.
@@ -259,17 +249,18 @@ describe('web e2e: agent-preset authoring is a host-side copy', () => {
     await dialog.waitFor({ state: 'detached', timeout: 10_000 })
     await page.getByRole('button', { name: '创造模式' }).waitFor({ timeout: 10_000 })
     await expect.poll(async () => {
-      const response = await fetch(`${scaffold.baseUrl}/api/session.list`, {
+      const response = await scaffold.hostFetch('/api/session/list', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          type: 'client-request', rpcId: 'creator-draft-stage', method: 'session.list', payload: {},
+          type: 'client-request', rpcId: 'creator-draft-stage', method: 'session/list',
+          payload: { args: { _request: {} } },
         }),
       })
       const body = await response.json() as {
-        result: { value?: { sessions: unknown[] } }
+        result: { value?: { items: unknown[] } }
       }
-      return JSON.stringify(body.result.value?.sessions ?? body.result)
+      return JSON.stringify(body.result.value?.items ?? body.result)
     }, { timeout: 15_000 }).toContain('"agentPreset":"cordis"')
   }, 60_000)
 

@@ -48,7 +48,7 @@ function exportsPatch(packageName: string, profileDir: string): boolean {
  * Reconcile `alego.profile.bundles` against the installed state: pnpm has
  * already written the real installed names (so a git/path/tarball/alias spec
  * on the command line reconciles by its true package name) and materialized
- * the packages. A dependency that resolves to a `alego.bundle`-declaring
+ * the packages. A dependency that resolves to an `alego.bundle`-declaring
  * package joins the layer stack (appended in dependency order); a
  * dependency-listed name that no longer does — removed, or the installed
  * version dropped the declaration — leaves it. In-box bundles from the
@@ -120,7 +120,12 @@ function anchorPathSpec(argument: string, cwd: string): string {
 export function runPlugin(profile: string, args: readonly string[]): number {
   const dir = resolveProfileDir(profile)
   if (!existsSync(join(dir, 'package.json'))) {
-    initProfile(dir, PROFILE_TEMPLATES[profile] ?? DEFAULT_PROFILE_BUNDLES)
+    const template = PROFILE_TEMPLATES[profile]
+    initProfile(
+      dir,
+      template?.bundles ?? DEFAULT_PROFILE_BUNDLES,
+      template?.patchReload,
+    )
     process.stderr.write(`${NAME}: initialized profile ${profile} at ${dir}\n`)
   }
   const before = readProfileManifest(NAME, dir)

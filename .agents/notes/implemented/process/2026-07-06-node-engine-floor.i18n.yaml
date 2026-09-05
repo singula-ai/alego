@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-06-node-engine-floor.md
-2026-07-06-node-engine-floor.md: 83c1ced615b4171492419160ace14aa4f4747d3d
-2026-07-06-node-engine-floor.zh.md: 3f976adc6ee27a88d0f3c7bbcd175ace13230c38
+2026-07-06-node-engine-floor.md: 6b2bc213de9101ac0a9d92039fd9e2b606777613
+2026-07-06-node-engine-floor.zh.md: 4b2219b87f519d3bb944426085857af85e5d3167

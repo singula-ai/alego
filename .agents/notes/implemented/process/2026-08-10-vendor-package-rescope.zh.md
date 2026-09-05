@@ -32,11 +32,11 @@ Markdown 按「读者拿它做什么」一分为二。围栏一律跟着改，�
 
 ## 影响
 
-- 发布集里不再有任何上游名：`publish-npm-baseline.ts` 现在无条件要求每个待发包都是 `@singula-ai/alego-*`，vendored 包不再豁免，改名一旦回退就会在打包前失败。
+- 发布集里不再有任何上游名：`publish-npm-baseline.ts` 现在无条件要求每个待发包都是 `@singula-ai/*`，vendored 包不再豁免，改名一旦回退就会在打包前失败。
 - `vendor/README.md` 的清单表新增「上游名」列，`gen-third-party-notices` 随之解析六列并把上游名渲进 `THIRD_PARTY_NOTICES.md`；MIT 归属指向 fork 的来源，而不是我们的 scope。
-- `pnpm-workspace.yaml` 的 `minimumReleaseAgeExclude` 删去 `cordis` 与 `@cordisjs/plugin-loader` 两条：改名后这两个名字永远不从 registry 取。`knip.json` 的 `@cordisjs/.+` 忽略模式同理删除，已被 `@singula-ai/.+` 覆盖。
+- `pnpm-workspace.yaml` 的 `minimumReleaseAgeExclude` 删去 `cordis` 与 `@cordisjs/plugin-loader` 两条：改名后这两个名字永远不从 registry 取。
 - 上游 sync 照 `vendor/README.md` 的流程走，第 3 步多一项：对拷进来的源码重跑 `pnpm run rescope-vendor --apply`，脚本里的映射与清单表两列名字必须一致。
-- **要回到官方上游包**时反着跑这份映射——`pnpm run rescope-vendor --apply --reverse`——再补回 `minimumReleaseAgeExclude` 两条、放开发布集对 `@singula-ai/alego-*` 的断言。改写量约 1300 个文件，用脚本重放而不是手改。
+- **要回到官方上游包**时反着跑这份映射——`pnpm run rescope-vendor --apply --reverse`——再补回 `minimumReleaseAgeExclude` 两条、放开发布集对 `@singula-ai/*` 的断言。改写量约 1300 个文件，用脚本重放而不是手改。
 
 改名这件事由 `scripts/rescope-vendor.ts` 承载：映射、带定界符的 token 规则、名字其实是目录而非包时的逐文件豁免、上面那批精确改写，以及一个断言「零残留、每条精确改写都落上、幂等」的 `--check` 模式——它由 `hygiene` 门在每次 CI 上执行。rebase 时重放它，而不是去解一个 1300 文件的冲突；上游动了任一被钉住的点位，脚本会响亮失败而不是静默漏改。
 

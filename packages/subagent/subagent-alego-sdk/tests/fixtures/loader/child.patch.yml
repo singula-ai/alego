@@ -1,0 +1,29 @@
+# SDK-profile patch for the child runtime in the cwd-inheritance proof.
+
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  disabled: true
+
+- id: system-prompt
+  name: '@singula-ai/alego-system-prompt'
+  config:
+    persona: 'Echo where you run.'
+
+- id: agent-instructions
+  name: '@singula-ai/alego-agent-instructions'
+  disabled: true
+
+- id: skill-filesystem
+  name: '@singula-ai/alego-skill-filesystem'
+  config:
+    includeDefaultRoots: false
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: none
+
+- insert:
+    - id: child-mock-llm
+      name: './child-mock-llm.ts'

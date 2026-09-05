@@ -9,7 +9,7 @@ import type { Context } from '@singula-ai/cordis'
 import z from '@singula-ai/schemastery'
 import type {} from '@singula-ai/alego-agent'
 import { credentialRef } from '@singula-ai/alego-credentials'
-import { installSettingsSection, settingsNamespace } from '@singula-ai/alego-settings'
+import type {} from '@singula-ai/alego-settings'
 import { launchEnvironmentOf } from '@singula-ai/alego-launch-environment'
 import type {} from '@singula-ai/alego-session'
 import type {} from '@singula-ai/alego-web'
@@ -82,7 +82,7 @@ export const Config: z<Config> = z.object({
 const SEARCH_BASE_URL_ENV = 'DEEPSEEK_SEARCH_BASE_URL'
 
 /** Settings namespace carrying this provider's endpoint, model, and key reference. */
-export const WEB_SEARCH_DEEPSEEK_SETTINGS_NAMESPACE = settingsNamespace('web-search-deepseek')
+export const WEB_SEARCH_DEEPSEEK_SETTINGS_NAMESPACE = 'web-search-deepseek'
 
 /**
  * Project one resolved section into the options the provider serves its next
@@ -126,13 +126,15 @@ function resolveOptions(ctx: Context, config: Config): DeepSeekSearchProviderOpt
 /** Register the DeepSeek search provider with `ctx.web`. */
 export function apply(ctx: Context, config: Config): void {
   let current: () => Config = () => config
-  installSettingsSection(ctx, WEB_SEARCH_DEEPSEEK_SETTINGS_NAMESPACE, Config, config, {
-    setSource: (source) => {
-      current = source
-    },
-    // The registration carries no resolved value: the provider projects the
-    // section per search, so a committed change needs no re-registration.
-    onChange: () => {},
+  ctx.inject(['settings'], (settingsCtx) => {
+    settingsCtx.settings.installSection(ctx, WEB_SEARCH_DEEPSEEK_SETTINGS_NAMESPACE, Config, config, {
+      setSource: (source) => {
+        current = source
+      },
+      // The registration carries no resolved value: the provider projects the
+      // section per search, so a committed change needs no re-registration.
+      onChange: () => {},
+    })
   })
   ctx.web.registerSearchProvider(new DeepSeekSearchProvider(() => resolveOptions(ctx, current())))
 }

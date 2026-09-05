@@ -36,27 +36,27 @@ const EVENT_ENVELOPE_TYPE_NAMES = [
 
 type EventEnvelopeTypeName = typeof EVENT_ENVELOPE_TYPE_NAMES[number]
 
-/** Primary subsystems page for linked payload types. */
+/** Documentation target, relative to `docs/`, for linked payload types. */
 const LINK_MAP: Record<string, string> = {
-  CallId: 'core.md',
-  ContentBlock: 'core.md',
-  MessageSource: 'core.md',
-  ScheduleChange: 'schedule.md',
-  StreamChunk: 'llm-streaming.md',
-  TokenUsage: 'llm-streaming.md',
-  TodoItem: 'session.md',
-  TurnTrigger: 'session.md',
-  TurnEndReason: 'session.md',
-  SessionTitleEventData: 'session-title.md',
-  SessionTitleLlmRequestEventData: 'session-title.md',
-  SessionTitleModelProvenance: 'session-title.md',
-  SessionTitleProviderId: 'session-title.md',
-  SessionTitleSource: 'session-title.md',
-  TeamId: 'agent-team.md',
-  TeamMemberSnapshot: 'agent-team.md',
-  TeamMessageId: 'agent-team.md',
-  TeamMessageSnapshot: 'agent-team.md',
-  TeamTaskSnapshot: 'agent-team.md',
+  ToolCallId: 'subsystems/core.md',
+  ContentBlock: 'subsystems/core.md',
+  MessageSource: 'subsystems/core.md',
+  ScheduleChange: 'subsystems/schedule.md',
+  StreamChunk: 'subsystems/llm-streaming.md',
+  TokenUsage: 'subsystems/llm-streaming.md',
+  TodoItem: 'subsystems/todo.md',
+  TurnTrigger: 'subsystems/session.md',
+  TurnEndReason: 'subsystems/session.md',
+  SessionTitleEventData: 'subsystems/session-title.md',
+  SessionTitleLlmRequestEventData: 'subsystems/session-title.md',
+  SessionTitleModelProvenance: 'subsystems/session-title.md',
+  SessionTitleProviderId: 'subsystems/session-title.md',
+  SessionTitleSource: 'subsystems/session-title.md',
+  TeamId: 'subsystems/agent-team.md',
+  TeamMemberSnapshot: 'subsystems/agent-team.md',
+  TeamMessageId: 'subsystems/agent-team.md',
+  TeamMessageSnapshot: 'subsystems/agent-team.md',
+  TeamTaskSnapshot: 'subsystems/agent-team.md',
 }
 
 /** One log event, extracted from a `SessionEventMap` declaration. */
@@ -341,7 +341,7 @@ function typeLinks(payload: string): string {
     if (new RegExp(`\\b${name}\\b`).test(payload)) seen.add(name)
   }
   if (seen.size === 0) return ''
-  const links = [...seen].sort().map(n => `[${n}](subsystems/${LINK_MAP[n]})`)
+  const links = [...seen].sort().map(n => `[${n}](${LINK_MAP[n]})`)
   return `Types: ${links.join(' · ')}`
 }
 
@@ -368,7 +368,7 @@ export function render(events: AnnotatedLogEventEntry[], envelopeTypes: EventEnv
     '',
     'This file is GENERATED from source (`scripts/gen-persistence-catalog.ts`) and verified fresh by `pnpm run verify-persistence-catalog` (part of `doc-sync`) — do not edit it by hand. Declaration blocks retain the source declaration and nested property JSDoc, removing only the indentation imposed by a containing interface/module, and use a `ts persistence-catalog` fence (skipped by doc-typecheck because declarations reference types from their owning modules). Type names in a payload link to the page that documents them. See [the persistence-log-catalog Agent Note](../.agents/notes/archived/process/2026-07-04-persistence-log-catalog.md).',
     '',
-    'The envelope declarations below compose each event\'s `type`, monotonic `seq`, epoch-ms `time`, `data`, the optional `ignorable` unknown-type skip marker, and the conditional `surfaceOp`/`sourceEventSeqs` fields. **surface** marks a `SurfaceEventType` member: it produces an LLM message and declares how it joins the surface list. **log-only** marks everything else: a durable, replayable record with no derived-history contribution. Every payload is JSON-serializable (enforced at `Session.append`), and the whole format is pinned at `SESSION_FORMAT_VERSION = 0` — pre-release, no compatibility implied ([the version stance](subsystems/persistence.md)). Scope: the packages in this repo; a downstream plugin can merge further event types, which are outside this catalog by construction.',
+    'The envelope declarations below compose each event\'s `type`, monotonic `seq`, epoch-ms `time`, `data`, the optional `ignorable` unknown-type skip marker, and the conditional `surfaceOp`/`sourceEventSeqs` fields. **surface** marks a `SurfaceEventType` member: it produces an LLM message and declares how it joins the surface list. **log-only** marks everything else: a durable, replayable record with no derived-history contribution. Every payload is JSON-serializable (enforced at `Session.append`). Current writers stamp `SESSION_FORMAT_VERSION`; supported historical artifacts reach this current vocabulary through the build-static adjacent migration catalog ([the version lifecycle](subsystems/persistence.md)). Scope: the packages in this repo; a downstream plugin can merge further current-version event types, which are outside this catalog by construction and require an explicit disposition at a later format edge.',
     '',
     '## Event envelope',
     '',
@@ -414,8 +414,11 @@ export function renderKnownEventTypes(events: AnnotatedLogEventEntry[]): string 
     ' * in `./types.ts`): such a log was likely written by a newer harness, and',
     ' * silently skipping a required event would reconstruct a wrong session.',
     ' * Downstream (out-of-repo) plugin events are outside this list by',
-    ' * construction; a registration surface for them is deferred until such a',
-    ' * consumer exists.',
+    ' * construction. The persisted `SessionEvent.ignorable` marker is the',
+    ' * compatibility mechanism; event-name registration was rejected because',
+    ' * it does not classify omission safety and would make reads',
+    ' * composition-dependent. The rationale is in',
+    ' * `.agents/notes/implemented/architecture/2026-08-30-retain-ignorable-external-session-events.md`.',
     ' */',
     'export const KNOWN_SESSION_EVENT_TYPES: ReadonlySet<string> = new Set([',
     ...names.map(name => `  '${name}',`),
@@ -466,7 +469,6 @@ function main(): void {
   }
 }
 
-// Run only when invoked as a script, not when imported by a test.
 if (process.argv[1] && import.meta.filename === resolve(process.argv[1])) {
   main()
 }

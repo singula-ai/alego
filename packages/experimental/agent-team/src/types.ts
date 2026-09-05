@@ -1,8 +1,8 @@
 /** Public Agent Teams identities, durable records, and service request values. */
 
 import type { Branded } from '@singula-ai/alego-brand'
-import type { ContentBlock } from '@singula-ai/alego-llm'
-import type { SessionId } from '@singula-ai/alego-session'
+import type { ContentBlock } from '@singula-ai/alego-llm/types'
+import type { SessionId } from '@singula-ai/alego-session/types'
 
 /** Identifies the implicit team rooted at one top-level Session. */
 export type TeamId = Branded<'TeamId'>
@@ -96,13 +96,18 @@ export interface TeamTaskView {
   readonly writeScopeWarnings: string[]
 }
 
+/** Point-in-time roster and task-board projection returned to browser clients. */
+export interface TeamView {
+  readonly members: TeamMemberView[]
+  readonly tasks: TeamTaskView[]
+}
+
 /** One peer message retained until its target Session records it. */
 export interface TeamMessageSnapshot {
   readonly id: TeamMessageId
   readonly senderId: SessionId
   readonly senderName: string
   readonly targetId: SessionId
-  readonly delivery: 'quiet' | 'wakeup'
   readonly content: ContentBlock[]
 }
 
@@ -154,7 +159,6 @@ export interface SpawnTeammateResult {
 export interface SendTeamMessageRequest {
   readonly target: string
   readonly content: ContentBlock[]
-  readonly delivery: 'quiet' | 'wakeup'
   readonly signal: AbortSignal
 }
 
@@ -195,6 +199,17 @@ export interface UpdateTeamTaskRequest {
   readonly owner?: string
 }
 
+/** Browser task mutation result with stale revisions kept distinct from other Team rejections. */
+export type TeamTaskMutationResult =
+  | { readonly ok: true; readonly value: TeamTaskView }
+  | {
+    readonly ok: false
+    readonly error: {
+      readonly code: 'team-task-conflict' | 'team-rejected'
+      readonly message: string
+    }
+  }
+
 /** Result of waiting for Team activity. */
 export interface TeamWaitResult {
   readonly timedOut: boolean
@@ -203,14 +218,14 @@ export interface TeamWaitResult {
 declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /** Whole teammate lifecycle value, stored only in the Team Lead Session. */
-    'team/member': { version: 1; teamId: TeamId; member: TeamMemberSnapshot }
+    'team/member': { version: 2; teamId: TeamId; member: TeamMemberSnapshot }
     /** Whole shared-task value, stored only in the Team Lead Session. */
-    'team/task': { version: 1; teamId: TeamId; task: TeamTaskSnapshot }
+    'team/task': { version: 2; teamId: TeamId; task: TeamTaskSnapshot }
     /** Durable mailbox enqueue, stored before delivery is attempted. */
-    'team/message/queued': { version: 1; teamId: TeamId; message: TeamMessageSnapshot }
+    'team/message/queued': { version: 2; teamId: TeamId; message: TeamMessageSnapshot }
     /** Durable acknowledgement that the target Session recorded the message. */
     'team/message/delivered': {
-      version: 1
+      version: 2
       teamId: TeamId
       messageId: TeamMessageId
       targetId: SessionId

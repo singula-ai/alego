@@ -6,7 +6,7 @@ English | [中文](2026-07-31-fail-loud-releases-the-terminal.zh.md)
 
 ## Problem
 
-A `alego` launch whose config failed validation printed its diagnostic and returned the user to a broken shell. Typing was invisible, and the next command was mangled by stray text:
+An `alego` launch whose config failed validation printed its diagnostic and returned the user to a broken shell. Typing was invisible, and the next command was mangled by stray text:
 
 ```
 alego: fatal load failure: ValidationError: invalid config:

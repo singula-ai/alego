@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import Loader from '@singula-ai/cordis-plugin-loader'
 import Include from '@singula-ai/cordis-plugin-include'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import TokenMeter from '@singula-ai/alego-token-meter'
 import ToolResultPruner from '@singula-ai/alego-compaction-tool-result-pruner'
 
@@ -24,6 +25,7 @@ describe('compaction-tool-result-pruner real Loader composition', () => {
     root = await mkdtemp(join(tmpdir(), 'alego-compact-tool-result-prune-loader-'))
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
+      "- name: '@singula-ai/alego-session-projection'",
       "- name: '@singula-ai/alego-token-meter'",
       "- name: '@singula-ai/alego-compaction-tool-result-pruner'",
       '  config:',
@@ -40,6 +42,7 @@ describe('compaction-tool-result-pruner real Loader composition', () => {
     context.loader.internal = {
       version: 'v2',
       async import(specifier: string) {
+        if (specifier === '@singula-ai/alego-session-projection') return SessionProjectionRegistry
         if (specifier === '@singula-ai/alego-token-meter') return TokenMeter
         if (specifier === '@singula-ai/alego-compaction-tool-result-pruner') return ToolResultPruner
         throw new Error(`unexpected Loader import: ${specifier}`)
@@ -61,8 +64,9 @@ describe('compaction-tool-result-pruner real Loader composition', () => {
 
   it('rejects stale config after plugin schema normalization', async () => {
     context = new Context()
-    // Satisfy the declared injection first: config normalization runs in the
+    // Satisfy the declared injections first: config normalization runs in the
     // service constructor, which a pending fiber never reaches.
+    await context.plugin(SessionProjectionRegistry)
     await context.plugin(TokenMeter)
     await expect(context.plugin(ToolResultPruner, {
       maxChars: 100,

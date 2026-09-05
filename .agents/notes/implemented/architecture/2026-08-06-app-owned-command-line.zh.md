@@ -6,7 +6,7 @@ Status: implemented
 
 ## 问题
 
-profile 落地之后，组合可以安装，命令行却不能。`apps/cli` 仍然声明着 Web flag 家族（`--host`、`--port`、`--dev`、`--workspace-root`、`--trusted-host`）和一次性任务位置参数，再为自己硬编码的行 id（`webserver`、`api-gateway`、`connection`、`web-runtime`）派生 patch。像 [turtle-ui](https://github.com/alego/turtle-ui) 这样的树外应用能贡献行，却无处接受一个 flag：`alego --profile tui --resume <session>` 没有地方可供解析，而 `alego --profile web --help` 打印的是启动器的 help，而不是 web 应用的 help。
+profile 落地之后，组合可以安装，命令行却不能。`apps/cli` 仍然声明着 Web flag 家族（`--host`、`--port`、`--dev`、`--workspace-root`、`--trusted-host`）和一次性任务位置参数，再为自己硬编码的行 id（`webserver`、`api-gateway`、`connection`、`web-runtime`）派生 patch。像 [turtle-ui](https://github.com/deepseek-harness/turtle-ui) 这样的树外应用能贡献行，却无处接受一个 flag：`alego --profile tui --resume <session>` 没有地方可供解析，而 `alego --profile web --help` 打印的是启动器的 help，而不是 web 应用的 help。
 
 ## 决策
 

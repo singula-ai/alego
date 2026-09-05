@@ -1,0 +1,34 @@
+# Keyless twin of subagent-acp-diagnostic.cordis.yml: keep the real ACP child
+# permission-denial path and replace only the external parent model adapter.
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  disabled: true
+
+- insert:
+    - id: llm-replay
+      name: '@singula-ai/alego-llm-replay'
+      config:
+        providers:
+          - id: deepseek-official
+            name: DeepSeek
+            models:
+              - id: deepseek-v4-flash
+              - id: deepseek-v4-pro
+    - id: subagent-acp-diagnostic
+      name: '@singula-ai/alego-subagent-acp'
+      config:
+        providerName: acp-diagnostic
+        command: !!js process.execPath
+        args:
+          - !!js "decodeURIComponent(new URL('../../../packages/subagent/subagent-acp/tests/mock-acp-server.ts', 'file://' + process.env.ALEGO_SNAPSHOT_FILE).pathname)"
+        permission: reject
+        env:
+          MOCK_PERMISSION: '1'
+          MOCK_TOOL_KIND: execute
+    - id: tool-subagent-acp-diagnostic
+      name: '@singula-ai/alego-tool-subagent'
+      config:
+        provider: acp-diagnostic
+        toolName: subagent_acp
+        backgroundMode: one-shot
+        maxDepth: provider-managed

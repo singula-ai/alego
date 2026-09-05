@@ -8,7 +8,7 @@ import { Context, Service } from '@singula-ai/cordis'
 import z from '@singula-ai/schemastery'
 import { freezeMessage } from '@singula-ai/alego-llm'
 import type { ContentBlock } from '@singula-ai/alego-llm'
-import type { Session, SessionEvent, ToolResultMessage } from '@singula-ai/alego-session'
+import type { Session, SessionEvent, SessionSeq, ToolResultMessage } from '@singula-ai/alego-session'
 // Type-only: the `compaction/*` SessionEventMap merges (the shadow-price event).
 import type {} from '@singula-ai/alego-compaction'
 // Type-only: the `ctx.tokenMeter` Context merge for the declared injection.
@@ -36,7 +36,7 @@ declare module '@singula-ai/cordis' {
 }
 
 interface SnapshotCandidate {
-  readonly seq: number
+  readonly seq: SessionSeq
   readonly event: SessionEvent<'tool/result'>
 }
 
@@ -136,7 +136,7 @@ export class ToolResultPruner extends Service {
   pruneSession(session: Session): PruneResult {
     const candidates: SnapshotCandidate[] = []
     for (const seq of [...session.surface.nodes]) {
-      const event = session.events[seq]
+      const event = session.eventAt(seq)
       /* v8 ignore next -- surface seqs are validated contiguous log references. */
       if (event?.type === 'tool/result') candidates.push({ seq, event })
     }

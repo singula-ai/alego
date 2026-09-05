@@ -3,24 +3,41 @@
  * slot without defining a service.
  */
 import type { Context } from '@singula-ai/cordis'
-import type { SessionId } from '@singula-ai/alego-client-runtime/client'
+import type { ImageAttachmentRef } from '@singula-ai/alego-attachment'
+import type { SessionBinding } from '@singula-ai/alego-api-session-controller/client'
+import type { ObservableSnapshot } from '@singula-ai/alego-client-store'
+import type { SessionId } from '@singula-ai/alego-session/types'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
 import type {} from '@singula-ai/alego-client-locale/client'
 // Type-only: the 'conversation.view' SlotMap row (declared by the slot's
 // owning package) must be in the program for the register calls to type.
 import type {} from '@singula-ai/alego-client-ui-conversation/client'
+import type {} from '@singula-ai/alego-client-ui-renderer/client'
+import type {} from '@singula-ai/alego-client-ui-session/client'
 import { createTrajectoryDurationStore } from './duration-store.ts'
 import { en, NS, zh } from './locales.ts'
 import { registerTrajectoryAssistantDefinition } from './trajectory-assistant-definition.ts'
 import { registerTrajectoryCompactionDefinitions } from './trajectory-compaction-definition.ts'
 import { registerTrajectoryMessageDefinitions } from './trajectory-message-definitions.ts'
 import { registerTrajectoryRequestHeaderDefinition } from './trajectory-request-header-definition.ts'
-import { registerTrajectoryConversationView } from './trajectory-snapshot-builder.ts'
+import {
+  EMPTY_TRAJECTORY_SNAPSHOT, registerTrajectoryConversationView,
+} from './trajectory-snapshot-builder.ts'
+import type { TrajectorySnapshot } from './trajectory-contract.ts'
 import { registerTrajectoryToolDefinition } from './trajectory-tool-definition.ts'
 import { TrajectoryView, type TrajectoryViewInjected } from './TrajectoryView.tsx'
 
+export type { TrajectoryKey } from './locales.ts'
+export type {
+  TrajectoryContribution,
+  TrajectoryConversationViewNode,
+  TrajectoryRequestHeaderState,
+  TrajectorySnapshot,
+  UseTrajectory,
+} from './trajectory-contract.ts'
+
 /** Required services: the conversation slot, registries, ordinary Session paging, and the locale service. */
-export const inject = ['slots', 'conversationEvents', 'conversationViews', 'sessions', 'locale']
+export const inject = ['slots', 'sessions', 'uiSession', 'uiConversation', 'locale']
 
 /**
  * Client plugin body: register the trajectory view tab. The registration
@@ -28,6 +45,19 @@ export const inject = ['slots', 'conversationEvents', 'conversationViews', 'sess
  * @param ctx - client root context.
  */
 export function apply(ctx: Context): void {
+  const trajectorySources = new WeakMap<SessionBinding, ObservableSnapshot<TrajectorySnapshot>>()
+  const trajectorySource = (binding: SessionBinding): ObservableSnapshot<TrajectorySnapshot> => {
+    let source = trajectorySources.get(binding)
+    if (source === undefined) {
+      const target = ctx.uiConversation.binding(binding).target('trajectory')
+      source = {
+        getSnapshot: () => target.getSnapshot() ?? EMPTY_TRAJECTORY_SNAPSHOT,
+        subscribe: listener => target.subscribe(listener),
+      }
+      trajectorySources.set(binding, source)
+    }
+    return source
+  }
   ctx.effect(() => ctx.locale.register(NS, { zh, en }), 'ui-trajectory: dictionaries')
   // Registration-time text (the view tab label) reads through the bound
   // translate as a thunk, so it follows the active locale without
@@ -40,24 +70,36 @@ export function apply(ctx: Context): void {
   registerTrajectoryToolDefinition(ctx)
   registerTrajectoryCompactionDefinitions(ctx)
   registerTrajectoryConversationView(ctx)
+  ctx.uiSession.provide({
+    hooks: ['trajectory'],
+    resolve: binding => ({ hooks: { trajectory: trajectorySource(binding) } }),
+  })
   ctx.slots.inject('conversation.view', () => ctx.slots.register({
     name: 'conversation.view',
     id: 'trajectory',
     order: 10,
     locale: NS,
     label: () => t('view.trajectory'),
+    children: {
+      'conversation.trajectory.images': { kind: 'single', scope: 'session' },
+    },
     inject: (sessionId: SessionId): TrajectoryViewInjected => {
       const session = ctx.sessions.binding(sessionId)?.session
       if (session === undefined) {
         throw new Error(`ui-trajectory: session "${sessionId}" is unavailable`)
       }
+      const trajectory = ctx.uiConversation.binding(sessionId).target('trajectory')
       return {
         hooks: { duration },
         loadOlder: async () => {
-          const before = session.getSnapshot().views.get('trajectory')
+          const before = trajectory.getSnapshot()
           await session.loadOlder()
-          return session.getSnapshot().views.get('trajectory') !== before
+          return trajectory.getSnapshot() !== before
         },
+        loadImage: Object.assign(
+          (attachment: ImageAttachmentRef) => ctx.uiConversation.imageUrl(sessionId, attachment),
+          { peek: (attachment: ImageAttachmentRef) => ctx.uiConversation.peekImageUrl(sessionId, attachment) },
+        ),
         setActualDuration: (value) => { duration.set(value) },
       }
     },

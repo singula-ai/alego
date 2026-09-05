@@ -1,11 +1,12 @@
 import { createUserMessage } from '@singula-ai/alego-llm'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { SessionId, type SessionEvent } from '@singula-ai/alego-session'
 import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import type { Agent } from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
@@ -26,6 +27,8 @@ import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent
 async function harness(adapter: MockAdapter, sessionRoot?: string, alegoHome?: string) {
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
+  // AgentLoop declares the registry as a required injection.
+  await ctx.plugin(SessionProjectionRegistry)
   if (sessionRoot !== undefined) {
     await ctx.plugin(JsonlSessionPersistence, { root: sessionRoot, compression: 'none' })
   }
@@ -57,13 +60,13 @@ function waitForIdle(ctx: Context, agent: Agent): Promise<void> {
   })
 }
 
-function events(agent: Agent): SessionEvent[] {
-  return [...agent.session.events]
+function events(agent: Agent): readonly SessionEvent[] {
+  return agent.session.snapshotEvents()
 }
 
 /** Find a session event by type, narrowed; throws when absent. */
 function findEvent<T extends SessionEvent['type']>(
-  log: SessionEvent[],
+  log: readonly SessionEvent[],
   type: T,
   position: 'first' | 'last' = 'first',
 ): Extract<SessionEvent, { type: T }> {
@@ -93,14 +96,14 @@ async function pollUntil(predicate: () => boolean, timeoutMs = 5_000): Promise<v
 }
 
 describe('bash tool through the agent loop', () => {
-  it('first-turn bash receives session identity before the lazy JSONL file materializes', async () => {
+  it('first-turn bash receives session identity in a scrubbed ALEGO_* namespace', async () => {
     const root = mkdtempSync(join(tmpdir(), 'alego-bash-session-env-'))
     dirs.push(root)
     const alegoHome = join(root, 'alego-home')
     vi.stubEnv('ALEGO_STALE_PARENT', 'stale')
     const adapter = new MockAdapter([
       toolCallResponse('call-1', 'bash', {
-        command: 'printf \'%s\\n%s\\n%s\\n%s\\n%s\\n\' "$ALEGO_HOME" "$ALEGO_SHELL" "$ALEGO_SESSION_ID" "$ALEGO_SESSION_JSONL" "${ALEGO_STALE_PARENT-unset}"; if [ -e "$ALEGO_SESSION_JSONL" ]; then printf \'present\\n\'; else printf \'absent\\n\'; fi',
+        command: 'printf \'%s\\n%s\\n%s\\n%s\\n\' "$ALEGO_HOME" "$ALEGO_SHELL" "$ALEGO_SESSION_ID" "${ALEGO_STALE_PARENT-unset}"',
         description: 'inspect session environment',
       }),
       textResponse('Session environment inspected.'),
@@ -111,18 +114,12 @@ describe('bash tool through the agent loop', () => {
       agentOptions: { provider: 'mock', model: 'mock' },
     })
     const agent = handle.agent
-    const location = ctx.sessionPersistence.locate(agent.session.header)
-    expect(location?.kind).toBe('jsonl')
 
     agent.followup(createUserMessage({ content: [{ type: 'text', text: 'inspect the current session' }], source: { kind: 'user' } }))
     await waitForIdle(ctx, agent)
 
     const result = findEvent(events(agent), 'tool/result')
-    expect(resultText(result)).toBe(`${alegoHome}\n1\nsession-env-id\n${location?.path}\nunset\nabsent\n`)
-    await ctx.sessions.flush(agent.session)
-    expect(existsSync(location!.path)).toBe(true)
-    const header = JSON.parse(readFileSync(location!.path, 'utf8').split('\n')[0]!) as { type: string; id: string }
-    expect(header).toMatchObject({ type: 'session', id: 'session-env-id' })
+    expect(resultText(result)).toBe(`${alegoHome}\n1\nsession-env-id\nunset\n`)
     await handle.dispose()
   })
 
@@ -132,7 +129,7 @@ describe('bash tool through the agent loop', () => {
       textResponse('The command printed integration-ok.'),
     ])
     const ctx = await harness(adapter)
-    const agent = ctx.agentLoop.create(SessionId('it-fg'), { provider: 'mock', model: 'mock' })
+    const agent = await ctx.agentLoop.create(SessionId('it-fg'), { provider: 'mock', model: 'mock' })
 
     agent.followup(createUserMessage({ content: [{ type: 'text', text: 'run echo integration-ok' }], source: { kind: 'user' } }))
     await waitForIdle(ctx, agent)
@@ -164,7 +161,7 @@ describe('bash tool through the agent loop', () => {
       textResponse('It failed with code 9.'),
     ])
     const ctx = await harness(adapter)
-    const agent = ctx.agentLoop.create(SessionId('it-exit'), { provider: 'mock', model: 'mock' })
+    const agent = await ctx.agentLoop.create(SessionId('it-exit'), { provider: 'mock', model: 'mock' })
 
     agent.followup(createUserMessage({ content: [{ type: 'text', text: 'run exit 9' }], source: { kind: 'user' } }))
     await waitForIdle(ctx, agent)
@@ -197,7 +194,7 @@ describe('bash tool through the agent loop', () => {
       textResponse('Background job finished.'),
     ])
     const ctx = await harness(adapter)
-    const agent = ctx.agentLoop.create(SessionId('it-bg'), { provider: 'mock', model: 'mock' })
+    const agent = await ctx.agentLoop.create(SessionId('it-bg'), { provider: 'mock', model: 'mock' })
 
     agent.followup(createUserMessage({ content: [{ type: 'text', text: 'run echo bg-ok in the background' }], source: { kind: 'user' } }))
     await waitForIdle(ctx, agent)

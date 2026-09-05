@@ -23,7 +23,8 @@ import type { AttachmentStore, ImageAttachmentRef, ImageMediaType, SaveImageAtta
 import type { ContentBlock } from '@singula-ai/alego-llm'
 import type { ToolDefinition, ToolExecution, ToolExecutionResult } from '@singula-ai/alego-tools'
 import { assertSupportedJsonSchema } from '@singula-ai/alego-tools'
-import type { JsonSchemaNode, JsonValue } from '@singula-ai/alego-tools'
+import type { JsonSchemaNode } from '@singula-ai/alego-tools'
+import type { JsonValue } from '@singula-ai/alego-util-values'
 
 /** Resolved options relevant to tool bridging. */
 export interface ToolBridgeOptions {
@@ -36,7 +37,7 @@ export interface ToolBridgeOptions {
 /** State for one sync generation: the current set of disposers keyed by public name. */
 export type ToolDisposers = Map<string, () => void>
 
-/** Canonical MCP result exposed to Code Mode without discarding protocol blocks. */
+/** Canonical MCP result exposed to PTC mode without discarding protocol blocks. */
 export type McpResult<Structured extends JsonValue = JsonValue> = {
   content: JsonValue[]
   structuredContent?: Structured

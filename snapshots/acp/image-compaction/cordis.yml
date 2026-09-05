@@ -1,0 +1,42 @@
+# Image-compaction overlay: the image scenario plus a compaction budget the
+# scenario's inline images exceed only under route-priced visual tokens.
+# Adds the durable attachment store the read_image tool
+# commits through. The store resolves its root from $ALEGO_HOME, which the
+# snapshot harness scopes per run, so the patch itself carries no attachment
+# path. The ACP row selects the shipped vision model.
+- id: acp
+  name: '@singula-ai/alego-acp'
+  config:
+    provider: deepseek-official
+    model: deepseek-v4-flash-vision-exp
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js process.env.ALEGO_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
+    compression: none
+
+- id: agent-instructions
+  name: '@singula-ai/alego-agent-instructions'
+  config:
+    maxBytes: 65536
+
+- id: system-prompt
+  name: '@singula-ai/alego-system-prompt'
+  config:
+    persona: |
+      You are a coding assistant powered by the {{model}} model. Your working directory is {{cwd}}. Your bash tool runs under a file sandbox — a `[sandbox: file access denied …]` result is policy, not a command bug.
+
+      Verify your work by running the code or tests. Keep answers brief and factual.
+
+- id: attachment-local
+  name: '@singula-ai/alego-attachment-local'
+
+# Tight automatic compaction budget sized to the route-priced visual tokens of
+# the scenario's inline images: the text-only history stays under the
+# threshold, so a triggered compaction proves the routed model's image pricing
+# drove the pressure decision.
+- id: compaction-basic
+  name: '@singula-ai/alego-compaction-basic'
+  config:
+    retainTokens: 100

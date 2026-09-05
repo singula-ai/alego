@@ -43,14 +43,13 @@ export default defineConfig({
   plugins: [tsconfigPaths({ projects: ['./tsconfig.base.json'] }), standardDecoratorPlugin()],
   test: {
     execArgv: vitestExecArgv,
-    setupFiles: ['./scripts/test-invariants.ts'],
+    setupFiles: ['./scripts/test-proxy-environment.ts', './scripts/test-invariants.ts'],
     include: [
-      'scripts/**/*.snapshot.ts',
+      'scripts/session-snapshot-corpus.corpus.ts',
       // The assembled Web snapshot executes generated client bundles; source
       // mode remains the zero-build path, while lib mode requires a prior build.
       ...(process.env.ALEGO_EXAMPLE_MODE === 'lib' ? ['apps/web/tests/**/*.snapshot.ts'] : []),
-      'apps/cli/tests/**/*.snapshot.ts',
-      'examples/*/tests/**/*.snapshot.ts',
+      'snapshots/**/*.snapshot.ts',
     ],
     // Replay never writes committed outputs and every scenario owns its
     // mutable runtime state (the subprocess suites use a unique temp dir and
@@ -59,7 +58,7 @@ export default defineConfig({
     // (value 1 restores fully serial replay on constrained machines). Record
     // and refresh stay serial: record spends real API quota per scenario, and
     // refresh write-back harvests volatile values from fixtures already on
-    // disk, so concurrent writers would corrupt goldens.
+    // disk, so concurrent writers would corrupt expected outputs.
     testTimeout: 120_000,
     hookTimeout: 30_000,
     fileParallelism: (process.env.ALEGO_SNAPSHOT || 'replay') === 'replay' && snapshotMaxConcurrency > 1,

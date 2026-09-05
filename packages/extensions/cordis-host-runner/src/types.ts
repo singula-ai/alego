@@ -4,7 +4,8 @@
  */
 
 import type { Branded } from '@singula-ai/alego-brand'
-import type { JsonValue, SessionId } from '@singula-ai/alego-session/types'
+import type { SessionId } from '@singula-ai/alego-session/types'
+import type { JsonValue } from '@singula-ai/alego-util-values'
 
 /** Stable identity of one dynamic plugin instance. */
 export type CordisDynamicPluginId = Branded<'CordisDynamicPluginId'>

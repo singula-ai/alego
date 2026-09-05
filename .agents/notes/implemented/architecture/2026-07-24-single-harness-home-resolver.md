@@ -23,7 +23,7 @@ explicit configured path  >  $ALEGO_HOME  >  ~/.alego
 
 An empty or whitespace-only `$ALEGO_HOME` is treated as unset; otherwise `resolve('')` would silently place the home at the current working directory. The harness keeps all user data under one root; there is no XDG config/data/cache split. `alegoHomePath(...segments)` joins deployment-owned children onto that root, and `alego-app-boot` exposes it to Loader `!!js` config expressions before mounting entries, so shipped compositions derive `sessions` and `storages` without copying the resolver. `alegoHomeDisplay()` names a resolved root symbolically for user-facing paths — `~/.alego` for the default home, `$ALEGO_HOME` for any configured home — so the user-global `AGENTS.md` label never leaks an absolute machine path. It replaces agent-instructions's bespoke default-vs-`$ALEGO_HOME` check.
 
-`@singula-ai/alego-home` is deleted. Its three importers (`alego-tool-bash`, `alego-skill-filesystem`, `alego-agent-spine-demo`) import `resolveAlegoHome` from `alego-home-paths`.
+`@singula-ai/alego-home` is deleted. Home-owning providers and boot packages import `resolveAlegoHome` from `alego-home-paths`; composition bundles contain only the resolved configuration rows.
 
 `alego-telemetry` and its separate home policy are absent under the [SDK project toolchain removal](../simplification/2026-08-11-remove-sdk-project-toolchain.md), leaving this resolver as the sole home policy.
 

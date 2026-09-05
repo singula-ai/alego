@@ -1,22 +1,82 @@
 import { describe, expect, it } from 'vitest'
-import { Context, Service } from '@singula-ai/cordis'
+import { Context } from '@singula-ai/cordis'
 import Loader from '@singula-ai/cordis-plugin-loader'
 import { agentEvents } from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
-import { CallId } from '@singula-ai/alego-llm'
-import { SessionId } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import { ToolCallId } from '@singula-ai/alego-llm'
+import { SessionLogOffset, SessionId } from '@singula-ai/alego-session'
+import type { SessionEvent, SessionHeader } from '@singula-ai/alego-session'
+import {
+  SessionPersistence,
+  SessionPersistenceNotFoundError,
+  SessionPersistenceRevision,
+} from '@singula-ai/alego-session-persistence'
+import type { SessionAccess, SessionHandle, SessionPersistenceSnapshot } from '@singula-ai/alego-session-persistence'
 import * as toolSchedule from '../src/index.ts'
 
-class PersistenceProbe extends Service {
-  constructor(ctx: Context) {
-    super(ctx, 'sessionPersistence')
+interface StoredProbeSession {
+  readonly header: SessionHeader
+  readonly events: SessionEvent[]
+}
+
+/** In-memory handle-based persistence, just enough for agent-loop's write path. */
+class PersistenceProbe extends SessionPersistence {
+  private readonly stored = new Map<string, StoredProbeSession>()
+
+  override async create(header: SessionHeader): Promise<SessionHandle> {
+    const entry: StoredProbeSession = { header, events: [] }
+    this.stored.set(header.id, entry)
+    return this.handle(entry, 'write')
+  }
+
+  // Appends are durable on resolution here; nothing buffers, so the service-wide flush is a no-op.
+  override async flush(): Promise<void> {}
+
+  override async open(id: SessionId, access: SessionAccess): Promise<SessionHandle> {
+    const entry = this.stored.get(id)
+    if (entry === undefined) throw new SessionPersistenceNotFoundError(id)
+    return this.handle(entry, access)
+  }
+
+  override async stat(id: SessionId): Promise<SessionPersistenceSnapshot | undefined> {
+    const entry = this.stored.get(id)
+    return entry === undefined ? undefined : this.snapshot(entry)
+  }
+
+  override async list(): Promise<SessionPersistenceSnapshot[]> {
+    return [...this.stored.values()].map(entry => this.snapshot(entry))
+  }
+
+  private snapshot(entry: StoredProbeSession): SessionPersistenceSnapshot {
+    return {
+      header: entry.header,
+      revision: SessionPersistenceRevision(`probe-${entry.header.id}-${entry.events.length}`),
+      eventCount: entry.events.length,
+    }
+  }
+
+  private handle(entry: StoredProbeSession, access: SessionAccess): SessionHandle {
+    return {
+      id: entry.header.id,
+      header: entry.header,
+      inheritedEventCount: SessionLogOffset(0),
+      access,
+      read: async (offset = 0, length = Number.MAX_SAFE_INTEGER) =>
+        entry.events.slice(offset, offset + length),
+      append: async (events) => { entry.events.push(...events) },
+      flush: async () => {},
+      close: async () => {},
+      [Symbol.asyncDispose]: async () => {},
+    }
   }
 }
 
 async function harness(): Promise<Context> {
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
+  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(PersistenceProbe)
   ctx.on('session/flush', () => {})
   await ctx.plugin(AgentLoop, { agents: [] })
@@ -51,7 +111,7 @@ describe('Schedule plugin composition', () => {
 
     const created = await ctx.agents.withInitiator(root.agent, () => ctx.tools.execute({
       signal: new AbortController().signal,
-      callId: CallId('schedule-plugin-create'),
+      callId: ToolCallId('schedule-plugin-create'),
       name: 'schedule_create',
       arguments: { prompt: 'future reminder', after_seconds: 3_600 },
       agent: root.agent,

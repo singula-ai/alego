@@ -3,7 +3,7 @@
 import type { Context } from '@singula-ai/cordis'
 import { HOST_BUILTIN_INSPECTION } from '@singula-ai/alego-cordis-host-runner'
 import type { HostCordisInspectProviderRegistration } from '@singula-ai/alego-cordis-host-runner'
-import type { JsonValue } from '@singula-ai/alego-session'
+import type { JsonValue } from '@singula-ai/alego-util-values'
 import { EVENT_API, queryEventApi, queryServiceApi } from './api-catalog.ts'
 
 const EMPTY_INPUT = { type: 'object', properties: {}, additionalProperties: false } as const

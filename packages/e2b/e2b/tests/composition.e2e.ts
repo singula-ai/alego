@@ -14,10 +14,11 @@ import {
 import TerminalSessionService, { TerminalSessionId } from '@singula-ai/alego-terminal'
 import { BashTerminalBackend } from '@singula-ai/alego-terminal-bash'
 import SandboxPolicyService from '@singula-ai/alego-sandbox-policy'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { Session, SessionId } from '@singula-ai/alego-session'
 import E2BSubprocessRuntime from '@singula-ai/alego-subprocess-e2b'
 
-const fixtureRoot = fileURLToPath(new URL('../../../../examples/headless-agent/tests/fixtures/e2b/e2b/', import.meta.url))
+const fixtureRoot = fileURLToPath(new URL('./fixtures/composition/', import.meta.url))
 const binScript = join(fixtureRoot, 'bin.ts')
 const configPath = join(fixtureRoot, 'cordis.yml')
 const tsconfigPath = fileURLToPath(new URL('../../../../tsconfig.json', import.meta.url))
@@ -52,6 +53,7 @@ describe.skipIf(!process.env.E2B_API_KEY)('E2B live Loader composition', () => {
         runtimeRoot: '/home/user/.alego-e2b',
         getSandbox: async () => sandbox,
       } as never)
+      await ctx.plugin(SessionProjectionRegistry)
       const sandboxPolicyFiber = await ctx.plugin(SandboxPolicyService, {
         mode: 'danger-full-access',
         workspaceRoot: '/home/user',

@@ -1,0 +1,35 @@
+# Opt-in GitHub webhook overlay over the shipped Web composition. The second
+# WebServer lives in an isolated realm so exposing it never exposes the UI API.
+
+- insert:
+    - id: webhook-runtime
+      name: '@singula-ai/alego-webhook'
+
+    - id: github-ready-review-rule
+      name: './github-ready-review-rule.mjs'
+      config:
+        source: primary-github
+        repository: singula-ai/alego
+        workspacePath: !!js process.env.ALEGO_GITHUB_REVIEW_WORKSPACE ?? process.cwd()
+        agentPreset: standard
+        permissionPreset: read-only
+
+    - id: github-webhook-ingress
+      name: cordis:group
+      group: true
+      isolate:
+        webServer: true
+      config:
+        - id: github-webhook-server
+          name: '@singula-ai/alego-host-webserver'
+          config:
+            host: '127.0.0.1'
+            port: !!js Number(process.env.ALEGO_GITHUB_WEBHOOK_PORT ?? 3081)
+
+        - id: github-webhook-adapter
+          name: '@singula-ai/alego-webhook-github'
+          config:
+            source: primary-github
+            path: /github
+            secretEnv: ALEGO_GITHUB_WEBHOOK_SECRET
+            maxBodyBytes: 1048576

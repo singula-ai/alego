@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/schemastery",
   "description": "Type driven schema validator",
-  "version": "3.18.1",
+  "version": "3.18.2",
   "publishConfig": {
     "access": "public"
   },

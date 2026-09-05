@@ -2,7 +2,7 @@ import { createUserMessage } from '@singula-ai/alego-llm'
 import { describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import type { ContentBlock } from '@singula-ai/alego-llm'
-import SessionStore, { Session, SessionId, type SessionEvent } from '@singula-ai/alego-session'
+import SessionStore, { Session, SessionId, SessionSeq, type SessionEvent } from '@singula-ai/alego-session'
 import * as TimeInvariant from '@singula-ai/alego-time-context/invariant'
 import InvariantRegistry from '@singula-ai/alego-invariants'
 
@@ -24,7 +24,7 @@ function event(
 ): SessionEvent<'user/message'> {
   return {
     type: 'user/message',
-    seq: 0,
+    seq: SessionSeq(0),
     time,
     data: createUserMessage({
       content: (content ?? [{ type: 'text', text }]) as ContentBlock[],
@@ -322,9 +322,9 @@ describe('time-context invariants', () => {
     expect(() => {
       ctx.sessions.create(SessionId('time-invariant-created-invalid'), {
         seed: [
-          { type: 'turn/start', seq: 0, time: SECOND, data: { turn: 1 } },
-          { type: 'step/start', seq: 1, time: SECOND, data: { turn: 1, step: 1 } },
-          { ...event(text), seq: 2, surfaceOp: 'append' },
+          { type: 'turn/start', seq: SessionSeq(0), time: SECOND, data: { turn: 1 } },
+          { type: 'step/start', seq: SessionSeq(1), time: SECOND, data: { turn: 1, step: 1 } },
+          { ...event(text), seq: SessionSeq(2), surfaceOp: 'append' },
         ],
       })
     }).toThrow(/expected turn 1\/step 1/)
@@ -345,7 +345,7 @@ describe('time-context invariants', () => {
     expect(() => { ctx.emit('session/event', preparing(1, 1), user) }).not.toThrow()
     expect(() => {
       ctx.emit('session/event', preparing(1, 1), {
-        type: 'turn/start', seq: 0, time: 0, data: { turn: 1 },
+        type: 'turn/start', seq: SessionSeq(0), time: 0, data: { turn: 1 },
       })
       ctx.emit('tools/change')
     }).not.toThrow()

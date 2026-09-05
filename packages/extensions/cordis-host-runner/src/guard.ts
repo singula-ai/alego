@@ -19,7 +19,7 @@ import { scopeOf } from '@singula-ai/alego-scope'
 import { assertSupportedJsonSchema, defineTool } from '@singula-ai/alego-tools'
 import type { ToolDefinition } from '@singula-ai/alego-tools'
 import type { ContentBlock } from '@singula-ai/alego-llm'
-import type { JsonValue } from '@singula-ai/alego-session'
+import type { JsonValue } from '@singula-ai/alego-util-values'
 
 const DYNAMIC_TOOL = Symbol('cordis-host-runner.dynamic-tool')
 const SCHEMA_TYPES = new Set<unknown>(['string', 'number', 'integer', 'boolean', 'null', 'object', 'array', 'json'])

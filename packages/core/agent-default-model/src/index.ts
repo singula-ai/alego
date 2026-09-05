@@ -8,7 +8,7 @@ import { Context, Service } from '@singula-ai/cordis'
 import z from '@singula-ai/schemastery'
 import type { ModelSelection } from '@singula-ai/alego-agent'
 import { ReasoningEffortId } from '@singula-ai/alego-llm'
-import { installSettingsSection, settingsNamespace } from '@singula-ai/alego-settings'
+import type {} from '@singula-ai/alego-settings'
 
 declare module '@singula-ai/cordis' {
   interface Context {
@@ -18,7 +18,7 @@ declare module '@singula-ai/cordis' {
 }
 
 /** Settings namespace carrying the default model selection for future Agents. */
-export const AGENT_DEFAULT_MODEL_SETTINGS_NAMESPACE = settingsNamespace('agent-default-model')
+export const AGENT_DEFAULT_MODEL_SETTINGS_NAMESPACE = 'agent-default-model'
 
 /** Stored and composed default model selection. */
 export interface AgentDefaultModelSettings {
@@ -73,11 +73,13 @@ export class AgentDefaultModelConfig extends Service {
     super(ctx, 'agentDefaultModel')
     const entry: AgentDefaultModelSettings = { provider: config.provider, model: config.model }
     this.source = () => entry
-    installSettingsSection(ctx, AGENT_DEFAULT_MODEL_SETTINGS_NAMESPACE, AGENT_DEFAULT_MODEL_SETTINGS_SCHEMA, entry, {
-      setSource: (current) => { this.source = current },
-      // Every consumer reads through currentSelection(), so no registration-level fact
-      // needs rebuilding when the settings document changes.
-      onChange: () => {},
+    ctx.inject(['settings'], (settingsCtx) => {
+      settingsCtx.settings.installSection(ctx, AGENT_DEFAULT_MODEL_SETTINGS_NAMESPACE, AGENT_DEFAULT_MODEL_SETTINGS_SCHEMA, entry, {
+        setSource: (current) => { this.source = current },
+        // Every consumer reads through currentSelection(), so no registration-level fact
+        // needs rebuilding when the settings document changes.
+        onChange: () => {},
+      })
     })
   }
 

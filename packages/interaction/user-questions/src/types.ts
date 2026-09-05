@@ -1,9 +1,7 @@
-/**
- * Wire-safe question and answer types, free of cordis/service imports so browser
- * type chains (apiproxy api → client) can consume them without loading this
- * package's Context augmentation.
- * @module @singula-ai/alego-user-questions/types
- */
+/** Client-safe question, answer, and event types. @module @singula-ai/alego-user-questions/types */
+
+import type { Scoped } from '@singula-ai/alego-scope'
+import type { Agent } from '@singula-ai/alego-agent/types'
 
 /** One selectable answer offered to the user. */
 export interface AskUserQuestionOption {
@@ -63,4 +61,31 @@ export interface AskUserQuestionAnswerItem {
 export interface AskUserQuestionAnswer {
   /** Structured answers keyed by question id. */
   answers: AskUserQuestionAnswerItem[]
+}
+
+/** Client-safe payload declared for the user-question answerer waterfall. */
+export interface AskUserQuestionRequestEvent {
+  /** Questions to display. */
+  questions: AskUserQuestionItem[]
+  /** Agent identity projected to the corresponding Client Context in transit. */
+  agent?: Agent
+  /** Cancellation lifetime of the pending request. */
+  signal?: AbortSignal
+}
+
+declare module '@singula-ai/cordis' {
+  interface Events {
+    /**
+     * Ask composed answerers for structured user input. Return an answer to
+     * claim the request or call `next()` to delegate. Scope-filtered dispatch
+     * (`@singula-ai/alego-scope`): agent-scoped listeners receive only that agent.
+     * @param request - pending user-question request.
+     * @mode waterfall
+     */
+    'user-questions/request'(
+      this: Scoped<Agent>,
+      request: AskUserQuestionRequestEvent,
+      next: () => Promise<AskUserQuestionAnswer>,
+    ): Promise<AskUserQuestionAnswer>
+  }
 }

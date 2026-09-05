@@ -9,12 +9,13 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import Loader from '@singula-ai/cordis-plugin-loader'
 import Include from '@singula-ai/cordis-plugin-include'
-import { CallId } from '@singula-ai/alego-llm'
+import { ToolCallId } from '@singula-ai/alego-llm'
 import { Session, SessionId } from '@singula-ai/alego-session'
 import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
 import type { Agent } from '@singula-ai/alego-agent'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime from '@singula-ai/alego-tools'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import * as ToolTodo from '@singula-ai/alego-tool-todo'
 
 let root: string | undefined
@@ -58,6 +59,7 @@ async function boot(configLines: readonly string[]): Promise<Context> {
     "- name: '@singula-ai/alego-agent'",
     "- name: '@singula-ai/alego-system-prompt'",
     "- name: '@singula-ai/alego-tools'",
+    "- name: '@singula-ai/alego-session-projection'",
     "- name: '@singula-ai/alego-tool-todo'",
     ...configLines.length > 0 ? ['  config:', ...configLines] : [],
     '',
@@ -72,6 +74,7 @@ async function boot(configLines: readonly string[]): Promise<Context> {
     ['@singula-ai/alego-agent', AgentRegistry],
     ['@singula-ai/alego-system-prompt', SystemPrompt],
     ['@singula-ai/alego-tools', ToolRuntime],
+    ['@singula-ai/alego-session-projection', SessionProjectionRegistry],
     ['@singula-ai/alego-tool-todo', ToolTodo],
   ])
   ctx.loader.internal = {
@@ -101,14 +104,14 @@ describe('tool-todo real Loader composition through cordis.yml', () => {
     const owner = agent(ctx)
     const result = await ctx.tools.execute({
       signal: new AbortController().signal,
-      callId: CallId('parallel'),
+      callId: ToolCallId('parallel'),
       name: 'todo_write',
       arguments: { todos: PARALLEL_TODOS },
       agent: owner,
     })
     expect(result.isError).toBe(true)
     expect(resultText(result)).toContain('at most one task may be in_progress')
-    expect(owner.session.events.some(e => e.type === 'todo/write')).toBe(false)
+    expect(owner.session.snapshotEvents().some(e => e.type === 'todo/write')).toBe(false)
   }, 30_000)
 
   it('allowParallelInProgress: true permits a parallel write end to end', async () => {
@@ -119,13 +122,13 @@ describe('tool-todo real Loader composition through cordis.yml', () => {
     const owner = agent(ctx)
     const result = await ctx.tools.execute({
       signal: new AbortController().signal,
-      callId: CallId('parallel-enabled'),
+      callId: ToolCallId('parallel-enabled'),
       name: 'todo_write',
       arguments: { todos: PARALLEL_TODOS },
       agent: owner,
     })
     expect(result.isError).toBe(false)
-    expect(owner.session.events.findLast(e => e.type === 'todo/write')?.data.todos).toEqual(PARALLEL_TODOS)
+    expect(owner.session.snapshotEvents().findLast(e => e.type === 'todo/write')?.data.todos).toEqual(PARALLEL_TODOS)
   }, 30_000)
 
   it.each([

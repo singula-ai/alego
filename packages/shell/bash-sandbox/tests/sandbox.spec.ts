@@ -8,9 +8,10 @@
 import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
-import { describe, expect, it, vi } from 'vitest'
+import { afterAll, describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import type { ShellRunResult, CollectedOutput } from '@singula-ai/alego-shell'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { SANDBOX_UNAVAILABLE, SandboxProvider, SandboxUnavailableError } from '@singula-ai/alego-sandbox'
 import type { ConfinedArgv, SandboxExecutionPolicy, SandboxMode, SandboxPolicy } from '@singula-ai/alego-sandbox'
 import { SandboxPolicyService } from '@singula-ai/alego-sandbox-policy'
@@ -21,6 +22,10 @@ import { classifyDenial, classifyRunnerFailure, isRunnerSpawnFailure } from '../
 import type { Config } from '@singula-ai/alego-bash-sandbox'
 
 const spillDir = mkdtempSync(join(tmpdir(), 'alego-bash-sandbox-spec-'))
+
+afterAll(() => {
+  rmSync(spillDir, { recursive: true, force: true })
+})
 
 /** One recorded provider call: the argv handed over and the policy it rode with. */
 interface ConfineCall {
@@ -62,6 +67,7 @@ async function setup(
     }
   }
   const ctx = new Context()
+  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(FakeSandboxProvider)
   await ctx.plugin(SandboxPolicyService, {
     ...mode !== undefined ? { mode } : {},
@@ -516,12 +522,17 @@ describe('result facts', () => {
 
   it('reports a real permission failure as a sandbox denial with the mode it ran under', async () => {
     const { bash } = await setup()
-    const lockedDir = join(mkdtempSync(join(tmpdir(), 'alego-sandbox-denied-')), 'locked')
-    mkdirSync(lockedDir)
-    chmodSync(lockedDir, 0o555)
-    const result = await bash.run(bash.resolve({ command: `echo x > ${lockedDir}/f` }))
-    expect(result.exitCode).not.toBe(0)
-    expect(result.sandbox).toEqual({ mode: 'read-only', denied: true, enforcement: 'full' })
+    const deniedRoot = mkdtempSync(join(tmpdir(), 'alego-sandbox-denied-'))
+    try {
+      const lockedDir = join(deniedRoot, 'locked')
+      mkdirSync(lockedDir)
+      chmodSync(lockedDir, 0o555)
+      const result = await bash.run(bash.resolve({ command: `echo x > ${lockedDir}/f` }))
+      expect(result.exitCode).not.toBe(0)
+      expect(result.sandbox).toEqual({ mode: 'read-only', denied: true, enforcement: 'full' })
+    } finally {
+      rmSync(deniedRoot, { recursive: true, force: true })
+    }
   })
 
   it('carries the provider\'s partial-enforcement fact through unchanged', async () => {

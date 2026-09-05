@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-tool",
   "description": "Client Tool call-tree renderer and keyed per-tool presentation slot",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -18,10 +18,6 @@
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
     },
-    "./invariant": {
-      "types": "./lib/types/invariant.d.ts",
-      "default": "./lib/invariant.js"
-    },
     "./client": {
       "types": "./lib/types/client/index.d.ts",
       "default": "./lib/client.js"
@@ -32,8 +28,8 @@
   "alego": {
     "client": {
       "inject": [
+        "@singula-ai/alego-api-workspace-controller",
         "@singula-ai/alego-client-connection",
-        "@singula-ai/alego-client-runtime",
         "@singula-ai/alego-client-locale",
         "@singula-ai/alego-client-ui-conversation"
       ],
@@ -49,33 +45,30 @@
     "clsx": "^2.0.0"
   },
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-api-remotes": "workspace:^",
-    "@singula-ai/alego-client-connection": "workspace:^",
-    "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-runtime": "workspace:^",
-    "@singula-ai/alego-client-ui-conversation": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^"
+    "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
     "@singula-ai/cordis": "workspace:^",
     "@singula-ai/alego-api-remotes": "workspace:^",
     "@singula-ai/alego-client-connection": "workspace:^",
     "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-runtime": "workspace:^",
     "@singula-ai/alego-client-test-runtime": "workspace:^",
     "@singula-ai/alego-client-ui-conversation": "workspace:^",
     "@singula-ai/alego-client-ui-primitives": "workspace:^",
     "@singula-ai/alego-client-ui-slots": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
     "@testing-library/react": "^16.1.0",
     "@types/react": "~18.3.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "@singula-ai/alego-api-workspace-controller": "workspace:^",
+    "@singula-ai/alego-client-ui-chat": "workspace:^",
+    "@singula-ai/alego-client-ui-renderer": "workspace:^",
+    "@singula-ai/alego-client-ui-session": "workspace:^",
+    "@singula-ai/alego-util-workspace-path": "workspace:^",
+    "@singula-ai/alego-attachment": "workspace:^"
   },
   "files": [
     "lib/index.js",
-    "lib/invariant.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"
   ]

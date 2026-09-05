@@ -1,6 +1,6 @@
 /** General Settings row for the Composer's busy-state Enter preference. */
 import { useState } from 'react'
-import type { SnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import type { SnapshotStore } from '@singula-ai/alego-client-store'
 import type { InjectFace, PropsLocale, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
 import { IconChevronDownOutline14, Menu } from '@singula-ai/alego-client-ui-primitives'
 import type { BusyEnterBehavior } from '../contract/composer-submission.ts'

@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-compaction",
   "description": "Abstract compaction service seam (ctx.compaction) for the Alego",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },

@@ -18,19 +18,19 @@ interface Profile {
 // snapshot; they do not re-evaluate that deleted baseline or track its preset.
 const profiles = {
   source: {
-    count: 88,
+    count: 89,
     indexes: [0, 1, 4, 5],
-    sha256: 'da1dfd77cb6eb66be93d8d3820f9b9b68b7aa391c24680f8851c0910298f9e3b',
+    sha256: 'a089617a0718c627e1d6e7d6ee5b6aba2c7148866bc0abc37ff7fcee41b1c3a1',
   },
   example: {
-    count: 87,
+    count: 88,
     indexes: [0, 1, 2, 4, 5],
-    sha256: '6a2606053bc1ec1de3b02611de88ea51d201dac13a1f193e4934d33c08b95f08',
+    sha256: 'f394666fb4aeb90da527847362867e48f6a092870a6d308729bd1d7c90d5c4a4',
   },
   test: {
-    count: 83,
+    count: 84,
     indexes: [0, 3, 4, 5],
-    sha256: '7995e14926a36c40bd65c474637735222a95fb030395681685f03060e50a7b78',
+    sha256: '840f195b3164c99996e969d9d049bd70e4c9f3b0fd7790b2485f2dbd73fc5501',
   },
 } as const satisfies Record<string, Profile>
 
@@ -85,7 +85,7 @@ describe('Oxlint repository rule fingerprint', () => {
   const overrides: readonly unknown[] = parsed.overrides
 
   it('pins every override field', () => {
-    expect(overrides).toHaveLength(8)
+    expect(overrides).toHaveLength(9)
   })
 
   it.each(Object.entries(profiles))('pins the %s rule profile', (_name, profile) => {
