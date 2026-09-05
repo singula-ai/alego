@@ -9,6 +9,7 @@ import { pathToFileURL } from 'node:url'
 import LlmRuntime, { createUserMessage, LlmAdapter  } from '@singula-ai/alego-llm'
 import type { GenerateOptions, StreamChunk } from '@singula-ai/alego-llm'
 import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import SessionTitleService from '@singula-ai/alego-session-title'
 import * as providerPlugin from '@singula-ai/alego-session-title-first-prompt-llm'
 
@@ -38,6 +39,7 @@ async function loadComposition(): Promise<Context> {
   await writeFile(configPath, [
     "- name: '@singula-ai/alego-llm'",
     "- name: '@singula-ai/alego-session'",
+    "- name: '@singula-ai/alego-session-projection'",
     "- name: '@singula-ai/alego-session-title'",
     '  config:',
     '    fallbackMaxWords: 5',
@@ -62,6 +64,7 @@ async function loadComposition(): Promise<Context> {
   const modules = new Map<string, unknown>([
     ['@singula-ai/alego-llm', LlmRuntime],
     ['@singula-ai/alego-session', SessionStore],
+    ['@singula-ai/alego-session-projection', SessionProjectionRegistry],
     ['@singula-ai/alego-session-title', SessionTitleService],
     ['@singula-ai/alego-session-title-first-prompt-llm', providerPlugin],
   ])

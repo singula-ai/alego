@@ -1,0 +1,61 @@
+# SDK-profile patch for a deterministic parent model that selects a route for
+# a separate SDK child runtime. Both runtimes persist their request headers.
+
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  disabled: true
+
+- id: tool-subagent
+  name: '@singula-ai/alego-tool-subagent'
+  disabled: true
+
+- id: sdk-jsonrpc-server
+  name: '@singula-ai/alego-sdk-jsonrpc-server'
+  disabled: true
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: none
+
+- insert:
+    - id: mock-llm
+      name: '../../../packages/subagent/subagent-alego-sdk/tests/fixtures/loader/mock-delegating-llm.ts'
+      disabled: !!js process.env.ALEGO_SNAPSHOT !== 'record'
+
+    - id: subagent-alego-sdk
+      name: '@singula-ai/alego-subagent-alego-sdk'
+      config:
+        profile: sdk
+        patches: !!js JSON.parse(process.env.ALEGO_TEST_CHILD_PATCHES ?? '[]')
+        alegoHome: !!js process.env.ALEGO_TEST_CHILD_HOME
+        provider: mock
+        model: mock-routed
+        env:
+          ALEGO_TELEMETRY_DISABLED: '1'
+
+    - id: subagent-model-selection-settings
+      name: '@singula-ai/alego-tool-subagent/model-selection-settings'
+      config:
+        enabled: true
+        allowedModels:
+          - provider: mock
+            model: mock-routed
+
+    - id: tool-subagent-alego-sdk
+      name: '../../../packages/subagent/subagent-alego-sdk/tests/fixtures/loader/scoped-tool-subagent.ts'
+      config:
+        provider: alego-sdk
+        toolName: subagent
+        enableRunInBackground: false
+        agentOptions:
+          maxTokens: 777
+        maxDepth: 'provider-managed'
+
+    - id: sdk-jsonrpc-server-dynamic-live
+      name: '@singula-ai/alego-sdk-jsonrpc-server'
+      inject: [sdkAppStartup, loader]
+      disabled: !!js process.env.ALEGO_SNAPSHOT !== 'record'
+      config:
+        maxTokensAsSuccess: true

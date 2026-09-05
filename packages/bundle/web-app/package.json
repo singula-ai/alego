@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-web-app",
   "description": "The alego browser-surface bundle: the web patch layer over alego-base plus the runtime glue plugin (frontend dist serving, web-surface prompt, bash runtime variables, URL line)",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -22,17 +22,12 @@
       "types": "./lib/types/startup.d.ts",
       "default": "./lib/startup.js"
     },
-    "./invariant": {
-      "types": "./lib/types/invariant.d.ts",
-      "default": "./lib/invariant.js"
-    },
     "./cordis.patch.yml": "./cordis.patch.yml",
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
   "files": [
     "lib/index.js",
-    "lib/invariant.js",
     "lib/startup.js",
     "cordis.patch.yml",
     "lib/types/**/*.d.ts"
@@ -45,18 +40,21 @@
   },
   "dependencies": {
     "@singula-ai/alego-agent-presets": "workspace:^",
+    "@singula-ai/alego-tool-subagent": "workspace:^",
     "@singula-ai/alego-api-remotes": "workspace:^",
     "@singula-ai/alego-app-boot": "workspace:^",
     "@singula-ai/alego-client-connection": "workspace:^",
+    "@singula-ai/alego-client-file-upload": "workspace:^",
     "@singula-ai/alego-client-hmr": "workspace:^",
     "@singula-ai/alego-client-locale": "workspace:^",
     "@singula-ai/alego-client-modules": "workspace:^",
     "@singula-ai/alego-client-ui-renderer": "workspace:^",
-    "@singula-ai/alego-client-runtime": "workspace:^",
     "@singula-ai/alego-client-ui-agent-preset": "workspace:^",
     "@singula-ai/alego-client-ui-attachment": "workspace:^",
+    "@singula-ai/alego-client-ui-approval": "workspace:^",
     "@singula-ai/alego-client-ui-brand-official": "workspace:^",
     "@singula-ai/alego-client-ui-commands": "workspace:^",
+    "@singula-ai/alego-client-ui-chat": "workspace:^",
     "@singula-ai/alego-client-ui-conversation": "workspace:^",
     "@singula-ai/alego-client-ui-cordis": "workspace:^",
     "@singula-ai/alego-client-ui-deliverables": "workspace:^",
@@ -70,6 +68,8 @@
     "@singula-ai/alego-client-ui-settings-plugin-inventory": "workspace:^",
     "@singula-ai/alego-client-ui-permission-presets": "workspace:^",
     "@singula-ai/alego-client-ui-plan": "workspace:^",
+    "@singula-ai/alego-client-ui-schedule": "workspace:^",
+    "@singula-ai/alego-client-ui-session": "workspace:^",
     "@singula-ai/alego-client-ui-settings-plugins": "workspace:^",
     "@singula-ai/alego-client-ui-user-questions": "workspace:^",
     "@singula-ai/alego-client-ui-settings": "workspace:^",
@@ -91,7 +91,6 @@
     "@singula-ai/alego-cordis-host-runner": "workspace:^",
     "@singula-ai/alego-web-frontend": "workspace:^",
     "@singula-ai/alego-host-frontend-static": "workspace:^",
-    "@singula-ai/alego-host-apiproxy": "workspace:^",
     "@singula-ai/alego-host-directory-picker-auto": "workspace:^",
     "@singula-ai/alego-host-directory-picker-browse": "workspace:^",
     "@singula-ai/alego-host-directory-picker-native": "workspace:^",
@@ -101,13 +100,13 @@
     "@singula-ai/alego-file-reference-local": "workspace:^",
     "@singula-ai/alego-launch-environment": "workspace:^",
     "@singula-ai/alego-message-feedback": "workspace:^",
-    "@singula-ai/alego-session-projection-cache": "workspace:^",
     "@singula-ai/alego-session-reference": "workspace:^",
     "@singula-ai/alego-session-log-export": "workspace:^",
     "@singula-ai/alego-session-stats": "workspace:^",
-    "@singula-ai/alego-storage": "workspace:^",
-    "@singula-ai/alego-storage-domain": "workspace:^",
-    "@singula-ai/alego-storage-json": "workspace:^",
+    "@singula-ai/alego-session-turn-outline": "workspace:^",
+    "@singula-ai/alego-api-session-controller": "workspace:^",
+    "@singula-ai/alego-api-settings-controller": "workspace:^",
+    "@singula-ai/alego-api-workspace-controller": "workspace:^",
     "@singula-ai/alego-subprocess": "workspace:^",
     "@singula-ai/alego-workspace": "workspace:^",
     "@singula-ai/schemastery": "workspace:^",
@@ -117,14 +116,12 @@
   "peerDependencies": {
     "@singula-ai/cordis-plugin-loader": "workspace:^",
     "@singula-ai/alego-shell-env": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-system-prompt": "workspace:^",
     "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
     "@singula-ai/cordis-plugin-loader": "workspace:^",
     "@singula-ai/alego-shell-env": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-system-prompt": "workspace:^",
     "@singula-ai/cordis": "workspace:^"
   }

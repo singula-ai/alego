@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-session-query",
   "description": "Combined session query service contract with concrete reads, traces, and filters",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -18,40 +18,45 @@
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
     },
-    "./invariant": {
-      "types": "./lib/types/invariant.d.ts",
-      "default": "./lib/invariant.js"
-    },
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
   "files": [
     "lib/index.js",
-    "lib/invariant.js",
     "lib/types/**/*.d.ts"
   ],
   "license": "MIT",
   "peerDependencies": {
     "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-llm": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/alego-session-title": "workspace:^",
+    "@singula-ai/alego-tool-todo": "workspace:^",
     "@singula-ai/alego-session-persistence": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^",
+    "@singula-ai/alego-session-projection-cache": "workspace:^",
     "@singula-ai/cordis": "workspace:^"
   },
   "peerDependenciesMeta": {
     "@singula-ai/alego-session-persistence": {
       "optional": true
+    },
+    "@singula-ai/alego-session-projection": {
+      "optional": true
+    },
+    "@singula-ai/alego-session-projection-cache": {
+      "optional": true
     }
   },
   "devDependencies": {
     "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-llm": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/alego-session-title": "workspace:^",
+    "@singula-ai/alego-tool-todo": "workspace:^",
     "@singula-ai/alego-session-persistence": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^",
+    "@singula-ai/alego-session-projection-cache": "workspace:^",
     "@singula-ai/cordis": "workspace:^"
   }
 }

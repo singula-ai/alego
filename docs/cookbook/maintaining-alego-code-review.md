@@ -18,7 +18,7 @@ Each run stores its artifacts on the operator's machine. The saved diff, candida
 
 ## What the operator does with a candidate diff
 
-When a run produces a candidate, a macOS notification arrives with a `alego-code-review-promote <timestamp>` hint.
+When a run produces a candidate, a macOS notification arrives with an `alego-code-review-promote <timestamp>` hint.
 
 1. **Read the diff on its own merits.** Do not defer to "the reviewers approved"; the maintainer contract is that the operator makes the final decision. Look for checklist bloat, historical prose, unsupported extrapolation from a single incident, and duplicated coverage with existing skill or authoritative-doc content.
 

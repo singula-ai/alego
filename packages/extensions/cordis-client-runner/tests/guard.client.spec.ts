@@ -16,7 +16,7 @@ import type {
   CordisDynamicPluginRunId,
   DynamicCordisPackage,
 } from '@singula-ai/alego-api-remotes/client'
-import { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import { SlotRegistry } from '@singula-ai/alego-client-ui-renderer/client'
 import { dynamicCordisContext } from '../src/client/guard.ts'
 import type { DynamicCordisSlotLedgerRow } from '../src/client/guard.ts'
 

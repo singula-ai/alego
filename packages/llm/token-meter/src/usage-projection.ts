@@ -3,7 +3,9 @@
  */
 
 import { z } from 'zod'
-import type { TokenUsage } from '@singula-ai/alego-llm'
+import { expandAssistantStream, type TokenUsage } from '@singula-ai/alego-llm'
+import type {} from '@singula-ai/alego-llm-retry/types'
+import { SessionSeq } from '@singula-ai/alego-session'
 import type { SessionEvent } from '@singula-ai/alego-session'
 import type { ProjectionDefinition } from '@singula-ai/alego-session-projection'
 import type { ContextPressureProjection, TokenUsageProjection } from './projection.ts'
@@ -76,13 +78,15 @@ const pressureSchema: z.ZodType<ContextPressureProjection> = z.object({
 const pressureFrom = (usage: TokenUsage): number =>
   usage.inputTokens + (usage.cacheReadTokens ?? 0) + (usage.cacheWriteTokens ?? 0)
 
-/** The usage a chunk or finalized message reports for its step, if any. */
-const usageOf = (event: SessionEvent): TokenUsage | undefined =>
-  event.type === 'assistant/chunk' && event.data.chunk.type === 'usage'
-    ? event.data.chunk.usage
-    : event.type === 'assistant/message'
-      ? event.data.usage
-      : undefined
+/** The usage one durable Assistant settlement reports for its attempt, if any. */
+function usageOf(event: SessionEvent): TokenUsage | undefined {
+  if (event.type === 'assistant/message' && event.data.usage !== undefined) return event.data.usage
+  if (event.type !== 'assistant/message' && event.type !== 'assistant/attempt') return undefined
+  for (const member of expandAssistantStream(event.data.stream).toReversed()) {
+    if (member.chunk.type === 'usage') return member.chunk.usage
+  }
+  return undefined
+}
 
 declare module '@singula-ai/alego-session-projection/types' {
   interface SessionProjectionStateMap {
@@ -98,8 +102,8 @@ const contextPressureStateSchema = z.object({
   surfaceTokens: z.number().int().nonnegative(),
   sampledSurfaceTokens: z.number().int().nonnegative().optional(),
   claim: z.object({
-    start: z.number().int().nonnegative(),
-    end: z.number().int().nonnegative(),
+    start: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER).transform(SessionSeq),
+    end: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER).transform(SessionSeq),
     tokens: z.number().int().nonnegative(),
   }).optional(),
 }).strict()
@@ -109,30 +113,28 @@ type ContextPressureState = z.infer<typeof contextPressureStateSchema>
 /**
  * Token-meter's session projection unit.
  *
- * Usage chunks provide an early sample that survives a later request failure;
- * an assistant message provides the final sample for the same turn/step. A
- * repeated sample replaces that step's earlier value instead of double
- * counting it. The single `last` slot relies on the session-log invariant
- * that usage reports for one turn/step are adjacent: once a later step begins,
- * a legal log never reports usage for an earlier step again.
+ * Each v2 Assistant settlement contributes the last usage sample embedded in
+ * its stream. `llm/retry-started` closes the replacement slot so the retried
+ * attempt adds to the total.
  */
 export const tokenUsageProjectionDefinition = {
   key: 'tokenUsage',
-  stateVersion: 1,
+  stateVersion: 2,
   stateSchema: tokenUsageStateSchema,
   init: () => ({ totals: zeroBuckets(), last: null }),
   apply: (state, event) => {
-    let turn: number
-    let step: number
-    let usage: TokenUsage
-    if (event.type === 'assistant/chunk' && event.data.chunk.type === 'usage') {
-      ;({ turn, step } = event.data)
-      usage = event.data.chunk.usage
-    } else if (event.type === 'assistant/message' && event.data.usage !== undefined) {
-      ;({ turn, step, usage } = event.data)
-    } else {
+    if (event.type === 'llm/retry-started') {
+      return state.last?.turn === event.data.turn && state.last.step === event.data.step
+        ? { ...state, last: null }
+        : state
+    }
+    if (event.type !== 'assistant/message' && event.type !== 'assistant/attempt') {
       return state
     }
+    const sample = usageOf(event)
+    if (sample === undefined) return state
+    const { turn, step } = event.data
+    const usage: TokenUsage = sample
 
     const buckets = bucketsFrom(usage)
     const previous = state.last !== null

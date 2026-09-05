@@ -21,10 +21,13 @@
       "path": "../../llm/llm"
     },
     {
+      "path": "../../llm/deepseek-llm-api-extensions"
+    },
+    {
       "path": "../../core/session"
     },
     {
-      "path": "../../runtime-diagnostics/invariants"
+      "path": "../../session/session-format-catalog"
     }
   ]
 }

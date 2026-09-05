@@ -1,6 +1,6 @@
 /**
  * Skill reference plugin, browser half: registers the '/' skill source —
- * candidates from the skill.list RPC addressed by the per-call session
+ * candidates from the `skills/list` Remote addressed by the per-call session
  * projection's sessionId (sessions are always agent-backed; the host
  * resolves cwd from the session header). A pick lands the literal `/name `
  * text and the prompt ships the same literal (plain-text-reference decision;
@@ -10,7 +10,7 @@
  * leading `/name` naming a user-invocable skill and injects the rendered
  * body for every entry point, including `disable-model-invocation` skills the
  * model-side catalog never lists (issue #1470). The RPC rides the plugin's
- * root-context connection captured at registration — the source never reads
+ * root-context Remote captured at registration — the source never reads
  * services off a per-call argument. Draft chip visuals derive from
  * the lexicon scan; this source implements no reference codec.
  *
@@ -30,11 +30,16 @@
  * accent row derived only from each logged call/result slice.
  */
 // Type-only: the carrier types, the forwarded Host-event face and the ctx.remote merge.
-import type { ConnectionHandle, SessionId, SkillEntry } from '@singula-ai/alego-api-remotes/client'
-import type { ClientContext, ISessions } from '@singula-ai/alego-client-runtime/client'
+import type { Context as ClientContext } from '@singula-ai/cordis'
+import type { SkillEntry } from '@singula-ai/alego-api-remotes/client'
+import type {} from '@singula-ai/alego-api-session-controller/client'
+import type { SessionId } from '@singula-ai/alego-session/types'
 import type { InputTriggerServiceContract, InputTriggerSource } from '@singula-ai/alego-client-ui-input-trigger/client'
+import { rankByName } from '@singula-ai/alego-client-ui-primitives'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
 import type {} from '@singula-ai/alego-client-locale/client'
+// Type-only: pulls the SlotRegistry service merge (ctx.slots).
+import type {} from '@singula-ai/alego-client-ui-renderer/client'
 import { SkillRow } from './SkillRow.tsx'
 import { en, NS, zh, type SkillKey } from './locales.ts'
 
@@ -54,7 +59,7 @@ interface CatalogFetch {
 }
 
 /** Required services: reference source faces plus the tool-row and locale registries. */
-export const inject = ['inputTriggers', 'connection', 'sessions', 'slots', 'locale', 'remote']
+export const inject = ['inputTriggers', 'sessions', 'slots', 'locale', 'remote', 'remote.skills']
 
 /**
  * Client plugin body: register the '/' source, dictionaries, and keyed tool row.
@@ -67,8 +72,8 @@ export function apply(ctx: ClientContext): void {
     SkillRow,
   ))
 
-  const skills = (ctx.get('connection') as ConnectionHandle).api.skills
-  const sessions = ctx.get('sessions') as ISessions
+  const skills = ctx.remote.skills
+  const sessions = ctx.sessions
   // Session-keyed catalog cache; single-flight per key. Plugin-closure state:
   // the fiber effect below is its teardown boundary.
   const fetches = new Map<SessionId, CatalogFetch>()
@@ -94,8 +99,8 @@ export function apply(ctx: ClientContext): void {
     if (existing !== undefined) return existing.promise
     const abort = new AbortController()
     const promise = (async () => {
-      const { result } = await skills.list({ sessionId }, abort.signal)
-      if (!result.ok) throw new Error(`skill.list failed: ${result.error.code}: ${result.error.message}`)
+      const result = await skills.list({ sessionId }, abort.signal)
+      if (!result.ok) throw new Error(`skills/list failed: ${result.error.code}: ${result.error.message}`)
       return result.value.skills
     })()
     const entry: CatalogFetch = { promise, abort }
@@ -138,8 +143,9 @@ export function apply(ctx: ClientContext): void {
       const skills = await fetchCatalog(session.sessionId)
       // Superseded keystroke: the shared fetch stays warm, this caller yields.
       if (signal.aborted) return []
-      return skills
-        .filter(skill => skill.name.startsWith(query))
+      // The same ranking as the command group of this menu: case-insensitive
+      // ordered subsequence, prefix hits first.
+      return rankByName(skills, query)
         .map(skill => ({
           name: skill.name,
           // The user-only marker rides the description (the menu's only

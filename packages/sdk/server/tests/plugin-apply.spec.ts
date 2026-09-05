@@ -7,7 +7,11 @@ import { PassThrough, Writable } from 'node:stream'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import Loader from '@singula-ai/cordis-plugin-loader'
-import * as agentCore from '@singula-ai/alego-agent-spine-demo'
+import AgentLoop from '@singula-ai/alego-agent-loop'
+import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
+import { LlmAdapter } from '@singula-ai/alego-llm'
+import type { GenerateOptions, StreamChunk } from '@singula-ai/alego-llm'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import * as jsonrpc from '../src/index.ts'
 
@@ -39,6 +43,13 @@ interface ApplyHarness {
   dispose(): Promise<void>
 }
 
+/** Adapter whose route registration is the delayed Loader entry's readiness fact. */
+class DelayedAdapter extends LlmAdapter {
+  async * stream(_options: GenerateOptions): AsyncIterable<StreamChunk> {
+    throw new Error('not exercised')
+  }
+}
+
 /** Poll asynchronous output for up to five seconds. */
 async function waitFor<T>(get: () => T | undefined, description: string): Promise<T> {
   const deadline = Date.now() + 5000
@@ -65,7 +76,9 @@ async function mountPlugin(
   } = {},
 ): Promise<ApplyHarness> {
   const ctx = new Context()
-  await ctx.plugin(agentCore, { workspaceContext: false })
+  await mountAgentLoopTestDependencies(ctx)
+  await ctx.plugin(SessionProjectionRegistry)
+  await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(JsonlSessionPersistence, { root: storageDir })
   await new Promise(resolve => setTimeout(resolve, 50))
   await options.beforeServer?.(ctx)
@@ -107,7 +120,11 @@ async function mountPlugin(
   const exit = (code: number): void => { events.push({ kind: 'exit', code }) }
 
   ctx.effect(() => () => { events.push({ kind: 'root-disposed' }) }, 'jsonrpc test root-disposal witness')
-  const fiber = await ctx.plugin(jsonrpc, { input, output, exit })
+  const fiber = await ctx.plugin(jsonrpc, {
+    input,
+    output,
+    exit,
+  })
 
   const frames = (): Record<string, unknown>[] =>
     events.flatMap(event => event.kind === 'frame' ? [event.frame] : [])
@@ -176,7 +193,7 @@ describe('alego-sdk-jsonrpc-server plugin apply', () => {
     }
   })
 
-  it('does not answer initialize until async sibling Loader entries settle', async () => {
+  it('waits for Loader-owned adapter registration before initialize', async () => {
     const storageDir = await mkdtemp(join(tmpdir(), 'alego-jsonrpc-apply-readiness-'))
     vi.stubEnv('DEEPSEEK_API_KEY', 'test-key')
     let markStarted!: () => void
@@ -188,9 +205,11 @@ describe('alego-sdk-jsonrpc-server plugin apply', () => {
       beforeServer: async (ctx) => {
         await ctx.plugin(Loader)
         ctx.loader.builtins['delayed-readiness'] = {
-          async apply() {
+          inject: ['llm'],
+          async apply(entryCtx: Context) {
             markStarted()
             await ready
+            entryCtx.llm.registerAdapter(['delayed-private'], new DelayedAdapter())
           },
         }
         delayedEntry = ctx.loader.create({ name: 'cordis:delayed-readiness' })
@@ -202,7 +221,7 @@ describe('alego-sdk-jsonrpc-server plugin apply', () => {
         jsonrpc: '2.0',
         id: 'init-delayed',
         method: 'initialize',
-        params: { cwd: storageDir, provider: 'deepseek-official', model: 'apply-model' },
+        params: { cwd: storageDir, provider: 'delayed-private', model: 'apply-model' },
       }
       const probe = { jsonrpc: '2.0', id: 'probe-during-delay', method: 'nope/unknown' }
       harness.sendRaw(`${JSON.stringify(initialize)}\n${JSON.stringify(probe)}\n`)
@@ -220,6 +239,7 @@ describe('alego-sdk-jsonrpc-server plugin apply', () => {
         id: 'init-delayed',
         result: { serverInfo: { name: 'alego-sdk-runtime' } },
       })
+      expect(harness.ctx.llm.listProviders()).toContainEqual({ id: 'delayed-private', name: 'delayed-private' })
     } finally {
       release()
       await Promise.allSettled(delayedEntry === undefined ? [] : [delayedEntry])

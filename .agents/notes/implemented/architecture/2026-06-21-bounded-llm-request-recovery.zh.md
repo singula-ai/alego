@@ -10,7 +10,7 @@ Status: implemented
 
 提供方适配器可能在分发或迭代时抛出异常，也可能以 `finish { kind: 'error' | 'aborted' }` 结束。最终适配器边界会在 `alego-agent-loop` 接收前把抛出值规范化为该终止 finish 协议；middleware 与结果处理缺陷仍会抛出。loop 会将终止模型请求失败交给 `agent/request-error`。未被处理的失败是终态；处理失败的监听器修复策略自有状态，返回 `{ kind: 'retry' }`，并停止 waterfall（瀑布式事件）委托。[重试动作决策](../simplification/2026-07-27-request-error-retry-action.zh.md)规定这一返回约定。
 
-该边界已能安全地再次发起请求。原始 `assistant/chunk` 事件携带失败的 `turn` 和 `step`；除非某条成功的 `assistant/message` 引用这些事件，否则消息派生会忽略它们。只有终止性 finish 成功且组装完成后，系统才会分发工具调用；重试则会从持久日志重建下一次尝试。因此，harness 无需引入第二套响应生命周期或暂定输出协议，即可分隔两次尝试。
+该边界已能安全地再次发起请求。每个失败 stream 会提交一个包含精确紧凑 stream 的仅日志 `assistant/attempt`，message derivation 会忽略它；系统只会在 terminal finish 成功并组装 `assistant/message` 后分派工具调用，重试则从持久 surface 重建下一次 attempt。因此，harness 无需引入第二套响应生命周期或暂定输出协议，即可分隔两次 attempt。
 
 此前的边界还留有三个较窄的缺口。
 
@@ -38,7 +38,7 @@ interface LlmFailure {
 }
 ```
 
-`code` 仍是 `HarnessError` 建立的提供方无关机器路由分类体系；新字段是在提供方边界观测到的事实。`ProviderRequestId` 由 `alego-llm` 拥有并构造，序列化后为提供方发放的字符串。该载荷有意不包含 `retryable`、`failover`、`partialOutput`、提供方、模型、阶段或路由 id 字段。是否可重试属于策略，提供方／模型已位于持久请求头中，部分输出则从失败步骤的 `assistant/chunk` 事件派生。
+`code` 仍是 `HarnessError` 建立的 provider-neutral 机器路由分类；新字段是在 provider 边界观测到的事实。`ProviderRequestId` 由 `alego-llm` 拥有并构造，序列化后是 provider 发放的字符串。该 payload 有意不包含 `retryable`、`failover`、`partialOutput`、provider、model、phase 或 route id。是否可重试属于 policy，provider/model 已位于持久 request header 中，部分输出由失败 attempt 的嵌入式 stream 保留。
 
 `LlmError` 携带 `failure: LlmFailure`，并保持 `failure.code === error.code`。`FinishReasonMap.error` 和 `FinishReasonMap.aborted` 携带同一载荷，而不是并行的失败形状。最终适配器边界会从适配器抛出值中分离这些事实，并发出相应的终止 finish；未知 SDK 异常会获得 `UNKNOWN` 载荷。精确的抛出对象身份不会跨越 LLM 流 seam。
 
@@ -64,7 +64,7 @@ agent loop（智能体循环）会将终止 finish 的 `LlmFailure` 传给 `agen
 
 对非暂时性 code、耗尽的策略预算或超出上限的提供方延迟，监听器会调用 `next()`。这保留了与上下文溢出恢复及后续策略插件的组合能力。对自身处理的失败，它会记录并等待延迟，然后在不委托的情况下返回 `{ kind: 'retry' }`。轮次取消和插件 dispose 会结束等待且不返回重试动作，此后仍以循环的取消／dispose 检查为准。
 
-agent-spine 演示组合包加载该插件，因此共享的 stdio/TUI、一次性 CLI（命令行界面）、ACP（Agent Client Protocol）和 headless 示例组合使用同一套按提供方路由的策略。随产品交付的 Web 组合也会加载该插件，因此浏览器请求与命令行请求使用相同的提供方默认值。库消费方仍需显式组合插件：省略该插件时，请求失败保持终态。
+`alego-base` 与 `alego-sdk-minimal` patch 将该插件作为显式配置行加载，因此基于 base 的 profile 与独立 SDK profile 使用同一套按提供方路由的策略。库消费方仍需显式组合插件：省略该插件时，请求失败保持终态。
 
 ### 由单一层负责可见的尝试
 
@@ -82,7 +82,7 @@ agent-spine 演示组合包加载该插件，因此共享的 stdio/TUI、一次�
 
 ### 在现有日志中分隔尝试
 
-一次失败尝试可以在其步骤中留下 `assistant/chunk` 事件，但绝不会追加 `assistant/message`，也不会分发工具。重试在失败的轮次与步骤内继续，从持久表层重建请求，并生成自己的分片；只有最终结果才会关闭该轮次。步骤仍处于打开状态时，UI 可以渲染实时分片；当 `llm/retry` 标识失败尝试，或 `turn/end` 记录失败时，UI 再标记或清除这份暂时视图。Web 会验证完整的重试载荷约定，在 `llm/retry` 到达时清除失败的部分输出，将每条生产方关联的 `retryId` 重试链投影为稳定的一行，并用最新一次尝试更新该行，再从 `llm/retry-started` 与所属轮次、步骤边界的关闭派生 scheduled、started 或 cancelled 状态。倒计时以浏览器收到事件的时刻为计划延迟的起点，而不是使用 Host 事件时钟；它按向上取整且不低于 1 秒的秒数显示，仅在重试尚未结束时显示动画，并把最近一次失败的准确详情折叠在该行之后。即使失败尝试没有 assistant 节点，重试节点也会锚定自身的轨迹轮次。消息派生仍会忽略失败分片；Web 在重建历史时也会应用同一投影，因此刷新页面不会让已丢弃的部分输出重新出现，也不会生成重复的重试行。
+失败 attempt 会追加带嵌入式 stream 的 `assistant/attempt`，但绝不追加 surface `assistant/message` 或分派工具。重试在失败 turn 与 step 内继续，从持久 surface 重建请求，并产生自己的 settlement；只有最终结果才会关闭 turn。step 打开时，UI 可以渲染瞬态 `assistant/live-chunk` update；当 `llm/retry` 标识失败 attempt 或 `turn/end` 记录失败时，UI 再结算它。Web 会校验完整 retry payload contract，把每条 producer-correlated `retryId` chain 投影为稳定一行并更新到最新 attempt，再从 `llm/retry-started` 与所属 turn、step boundary 的关闭派生 scheduled、started 或 cancelled 状态。倒计时以浏览器收到 event 的时刻为计划延迟起点，而不是 Host event clock；它按向上取整且不低于 1 秒的秒数显示，只在未结算时动画，并把最新失败详情折叠在该行后。即使失败 attempt 没有 surface Assistant node，retry node 也会锚定自己的 trajectory turn。Message derivation 会忽略 `assistant/attempt`，Web 在历史重建时应用同一投影，因此刷新不会把失败 partial 提升进模型历史，也不会生成重复 retry row。
 
 如果恢复预算耗尽，最终失败会连同结构化事实在 `turn/end.reason` 中存储一次。Web 会在该序列位置派生一个 `turn-error` 节点，并内联渲染适合展示的消息与可选错误码；AUTH 投影会把可能回显凭据片段的提供方文案替换为 `API key is invalid`，原始诊断仍保留在会话日志中。实时事件和历史回放使用同一套折叠逻辑。暂时性恢复继续期间，`llm/retry` 是每次中间失败与延迟的持久归属位置；终态错误行只在 `turn/end` 记录错误后才存在，而由于耗尽的恢复与失败共享同一轮次，该轮次的重试历史绝不会抑制这一行——定格的重试链与终态错误并列渲染。本决策不增加独立的最终错误事件或响应 id 词汇。
 
@@ -116,7 +116,7 @@ agent-spine 演示组合包加载该插件，因此共享的 stdio/TUI、一次�
 - 纯单元测试覆盖暂时性 code 选择、指数退避和抖动边界、有效及超出上限的 `Retry-After`、耗尽的预算、确定性定时器／随机数钩子，以及退避期间中止。
 - 真实 agent-loop 测试覆盖分片前失败、部分分片后失败、抛出及带内失败、在同一轮次内重试至成功、耗尽后写入结构化 `turn/end.reason`，以及与 `alego-compaction-basic` 上下文溢出恢复的组合。
 - 部分分片集成测试证明：失败分片仍归属于失败步骤，该步骤不会提交 assistant 消息或工具副作用，成功的重试会记录自己的分片 seq 和提供方／模型路由。
-- 插件拥有的不进入表层的 `llm/retry` 事件可在 JSONL 和 SQLite 往返后保留，被消息派生忽略，并驱动 TUI 和 Web 撤回及计划重试渲染。客户端测试覆盖完整的 wire 验证、独立于时钟的倒计时、已取消与已完成重试标签的区别以及轨迹归属；无密钥 UI 快照覆盖 Web 的调度与成功，真实 Web 组合测试覆盖部分传输失败直至恢复，以及耗尽后终态错误行与定格重试链并列的画面，ACP 自动化快照确认，被丢弃的尝试不会通过协议发出，而恢复后的回复会正常发出。
+- 插件拥有的不进入表层的 `llm/retry` 事件可在 JSONL 往返后保留，被消息派生忽略，并驱动 TUI 和 Web 撤回及计划重试渲染。客户端测试覆盖完整的 wire 验证、独立于时钟的倒计时、已取消与已完成重试标签的区别以及轨迹归属；无密钥 UI 快照覆盖 Web 的调度与成功，真实 Web 组合测试覆盖部分传输失败直至恢复，以及耗尽后终态错误行与定格重试链并列的画面，ACP 自动化快照确认，被丢弃的尝试不会通过协议发出，而恢复后的回复会正常发出。
 - 空闲看门狗测试证明：只有 `next()` 尚未完成时才会重新布防稳定信号；在消费方思考期间及 `finally` 中会解除布防；它与总调用 deadline 以及更早发生的调用方中止分开分类。适配器测试证明该信号会终止底层请求，而不只是与其脱离。
 - `ctx.llm.stream()` 的直接调用方仍只尝试一次，并收到相同的结构化失败事实。
 

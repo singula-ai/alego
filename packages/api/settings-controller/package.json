@@ -1,0 +1,68 @@
+{
+  "name": "@singula-ai/alego-api-settings-controller",
+  "description": "Remote owner for the configuration surfaces over the settings-domain seams",
+  "version": "0.1.3-alpha.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/api/settings-controller"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./types": {
+      "types": "./lib/types/types.d.ts",
+      "default": "./lib/types/types.js"
+    },
+    "./typert": {
+      "types": "./lib/typert.host.d.ts",
+      "default": "./lib/typert.host.js"
+    },
+    "./remote": {
+      "types": "./lib/typert.remote-client.d.ts",
+      "default": "./lib/typert.remote-client.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/types/**/*.js",
+    "lib/types/**/*.d.ts",
+    "lib/typert.host.js",
+    "lib/typert.host.d.ts",
+    "lib/typert.remote-client.js",
+    "lib/typert.remote-client.d.ts"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@singula-ai/schemastery": "workspace:^",
+    "zod": "^4.4.3"
+  },
+  "peerDependencies": {
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-agent-presets": "workspace:^",
+    "@singula-ai/alego-credentials": "workspace:^",
+    "@singula-ai/alego-native-command": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-settings": "workspace:^",
+    "@singula-ai/alego-typert-protocol": "workspace:^"
+  },
+  "devDependencies": {
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-agent-presets": "workspace:^",
+    "@singula-ai/alego-credentials": "workspace:^",
+    "@singula-ai/alego-native-command": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-settings": "workspace:^",
+    "@singula-ai/alego-typert-protocol": "workspace:^"
+  }
+}

@@ -1,0 +1,25 @@
+# Keyless twin of subagent-result-diagnostic.cordis.yml: keep the same test
+# provider/tool and replace only the external model adapter.
+- insert:
+    - id: llm-replay
+      name: '@singula-ai/alego-llm-replay'
+      config:
+        providers:
+          - id: deepseek-official
+            name: DeepSeek
+            models:
+              - id: deepseek-v4-flash
+              - id: deepseek-v4-pro
+    - id: subagent-result-diagnostic
+      name: '../../../packages/test-support/session-snapshot/tests/fixtures/subagent-result-diagnostic.ts'
+    - id: tool-subagent-codex
+      name: '@singula-ai/alego-tool-subagent'
+      config:
+        provider: snapshot-diagnostic
+        toolName: subagent_codex
+        backgroundMode: one-shot
+        maxDepth: provider-managed
+
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  disabled: true

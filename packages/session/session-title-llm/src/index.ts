@@ -6,9 +6,11 @@
 
 import type { Context } from '@singula-ai/cordis'
 import z from '@singula-ai/schemastery'
-import { createUserMessage, BlockAssembler, deepFreeze } from '@singula-ai/alego-llm'
+import { createUserMessage, BlockAssembler } from '@singula-ai/alego-llm'
 import type { FinishReason, GenerateOptions, Message } from '@singula-ai/alego-llm'
 import { deadline, MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
+import { deepFreeze } from '@singula-ai/alego-util-values'
+import type { SessionSeq } from '@singula-ai/alego-session'
 import {
   normalizeSessionTitle,
   SessionTitleProviderId,
@@ -26,7 +28,7 @@ export interface SessionTitleLlmRequestEventData {
   /** Registered title-provider identity responsible for the request. */
   readonly titleProvider: SessionTitleProviderId
   /** Exact human `user/message` seqs represented in `messages`. */
-  readonly messageSeqs: number[]
+  readonly messageSeqs: SessionSeq[]
   /** Exact auxiliary LLM route. */
   readonly route: SessionTitleModelProvenance
   /** Exact auxiliary system prompt. */

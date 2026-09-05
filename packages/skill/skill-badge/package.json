@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-skill-badge",
   "description": "Bundled alego badge skill provider for Alego",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -18,26 +18,19 @@
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
     },
-    "./invariant": {
-      "types": "./lib/types/invariant.d.ts",
-      "default": "./lib/invariant.js"
-    },
     "./package.json": "./package.json"
   },
   "files": [
     "lib/index.js",
-    "lib/invariant.js",
     "assets",
     "lib/types/**/*.d.ts"
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-skill": "workspace:^",
     "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
-    "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-skill": "workspace:^",
     "@singula-ai/cordis": "workspace:^"
   }

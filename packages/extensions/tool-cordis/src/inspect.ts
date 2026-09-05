@@ -180,7 +180,7 @@ export function describeTools(ctx: Context, scope?: ScopeKey): string[] {
 export function describeDynamic(ctx: Context, agent?: Agent): string[] {
   const rows = agent === undefined ? [] : ctx.dynamicCordisRunner.snapshot(agent)
   if (rows.length === 0) {
-    return ['No dynamic Plugins are defined in this session. Definitions live only in this process\'s memory, so an ALEGO restart clears them.']
+    return ['No dynamic Plugins are defined in this session. Definitions live only in this process\'s memory, so a ALEGO restart clears them.']
   }
   return rows.flatMap((row) => {
     const head = `- Plugin ${row.pluginId}; current: ${row.currentPackageId ?? 'none'}; next: ${row.nextPackageId ?? 'none'}`

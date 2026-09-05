@@ -9,11 +9,12 @@
  */
 
 import { useEffect } from 'react'
-import type { SnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import type { SnapshotStore } from '@singula-ai/alego-client-store'
 import type { InjectFace, PropsLocale, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
 import { IconAgentPresetOutline16 } from '@singula-ai/alego-client-ui-primitives'
 // Type-only: pulls the ui-conversation SlotMap merge (the header actions).
 import type {} from '@singula-ai/alego-client-ui-conversation/client'
+import type {} from '@singula-ai/alego-agent-presets/types'
 import type { AgentPresetSettingsState } from './settings-store.ts'
 import { presetDisplayText } from './locales.ts'
 import css from './AgentPresetLabel.module.css'
@@ -42,7 +43,10 @@ export type AgentPresetLabelProps =
 export function AgentPresetLabel({
   sessionId, useSessions, useAgentPresets, load, t,
 }: AgentPresetLabelProps) {
-  const preset = useSessions(state => state.byId[sessionId]?.agentPreset)
+  const preset = useSessions((state) => {
+    const value = state.byId[sessionId]?.projectionValues?.agentPreset
+    return typeof value === 'string' ? value : undefined
+  })
   const options = useAgentPresets(state => state.options)
 
   useEffect(() => {

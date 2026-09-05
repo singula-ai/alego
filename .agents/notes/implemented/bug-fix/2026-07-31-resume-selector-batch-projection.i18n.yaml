@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-07-31-resume-selector-batch-projection.md
-2026-07-31-resume-selector-batch-projection.md: 5b0b33c34137efb95f31e07e7fce7622aeb2dbce
-2026-07-31-resume-selector-batch-projection.zh.md: a8e89c2e989680a1d1bf98f0cd2817b5900d36d0
+2026-07-31-resume-selector-batch-projection.md: aa99ecf323b44432e360402f072d89436b2778bd
+2026-07-31-resume-selector-batch-projection.zh.md: ebc9d43677edc23004c32736db989d39e59ef152

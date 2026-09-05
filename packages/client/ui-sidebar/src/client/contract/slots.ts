@@ -8,17 +8,17 @@
  * actions in `sidebar.footer.action`.
  */
 import type { PropsLocale, PropsRenderSlots, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
+import type { WorkspaceId } from '@singula-ai/alego-api-workspace-controller/client'
 // Type-only: pulls ui-layout's SlotMap merge (the 'sidebar' entry) into every
 // program that sees this contract, so PropsRuntime<'sidebar'> resolves.
 import type {} from '@singula-ai/alego-client-ui-layout/client'
-import type { WorkspaceId } from '@singula-ai/alego-client-runtime/client'
 
 declare module '@singula-ai/alego-client-ui-slots' {
   interface SlotMap {
     /**
      * Brand mark rendered in the expanded brand row and collapsed rail.
      * Declared by this package's `sidebar` entry; deployments may replace
-     * the shell's block-mark fallback without replacing the surrounding controls.
+     * the shell's Alego mark fallback without replacing the surrounding controls.
      */
     'sidebar.brand.mark': { kind: 'single'; scope: 'root'; owner: SidebarBrandMarkOwnerProps }
     /**

@@ -1,0 +1,21 @@
+# Keyless generic ACP v1 control-surface patch over `alego --profile acp`.
+
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  disabled: true
+
+- id: acp
+  name: '@singula-ai/alego-acp'
+  config:
+    provider: control-fixture
+    model: alpha
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js process.env.ALEGO_CONFORMANCE_PERSISTENCE_ROOT
+    compression: none
+
+- insert:
+    - id: control-surface-llm
+      name: './control-surface-llm.ts'

@@ -22,7 +22,7 @@ import type { Transport } from '@modelcontextprotocol/sdk/shared/transport.js'
 import LocalAttachmentStore from '@singula-ai/alego-attachment-local'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime from '@singula-ai/alego-tools'
-import { CallId, LlmAdapter, LlmRuntime } from '@singula-ai/alego-llm'
+import { ToolCallId, LlmAdapter, LlmRuntime } from '@singula-ai/alego-llm'
 import type { GenerateOptions, LlmResolvedModelInfo, StreamChunk } from '@singula-ai/alego-llm'
 import { apply } from '@singula-ai/alego-mcp-client/src/index.ts'
 import { publicToolName } from '@singula-ai/alego-mcp-client/src/tools.ts'
@@ -87,8 +87,8 @@ function textOf(block: unknown): string {
 }
 
 let callSeq = 0
-function nextCallId(): CallId {
-  return CallId(`e2e-${++callSeq}`)
+function nextCallId(): ToolCallId {
+  return ToolCallId(`e2e-${++callSeq}`)
 }
 
 // ---- Fixture server tests ----

@@ -34,7 +34,7 @@ interface SessionReferenceInput {
 }
 ```
 
-`SessionReferenceCandidate` 是面向宿主的发现输出。存在最新会话标题时，它的 label 使用该标题；筛选仍只搜索 session id 和 cwd，绝不搜索 transcript（文本记录）。
+`SessionReferenceCandidate` 是面向宿主的发现输出。存在最新会话标题时，它的 label 使用该标题；筛选搜索该 label 以及 session id 和 cwd，绝不搜索 transcript（文本记录）。
 
 ```ts type-equiv
 /** One host-facing candidate from exact session metadata. */
@@ -45,6 +45,12 @@ interface SessionReferenceCandidate {
   label: string
   /** Source session working directory, when recorded. */
   cwd?: string
+  /**
+   * True when {@link SessionReferenceCandidate.cwd} is recorded and equals the
+   * requesting agent's. Hosts that only surface a distinguishing location
+   * read this instead of comparing paths they never received.
+   */
+  sameWorkspace: boolean
   /** Source session creation time in Unix epoch milliseconds. */
   createdAt: number
 }
@@ -62,7 +68,31 @@ interface SessionReferenceMentionCandidate extends SessionReferenceCandidate {
 
 ## 准备后的消息
 
-准备过程保留可读的当前消息内容，并最多返回一个聚合上下文。
+准备过程保留可读的当前消息内容，并最多返回一个聚合上下文。其持久 source 记录会把 `capturedThroughSeq` 保留为被引用 Session 原始 generation 中的坐标，绝不会把它重新解释为所在 Session 的 seq。`capturedFormatVersion` 记录该 generation；缺失表示已发布格式 v0。
+
+```ts type-equiv
+/** Durable source session, cited event seqs, and snapshot facts for prepared cross-session context. */
+interface SessionReferenceSource {
+  kind: 'session-reference'
+  /** Material lifted out of another session's log (`recall` context form). */
+  form: 'recall'
+  version: 1
+  references: {
+    sessionId: string
+    label: string
+    /** Source Session format generation; absence identifies version 0. */
+    capturedFormatVersion?: number
+    capturedThroughSeq: OptionalSessionSeq
+    compacted: boolean
+    originalMessages: number
+    retainedMessages: number
+    omittedMessages: number
+    omittedBytes: number
+    truncated: boolean
+    inputIndex: number
+  }[]
+}
+```
 
 ```ts type-equiv
 /** Direct message content and optional referenced-session context. */
@@ -113,21 +143,32 @@ Host capability for cancellable file-reference discovery.
  * @returns deterministic path-only candidates.
  */
 abstract list( agent: Agent, query: string, signal: AbortSignal, ): Promise<FileReferenceCandidate[]>
-
-/**
- * Remote face of {@link list}; the decorator cannot mark the abstract
- * member, so this concrete adapter carries the identical contract.
- * @param agent - target agent whose session cwd bounds discovery.
- * @param query - path text following `@` or `@"`.
- * @param signal - caller cancellation.
- * @returns deterministic path-only candidates.
- */
-@Remote('list') remoteExportList( agent: Agent, query: string, signal: AbortSignal, ): Promise<FileReferenceCandidate[]>
 ```
 
 Types: [Agent](core.zh.md)
 
 Source: [`packages/context/file-reference/src/index.ts`](../../packages/context/file-reference/src/index.ts)
+
+<a id="ctxsessionfilereferences--sessionfilereferences"></a>
+
+### `ctx.sessionFileReferences` — `SessionFileReferences`
+
+Host Remote adapter over the composed file-reference provider.
+
+```ts cordis-catalog
+/**
+ * List file and directory candidates for one Agent's working directory.
+ * @param agent - target Agent resolved from the Session identity on the wire.
+ * @param query - path text following `@` or `@"`.
+ * @param signal - caller cancellation.
+ * @returns deterministic path-only candidates from the composed provider.
+ */
+@Remote list( agent: Agent, query: string, signal: AbortSignal, ): Promise<FileReferenceCandidate[]>
+```
+
+Types: [Agent](core.zh.md)
+
+Source: [`packages/api/session-controller/src/file-references.ts`](../../packages/api/session-controller/src/file-references.ts)
 
 <a id="ctxsessionreferenceresolver--sessionreferenceresolver"></a>
 
@@ -138,6 +179,10 @@ Exact-read consumer that prepares immutable cross-session message context.
 ```ts cordis-catalog
 /**
  * List reference candidates, ranked by working-directory affinity.
+ *
+ * Discovery runs at keystroke rate, so a title only ever comes from a
+ * projection read: see {@link SessionReferenceResolver.projectedTitle} for
+ * which sessions can answer one and which fall back to their id.
  * @param agent - target agent; self is excluded and its cwd drives ranking.
  * @param query - optional case-insensitive session-id/cwd/title substring.
  * @param limit - optional positive result cap.

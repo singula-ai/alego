@@ -15,6 +15,7 @@ import { Context, Service } from '@singula-ai/cordis'
 import { SandboxProvider, SandboxUnavailableError } from '@singula-ai/alego-sandbox'
 import type { ConfinedArgv, RunnerFailureRule, SandboxExecutionPolicy, SandboxPolicy } from '@singula-ai/alego-sandbox'
 import { resolvePwshPath } from '@singula-ai/alego-pwsh-local'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { SandboxPolicyService } from '@singula-ai/alego-sandbox-policy'
 import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 import { SandboxPwshExecutor } from '../src/index.ts'
@@ -64,6 +65,7 @@ async function setup(
     }
   }
   const ctx = new Context()
+  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(FakeSandboxProvider)
   await ctx.plugin(SandboxPolicyService, { mode: 'workspace-write', workspaceRoot: spillDir })
   await ctx.plugin(subprocess)

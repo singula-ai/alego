@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest'
 import LlmRuntime, { createUserMessage, LlmAdapter  } from '@singula-ai/alego-llm'
 import type { GenerateOptions, StreamChunk } from '@singula-ai/alego-llm'
 import SessionStore, { Session, SessionId } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import { turnBoundaryProjectionDefinition } from '@singula-ai/alego-agent-loop'
 import SessionTitleService from '@singula-ai/alego-session-title'
 import * as providerPlugin from '@singula-ai/alego-session-title-all-prompts-llm'
 
@@ -44,13 +46,16 @@ describe('all-messages LLM title provider', () => {
     const ctx = new Context()
     await ctx.plugin(LlmRuntime)
     await ctx.plugin(SessionStore)
+    await ctx.plugin(SessionProjectionRegistry)
+    ctx.sessionProjections.register(turnBoundaryProjectionDefinition)
     await ctx.plugin(SessionTitleService, TITLE_CONFIG)
     const adapter = new RecordingAdapter()
     ctx.llm.registerAdapter(['current-route'], adapter)
     await ctx.plugin(providerPlugin, LLM_CONFIG)
     const session = ctx.sessions.create(SessionId('all-plugin'), {
-      seed: seeded.events,
-      meta: { parentSession: seeded.id, seedLength: seeded.seq },
+      seed: seeded.snapshotEvents(),
+      inheritedEventCount: seeded.seq,
+      meta: { parentSession: seeded.id, isSeeded: true },
     })
     session.append('turn/start', { turn: 2 })
     const latest = session.append('user/message', createUserMessage({

@@ -1,6 +1,7 @@
 import { Context } from '@singula-ai/cordis'
 import type { Agent } from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
 import LocalFileSystem from '@singula-ai/alego-fs-local'
 import * as FsPolicy from '@singula-ai/alego-fs-observation-policy'
@@ -14,6 +15,7 @@ import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek'
  */
 export async function fsHarness(fsCwd: string, persona = ''): Promise<Context> {
   const ctx = new Context()
+  await ctx.plugin(SessionProjectionRegistry)
   await mountAgentLoopTestDependencies(ctx, { systemPrompt: { persona } })
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(LlmDeepSeek)

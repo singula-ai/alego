@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-theme",
   "description": "Theme plugin: Host bootstrap for the pre-plugin palette; DOM-free ThemeRuntime for light/dark/system state; --dsw-* token styles and Appearance settings row",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -18,10 +18,6 @@
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
     },
-    "./invariant": {
-      "types": "./lib/types/invariant.d.ts",
-      "default": "./lib/invariant.js"
-    },
     "./client": {
       "types": "./lib/types/client/index.d.ts",
       "default": "./lib/client.js"
@@ -33,8 +29,8 @@
     "client": {
       "inject": [
         "@singula-ai/alego-client-connection",
-        "@singula-ai/alego-client-runtime",
         "@singula-ai/alego-client-locale",
+        "@singula-ai/alego-client-ui-renderer",
         "@singula-ai/alego-client-ui-settings",
         "@singula-ai/alego-api-remotes"
       ],
@@ -44,35 +40,26 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-api-remotes": "workspace:^",
-    "@singula-ai/alego-client-connection": "workspace:^",
-    "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-runtime": "workspace:^",
-    "@singula-ai/alego-client-ui-settings": "workspace:^",
-    "@singula-ai/alego-host-webserver": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
-    "@singula-ai/alego-settings": "workspace:^"
+    "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
     "@singula-ai/cordis": "workspace:^",
     "@singula-ai/alego-api-remotes": "workspace:^",
     "@singula-ai/alego-client-connection": "workspace:^",
     "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-runtime": "workspace:^",
+    "@singula-ai/alego-client-store": "workspace:^",
     "@singula-ai/alego-client-test-runtime": "workspace:^",
     "@singula-ai/alego-client-ui-primitives": "workspace:^",
+    "@singula-ai/alego-client-ui-renderer": "workspace:^",
     "@singula-ai/alego-client-ui-settings": "workspace:^",
     "@singula-ai/alego-client-ui-slots": "workspace:^",
     "@singula-ai/alego-host-webserver": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
-    "@singula-ai/alego-settings": "workspace:^",
     "@types/react": "~18.3.1",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "@singula-ai/alego-settings": "workspace:^"
   },
   "files": [
     "lib/index.js",
-    "lib/invariant.js",
     "lib/client.js",
     "lib/styles",
     "lib/types/**/*.d.ts"

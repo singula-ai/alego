@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-spill-policy",
   "description": "Tool-result spill policy for the Alego — replaces oversized plain-text tool results with a retained preview plus a spill-file path (no service API)",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -18,21 +18,15 @@
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
     },
-    "./invariant": {
-      "types": "./lib/types/invariant.d.ts",
-      "default": "./lib/invariant.js"
-    },
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
   "files": [
     "lib/index.js",
-    "lib/invariant.js",
     "lib/types/**/*.d.ts"
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-llm": "workspace:^",
     "@singula-ai/alego-output-retention": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
@@ -46,7 +40,6 @@
   "devDependencies": {
     "@singula-ai/alego-agent": "workspace:^",
     "@singula-ai/alego-code-runtime-worker-thread": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-llm": "workspace:^",
     "@singula-ai/alego-output-retention": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",

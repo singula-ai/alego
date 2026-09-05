@@ -1,0 +1,55 @@
+{
+  "name": "@singula-ai/alego-webhook-github",
+  "description": "Signed GitHub HTTP webhook adapter for the Alego webhook runtime",
+  "version": "0.1.3-alpha.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/webhook/webhook-github"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./types": {
+      "types": "./lib/types/types.d.ts",
+      "default": "./lib/types/types.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/types/**/*.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-credentials": "workspace:^",
+    "@singula-ai/alego-host-webserver": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-webhook": "workspace:^"
+  },
+  "dependencies": {
+    "@singula-ai/alego-util-values": "workspace:^",
+    "@singula-ai/schemastery": "workspace:^",
+    "@octokit/webhooks": "^14.2.0"
+  },
+  "devDependencies": {
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/cordis-plugin-include": "workspace:^",
+    "@singula-ai/cordis-plugin-loader": "workspace:^",
+    "@singula-ai/alego-credentials": "workspace:^",
+    "@singula-ai/alego-host-webserver": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-webhook": "workspace:^"
+  }
+}

@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import { constants } from 'node:fs'
-import { chmod, mkdir, readFile, stat, writeFile } from 'node:fs/promises'
+import { chmod, mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join, parse, resolve } from 'node:path'
 import { mkdtemp, rm } from 'node:fs/promises'
@@ -8,7 +8,13 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import sharp from 'sharp'
 import type { ImageAttachmentLimits } from '@singula-ai/alego-attachment'
 import type { NormalizationPolicy } from '../src/normalization.ts'
-import { commitPreparedImageFile, prepareImageFile, readImageFile, saveImageFile } from '../src/store.ts'
+import {
+  commitPreparedImageFile,
+  prepareImageFile,
+  publishImmutableObject,
+  readImageFile,
+  saveImageFile,
+} from '../src/store.ts'
 
 const fsControl = vi.hoisted(() => ({
   readSignals: [] as AbortSignal[],
@@ -39,7 +45,7 @@ const PNG = Uint8Array.from(Buffer.from(
   'base64',
 ))
 
-const POLICY: NormalizationPolicy = { maxDimension: 2048, maxBytes: 1024 * 1024 }
+const POLICY: NormalizationPolicy = { maxPixels: 2048 * 2048, maxDimension: 8192, maxBytes: 1024 * 1024 }
 
 const LIMITS: ImageAttachmentLimits = {
   maxImageBytes: 1024,
@@ -89,12 +95,13 @@ describe('local attachment store', () => {
     // Later directory creation can then stop at that process-proven boundary.
     expect(fsControl.syncedDirectories).toEqual([
       ...parentChainToRoot(base),
-      // bucket chain: every parent entry between the bucket and the boundary.
-      objects,
+      // Staging precedes publication because the streamed digest selects the
+      // target bucket only after every byte has been written.
       storageRoot,
       join(storageRoot, '..'),
       base,
-      // staging chain re-walks the shared ancestors after creating tmp.
+      // bucket chain: every parent entry between the bucket and the boundary.
+      objects,
       storageRoot,
       join(storageRoot, '..'),
       base,
@@ -132,10 +139,29 @@ describe('local attachment store', () => {
     expect(second.attachmentId).toBe(first.attachmentId)
     expect(new Uint8Array(await readFile(object))).toEqual(PNG)
     if (process.platform !== 'win32') {
-      expect((await stat(object)).mode & 0o777).toBe(0o600)
+      expect((await stat(object)).mode & 0o777).toBe(0o400)
       expect((await stat(join(storageRoot, 'objects', sha256.slice(0, 2)))).mode & 0o777).toBe(0o700)
     }
+    await chmod(object, 0o600)
+    await saveImageFile(storageRoot, { data: PNG, mediaType: 'image/png' }, LIMITS, POLICY)
+    if (process.platform !== 'win32') expect((await stat(object)).mode & 0o777).toBe(0o400)
     await expect(readImageFile(storageRoot, first)).resolves.toEqual({ ref: first, data: PNG })
+  })
+
+  it('rejects publication when the supplied digest does not match the staged bytes', async () => {
+    const storageRoot = await root()
+    const target = join(storageRoot, 'objects', '00', 'mismatch')
+    await expect(publishImmutableObject(storageRoot, target, Uint8Array.of(1), '0'.repeat(64)))
+      .rejects.toMatchObject({ code: 'ATTACHMENT_CORRUPT' })
+    expect(await readdir(join(storageRoot, 'tmp'))).toEqual([])
+  })
+
+  it.skipIf(process.platform !== 'win32')('publishes a new object on Windows', async () => {
+    const storageRoot = await root()
+
+    const ref = await saveImageFile(storageRoot, { data: PNG, mediaType: 'image/png' }, LIMITS, POLICY)
+
+    await expect(readImageFile(storageRoot, ref)).resolves.toEqual({ ref, data: PNG })
   })
 
   it('stores the normalized image of an oversized source and reads it back verified', async () => {
@@ -146,10 +172,10 @@ describe('local attachment store', () => {
 
     const saved = await saveImageFile(storageRoot, {
       data: oversized, mediaType: 'image/png', name: 'big.png',
-    }, { ...LIMITS, maxImagePixels: 64 }, { maxDimension: 2, maxBytes: 1024 * 1024 })
+    }, { ...LIMITS, maxImagePixels: 64 }, { maxPixels: POLICY.maxPixels, maxDimension: 2, maxBytes: 1024 * 1024 })
 
     expect(saved).toMatchObject({
-      mediaType: 'image/png',
+      mediaType: 'image/jpeg',
       width: 2,
       height: 2,
       name: 'big.png',

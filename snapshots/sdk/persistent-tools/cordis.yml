@@ -1,0 +1,158 @@
+# Per-launch SDK customization: retain only persistent Bash and the string
+# editor as model-facing tools, with process-local providers and an explicit
+# danger-full-access / never-ask policy.
+
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  config:
+    apiKeyEnv: DEEPSEEK_API_KEY
+    streamIdleTimeoutMs: 172800000
+    models:
+      - id: !!js process.env.ALEGO_MODEL ?? 'deepseek-v4-flash'
+        contextWindow: !!js Number(process.env.ALEGO_CONTEXT_WINDOW ?? 1000000)
+
+- id: sandbox-policy
+  name: '@singula-ai/alego-sandbox-policy'
+  config:
+    mode: danger-full-access
+    workspaceRoot: !!js process.cwd()
+
+- id: approval
+  name: '@singula-ai/alego-user-approval'
+  config:
+    policy: never
+
+- id: permission
+  name: '@singula-ai/alego-permission-presets'
+  disabled: true
+
+- id: bash-sandbox
+  name: '@singula-ai/alego-bash-sandbox'
+  disabled: true
+
+- id: pwsh-sandbox
+  name: '@singula-ai/alego-pwsh-sandbox'
+  disabled: true
+
+- id: fs-sandbox
+  name: '@singula-ai/alego-fs-sandbox'
+  disabled: true
+
+- id: tool-bash
+  name: '@singula-ai/alego-tool-bash'
+  disabled: true
+
+- id: tool-pwsh
+  name: '@singula-ai/alego-tool-pwsh'
+  disabled: true
+
+- id: agent-instructions
+  name: '@singula-ai/alego-agent-instructions'
+  disabled: true
+
+- id: skill
+  name: '@singula-ai/alego-skill'
+  disabled: true
+
+- id: skill-filesystem
+  name: '@singula-ai/alego-skill-filesystem'
+  disabled: true
+
+- id: tool-skill
+  name: '@singula-ai/alego-tool-skill'
+  disabled: true
+
+- id: tool-jobs
+  name: '@singula-ai/alego-tool-jobs'
+  disabled: true
+
+- id: tool-fs
+  name: '@singula-ai/alego-tool-fs'
+  disabled: true
+
+- id: tool-fs-search
+  name: '@singula-ai/alego-tool-fs-search'
+  disabled: true
+
+- id: tool-subagent-control
+  name: '@singula-ai/alego-tool-subagent-control'
+  disabled: true
+
+- id: tool-subagent-list-agents
+  name: '@singula-ai/alego-tool-subagent-control/list-agents'
+  disabled: true
+
+- id: tool-subagent
+  name: '@singula-ai/alego-tool-subagent'
+  disabled: true
+
+- id: tool-subagent-fork
+  name: '@singula-ai/alego-tool-subagent'
+  disabled: true
+
+- id: tool-workflow
+  name: '@singula-ai/alego-tool-workflow'
+  disabled: true
+
+- id: tool-todo
+  name: '@singula-ai/alego-tool-todo'
+  disabled: true
+
+- id: tool-goal
+  name: '@singula-ai/alego-tool-goal'
+  disabled: true
+
+- id: tool-ralph
+  name: '@singula-ai/alego-tool-ralph'
+  disabled: true
+
+- id: tool-web
+  name: '@singula-ai/alego-tool-web'
+  disabled: true
+
+- id: plan-mode
+  name: '@singula-ai/alego-plan-mode'
+  disabled: true
+
+- id: system-prompt
+  name: '@singula-ai/alego-system-prompt'
+  config:
+    includeHarnessIdentity: false
+    persona: !!js process.env.ALEGO_SYSTEM_PROMPT ?? 'You are a helpful software engineer assistant.'
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: none
+
+- insert:
+    - id: bash-local
+      name: '@singula-ai/alego-bash-local'
+
+    - id: fs-local
+      name: '@singula-ai/alego-fs-local'
+      config:
+        cwd: !!js process.cwd()
+
+    - id: terminal
+      name: '@singula-ai/alego-terminal'
+
+    - id: terminal-bash
+      name: '@singula-ai/alego-terminal-bash'
+      config:
+        timeoutMs: 300000
+
+    - id: persistent-bash
+      name: '@singula-ai/alego-tool-bash-persistent'
+      config:
+        timeoutMs: 300000
+        description: |-
+          Run commands in a bash shell
+          * When invoking this tool, the contents of the "command" parameter does NOT need to be XML-escaped.
+          * You don't have access to the internet via this tool.
+          * You do have access to a mirror of common linux and python packages via apt and pip.
+          * State is persistent across command calls and discussions with the user.
+          * To inspect a particular line range of a file, e.g. lines 10-25, try 'sed -n 10,25p /path/to/the/file'.
+          * Please avoid commands that may produce a very large amount of output.
+          * Please run long lived commands in the background, e.g. 'sleep 10 &' or start a server in the background.

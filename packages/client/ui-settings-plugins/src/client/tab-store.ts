@@ -12,7 +12,7 @@
 
 import type { SettingsDescribeFace } from '@singula-ai/alego-client-ui-settings/client'
 import type { StoredEntry } from '@singula-ai/alego-client-ui-slots'
-import { createSnapshotStore, type SnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import { createSnapshotStore, type SnapshotStore } from '@singula-ai/alego-client-store'
 
 /** What the section renders. */
 export interface ConfigurablePluginsTabState {

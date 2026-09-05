@@ -92,4 +92,4 @@ export function apply(ctx: Context) {
 
 下一章：[生命周期与 effect](02-lifecycle-and-effects.zh.md)：插件卸载时会发生什么。
 
-[![](https://img.shields.io/badge/powered_by-alego-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/singula-ai/alego)
+[![](https://img.shields.io/badge/powered_by-alego-F5A524?style=flat-square)](https://github.com/singula-ai/alego)

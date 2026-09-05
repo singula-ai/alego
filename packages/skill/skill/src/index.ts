@@ -11,7 +11,8 @@
  */
 
 import { Context, Service } from '@singula-ai/cordis'
-import { assertNever } from '@singula-ai/alego-llm'
+import type {} from '@singula-ai/alego-llm'
+import { assertNever } from '@singula-ai/alego-util-values'
 import { NamedEntries, ScopedLayers, scopeChainOf, scopeOf } from '@singula-ai/alego-scope'
 import type { ScopeKey, ScopeLayer } from '@singula-ai/alego-scope'
 import z from '@singula-ai/schemastery'

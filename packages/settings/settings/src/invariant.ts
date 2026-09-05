@@ -5,7 +5,7 @@
 
 import type { Context } from '@singula-ai/cordis'
 import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
-import { deepEqualJson } from './index.ts'
+import { deepEqualJson } from '@singula-ai/alego-util-values'
 
 const PACKAGE_NAME = '@singula-ai/alego-settings'
 

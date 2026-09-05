@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
-import type { SnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import type { SnapshotStore } from '@singula-ai/alego-client-store'
 import type { InjectFace, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
 import { Button } from '@singula-ai/alego-client-ui-primitives'
 import type { WelcomeNoticeState, WelcomeNoticeStore } from './welcome-store.ts'

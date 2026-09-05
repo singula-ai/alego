@@ -2,15 +2,17 @@
 
 [English](README.md) | 中文
 
-Alego（`alego`）是一个开源 agent harness（智能体框架）：面向 AI agent 应用的积木式基础设施，每一项能力都以插件的形式拼装进来。
+Alego（`alego`）是 Singula AI 的开源 agent harness（智能体框架），为 AI 智能体应用提供积木式基础。
 
-它采用**一切皆插件**的架构，并由 [Cordis](https://github.com/cordiverse/cordis) 驱动，其设计参见论文 [_A Programming Paradigm for Spatiotemporal Composability_](https://github.com/cordiverse/paper)。
+它构建于**一切皆插件**的架构之上，由 [Cordis](https://github.com/cordiverse/cordis) 驱动，其设计参见论文 [_A Programming Paradigm for Spatiotemporal Composability_](https://arxiv.org/abs/2608.25512)。
 
-Alego fork 自 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)，经过品牌重塑后独立开发，与 DeepSeek 无隶属、背书或赞助关系。
+Alego 是 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的独立 fork，与 DeepSeek 无隶属或背书关系。请从[文档](docs/user/index.zh.md)开始。
 
 ## 开发者预览
 
-Alego 目前处于 _开发者预览_ 阶段，正在快速迭代。**未来将出现破坏兼容性的变更。**
+Alego 处于 _开发者预览_ 阶段，正在快速迭代。**未来将出现破坏兼容性的变更。**
+
+运行本项目前，请阅读[安全说明](SAFETY.zh.md)。
 
 <a id="run"></a>
 
@@ -30,15 +32,13 @@ npx @singula-ai/alego web
 
 ### 从源码运行
 
-在 Linux/macOS 上，一条命令即可完成安装（需要 `git` 与 Node.js `^22.19.0 || >=24`；缺少 pnpm 时会通过 corepack 提供）：
+在 Linux/macOS 上，源码安装脚本会构建 Alego，并在 `~/.local/bin` 中添加启动器：
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/singula-ai/alego/main/install.sh | bash
 ```
 
-该脚本会把仓库克隆到 `~/.alego-src`，安装依赖并构建运行时与 Web UI，然后在 `~/.local/bin` 写入 `alego` 启动器；之后运行 `alego web` 即可。重复运行同一命令会更新检出并重新构建。`ALEGO_SRC_DIR`、`ALEGO_BIN_DIR`、`ALEGO_REPO`、`ALEGO_REF` 可覆盖默认值；卸载时删除启动器和检出目录即可。
-
-如需手动从仓库检出运行：
+如需从仓库源码运行：
 
 ```sh
 git clone https://github.com/singula-ai/alego.git
@@ -52,9 +52,9 @@ pnpm alego web
 
 ## 社区与支持
 
-- 项目站点：<https://alego.dev>。
-- 欢迎通过 [GitHub Discussions](https://github.com/singula-ai/alego/discussions) 提交反馈或 bug 报告。
+- 通过 [GitHub Discussions](https://github.com/singula-ai/alego/discussions) 提交反馈或 bug 报告。
 - 为你的插件仓库添加 [`alego-plugin`](https://github.com/topics/alego-plugin) 话题，便于被发现。
+- 项目网站：<https://alego.dev>。
 
 ## 参与贡献
 

@@ -19,7 +19,8 @@ import type { Context } from '@singula-ai/cordis'
 import type { Agent } from '@singula-ai/alego-agent'
 import type { ContentBlock } from '@singula-ai/alego-llm'
 import { foldConsumedWork } from '@singula-ai/alego-agent'
-import type { SessionEvent, SessionId } from '@singula-ai/alego-session'
+import { SessionLogOffset } from '@singula-ai/alego-session'
+import type { SessionEvent, SessionId, SessionLogOffset as SessionLogOffsetType } from '@singula-ai/alego-session'
 import { finalAssistantOutput } from './assistant-output.ts'
 import { SubagentRunId } from './types.ts'
 import type { SubagentResult, SubagentRun, SubagentRunEndInfo, SubagentRunInfo } from './types.ts'
@@ -182,7 +183,7 @@ export function createActivationObserver(
   // A cold resume replays earlier turns, so this epoch's telemetry must come
   // from the suffix it actually produced — never the whole session, which
   // would report a previous epoch's answer when this one opened no turn.
-  let boundary = 0
+  let boundary: SessionLogOffsetType = SessionLogOffset(0)
   // Assigned by `capture()`, which the disposal path always runs before
   // `settle()`; a resident epoch therefore always has its facts by then.
   let captured: ActivationTerminal = { stopReason: 'completed' }
@@ -193,11 +194,11 @@ export function createActivationObserver(
     : { stopReason: 'error' }
   return {
     start: (child: Agent): void => {
-      boundary = child.session.events.length
+      boundary = child.session.seq
       emit('subagent/start', identity, parent)
     },
     capture: (child: Agent): void => {
-      const own = child.session.events.slice(boundary)
+      const own = child.session.snapshotEvents(boundary)
       const output = finalAssistantOutput(own)
       captured = {
         stopReason: epochStopReason(own),

@@ -7,17 +7,27 @@
  * shared overlay whose row exists only on another surface.
  */
 
-import { mkdtempSync, writeFileSync } from 'node:fs'
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { describe, expect, it, vi } from 'vitest'
+import { pathToFileURL } from 'node:url'
+import { afterAll, describe, expect, it, vi } from 'vitest'
 import * as yaml from 'js-yaml'
 import { entryListSchema } from '@singula-ai/cordis-plugin-include'
 import { loadOverlayPatches, renderConfigDump } from '../src/index.ts'
 
 const NAME = 'alego-test-bin'
 
-const tmp = (): string => mkdtempSync(join(tmpdir(), 'alego-config-dump-'))
+const tempRoots: string[] = []
+afterAll(() => {
+  for (const root of tempRoots.splice(0)) rmSync(root, { recursive: true, force: true })
+})
+
+const tmp = (): string => {
+  const dir = mkdtempSync(join(tmpdir(), 'alego-config-dump-'))
+  tempRoots.push(dir)
+  return dir
+}
 
 function writeBase(dir: string): string {
   const base = join(dir, 'base.yml')
@@ -74,7 +84,11 @@ describe('renderConfigDump', () => {
         config: { value: 'surface', key: { __jsExpr: 'process.env.ALEGO_DUMP_SPEC' } },
       },
       { id: 'untouched', name: './noop.mjs' },
-      { id: 'surface-extra', name: './noop.mjs', config: { value: 'user' } },
+      {
+        id: 'surface-extra',
+        name: pathToFileURL(join(dir, 'noop.mjs')).href,
+        config: { value: 'user' },
+      },
     ])
     // Unevaluated: the expression text round-trips as a !!js scalar.
     expect(dump).toContain('!!js process.env.ALEGO_DUMP_SPEC')

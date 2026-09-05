@@ -15,7 +15,7 @@
 
 import { Context } from '@singula-ai/cordis'
 import type { DynamicCordisPackage } from '@singula-ai/alego-api-remotes/client'
-import type { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import type { SlotRegistry } from '@singula-ai/alego-client-ui-renderer/client'
 import type { ThemeRuntime } from '@singula-ai/alego-client-ui-theme/client'
 
 /** Facade verbs beyond declared services (host CTX_VERBS twin). */

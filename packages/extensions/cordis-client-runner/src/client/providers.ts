@@ -1,8 +1,8 @@
 /** Built-in Client inspect providers over live Client-owned services. */
 
 import type { Context } from '@singula-ai/cordis'
-import type { JsonValue } from '@singula-ai/alego-api-remotes/client'
-import type { SlotRegistry } from '@singula-ai/alego-client-runtime/client'
+import type { JsonValue } from '@singula-ai/alego-util-values'
+import type { SlotRegistry } from '@singula-ai/alego-client-ui-renderer/client'
 import type {} from '@singula-ai/alego-client-ui-theme/client'
 import { queryEventApi, queryServiceApi } from './api-catalog.ts'
 import type { ClientCordisInspectProviderRegistration } from './inspect-registry.ts'

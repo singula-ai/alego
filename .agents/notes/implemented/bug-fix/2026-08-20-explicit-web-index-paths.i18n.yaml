@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-20-explicit-web-index-paths.md
-2026-08-20-explicit-web-index-paths.md: c37ddb4fc1b0d5423054ca21d50477c83b8e7ea3
-2026-08-20-explicit-web-index-paths.zh.md: 299af389cdb01c54bd29dc70384b8aab0bebe07f
+2026-08-20-explicit-web-index-paths.md: a8f769142f20c7d710cb6868caf5d069ba9fa47d
+2026-08-20-explicit-web-index-paths.zh.md: a2ed9b4ae90b5abae4c37a6deccf202b832eca50

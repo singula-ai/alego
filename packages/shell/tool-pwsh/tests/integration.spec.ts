@@ -15,7 +15,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { spawnSync } from 'node:child_process'
 import { Context } from '@singula-ai/cordis'
-import { CallId } from '@singula-ai/alego-llm'
+import { ToolCallId } from '@singula-ai/alego-llm'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime, { TOOL_ABORTED } from '@singula-ai/alego-tools'
 import LocalJobRegistry from '@singula-ai/alego-jobs-local'
@@ -41,7 +41,7 @@ let callCounter = 0
 function call(name: string, args: unknown, agentObj?: object, signal?: AbortSignal) {
   return ctx.tools.execute({
     signal: signal ?? testToolSignal,
-    callId: CallId(`it-${++callCounter}`),
+    callId: ToolCallId(`it-${++callCounter}`),
     name,
     arguments: args,
     ...agentObj ? { agent: agentObj as never } : {},

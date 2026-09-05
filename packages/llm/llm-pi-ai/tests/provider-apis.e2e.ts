@@ -10,7 +10,7 @@ import type {
   SaveImageAttachment,
   StoredImageAttachment,
 } from '@singula-ai/alego-attachment'
-import LlmRuntime, { createUserMessage, CallId } from '@singula-ai/alego-llm'
+import LlmRuntime, { createUserMessage, ToolCallId } from '@singula-ai/alego-llm'
 import type { Message, ToolSchema } from '@singula-ai/alego-llm'
 import * as LlmPiAi from '@singula-ai/alego-llm-pi-ai'
 import type { PiAiReplayResponse } from '../src/replay.ts'
@@ -212,7 +212,7 @@ for (const profile of providerCases) {
             createUserMessage({
               content: [{
                 type: 'tool-result',
-                toolCallId: CallId(call!.id),
+                toolCallId: ToolCallId(call!.id),
                 content: [{ type: 'text', text: 'The code blue means ocean.' }],
               }],
               source: { kind: 'plugin', plugin: 'test' },

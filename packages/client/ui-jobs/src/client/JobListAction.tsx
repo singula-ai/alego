@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
-import type { JobView } from '@singula-ai/alego-client-runtime/client'
+import type { SessionJob as JobView } from '@singula-ai/alego-api-session-controller/types'
 import { IconChevronDownOutline14, StateDot, useDismissOnOutsidePointer, type StateDotState } from '@singula-ai/alego-client-ui-primitives'
 import type { PropsLocale, PropsRuntime, TranslateNS } from '@singula-ai/alego-client-ui-slots'
 import { NS } from './locales.ts'

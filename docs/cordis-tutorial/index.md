@@ -57,4 +57,4 @@ The examples use three TypeScript features beyond ordinary modern JavaScript:
 
 Chapter 5 also uses an `interface` to describe a configuration object's fields and a generic type such as `Schema<Config>` to say which object fields a schema validates. You can copy those declarations as shown; the surrounding text explains what each one connects.
 
-[![](https://img.shields.io/badge/powered_by-alego-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/singula-ai/alego)
+[![](https://img.shields.io/badge/powered_by-alego-F5A524?style=flat-square)](https://github.com/singula-ai/alego)

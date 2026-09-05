@@ -6,7 +6,7 @@ English | [中文](2026-07-27-dispose-ladder-to-consumer.zh.md)
 
 ## Problem
 
-`SubprocessHandle.dispose(graces)` and `SubprocessDisposeGraces` put a full teardown *policy* — stdin-EOF wait, then SIGTERM, then SIGKILL, each tier bounded by a caller-supplied window — on a seam whose other verbs are single mechanisms. Only one consumer ever called it (the ACP subagent backend); bash rides `terminate()` and service teardown, and the LSP host runs its own protocol-first shutdown. Every future backend nonetheless had to implement the ladder to satisfy the interface, and the implementation carried a `alego-timeout` dependency solely for the ladder's tier bounds.
+`SubprocessHandle.dispose(graces)` and `SubprocessDisposeGraces` put a full teardown *policy* — stdin-EOF wait, then SIGTERM, then SIGKILL, each tier bounded by a caller-supplied window — on a seam whose other verbs are single mechanisms. Only one consumer ever called it (the ACP subagent backend); bash rides `terminate()` and service teardown, and the LSP host runs its own protocol-first shutdown. Every future backend nonetheless had to implement the ladder to satisfy the interface, and the implementation carried an `alego-timeout` dependency solely for the ladder's tier bounds.
 
 ## Decision
 

@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import Loader from '@singula-ai/cordis-plugin-loader'
 import Include from '@singula-ai/cordis-plugin-include'
-import { CallId } from '@singula-ai/alego-llm'
+import { ToolCallId } from '@singula-ai/alego-llm'
 import { Session, SessionId } from '@singula-ai/alego-session'
 import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
 import type { Agent } from '@singula-ai/alego-agent'
@@ -16,6 +16,7 @@ import TerminalSessionService from '@singula-ai/alego-terminal'
 import SandboxProvider from '@singula-ai/alego-sandbox'
 import type { ConfinedArgv, SandboxPolicy } from '@singula-ai/alego-sandbox'
 import SandboxPolicyService from '@singula-ai/alego-sandbox-policy'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 import * as TerminalLocal from '@singula-ai/alego-terminal-bash'
 import * as ToolPty from '@singula-ai/alego-tool-terminal'
@@ -69,6 +70,7 @@ suite('terminal real Loader composition through cordis.yml', () => {
       "- name: '@singula-ai/alego-tools'",
       "- name: '@singula-ai/alego-terminal'",
       "- name: '@singula-ai/alego-test-sandbox'",
+      "- name: '@singula-ai/alego-session-projection'",
       "- name: '@singula-ai/alego-sandbox-policy'",
       '  config:',
       '    mode: danger-full-access',
@@ -96,6 +98,7 @@ suite('terminal real Loader composition through cordis.yml', () => {
       ['@singula-ai/alego-tools', ToolRuntime],
       ['@singula-ai/alego-terminal', TerminalSessionService],
       ['@singula-ai/alego-test-sandbox', PassthroughSandbox],
+      ['@singula-ai/alego-session-projection', SessionProjectionRegistry],
       ['@singula-ai/alego-sandbox-policy', SandboxPolicyService],
       ['@singula-ai/alego-subprocess-local', LocalSubprocessRuntime],
       ['@singula-ai/alego-terminal-bash', TerminalLocal],
@@ -114,15 +117,15 @@ suite('terminal real Loader composition through cordis.yml', () => {
     const owner = agent(context)
     const signal = new AbortController().signal
     const spawn = await context.tools.execute({
-      signal, callId: CallId('spawn'), name: 'terminal_open', arguments: { type: 'shell', name: 'main', cwd: root }, agent: owner,
+      signal, callId: ToolCallId('spawn'), name: 'terminal_open', arguments: { type: 'shell', name: 'main', cwd: root }, agent: owner,
     })
     expect(resultText(spawn)).toContain('started terminal session pty-1 (main)')
 
     await context.tools.execute({
-      signal, callId: CallId('state'), name: 'terminal_send', arguments: { sessionId: 'pty-1', text: 'export KEEP=loader; cd /' }, agent: owner,
+      signal, callId: ToolCallId('state'), name: 'terminal_send', arguments: { sessionId: 'pty-1', text: 'export KEEP=loader; cd /' }, agent: owner,
     })
     const read = await context.tools.execute({
-      signal, callId: CallId('read'), name: 'terminal_send', arguments: { sessionId: 'pty-1', text: 'printf "cwd=%s keep=%s\\n" "$PWD" "$KEEP"' }, agent: owner,
+      signal, callId: ToolCallId('read'), name: 'terminal_send', arguments: { sessionId: 'pty-1', text: 'printf "cwd=%s keep=%s\\n" "$PWD" "$KEEP"' }, agent: owner,
     })
     expect(resultText(read)).toContain('cwd=/ keep=loader')
     expect(context.terminals.list(owner)).toHaveLength(1)

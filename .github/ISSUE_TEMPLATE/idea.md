@@ -1,20 +1,20 @@
 ---
 name: Idea
-about: Record an actionable idea not yet committed to
+about: 记录尚未承诺实施、但具有行动可能的想法
 title: ''
 labels: ''
 assignees: ''
 type: Idea
 ---
 
-<!-- Title: one action or result sentence. Keep the body outside <details> under 50 units. -->
-One sentence stating the value hypothesis.
+<!-- 标题写中文行动或结果句；外露正文不超过 50 单位。 -->
+一句话说明价值假设。
 
 <details>
-<summary>Value and detail</summary>
+<summary>价值与细节</summary>
 
-- Value hypothesis:
-- To verify:
-- Possible follow-up work:
+- 价值假设：
+- 需要验证：
+- 可能的后续工作：
 
 </details>

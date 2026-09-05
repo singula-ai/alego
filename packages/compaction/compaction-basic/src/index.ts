@@ -9,9 +9,10 @@ import z from '@singula-ai/schemastery'
 import { CompactionEngine, ManualCompactionError } from '@singula-ai/alego-compaction'
 import type { CompactionResult, CompactionTrigger } from '@singula-ai/alego-compaction'
 import type { TokenMeter } from '@singula-ai/alego-token-meter'
-import type { Session } from '@singula-ai/alego-session'
-import { CONTEXT_WINDOW_EXCEEDED_CODE, assertNever } from '@singula-ai/alego-llm'
+import type { Session, SessionSeq } from '@singula-ai/alego-session'
+import { CONTEXT_WINDOW_EXCEEDED_CODE } from '@singula-ai/alego-llm'
 import type { LlmCallConfig } from '@singula-ai/alego-llm'
+import { assertNever } from '@singula-ai/alego-util-values'
 import type { Agent, PreStepDecision } from '@singula-ai/alego-agent'
 import type { CommandId } from '@singula-ai/alego-commands/brand'
 // Type-only: makes the optional sibling service available to `ctx.get()`.
@@ -341,8 +342,8 @@ export class BasicCompactionEngine extends CompactionEngine {
    * @returns the successful durable compaction result.
    */
   override async compactRegion(
-    start: number,
-    end: number,
+    start: SessionSeq,
+    end: SessionSeq,
     agent: Agent,
     signal?: AbortSignal,
   ): Promise<CompactionResult> {

@@ -14,7 +14,7 @@ import z from '@singula-ai/schemastery'
 import { SHELL_SETTINGS_NAMESPACE, ShellExecutor } from '@singula-ai/alego-shell'
 import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellProcessRead, ShellRunResult, CollectedOutput } from '@singula-ai/alego-shell'
 import type { SubprocessCollect, SubprocessHandle, SubprocessOutputReader, SubprocessSpawnSpec } from '@singula-ai/alego-subprocess'
-import { installSettingsSection } from '@singula-ai/alego-settings'
+import type {} from '@singula-ai/alego-settings'
 import { clampTimeout, deadline, MAX_TIMER_DELAY_MS, timeoutOf } from '@singula-ai/alego-timeout'
 
 /**
@@ -125,14 +125,16 @@ export class LocalBashExecutor extends ShellExecutor {
     const entry = config as ResolvedConfig
     assertServiceableBashConfig(entry)
     this.source = () => entry
-    installSettingsSection(ctx, SHELL_SETTINGS_NAMESPACE, LocalBashExecutor.Config, entry, {
-      validate: assertServiceableBashConfig,
-      setSource: (current) => {
-        this.source = current as () => ResolvedConfig
-      },
-      // Every field is read through the getter at each command, so nothing
-      // derived from the source needs rebuilding when the document changes.
-      onChange: () => {},
+    ctx.inject(['settings'], (settingsCtx) => {
+      settingsCtx.settings.installSection(ctx, SHELL_SETTINGS_NAMESPACE, LocalBashExecutor.Config, entry, {
+        validate: assertServiceableBashConfig,
+        setSource: (current) => {
+          this.source = current as () => ResolvedConfig
+        },
+        // Every field is read through the getter at each command, so nothing
+        // derived from the source needs rebuilding when the document changes.
+        onChange: () => {},
+      })
     })
   }
 

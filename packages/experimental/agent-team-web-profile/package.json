@@ -1,0 +1,45 @@
+{
+  "name": "@singula-ai/alego-experimental-agent-team-web-profile",
+  "description": "Private Web profile layer for Agent Teams Remote and UI plugins",
+  "version": "0.1.3-alpha.1",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/experimental/agent-team-web-profile"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "cordis.patch.yml",
+    "lib/types/**/*.d.ts"
+  ],
+  "license": "MIT",
+  "alego": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "dependencies": {
+    "@singula-ai/alego-experimental-client-ui-agent-team": "workspace:^"
+  },
+  "peerDependencies": {
+    "@singula-ai/cordis": "workspace:^"
+  },
+  "devDependencies": {
+    "@singula-ai/cordis-plugin-include": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
+    "js-yaml": "^4.2.0"
+  }
+}

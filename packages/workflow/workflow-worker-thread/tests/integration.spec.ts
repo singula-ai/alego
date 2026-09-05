@@ -7,6 +7,7 @@ import InvariantRegistry from '@singula-ai/alego-invariants'
 import * as SessionInvariant from '@singula-ai/alego-session/invariant'
 import * as AgentInvariant from '@singula-ai/alego-agent/invariant'
 import * as AgentLoopInvariant from '@singula-ai/alego-agent-loop/invariant'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import SubagentRuntime from '@singula-ai/alego-subagent'
 import * as spawn from '@singula-ai/alego-subagent-spawn-in-process'
 import { STRUCTURED_OUTPUT_TOOL } from '@singula-ai/alego-subagent-in-process-driver'
@@ -35,12 +36,13 @@ async function setup(script: Script) {
   const adapter = new MockAdapter(script)
   await mountAgentLoopTestDependencies(ctx)
   await mountInvariants(ctx)
+  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(SubagentRuntime)
   await ctx.plugin(spawn, { providerName: 'spawn' })
   await ctx.plugin(WorkerThreadWorkflowEngine, {})
   ctx.llm.registerAdapter(['mock'], adapter)
-  const parent = ctx.agentLoop.create(SessionId('parent'), { provider: 'mock', model: 'mock' })
+  const parent = await ctx.agentLoop.create(SessionId('parent'), { provider: 'mock', model: 'mock' })
   return { ctx, parent, adapter }
 }
 

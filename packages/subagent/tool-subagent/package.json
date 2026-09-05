@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-tool-subagent",
   "description": "Model-facing subagent delegation tool over the ctx.subagents seam",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -18,6 +18,10 @@
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
     },
+    "./model-selection-settings": {
+      "types": "./lib/types/model-selection-settings.d.ts",
+      "default": "./lib/model-selection-settings.js"
+    },
     "./invariant": {
       "types": "./lib/types/invariant.d.ts",
       "default": "./lib/invariant.js"
@@ -28,6 +32,7 @@
   "files": [
     "lib/index.js",
     "lib/invariant.js",
+    "lib/model-selection-settings.js",
     "lib/types/**/*.d.ts"
   ],
   "license": "MIT",
@@ -35,6 +40,10 @@
     "@singula-ai/alego-agent": "workspace:^",
     "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^",
+    "@singula-ai/alego-scope": "workspace:^",
+    "@singula-ai/alego-settings": "workspace:^",
     "@singula-ai/alego-subagent": "workspace:^",
     "@singula-ai/alego-system-prompt": "workspace:^",
     "@singula-ai/alego-jobs": "workspace:^",
@@ -42,7 +51,8 @@
     "@singula-ai/cordis": "workspace:^"
   },
   "dependencies": {
-    "@singula-ai/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:^",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@singula-ai/cordis-plugin-loader": "workspace:^",
@@ -50,8 +60,10 @@
     "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-llm": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-scope": "workspace:^",
     "@singula-ai/alego-session-persistence": "workspace:^",
     "@singula-ai/alego-session-persistence-jsonl": "workspace:^",
+    "@singula-ai/alego-settings": "workspace:^",
     "@singula-ai/alego-subagent": "workspace:^",
     "@singula-ai/alego-subagent-spawn-in-process": "workspace:^",
     "@singula-ai/alego-system-prompt": "workspace:^",
@@ -59,6 +71,7 @@
     "@singula-ai/alego-jobs-local": "workspace:^",
     "@singula-ai/alego-tool-jobs": "workspace:^",
     "@singula-ai/alego-tools": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^"
   }
 }

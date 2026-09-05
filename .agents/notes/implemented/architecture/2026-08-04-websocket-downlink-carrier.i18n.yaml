@@ -1,6 +1,0 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-04-websocket-downlink-carrier.md
-2026-08-04-websocket-downlink-carrier.md: a56dcfbd2641310e9db4e311f410aff4f13683a9
-2026-08-04-websocket-downlink-carrier.zh.md: 1c99d33ef12922dc54984eca29f56750c972adb2

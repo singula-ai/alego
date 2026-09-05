@@ -1,0 +1,95 @@
+# Keyless replay counterpart to persistent-pwsh.cordis.yml.
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  disabled: true
+
+- insert:
+    - id: llm-replay
+      name: '@singula-ai/alego-llm-replay'
+      config:
+        providers:
+          - id: deepseek-official
+            name: DeepSeek
+            models:
+              - id: deepseek-v4-pro
+
+- insert:
+    - id: terminal
+      name: '@singula-ai/alego-terminal'
+
+- id: sandbox-policy
+  name: '@singula-ai/alego-sandbox-policy'
+  config:
+    mode: danger-full-access
+    workspaceRoot: !!js process.cwd()
+
+- id: subprocess
+  name: '@singula-ai/alego-subprocess-local'
+
+- insert:
+    - id: terminal-pwsh
+      name: '@singula-ai/alego-terminal-bash'
+      config:
+        shellDialect: pwsh
+        timeoutMs: 30000
+
+- id: agent-default-model
+  name: '@singula-ai/alego-agent-default-model'
+  config:
+    provider: deepseek-official
+    model: deepseek-v4-pro
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: none
+
+- id: agent-instructions
+  name: '@singula-ai/alego-agent-instructions'
+  disabled: true
+
+- id: system-prompt
+  name: '@singula-ai/alego-system-prompt'
+  config:
+    persona: You are a concise snapshot agent working in {{cwd}}.
+
+- id: tool-jobs
+  name: '@singula-ai/alego-tool-jobs'
+  disabled: true
+
+- id: goal
+  name: '@singula-ai/alego-goal'
+  disabled: true
+
+- id: goal-round-driver
+  name: '@singula-ai/alego-goal-round-driver'
+  disabled: true
+
+- id: command-goal
+  name: '@singula-ai/alego-command-goal'
+  disabled: true
+
+- id: tool-goal
+  name: '@singula-ai/alego-tool-goal'
+  disabled: true
+
+- id: skill
+  name: '@singula-ai/alego-skill'
+  disabled: true
+
+- id: skill-filesystem
+  name: '@singula-ai/alego-skill-filesystem'
+  disabled: true
+
+- id: tool-skill
+  name: '@singula-ai/alego-tool-skill'
+  disabled: true
+
+- id: tool-bash
+  name: '@singula-ai/alego-tool-bash'
+  disabled: true
+
+- insert:
+    - id: tool-pwsh-persistent
+      name: '@singula-ai/alego-tool-pwsh-persistent'

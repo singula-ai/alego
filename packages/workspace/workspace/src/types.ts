@@ -6,13 +6,21 @@
  */
 
 import type { Branded } from '@singula-ai/alego-brand'
-import type { SessionId } from '@singula-ai/alego-session'
+import type { SessionId } from '@singula-ai/alego-session/types'
+import type {} from '@singula-ai/alego-typert-protocol'
 
 /**
  * Identifies one workspace record. A generated uuid, never the path: path
  * normalization rewrites paths, and a reference anchor must stay stable.
  */
 export type WorkspaceId = Branded<'WorkspaceId'>
+
+declare module '@singula-ai/alego-typert-protocol' {
+  interface RemoteErrorDetailsMap {
+    /** No registration carries that Workspace identity. */
+    'workspace/not-found': { readonly workspaceId: WorkspaceId }
+  }
+}
 
 /**
  * One workspace: a stable id over an existing directory, a display title, and
@@ -31,7 +39,7 @@ export interface Workspace {
    */
   readonly path: string
 
-  /** Display title. Defaults to `basename(path)` at create; duplicates are allowed. */
+  /** Display title. Defaults to the final path segment, or a filesystem root's own spelling; duplicates are allowed. */
   readonly title: string
 
   /** ISO-8601 creation instant, stamped at create and never rewritten. */

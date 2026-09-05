@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-tool-todo",
   "description": "Model-facing todo_write tool over the Alego event-sourced session log",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -54,7 +54,6 @@
     "@singula-ai/alego-agent": "workspace:^",
     "@singula-ai/alego-agent-loop": "workspace:^",
     "@singula-ai/alego-agent-loop-testkit": "workspace:^",
-    "@singula-ai/alego-host-apiproxy": "workspace:^",
     "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-llm": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",

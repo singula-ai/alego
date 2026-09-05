@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-agent",
   "description": "Agent interface, registry, initiator scope, and event vocabulary for the Alego",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -43,7 +43,8 @@
     "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/alego-system-prompt": "workspace:^",
     "@singula-ai/alego-typert-protocol": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^"
   },
   "devDependencies": {
     "@singula-ai/alego-invariants": "workspace:^",
@@ -53,6 +54,7 @@
     "@singula-ai/alego-system-prompt": "workspace:^",
     "@singula-ai/alego-typert-protocol": "workspace:^",
     "@singula-ai/alego-typert-registry": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^"
   }
 }

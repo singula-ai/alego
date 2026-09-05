@@ -8,7 +8,6 @@ import { createLaunchEnvironmentSnapshot, ALEGO_LAUNCH_ENVIRONMENT_KEY } from '@
 import type { CredentialRef } from '@singula-ai/alego-credentials'
 import { LocalCredentialProvider, resolveSpec } from '../src/index.ts'
 
-/** Credential documents are seeded owner-only, exactly as the provider creates them. */
 function writeCredentials(file: string, text: string): Promise<void> {
   return writeFile(file, text, { mode: 0o600 })
 }

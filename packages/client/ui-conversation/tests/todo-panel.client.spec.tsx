@@ -6,16 +6,14 @@
  */
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { bindSnapshotSelector } from '@singula-ai/alego-client-test-runtime'
-import { createSnapshotStore } from '@singula-ai/alego-client-runtime/client'
-import type { TodoItem } from '@singula-ai/alego-client-runtime/client'
-import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { bindSnapshotSelector, makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { createSnapshotStore } from '@singula-ai/alego-client-store'
+import type { TodoItem } from '@singula-ai/alego-tool-todo/client'
 import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
 import type { TodoDockProps } from '../src/client/skeleton/TodoPanel.tsx'
 import { TodoDock, TodoPanel, todoDockEntry } from '../src/client/skeleton/TodoPanel.tsx'
 import { NS, zh } from '../src/client/locales.ts'
 
-// Mirrors the real lookup chain (conversation namespace, then common).
 const t: TodoDockProps['t'] = makeTranslate(zh, commonZh)
 
 afterEach(cleanup)

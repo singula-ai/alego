@@ -1,7 +1,7 @@
 /** Canonical tool-definition fixtures for repository tests. @module alego-tools/testing */
 
 import type { ContentBlock } from '@singula-ai/alego-llm'
-import type { JsonValue } from '@singula-ai/alego-session'
+import type { JsonValue } from '@singula-ai/alego-util-values'
 import { defineTool } from './schema.ts'
 import type { DefineToolOptions, ParameterSchemaSpec } from './schema.ts'
 import type { ToolDefinition, ToolRunContext } from './index.ts'

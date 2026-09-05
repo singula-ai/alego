@@ -1,0 +1,81 @@
+# Minimal keyless composition: real app, bash, and search tool; replayed model.
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  disabled: true
+
+- insert:
+    - id: llm-replay
+      name: '@singula-ai/alego-llm-replay'
+      config:
+        providers:
+          - id: deepseek-official
+            name: DeepSeek
+            models:
+              - id: deepseek-v4-pro
+
+- id: subprocess
+  name: '@singula-ai/alego-subprocess-local'
+
+- id: agent-default-model
+  name: '@singula-ai/alego-agent-default-model'
+  config:
+    provider: deepseek-official
+    model: deepseek-v4-pro
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: none
+
+- id: agent-instructions
+  name: '@singula-ai/alego-agent-instructions'
+  disabled: true
+
+- id: system-prompt
+  name: '@singula-ai/alego-system-prompt'
+  config:
+    persona: You are a concise snapshot agent working in {{cwd}}.
+
+- id: tool-jobs
+  name: '@singula-ai/alego-tool-jobs'
+  disabled: true
+
+- id: goal
+  name: '@singula-ai/alego-goal'
+  disabled: true
+
+- id: goal-round-driver
+  name: '@singula-ai/alego-goal-round-driver'
+  disabled: true
+
+- id: command-goal
+  name: '@singula-ai/alego-command-goal'
+  disabled: true
+
+- id: tool-goal
+  name: '@singula-ai/alego-tool-goal'
+  disabled: true
+
+- id: skill
+  name: '@singula-ai/alego-skill'
+  disabled: true
+
+- id: skill-filesystem
+  name: '@singula-ai/alego-skill-filesystem'
+  disabled: true
+
+- id: tool-skill
+  name: '@singula-ai/alego-tool-skill'
+  disabled: true
+
+- id: tool-fs-search
+  name: '@singula-ai/alego-tool-fs-search'
+  config:
+    sampleOverCapGlobResults: true
+    globMaxResults: 4
+
+- id: spill-local
+  name: '@singula-ai/alego-spill-local'
+  config:
+    root: !!js process.env.ALEGO_SNAPSHOT_SPILL_ROOT ?? './.spill'

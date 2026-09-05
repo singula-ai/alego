@@ -15,7 +15,8 @@ import { dirname, extname, join, resolve } from 'node:path'
 import { Document, parseDocument } from 'yaml'
 import { withFileLock, writeFileAtomic } from '@singula-ai/alego-atomic-write'
 import { canonicalizeWatchPath, resolveAlegoHome } from '@singula-ai/alego-home-paths'
-import { SettingsProvider, deepEqualJson, type SettingsNamespace } from '@singula-ai/alego-settings'
+import { SettingsProvider, type SettingsNamespace } from '@singula-ai/alego-settings'
+import { deepEqualJson } from '@singula-ai/alego-util-values'
 
 /** Plugin config: file location and hot-reload behavior. */
 export interface Config {

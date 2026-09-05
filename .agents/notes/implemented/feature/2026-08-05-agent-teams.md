@@ -10,7 +10,7 @@ The subagent seam supplies fresh/fork providers, durable child Sessions, FIFO fo
 
 All same-process Agents also share one checkout. Filesystem edit tools can reject an observed stale version, but Bash, formatters, generators, and external writers bypass that fence. Treating a teammate name or task owner as a file lock would hide rather than solve this concurrency boundary.
 
-The model-visible Team tools remain opt-in so the default tool catalog and simple-task behavior do not change. An explicitly requested Team must survive child Activation settlement and mailbox delivery races long enough for the Lead to aggregate the result before process teardown.
+Agent Teams needs an explicit source-checkout composition before its public contracts are stable enough for released CLI or Web bundles. The default tool catalog and simple-task behavior must remain unchanged, while an explicitly requested Team must survive child Activation settlement and mailbox delivery races long enough for the Lead to aggregate the result before process teardown.
 
 ## Decision
 
@@ -32,7 +32,7 @@ Fresh children have no inherited conversation. Fork children capture the Lead's 
 
 Peer communication is a Lead-log mailbox. `team/message/queued` is appended and flushed before delivery. The target message carries the stable message id and sender identity in both durable source metadata and a short model-visible prefix. A target receipt is acknowledged with `team/message/delivered` only after its pending inbox item or recorded user message is flushed. Immediate admission is serialized per target in queued-log order, recovery retries queued-minus-delivered in the same order, and delivery folds live or persisted target inbox/history state before cold resume. Every current-version Team payload is runtime-validated before entering replay state. The Team runtime tracks dispatch and asynchronous acknowledgement work from synchronous admission until settlement; disposal closes admission and awaits both before removing the service. Current waiters wake only after the owning Team event flush succeeds.
 
-Quiet `send_message` injects, flushes, and acknowledges immediately for a live target without waking it; an inactive target remains queued until another event materializes that teammate. Waking `followup_task` becomes the target's next FIFO turn and may cold-resume it. Success means the message is already durable even when immediate delivery is deferred. The mechanism provides process-local retry and target-Session de-duplication, not a cross-process exactly-once claim.
+`send_message` always attempts Steer delivery. A running target receives the message at the nearest step boundary, an idle target starts a turn, and an inactive teammate cold-resumes. Success means the message is already durable even when temporary delivery failure leaves it queued. The mechanism provides process-local retry and target-Session de-duplication, not a cross-process exactly-once claim. The [Team Steer messaging decision](../simplification/2026-08-30-team-send-message-steer.md) owns the single-tool scheduling rationale.
 
 Shared tasks are complete snapshots with Team-local ids and monotonic revisions. Every mutation carries `expectedRevision`. Any member creates, reads, or claims a ready unowned task; the owner or Lead edits and transitions it, while only the Lead assigns another member. Numeric task ids remain within the safe-integer allocation range, and exhaustion fails without reusing an id. Dependencies must name non-deleted tasks and form a complete DAG. Deleted tasks are retained tombstones. `writeScopes` are normalized path prefixes that produce overlap diagnostics but never block claim or authorize a write.
 
@@ -48,13 +48,13 @@ Worktree isolation is not a harness runtime behavior. A deployment or prompt may
 
 **Extend direct-child subagent tools with peer ids.** Rejected because parent/child authority and Team peer membership are different domains. Adding peer access to the continuation seam would weaken its exact-parent authorization and still leave roster and tasks without a persistence owner.
 
-**Store mail in each target Session before delivery.** Rejected because an inactive target is intentionally not materialized for quiet mail. The always-live Lead Session is the transaction home; target recording is the acknowledgement and de-duplication boundary.
+**Store mail in each target Session before Lead-log enqueue.** Rejected because target materialization and acceptance can fail after the Team has committed the send. The always-live Lead Session is the transaction home; target recording is the acknowledgement and de-duplication boundary.
 
 **Treat task ownership or write scopes as locks.** Rejected because external writers bypass them, crashed owners remain durable, and path-prefix overlap cannot prove semantic independence. False mutual exclusion is more dangerous than an explicit warning.
 
 **Create isolated worktrees automatically.** Rejected because worktree creation, branch naming, merge policy, ignored files, build artifacts, and cleanup are deployment choices. It also changes the same-world behavior existing subagents and sandboxes expose.
 
-**Enable Teams in the default catalog.** Rejected because scoped Team controls would shadow same-named legacy globals and unsolicited delegation would add latency and token cost to simple tasks. Explicit composition keeps model-visible ownership unambiguous without changing shipped requests.
+**Enable Teams in the default catalog.** Rejected because scoped Team controls would shadow same-named legacy globals and unsolicited delegation would add latency and token cost to simple tasks. A private profile bundle inserts Team and disables the legacy controls without adding Team packages to shipped dependency graphs.
 
 **Use an in-memory board and mailbox.** Rejected because child settlement, HMR, and process interruption would lose accepted coordination state and make retries ambiguous.
 
@@ -62,12 +62,12 @@ Worktree isolation is not a harness runtime behavior. A deployment or prompt may
 
 ## Testing
 
-Package tests cover identity, name and authority checks, provider selection, reserved-id persistence collisions, child-before-Lead flush ordering, durable provisioning failure and pending-inbox JSONL/SQLite reconciliation, concurrent target-local ordering, pending/history de-duplication, mailbox limits, post-flush notification, bounded disposal with in-flight creation and dispatch cancellation, failed-member cleanup, task CAS and DAG validation, write-scope warnings, wait cancellation/timeout, inbox-preserving interruption, ordinary-fork isolation, legacy-control shadowing, compact declared-schema result rendering, and scoped registration HMR at per-file 100% coverage. A keyless headless Loader snapshot assembles the real Team plugins and records teammate creation, peer mail, dependent tasks, waiting, and Lead aggregation.
+Package tests cover identity, name and authority checks, provider selection, reserved-id persistence collisions, child-before-Lead flush ordering, durable provisioning failure and pending-inbox JSONL reconciliation, concurrent target-local ordering, pending/history de-duplication, mailbox limits, post-flush notification, bounded disposal with in-flight creation and dispatch cancellation, failed-member cleanup, task CAS and DAG validation, write-scope warnings, wait cancellation/timeout, inbox-preserving interruption, ordinary-fork isolation, legacy-control shadowing, compact declared-schema result rendering, and scoped registration HMR at per-file 100% coverage. A keyless product snapshot loads the private Agent Teams profile bundle through `alego --profile headless` and pins its complete model-visible tool list, Team policy, and durable workflow projection for two teammates, dependent tasks, peer delivery, waiting, completion, and aggregation. A CLI e2e reuses the same deterministic adapter and verifies normal process exit with persisted Team and child logs.
 
 ## Consequences
 
 The Lead Session grows with whole task/member snapshots and mailbox acknowledgements. This favors independently inspectable recovery over compact deltas; configured task and pending-mail bounds cap active state, while deleted and delivered history remains append-only until broader Session retention applies.
 
-An active roster member can be non-resident, so `inactive` is not failure and a wakeup can incur cold-resume latency. A quiet message for an inactive target can remain pending indefinitely until the target is otherwise materialized. A failed member permanently consumes its name and member slot, making provisioning failures visible instead of silently recycling identity.
+An active roster member can be non-resident, so `inactive` is not failure and a send can incur cold-resume latency. Temporary inspection, resume, or inbox-admission failure can leave a durable message queued for recovery. A failed member permanently consumes its name and member slot, making provisioning failures visible instead of silently recycling identity.
 
 Coordination reduces likely checkout conflicts but cannot eliminate writes outside filesystem compare-and-set tools. The final diff and tests remain the Lead's integration boundary.

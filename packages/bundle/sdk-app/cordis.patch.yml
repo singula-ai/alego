@@ -1,0 +1,21 @@
+# The SDK application over alego-base. Stdout belongs exclusively to JSON-RPC.
+
+- id: system-prompt
+  config:
+    persona: >-
+      You are a coding agent powered by the {{model}} model. Your working directory is {{cwd}}.
+
+- id: session-title-llm
+  disabled: true
+
+- insert:
+    - id: sdk-app-startup
+      name: '@singula-ai/alego-sdk-app'
+      config:
+        profile: sdk
+
+    - id: sdk-jsonrpc-server
+      name: '@singula-ai/alego-sdk-jsonrpc-server'
+      inject: [sdkAppStartup, loader]
+      config:
+        maxTokensAsSuccess: !!js "process.env.ALEGO_MAX_TOKENS_AS_SUCCESS === undefined ? true : JSON.parse(process.env.ALEGO_MAX_TOKENS_AS_SUCCESS)"

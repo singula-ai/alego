@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import { createScope, scopeTarget } from '@singula-ai/alego-scope'
-import { createUserMessage, CallId, createMessage, createToolResultMessage, freezeMessage } from '@singula-ai/alego-llm'
-import SessionStore, { SessionId, TOOL_NOT_STARTED } from '@singula-ai/alego-session'
+import { createUserMessage, ToolCallId, createMessage, createToolResultMessage, freezeMessage } from '@singula-ai/alego-llm'
+import SessionStore, { SessionId, SessionSeq, TOOL_NOT_STARTED } from '@singula-ai/alego-session'
 import * as SessionInvariant from '@singula-ai/alego-session/invariant'
 import InvariantRegistry, { InvariantError } from '@singula-ai/alego-invariants'
 
@@ -40,24 +40,28 @@ describe('session-log invariants', () => {
         content: [{ type: 'text', text: 'hi' }], source: { kind: 'user' },
       }), { surfaceOp: 'append' })
       session.append('step/start', { turn: 1, step: 1 })
-      session.append('assistant/chunk', { turn: 1, step: 1, chunk: { type: 'text-delta', index: 0, text: 'h' } })
+      session.append('assistant/attempt', {
+        turn: 1, step: 1,
+        stream: [{ type: 'text-chunks', time0: 1, index: 0, dt: [], texts: ['h'] }],
+      })
       session.append('assistant/message', {
+        stream: [],
         turn: 1,
         step: 1,
         message: createMessage({
           role: 'assistant',
-          content: [{ type: 'tool-call', id: CallId('c1'), name: 'echo', arguments: '{}' }],
+          content: [{ type: 'tool-call', id: ToolCallId('c1'), name: 'echo', arguments: '{}' }],
           source: {
             kind: 'model',
             ...{ provider: 'mock', model: 'mock' },
           },
         }),
       }, { surfaceOp: 'append' })
-      session.append('tool/call', { turn: 1, step: 1, callId: CallId('c1'), name: 'echo', arguments: '{}' })
+      session.append('tool/call', { turn: 1, step: 1, callId: ToolCallId('c1'), name: 'echo', arguments: '{}' })
       session.append('tool/result', {
         turn: 1, step: 1,
         message: createToolResultMessage({
-          callId: CallId('c1'),
+          callId: ToolCallId('c1'),
           content: [],
           isError: false,
         }),
@@ -79,7 +83,7 @@ describe('session-log invariants', () => {
     expect(() => session.append('turn/start', {
       turn: 1,
     })).toThrow('later dispatch veto')
-    expect(session.events).toEqual([])
+    expect(session.snapshotEvents()).toEqual([])
     expect(() => {
       session.append('turn/start', { turn: 1 })
       session.append('turn/end', { turn: 1, reason: { kind: 'completed' } })
@@ -141,7 +145,6 @@ describe('session-log invariants', () => {
     const enclosed = (await setup()).ctx.sessions.create()
     enclosed.append('turn/start', { turn: 1 })
     enclosed.append('step/start', { turn: 1, step: 1 })
-    expect(() => enclosed.append('todo/write', { todos: [] })).not.toThrow()
     expect(() => enclosed.append('request/header', {
       header: { config: { provider: 'mock', model: 'mock' } },
       reason: 'initial',
@@ -182,6 +185,7 @@ describe('session-log invariants', () => {
       .toThrow(/while step 1 is still open/)
     expect(() => nested.append('step/end', { turn: 1, step: 2 })).toThrow(/open is turn 1\/step 1/)
     expect(() => nested.append('assistant/message', {
+      stream: [],
       turn: 1,
       step: 2,
       message: createMessage({
@@ -210,10 +214,10 @@ describe('session-log invariants', () => {
   it('requires step-scoped stream and tool events to name the open step', async () => {
     const chunk = (await setup()).ctx.sessions.create()
     chunk.append('turn/start', { turn: 1 })
-    expect(() => chunk.append('assistant/chunk', {
+    expect(() => chunk.append('assistant/attempt', {
       turn: 1,
       step: 1,
-      chunk: { type: 'text-delta', index: 0, text: 'x' },
+      stream: [{ type: 'text-chunks', time0: 1, index: 0, dt: [], texts: ['x'] }],
     })).toThrow(/open is turn 1\/step null/)
 
     const tool = (await setup()).ctx.sessions.create()
@@ -223,7 +227,7 @@ describe('session-log invariants', () => {
       turn: 1,
       step: 1,
       message: createToolResultMessage({
-        callId: CallId('ghost'),
+        callId: ToolCallId('ghost'),
         content: [],
         isError: false,
       }),
@@ -238,7 +242,7 @@ describe('session-log invariants', () => {
       turn: 1,
       step: 1,
       message: createToolResultMessage({
-        callId: CallId('closed'),
+        callId: ToolCallId('closed'),
         content: [],
         isError: false,
       }),
@@ -253,7 +257,7 @@ describe('session-log invariants', () => {
     session.append('tool/call', {
       turn: 1,
       step: 1,
-      callId: CallId('rewrite'),
+      callId: ToolCallId('rewrite'),
       name: 'echo',
       arguments: '{}',
     })
@@ -261,7 +265,7 @@ describe('session-log invariants', () => {
       turn: 1,
       step: 1,
       message: createToolResultMessage({
-        callId: CallId('rewrite'),
+        callId: ToolCallId('rewrite'),
         content: [{ type: 'text', text: 'original' }],
         isError: false,
       }),
@@ -293,7 +297,7 @@ describe('session-log invariants', () => {
     session.append('tool/call', {
       turn: 1,
       step: 1,
-      callId: CallId('rewrite'),
+      callId: ToolCallId('rewrite'),
       name: 'echo',
       arguments: '{}',
     })
@@ -301,7 +305,7 @@ describe('session-log invariants', () => {
       turn: 1,
       step: 1,
       message: createToolResultMessage({
-        callId: CallId('rewrite'),
+        callId: ToolCallId('rewrite'),
         content: [{ type: 'text', text: 'original' }],
         isError: false,
       }),
@@ -333,7 +337,7 @@ describe('session-log invariants', () => {
         turn: 1,
         step: 1,
         message: createToolResultMessage({
-          callId: CallId('crashed'),
+          callId: ToolCallId('crashed'),
           content: [],
           isError: true,
         }),
@@ -347,7 +351,7 @@ describe('session-log invariants', () => {
     expect(() => {
       unresolved.append('turn/start', { turn: 1 })
       unresolved.append('step/start', { turn: 1, step: 1 })
-      unresolved.append('tool/call', { turn: 1, step: 1, callId: CallId('c1'), name: 'echo', arguments: '{}' })
+      unresolved.append('tool/call', { turn: 1, step: 1, callId: ToolCallId('c1'), name: 'echo', arguments: '{}' })
       unresolved.append('step/end', { turn: 1, step: 1 })
       unresolved.append('turn/end', { turn: 1, reason: { kind: 'error', error: { message: 'boom', code: 'UNKNOWN' } } })
     }).not.toThrow()
@@ -358,14 +362,14 @@ describe('session-log invariants', () => {
     const session = ctx.sessions.create()
     session.append('turn/start', { turn: 1 })
     session.append('step/start', { turn: 1, step: 1 })
-    session.append('tool/call', { turn: 1, step: 1, callId: CallId('c1'), name: 'echo', arguments: '{}' })
+    session.append('tool/call', { turn: 1, step: 1, callId: ToolCallId('c1'), name: 'echo', arguments: '{}' })
     session.append('step/end', { turn: 1, step: 1 })
     session.append('step/start', { turn: 1, step: 2 })
     expect(() => session.append('tool/result', {
       turn: 1,
       step: 2,
       message: createToolResultMessage({
-        callId: CallId('c1'),
+        callId: ToolCallId('c1'),
         content: [],
         isError: false,
       }),
@@ -375,8 +379,8 @@ describe('session-log invariants', () => {
   it('replays seeded sessions and tracks each session independently', async () => {
     const { ctx } = await setup()
     const badSeed = [
-      { type: 'turn/start' as const, seq: 0, time: 0, data: { turn: 1 } },
-      { type: 'turn/start' as const, seq: 1, time: 0, data: { turn: 2 } },
+      { type: 'turn/start' as const, seq: SessionSeq(0), time: 0, data: { turn: 1 } },
+      { type: 'turn/start' as const, seq: SessionSeq(1), time: 0, data: { turn: 2 } },
     ]
     expect(() => ctx.sessions.create(undefined, { seed: badSeed })).toThrow(InvariantError)
 
@@ -394,10 +398,10 @@ describe('session-log invariants', () => {
     session.append('step/start', { turn: 1, step: 1 })
     await fiber.dispose()
     await ctx.plugin(SessionInvariant)
-    expect(() => session.append('assistant/chunk', {
+    expect(() => session.append('assistant/attempt', {
       turn: 1,
       step: 1,
-      chunk: { type: 'text-delta', index: 0, text: 'h' },
+      stream: [{ type: 'text-chunks', time0: 1, index: 0, dt: [], texts: ['h'] }],
     })).not.toThrow()
     expect(() => session.append('turn/start', { turn: 2 }))
       .toThrow(/turn 1 is still open/)
@@ -407,14 +411,14 @@ describe('session-log invariants', () => {
     const { ctx } = await setup()
     // Balanced seed: between turns.
     expect(() => ctx.sessions.create(SessionId('inherited-between-turns'), { seed: [
-      { type: 'turn/start', seq: 0, time: 1, data: { turn: 1 } },
-      { type: 'turn/end', seq: 1, time: 2, data: { turn: 1, reason: { kind: 'completed' } } },
+      { type: 'turn/start', seq: SessionSeq(0), time: 1, data: { turn: 1 } },
+      { type: 'turn/end', seq: SessionSeq(1), time: 2, data: { turn: 1, reason: { kind: 'completed' } } },
     ] })).not.toThrow()
     // Unbalanced seed: inside the open turn, which the relation permits.
     const open = ctx.sessions.create(SessionId('inherited-inside-open-turn'), { seed: [
-      { type: 'turn/start', seq: 0, time: 1, data: { turn: 1 } },
+      { type: 'turn/start', seq: SessionSeq(0), time: 1, data: { turn: 1 } },
     ] })
-    expect(open.events.map(event => event.type)).toEqual(['turn/start', 'session/end-seed'])
+    expect(open.snapshotEvents().map(event => event.type)).toEqual(['turn/start', 'session/end-seed'])
     // Still open afterwards: the boundary moves no cursor.
     expect(() => open.append('turn/start', { turn: 2 }))
       .toThrow(/turn 1 is still open/)

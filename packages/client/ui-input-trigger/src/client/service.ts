@@ -7,7 +7,9 @@
  */
 import { Service } from '@singula-ai/cordis'
 import type { Context } from '@singula-ai/cordis'
-import type { ClientContext, ISessions, SessionId } from '@singula-ai/alego-client-runtime/client'
+import type { Context as ClientContext } from '@singula-ai/cordis'
+import type { ISessions } from '@singula-ai/alego-api-session-controller/client'
+import type { SessionId } from '@singula-ai/alego-session/types'
 import type { InputTriggerSource } from '../types.ts'
 import { InputTriggerController } from './controller.ts'
 import type { InputTriggerServiceContract } from './contract.ts'

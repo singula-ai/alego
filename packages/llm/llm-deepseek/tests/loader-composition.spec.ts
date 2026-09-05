@@ -8,7 +8,7 @@
  * behavior — the documented optional-inject fallback.
  */
 
-import { mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
@@ -17,16 +17,20 @@ import { Context } from '@singula-ai/cordis'
 import Loader from '@singula-ai/cordis-plugin-loader'
 import Include from '@singula-ai/cordis-plugin-include'
 import LlmRuntime from '@singula-ai/alego-llm'
+import AgentRegistry from '@singula-ai/alego-agent'
+import SessionStore, { SessionId } from '@singula-ai/alego-session'
 import { credentialRef } from '@singula-ai/alego-credentials'
 import LocalCredentialProvider from '@singula-ai/alego-credentials-local'
-import { settingsNamespace } from '@singula-ai/alego-settings'
 import FileSettingsProvider from '@singula-ai/alego-settings-file'
 import { getOrCreateAnonymousUserId } from '@singula-ai/alego-anonymous-user-id'
+import DeepSeekLlmApiExtensionRegistry from '@singula-ai/alego-deepseek-llm-api-extensions'
+import * as SessionLogDeepSeek from '@singula-ai/alego-session-log-deepseek'
+import * as DeepSeekPluginPackageInventory from '@singula-ai/alego-plugin-package-inventory-deepseek'
 import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek'
 import { assemble } from './assemble.ts'
 import { closeMockServers, mockServer, textEvents } from './mock-server.ts'
 
-const NS = settingsNamespace('llm-deepseek')
+const NS = 'llm-deepseek'
 const KEY_REF = credentialRef('DEEPSEEK_API_KEY')
 
 let root: string | undefined
@@ -42,7 +46,7 @@ afterEach(async () => {
 })
 
 async function loadComposition(
-  options: { withDynamic: boolean; baseURL: string; reuseRoot?: string },
+  options: { withDynamic: boolean; baseURL: string; reuseRoot?: string; enableSessionLog?: boolean },
 ): Promise<{ ctx: Context; settingsPath: string; credentialsPath: string }> {
   // A reused root is the restart case: the same harness home, its documents
   // exactly as the previous process left them.
@@ -59,7 +63,20 @@ async function loadComposition(
   const configPath = join(root, 'cordis.yml')
   await writeFile(configPath, [
     '- id: llm',
-    "  name: 'test-llm-service'",
+    "  name: '@singula-ai/alego-llm'",
+    '- id: session',
+    "  name: '@singula-ai/alego-session'",
+    '- id: agents',
+    "  name: '@singula-ai/alego-agent'",
+    '- id: deepseek-llm-api-extensions',
+    "  name: '@singula-ai/alego-deepseek-llm-api-extensions'",
+    '- id: session-log-deepseek',
+    "  name: '@singula-ai/alego-session-log-deepseek'",
+    ...options.enableSessionLog === true
+      ? ['  config:', '    enabled: true']
+      : [],
+    '- id: plugin-package-inventory-deepseek',
+    "  name: '@singula-ai/alego-plugin-package-inventory-deepseek'",
     ...options.withDynamic
       ? [
         '- id: settings',
@@ -87,11 +104,27 @@ async function loadComposition(
   await ctx.plugin(Loader)
   ctx.loader.builtins.include = Include
   const modules = new Map<string, unknown>([
-    ['test-llm-service', LlmRuntime],
+    ['@singula-ai/alego-llm', LlmRuntime],
+    ['@singula-ai/alego-session', SessionStore],
+    ['@singula-ai/alego-agent', AgentRegistry],
+    ['@singula-ai/alego-deepseek-llm-api-extensions', DeepSeekLlmApiExtensionRegistry],
+    ['@singula-ai/alego-session-log-deepseek', SessionLogDeepSeek],
+    ['@singula-ai/alego-plugin-package-inventory-deepseek', DeepSeekPluginPackageInventory],
     ['@singula-ai/alego-settings-file', FileSettingsProvider],
     ['@singula-ai/alego-credentials-local', LocalCredentialProvider],
     ['@singula-ai/alego-llm-deepseek', LlmDeepSeek],
   ])
+  // The custom importer bypasses Node resolution; mirror the package manifests
+  // a deployed cordis.yml has beside its declared dependencies.
+  await Promise.all([...modules.keys()].map(async (packageName) => {
+    const packageDir = join(root!, 'node_modules', ...packageName.split('/'))
+    await mkdir(packageDir, { recursive: true })
+    await writeFile(join(packageDir, 'package.json'), `${JSON.stringify({
+      name: packageName,
+      version: '0.1.0-rc.8',
+      type: 'module',
+    })}\n`)
+  }))
   ctx.loader.internal = {
     version: 'v2',
     async import(specifier: string) {
@@ -108,6 +141,56 @@ async function loadComposition(
 }
 
 describe('llm-deepseek real dynamic composition', () => {
+  it('keeps session upload off and package inventory on by default in the real Loader composition', async () => {
+    vi.stubEnv('DEEPSEEK_API_KEY', 'entry-key')
+    const server = await mockServer([{ kind: 'sse', events: textEvents }])
+    const { ctx } = await loadComposition({ withDynamic: false, baseURL: server.url })
+    const session = ctx.sessions.create(SessionId('extension-composition'))
+    session.append('turn/start', { turn: 1 })
+
+    await assemble(ctx, { model: 'deepseek-v4-flash', messages: [], sessionId: session.id })
+    const request = server.requests[0] as { dsh_plugin_packages: { version: number; packages: unknown[] } }
+    expect(request).not.toHaveProperty('dsh_session_log')
+    expect(request.dsh_plugin_packages.packages).toEqual(expect.arrayContaining([
+      { name: '@singula-ai/alego-deepseek-llm-api-extensions', version: '0.1.0-rc.8' },
+      { name: '@singula-ai/alego-llm-deepseek', version: '0.1.0-rc.8' },
+      { name: '@singula-ai/alego-session-log-deepseek', version: '0.1.0-rc.8' },
+    ]))
+    expect(request.dsh_plugin_packages.version).toBe(1)
+    expect(SessionLogDeepSeek.acceptedThrough(session)).toBe(-1)
+  })
+
+  it('sends the canonical session suffix when the Loader composition explicitly enables upload', async () => {
+    vi.stubEnv('DEEPSEEK_API_KEY', 'entry-key')
+    const server = await mockServer([{ kind: 'sse', events: textEvents }])
+    const { ctx } = await loadComposition({
+      withDynamic: false,
+      baseURL: server.url,
+      enableSessionLog: true,
+    })
+    const session = ctx.sessions.create(SessionId('extension-composition-enabled'))
+    session.append('turn/start', { turn: 1 })
+
+    await assemble(ctx, { model: 'deepseek-v4-flash', messages: [], sessionId: session.id })
+    const request = server.requests[0] as {
+      dsh_session_log?: {
+        version: number
+        session: { id: string }
+        afterSeq: number
+        throughSeq: number
+        events: Array<{ type: string; seq: number }>
+      }
+    }
+    expect(request.dsh_session_log).toMatchObject({
+      version: 1,
+      session: { id: 'extension-composition-enabled' },
+      afterSeq: -1,
+      throughSeq: 0,
+      events: [{ type: 'turn/start', seq: 0 }],
+    })
+    expect(SessionLogDeepSeek.acceptedThrough(session)).toBe(0)
+  })
+
   it('boots from cordis.yml and routes the next request after external settings and credential edits', async () => {
     vi.stubEnv('DEEPSEEK_API_KEY', '')
     const serverA = await mockServer([{ kind: 'sse', events: textEvents }])
@@ -117,7 +200,7 @@ describe('llm-deepseek real dynamic composition', () => {
     expect(ctx.get('settings')!.describe().map(entry => entry.ns)).toEqual([NS])
     await assemble(ctx, { model: 'deepseek-v4-flash', messages: [] })
     expect(serverA.headers[0]?.authorization).toBe('Bearer boot-key')
-    expect(serverA.headers[0]?.['x-alego-user-id']).toBe(getOrCreateAnonymousUserId())
+    expect(serverA.headers[0]?.['x-dsh-user-id']).toBe(getOrCreateAnonymousUserId())
 
     // External edits, exactly as a user or the web UI would leave them on disk.
     await writeFile(settingsPath, `llm-deepseek:\n  baseURL: ${serverB.url}\n`)

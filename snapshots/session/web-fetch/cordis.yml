@@ -1,0 +1,18 @@
+# Web-fetch composition for the web-fetch snapshot scenario. The base bundle
+# supplies the web seam and public HTTP provider; this overlay inserts a
+# deterministic provider and exposes only fetch.
+- insert:
+    - id: web-fetch-fixture
+      name: './web-fetch-fixture-server.mjs'
+
+- id: web
+  name: '@singula-ai/alego-web'
+
+- id: web-fetch-http
+  name: '@singula-ai/alego-web-fetch-http'
+  disabled: true
+
+- id: tool-web
+  name: '@singula-ai/alego-tool-web'
+  config:
+    search: false

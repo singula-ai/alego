@@ -89,7 +89,7 @@ The tables record public and repository-wide renames. The `Current` column holds
 | `@singula-ai/alego-jsonrpc` | `@singula-ai/alego-sdk-jsonrpc-server` | It is the server half of the SDK protocol. `jsonrpc` alone names an encoding; `sdk-jsonrpc-server` gives the family, mechanism, and role. |
 | `HarnessSdkServer` | `HarnessSdkJsonRpcServer` | The class is one JSON-RPC server implementation, not every possible SDK server. |
 
-Keep `@singula-ai/alego-sdk-client`, `@singula-ai/alego-sdk-protocol`, and `alego-sdk-runtime`. Exclude `@singula-ai/alego-create-sdk`, `@singula-ai/alego-scripts`, `@singula-ai/alego-helper`, and `@singula-ai/alego-telemetry`; the separate removal decision deletes them and their support graph.
+Keep `@singula-ai/alego-sdk-client`, `@singula-ai/alego-sdk-protocol`, and `alego-sdk-runtime`. Exclude `@singula-ai/create-sdk`, `@singula-ai/alego-scripts`, `@singula-ai/alego-helper`, and `@singula-ai/alego-telemetry`; the separate removal decision deletes them and their support graph.
 
 ### Shell and terminal
 
@@ -274,10 +274,14 @@ Keep MCP, Todo, and the Plan Mode package, key, events, and tool names. This dec
 | `E2BSandboxService` | `E2BRuntime` | The class creates, reuses, and disposes the E2B execution environment used by filesystem and subprocess adapters. It is broader than one sandbox handle and narrower than a generic owner. Keep `@singula-ai/alego-e2b`, `ctx.e2b`, and the `e2b/` group. |
 | `@singula-ai/alego-frontend-static` | `@singula-ai/alego-host-frontend-static` | The package is the Host plugin that serves the frontend assets. The prefix distinguishes it from frontend application code. |
 | `PluginInventoryService` | `PluginInventoryGateway` | The class is a Remote-only adapter from the live Loader tree to the `pluginInventory/list` RPC. It owns no same-process service, cache, history, or mutation path. `Gateway` states the role that exists. |
-| `@singula-ai/alego-jsonrpc-demo` | `@singula-ai/alego-sdk-jsonrpc-demo` | The example demonstrates the runtime SDK over JSON-RPC. It belongs to the one SDK meaning. |
+| `@singula-ai/alego-jsonrpc-demo`, `@singula-ai/alego-sdk-jsonrpc-demo`, `@singula-ai/alego-sdk-python-runtime` | removed | The Python runtime packages the existing `@singula-ai/alego` CLI and its `sdk` profile; a private application package would recreate a second launcher. |
+| `packages/examples/jsonrpc-demo/`, `packages/sdk/python-runtime/` | removed | The Python runtime wheel's closure manifest owns packaging without a separate application package. |
+| `examples/jsonrpc-agent/` | `python/sdk/examples/` | The example demonstrates Python use of the `sdk` profile and ordered patches. |
+| `@singula-ai/alego-acp-demo` | `@singula-ai/alego-acp-app` | The package is the ACP profile's application bundle, not a standalone demo bin. |
+| Deploy-root manifests `alego-jsonrpc-agent-pkg`, `alego-sdk-python-runtime-closure` | `alego-python-runtime-closure` | The zero-code manifest defines the Python runtime wheel's complete `alego` dependency closure without naming a separate SDK application. |
 | `@singula-ai/alego-frontend` | `@singula-ai/alego-web-frontend` | The application is the web frontend. Keep its physical `apps/web/` folder. |
 
-Keep atomic-write, brand, native-command, timeout utility, directory-picker, `alego-base`, `alego-web-app`, app boot, CLI names, and the `headless` package, bundle, and example identity. `headless` is the intended product essence and may later support more than one-shot execution.
+Keep atomic-write, brand, native-command, timeout utility, directory-picker, `alego-base`, `alego-web-app`, `alego-sdk-app`, `alego-acp-app`, app boot, CLI names, and the `headless` package, bundle, and example identity. `headless` is the intended product essence and may later support more than one-shot execution.
 
 ### Client runtime and UI
 
@@ -309,7 +313,7 @@ Keep atomic-write, brand, native-command, timeout utility, directory-picker, `al
 | `ConversationService` | `ConversationController` | The object controls the active conversation state and user actions. |
 | `InputService` | `SessionInputResolver` | The interface resolves the input facade for one session scope. It is neither a global input registry nor an execution service. Keep `InputHub` as the concrete hub and `ctx.conversation.input` as the published face. |
 
-Use `Ui`, not `UI`, inside PascalCase identifiers. Keep the remaining client package names unless this ledger names them. Keep the deprecated client connection and Host `ApiProxy` vocabulary for now; the API plane will replace them, and a rename would add churn to a surface scheduled for removal.
+Use `Ui`, not `UI`, inside PascalCase identifiers. Keep the remaining client package names unless this ledger names them. Retain the deprecated client connection and Host `ApiProxy` vocabulary until the API plane removes those surfaces; renaming them earlier would add churn without establishing a lasting name.
 
 ## Explicit non-renames
 

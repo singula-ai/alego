@@ -1,4 +1,5 @@
-import type { ObservableSnapshot, SessionId } from '@singula-ai/alego-client-runtime/client'
+import type { ObservableSnapshot } from '@singula-ai/alego-client-store'
+import type { SessionId } from '@singula-ai/alego-session/types'
 import { Button, Modal } from '@singula-ai/alego-client-ui-primitives'
 import type { InjectFace, PropsLocale, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
 import type { SessionLogDownloadState } from './controller.ts'

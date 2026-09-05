@@ -5,15 +5,15 @@
  * conversation.chat.assistant-actions, one controller per Session backs every
  * message in that Session, a reconnect refreshes only Sessions that were
  * already read, and registration plus controller disposal ride the plugin
- * fiber (HMR safety). The node half and the invariant companion are exercised
- * over the same Context.
+ * fiber (HMR safety). The node half stays inert.
  */
 import { Context, Service } from '@singula-ai/cordis'
 import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup } from '@testing-library/react'
-import { SlotRegistry, type SessionId } from '@singula-ai/alego-client-runtime/client'
+import { SlotRegistry } from '@singula-ai/alego-client-ui-renderer/client'
+import type { SessionId } from '@singula-ai/alego-session/types'
 import { LocaleRuntime } from '@singula-ai/alego-client-locale/client'
-import type { MessageId } from '@singula-ai/alego-client-connection/client'
+import type { MessageId } from '@singula-ai/alego-api-remotes/client'
 import type { MessageFeedbackItem, MessageFeedbackVersion } from '@singula-ai/alego-message-feedback/types'
 import type { MessageFeedbackInjected } from '../src/client/slots.ts'
 import { apply, inject } from '../src/client/index.ts'
@@ -207,8 +207,6 @@ describe('ui-message-feedback browser plugin', () => {
   })
 
   it('the node half applies without host-side behavior', () => {
-    // The invariant companion is mounted by the vitest-wide invariant host on
-    // every Context this suite creates; its registration is covered there.
     expect(() => { nodeApply() }).not.toThrow()
   })
 })

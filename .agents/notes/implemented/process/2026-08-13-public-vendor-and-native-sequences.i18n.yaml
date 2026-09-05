@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-08-13-public-vendor-and-native-sequences.md
-2026-08-13-public-vendor-and-native-sequences.md: dfabbf389d043b49411d276c420000df15c0992c
-2026-08-13-public-vendor-and-native-sequences.zh.md: 4ff40441f60bba4a87555fb61e2d53673e0a5f3e
+2026-08-13-public-vendor-and-native-sequences.md: d0e7cebfd2202081faf7a07498eae23787025ab0
+2026-08-13-public-vendor-and-native-sequences.zh.md: 43fbd3a3870a2b654bff7d6f7b6e139dd38d7b21

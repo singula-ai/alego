@@ -11,27 +11,18 @@ import { AsyncLocalStorage } from 'node:async_hooks'
 import { isPromise } from 'node:util/types'
 import { scopeTarget } from '@singula-ai/alego-scope'
 import type { Scoped } from '@singula-ai/alego-scope'
-import type { SessionEvent, SessionId } from '@singula-ai/alego-session'
-import type { TypertContext, TypertLookup } from '@singula-ai/alego-typert-protocol'
-import type { Agent, AgentOptions } from './runtime-types.ts'
+import type { SessionEvent, SessionId, SessionLogOffset } from '@singula-ai/alego-session'
+import type { Agent } from './types.ts'
+import type { AgentOptions } from './runtime-types.ts'
 
 export * from './runtime-types.ts'
 export * from './types.ts'
+export type * from './projection.ts'
 export * from './inbox.ts'
 export * from './consumed-work.ts'
 export * from './model-selection.ts'
 export { agentCarrier, agentEvents, assembleContextFor, emitAgentEvent } from './dispatch.ts'
 export type { AgentEventDispatch, AgentSubjectEvent } from './dispatch.ts'
-
-declare module '@singula-ai/alego-typert-protocol' {
-  interface TypertLookupMap {
-    agent: TypertLookup<Agent, SessionId>
-  }
-
-  interface TypertContextMap {
-    agent: TypertContext<SessionId>
-  }
-}
 
 declare module '@singula-ai/cordis' {
   interface Context {
@@ -82,9 +73,9 @@ export interface CreateAgentOptions {
   readonly sessionId: SessionId
   /**
    * Session creation metadata: validated absolute `cwd`, `parentSession`
-   * fork lineage, the `seedLength` seed boundary, the coarse `origin`
+   * fork lineage, the `isSeeded` fork marker, the coarse `origin`
    * classification, and the `delegationDepth` recursion budget. Mirrors the
-   * `cwd`/`parentSession`/`seedLength`/`origin`/`delegationDepth` fields of
+   * `cwd`/`parentSession`/`isSeeded`/`origin`/`delegationDepth` fields of
    * {@link CreateSessionOptions.meta} in alego-session (the internal-only
    * `createdAt`, used when reconstructing a persisted session, is deliberately
    * excluded — a factory caller never sets it). This is durable session data,
@@ -94,11 +85,13 @@ export interface CreateAgentOptions {
   readonly meta?: {
     readonly cwd?: string
     readonly parentSession?: SessionId
-    readonly seedLength?: number
+    readonly isSeeded?: boolean
     readonly origin?: 'subagent'
     readonly delegationDepth?: number
     readonly agentPreset?: string
   }
+  /** Exact fork-inherited prefix length when the session metadata sets `isSeeded`. */
+  readonly inheritedEventCount?: SessionLogOffset
   /**
    * Initial replay/fork history. A fork supplies a balanced completed-turn
    * prefix of the parent's log. The complete seed must be contiguous from seq
@@ -201,11 +194,12 @@ export interface AgentFactory {
    */
   createAgent(ownerCtx: Context, options: CreateAgentOptions): Promise<AgentHandle>
   /**
-   * Prepare a persisted session and resume an agent on it. Async because it awaits
-   * both `ctx.sessionPersistence.prepare` and the optional unpublished setup
-   * transaction; must be called after that service exists (consumers inject
-   * `sessionPersistence`). Publication follows the same setup-commit and
-   * ordered boundary as {@link createAgent}.
+   * Resume an agent on a persisted session. Async because it opens the
+   * persisted session for write, reads and repairs the log, publishes it, and
+   * awaits the optional unpublished setup transaction; must be called after
+   * `ctx.sessionPersistence` exists (consumers inject `sessionPersistence`).
+   * Publication follows the same setup-commit and ordered boundary as
+   * {@link createAgent}.
    * @param ownerCtx - caller-bound context that owns load, setup, and the live handle.
    * @param options - persisted identity, configuration, and optional setup.
    * @returns the owned handle after setup, both announcements, and loop start complete.
@@ -276,6 +270,7 @@ export class AgentRegistry extends Service {
       typeCtx.typert.contexts.registerHost('agent', {
         wire: 'agentId',
         wireTypeSymbol: '@singula-ai/alego-session/types#SessionId',
+        identity: candidate => candidate.agent?.id,
         resolve: sessionId => this.get(sessionId)?.ctx,
       })
     })

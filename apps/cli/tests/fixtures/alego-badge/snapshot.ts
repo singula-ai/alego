@@ -1,7 +1,6 @@
 import { fileURLToPath } from 'node:url'
-import { Context } from '@singula-ai/cordis'
 import { agentEvents, Inbox, type Agent } from '@singula-ai/alego-agent'
-import { CallId } from '@singula-ai/alego-llm'
+import { ToolCallId } from '@singula-ai/alego-llm'
 import { boot, loadOverlayPatches } from '@singula-ai/alego-app-boot'
 import { SessionId } from '@singula-ai/alego-session'
 import type {} from '@singula-ai/alego-skill'
@@ -20,7 +19,7 @@ try {
   const agentId = SessionId('alego-badge-snapshot')
   const session = ctx.sessions.create(agentId, { meta: { cwd: process.cwd() } })
   const agent: Agent = {
-    ctx: new Context(),
+    ctx,
     id: agentId,
     options: {},
     session,
@@ -45,7 +44,7 @@ try {
     : undefined
   const summary = (await ctx.skills.list()).find(skill => skill.name === 'alego-badge')
   const result = await ctx.tools.execute({
-    callId: CallId('alego-badge-snapshot'),
+    callId: ToolCallId('alego-badge-snapshot'),
     name: 'skill',
     arguments: { name: 'alego-badge' },
     signal: new AbortController().signal,

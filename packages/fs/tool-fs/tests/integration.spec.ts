@@ -10,7 +10,7 @@ import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { Context } from '@singula-ai/cordis'
-import { CallId } from '@singula-ai/alego-llm'
+import { ToolCallId } from '@singula-ai/alego-llm'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@singula-ai/alego-tools'
 import { LocalFileSystem } from '@singula-ai/alego-fs-local'
@@ -29,7 +29,7 @@ let callCounter = 0
 function call(name: string, args: unknown) {
   return ctx.tools.execute({
     signal: testToolSignal,
-    callId: CallId(`call-${++callCounter}`),
+    callId: ToolCallId(`call-${++callCounter}`),
     name,
     arguments: args,
     agent: { session } as never,
@@ -38,6 +38,10 @@ function call(name: string, args: unknown) {
 
 function text(result: { content: { type: string; text?: string }[] }): string {
   return result.content.filter(b => b.type === 'text').map(b => b.text).join('')
+}
+
+function notObservedDiagnostic(path: string): string {
+  return `Error: cannot modify "${path}": file has not been read — read the file, then retry`
 }
 
 afterEach(async () => {
@@ -71,9 +75,7 @@ describe('default deployment (with alego-fs-observation-policy)', () => {
       const result = await call('write', { file_path: 'a.txt', content: 'clobber' })
       expect(result.isError).toBe(true)
       expect(result.error).toMatchObject({ info: { code: 'FS_NOT_OBSERVED' } })
-      // The model-facing text names the remedy, not just the condition.
-      expect(text(result)).toContain('without reading it first')
-      expect(text(result)).toContain('read the file, then retry')
+      expect(text(result)).toBe(notObservedDiagnostic(join(dir, 'a.txt')))
       expect(await readFile(join(dir, 'a.txt'), 'utf8')).toBe('original')
     })
 
@@ -151,9 +153,7 @@ describe('default deployment (with alego-fs-observation-policy)', () => {
       const result = await call('edit', { file_path: 'a.txt', old_string: 'world', new_string: 'there' })
       expect(result.isError).toBe(true)
       expect(result.error).toMatchObject({ info: { code: 'FS_NOT_OBSERVED' } })
-      // The policy's refusal reaches the model with the read remedy appended.
-      expect(text(result)).toContain('edit requires reading')
-      expect(text(result)).toContain('read the file, then retry')
+      expect(text(result)).toBe(notObservedDiagnostic(join(dir, 'a.txt')))
       expect(await readFile(join(dir, 'a.txt'), 'utf8')).toBe('hello world')
     })
 
@@ -393,7 +393,7 @@ describe('per-session cwd', () => {
   const callIn = (sessionObj: object, name: string, args: unknown) =>
     ctx.tools.execute({
       signal: testToolSignal,
-      callId: CallId(`call-${++callCounter}`),
+      callId: ToolCallId(`call-${++callCounter}`),
       name,
       arguments: args,
       agent: { session: sessionObj } as never,
@@ -436,9 +436,9 @@ describe('signal, concurrency, and the fs/observed contract', () => {
 
   const session = { header: {} }
   const callSig = (signal: AbortSignal, name: string, args: unknown) =>
-    ctx.tools.execute({ callId: CallId(`c-${++callCounter}`), name, arguments: args, agent: { session } as never, signal })
+    ctx.tools.execute({ callId: ToolCallId(`c-${++callCounter}`), name, arguments: args, agent: { session } as never, signal })
   const callOwned = (name: string, args: unknown) =>
-    ctx.tools.execute({ signal: testToolSignal, callId: CallId(`c-${++callCounter}`), name, arguments: args, agent: { session } as never })
+    ctx.tools.execute({ signal: testToolSignal, callId: ToolCallId(`c-${++callCounter}`), name, arguments: args, agent: { session } as never })
 
   it('a pre-aborted registry call skips read/write/edit with ABORTED_BEFORE_DISPATCH', async () => {
     await writeFile(join(dir, 'a.txt'), 'hello')

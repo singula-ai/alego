@@ -15,7 +15,7 @@ import { mkdir, mkdtemp, rm, utimes, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { Context } from '@singula-ai/cordis'
-import { CallId } from '@singula-ai/alego-llm'
+import { ToolCallId } from '@singula-ai/alego-llm'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@singula-ai/alego-tools'
 import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
@@ -30,7 +30,7 @@ let callCounter = 0
 function call(name: string, args: unknown, agentObj?: object) {
   return ctx.tools.execute({
     signal: testToolSignal,
-    callId: CallId(`it-${++callCounter}`),
+    callId: ToolCallId(`it-${++callCounter}`),
     name,
     arguments: args,
     ...agentObj ? { agent: agentObj as never } : {},
@@ -180,7 +180,7 @@ describe('search tools over the real subprocess service + the packaged rg', () =
       const controller = new AbortController()
       controller.abort()
       const result = await ctx.tools.execute({
-        callId: CallId(`it-${++callCounter}`),
+        callId: ToolCallId(`it-${++callCounter}`),
         name: 'grep',
         arguments: { pattern: 'x' },
         signal: controller.signal,

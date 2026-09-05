@@ -10,8 +10,9 @@
 
 ```ts
 import type { Context } from '@singula-ai/cordis'
+import { brandString } from '@singula-ai/alego-brand'
 import { defineTool } from '@singula-ai/alego-tools'
-import { CallId } from '@singula-ai/alego-llm'
+import type { ToolCallId } from '@singula-ai/alego-llm'
 
 export const name = 'greet-tool'
 export const inject = ['tools']
@@ -33,10 +34,10 @@ export function apply(ctx: Context) {
   }))
 
   // Drive one call through the real execution pipeline, standing in for
-  // the model. CallId brands the correlation id a provider would issue.
+  // the model. ToolCallId brands the correlation id a provider would issue.
   void (async () => {
     const result = await ctx.tools.execute({
-      callId: CallId('demo-1'),
+      callId: brandString<ToolCallId>('demo-1'),
       name: 'greet',
       arguments: { name: 'Cordis' },
       signal: new AbortController().signal,
@@ -95,7 +96,7 @@ logger 会先触发：`tools/result` 在结果物化过程中发出，发生在 
 
 ## 从这里走向完整 agent（智能体）
 
-真实 agent 就是这套组合再加上更多插件：LLM（大语言模型）适配器、agent loop（智能体循环）、持久化和运行入口。对照 [examples/headless-agent/cordis.yml](../../examples/headless-agent/cordis.yml)，你现在已经可以读懂其中每个配置项。将 `greet-tool.ts` 加入该文件的副本即可。
+真实 agent 就是这套组合再加上更多插件：LLM（大语言模型）适配器、agent loop（智能体循环）、持久化和应用入口。对照 [base profile 层](../../packages/bundle/base/cordis.patch.yml)与 [headless 层](../../packages/bundle/headless/cordis.patch.yml)，你现在已经可以读懂其中各项。通过一个小型 `--patch` overlay 加入 `greet-tool.ts` 即可。
 
 后续可以阅读：
 
@@ -104,4 +105,4 @@ logger 会先触发：`tools/result` 在结果物化过程中发出，发生在 
 - [子系统页面](../subsystems/core.zh.md)上生成的 `cordis-surface` 区块：可以注入和监听的所有内容，各在其所属页面上。
 - [架构](../architecture.zh.md)：这些插件所处的系统地图。
 
-[![](https://img.shields.io/badge/powered_by-alego-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/singula-ai/alego)
+[![](https://img.shields.io/badge/powered_by-alego-F5A524?style=flat-square)](https://github.com/singula-ai/alego)

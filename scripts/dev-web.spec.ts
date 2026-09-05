@@ -3,7 +3,45 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { expect, it } from 'vitest'
 import type { TsdownBundle } from 'tsdown'
-import { discoverLibraryDirs, discoverPluginDirs, watchClientPlugins } from './dev-web.ts'
+import { writeClientBuildRecord } from './client-build-environment.ts'
+import {
+  devWebBuildEnvironment,
+  discoverLibraryDirs,
+  discoverPluginDirs,
+  watchClientPlugins,
+} from './dev-web.ts'
+
+it('samples one local environment at startup without validating watcher outputs', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'alego-dev-web-environment-'))
+  try {
+    await mkdir(join(root, 'apps/web/dist'), { recursive: true })
+    await mkdir(join(root, 'packages/client/example/lib'), { recursive: true })
+    await writeFile(join(root, 'package.json'), JSON.stringify({ version: '1.2.3' }))
+    await writeFile(join(root, 'apps/web/dist/index.html'), '<main></main>')
+    await writeFile(join(root, 'packages/client/example/lib/client.js'), 'module.exports = {}\n')
+    writeClientBuildRecord(root, {
+      ALEGO_CLIENT_BUILD_PROFILE: 'official',
+      ALEGO_CLIENT_COMMIT_HASH: 'fffffff',
+      ALEGO_CLIENT_TITLE: 'Alego',
+      ALEGO_CLIENT_VERSION: '1.2.2',
+    })
+    await writeFile(join(root, 'packages/client/example/lib/client.js'), 'module.exports = { changed: true }\n')
+
+    expect(devWebBuildEnvironment(root, {
+      PATH: '/bin',
+      ALEGO_BUILD_CLIENT_PROFILE: 'official',
+      ALEGO_CLIENT_COMMIT_HASH: 'abc1234',
+      ALEGO_CLIENT_EXTRA: 'launch-value',
+    })).toEqual({
+      PATH: '/bin',
+      ALEGO_CLIENT_COMMIT_HASH: 'abc1234',
+      ALEGO_CLIENT_EXTRA: 'launch-value',
+      ALEGO_CLIENT_VERSION: '1.2.3',
+    })
+  } finally {
+    await rm(root, { recursive: true, force: true })
+  }
+})
 
 it('discovers alego.client packages with sibling roles', async () => {
   const root = await mkdtemp(join(tmpdir(), 'alego-dev-web-discovery-'))

@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-llm",
   "description": "Provider-neutral LLM service interface for the Alego",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -34,6 +34,18 @@
       "types": "./lib/types/message.d.ts",
       "default": "./lib/types/message.js"
     },
+    "./assistant-stream": {
+      "types": "./lib/types/assistant-stream.d.ts",
+      "default": "./lib/types/assistant-stream.js"
+    },
+    "./typert": {
+      "types": "./lib/typert.host.d.ts",
+      "default": "./lib/typert.host.js"
+    },
+    "./remote": {
+      "types": "./lib/typert.remote-client.d.ts",
+      "default": "./lib/typert.remote-client.js"
+    },
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
@@ -41,24 +53,28 @@
     "lib/index.js",
     "lib/invariant.js",
     "lib/types/**/*.js",
-    "lib/types/**/*.d.ts"
+    "lib/types/**/*.d.ts",
+    "lib/typert.host.js",
+    "lib/typert.host.d.ts",
+    "lib/typert.remote-client.js",
+    "lib/typert.remote-client.d.ts"
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-attachment": "workspace:^",
-    "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
-    "@singula-ai/alego-timeout": "workspace:^",
     "@singula-ai/cordis": "workspace:^"
   },
   "dependencies": {
-    "@singula-ai/schemastery": "workspace:^"
+    "@singula-ai/alego-util-crypto": "workspace:^",
+    "@singula-ai/schemastery": "workspace:^",
+    "zod": "^4.4.3",
+    "@singula-ai/alego-timeout": "workspace:^",
+    "@singula-ai/alego-brand": "workspace:^",
+    "@singula-ai/alego-util-values": "workspace:^",
+    "@singula-ai/alego-typert-protocol": "workspace:^"
   },
   "devDependencies": {
     "@singula-ai/alego-attachment": "workspace:^",
-    "@singula-ai/alego-brand": "workspace:^",
     "@singula-ai/alego-invariants": "workspace:^",
-    "@singula-ai/alego-timeout": "workspace:^",
     "@singula-ai/cordis": "workspace:^"
   }
 }

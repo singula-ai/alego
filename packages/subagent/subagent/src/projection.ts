@@ -6,6 +6,7 @@
  */
 
 import { z } from 'zod'
+import { SessionSeq } from '@singula-ai/alego-session'
 import type { ProjectionDefinition } from '@singula-ai/alego-session-projection'
 import type { SessionEvent } from '@singula-ai/alego-session'
 import { foldSubagentDescriptor } from './descriptor.ts'
@@ -119,12 +120,12 @@ const identityValueSchema = z.discriminatedUnion('mode', [
   z.object({
     mode: z.literal('one-shot'),
     label: z.string().optional(),
-    seq: z.number().int().nonnegative(),
+    seq: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER).transform(SessionSeq),
   }).strict(),
   z.object({
     mode: z.literal('continuable'),
     label: z.string(),
-    seq: z.number().int().nonnegative(),
+    seq: z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER).transform(SessionSeq),
   }).strict(),
 ]) as unknown as z.ZodType<SubagentIdentityProjection>
 

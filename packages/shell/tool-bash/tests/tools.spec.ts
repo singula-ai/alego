@@ -1,17 +1,17 @@
-import { mkdtempSync } from 'node:fs'
+import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { describe, expect, it, vi } from 'vitest'
+import { afterAll, describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
-import { CallId } from '@singula-ai/alego-llm'
+import { ToolCallId } from '@singula-ai/alego-llm'
 import { ShellExecutor } from '@singula-ai/alego-shell'
 import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellProcessRead, ShellRunResult } from '@singula-ai/alego-shell'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime, { TOOL_ABORTED, TOOL_ABORTED_BEFORE_DISPATCH } from '@singula-ai/alego-tools'
 import AgentRegistry from '@singula-ai/alego-agent'
 import type { Agent } from '@singula-ai/alego-agent'
-import SessionStore, { SessionId } from '@singula-ai/alego-session'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import { turnBoundaryProjectionDefinition } from '@singula-ai/alego-agent-loop'
+import { SessionId } from '@singula-ai/alego-session'
 import LocalJobRegistry from '@singula-ai/alego-jobs-local'
 import * as ToolTasks from '@singula-ai/alego-tool-jobs'
 import ApprovalService from '@singula-ai/alego-user-approval'
@@ -19,6 +19,7 @@ import type { ApprovalOutcome } from '@singula-ai/alego-user-approval'
 import { LocalBashExecutor } from '@singula-ai/alego-bash-local'
 import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 import SandboxPolicyService from '@singula-ai/alego-sandbox-policy'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import * as ToolBash from '@singula-ai/alego-tool-bash'
 import * as BashEnvPlugin from '@singula-ai/alego-shell-env'
 import { processOutcome } from '../src/background.ts'
@@ -27,6 +28,10 @@ import { renderProcessRead, renderResult } from '../src/render.ts'
 const testToolSignal = new AbortController().signal
 
 const spillDir = mkdtempSync(join(tmpdir(), 'alego-tool-bash-spec-'))
+
+afterAll(() => {
+  rmSync(spillDir, { recursive: true, force: true })
+})
 
 /** Foreground-only harness: no job runtime (backgrounding fails loud here). */
 async function setup() {
@@ -76,7 +81,7 @@ function registerFakeAgent(ctx: Context, sessionId: string, inject: (...args: un
 }
 let callCounter = 0
 function call(ctx: Context, name: string, args: unknown, agent?: Agent) {
-  return ctx.tools.execute({ signal: testToolSignal, callId: CallId(`call-${++callCounter}`), name, arguments: args, ...agent ? { agent } : {} })
+  return ctx.tools.execute({ signal: testToolSignal, callId: ToolCallId(`call-${++callCounter}`), name, arguments: args, ...agent ? { agent } : {} })
 }
 
 function text(result: { content: { type: string; text?: string }[] }): string {
@@ -188,6 +193,8 @@ async function setupSandboxed(withApproval = false) {
   await ctx.plugin(AgentRegistry)
   await ctx.plugin(LocalJobRegistry)
   await ctx.plugin(ToolTasks)
+  await ctx.plugin(SessionProjectionRegistry)
+  ctx.sessionProjections.register(turnBoundaryProjectionDefinition)
   await ctx.plugin(SandboxPolicyService, {})
   await ctx.plugin(RecordingSandboxExecutor)
   if (withApproval) await ctx.plugin(ApprovalService)
@@ -201,8 +208,8 @@ function sandboxAgent(
   ctx?: Context,
   onAppend?: (type: string) => void,
 ): Agent {
-  const events: Array<{ type: string; data?: Record<string, unknown> }> = [{ type: 'turn/start' }]
-  if (mode !== undefined) events.push({ type: 'sandbox/mode', data: { mode } })
+  const events: Array<{ type: string; data?: Record<string, unknown>; seq: number }> = [{ type: 'turn/start', seq: 0, data: { turn: 1 } }]
+  if (mode !== undefined) events.push({ type: 'sandbox/mode', seq: events.length, data: { mode } })
   const id = SessionId('sandbox-session')
   return {
     id,
@@ -210,9 +217,11 @@ function sandboxAgent(
     session: {
       id,
       header: { version: 0, id, createdAt: 0 },
-      events,
+      get seq() { return events.length },
+      eventAt: (seq: number) => events[seq],
+      snapshotEvents: () => events,
       append: (type: string, data: Record<string, unknown>) => {
-        const event = { type, data }
+        const event = { type, data, seq: events.length }
         events.push(event)
         onAppend?.(type)
         return event
@@ -309,7 +318,7 @@ describe('bash tool', () => {
     const ctx = await setup()
     const controller = new AbortController()
     const pending = ctx.tools.execute({
-      callId: CallId('call-abort'),
+      callId: ToolCallId('call-abort'),
       name: 'bash',
       arguments: { command: 'sleep 60', description: 'test command' },
       signal: controller.signal,
@@ -377,8 +386,16 @@ describe('bash tool', () => {
 
   it('contributes the exit-code habit as its prompt section (guidance the descriptions cannot carry)', async () => {
     const ctx = await setup()
-    ctx.systemPrompt.section({ name: 'test:before-bash', order: 104, text: 'before' })
-    ctx.systemPrompt.section({ name: 'test:after-bash', order: 106, text: 'after' })
+    ctx.systemPrompt.section({
+      name: 'test:before-bash',
+      order: ctx.systemPrompt.getSectionOrder('TOOL_BASH') - 10,
+      text: 'before',
+    })
+    ctx.systemPrompt.section({
+      name: 'test:after-bash',
+      order: ctx.systemPrompt.getSectionOrder('TOOL_BASH') + 10,
+      text: 'after',
+    })
     const assembly = await ctx.systemPrompt.assemble()
     const section = assembly.sections.find(s => s.name === 'tool:bash')
     expect(assembly.sections.map(s => s.name)).toEqual([
@@ -509,7 +526,7 @@ describe('background execution through the job runtime', () => {
     const controller = new AbortController()
     controller.abort()
     const result = await ctx.tools.execute({
-      callId: CallId('call-pre-aborted'),
+      callId: ToolCallId('call-pre-aborted'),
       name: 'bash',
       arguments: { command: 'sleep 60', description: 'test command', run_in_background: true },
       signal: controller.signal,
@@ -613,9 +630,10 @@ describe('sandbox escalation through the generic task producer', () => {
     expect(prompted).not.toHaveBeenCalled()
 
     const malformed = sandboxAgent()
-    ;(malformed.session.events as unknown as Array<{ type: string; data: { mode: string } }>).push({
+    ;(malformed.session.snapshotEvents() as unknown as Array<{ type: string; data: { mode: string }; seq: number }>).push({
       type: 'sandbox/mode',
       data: { mode: 'unknown-mode' },
+      seq: malformed.session.seq,
     })
     expect(text(await call(ctx, 'bash', escalate, malformed))).toContain('not strictly wider')
   })
@@ -646,7 +664,7 @@ describe('sandbox escalation through the generic task producer', () => {
     const agent = sandboxAgent(undefined, ctx)
     ctx.agents.register(agent)
     const foreground = await ctx.tools.execute({
-      callId: CallId('sandbox-signal'),
+      callId: ToolCallId('sandbox-signal'),
       name: 'bash',
       arguments: escalate,
       agent,
@@ -669,7 +687,7 @@ describe('sandbox escalation through the generic task producer', () => {
     const start = vi.spyOn(bash, 'start')
 
     const result = await ctx.tools.execute({
-      callId: CallId('cancelled-escalation-background'),
+      callId: ToolCallId('cancelled-escalation-background'),
       name: 'bash',
       arguments: { ...escalate, run_in_background: true },
       agent,
@@ -833,7 +851,7 @@ describe('session-cwd routing (per-session workdir)', () => {
   it('falls back to the executor default when the agent has no session cwd', async () => {
     const ctx = await setup()
     // No exec.agent at all → executor uses its config/process.cwd() default.
-    const result = await ctx.tools.execute({ signal: testToolSignal, callId: CallId('cwd-noagent'), name: 'bash', arguments: { command: 'pwd', description: 'pwd' } })
+    const result = await ctx.tools.execute({ signal: testToolSignal, callId: ToolCallId('cwd-noagent'), name: 'bash', arguments: { command: 'pwd', description: 'pwd' } })
     expect(result.isError).toBe(false)
     expect(text(result).trim().length).toBeGreaterThan(0)
   })
@@ -1100,15 +1118,11 @@ describe('the model-facing bash tool builds its request from named args only (no
     }
   }
 
-  async function setupRecording(withJsonl = false) {
+  async function setupRecording() {
     const ctx = new Context()
     await ctx.plugin(SystemPrompt)
     await ctx.plugin(ToolRuntime)
     await ctx.plugin(AgentRegistry)
-    if (withJsonl) {
-      await ctx.plugin(SessionStore)
-      await ctx.plugin(JsonlSessionPersistence, { root: join(spillDir, 'jsonl') })
-    }
     await ctx.plugin(LocalJobRegistry)
     await ctx.plugin(ToolTasks)
     await ctx.plugin(BashEnvPlugin, { alegoHome: recordingAlegoHome })
@@ -1121,17 +1135,16 @@ describe('the model-facing bash tool builds its request from named args only (no
     const { ctx } = await setupRecording()
     const description = ctx.tools.get('bash')?.description ?? ''
     expect(description).toContain('$ALEGO_*')
-    expect(description).not.toContain('ALEGO_SESSION_JSONL')
   })
 
-  it('injects the session id and JSONL target path into a foreground request', async () => {
-    const { ctx, bash } = await setupRecording(true)
+  it('injects built-ins and the stable session id into a foreground request', async () => {
+    const { ctx, bash } = await setupRecording()
     const agent = registerFakeAgent(ctx, 'request-fg', () => undefined)
-    const path = ctx.sessionPersistence.locate(agent.session.header)?.path
+    const ambient = process.env.ALEGO_SESSION_ID
 
     await ctx.tools.execute({
       signal: testToolSignal,
-      callId: CallId('session-env-fg'),
+      callId: ToolCallId('session-env-fg'),
       name: 'bash',
       arguments: { command: 'true', description: 'run command' },
       agent,
@@ -1140,25 +1153,24 @@ describe('the model-facing bash tool builds its request from named args only (no
     expect(bash.requests[0]?.alegoEnv).toEqual({
       ALEGO_HOME: recordingAlegoHome,
       ALEGO_SESSION_ID: 'request-fg',
-      ALEGO_SESSION_JSONL: path,
       ALEGO_SHELL: '1',
     })
+    expect(process.env.ALEGO_SESSION_ID).toBe(ambient)
   })
 
   it('injects the same trusted variables into a background request without forwarding model env', async () => {
-    const { ctx, bash } = await setupRecording(true)
+    const { ctx, bash } = await setupRecording()
     const agent = registerFakeAgent(ctx, 'request-bg', () => undefined)
-    const path = ctx.sessionPersistence.locate(agent.session.header)?.path
 
     await ctx.tools.execute({
       signal: testToolSignal,
-      callId: CallId('session-env-bg'),
+      callId: ToolCallId('session-env-bg'),
       name: 'bash',
       arguments: {
         command: 'sleep 1',
         description: 'run command',
         run_in_background: true,
-        env: { ALEGO_SESSION_ID: 'spoofed', ALEGO_SESSION_JSONL: '/tmp/spoofed' },
+        env: { ALEGO_SESSION_ID: 'spoofed' },
       },
       agent,
     })
@@ -1167,41 +1179,19 @@ describe('the model-facing bash tool builds its request from named args only (no
     expect(bash.requests[0]?.alegoEnv).toEqual({
       ALEGO_HOME: recordingAlegoHome,
       ALEGO_SESSION_ID: 'request-bg',
-      ALEGO_SESSION_JSONL: path,
       ALEGO_SHELL: '1',
     })
-  })
-
-  it('injects built-ins and the stable session id when no JSONL locator is available', async () => {
-    const { ctx, bash } = await setupRecording()
-    const agent = registerFakeAgent(ctx, 'request-id-only', () => undefined)
-    const ambient = process.env.ALEGO_SESSION_ID
-
-    await ctx.tools.execute({
-      signal: testToolSignal,
-      callId: CallId('session-env-id-only'),
-      name: 'bash',
-      arguments: { command: 'true', description: 'run command' },
-      agent,
-    })
-
-    expect(bash.requests[0]?.alegoEnv).toEqual({
-      ALEGO_HOME: recordingAlegoHome,
-      ALEGO_SESSION_ID: 'request-id-only',
-      ALEGO_SHELL: '1',
-    })
-    expect(process.env.ALEGO_SESSION_ID).toBe(ambient)
   })
 
   it('keeps parent and child agent session environments isolated', async () => {
-    const { ctx, bash } = await setupRecording(true)
+    const { ctx, bash } = await setupRecording()
     const parent = registerFakeAgent(ctx, 'request-parent', () => undefined)
     const child = registerFakeAgent(ctx, 'request-child', () => undefined)
 
     for (const [callId, agent] of [['parent', parent], ['child', child]] as const) {
       await ctx.tools.execute({
         signal: testToolSignal,
-        callId: CallId(`session-env-${callId}`),
+        callId: ToolCallId(`session-env-${callId}`),
         name: 'bash',
         arguments: { command: 'true', description: 'run command' },
         agent,
@@ -1212,17 +1202,14 @@ describe('the model-facing bash tool builds its request from named args only (no
       {
         ALEGO_HOME: recordingAlegoHome,
         ALEGO_SESSION_ID: 'request-parent',
-        ALEGO_SESSION_JSONL: ctx.sessionPersistence.locate(parent.session.header)?.path,
         ALEGO_SHELL: '1',
       },
       {
         ALEGO_HOME: recordingAlegoHome,
         ALEGO_SESSION_ID: 'request-child',
-        ALEGO_SESSION_JSONL: ctx.sessionPersistence.locate(child.session.header)?.path,
         ALEGO_SHELL: '1',
       },
     ])
-    expect(bash.requests[0]?.alegoEnv?.ALEGO_SESSION_JSONL).not.toBe(bash.requests[1]?.alegoEnv?.ALEGO_SESSION_JSONL)
   })
 
   it('does not forward trusted-only fields even when the model includes them as extra arguments', async () => {
@@ -1232,7 +1219,7 @@ describe('the model-facing bash tool builds its request from named args only (no
     // already set environment variables or feed stdin.
     await ctx.tools.execute({
       signal: testToolSignal,
-      callId: CallId('no-forward-1'),
+      callId: ToolCallId('no-forward-1'),
       name: 'bash',
       arguments: {
         command: 'echo hi',
@@ -1254,7 +1241,7 @@ describe('the model-facing bash tool builds its request from named args only (no
     const { ctx, bash } = await setupRecording()
     const result = await ctx.tools.execute({
       signal: testToolSignal,
-      callId: CallId('no-forward-2'),
+      callId: ToolCallId('no-forward-2'),
       name: 'bash',
       arguments: {
         command: 'sleep 1',

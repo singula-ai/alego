@@ -1,7 +1,7 @@
 /** Host registration for browser conversation preferences. */
 
 import type { Context } from '@singula-ai/cordis'
-import { settingsNamespace } from '@singula-ai/alego-settings'
+import type {} from '@singula-ai/alego-settings'
 import { CONVERSATION_SETTINGS_NAMESPACE, ConversationSettingsSchema } from './submission-settings.ts'
 
 export {
@@ -16,7 +16,7 @@ export {
 export function apply(ctx: Context): void {
   ctx.inject(['settings'], (settingsCtx) => {
     settingsCtx.settings.register(
-      settingsNamespace(CONVERSATION_SETTINGS_NAMESPACE),
+      CONVERSATION_SETTINGS_NAMESPACE,
       ConversationSettingsSchema,
     )
   })

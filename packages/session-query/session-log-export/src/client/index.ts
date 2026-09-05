@@ -1,9 +1,12 @@
 /** Browser plugin owning Session export download state and its shared modal. */
 
-import type { ClientContext, SessionId } from '@singula-ai/alego-client-runtime/client'
+import type { Context as ClientContext } from '@singula-ai/cordis'
+import type { SessionId } from '@singula-ai/alego-session/types'
 import type {} from '@singula-ai/alego-client-locale/client'
 import type {} from '@singula-ai/alego-client-ui-commands/client'
 import type {} from '@singula-ai/alego-client-ui-conversation/client'
+import type {} from '@singula-ai/alego-client-ui-renderer/client'
+import type {} from '@singula-ai/alego-client-ui-session/client'
 import { SessionLogDownloadController } from './controller.ts'
 import type { SessionLogDownloadDialogInjected } from './Dialog.tsx'
 import { SessionLogDownloadHeaderAction } from './HeaderAction.tsx'

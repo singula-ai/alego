@@ -3,8 +3,7 @@
 import { Service } from '@singula-ai/cordis'
 import type { Context } from '@singula-ai/cordis'
 import type { Agent } from '@singula-ai/alego-agent'
-import { snapshotJsonValue } from '@singula-ai/alego-session'
-import type { JsonValue } from '@singula-ai/alego-session/types'
+import { snapshotJsonValue, type JsonValue } from '@singula-ai/alego-util-values'
 import { assertSupportedJsonSchema, validateJsonSchemaValue } from '@singula-ai/alego-tools'
 import type { JsonSchemaNode } from '@singula-ai/alego-tools'
 import type {

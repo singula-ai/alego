@@ -10,7 +10,7 @@ Status: proposed
 
 网关以前会在可用时采用 JSONL 产物的 mtime。mtime 回答的是另一件事：这份产物上次是什么时候被写入。每一次持久写入都会刷新它，包括对撕裂尾部的截断修复、平衡中断轮次的合成 closer，以及拾起时追加的 [`session/end-seed` 边界](../../implemented/architecture/2026-07-30-session-end-seed-log-boundary.zh.md)。这套近似会让 Session 仅仅因为被打开就提升排序。[有界冷空白验证](../../implemented/bug-fix/2026-08-13-bounded-cold-blank-verification.zh.md)移除了 mtime 排序，并把 cache 保守的「过旧」错误方向作为现阶段取舍。
 
-已附加摘要可以折叠实时事件日志并选择最新的真人 `user/message`，但冷路径有意不读取大日志。为计算 `updatedAt` 而读取每一份日志，会让 `list()` 的开销随对话总字节数而非 Session 数量增长。用于 metadata 验证的 1 KiB 冷读取可以让符合条件的小产物得到精确的最近时间，但不能让大日志的排序精确。
+已附加摘要可以折叠实时事件日志并选择最新的真人 `user/message`，但冷路径有意不读取任何日志：冷摘要只来自 projection cache，因此冷最近时间的新旧只取决于 cache。
 
 让冷排序变得精确仍是一项持久格式决策，因此其范围留在本文，而不是网关 workaround 中。
 
@@ -18,16 +18,13 @@ Status: proposed
 
 把最新真人 prompt 时间存到列举本就会读取的 Session 索引，这样 `summarizeCold()` 无需打开日志或依赖 cache checkpoint 就能给出答案。该值由协调器计算，因为它看得到每一次追加，而且本就拥有每 id 状态；由后端负责持久化。这样它就成为 `PersistenceBackend` 约定中新增的一个要素，而不是各后端本地账目，并与已附加投影使用同一个事件谓词：`source.kind` 为 `user` 的 `user/message`。
 
-两个已交付的后端受到的约束正好相反，本提案对它们有意采取不对称的处理：
-
-- **SQLite** 在 `sessions` 表上得到一列，与 `appendBatch` 在同一个事务中写入，代价是一次单调的 `SCHEMA_VERSION` 递增。
-- **JSONL 无法承载一个可变的 header 字段。** header 就是第 1 行，在物化时一次写就，此后这份日志永远以追加方式打开；`jsonl.spec.ts` 钉住了「已提交的字节绝不重写」。一个每次追加都要改的 header 字段，违反的是一条被断言的持久性不变式，而不只是让写入方变复杂。要与「让 JSONL 保持近似」相比较的形态，是每会话一个伴随文件。
+随产品交付的 JSONL 后端决定了具体存储约束。它的 header 就是第 1 行，在物化时一次写就，此后这份日志永远以追加方式打开；`jsonl.spec.ts` 钉住了「已提交的字节绝不重写」。一个每次追加都要改的 header 字段，违反的是一条被断言的持久性不变式，而不只是让写入方变复杂。因此，要与「让 JSONL 保持近似」相比较的形态，是每会话一个伴随文件。仓库外后端只有在为自己的表示定义更新原子性、版本与恢复语义后，才可以把该值存入自己的索引；本提案不规定其他提供方的 schema。
 
 实现之前必须回答三个问题，本文对它们都没有定论：
 
 **共享谓词由谁拥有？** 已存储字段在写入时编码规则，写入方只看到一个批次，而已附加摘要折叠整份日志。两者必须使用同一个导出的事件谓词或 reducer，避免新的消息来源变体让已附加排序与冷排序发生分歧。
 
-**该字段引入之前的日志表现如何？** 既有产物里没有这个值。回退到 mtime 能让它们保持今天的准确度；回退到 `createdAt` 是诚实的，但会把选择器和会话树里每一个既有会话都重新排一次序。
+**该字段引入之前的日志表现如何？** 既有产物里没有这个值。回退到 mtime 能让它们保持现有基于 mtime 的准确度；回退到 `createdAt` 是诚实的，但会把选择器和会话树里每一个既有会话都重新排一次序。
 
 **对 JSONL 来说伴随文件可以接受吗？** 它重新引入了每会话第二个文件，而该文件可能与日志不一致，这正是单产物设计所避开的。
 
@@ -47,7 +44,7 @@ Status: proposed
 - 在 web 会话树和 TUI 恢复选择器中，一个恢复后即被弃置的会话不会排到此后工作过的会话之前；由一份组装后的快照钉住，而不是只靠单元测试。
 - prompt 时间规则只有一个定义：一个测试证明，在包含真人 prompt、注入式 user message、边界和 closer 的日志上，已存储字段与已附加折叠结果一致。
 - 在选定的回退方案下，该字段引入之前的产物能够无错误地加载和列举，并且该回退在排序上的后果有断言覆盖。
-- 按本仓库不做迁移的立场，SQLite 的 `SCHEMA_VERSION` 递增会拒绝旧的磁盘版本。
+- 选定的 JSONL 表示保留已提交日志字节，并且要么与对应追加原子地更新活动值，要么定义一种保守且可观察的陈旧值失败模式。
 
 ## 风险
 
@@ -61,7 +58,7 @@ Status: proposed
 
 ## 相关
 
-- [有界冷空白验证](../../implemented/bug-fix/2026-08-13-bounded-cold-blank-verification.zh.md)——移除 mtime 排序，定义 projection cache 的过渡回退，并把直接冷读取限制为小产物 metadata 验证。
+- [有界冷空白验证](../../implemented/bug-fix/2026-08-13-bounded-cold-blank-verification.zh.md)——移除 mtime 排序，并定义了本提案将使之精确的、仅依赖 cache 的过渡冷摘要。
 - [种子结束日志边界](../../implemented/architecture/2026-07-30-session-end-seed-log-boundary.zh.md)——让 mtime 不适用的非 prompt 写入之一。
 - [会话持久化](../../implemented/architecture/2026-06-14-session-persistence.zh.md)——仅追加与绝不重写这两条不变式，正是它们排除了可变的 JSONL header 字段。
-- [共享持久化写入协调器](../../implemented/architecture/2026-06-18-shared-persistence-write-coordinator.zh.md)——一个已存储字段将挂入的那条追加路径。
+- [基于句柄的会话持久化](../../implemented/architecture/2026-08-27-handle-based-session-persistence.zh.md)——一个已存储字段将挂入的那条写句柄追加路径。

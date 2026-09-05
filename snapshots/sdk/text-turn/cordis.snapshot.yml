@@ -1,0 +1,20 @@
+# Keyless TypeScript SDK replay patch over the live profile patch.
+
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  disabled: true
+
+- insert:
+    - id: llm-replay
+      name: '@singula-ai/alego-llm-replay'
+      config:
+        providers:
+          - id: deepseek-official
+            name: DeepSeek
+            models:
+              - id: deepseek-v4-flash
+
+- id: session-log-deepseek
+  name: '@singula-ai/alego-session-log-deepseek'
+  config:
+    enabled: true

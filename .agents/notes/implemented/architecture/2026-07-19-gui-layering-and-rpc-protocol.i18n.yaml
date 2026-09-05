@@ -1,6 +1,0 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-19-gui-layering-and-rpc-protocol.md
-2026-07-19-gui-layering-and-rpc-protocol.md: 0ec2d5843777a880f66c914a4d8a0a125618614c
-2026-07-19-gui-layering-and-rpc-protocol.zh.md: 3fe0bd74840e02b1324de9be12b526a2fd94d1af

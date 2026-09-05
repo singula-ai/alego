@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-app-boot",
   "description": "Shared boot glue for the app bins: .env loading, fail-loud Loader guards, snapshot-aware config resolution, and the Loader boot sequence",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.1",
   "publishConfig": {
     "access": "public"
   },
@@ -18,21 +18,18 @@
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
     },
-    "./invariant": {
-      "types": "./lib/types/invariant.d.ts",
-      "default": "./lib/invariant.js"
-    },
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
   "files": [
     "lib/index.js",
-    "lib/invariant.js",
     "lib/types/**/*.d.ts"
   ],
   "license": "MIT",
   "dependencies": {
-    "js-yaml": "^4.2.0"
+    "@singula-ai/alego-atomic-write": "workspace:^",
+    "js-yaml": "^4.2.0",
+    "resolve.exports": "^2.0.3"
   },
   "peerDependencies": {
     "@singula-ai/cordis-plugin-group": "workspace:^",
@@ -40,7 +37,6 @@
     "@singula-ai/cordis-plugin-include": "workspace:^",
     "@singula-ai/cordis-plugin-loader": "workspace:^",
     "@singula-ai/alego-launch-environment": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-home-paths": "workspace:^",
     "@singula-ai/alego-system-prompt": "workspace:^",
     "@singula-ai/cordis": "workspace:^"
@@ -57,7 +53,6 @@
     "@singula-ai/cordis-plugin-loader": "workspace:^",
     "@singula-ai/cordis-plugin-timer": "workspace:^",
     "@singula-ai/alego-launch-environment": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-home-paths": "workspace:^",
     "@singula-ai/alego-system-prompt": "workspace:^",
     "@types/js-yaml": "^4.0.9",

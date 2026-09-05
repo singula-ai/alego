@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
-import LlmRuntime, { CallId, LlmAdapter } from '@singula-ai/alego-llm'
+import LlmRuntime, { ToolCallId, LlmAdapter } from '@singula-ai/alego-llm'
 import type { GenerateOptions, StreamChunk } from '@singula-ai/alego-llm'
 import * as LlmInvariant from '@singula-ai/alego-llm/invariant'
 import InvariantRegistry from '@singula-ai/alego-invariants'
@@ -38,8 +38,8 @@ describe('LLM stream invariants', () => {
       { type: 'block-end', index: 1, block: { type: 'reasoning', text: 'b' } },
       { type: 'block-end', index: 0, block: { type: 'text', text: 'a' } },
       { type: 'block-start', index: 2, blockType: 'tool-call' },
-      { type: 'tool-call-delta', index: 2, id: CallId('c1'), name: 'echo', argumentsDelta: '{}' },
-      { type: 'block-end', index: 2, block: { type: 'tool-call', id: CallId('c1'), name: 'echo', arguments: '{}' } },
+      { type: 'tool-call-delta', index: 2, id: ToolCallId('c1'), name: 'echo', argumentsDelta: '{}' },
+      { type: 'block-end', index: 2, block: { type: 'tool-call', id: ToolCallId('c1'), name: 'echo', arguments: '{}' } },
       { type: 'usage', usage: { inputTokens: 1, outputTokens: 1 } },
       finish,
     ]

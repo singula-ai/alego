@@ -18,7 +18,7 @@ Each live `Session` has one lifecycle entry containing initialization and one pa
 
 Initialization now enters the existing per-id operation chain once and calls the unserialized core operations while it owns that turn. The chain remains separate from the live controller because detached public `create`/`append`/`load` calls can race without a `Session` object and still require identity-level serialization.
 
-Crash repair is cold-only. For a live identity, `load(id)` snapshots the authoritative in-memory events before awaiting their flush, then returns them with `SessionState.meta`, the header actually used for durable writes; it rejects an open turn without reading or repairing storage. A cold load reserves its identity synchronously inside the per-id chain before awaiting stored-prefix reads or repair writes; the `session/created` publication boundary rejects and rolls back a same-id live session until the reservation clears. HMR adoption remains separate through `loadStored` plus the coordinator's cwd check and truncates torn storage without closing the authoritative live turn.
+Crash repair is cold-only. For a live identity, `load(id)` snapshots the authoritative in-memory events before awaiting their flush, then returns them with `SessionState.meta`, the header actually used for durable writes; it rejects an open turn without reading or repairing storage. A cold load reserves its identity synchronously inside the per-id chain before awaiting current-prefix reads or repair writes; the `session/created` publication boundary rejects and rolls back a same-id live session until the reservation clears. HMR adoption reaches the current prefix through the same serialized backend path plus the coordinator's cwd check. It may publish a supported historical generation first, while adoption of current storage truncates a torn tail without closing the authoritative live turn.
 
 The live-controller map is also the retirement registry. Successful retirement drains and removes its controller; failed retirement leaves it in the map. Backend teardown stops event admission, flushes every controller still present, awaits remaining per-id operations, and closes the backend. No separate retirement set is needed to rediscover unfinished work.
 
@@ -35,7 +35,7 @@ The live-controller map is also the retirement registry. Successful retirement d
 ## Verification
 
 - Focused controller tests use a fake clock to prove the non-resetting fixed window, gate the first append, admit another event during that write, and observe an automatic second durable batch without calling `session/flush`.
-- The shared coordinator contract still covers live adoption, collisions, crash repair, and session/backend disposal over the in-memory, JSONL, and SQLite backends.
+- The shared coordinator contract still covers live adoption, collisions, crash repair, and Session/provider disposal over the in-memory reference and JSONL provider.
 - Failure and teardown tests keep rejected batches pending, retry them before close, and prove an in-flight controller delays backend close.
 - The shared backend contract persists an open live turn, proves `load` rejects without writing synthetic closers, completes and retires the owner, then reloads the exact completed turn.
 - An AgentLoop regression races `resume()` against a live open turn and proves the original agent can still durably complete it without an injected `interrupted` boundary.

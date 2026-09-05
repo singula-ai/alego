@@ -10,7 +10,6 @@ import { defineTool } from '@singula-ai/alego-tools'
 import type { DiffCallView, DiffResultView, ToolResult } from '@singula-ai/alego-tools'
 import type { FsWriteOutcome } from '@singula-ai/alego-fs'
 import type {} from '@singula-ai/alego-fs'
-import type {} from '@singula-ai/alego-system-prompt'
 import { computeHunkDiffs, diffsFromMeta } from './diff.ts'
 import { remediateFsError } from './error.ts'
 import { sessionResolveOptions } from './session-cwd.ts'
@@ -62,7 +61,7 @@ interface WriteToolArgs {
 export function applyWriteTool(ctx: Context, sandbox: FsSandboxController): void {
   ctx.systemPrompt.section({
     name: 'tool:write',
-    order: 101,
+    order: ctx.systemPrompt.getSectionOrder('TOOL_WRITE'),
     text: 'Use the write tool to create files or completely replace file contents. Existing files are overwritten, so read an existing file first (the default fs-observation-policy requires it) and prefer edit for targeted changes.',
   })
 
@@ -114,11 +113,10 @@ export function applyWriteTool(ctx: Context, sandbox: FsSandboxController): void
         outcome = await ctx.fs.writeText(target, input.content, intent, exec.signal, sandboxPolicy)
       } catch (error: unknown) {
         // A sandbox denial becomes the shared [sandbox: …] marker (the model
-        // recognizes it from bash); stale/not-observed failures gain their
-        // model-facing remedy; anything else passes through.
-        throw remediateFsError(sandbox.mapError(error, sandboxPolicy))
+        // recognizes it from bash); guarded mutation failures receive their
+        // stable model-facing diagnostic; anything else passes through.
+        throw remediateFsError(sandbox.mapError(error, sandboxPolicy), target.displayPath)
       }
-      // Record the present observation (a no-op when no policy plugin listens).
       ctx.emit('fs/observed', target, { kind: 'present', version: outcome.version }, exec)
       return {
         path: target.displayPath,

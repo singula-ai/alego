@@ -1,4 +1,4 @@
-# Sandbox CI: the keyless real-kernel confinement proofs. This main-only
+# Sandbox CI: the keyless real-kernel confinement proofs. This master-only
 # reference stays outside the pull-request verdict; rationale lives in
 # .agents/notes/implemented/process/2026-07-21-serial-cross-platform-ci-reference.md.
 # A separate workflow from ci.yml because the axis is different — these jobs

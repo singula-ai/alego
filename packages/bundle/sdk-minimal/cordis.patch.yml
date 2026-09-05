@@ -1,0 +1,168 @@
+# Standalone minimal SDK application. Unlike the ordinary SDK profile, this
+# bundle does not layer over alego-base: this insert is the complete Cordis tree.
+# User profile, home, and invocation patches still apply above it.
+
+- insert:
+    - id: sdk-app-startup
+      name: '@singula-ai/alego-sdk-app'
+      config:
+        profile: sdk-minimal
+
+    - id: sdk-jsonrpc-server
+      name: '@singula-ai/alego-sdk-jsonrpc-server'
+      inject: [sdkAppStartup, loader]
+      config:
+        maxTokensAsSuccess: false
+
+    - id: deepseek-llm-api-extensions
+      name: '@singula-ai/alego-deepseek-llm-api-extensions'
+
+    - id: session-log-deepseek
+      name: '@singula-ai/alego-session-log-deepseek'
+
+    - id: plugin-package-inventory-deepseek
+      name: '@singula-ai/alego-plugin-package-inventory-deepseek'
+
+    - id: llm-deepseek
+      name: '@singula-ai/alego-llm-deepseek'
+      config:
+        apiKeyEnv: DEEPSEEK_API_KEY
+        defaultContextWindow: !!js Number(process.env.ALEGO_CONTEXT_WINDOW ?? 1000000)
+        streamIdleTimeoutMs: 172800000
+
+    - id: sandbox
+      name: '@singula-ai/alego-sandbox-local'
+
+    # Shared projection registry: sandbox-policy and terminal-bash fold
+    # sandbox-mode state through its units and require it as a hard injection.
+    - id: session-projection
+      name: '@singula-ai/alego-session-projection'
+
+    - id: sandbox-policy
+      name: '@singula-ai/alego-sandbox-policy'
+      config:
+        mode: danger-full-access
+        workspaceRoot: !!js process.cwd()
+
+    - id: subprocess
+      name: '@singula-ai/alego-subprocess-local'
+
+    - id: pty
+      name: '@singula-ai/alego-terminal'
+
+    - id: terminal-bash
+      name: '@singula-ai/alego-terminal-bash'
+      disabled: !!js process.platform === 'win32'
+      config:
+        timeoutMs: 300000
+
+    - id: terminal-pwsh
+      name: '@singula-ai/alego-terminal-bash'
+      disabled: !!js process.platform !== 'win32'
+      config:
+        shellDialect: pwsh
+        timeoutMs: 300000
+
+    # The editor uses the bare local filesystem; persistent Bash still consumes
+    # the shared danger-full-access sandbox policy above.
+    - id: fs-local
+      name: '@singula-ai/alego-fs-local'
+      config:
+        cwd: !!js process.cwd()
+
+    # Keep the minimal agent kernel explicit: unlike alego-base, this profile
+    # owns each service row and omits every optional producer it does not use.
+    - id: timer
+      name: '@singula-ai/cordis-plugin-timer'
+
+    - id: llm
+      name: '@singula-ai/alego-llm'
+
+    - id: session
+      name: '@singula-ai/alego-session'
+
+    - id: session-title
+      name: '@singula-ai/alego-session-title'
+      config:
+        fallbackMaxWords: 5
+        fallbackMaxBytes: 40
+        maxTitleBytes: 80
+
+    - id: system-prompt
+      name: '@singula-ai/alego-system-prompt'
+      config:
+        includeHarnessIdentity: false
+        includeRuntimeContext: false
+        persona: !!js process.env.ALEGO_SYSTEM_PROMPT ?? 'You are a helpful software engineer assistant.'
+
+    - id: tools
+      name: '@singula-ai/alego-tools'
+
+    - id: agent
+      name: '@singula-ai/alego-agent'
+
+    - id: llm-retry
+      name: '@singula-ai/alego-llm-retry'
+
+    - id: jobs
+      name: '@singula-ai/alego-jobs-local'
+
+    - id: invariants
+      name: '@singula-ai/alego-invariants'
+
+    - id: session-invariant
+      name: '@singula-ai/alego-session/invariant'
+
+    - id: agent-invariant
+      name: '@singula-ai/alego-agent/invariant'
+
+    - id: scope-invariant
+      name: '@singula-ai/alego-scope/invariant'
+
+    - id: agent-loop-invariant
+      name: '@singula-ai/alego-agent-loop/invariant'
+
+    - id: agent-loop
+      name: '@singula-ai/alego-agent-loop'
+      config:
+        agents: []
+
+    - id: persistent-bash
+      name: '@singula-ai/alego-tool-bash-persistent'
+      disabled: !!js process.platform === 'win32'
+      config:
+        timeoutMs: 300000
+        description: |-
+          Run commands in a bash shell
+          * When invoking this tool, the contents of the "command" parameter does NOT need to be XML-escaped.
+          * You don't have access to the internet via this tool.
+          * You do have access to a mirror of common linux and python packages via apt and pip.
+          * State is persistent across command calls and discussions with the user.
+          * To inspect a particular line range of a file, e.g. lines 10-25, try 'sed -n 10,25p /path/to/the/file'.
+          * Please avoid commands that may produce a very large amount of output.
+          * Please run long lived commands in the background, e.g. 'sleep 10 &' or start a server in the background.
+
+    - id: persistent-pwsh
+      name: '@singula-ai/alego-tool-pwsh-persistent'
+      disabled: !!js process.platform !== 'win32'
+      config:
+        timeoutMs: 300000
+        description: |-
+          Run commands in a PowerShell shell
+          * When invoking this tool, the contents of the "command" parameter does NOT need to be XML-escaped.
+          * You don't have access to the internet via this tool.
+          * State is persistent across command calls and discussions with the user.
+          * Use native Windows paths (C:\...) and $env:NAME variables; this is PowerShell, not bash.
+          * Please avoid commands that may produce a very large amount of output.
+          * Please run long lived commands in the background, e.g. 'Start-Job' or start a server with Start-Process.
+
+    - id: str-replace-editor
+      name: '@singula-ai/alego-tool-str-replace-editor'
+      config:
+        maxOutputChars: 16000
+
+    - id: sessions
+      name: '@singula-ai/alego-session-persistence-jsonl'
+      config:
+        root: !!js alegoHomePath('sessions')
+        compression: none

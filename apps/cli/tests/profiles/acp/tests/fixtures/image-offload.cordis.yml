@@ -1,0 +1,44 @@
+# Keyless assembled-request snapshot for native DeepSeek image offload. The
+# local provider endpoint is supplied by the snapshot test; the real attachment
+# store and ACP bridge carry two uploaded images into one model request.
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  config:
+    apiKeyEnv: ALEGO_SNAPSHOT_API_KEY
+    baseURL: !!js process.env.ALEGO_SNAPSHOT_BASE_URL
+    thinking: disabled
+    maxRequestFilesBytes: 92
+    imageOffloadByteQuantum: 1
+    models:
+      - id: deepseek-v4-flash-vision-exp
+        contextWindow: 32768
+        maxTokens: 1024
+        inputModalities: [text, image]
+
+- id: acp
+  name: '@singula-ai/alego-acp'
+  config:
+    provider: deepseek-official
+    model: deepseek-v4-flash-vision-exp
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js process.env.ALEGO_SNAPSHOT_SESSIONS_ROOT ?? './.sessions'
+    compression: none
+
+- id: agent-instructions
+  name: '@singula-ai/alego-agent-instructions'
+  config:
+    maxBytes: 65536
+
+- id: system-prompt
+  name: '@singula-ai/alego-system-prompt'
+  config:
+    persona: |
+      You are a coding assistant powered by the {{model}} model. Your working directory is {{cwd}}.
+
+      Keep answers brief and factual.
+
+- id: attachment-local
+  name: '@singula-ai/alego-attachment-local'

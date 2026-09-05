@@ -5,8 +5,8 @@ import { describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import { createMessage, createUserMessage } from '@singula-ai/alego-llm'
 import type { ContentBlock, ToolSchema } from '@singula-ai/alego-llm'
-import SessionStore from '@singula-ai/alego-session'
-import type { Session, SessionEvent } from '@singula-ai/alego-session'
+import SessionStore, { SessionSeq } from '@singula-ai/alego-session'
+import type { Session, SessionEvent, SessionSeq as SessionSeqType } from '@singula-ai/alego-session'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import TokenMeter from '@singula-ai/alego-token-meter'
 import type { ContextBreakdownProjection } from '@singula-ai/alego-token-meter/client'
@@ -42,7 +42,7 @@ const projected = (ctx: Context, session: Session): ContextBreakdownProjection =
   return value
 }
 
-function appendUser(session: Session, text: string): number {
+function appendUser(session: Session, text: string): SessionSeqType {
   return session.append('user/message', createUserMessage({
     content: [{ type: 'text', text }],
     source: { kind: 'user' },
@@ -54,7 +54,7 @@ function appendUser(session: Session, text: string): number {
  * replaced span from the measurement service's own nodes and log the
  * shadow-price event directly before the replace.
  */
-function appendSummaryMeter(ctx: Context, session: Session, start: number, end: number): void {
+function appendSummaryMeter(ctx: Context, session: Session, start: SessionSeqType, end: SessionSeqType): void {
   const nodes = ctx.tokenMeter.measure(session).nodes
   const startIdx = nodes.findIndex(node => node.seq === start)
   const endIdx = nodes.findIndex(node => node.seq === end)
@@ -94,7 +94,7 @@ describe('contextBreakdown session projection', () => {
       header: { config: CONFIG, system: 'You are terse.', tools: TOOLS },
       reason: 'change',
     })
-    session.append('todo/write', { todos: [] })
+    session.append('session/end-seed', {})
     expect(changed).not.toContain('contextBreakdown')
 
     // A system-less, tool-less envelope prices back to zero.
@@ -107,6 +107,7 @@ describe('contextBreakdown session projection', () => {
     appendUser(session, 'abcd')
     session.append('step/start', { turn: 1, step: 1 })
     session.append('assistant/message', {
+      stream: [],
       turn: 1,
       step: 1,
       message: createMessage({
@@ -115,7 +116,7 @@ describe('contextBreakdown session projection', () => {
         source: { kind: 'model', provider: 'mock', model: 'mock' },
       }),
       usage: { inputTokens: 9, outputTokens: 0 },
-    }, { surfaceOp: 'append', sourceEventSeqs: [] })
+    }, { surfaceOp: 'append' })
     session.append('step/end', { turn: 1, step: 1 })
     // 'abcd' prices to 9 (1 text + 4 block + 4 role); the usage-only assistant
     // message derives to no transcript entry and adds nothing.
@@ -156,6 +157,7 @@ describe('contextBreakdown session projection', () => {
     const question = appendUser(session, 'a first question, long enough to price above zero')
     session.append('step/start', { turn: 1, step: 1 })
     const answer = session.append('assistant/message', {
+      stream: [],
       turn: 1,
       step: 1,
       message: createMessage({
@@ -164,7 +166,7 @@ describe('contextBreakdown session projection', () => {
         source: { kind: 'model', provider: 'mock', model: 'mock' },
       }),
       usage: { inputTokens: 40, outputTokens: 7 },
-    }, { surfaceOp: 'append', sourceEventSeqs: [] }).seq
+    }, { surfaceOp: 'append' }).seq
     session.append('step/end', { turn: 1, step: 1 })
     const grown = agree()
     expect(grown).toBeGreaterThan(0)
@@ -184,44 +186,51 @@ describe('contextBreakdown session projection', () => {
 
   it('folds a replacement without a claim at zero and fails on a mismatched claim', () => {
     const definition = contextBreakdownProjectionDefinition
-    const replace = (start: number, end: number): SessionEvent => ({
+    const replace = (start: SessionSeq, end: SessionSeq): SessionEvent => ({
       type: 'user/message',
-      seq: 9,
+      seq: SessionSeq(9),
       time: 0,
       data: createUserMessage({ content: [{ type: 'text', text: 'x' }], source: { kind: 'user' } }),
       surfaceOp: { op: 'replace', start, end },
       sourceEventSeqs: [start, end],
     } as unknown as SessionEvent)
-    const append = (seq: number): SessionEvent => ({
+    const append = (seq: SessionSeq): SessionEvent => ({
       type: 'user/message',
       seq,
       time: 0,
       data: createUserMessage({ content: [{ type: 'text', text: 'x' }], source: { kind: 'user' } }),
       surfaceOp: 'append',
     } as unknown as SessionEvent)
-    const meter = (start: number, end: number, seq: number): SessionEvent => ({
+    const meter = (start: SessionSeq, end: SessionSeq, seq: SessionSeq): SessionEvent => ({
       type: 'compaction/prune',
       seq,
       time: 0,
-      data: { shadowedRange: { start, end }, shadowedSeqs: [start, end], shadowedTokenCount: 5 },
+      data: {
+        shadowedRange: { start, end },
+        shadowedSeqs: [start, end],
+        shadowedTokenCount: 5,
+      },
     } as unknown as SessionEvent)
     let state = definition.init()
-    state = definition.apply(state, append(1))
-    state = definition.apply(state, append(3))
+    state = definition.apply(state, append(SessionSeq(1)))
+    state = definition.apply(state, append(SessionSeq(3)))
     // No metering event: the replacement contributes zero instead of throwing.
-    expect(definition.wire.view(definition.apply(state, replace(1, 3))).messageTokens)
+    expect(definition.wire.view(definition.apply(state, replace(SessionSeq(1), SessionSeq(3)))).messageTokens)
       .toBe(definition.wire.view(state).messageTokens)
     // An adjacent claim for another range contradicts the replacement.
-    const mismatched = definition.apply(state, meter(1, 1, 8))
-    expect(() => definition.apply(mismatched, replace(1, 3))).toThrow('no adjacent shadow price')
+    const mismatched = definition.apply(state, meter(SessionSeq(1), SessionSeq(1), SessionSeq(8)))
+    expect(() => definition.apply(mismatched, replace(SessionSeq(1), SessionSeq(3))))
+      .toThrow('no adjacent shadow price')
     // A claim expires after one intervening event, so replacement delta is zero.
-    let expired = definition.apply(state, meter(1, 3, 8))
-    expired = definition.apply(expired, { type: 'todo/write', seq: 9, time: 0, data: { todos: [] } } as unknown as SessionEvent)
-    expect(definition.wire.view(definition.apply(expired, replace(1, 3))).messageTokens)
+    let expired = definition.apply(state, meter(SessionSeq(1), SessionSeq(3), SessionSeq(8)))
+    expired = definition.apply(expired, {
+      type: 'session/end-seed', seq: SessionSeq(9), time: 0, data: {},
+    })
+    expect(definition.wire.view(definition.apply(expired, replace(SessionSeq(1), SessionSeq(3)))).messageTokens)
       .toBe(definition.wire.view(state).messageTokens)
     // The armed claim prices exactly the next event's matching replacement.
-    const armed = definition.apply(state, meter(1, 3, 8))
-    expect(definition.wire.view(definition.apply(armed, replace(1, 3))).messageTokens)
+    const armed = definition.apply(state, meter(SessionSeq(1), SessionSeq(3), SessionSeq(8)))
+    expect(definition.wire.view(definition.apply(armed, replace(SessionSeq(1), SessionSeq(3)))).messageTokens)
       .toBe(definition.wire.view(state).messageTokens - 5 + estimateMessage(
         createUserMessage({ content: [{ type: 'text', text: 'x' }], source: { kind: 'user' } }),
       ))

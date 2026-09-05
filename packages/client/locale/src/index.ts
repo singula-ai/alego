@@ -1,12 +1,12 @@
 /** Host registration for the browser locale preference. */
 
 import type { Context } from '@singula-ai/cordis'
-import { settingsNamespace } from '@singula-ai/alego-settings'
+import type {} from '@singula-ai/alego-settings'
 import { LOCALE_SETTINGS_NAMESPACE, LocaleSettingsSchema } from './locale-settings.ts'
 
 export {
   LOCALE_IDS, LOCALE_PREFERENCE_FIELD, LOCALE_SETTINGS_NAMESPACE,
-  type LocaleId, type LocaleSettings,
+  type BuiltInLocaleId, type LocaleId, type LocaleSettings,
 } from './locale-settings.ts'
 
 /**
@@ -16,7 +16,7 @@ export {
 export function apply(ctx: Context): void {
   ctx.inject(['settings'], (settingsCtx) => {
     settingsCtx.settings.register(
-      settingsNamespace(LOCALE_SETTINGS_NAMESPACE),
+      LOCALE_SETTINGS_NAMESPACE,
       LocaleSettingsSchema,
     )
   })

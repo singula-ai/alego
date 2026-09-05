@@ -1,8 +1,8 @@
 /**
  * The `todos` projection provider (session-projection RFC knife 4 — the "a
  * fourth domain is just its own registrations" acceptance probe): mounting
- * tool-todo beside the registry serves the whole current list on the history
- * tail page with a consistent asOfSeq (= last event seq); before any write the value is null; a
+ * tool-todo beside the registry serves the whole current list with a
+ * consistent asOfSeq (= last event seq); before any write the value is null; a
  * composition without tool-todo has no `todos` key; unmounting tool-todo
  * removes it (HMR safety). The carrier and framework are exercised unmodified.
  */
@@ -13,20 +13,13 @@ import AgentRegistry from '@singula-ai/alego-agent'
 import type { Agent } from '@singula-ai/alego-agent'
 import { createUserMessage } from '@singula-ai/alego-llm'
 import SessionStore from '@singula-ai/alego-session'
-import type { Session, TodoItem } from '@singula-ai/alego-session'
+import type { Session } from '@singula-ai/alego-session'
+import type { TodoItem } from '@singula-ai/alego-tool-todo'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime from '@singula-ai/alego-tools'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import UserQuestionService from '@singula-ai/alego-user-questions'
-import type { RpcRequest } from '@singula-ai/alego-host-apiproxy/api/rpc'
-import { RpcId } from '@singula-ai/alego-host-apiproxy/api/rpc'
-import { createApiProxy } from '@singula-ai/alego-host-apiproxy'
 import * as ToolTodo from '@singula-ai/alego-tool-todo'
-
-let nextRpc = 1
-function request<P>(payload: P): RpcRequest<P> {
-  return { rpcId: RpcId(`todo-proj-${String(nextRpc++)}`), payload }
-}
 
 interface Bench {
   ctx: Context
@@ -45,14 +38,11 @@ async function harness(withTodoTool: boolean): Promise<Bench> {
   if (withTodoTool) await ctx.plugin(ToolTodo, { allowParallelInProgress: true })
   const session = ctx.sessions.create()
   ctx.agents.register({ id: session.id, session, status: 'idle', ctx } as Agent)
-  const api = createApiProxy(ctx, { defaultModelSelection: () => ({ provider: 'p', model: 'm' }), cwd: '/tmp' })
   return {
     ctx,
     session,
     async tailProjections() {
-      const response = await api.sessions.history(request({ sessionId: session.id }))
-      if (!response.result.ok) throw new Error('history failed')
-      return response.result.value.projections
+      return ctx.sessionProjections.snapshot(session)
     },
   }
 }
@@ -83,6 +73,7 @@ describe('todos projection provider', () => {
       { content: 'a', status: 'completed' },
       { content: 'b', status: 'in_progress' },
     ]
+    session.append('turn/start', { turn: 1 })
     session.append('todo/write', { todos: first })
     session.append('todo/write', { todos: second })
     const projections = await bench.tailProjections()
@@ -96,10 +87,11 @@ describe('todos projection provider', () => {
     const session = bench.session
     seedMessage(session)
     const list: TodoItem[] = [{ content: 'done', status: 'completed' }]
+    session.append('turn/start', { turn: 1 })
     session.append('todo/write', { todos: list })
     session.append('turn/end', { turn: 1, reason: { kind: 'completed' } })
     expect((await bench.tailProjections())?.values.todos).toEqual(list)
-    session.append('turn/start', { turn: 1 })
+    session.append('turn/start', { turn: 2 })
     const cleared = await bench.tailProjections()
     expect(cleared?.values.todos).toBeNull()
     expect(cleared?.asOfSeq).toBe(session.seq - 1)

@@ -5,8 +5,8 @@
  * stays process-local here.
  */
 
-import type { SettingsScope, SnapshotStore } from '@singula-ai/alego-client-runtime/client'
-import { createSnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import { createSnapshotStore, type SnapshotStore } from '@singula-ai/alego-client-store'
+import type { SettingsScope } from '@singula-ai/alego-client-ui-settings/client'
 import {
   WELCOME_NOTICE_ACK_FIELD, WELCOME_NOTICE_VERSION,
 } from '../onboarding-copy.ts'

@@ -2,8 +2,10 @@
 
 import { describe, expect, it } from 'vitest'
 import {
+  checkAlegoFamilyVersion,
   checkExperimentalDependencyIsolation,
   checkExperimentalManifest,
+  expectedAlegoPackageFiles,
   type WorkspaceManifest,
 } from './check-workspace-constraints.ts'
 
@@ -71,6 +73,51 @@ describe('experimental workspace constraints', () => {
 
     expect(checkExperimentalDependencyIsolation(manifests)).toEqual([
       '@singula-ai/alego-python-runtime: dependencies.@singula-ai/alego-experimental-prototype must not reference an experimental package',
+    ])
+  })
+})
+
+describe('alego family version coherence', () => {
+  it('rejects a package carrying a stale shared version', () => {
+    expect(checkAlegoFamilyVersion(
+      { name: '@singula-ai/alego-http-proxy', version: '0.1.2-alpha.5' },
+      '0.1.2-rc.1',
+    )).toBe('@singula-ai/alego-http-proxy: package.json version must match root version 0.1.2-rc.1')
+  })
+
+  it('rejects the root-named CLI app on a stale shared version', () => {
+    expect(checkAlegoFamilyVersion(
+      { name: '@singula-ai/alego', version: '0.1.2-alpha.5' },
+      '0.1.2-rc.1',
+    )).toBe('@singula-ai/alego: package.json version must match root version 0.1.2-rc.1')
+  })
+
+  it('accepts a manifest carrying the shared version', () => {
+    expect(checkAlegoFamilyVersion(
+      { name: '@singula-ai/alego-http-proxy', version: '0.1.2-rc.1' },
+      '0.1.2-rc.1',
+    )).toBeUndefined()
+  })
+
+  it('leaves other sequences to their own version lines', () => {
+    expect(checkAlegoFamilyVersion({ name: '@singula-ai/cordis', version: '4.0.1' }, '0.1.2-rc.1')).toBeUndefined()
+    expect(checkAlegoFamilyVersion(
+      { name: '@singula-ai/node-addon-landlock-run', version: '0.1.1' },
+      '0.1.2-rc.1',
+    )).toBeUndefined()
+    expect(checkAlegoFamilyVersion({ version: '0.1.2-alpha.5' }, '0.1.2-rc.1')).toBeUndefined()
+  })
+})
+
+describe('package payload constraints', () => {
+  it('includes a declared profile patch without a package-name allowlist', () => {
+    expect(expectedAlegoPackageFiles({
+      name: '@singula-ai/alego-private-profile',
+      alego: { bundle: { patch: './cordis.patch.yml' } },
+    })).toEqual([
+      'lib/index.js',
+      'cordis.patch.yml',
+      'lib/types/**/*.d.ts',
     ])
   })
 })

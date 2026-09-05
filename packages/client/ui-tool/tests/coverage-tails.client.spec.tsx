@@ -1,12 +1,12 @@
 // @vitest-environment jsdom
-// Tool presentation branch tails not reached by the main acceptance specs.
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
-import { createSnapshotStore } from '@singula-ai/alego-client-runtime/client'
-import { bindSnapshotSelector } from '@singula-ai/alego-client-test-runtime'
-import type { RunningToolCall, SessionId, SessionListState, ToolResultNode } from '@singula-ai/alego-client-runtime/client'
-import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { createSnapshotStore } from '@singula-ai/alego-client-store'
+import { bindSnapshotSelector, makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import type { SessionListState } from '@singula-ai/alego-api-session-controller/client'
+import type { RunningToolCall, ToolResultNode } from '@singula-ai/alego-client-ui-chat/client'
+import type { SessionId } from '@singula-ai/alego-session/types'
 import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
 import { GenericToolCard, type GenericToolCardProps } from '../src/client/tool/toolviews/GenericToolCard.tsx'
 import { ToolRow } from '../src/client/tool/components/ToolRow.tsx'
@@ -15,7 +15,6 @@ import { zh } from '@singula-ai/alego-client-ui-conversation/src/client/locales.
 
 type BashRowProps = Parameters<typeof BashRow>[0]
 
-// Mirrors the real lookup chain (conversation namespace, then common).
 const t: GenericToolCardProps['t'] = makeTranslate(zh, commonZh)
 
 afterEach(cleanup)
@@ -46,7 +45,7 @@ function bashProps(block: RunningToolCall | ToolResultNode): BashRowProps {
 describe('Tool presentation tails', () => {
   it('ToolRow stopped state renders the warning dot in the leading slot', () => {
     const view = render(
-      <ToolRow t={t} variant="bash" icon={<i data-testid="icon" />} title="Bash" summary="s" body={null} state="stopped" />,
+      <ToolRow t={t} variant="bash" icon={<i data-testid="icon" />} title="Bash" summary="s" state="stopped" />,
     )
     expect(view.queryByTestId('icon')).toBeNull()
     expect(view.container.querySelector('[data-state="stopped"]')).not.toBeNull()
@@ -57,9 +56,10 @@ describe('Tool presentation tails', () => {
       kind: 'tool-result', seq: 2, time: 2_000, callId: 'c5',
       call: { name: 'todo_write', argsRaw: '{"note":"x"}' },
       callTime: 1_000,
-      content: [], isError: false, callView: null, resultView: null, subCalls: [],
+      content: [], isError: false, subCalls: [],
     }
     const props: GenericToolCardProps = {
+      loadImage: vi.fn(() => Promise.reject(new Error('not used'))),
       callId: 'c5', toolName: 'todo_write', block: settled, openFile: vi.fn(), t,
     }
     const view = render(<GenericToolCard {...props} />)
@@ -72,7 +72,7 @@ describe('Tool presentation tails', () => {
       kind: 'tool-result', seq: 3, time: 3_000, callId: 'c1',
       call: { name: 'bash', argsRaw: '{"command":"make build","description":"Build"}' },
       callTime: 2_000,
-      content: [], isError: false, callView: null, resultView: null, subCalls: [],
+      content: [], isError: false, subCalls: [],
     }
     const view = render(<BashRow {...bashProps(settled)} />)
     const row = view.container.querySelector('[data-sample="bash"]')!
@@ -84,13 +84,13 @@ describe('Tool presentation tails', () => {
   it('BashRow carries data-state for running and StateDots for error/stopped', () => {
     const running: RunningToolCall = {
       callId: 'c1', name: 'bash', argsRaw: '{"command":"ls","description":"List"}',
-      turn: 1, step: 1, time: 1_000, callView: null, subCalls: [],
+      turn: 1, step: 1, time: 1_000, subCalls: [],
     }
     const errorResult: ToolResultNode = {
       kind: 'tool-result', seq: 1, time: 1_000, callId: 'c1',
       call: { name: 'bash', argsRaw: '{"command":"boom"}' },
       callTime: 500,
-      content: [], isError: true, callView: null, resultView: null, subCalls: [],
+      content: [], isError: true, subCalls: [],
     }
     const stoppedResult: ToolResultNode = {
       ...errorResult,

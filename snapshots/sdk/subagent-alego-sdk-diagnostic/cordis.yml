@@ -1,0 +1,68 @@
+# TypeScript SDK snapshot patch for foreground and background ALEGO SDK failures.
+
+- id: skill-filesystem
+  name: '@singula-ai/alego-skill-filesystem'
+  config:
+    includeDefaultRoots: false
+
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  config:
+    thinking: enabled
+    reasoningEffort: max
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: !!js "process.env.ALEGO_SNAPSHOT === undefined ? 'zstd' : 'none'"
+
+- id: session-log-deepseek
+  name: '@singula-ai/alego-session-log-deepseek'
+  config:
+    enabled: true
+
+- insert:
+    - id: subagent-alego-sdk-diagnostic
+      name: '@singula-ai/alego-subagent-alego-sdk'
+      config:
+        providerName: alego-sdk-diagnostic
+        profile: sdk
+        patches:
+          - !!js process.env.ALEGO_TEST_CHILD_PATCH
+        alegoHome: !!js alegoHomePath('children/foreground')
+        provider: mock
+        model: mock-echo
+        env:
+          ALEGO_TELEMETRY_DISABLED: '1'
+          ALEGO_TEST_CHILD_FAILURE: '1'
+    - id: tool-subagent-alego-sdk-diagnostic
+      name: '@singula-ai/alego-tool-subagent'
+      config:
+        provider: alego-sdk-diagnostic
+        toolName: subagent_alego_sdk
+        backgroundMode: one-shot
+        maxDepth: provider-managed
+    - id: subagent-alego-sdk-diagnostic-background
+      name: '@singula-ai/alego-subagent-alego-sdk'
+      config:
+        providerName: alego-sdk-diagnostic-background
+        profile: sdk
+        patches:
+          - !!js process.env.ALEGO_TEST_CHILD_PATCH
+        alegoHome: !!js alegoHomePath('children/background')
+        provider: mock
+        model: mock-echo
+        env:
+          ALEGO_TELEMETRY_DISABLED: '1'
+          ALEGO_TEST_CHILD_FAILURE: '1'
+          FAKE_INIT_GO: .alego-sdk-background-release
+    - id: tool-subagent-alego-sdk-diagnostic-background
+      name: '@singula-ai/alego-tool-subagent'
+      config:
+        provider: alego-sdk-diagnostic-background
+        toolName: subagent_alego_sdk_background
+        backgroundMode: one-shot
+        maxDepth: provider-managed
+    - id: release-alego-sdk-background-on-job-output
+      name: '../../../apps/cli/tests/profiles/sdk/fixtures/subagent-alego-sdk-release-on-job-output.ts'

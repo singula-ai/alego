@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/cookbook/maintaining-alego-code-review.md
-maintaining-alego-code-review.md: d7415131b85433f7e5b43a5567ce811960ecb75c
+maintaining-alego-code-review.md: bdfc39161077ce41f1cdf43b4be41e8d788b8213
 maintaining-alego-code-review.zh.md: 8b4335140de4b1d59bb2edacf4bd30a6d87d277a

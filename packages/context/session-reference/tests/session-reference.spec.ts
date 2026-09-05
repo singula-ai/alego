@@ -2,9 +2,11 @@ import { describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import { agentEvents, type Agent } from '@singula-ai/alego-agent'
 import { CompactionId, compactCheckpointSource } from '@singula-ai/alego-compaction'
-import { createUserMessage, CallId , createMessage, createToolResultMessage } from '@singula-ai/alego-llm'
-import SessionStore, { Session, SessionId } from '@singula-ai/alego-session'
+import { createUserMessage, ToolCallId , createMessage, createToolResultMessage } from '@singula-ai/alego-llm'
+import SessionStore, { Session, SessionId, SessionSeq } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import SessionQueryEngine from '@singula-ai/alego-session-query'
+import SessionTitleService from '@singula-ai/alego-session-title'
 import SessionReferenceResolver, {
   decodeSessionReferenceUri,
   encodeSessionReferenceUri,
@@ -35,9 +37,27 @@ class TestSessionQueryEngine extends SessionQueryEngine {
 async function harness(config: Config = {}): Promise<Context> {
   const ctx = new Context()
   await ctx.plugin(SessionStore)
+  // The live registry and the title unit it hosts: discovery labels an
+  // attached session from its projection cut, never from its log.
+  await ctx.plugin(SessionProjectionRegistry)
+  // Shipped base values: this suite only needs the unit the service registers.
+  await ctx.plugin(SessionTitleService, { fallbackMaxWords: 5, fallbackMaxBytes: 40, maxTitleBytes: 80 })
   await ctx.plugin(TestSessionQueryEngine)
   await ctx.plugin(SessionReferenceResolver, config)
   return ctx
+}
+
+/**
+ * Stand in for the projection cache with a fixed checkpoint table: the
+ * resolver reads `cachedSnapshot` alone, and the point under test is which
+ * sessions still reach a log fold.
+ */
+function withProjectionCache(ctx: Context, rows: Record<string, string | null>): void {
+  ctx.provide('sessionProjectionCache', {
+    cachedSnapshot: (meta: { id: SessionId }) => (
+      meta.id in rows ? { asOfSeq: SessionSeq(0), values: { title: rows[meta.id] } } : undefined
+    ),
+  })
 }
 
 function fakeAgent(session: Session): Agent {
@@ -63,6 +83,7 @@ function appendConversation(session: Session): void {
   const oldAssistant = session.append(
     'assistant/message',
     {
+      stream: [],
       turn: 1,
       step: 1,
       message: createMessage({
@@ -122,7 +143,7 @@ function appendConversation(session: Session): void {
     {
       turn: 2, step: 1,
       message: createToolResultMessage({
-        callId: CallId('call'),
+        callId: ToolCallId('call'),
         content: [{ type: 'text', text: 'tool output' }],
         isError: false,
       }),
@@ -132,6 +153,7 @@ function appendConversation(session: Session): void {
   session.append(
     'assistant/message',
     {
+      stream: [],
       turn: 2,
       step: 1,
       message: createMessage({
@@ -170,6 +192,7 @@ function appendConversation(session: Session): void {
   session.append(
     'assistant/message',
     {
+      stream: [],
       turn: 2,
       step: 2,
       message: createMessage({
@@ -183,10 +206,16 @@ function appendConversation(session: Session): void {
     },
     { surfaceOp: 'append' },
   )
-  session.append('assistant/chunk', {
+  session.append('assistant/attempt', {
     turn: 2,
     step: 2,
-    chunk: { type: 'text-delta', index: 0, text: 'unfinished answer' },
+    stream: [{
+      type: 'text-chunks',
+      time0: 0,
+      index: 0,
+      dt: [],
+      texts: ['unfinished answer'],
+    }],
   })
 }
 
@@ -253,16 +282,16 @@ describe('session reference discovery and preparation', () => {
     })
 
     await expect(ctx.sessionReferenceResolver.listCandidates(fakeAgent(target))).resolves.toEqual([
-      { sessionId: SessionId('same-later'), label: 'Latest title', cwd: '/same', createdAt: 25 },
-      { sessionId: SessionId('same'), label: 'same', cwd: '/same', createdAt: 20 },
-      { sessionId: SessionId('none'), label: 'none', createdAt: 30 },
-      { sessionId: SessionId('other'), label: 'other', cwd: '/else', createdAt: 40 },
+      { sessionId: SessionId('same-later'), label: 'Latest title', cwd: '/same', sameWorkspace: true, createdAt: 25 },
+      { sessionId: SessionId('same'), label: 'same', cwd: '/same', sameWorkspace: true, createdAt: 20 },
+      { sessionId: SessionId('none'), label: 'none', sameWorkspace: false, createdAt: 30 },
+      { sessionId: SessionId('other'), label: 'other', cwd: '/else', sameWorkspace: false, createdAt: 40 },
     ])
     await expect(ctx.sessionReferenceResolver.listCandidates(fakeAgent(target), 'els', 1)).resolves.toEqual([
-      { sessionId: SessionId('other'), label: 'other', cwd: '/else', createdAt: 40 },
+      { sessionId: SessionId('other'), label: 'other', cwd: '/else', sameWorkspace: false, createdAt: 40 },
     ])
     await expect(ctx.sessionReferenceResolver.listCandidates(fakeAgent(target), 'LATEST', 1)).resolves.toEqual([
-      { sessionId: SessionId('same-later'), label: 'Latest title', cwd: '/same', createdAt: 25 },
+      { sessionId: SessionId('same-later'), label: 'Latest title', cwd: '/same', sameWorkspace: true, createdAt: 25 },
     ])
     await expect(ctx.sessionReferenceResolver.listCandidates(fakeAgent(target), '', 0))
       .rejects.toThrow(expectCode('SESSION_REFERENCE_INVALID_REFERENCE'))
@@ -283,6 +312,83 @@ describe('session reference discovery and preparation', () => {
     listSessions.mockRestore()
   })
 
+  it('reads an attached session\'s current title, ahead of any checkpoint', async () => {
+    const ctx = await harness()
+    const target = ctx.sessions.create(SessionId('target'), { meta: { cwd: '/same' } })
+    const live = ctx.sessions.create(SessionId('live'), { meta: { cwd: '/same' } })
+    live.append('session/title', { title: 'Old title', messageSeqs: [], source: { kind: 'fallback' } })
+    // The durable checkpoint is write-behind, so it still holds the old value.
+    withProjectionCache(ctx, { live: 'Old title' })
+    live.append('session/title', { title: 'Renamed mid turn', messageSeqs: [], source: { kind: 'user' } })
+    const readTitles = vi.spyOn(ctx.sessionQuery, 'readTitleSnapshots')
+
+    await expect(ctx.sessionReferenceResolver.listCandidates(fakeAgent(target), 'renamed'))
+      .resolves.toEqual([
+        { sessionId: live.id, label: 'Renamed mid turn', cwd: '/same', sameWorkspace: true, createdAt: live.header.createdAt },
+      ])
+    await expect(ctx.sessionReferenceResolver.listCandidates(fakeAgent(target), 'old title')).resolves.toEqual([])
+    expect(readTitles).not.toHaveBeenCalled()
+    readTitles.mockRestore()
+  })
+
+  it('labels a cold session from its checkpoint and reads no log', async () => {
+    const ctx = await harness()
+    const target = ctx.sessions.create(SessionId('target'), { meta: { cwd: '/same' } })
+    const cold = { id: SessionId('cold'), createdAt: 10, cwd: '/same' }
+    withProjectionCache(ctx, { cold: 'Cold checkpoint' })
+    vi.spyOn(ctx.sessionQuery, 'listSessions').mockResolvedValue([
+      { header: cold, live: false, persisted: true },
+    ] as never)
+    const readTitles = vi.spyOn(ctx.sessionQuery, 'readTitleSnapshots')
+
+    await expect(ctx.sessionReferenceResolver.listCandidates(fakeAgent(target), 'checkpoint'))
+      .resolves.toEqual([
+        { sessionId: cold.id, label: 'Cold checkpoint', cwd: '/same', sameWorkspace: true, createdAt: 10 },
+      ])
+    expect(readTitles).not.toHaveBeenCalled()
+    vi.restoreAllMocks()
+  })
+
+  it('labels a session no projection answers for by its id, still without a log read', async () => {
+    const ctx = await harness()
+    const target = ctx.sessions.create(SessionId('target'), { meta: { cwd: '/same' } })
+    const seeded = {
+      version: 0,
+      id: SessionId('seeded'),
+      createdAt: 10,
+      cwd: '/same',
+      isSeeded: true,
+    }
+    // Persisted before the cache was composed: the title lives only in its log.
+    withProjectionCache(ctx, { seeded: 'Unsafe body-free title' })
+    vi.spyOn(ctx.sessionQuery, 'listSessions').mockResolvedValue([
+      { header: seeded, live: false, persisted: true },
+    ] as never)
+    const readTitles = vi.spyOn(ctx.sessionQuery, 'readTitleSnapshots')
+
+    await expect(ctx.sessionReferenceResolver.listCandidates(fakeAgent(target))).resolves.toEqual([
+      { sessionId: seeded.id, label: seeded.id, cwd: '/same', sameWorkspace: true, createdAt: 10 },
+    ])
+    // Its own title cannot find it, and discovery still never opens the log.
+    await expect(ctx.sessionReferenceResolver.listCandidates(fakeAgent(target), 'anything')).resolves.toEqual([])
+    expect(readTitles).not.toHaveBeenCalled()
+    vi.restoreAllMocks()
+  })
+
+  it('labels every session by id when no projection face is composed', async () => {
+    const ctx = new Context()
+    await ctx.plugin(SessionStore)
+    await ctx.plugin(TestSessionQueryEngine)
+    await ctx.plugin(SessionReferenceResolver)
+    const target = ctx.sessions.create(SessionId('target'), { meta: { cwd: '/same' } })
+    const other = ctx.sessions.create(SessionId('other'), { meta: { cwd: '/same' } })
+    other.append('session/title', { title: 'Unreadable', messageSeqs: [], source: { kind: 'fallback' } })
+
+    await expect(ctx.sessionReferenceResolver.listCandidates(fakeAgent(target))).resolves.toEqual([
+      { sessionId: other.id, label: other.id, cwd: '/same', sameWorkspace: true, createdAt: other.header.createdAt },
+    ])
+  })
+
   it('serves the Remote face with the configured limit and canonical mentions', async () => {
     const ctx = await harness()
     const target = ctx.sessions.create(SessionId('target'), { meta: { cwd: '/same', createdAt: 10 } })
@@ -296,6 +402,7 @@ describe('session reference discovery and preparation', () => {
       sessionId: SessionId('source]'),
       label: 'source]',
       cwd: '/same',
+      sameWorkspace: true,
       createdAt: 20,
       mention: formatSessionReferenceMention({ sessionId: SessionId('source]'), label: 'source]' }),
     }])
@@ -377,38 +484,15 @@ describe('session reference discovery and preparation', () => {
     )).rejects.toThrow(/invalid session reference URI/)
   })
 
-  it('keeps metadata matches when one title observation fails and cancels a stalled title batch', async () => {
+  it('still matches an unlabeled session on its own metadata', async () => {
     const ctx = await harness()
     const target = ctx.sessions.create(SessionId('target'))
+    // No cwd, no title event: nothing but the id identifies it.
     const source = ctx.sessions.create(SessionId('source'))
-    const readTitles = vi.spyOn(ctx.sessionQuery, 'readTitleSnapshots')
-    readTitles.mockResolvedValueOnce([{
-      sessionId: source.id,
-      status: 'rejected',
-      reason: new Error('broken title log'),
-    }])
 
     await expect(ctx.sessionReferenceResolver.listCandidates(fakeAgent(target), 'source')).resolves.toEqual([
-      { sessionId: source.id, label: source.id, createdAt: source.header.createdAt },
+      { sessionId: source.id, label: source.id, sameWorkspace: false, createdAt: source.header.createdAt },
     ])
-
-    let releaseTitles: (() => void) | undefined
-    let titleSignal: AbortSignal | undefined
-    readTitles.mockImplementationOnce(async (_ids, signal) => {
-      titleSignal = signal
-      await new Promise<void>((resolve) => { releaseTitles = resolve })
-      return []
-    })
-    const controller = new AbortController()
-    const pending = ctx.sessionReferenceResolver.listCandidates(fakeAgent(target), 'source', undefined, controller.signal)
-    await vi.waitFor(() => { expect(releaseTitles).toBeTypeOf('function') })
-    expect(titleSignal).toBe(controller.signal)
-    const cancelledTitles = expect(pending).rejects.toThrow(expectCode('SESSION_REFERENCE_CANCELLED'))
-    controller.abort('autocomplete superseded')
-    await cancelledTitles
-    releaseTitles?.()
-    await Promise.resolve()
-    readTitles.mockRestore()
   })
 
   it('projects only the current user/assistant surface and records snapshot metadata', async () => {
@@ -459,6 +543,31 @@ describe('session reference discovery and preparation', () => {
       { surfaceOp: 'append' },
     )
     expect(context.content[0].text).not.toContain('later source mutation')
+  })
+
+  it('records the current source format generation without rebasing its frozen sequence', async () => {
+    const ctx = await harness()
+    const target = ctx.sessions.create(SessionId('target'))
+    const source = ctx.sessions.create(SessionId('source'))
+    appendConversation(source)
+    const snapshot = await ctx.sessionQuery.readSurface(source.id)
+    vi.spyOn(ctx.sessionQuery, 'readSurface').mockResolvedValue(snapshot)
+
+    const prepared = await ctx.sessionReferenceResolver.prepare(
+      fakeAgent(target),
+      [{ type: 'text', text: 'use @source' }],
+      [{ sessionId: source.id }],
+    )
+
+    const captured = prepared.additionalContext?.source
+    expect(captured).toMatchObject({
+      kind: 'session-reference',
+      references: [{
+        sessionId: source.id,
+        capturedFormatVersion: snapshot.session.version,
+        capturedThroughSeq: snapshot.capturedThroughSeq,
+      }],
+    })
   })
 
   it('excludes injected context when projecting a referenced session', async () => {
@@ -604,6 +713,7 @@ describe('session reference discovery and preparation', () => {
     source.append(
       'assistant/message',
       {
+        stream: [],
         turn: 3,
         step: 1,
         message: createMessage({
@@ -705,6 +815,7 @@ describe('session reference discovery and preparation', () => {
     const later = source.append(
       'assistant/message',
       {
+        stream: [],
         turn: 1,
         step: 1,
         message: createMessage({
@@ -736,7 +847,7 @@ describe('session reference discovery and preparation', () => {
     expect(JSON.stringify(before)).toContain('durable referenced fact')
     expect(JSON.stringify(before)).toContain('use @source')
     expect(JSON.stringify(before)).not.toContain('later source mutation')
-    expect(Session.create(SessionId('replayed-target'), target.events).deriveMessages()).toEqual(before)
+    expect(Session.create(SessionId('replayed-target'), target.snapshotEvents()).deriveMessages()).toEqual(before)
   })
 
   it('rejects direct invalid configuration before service publication', async () => {

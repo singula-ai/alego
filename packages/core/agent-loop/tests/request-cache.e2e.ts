@@ -8,6 +8,7 @@ import ToolRuntime, { defineContentToolFixture } from '@singula-ai/alego-tools'
 import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
 
 import AgentLoop from '@singula-ai/alego-agent-loop'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek'
 
 /**
@@ -41,6 +42,7 @@ async function loopHarness(): Promise<Context> {
   const created = new Context()
   await created.plugin(LlmRuntime)
   await created.plugin(SessionStore)
+  await created.plugin(SessionProjectionRegistry)
   await created.plugin(SystemPrompt, { persona: SYSTEM })
   await created.plugin(ToolRuntime)
   await created.plugin(AgentRegistry)
@@ -71,7 +73,7 @@ function waitForIdle(context: Context, agent: Agent): Promise<void> {
 describe.skipIf(!process.env.DEEPSEEK_API_KEY)('log-derived request cache hits (real API)', () => {
   it('every request after the first hits the provider prefix cache', async () => {
     ctx = await loopHarness()
-    const agent = ctx.agentLoop.create(SessionId('cache-e2e'), { provider: 'deepseek-official', model: 'deepseek-v4-flash' })
+    const agent = await ctx.agentLoop.create(SessionId('cache-e2e'), { provider: 'deepseek-official', model: 'deepseek-v4-flash' })
 
     // Turn 1: forces a tool call → at least two steps (two model requests).
     agent.followup(createUserMessage({ content: [{ type: 'text', text: 'Look up the key "deploy-color" with the lookup tool and tell me the value.' }], source: { kind: 'user' } }))
@@ -80,7 +82,7 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY)('log-derived request cache hits (
     agent.followup(createUserMessage({ content: [{ type: 'text', text: 'Thanks. Repeat that value one more time.' }], source: { kind: 'user' } }))
     await waitForIdle(ctx, agent)
 
-    const usages = [...agent.session.events]
+    const usages = agent.session.snapshotEvents()
       .filter(e => e.type === 'assistant/message')
       .map(e => e.data.usage)
     expect(usages.length).toBeGreaterThanOrEqual(3) // 2 steps in turn 1 + ≥1 in turn 2

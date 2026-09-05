@@ -2,10 +2,12 @@
 import { Context } from '@singula-ai/cordis'
 import { stubSettingsScope } from '@singula-ai/alego-client-test-runtime'
 import { describe, expect, it } from 'vitest'
-import {
-  SlotRegistry, type ConversationSnapshot, type SessionId, type SessionListState,
-  type SessionSummary, type SubagentAddress,
-} from '@singula-ai/alego-client-runtime/client'
+import type {
+  SessionListState, SessionSnapshot, SessionSummary,
+} from '@singula-ai/alego-api-session-controller/client'
+import type { SubagentAddress } from '@singula-ai/alego-subagent/client'
+import { SlotRegistry } from '@singula-ai/alego-client-ui-renderer/client'
+import type { SessionId } from '@singula-ai/alego-session/types'
 import type { ComposerChainProps } from '@singula-ai/alego-client-ui-conversation/client'
 import { apply as applyLocale, inject as localeInject } from '@singula-ai/alego-client-locale/client'
 import {
@@ -68,7 +70,6 @@ async function fullBench(sessions: SessionSummary[]) {
   const ctx = new Context()
   const face = sessionsWith(sessions)
   ctx.provide('sessions', face)
-  ctx.provide('connection', { api: { settings: {} }, isLoopback: false } as never)
   ctx.provide('remote', { $on: () => () => {} } as never)
   ctx.provide('settingsScope', { bind: () => stubSettingsScope().scope } as never)
   await provideSlotFaces(ctx)
@@ -115,13 +116,14 @@ describe('apply', () => {
       .find(entry => entry.component === SubagentReadOnlyComposer)!
     const select = composerEntry.select as (owner: ComposerChainProps) => SubagentReadOnlyMatch | null
     const owner = (
-      subagent: ConversationSnapshot['subagent'] | undefined,
+      subagent: SessionSnapshot['subagent'] | undefined,
       running = false,
     ): ComposerChainProps => ({
-      interactions: [],
+      sessionId: subagent?.address.childSessionId,
       session: subagent === undefined
         ? undefined
-        : ({ subagent, running } as unknown as ConversationSnapshot),
+        : ({ subagent, running } as SessionSnapshot),
+      pendingInteraction: undefined,
     })
     expect(select(owner(undefined))).toBeNull()
     expect(select(owner(null))).toBeNull()
@@ -130,6 +132,7 @@ describe('apply', () => {
     // One-shot stays read-only even while running: it has no stop action.
     expect(select(owner({ address: { ...address, mode: 'one-shot' }, parentAvailable: true }, true)))
       .toEqual({ reason: 'one-shot' })
+    expect(select(owner({ address }))).toBeNull()
     expect(select(owner({ address, parentAvailable: true }))).toBeNull()
     expect(select(owner({ address, parentAvailable: false })))
       .toEqual({ reason: 'parent-unavailable' })

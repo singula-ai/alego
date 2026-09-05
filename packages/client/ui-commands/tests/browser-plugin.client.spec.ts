@@ -8,8 +8,9 @@
  */
 import { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
-import { createScope, scopeOf, SlotRegistry } from '@singula-ai/alego-client-runtime/client'
-import type { SessionId } from '@singula-ai/alego-client-runtime/client'
+import { createScope, scopeOf } from '@singula-ai/alego-api-session-controller/client'
+import { SlotRegistry } from '@singula-ai/alego-client-ui-renderer/client'
+import type { SessionId } from '@singula-ai/alego-session/types'
 import type { InputTriggerSource } from '@singula-ai/alego-client-ui-input-trigger/client'
 import type { CommandUiContract } from '../src/client/contract.ts'
 import type { PopupSelectInjected } from '../src/client/PopupSelectView.tsx'

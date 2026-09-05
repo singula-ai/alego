@@ -18,10 +18,11 @@ import {
   webSnapshotMode,
   type WebScaffold,
 } from './scaffold.ts'
-import { connectFreshWorkspace, newEnglishPage, saveFailureShot } from './support.ts'
+import { connectFreshWorkspace, newEnglishPage, saveFailureShot, writeComposerDraft } from './support.ts'
 
-const SNAPSHOT_DIR = fileURLToPath(new URL('./snapshots/skill-invocation-policy', import.meta.url))
+const SNAPSHOT_DIR = fileURLToPath(new URL('./expected/skill-invocation-policy', import.meta.url))
 const MENU_EXPECTED = join(SNAPSHOT_DIR, 'menu.expected.md')
+const FUZZY_MENU_EXPECTED = join(SNAPSHOT_DIR, 'menu-fuzzy.expected.md')
 const MODE = webSnapshotMode()
 
 interface SeedSkill {
@@ -83,7 +84,7 @@ describe('web e2e: skill invocation policy through the real host', () => {
     browser = await chromium.launch()
     page = await newEnglishPage(browser)
     tripwire = watchConsole(page)
-    await page.goto(scaffold.baseUrl, { waitUntil: 'load' })
+    await page.goto(scaffold.authenticatedUrl, { waitUntil: 'load' })
     await page.waitForSelector('[class*="frame"]', { timeout: 30_000 })
     await connectFreshWorkspace(page, scaffold.workspaceCwd)
   }, 120_000)
@@ -95,7 +96,7 @@ describe('web e2e: skill invocation policy through the real host', () => {
 
   it('renders every user-invocable skill and marks the user-only entry', async () => {
     onTestFailed(() => saveFailureShot(page, 'web-e2e-skill-invocation-policy'))
-    const input = page.locator('textarea').first()
+    const input = page.locator('[data-composer-input]').first()
     await input.fill('/policy')
     const menu = page.getByRole('listbox', { name: 'Trigger suggestions' })
     await expect.poll(
@@ -111,8 +112,16 @@ describe('web e2e: skill invocation policy through the real host', () => {
 
     const snapshot = await captureStableAria(page, '[role="listbox"]', scaffold.workspaceCwd)
     await compareOrRefreshGolden(MENU_EXPECTED, snapshot, MODE)
+
+    // Discovery needs no prefix: an in-order subsequence of one skill name
+    // ranks that skill alone, through the ranker the command group uses.
+    await writeComposerDraft(page, input, '/plcyusr')
+    await expect.poll(() => menu.getByRole('option').count(), { timeout: 10_000 }).toBe(1)
+    expect(await menu.getByRole('option', { name: /policy-user-only/ }).count()).toBe(1)
+    const fuzzySnapshot = await captureStableAria(page, '[role="listbox"]', scaffold.workspaceCwd)
+    await compareOrRefreshGolden(FUZZY_MENU_EXPECTED, fuzzySnapshot, MODE)
     expect(tripwire.pageErrors).toEqual([])
     expect(tripwire.warnings).toEqual([])
-    await assertFixtureInventory(SNAPSHOT_DIR, ['menu.expected.md'])
+    await assertFixtureInventory(SNAPSHOT_DIR, ['menu-fuzzy.expected.md', 'menu.expected.md'])
   })
 })

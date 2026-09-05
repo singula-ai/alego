@@ -95,4 +95,4 @@ PENDING → LOADING → ACTIVE → UNLOADING → DISPOSED
 
 下一章：[服务](03-services.zh.md)：插件如何共享功能。
 
-[![](https://img.shields.io/badge/powered_by-alego-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/singula-ai/alego)
+[![](https://img.shields.io/badge/powered_by-alego-F5A524?style=flat-square)](https://github.com/singula-ai/alego)

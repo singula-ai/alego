@@ -2,15 +2,17 @@
 
 English | [中文](README.zh.md)
 
-Alego (`alego`) is an open-source agent harness: the building-block foundation for AI agent applications, where every capability arrives as a plugin you snap in.
+Alego (`alego`) is an open-source agent harness from Singula AI: a building-block foundation for AI agent applications.
 
-It uses an architecture where **everything is a plugin**, and is powered by [Cordis](https://github.com/cordiverse/cordis), whose design is described in [_A Programming Paradigm for Spatiotemporal Composability_](https://github.com/cordiverse/paper).
+It is built on an **everything-is-a-plugin** architecture and powered by [Cordis](https://github.com/cordiverse/cordis), whose design is described in [_A Programming Paradigm for Spatiotemporal Composability_](https://arxiv.org/abs/2608.25512).
 
-Alego is a fork of [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness), rebranded and developed independently. It is not affiliated with, endorsed by, or sponsored by DeepSeek.
+Alego is an independent fork of [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness), with no affiliation or endorsement from DeepSeek. Start with the [documentation](docs/user/index.md).
 
 ## Developer preview
 
-Alego is currently in _developer preview_ and is iterating rapidly. **THERE WILL BE COMPATIBILITY-BREAKING CHANGES.**
+Alego is in _developer preview_ and iterating rapidly. **THERE WILL BE COMPATIBILITY-BREAKING CHANGES.**
+
+Review the [safety notice](SAFETY.md) before running the project.
 
 ## Run
 
@@ -26,15 +28,13 @@ The command starts the Web UI at `http://127.0.0.1:3080` by default and opens it
 
 ### Run from source
 
-One command installs it on Linux/macOS (requires `git` and Node.js `^22.19.0 || >=24`; pnpm is provided through corepack when missing):
+On Linux/macOS, the source installer builds Alego and adds a launcher in `~/.local/bin`:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/singula-ai/alego/main/install.sh | bash
 ```
 
-The script clones the repository into `~/.alego-src`, installs dependencies, builds the runtime and Web UI, and writes an `alego` launcher into `~/.local/bin`; run `alego web` afterwards. Re-running the same command updates the checkout and rebuilds. `ALEGO_SRC_DIR`, `ALEGO_BIN_DIR`, `ALEGO_REPO`, and `ALEGO_REF` override the defaults; uninstall by removing the launcher and the checkout directory.
-
-To run from a repository checkout manually:
+To run from a repository checkout:
 
 ```sh
 git clone https://github.com/singula-ai/alego.git
@@ -48,9 +48,9 @@ pnpm alego web
 
 ## Community and support
 
-- Project site: <https://alego.dev>.
-- Feel free to submit feedback or bug reports through [GitHub Discussions](https://github.com/singula-ai/alego/discussions).
+- Submit feedback or bug reports through [GitHub Discussions](https://github.com/singula-ai/alego/discussions).
 - Add the [`alego-plugin`](https://github.com/topics/alego-plugin) topic to your plugin repository for discoverability.
+- Project site: <https://alego.dev>.
 
 ## Contributing
 

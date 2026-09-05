@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/llm/deepseek-llm-api-extensions/README.md
+README.md: 6a3044819e343b49d218a849ef2d2059fa5df5d3
+README.zh.md: ad07325f2968bb63886eebd7dc86130938af4bd4

@@ -16,6 +16,8 @@ Status: implemented
 
 **`dsh` 仅在作为完整标识符片段时才被重命名。** 片段由分隔符或大小写变化界定：`dsh-`、`dsh_`、`DSH_`、`Dsh`、`dsh` 后接大写字母，以及处于单词边界的裸 `dsh`。位于单词内部的 `dsh` 保持不变，这正是 `handshake` 得以完好的原因。
 
+DeepSeek HTTP 扩展保留上游协议名称 `x-dsh-user-id`、`x-dsh-session-id`、`x-dsh-compact`、`dsh_plugin_packages` 和 `dsh_session_log`。它们标识提供方协议字段，而非 Alego 命令或配置。User-Agent 中的产品名和包身份仍使用 Alego。
+
 **scope 命名公司，前缀命名产品**，与上游的做法完全一致。`@deepseek-ai/dsh-<name>` 变为 `@singula-ai/alego-<name>`，而 CLI 包——上游的裸 `@deepseek-ai/dsh`——变为裸 `@singula-ai/alego`，因此对外发布的入口是 `npx @singula-ai/alego web`。Singula AI 拥有不止一个产品，所以 scope 归公司所有，产品名落在包名里。
 
 **上游未加产品前缀的包，这里同样不加。** 重新 scope 的 Cordis vendor 树（`@singula-ai/cordis`、`@singula-ai/schemastery`、`@singula-ai/cosmokit`、`@singula-ai/cordis-plugin-*`）、Landlock addon 家族与 website 都不带 `alego-` 前缀，因为它们不是产品。正是这一点使得一次前缀判断就能把 MIT 产品与共享同一 scope 的其他东西区分开。
@@ -26,9 +28,17 @@ Status: implemented
 
 scope 命名的是公司，但用户实际输入的一切都没有随之改变。命令仍是 `alego`，环境变量前缀仍是 `ALEGO_`，用户级目录仍是 `~/.alego`，插件 manifest 键仍是 `alego`，CSS 自定义属性仍是 `--alego-*`，JSDoc 扫描标签仍是 `@alegoScopeScan`。第三方插件以 `alego-plugin-*` 的形式、通过 [`alego-plugin`](https://github.com/topics/alego-plugin) 话题被发现。npm 包名是唯一携带公司名的表面，这让插件生态继续以它所扩展的产品为锚。
 
-## The frozen archive was re-sealed
+## Upstream synchronization
 
-`archived/manifest.json` 是只追加的，以保证归档 Agent Note 不可更改。而仓库范围的重命名必然会重写它们的文本，因此该 manifest 被整体重新封存——这是冻结机制未曾预期的唯一一处改动。这些文件中除品牌 token 外没有任何变化，也没有任何归档决策被修改。
+源码基线为 [deepseek-ai/deepseek-harness 的 `d347e703908d0406b7a7ef80e3a0e594d86b2215`](https://github.com/deepseek-ai/deepseek-harness/commit/d347e703908d0406b7a7ef80e3a0e594d86b2215)，版本为 `0.1.3-alpha.1`。导入包含上游的每个受跟踪文件，并移除过时源码路径；fork 的改动集中于命名、品牌图形和仓库目标。运行时行为、会话迁移、包布局和测试结构均由上游定义。源码安装脚本仍作为 Alego 的便捷分发方式。
+
+现有归档三件套保留逐字节内容及封存哈希。上游只新增三件套，不修改旧文件；新导入文件在首次 Alego 封存前应用相同的品牌映射。二进制图片和不透明编码数据不参与文本替换。包含字面 NUL 测试输入的源文件仍须更新标识符。
+
+侧栏和首屏使用相同的 Alego 积木标志。首屏保留上游 slot 及遵循减少动画偏好的悬停动画，以积木图形替换鲸鱼路径形变。GitHub 源码链接和 push 工作流指向 `singula-ai/alego` 的 `main`；必需 CI 使用本仓库可用的托管 runner。Cloudflare 预览要求仓库显式启用 `ALEGO_CLOUDFLARE_PREVIEW_ENABLED`。
+
+自托管备用演练要求启用 `ALEGO_SELF_HOSTED_STANDBY_ENABLED`；本仓库没有配置备用 runner。仅适用于上游的 CDN 发布记录以原始基础设施身份归档。本地验证要求文档构建显式解析 Vue，并在删除会话目录前释放 subagent-list 测试的 context；两者均不改变应用行为。
+
+E2E 工作流的可选 `record_brand_demo` 输入选择现有的真实 Host、真实模型首轮发送冒烟测试，并上传同一次隔离运行的空白、输入完成和回复完成画面。普通运行保留完整 E2E 套件。截图等待持久化的 Assistant 回复及其精确渲染文本，而非提示词回显中的标记。UI 文案门禁允许各语言共用字面量 `alego` 字标，但仍拒绝包含它的未翻译短语。
 
 ## Alternatives considered
 
@@ -38,10 +48,10 @@ scope 命名的是公司，但用户实际输入的一切都没有随之改变�
 
 ## Consequences
 
-harness 中已不含任何 DeepSeek 品牌 token，同时每一处 DeepSeek 集成仍能对真实 API 正常工作。插件面的形态没有任何变化：[examples/hello-world](../../../../examples/hello-world/README.zh.md) 从 `cordis.yml` 挂载一个插件，其无密钥 smoke 断言该工具已注册、出现在模型可见的 schema 列表中、可以执行，并在插件 fiber 被销毁时撤回。
+产品使用 Alego 身份，而 DeepSeek 集成保留其外部服务名称。上游的[已构建 CLI 测试](../../../../apps/cli/tests/built-bin.e2e.ts)通过发布的 `alego` 入口验证自定义 profile 和插件安装。录制会话场景保留上游[快照布局](../../../../snapshots/AGENTS.md)，验证重命名后的 profile、工具 schema 和 SDK 投影。
 
 由于命名结构与上游一一对应，[`verify-alego-package-licenses`](../../../../scripts/verify-alego-package-licenses.ts)、[`verify-client-packages`](../../../../scripts/verify-client-packages.ts) 与 [`package-graph`](../../../../scripts/package-graph.ts) 保留了上游的逻辑，只替换了两个品牌 token，因此将来与上游同步时不存在需要调和的命名分歧。
 
 代价是长度：每个 import 处都要写 `@singula-ai/alego-client-ui-settings-plugin-inventory`，并且要输入公司名才能触达产品。
 
-包名、`alego` 命令、`ALEGO_*`、`alego` manifest 键与 `~/.alego` 一次性全部改变，因此任何依据旧名写下的磁盘状态、环境变量或组合都无法再被读取。[AGENTS.md](../../../../AGENTS.md) 中的预发布立场正允许这样做，且不存在需要迁移的外部消费方。
+包名、命令、环境变量、manifest 字段和主目录统一使用 Alego。上游已发布会话的迁移规则保持完整；不引入 DeepSeek Harness 产品身份的兼容别名。

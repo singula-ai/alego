@@ -15,7 +15,7 @@ import { Context } from '@singula-ai/cordis'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { Agent } from '@singula-ai/alego-agent'
 import SubagentRuntime from '@singula-ai/alego-subagent'
-import type { SubagentResult } from '@singula-ai/alego-subagent'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import type { SubprocessHandle } from '@singula-ai/alego-subprocess'
 import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 import * as codex from '../src/index.ts'
@@ -31,28 +31,6 @@ const codexPackage = JSON.parse(readFileSync(
   'utf8',
 )) as { version: string; bin: { codex: string } }
 const codexEntry = resolve(dirname(codexPackageJson), codexPackage.bin.codex)
-
-/**
- * Describe why a run did not complete, for the assertion that reports it.
- *
- * A bare `expected 'error' to be 'completed'` names no cause, and the provider
- * diagnostic and the bridge's own refusals are the only records of one.
- * @param result - the settled run result.
- * @param bridge - the bridge that served the run.
- * @returns Provider diagnostic and bridge failures, or a note that neither exists.
- */
-function failureDetail(result: SubagentResult, bridge: DeepSeekResponsesBridge): string {
-  // Codex retries hard, so one cause can appear dozens of times; the counted
-  // set keeps the message bounded while still naming every distinct reason.
-  const counted = new Map<string, number>()
-  for (const failure of bridge.failures) counted.set(failure, (counted.get(failure) ?? 0) + 1)
-  const summary = [...counted].map(([reason, times]) => `${String(times)}x ${reason}`).join('; ')
-  const parts = [
-    result.diagnostic === undefined ? undefined : `diagnostic: ${result.diagnostic}`,
-    summary === '' ? undefined : `bridge: ${summary}`,
-  ].filter((part): part is string => part !== undefined)
-  return parts.length === 0 ? 'no provider diagnostic and no bridge failure' : parts.join(' | ')
-}
 
 const roots: string[] = []
 const contexts: Context[] = []
@@ -119,6 +97,7 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY)(
       }
       const ctx = new Context()
       contexts.push(ctx)
+      await ctx.plugin(SessionProjectionRegistry)
       await ctx.plugin(SubagentRuntime)
       await ctx.plugin(LocalSubprocessRuntime)
       const handles: SubprocessHandle[] = []
@@ -132,8 +111,8 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY)(
       const version = await execFileAsync(process.execPath, [codexEntry, '--version'], {
         env: { ...process.env, ...env },
       })
-      expect(codexPackage.version).toBe('0.147.0')
-      expect(version.stdout.trim()).toBe('codex-cli 0.147.0')
+      expect(codexPackage.version).toBe('0.149.1')
+      expect(version.stdout.trim()).toBe('codex-cli 0.149.1')
 
       const parent = {
         id: 'deepseek-e2e-parent',
@@ -150,7 +129,7 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY)(
       const result = await run.result
       await run.dispose()
 
-      expect(result.stopReason, failureDetail(result, bridge)).toBe('completed')
+      expect(result.stopReason).toBe('completed')
       const text = result.output
         .filter(block => block.type === 'text')
         .map(block => block.text)

@@ -6,14 +6,13 @@ import { join } from 'node:path'
 import LlmRuntime, { LlmAdapter } from '@singula-ai/alego-llm'
 import { credentialRef } from '@singula-ai/alego-credentials'
 import { LocalCredentialProvider } from '@singula-ai/alego-credentials-local'
-import { settingsNamespace } from '@singula-ai/alego-settings'
 import { FileSettingsProvider } from '@singula-ai/alego-settings-file'
 import * as LlmPiAi from '@singula-ai/alego-llm-pi-ai'
 import AuthorizationService from '@singula-ai/alego-authorization'
 import { assemble } from './assemble.ts'
 import { closeMockServers, mockServer, textEvents } from './mock-server.ts'
 
-const NS = settingsNamespace('llm-pi-ai')
+const NS = 'llm-pi-ai'
 
 /** Minimal foreign adapter: only needs to own a route the pi-ai plugin then wants. */
 class StubAdapter extends LlmAdapter {
@@ -37,7 +36,6 @@ async function home(): Promise<string> {
   return dir
 }
 
-/** Real dynamic composition mirroring the deepseek twin's harness. */
 async function boot(
   dir: string,
   config: LlmPiAi.Config,
@@ -192,6 +190,11 @@ describe('request-level dynamic profiles', () => {
     // and then quietly disabling every route in the namespace.
     await expect(ctx.settings.update(NS, { providers: { 'not-a-real-provider': {} } }))
       .rejects.toThrow(/resolves no models/)
+    expect(ctx.llm.listProviders().map(provider => provider.id)).toEqual(['openai'])
+
+    await expect(ctx.settings.update(NS, {
+      providers: { openai: { headers: { 'bad header name': 'value' } } },
+    })).rejects.toThrow(/provider "openai" header "bad header name" is not valid for Fetch/)
     expect(ctx.llm.listProviders().map(provider => provider.id)).toEqual(['openai'])
   })
 

@@ -51,7 +51,7 @@ describe('tierExternalDeps', () => {
       'website/package.json': { devDependencies: { 'site-tool': '^1' } },
       // A plugin package's runtime dependency ships even when no app mounts it by default.
       'packages/mcp/mcp-client/package.json': { name: '@singula-ai/alego-mcp-client', dependencies: { 'protocol-sdk': '^1' }, devDependencies: { 'protocol-fixture-server': '^1' } },
-      'apps/cli/package.json': { name: '@singula-ai/alego', dependencies: { 'cli-lib': '^1', '@singula-ai/alego-mcp-client': 'workspace:^' } },
+      'apps/cli/package.json': { name: '@singula-ai/alego-cli', dependencies: { 'cli-lib': '^1', '@singula-ai/alego-mcp-client': 'workspace:^' } },
     })
 
     expect(tierExternalDeps(manifests, names)).toEqual(new Map([
@@ -70,12 +70,12 @@ describe('tierExternalDeps', () => {
   it('keeps a package runtime when any shipping area declares it, and excludes workspace links', () => {
     const { manifests, names } = workspace({
       'package.json': { devDependencies: { shared: '^1' } },
-      'packages/interaction/tui/package.json': { name: '@singula-ai/alego-tui', dependencies: { shared: '^1', '@singula-ai/alego': 'workspace:^' } },
-      'apps/cli/package.json': { name: '@singula-ai/alego' },
+      'packages/interaction/tui/package.json': { name: '@singula-ai/alego-tui', dependencies: { shared: '^1', '@singula-ai/alego-cli': 'workspace:^' } },
+      'apps/cli/package.json': { name: '@singula-ai/alego-cli' },
     })
 
     expect(tierExternalDeps(manifests, names).get('shared')).toBe(true)
-    expect(tierExternalDeps(manifests, names).has('@singula-ai/alego')).toBe(false)
+    expect(tierExternalDeps(manifests, names).has('@singula-ai/alego-cli')).toBe(false)
   })
 })
 
@@ -109,6 +109,24 @@ describe('virtualManifest', () => {
       writeFileSync(join(manifestDir, 'package.json'), JSON.stringify({ name, version, license: 'Apache-2.0' }))
 
       expect(virtualManifest(store, name)).toMatchObject({ name, version, license: 'Apache-2.0' })
+    } finally {
+      rmSync(root, { recursive: true, force: true })
+    }
+  })
+
+  it('selects the requested version when the store retains historical copies', () => {
+    const root = mkdtempSync(join(tmpdir(), 'alego-notices-version-'))
+    try {
+      const name = '@scope/pkg'
+      const store = join(root, 'store')
+      for (const version of ['1.0.0', '2.0.0']) {
+        const manifestDir = join(store, `${name.replace('/', '+')}@${version}`, 'node_modules', name)
+        mkdirSync(manifestDir, { recursive: true })
+        writeFileSync(join(manifestDir, 'package.json'), JSON.stringify({ name, version, license: 'MIT' }))
+      }
+
+      expect(virtualManifest(store, name, '2.0.0')).toMatchObject({ name, version: '2.0.0' })
+      expect(virtualManifest(store, name, '3.0.0')).toBeUndefined()
     } finally {
       rmSync(root, { recursive: true, force: true })
     }
@@ -231,10 +249,10 @@ describe('collectPythonDependencies', () => {
   it('excludes normalized local project names without exempting a third-party prefix', () => {
     const pyprojects = [
       '[project]\nname = "alego-runtime-bin"\ndependencies = ["pydantic"]\n',
-      '[project]\nname = "alego-sdk"\ndependencies = ["Alego_Runtime-Bin", "deepseek-unrelated"]\n',
+      '[project]\nname = "alego-sdk"\ndependencies = ["Alego.Runtime_Bin", "alego-unrelated"]\n',
     ]
     expect(() => collectPythonDependencies(pyprojects)).toThrow(
-      'python dependency deepseek-unrelated is missing from PYTHON_METADATA',
+      'python dependency alego-unrelated is missing from PYTHON_METADATA',
     )
   })
 })
@@ -339,7 +357,6 @@ describe('manifestPatterns', () => {
       'tools/*/package.json',
       'native/landlock-run/package.json',
       'native/landlock-run/packages/*/package.json',
-      'examples/*/package.json',
     ])
   })
 })

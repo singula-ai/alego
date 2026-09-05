@@ -40,7 +40,7 @@ always 模式先请求下游恢复，使上下文溢出压缩（compaction）之
 
 两种模式的本地延迟都按指数增长，从 `initialDelayMs` 增至 `maxDelayMs`。`jitterRatio` 用 `[1 - jitterRatio, 1 + jitterRatio]` 区间内的均匀随机样本乘以每次目标值，再应用上限。提供方给出的正数 `Retry-After` 若未超过上限，则保持精确且不加抖动。若提供方延迟超过上限，normal 模式会委托后续处理；always 模式则改用配置的本地退避，以维持无限重试保证。
 
-每次安排重试都会追加一条不进入表层的 `llm/retry` 事件，其中包含失败的提供方、策略模式、已解析策略的规范键、提供方策略内的重试编号、延迟和失败事实。normal 事件包含有限的 `maxRetries`；always 事件省略该字段，UI 将上限渲染为 `∞`。该事件与失败的 `assistant/chunk` 记录都不会生成表层消息，因此除非其他恢复策略有意改变表层，否则下一次请求包含的派生上下文与失败请求相同。
+每次安排 retry 都会追加一条不进入 surface 的 `llm/retry` event，其中包含失败 provider、policy mode、resolved policy 的规范 key、provider-policy retry number、delay 与 failure facts。normal event 包含有限 `maxRetries`；always event 省略该字段，UI 把上限渲染为 `∞`。该 event 与失败 attempt 的 `assistant/attempt` settlement 都不产生 surface message，因此除非其他 recovery policy 有意改变 surface，否则下一次请求包含与失败请求相同的派生 context。
 
 ## 曾考虑的替代方案
 
@@ -62,7 +62,7 @@ always 模式先请求下游恢复，使上下文溢出压缩（compaction）之
 
 ## 验证
 
-适配器测试会在提供方加载时校验嵌套策略，证明显式 profile 策略抵达注册流程，证明省略配置会解析为五次重试，并证明请求进行期间替换路由后仍会保留实际提供服务的策略。LLM 服务测试会证明适配器策略被捕获，且省略配置使用共享的五次重试行为。解析器测试会证明 always 模式忽略残留的 normal 专属字段，但返回纯 always 策略。单元测试根据失败请求实际使用的注册项选择策略、分离不同提供方和策略变更后的重试历史、验证 always 模式可越过 normal 预算、固定抖动和延迟上限、证明下游恢复顺序、证明取消与 dispose 会先排空已委托的恢复再达到完全停稳，并证明二者都会停止正在进行的退避等待。请求级覆盖会比较失败尝试与重试尝试的完整消息，并排除提供方错误文本和丢弃的部分输出。一个无密钥 headless `stream-json` 快照会通过组装后的应用执行失败、重试与成功流程，固定完整的 `llm/retry` 记录，并拒绝各次尝试之间出现任何模型消息变化。随附的 Web 组合快照会把省略配置的 DeepSeek 与 pi-ai 策略固定为五次重试，再证明 settings 可以写入 `{ mode: 'always', maxRetries: 5 }` 并得到纯 always 策略。JSONL 与 SQLite 测试会往返读写不含 `Infinity` 的 always 事件；不变式测试会将提供方标识绑定到请求头、校验失败事实和各模式的计时器边界，并将重试编号绑定到提供方策略键；TUI 测试会渲染有限和无限上限。
+适配器测试会在提供方加载时校验嵌套策略，证明显式 profile 策略抵达注册流程，证明省略配置会解析为五次重试，并证明请求进行期间替换路由后仍会保留实际提供服务的策略。LLM 服务测试会证明适配器策略被捕获，且省略配置使用共享的五次重试行为。解析器测试会证明 always 模式忽略残留的 normal 专属字段，但返回纯 always 策略。单元测试根据失败请求实际使用的注册项选择策略、分离不同提供方和策略变更后的重试历史、验证 always 模式可越过 normal 预算、固定抖动和延迟上限、证明下游恢复顺序、证明取消与 dispose 会先排空已委托的恢复再达到完全停稳，并证明二者都会停止正在进行的退避等待。请求级覆盖会比较失败尝试与重试尝试的完整消息，并排除提供方错误文本和丢弃的部分输出。一个无密钥 headless `stream-json` 快照会通过组装后的应用执行失败、重试与成功流程，固定完整的 `llm/retry` 记录，并拒绝各次尝试之间出现任何模型消息变化。随附的 Web 组合快照会把省略配置的 DeepSeek 与 pi-ai 策略固定为五次重试，再证明 settings 可以写入 `{ mode: 'always', maxRetries: 5 }` 并得到纯 always 策略。JSONL 测试会往返读写不含 `Infinity` 的 always 事件；不变式测试会将提供方标识绑定到请求头、校验失败事实和各模式的计时器边界，并将重试编号绑定到提供方策略键；TUI 测试会渲染有限和无限上限。
 
 ## 后果
 

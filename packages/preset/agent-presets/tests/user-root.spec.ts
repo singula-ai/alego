@@ -10,7 +10,7 @@
  * temporary home, or it would reach the developer's real one.
  */
 
-import { mkdtemp, mkdir, writeFile } from 'node:fs/promises'
+import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
@@ -18,6 +18,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { Context } from '@singula-ai/cordis'
 import Loader from '@singula-ai/cordis-plugin-loader'
 import Include from '@singula-ai/cordis-plugin-include'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import AgentPresets, { COMPOSITION_FILE, type Config } from '@singula-ai/alego-agent-presets'
 
@@ -30,15 +31,20 @@ const VALID = '- id: tool-alpha\n  name: ../../plugins/contribute.js\n  config:\
 let home: string
 let previousHome: string | undefined
 
+/** Extra per-test roots, removed with the home directory. */
+const explicitRoots: string[] = []
+
 beforeEach(async () => {
   home = await mkdtemp(join(tmpdir(), 'alego-preset-home-'))
   previousHome = process.env.ALEGO_HOME
   process.env.ALEGO_HOME = home
 })
 
-afterEach(() => {
+afterEach(async () => {
   if (previousHome === undefined) delete process.env.ALEGO_HOME
   else process.env.ALEGO_HOME = previousHome
+  await rm(home, { recursive: true, force: true })
+  for (const root of explicitRoots.splice(0)) await rm(root, { recursive: true, force: true })
 })
 
 /** Boot a roster over the fixture system root, with the derived root left to the plugin. */
@@ -47,9 +53,12 @@ async function roster(config: Partial<Config> = {}): Promise<Context> {
   ctx.baseUrl = pathToFileURL(FIXTURES).href + '/'
   await ctx.plugin(Loader)
   ctx.loader.builtins.include = Include
+  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(AgentPresets, {
     default: 'standard',
     roots: [{ path: SYSTEM_ROOT, trust: 'system' as const }],
+    // The package's shipped presets would shadow this file's fixture ids.
+    includeShippedRoot: false,
     includeUserRoot: true,
     ...config,
   })
@@ -116,6 +125,7 @@ describe('the harness-home preset root', () => {
 
   it('yields to a configured user root for authoring, which writableRoot takes first', async () => {
     const explicit = await mkdtemp(join(tmpdir(), 'alego-preset-explicit-'))
+    explicitRoots.push(explicit)
     const ctx = await roster({
       roots: [
         { path: SYSTEM_ROOT, trust: 'system' as const },

@@ -8,6 +8,7 @@ import { Context } from '@singula-ai/cordis'
 import { launcherPath } from '@singula-ai/node-addon-landlock-run'
 import { LocalSandboxProvider } from '@singula-ai/alego-sandbox-local'
 import { SandboxPolicyService } from '@singula-ai/alego-sandbox-policy'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { SandboxBashExecutor } from '@singula-ai/alego-bash-sandbox'
 import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 
@@ -47,6 +48,7 @@ async function sandboxedBash(workspace: string, mode: 'read-only' | 'workspace-w
   ctx = new Context()
   await ctx.plugin(LocalSandboxProvider, {})
   ;(ctx.sandbox as LocalSandboxProvider).internals = { probeBwrap: () => false }
+  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(SandboxPolicyService, { mode, workspaceRoot: workspace })
   await ctx.plugin(LocalSubprocessRuntime)
   await ctx.plugin(SandboxBashExecutor, { cwd: workspace, timeoutMs: 30_000 })

@@ -1,0 +1,33 @@
+# Bounded-task admission overlay: keep the ordinary ACP composition while
+# configuring its task provider to allow one active task per exact owner. The
+# scenario starts a real background Bash process, observes the second producer
+# rejection, and cleans up the first task by its returned id.
+- id: agent-default-model
+  name: '@singula-ai/alego-agent-default-model'
+  config:
+    provider: deepseek-official
+    model: deepseek-v4-flash
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: !!js 'process.env.ALEGO_SNAPSHOT === undefined ? ''zstd'' : ''none'''
+
+- id: agent-instructions
+  name: '@singula-ai/alego-agent-instructions'
+  config:
+    maxBytes: 65536
+
+- id: system-prompt
+  name: '@singula-ai/alego-system-prompt'
+  config:
+    persona: |
+      You are a coding assistant powered by the {{model}} model. Your working directory is {{cwd}}. Your bash tool runs under a file sandbox — a `[sandbox: file access denied …]` result is policy, not a command bug.
+
+      Verify your work by running the code or tests. Keep answers brief and factual.
+
+- id: jobs
+  name: '@singula-ai/alego-jobs-local'
+  config:
+    maxConcurrentJobsPerOwner: 1

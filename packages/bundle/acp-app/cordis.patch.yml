@@ -1,0 +1,20 @@
+# The automation-only ACP application over alego-base. Stdout belongs to ACP.
+
+- id: system-prompt
+  config:
+    persona: >-
+      You are a coding agent powered by the {{model}} model. Your working directory is {{cwd}}.
+
+- id: session-title-llm
+  disabled: true
+
+- insert:
+    - id: acp-app-startup
+      name: '@singula-ai/alego-acp-app'
+
+    - id: acp
+      name: '@singula-ai/alego-acp'
+      inject: [acpAppStartup]
+      config:
+        provider: deepseek-official
+        model: deepseek-v4-flash

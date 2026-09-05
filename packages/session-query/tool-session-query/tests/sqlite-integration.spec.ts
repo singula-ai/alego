@@ -4,12 +4,15 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { Agent } from '@singula-ai/alego-agent'
-import { createUserMessage, CallId  } from '@singula-ai/alego-llm'
+import { createUserMessage, ToolCallId  } from '@singula-ai/alego-llm'
 import SessionStore, {
   SESSION_FORMAT_VERSION,
   SessionId,
+  SessionSeq,
   type Session,
 } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import { turnBoundaryProjectionDefinition } from '@singula-ai/alego-agent-loop'
 import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import SqliteSessionQueryEngine from '@singula-ai/alego-session-query-sqlite'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
@@ -30,6 +33,10 @@ function fakeAgent(session: Session): Agent {
   return { id: session.id, session } as unknown as Agent
 }
 
+function registerTurnBoundary(ctx: Context): void {
+  ctx.sessionProjections.register(turnBoundaryProjectionDefinition)
+}
+
 describe('tool-session-query with the real SQLite provider', () => {
   it('searches live prior-step history and a persisted same-workspace log', { timeout: 20_000 }, async () => {
     const root = await mkdtemp(join(tmpdir(), 'alego-tool-session-query-'))
@@ -37,6 +44,8 @@ describe('tool-session-query with the real SQLite provider', () => {
     const ctx = new Context()
     contexts.push(ctx)
     await ctx.plugin(SessionStore)
+    await ctx.plugin(SessionProjectionRegistry)
+    registerTurnBoundary(ctx)
     await ctx.plugin(SystemPrompt)
     await ctx.plugin(ToolRuntime)
     await ctx.plugin(JsonlSessionPersistence, { root, compression: 'none' })
@@ -44,15 +53,16 @@ describe('tool-session-query with the real SQLite provider', () => {
     await ctx.plugin(ToolSessionQuery)
 
     const persisted = SessionId('persisted')
-    await ctx.sessionPersistence.create({
+    const writer = await ctx.sessionPersistence.create({
       version: SESSION_FORMAT_VERSION,
       id: persisted,
       createdAt: 1,
       cwd: '/work',
+      isSeeded: false,
     })
-    await ctx.sessionPersistence.append(persisted, [{
+    await writer.append([{
       type: 'user/message',
-      seq: 0,
+      seq: SessionSeq(0),
       time: 2,
       data: createUserMessage({
         content: [{ type: 'text', text: 'persisted integration needle' }],
@@ -60,6 +70,7 @@ describe('tool-session-query with the real SQLite provider', () => {
       }),
       surfaceOp: 'append',
     }])
+    await writer.close()
 
     const caller = ctx.sessions.create(SessionId('caller'), {
       meta: { createdAt: 10, cwd: '/work' },
@@ -78,7 +89,7 @@ describe('tool-session-query with the real SQLite provider', () => {
     const execute = (name: string, args: unknown) => ctx.tools.execute({
       name,
       arguments: args,
-      callId: CallId(`integration-${++call}`),
+      callId: ToolCallId(`integration-${++call}`),
       signal: new AbortController().signal,
       agent: fakeAgent(caller),
     })
@@ -106,6 +117,8 @@ describe('tool-session-query with the real SQLite provider', () => {
     const ctx = new Context()
     contexts.push(ctx)
     await ctx.plugin(SessionStore)
+    await ctx.plugin(SessionProjectionRegistry)
+    registerTurnBoundary(ctx)
     await ctx.plugin(SystemPrompt)
     await ctx.plugin(ToolRuntime)
     await ctx.plugin(JsonlSessionPersistence, { root, compression: 'none' })
@@ -114,16 +127,17 @@ describe('tool-session-query with the real SQLite provider', () => {
 
     const base = Date.parse('2026-07-24T00:00:00.000Z')
     const persisted = SessionId('fractional-persisted')
-    await ctx.sessionPersistence.create({
+    const writer = await ctx.sessionPersistence.create({
       version: SESSION_FORMAT_VERSION,
       id: persisted,
       createdAt: base,
       cwd: '/work',
+      isSeeded: false,
     })
-    await ctx.sessionPersistence.append(persisted, [
+    await writer.append([
       {
         type: 'user/message',
-        seq: 0,
+        seq: SessionSeq(0),
         time: base + 123,
         data: createUserMessage({
           content: [{ type: 'text', text: 'fractional integration needle' }],
@@ -133,7 +147,7 @@ describe('tool-session-query with the real SQLite provider', () => {
       },
       {
         type: 'user/message',
-        seq: 1,
+        seq: SessionSeq(1),
         time: base + 124,
         data: createUserMessage({
           content: [{ type: 'text', text: 'fractional integration needle' }],
@@ -143,7 +157,7 @@ describe('tool-session-query with the real SQLite provider', () => {
       },
       {
         type: 'user/message',
-        seq: 2,
+        seq: SessionSeq(2),
         time: -124,
         data: createUserMessage({
           content: [{ type: 'text', text: 'pre-epoch fractional needle' }],
@@ -153,7 +167,7 @@ describe('tool-session-query with the real SQLite provider', () => {
       },
       {
         type: 'user/message',
-        seq: 3,
+        seq: SessionSeq(3),
         time: -123,
         data: createUserMessage({
           content: [{ type: 'text', text: 'pre-epoch fractional needle' }],
@@ -162,6 +176,7 @@ describe('tool-session-query with the real SQLite provider', () => {
         surfaceOp: 'append',
       },
     ])
+    await writer.close()
 
     const caller = ctx.sessions.create(SessionId('fractional-caller'), {
       meta: { createdAt: base + 1_000, cwd: '/work' },
@@ -170,7 +185,7 @@ describe('tool-session-query with the real SQLite provider', () => {
     const execute = (args: unknown) => ctx.tools.execute({
       name: 'session_event_search',
       arguments: args,
-      callId: CallId(`fractional-integration-${++call}`),
+      callId: ToolCallId(`fractional-integration-${++call}`),
       signal: new AbortController().signal,
       agent: fakeAgent(caller),
     })

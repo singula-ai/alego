@@ -1,6 +1,7 @@
 /** The agent-loop card's staged form over the `agent-loop` settings namespace. */
 
-import type { SettingsScope, SnapshotStore } from '@singula-ai/alego-client-runtime/client'
+import type { SnapshotStore } from '@singula-ai/alego-client-store'
+import type { SettingsScope } from '@singula-ai/alego-client-ui-settings/client'
 import { CardForm, numberField, type CardActions, type CardFieldState, type CardShell } from './card-form.ts'
 
 /**

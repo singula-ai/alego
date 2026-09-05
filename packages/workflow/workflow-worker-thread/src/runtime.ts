@@ -13,8 +13,9 @@
  */
 
 import * as vm from 'node:vm'
+import { brandString } from '@singula-ai/alego-brand'
 import type { ContentBlock } from '@singula-ai/alego-llm'
-import { SessionId } from '@singula-ai/alego-session'
+import type { SessionId } from '@singula-ai/alego-session'
 import { assertObjectJsonSchema, JsonSchemaError } from '@singula-ai/alego-tools'
 import type { ObjectJsonSchema } from '@singula-ai/alego-tools'
 import { isFatalWorkflowError, WorkflowError } from '@singula-ai/alego-workflow'
@@ -295,7 +296,7 @@ export class WorkflowExecution {
         await run.dispose()
         throw this.cancelledError()
       }
-      const info: WorkflowAgentInfo = { seq, label, ...phase !== undefined ? { phase } : {}, childId: SessionId(run.id) }
+      const info: WorkflowAgentInfo = { seq, label, ...phase !== undefined ? { phase } : {}, childId: brandString<SessionId>(run.id) }
       this.observer.agentStart(info)
       try {
         let result

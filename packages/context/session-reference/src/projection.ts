@@ -2,8 +2,10 @@
 
 import { isCompactCheckpointSource } from '@singula-ai/alego-compaction'
 import type { SessionSurfaceSnapshot } from '@singula-ai/alego-session-query'
-import { assertNever } from '@singula-ai/alego-llm'
 import { TextRetainer } from '@singula-ai/alego-output-retention'
+import { assertNever } from '@singula-ai/alego-util-values'
+import { SessionSeq } from '@singula-ai/alego-session'
+import type { OptionalSessionSeq } from '@singula-ai/alego-session'
 import { stringifyTagSafeJson } from './serialization.ts'
 import type { ReferencedConversationItem } from './types.ts'
 
@@ -18,7 +20,7 @@ export interface ReferencedSessionData {
   sessionId: string
   label: string
   cwd: string | null
-  capturedThroughSeq: number | null
+  capturedThroughSeq: OptionalSessionSeq
   conversation: ReferencedConversationItem[]
 }
 
@@ -79,7 +81,9 @@ export function retainReferencedSession(
     sessionId: snapshot.session.id,
     label,
     cwd: snapshot.session.cwd ?? null,
-    capturedThroughSeq: snapshot.capturedThroughSeq,
+    capturedThroughSeq: snapshot.capturedThroughSeq === null
+      ? null
+      : SessionSeq(snapshot.capturedThroughSeq),
     conversation: retained.map(({ role, text }) => ({ role, text })),
   })
   const size = (): number => Buffer.byteLength(stringifyTagSafeJson(data()), 'utf8')

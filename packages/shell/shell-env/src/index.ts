@@ -14,7 +14,6 @@ import { ALEGO_ENV_PREFIX } from '@singula-ai/alego-shell'
 import type { AlegoEnvironment, AlegoEnvironmentKey } from '@singula-ai/alego-shell'
 import { ALEGO_HOME_ENV, resolveAlegoHome } from '@singula-ai/alego-home-paths'
 import type { ToolExecution } from '@singula-ai/alego-tools'
-import type {} from '@singula-ai/alego-session-persistence'
 
 declare module '@singula-ai/cordis' {
   interface Context {
@@ -70,7 +69,6 @@ export interface BashEnvVariableInfo extends BashEnvVariable {
 
 const ALEGO_SHELL_KEY = `${ALEGO_ENV_PREFIX}SHELL` as const
 const ALEGO_SESSION_ID_KEY = `${ALEGO_ENV_PREFIX}SESSION_ID` as const
-const ALEGO_SESSION_JSONL_KEY = `${ALEGO_ENV_PREFIX}SESSION_JSONL` as const
 const RESERVED_BASH_ENV_KEYS = new Set<AlegoEnvironmentKey>([
   ALEGO_HOME_ENV,
   ALEGO_SHELL_KEY,
@@ -193,25 +191,10 @@ export class ShellEnvRegistry extends Service {
 }
 
 /**
- * Load the shell-env plugin: register the `ctx.shellEnv` service and the
- * shell-agnostic persistence contributor (`ALEGO_SESSION_JSONL`).
+ * Load the shell-env plugin: register the `ctx.shellEnv` registry service.
  * @param ctx - Cordis context that owns the service and registrations.
  * @param config - home-directory configuration for the built-in variables.
  */
 export function apply(ctx: Context, config: Config = {}): void {
-  const registry = new ShellEnvRegistry(ctx, config)
-  registry.register({
-    name: 'session-persistence',
-    variables: {
-      [ALEGO_SESSION_JSONL_KEY]: {
-        description: 'Absolute target path of the current session JSONL when the active persistence backend provides one.',
-      },
-    },
-    resolve(execution) {
-      const agent = execution.agent
-      if (agent === undefined) return {}
-      const location = ctx.get('sessionPersistence')?.locate(agent.session.header)
-      return location?.kind === 'jsonl' ? { [ALEGO_SESSION_JSONL_KEY]: location.path } : {}
-    },
-  })
+  new ShellEnvRegistry(ctx, config)
 }

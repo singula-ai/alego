@@ -7,14 +7,16 @@ import {
   type DisclosureRowProps, type StateDotState,
 } from '@singula-ai/alego-client-ui-primitives'
 import type { PropsLocale, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
-import { shallowEqual, type SessionId, type SessionListState } from '@singula-ai/alego-client-runtime/client'
+import type { SessionListState } from '@singula-ai/alego-api-session-controller/client'
+import { shallowEqual } from '@singula-ai/alego-client-store'
+import type { SessionId } from '@singula-ai/alego-session/types'
 import type { WorkflowRunKey } from './locales.ts'
 import type {
   WorkflowRunMemberData, WorkflowRunPhaseData, WorkflowRunStatus,
 } from './workflow-definition.ts'
 import css from './WorkflowRunPanel.module.css'
 
-/** Navigation action injected from the plugin's own SessionRuntime access. */
+/** Navigation action injected from the plugin's own Session Controller access. */
 export interface WorkflowRunInjected {
   readonly openSession: (id: SessionId) => void
 }

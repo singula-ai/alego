@@ -4,8 +4,9 @@
  * Host and Agent keep the actual delivery-window authority.
  */
 import {
-  createSnapshotStore, type SettingsScope, type SnapshotStore,
-} from '@singula-ai/alego-client-runtime/client'
+  createSnapshotStore, type SnapshotStore,
+} from '@singula-ai/alego-client-store'
+import type { SettingsScope } from '@singula-ai/alego-client-ui-settings/client'
 import type {
   BusyEnterBehavior, ComposerSubmitGesture, InputSubmitMode,
 } from '../contract/composer-submission.ts'

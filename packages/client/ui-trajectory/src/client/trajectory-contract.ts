@@ -1,8 +1,9 @@
 import type {
-  AssistantMessageNode, ConversationLocation, ConversationNode,
-  ConversationPromptSnapshot, ConversationViewNode, PartialAssistant,
-  RequestPromptChange, RequestView, RunningToolCall, ToolCallBlock,
-} from '@singula-ai/alego-client-runtime/client'
+  AssistantMessageNode, ConversationLocation, ConversationNode, ConversationPromptSnapshot,
+  ConversationViewNode, MessageImagesOwnerProps, PartialAssistant, RequestPromptChange,
+  RequestView, RunningToolCall, ToolCallBlock,
+} from '@singula-ai/alego-client-ui-conversation/client'
+import type { SnapshotSelectorHook } from '@singula-ai/alego-client-ui-slots'
 
 /** Request-header facts retained by the Trajectory target. */
 export interface TrajectoryRequestHeaderState {
@@ -47,6 +48,7 @@ export type TrajectoryContribution =
     readonly turn: number
     readonly time: number
     readonly error?: string
+    readonly errorCode?: string
   }
 
 /** Target envelope consumed by the Trajectory snapshot builder. */
@@ -67,9 +69,29 @@ export interface TrajectorySnapshot {
   readonly runningCalls: readonly RunningToolCall[]
 }
 
-declare module '@singula-ai/alego-client-runtime/client' {
+/** Selector hook over the current Conversation binding's Trajectory target. */
+export type UseTrajectory = SnapshotSelectorHook<TrajectorySnapshot>
+
+declare module '@singula-ai/alego-client-ui-conversation/client' {
   interface ConversationViewSnapshotMap {
     /** Independently assembled data consumed by the Trajectory view. */
     trajectory: TrajectorySnapshot
+  }
+}
+
+declare module '@singula-ai/alego-client-ui-slots' {
+  interface SessionStandardProps {
+    /** Selector hook over the current Conversation binding's Trajectory target. */
+    useTrajectory: UseTrajectory
+  }
+
+  interface SlotMap {
+    /**
+     * Renderer for one group of durable record images in the Trajectory
+     * ledger. The owner supplies image references, an authorized loader, and
+     * alignment. A registration replaces the shipped gallery; without one,
+     * images are omitted.
+     */
+    'conversation.trajectory.images': { kind: 'single'; scope: 'session'; owner: MessageImagesOwnerProps }
   }
 }

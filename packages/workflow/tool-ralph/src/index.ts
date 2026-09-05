@@ -8,13 +8,11 @@
 import type { Context } from '@singula-ai/cordis'
 import z from '@singula-ai/schemastery'
 import type { ContentBlock } from '@singula-ai/alego-llm'
-import type { JsonValue } from '@singula-ai/alego-session'
+import type { JsonValue } from '@singula-ai/alego-util-values'
 import type { SubagentProvider } from '@singula-ai/alego-subagent'
 import { defineTool } from '@singula-ai/alego-tools'
 import type { ToolCallView, ToolResultView } from '@singula-ai/alego-tools'
 import type { WorkflowResult, WorkflowRun } from '@singula-ai/alego-workflow'
-// Declaration merge only: makes ctx.systemPrompt visible for section registration.
-import type {} from '@singula-ai/alego-system-prompt'
 
 export const name = 'tool-ralph'
 export const inject = ['tools', 'workflowEngine', 'subagents', 'systemPrompt']
@@ -406,7 +404,7 @@ export function apply(ctx: Context, config: Config): void {
   const resolved = resolveConfig(config)
   ctx.systemPrompt.section({
     name: 'tool:ralph',
-    order: 116,
+    order: ctx.systemPrompt.getSectionOrder('TOOL_RALPH'),
     text: 'Use the ralph tool ONLY when the direct human explicitly asks for a Ralph loop or fresh-agent iterative execution. Each Ralph round starts a fresh child with no conversation seed and uses the shared workspace as durable memory. Completion and blockers are worker reports, not independent evaluation. Use same-session goal tools for ordinary long-running objectives, and plain subagents or workflows for bounded delegation and fan-out.',
   })
   ctx.tools.register(defineTool({

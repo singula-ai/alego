@@ -2,33 +2,23 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import Loader from '@singula-ai/cordis-plugin-loader'
 import { agentEvents, type Agent } from '@singula-ai/alego-agent'
-import LlmRuntime, { CallId, type GenerateOptions, LlmAdapter, type StreamChunk } from '@singula-ai/alego-llm'
+import LlmRuntime, { ToolCallId, type GenerateOptions, LlmAdapter, type StreamChunk } from '@singula-ai/alego-llm'
 import SessionStore, { SessionId } from '@singula-ai/alego-session'
-import type { SessionEvent, SessionHeader } from '@singula-ai/alego-session'
-import SessionPersistence from '@singula-ai/alego-session-persistence'
+import SessionPersistence, { type SessionHandle, type SessionPersistenceSnapshot } from '@singula-ai/alego-session-persistence'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime, { TOOL_ABORTED_BEFORE_DISPATCH } from '@singula-ai/alego-tools'
 import * as checkpointPolicy from '../src/index.ts'
 
 const contexts: Context[] = []
 
+// The policy only requires the service's presence; it flushes through
+// `ctx.sessions`, so no handle is ever opened in these tests.
 class TestPersistence extends SessionPersistence {
-  override readonly supportsRawArtifacts = false
-
-  locate(_meta: SessionHeader): undefined { return undefined }
-  create(_meta: SessionHeader): Promise<void> { return Promise.resolve() }
-  append(_id: SessionId, _events: readonly SessionEvent[]): Promise<void> { return Promise.resolve() }
-  load(_id: SessionId): Promise<{ meta: SessionHeader; events: SessionEvent[] }> {
-    return Promise.reject(new Error('not used'))
-  }
-  inspect(_id: SessionId): Promise<{ meta: SessionHeader; events: SessionEvent[] }> {
-    return Promise.reject(new Error('not used'))
-  }
-  readFrom(_id: SessionId, _fromSeq: number): Promise<{ meta: SessionHeader; events: SessionEvent[] }> {
-    return Promise.reject(new Error('not used'))
-  }
-  list(): Promise<SessionHeader[]> { return Promise.resolve([]) }
-  listSnapshots(): Promise<never[]> { return Promise.resolve([]) }
+  create(): Promise<SessionHandle> { return Promise.reject(new Error('not used')) }
+  open(): Promise<SessionHandle> { return Promise.reject(new Error('not used')) }
+  flush(): Promise<void> { return Promise.resolve() }
+  stat(): Promise<SessionPersistenceSnapshot | undefined> { return Promise.resolve(undefined) }
+  list(): Promise<readonly SessionPersistenceSnapshot[]> { return Promise.resolve([]) }
 }
 
 class RecordingAdapter extends LlmAdapter {
@@ -135,7 +125,7 @@ describe('session-checkpoint-policy tool and step boundaries', () => {
     })
 
     const pending = ctx.tools.execute({
-      callId: CallId('write-1'), name: 'write', arguments: {}, agent,
+      callId: ToolCallId('write-1'), name: 'write', arguments: {}, agent,
       signal: new AbortController().signal,
     })
     await Promise.resolve()
@@ -164,7 +154,7 @@ describe('session-checkpoint-policy tool and step boundaries', () => {
     })
 
     const pending = ctx.tools.execute({
-      callId: CallId('write-cancelled'), name: 'write', arguments: {}, agent,
+      callId: ToolCallId('write-cancelled'), name: 'write', arguments: {}, agent,
       signal: controller.signal,
     })
     await Promise.resolve()
@@ -195,7 +185,7 @@ describe('session-checkpoint-policy tool and step boundaries', () => {
       execute: async () => { ran = true; return null },
     })
     const result = await ctx.tools.execute({
-      callId: CallId('write-2'), name: 'write', arguments: {}, agent,
+      callId: ToolCallId('write-2'), name: 'write', arguments: {}, agent,
       signal: new AbortController().signal,
     })
     expect(result.isError).toBe(true)
@@ -215,7 +205,7 @@ describe('session-checkpoint-policy tool and step boundaries', () => {
       execute: async () => null,
     })
     await ctx.tools.execute({
-      callId: CallId('nested-1'), name: 'nested', arguments: {}, agent,
+      callId: ToolCallId('nested-1'), name: 'nested', arguments: {}, agent,
       parent: Symbol('outer') as never,
       signal: new AbortController().signal,
     })

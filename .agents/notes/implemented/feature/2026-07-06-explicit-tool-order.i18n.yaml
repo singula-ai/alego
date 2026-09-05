@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-06-explicit-tool-order.md
-2026-07-06-explicit-tool-order.md: 8489bd18606c5ff682eadbd2071c96be6047b9c1
-2026-07-06-explicit-tool-order.zh.md: 8448fcd58610cbf874a14e1ee543fb31880fec6b
+2026-07-06-explicit-tool-order.md: 3148dbcde71590d59dfb8c9e5e16c1659a93ab06
+2026-07-06-explicit-tool-order.zh.md: 9b05096e4c432afb0a552d39bfa7f808bfb20ed5
