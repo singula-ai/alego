@@ -721,7 +721,7 @@ describe('Issue lifecycle workflow', () => {
     expect(lifecyclePullRequest.types).not.toContain('ready_for_review')
     expect(lifecyclePullRequest.types).toContain('review_requested')
     expect(lifecycleReview.types).toEqual(['submitted'])
-    const gated = "${{ github.event_name != 'pull_request_review' || github.event.review.state == 'changes_requested' }}"
+    const gated = "${{ github.event.repository.has_issues && (github.event_name != 'pull_request_review' || github.event.review.state == 'changes_requested') }}"
     const steps = lifecycleJob.steps.filter(isRecord)
     const tokenStep = steps.find(s => s.name === 'Create project token')
     const handleStep = steps.find(s => s.name === 'Handle repository event')
@@ -741,7 +741,7 @@ describe('Issue lifecycle workflow', () => {
     const tokenStep = steps.find(step => step.name === 'Create Project read token')
     const validateStep = steps.find(step => step.name === 'Validate pull request')
     const humanPullRequest =
-      "${{ github.event.pull_request.user.type != 'Bot' && github.event.pull_request.user.type != 'App' }}"
+      "${{ github.event.repository.has_issues && github.event.pull_request.user.type != 'Bot' && github.event.pull_request.user.type != 'App' }}"
 
     expect(tokenStep).toMatchObject({
       id: 'app-token',
@@ -750,7 +750,7 @@ describe('Issue lifecycle workflow', () => {
       with: {
         'client-id': '${{ vars.ALEGO_ISSUE_APP_CLIENT_ID }}',
         'private-key': '${{ secrets.ALEGO_ISSUE_APP_PRIVATE_KEY }}',
-        owner: 'alego',
+        owner: 'singula-ai',
         repositories: 'alego',
         'permission-issues': 'read',
         'permission-organization-projects': 'read',

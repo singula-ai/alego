@@ -789,7 +789,7 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY || notReady.length > 0)('web smoke
       page.getByRole('navigation').getByText(durableTitle, { exact: true }).waitFor({ timeout: 10_000 }),
     ])
     await waitForAssistantMarker(baseUrl, sessionId, ROUND_DONE_MARKER)
-    const renderedReply = page.getByText(reply, { exact: true })
+    const renderedReply = page.locator('p').and(page.getByText(reply, { exact: true }))
     await renderedReply.waitFor({ timeout: 10_000 })
     expect(await renderedReply.count()).toBe(1)
     await screen(page, '04-round-complete')
