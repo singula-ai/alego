@@ -59,7 +59,7 @@
     "@singula-ai/alego-system-prompt": "workspace:^",
     "@singula-ai/alego-tools": "workspace:^",
     "@singula-ai/alego-workflow": "workspace:^",
-    "tsx": "^4.19.2",
+    "tsx": "^4.23.9",
     "@singula-ai/alego-http-proxy": "workspace:^"
   }
 }
