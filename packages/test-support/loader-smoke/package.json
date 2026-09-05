@@ -28,7 +28,7 @@
   "license": "MIT",
   "dependencies": {
     "execa": "^10.0.0",
-    "tsx": "^4.22.4"
+    "tsx": "^4.23.9"
   },
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:^",
