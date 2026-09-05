@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@singula-ai/alego-win32-process": "workspace:^",
-    "koffi": "^3.1.0"
+    "koffi": "^3.1.2"
   },
   "devDependencies": {
     "@singula-ai/alego-pwsh-local": "workspace:^",
