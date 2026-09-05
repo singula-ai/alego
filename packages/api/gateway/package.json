@@ -54,7 +54,7 @@
     "@singula-ai/alego-deque": "workspace:^",
     "@singula-ai/alego-timeout": "workspace:^",
     "@singula-ai/schemastery": "workspace:^",
-    "ws": "^8.21.0",
+    "ws": "^8.21.2",
     "@singula-ai/alego-typert-protocol": "workspace:^"
   },
   "peerDependencies": {
