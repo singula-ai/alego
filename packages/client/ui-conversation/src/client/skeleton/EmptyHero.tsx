@@ -76,6 +76,8 @@ export interface HeroShellProps {
  * @returns the centered hero element tree.
  */
 export function HeroShell({ t, renderSlot, children }: HeroShellProps) {
+  // The placeholder preserves each locale's word order around the styled brand.
+  const [beforeBrand, afterBrand] = t('hero.headline', { brand: '\uFFFC' }).split('\uFFFC')
   return (
     <div className={css.root}>
       <div className={css.stack}>
@@ -86,7 +88,7 @@ export function HeroShell({ t, renderSlot, children }: HeroShellProps) {
             })}
           </span>
           <span className={css.headlineText}>
-            {t('hero.headline')}
+            {beforeBrand}<span className={css.brand}>{t('hero.brand')}</span>{afterBrand}
           </span>
           <span className={css.previewBadge}>{t('hero.preview')}</span>
         </div>
