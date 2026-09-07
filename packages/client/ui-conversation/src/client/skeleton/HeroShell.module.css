@@ -43,6 +43,21 @@
   grid-column: 2;
 }
 
+.brand {
+  background-image: var(--dsw-alias-brand-rainbow);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+}
+
+@media (forced-colors: active) {
+  .brand {
+    background-image: none;
+    color: var(--dsw-alias-label-primary);
+  }
+}
+
 .previewBadge {
   grid-row: 1;
   grid-column: 3;
