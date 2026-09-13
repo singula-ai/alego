@@ -208,7 +208,7 @@ test('structures the pull request template around motivation, changes, and testi
   assert.doesNotMatch(source, /^### /m)
   assert.match(
     source,
-    /<!-- 高层次说明命令[^\n]+ -->\n<!-- 高层次说明用户[^\n]+ -->/,
+    /<!-- Describe changes to commands[^\n]+ -->\n<!-- Describe observable user[^\n]+ -->/,
   )
   assert.match(source, /- <!-- [^\n]+ -->\n\n  <details>\n  <summary>Proof<\/summary>/)
   assert.equal(source.match(/<details>/g)?.length, 1)
