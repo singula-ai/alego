@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/simplification/2026-08-04-drop-windows-powershell-picker-fallback.md
+2026-08-04-drop-windows-powershell-picker-fallback.md: c5b99d6a5628008bcdc2711bfebc4539117c4545
+2026-08-04-drop-windows-powershell-picker-fallback.zh.md: bc581862a08d16670d9ade3872ef3543dd59b750

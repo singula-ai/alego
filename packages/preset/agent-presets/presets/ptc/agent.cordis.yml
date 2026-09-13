@@ -31,8 +31,9 @@
 - id: persona
   name: '@singula-ai/alego-persona'
   config:
-    text: >-
-      You are a coding agent powered by the {{model}} model. Your working directory is {{cwd}}.
+    suffix: Your working directory is {{cwd}}.
+    prefix: >-
+      You are a coding agent powered by the {{model}} model.
 
 - id: agent-instructions
   name: '@singula-ai/alego-agent-instructions'
@@ -269,3 +270,6 @@
   name: '@singula-ai/alego-agent-tool-presentation'
   config:
     mode: ptc
+
+- id: present
+  name: '@singula-ai/alego-tool-present'

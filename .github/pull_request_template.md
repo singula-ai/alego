@@ -1,13 +1,21 @@
-<!-- 写 Fixes #NN 表示解决并自动关闭；写 Related to #NN 仅关联。 -->
-<!-- 仓库启用 Issues 时，进入评审的非 Draft 人类 PR 至少引用一个同仓库 Issue。 -->
-<!-- 解决型 PR 与 Issue 同步 Priority；解决多个 Issue 时取最高值。 -->
+## Motivation
 
-关联 Issue：
+<!-- Describe the problem. Link an Issue with Fixes #NN or Related #NN when Issues are enabled. -->
 
-<details>
-<summary>变更与验证</summary>
+## Changes
 
-- 变更：
-- 验证：
+<!-- Describe changes to commands, configuration, APIs, protocols, or persisted data. -->
+<!-- Describe observable user, model, or system behavior. -->
 
-</details>
+## Testing
+
+<!-- List each validation method and put its evidence in the corresponding Proof section. -->
+
+- <!-- Name the command or steps and the behavior covered. -->
+
+  <details>
+  <summary>Proof</summary>
+
+  <!-- Provide test output, screenshots, recordings, or logs. -->
+
+  </details>

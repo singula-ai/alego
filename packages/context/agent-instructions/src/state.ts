@@ -139,6 +139,7 @@ function visibleInstructionChanges(
 ): Map<string, AgentInstructionChange> {
   const visible = new Map<string, AgentInstructionChange>()
   for (const seq of agent.session.surface.nodes) {
+    // oxlint-disable-next-line typescript/no-deprecated -- Existing Session history read; migration deferred.
     const event = agent.session.eventAt(seq)
     if (event?.type !== 'user/message' || !isWorkspaceContextSource(event.data.source)) continue
     const changes = workspaceInstructionChanges(event.data.source)

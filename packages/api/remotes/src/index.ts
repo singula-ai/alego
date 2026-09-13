@@ -2,6 +2,7 @@
 
 import { homedir } from 'node:os'
 import type { Context } from '@singula-ai/cordis'
+import type { Agent } from '@singula-ai/alego-agent'
 import type {
   TypertRemoteEventDispatch,
   TypertRemoteEventInvocation,
@@ -20,6 +21,7 @@ import { API_REMOTE_FORWARDED_EVENTS } from './remote-events.ts'
 import type {} from '@singula-ai/alego-commands/types'
 import type {} from '@singula-ai/alego-cordis-host-runner/types'
 import type {} from '@singula-ai/alego-credentials/types'
+import type {} from '@singula-ai/alego-goal/types'
 import type {} from '@singula-ai/alego-llm/types'
 import type {} from '@singula-ai/alego-agent-presets/types'
 import type {} from '@singula-ai/alego-settings/types'
@@ -56,17 +58,17 @@ function remoteEventSource(ctx: Context): TypertRemoteEventSource {
         request: object,
         next: () => unknown,
       ) {
-        const subject = carrierKeyOf(this)
-        if (subject === undefined) return next()
-        const value = Reflect.get(subject, 'ctx') as unknown
-        if (typeof value !== 'object' || value === null) {
-          throw new TypeError(`forwarded scoped event ${JSON.stringify(event)} has no live Context`)
+        const carrierAgent = carrierKeyOf(this)
+        if (carrierAgent === undefined) return next()
+        const agent = (request as { readonly agent?: Agent }).agent
+        if (agent === undefined || agent !== carrierAgent) {
+          throw new TypeError(`forwarded scoped event ${JSON.stringify(event)} must carry its Agent directly`)
         }
         return forwardWaterfall(
           queue,
           event,
           request,
-          { value: value as Context, subject },
+          { value: agent.ctx, subject: agent, agentId: agent.id },
           next,
         )
       }) as never)

@@ -9,7 +9,7 @@ kind: "package-library"
 
 ## 概述
 
-`alego-home-paths` 解析所有用户数据所在的统一 Alego 主目录，并把子路径拼接上去，让每个产品包都就文件存放位置达成一致。优先级是显式的：显式配置的路径优先，然后是 `$ALEGO_HOME`，最后是 `~/.alego`；空或仅含空白的 `$ALEGO_HOME` 视为未设置。该包还针对操作系统主目录展开 `~`、`~/...` 与 `~\...` 前缀，并规范化监听目标，让原生文件系统 watcher 即使在最终路径段尚不存在时也能获得一种稳定的路径写法。它是一个零依赖库，由产品包直接导入；`cordis.yml` 无法加载它。
+`@singula-ai/alego-home-paths` 让包作者能够解析统一的 Alego 数据根目录，并由它派生子路径。显式路径优先于 `$ALEGO_HOME`，后者优先于 `~/.alego`；空白环境变量会被忽略。其公开辅助函数可以在不暴露机器绝对路径的情况下显示根目录，仅展开单独或当前用户的波浪号形式，并规范化最终路径段尚不存在的监听目标。请把它作为库依赖直接使用，不要通过 `cordis.yml` 加载。
 
 ## 目录
 
@@ -29,13 +29,16 @@ kind: "package-library"
 ### 解析主目录
 
 ```ts
-import { resolveAlegoHome, alegoHomePath } from '@singula-ai/alego-home-paths'
+import { resolveAlegoHome, alegoHomePath, alegoCachePath } from '@singula-ai/alego-home-paths'
 
 const home = resolveAlegoHome()                // configured path, else $ALEGO_HOME, else ~/.alego
 const settings = alegoHomePath('settings')     // join one child onto the resolved home
+const cache = alegoCachePath('models')         // $ALEGO_HOME/cache/models, default ~/.alego/cache/models
 ```
 
 显式配置的路径优先级最高，然后是 `$ALEGO_HOME`，最后是默认的 `~/.alego`。空或仅含空白的 `$ALEGO_HOME` 视为未设置，因此空白的覆盖值绝不会把主目录解析到当前工作目录。
+
+`alegoCachePath(...segments)` 从解析出的主目录下的 `cache` 目录派生路径。不传路径段时返回缓存目录本身。传入首个选项对象 `alegoCachePath({ alegoHome: home }, ...segments)` 可使用显式配置的主目录，遵循相同的优先级与波浪号展开规则。它返回绝对路径，不会创建目录。
 
 ### 展示主目录
 
@@ -64,7 +67,7 @@ const settings = alegoHomePath('settings')     // join one child onto the resolv
 | 文件 | 职责 |
 |---|---|
 | [`src/index.ts`](src/index.ts) | 主目录解析、路径拼接、展示、波浪号展开与监听路径规范化 |
-| — | 不发布运行时不变式伴生入口；解析规则由单元测试覆盖。 |
+| — | 不发布运行时不变式伴生入口；这个纯工具包不持有事件流或可变运行时数据；其解析规则和值代数由单元测试保障。 |
 
 ### 解析规则
 

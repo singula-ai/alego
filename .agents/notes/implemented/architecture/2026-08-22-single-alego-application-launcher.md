@@ -20,7 +20,7 @@ Vendor CLIs, build-only and test-only executables, direct in-process plugin moun
 
 ### Profile applications
 
-`@singula-ai/alego-sdk-app` and `@singula-ai/alego-acp-app` compose the full protocol applications over `@singula-ai/alego-base`. The SDK bundle adds the JSON-RPC server plus app-owned help and stdio lifetime; the ACP bundle adds the automation-only ACP server plus the same application responsibilities. Both adopt the base model, tools, persistence, settings, credentials, policy, and environment behavior. The [standalone sdk-minimal profile](2026-08-24-standalone-sdk-minimal-profile.md) reuses SDK startup and JSON-RPC serving but deliberately owns a complete explicit tree without `alego-base`.
+`@singula-ai/alego-sdk-app` and `@singula-ai/alego-acp-app` compose the full protocol applications over `@singula-ai/alego-base`. The SDK bundle adds the JSON-RPC server plus app-owned help and stdio lifetime; the ACP bundle adds the automation-only ACP server plus the same application responsibilities. Both adopt the base model, tools, persistence, settings, credentials, policy, and environment behavior. The [standalone sdk-minimal profile](../../archived/architecture/2026-08-24-standalone-sdk-minimal-profile.md) reuses SDK startup and JSON-RPC serving but deliberately owns a complete explicit tree without `alego-base`.
 
 Profile manifests own patch reload:
 
@@ -34,7 +34,7 @@ Profile manifests own patch reload:
 
 Custom profiles default to `live`. A startup profile still applies its bundle, profile, home-level, and invocation `--patch` layers, but it does not watch them after boot. `alego-base` inserts the module-HMR row disabled; a profile with a tested source-module reload lifecycle must enable it explicitly. None of the shipped profiles enable server module HMR: `patchReload: live` uses the launcher's config-only watcher while the startup profiles install no watcher. SDK and ACP cannot safely replace their server, agents, persistence, or tool registry inside one owned stdio connection.
 
-The shipped protocol profiles reserve stdout for protocol frames, expose help without starting transport, and route stdin EOF and signals through bounded root disposal. ACP remains automation-only. The SDK JSON-RPC methods, notification fields, and `initialize.serverInfo.name` remain stable. Full-profile model-visible tool and persistence defaults come from `alego-base`; `sdk-minimal` owns its explicit defaults. Runnable snapshots own the assembled application outputs.
+The shipped protocol profiles reserve stdout for protocol frames, expose help without starting transport, and route stdin EOF and signals through bounded root disposal. ACP remains automation-only. The SDK JSON-RPC methods, notification fields, and `initialize.serverInfo.name` remain stable. Full-profile model-visible tool and persistence defaults come from `alego-base`, including its [default editor selection](../simplification/2026-09-05-base-default-file-editor.md); `sdk-minimal` owns its explicit defaults. Runnable snapshots own the assembled application outputs.
 
 ### TypeScript SDK customization
 
@@ -46,9 +46,9 @@ Direct SDK use follows normal Harness-home resolution: explicit `alegoHome`, inh
 
 ### Python runtime
 
-The Python runtime wheel packages the ordinary `@singula-ai/alego` CLI from `node_modules/@singula-ai/alego/lib/bin.js` through the private `alego-python-runtime-closure` deploy manifest. The Python client selects `alego --profile sdk` by default, ordered patch files, and an explicit Harness home; the runnable example under `python/sdk/examples` selects `sdk-minimal`. The installed `alego` console command exposes the same profile grammar and the separately packaged `web` application.
+The Python runtime wheel stages [`python/sdk-runtime/runtime-bootstrap.mjs`](../../../../python/sdk-runtime/runtime-bootstrap.mjs) as the `alego-python-runtime-closure` entry. Its ordinary branch calls the public CLI export; a provider-private selector dispatches to the internal subprocess runner before CLI parsing and is not an application entry point. The [native-containment decision](2026-08-28-subprocess-native-containment.md) owns that private dispatch. The Python client selects `alego --profile sdk` by default, ordered patch files, and an explicit Harness home; the runnable example under `python/sdk/examples` selects `sdk-minimal`. The installed `alego` console command exposes the same profile grammar and the separately packaged `web` application.
 
-The executable family is `alego-sdk-runtime-<platform>-<arch>`. The SDK wire, wheel and import distribution names, sidecar names, and wire identity `alego-sdk-runtime` remain stable. The SDK package family is `@singula-ai/alego-sdk-client`, `@singula-ai/alego-sdk-protocol`, and `@singula-ai/alego-sdk-jsonrpc-server`; `@singula-ai/alego-acp` remains the ACP protocol plugin. There is no Python-specific Node application, checked-in complete config, compatibility package, forwarding executable, fallback parser, or SDK/ACP launcher alias. The [Python profile-runtime decision](2026-08-23-python-sdk-alego-profile-runtime.md) owns this launch, and the [Windows x64 runtime decision](2026-08-23-python-sdk-windows-x64-runtime.md) owns the Windows carrier.
+The executable family is `alego-sdk-runtime-<platform>-<arch>`. The SDK wire, wheel and import distribution names, sidecar names, and wire identity `alego-sdk-runtime` remain stable. The SDK package family is `@singula-ai/alego-sdk-client`, `@singula-ai/alego-sdk-protocol`, and `@singula-ai/alego-sdk-jsonrpc-server`; `@singula-ai/alego-acp` remains the ACP protocol plugin. There is no Python-specific Node application, checked-in complete config, compatibility package, forwarding executable, fallback parser, or SDK/ACP launcher alias. [docs/architecture.md](../../../../docs/architecture.md) owns this launch, and the [`python/sdk-runtime` README](../../../../python/sdk-runtime/README.md) owns the Windows carrier.
 
 ### Enforcement
 
@@ -56,9 +56,9 @@ The executable family is `alego-sdk-runtime-<platform>-<arch>`. The SDK wire, wh
 
 ## Existing decisions and supersession
 
-This decision supersedes the application-launch and package-name facts in [profile plugin bundles](2026-08-05-profile-plugin-bundles.md), [TypeScript SDK client and subagent backend](../feature/2026-07-27-typescript-sdk-and-sdk-subagent-backend.md), [remove the SDK project toolchain](../simplification/2026-08-11-remove-sdk-project-toolchain.md), and [single-file Python SDK runtime distribution](2026-07-10-single-file-executable-sdk-runtime-distribution.md). Those notes retain independent authority for profile layering, client/wire semantics, deleted project tooling, and native packaging.
+This decision supersedes the application-launch and package-name facts in [profile plugin bundles](2026-08-05-profile-plugin-bundles.md), [TypeScript SDK client and subagent backend](../../archived/feature/2026-07-27-typescript-sdk-and-sdk-subagent-backend.md), [remove the SDK project toolchain](../../archived/simplification/2026-08-11-remove-sdk-project-toolchain.md), and [single-file Python SDK runtime distribution](2026-07-10-single-file-executable-sdk-runtime-distribution.md). Those notes retain independent authority for profile layering, client/wire semantics, deleted project tooling, and native packaging.
 
-The [ACP automation-only protocol](../simplification/2026-07-23-acp-automation-only-protocol.md) remains authoritative for ACP wire and interaction scope. The [repository naming contract](2026-08-11-repository-naming-contract-and-rename-ledger.md) remains authoritative for role-based package names. The [standalone sdk-minimal profile](2026-08-24-standalone-sdk-minimal-profile.md) partially supersedes this note's base-first rule and complete-tree alternative while retaining this note's launcher ownership. No active note is fully superseded or eligible for archival.
+The [ACP automation-only protocol](../simplification/2026-07-23-acp-automation-only-protocol.md) remains authoritative for ACP wire and interaction scope. The [adding-a-package cookbook](../../../../docs/cookbook/adding-a-package.md) owns role-based package names. The [standalone sdk-minimal profile](../../archived/architecture/2026-08-24-standalone-sdk-minimal-profile.md) partially supersedes this note's base-first rule and complete-tree alternative while retaining this note's launcher ownership. No active note is fully superseded or eligible for archival.
 
 ## Alternatives considered
 
@@ -66,7 +66,7 @@ The [ACP automation-only protocol](../simplification/2026-07-23-acp-automation-o
 
 **Keep forwarding compatibility bins.** Rejected: a forwarding executable remains another public launch name and compatibility promise. The pre-release repository can move callers directly to profiles.
 
-**Put caller-supplied complete Cordis trees behind profile wrappers.** Rejected: that centralizes argv without centralizing application composition. Full profiles use `alego-base` plus thin app bundles so shared policy has one owner. A repository-owned, versioned standalone bundle is allowed only when an explicit roster is the product behavior, as [sdk-minimal](2026-08-24-standalone-sdk-minimal-profile.md) records.
+**Put caller-supplied complete Cordis trees behind profile wrappers.** Rejected: that centralizes argv without centralizing application composition. Full profiles use `alego-base` plus thin app bundles so shared policy has one owner. A repository-owned, versioned standalone bundle is allowed only when an explicit roster is the product behavior, as [sdk-minimal](../../archived/architecture/2026-08-24-standalone-sdk-minimal-profile.md) records.
 
 **Accept inline plugins or a complete `cordis.yml` in the TypeScript constructor.** Rejected: the SDK would become another package installer and application composer. Named profiles and patch files already provide persistent and per-launch customization through one resolution model.
 

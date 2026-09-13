@@ -18,7 +18,7 @@ import { setActiveVfs } from '@singula-ai/alego-experimental-webworker-runtime/s
 import { spawn, spawnSync } from '@singula-ai/alego-experimental-webworker-runtime/src/node/builtin_modules/implemented/child_process.ts'
 import {
   LAUNCHER_FAILURE_EXIT, grantArgs, launcherPath, probe,
-} from '@singula-ai/node-addon-landlock-run'
+} from '@singula-ai/node-addon-system/landlock-run'
 import { processAlive, signalProcess } from '@singula-ai/alego-experimental-webworker-runtime/src/node/process-table.ts'
 import { hostFileSystem } from '@singula-ai/alego-experimental-webworker-runtime/src/shell/fs-access.ts'
 import {

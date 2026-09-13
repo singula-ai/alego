@@ -10,10 +10,11 @@ import {
 } from '@singula-ai/alego-session'
 import SystemPrompt, { renderPrompt } from '@singula-ai/alego-system-prompt'
 import ToolRuntime, { defineContentToolFixture } from '@singula-ai/alego-tools'
-import AgentRegistry, { agentEvents, Inbox, type Agent, type PreStepDecision } from '@singula-ai/alego-agent'
+import AgentRegistry, { agentEvents, type Agent, type PreStepDecision } from '@singula-ai/alego-agent'
 import SkillRegistry from '@singula-ai/alego-skill'
 import * as SkillFileSystem from '@singula-ai/alego-skill-filesystem'
 import * as toolSkill from '@singula-ai/alego-tool-skill'
+import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 const testToolSignal = new AbortController().signal
 
@@ -56,7 +57,7 @@ function agentForCwd(cwd: string): Agent {
     id,
     options: {},
     session,
-    inbox: new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} }),
+    inbox: unsupportedInbox(),
     status: 'idle',
     send: () => {},
     followup: () => {},
@@ -69,11 +70,11 @@ function agentForCwd(cwd: string): Agent {
 }
 
 function sessionAgent(session: Session, id = 'tool-skill-agent'): Agent {
-  return {
+  const agent: Agent = {
     id: SessionId(id),
     options: {},
     session,
-    inbox: new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} }),
+    inbox: unsupportedInbox(),
     status: 'running',
     ctx: new Context(),
     send: () => {},
@@ -84,6 +85,7 @@ function sessionAgent(session: Session, id = 'tool-skill-agent'): Agent {
     runMaintenance: task => task(new AbortController().signal),
     whenIdle: () => Promise.resolve(),
   }
+  return agent
 }
 
 function openMessageTurn(session: Session, turn = 1): void {
@@ -628,7 +630,7 @@ describe('alego-tool-skill', () => {
       content: [{ type: 'text', text: 'compacted history' }],
       source: { kind: 'plugin', plugin: 'compact' },
     }), {
-      surfaceOp: { op: 'replace', start: initial.seq, end: initial.seq },
+      surfaceOp: { op: 'replace', startSeq: initial.seq, endSeq: initial.seq },
       sourceEventSeqs: [initial.seq],
     })
 

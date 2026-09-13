@@ -3,7 +3,6 @@ import { join, posix } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { Context } from '@singula-ai/cordis'
 import { describe, expect, it } from 'vitest'
-import { Inbox } from '@singula-ai/alego-agent'
 import type { Agent } from '@singula-ai/alego-agent'
 import { runLoaderSmoke } from '@singula-ai/alego-loader-smoke'
 import {
@@ -17,6 +16,7 @@ import SandboxPolicyService from '@singula-ai/alego-sandbox-policy'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { Session, SessionId } from '@singula-ai/alego-session'
 import E2BSubprocessRuntime from '@singula-ai/alego-subprocess-e2b'
+import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 const fixtureRoot = fileURLToPath(new URL('./fixtures/composition/', import.meta.url))
 const binScript = join(fixtureRoot, 'bin.ts')
@@ -87,7 +87,7 @@ describe.skipIf(!process.env.E2B_API_KEY)('E2B live Loader composition', () => {
         id: ownerId,
         options: {},
         session: ownerSession,
-        inbox: new Inbox(ownerSession, { inserted: () => {}, discarded: () => {}, claimed: () => {} }),
+        inbox: unsupportedInbox(),
         status: 'idle',
         ctx,
         send() {},

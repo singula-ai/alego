@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-session-telemetry-otel",
   "description": "OpenTelemetry backend for the Alego telemetry seam: hands captured session records to the OTel JS SDK's log pipeline",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -37,6 +37,7 @@
   },
   "peerDependencies": {
     "@singula-ai/alego-command-feedback": "workspace:^",
+    "@singula-ai/alego-message-feedback": "workspace:^",
     "@singula-ai/alego-llm": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/alego-session-telemetry": "workspace:^",
@@ -49,6 +50,7 @@
     "@singula-ai/alego-app-boot": "workspace:^",
     "@singula-ai/alego-bash-local": "workspace:^",
     "@singula-ai/alego-command-feedback": "workspace:^",
+    "@singula-ai/alego-message-feedback": "workspace:^",
     "@singula-ai/alego-llm": "workspace:^",
     "@singula-ai/alego-loader-smoke": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",

@@ -1,7 +1,7 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import { Session, SessionId } from '@singula-ai/alego-session'
-import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import AgentRegistry from '@singula-ai/alego-agent'
 import type { Agent } from '@singula-ai/alego-agent'
 import TerminalSessionService, { TerminalBackendCleanupError, TerminalError, TerminalSessionId } from '@singula-ai/alego-terminal'
 import type {
@@ -14,6 +14,7 @@ import type {
   TerminalSessionStatus,
   TerminalSignal,
 } from '@singula-ai/alego-terminal'
+import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 const agentScopeDisposers = new WeakMap<Agent, () => Promise<void>>()
 const ptyServiceDisposers = new WeakMap<Context, () => Promise<void>>()
@@ -26,7 +27,7 @@ function stubAgent(ctx: Context, rawId: string): Agent {
     id,
     options: {},
     session,
-    inbox: new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} }),
+    inbox: unsupportedInbox(),
     status: 'idle',
     ctx: scopeFiber.ctx,
     send: () => {},

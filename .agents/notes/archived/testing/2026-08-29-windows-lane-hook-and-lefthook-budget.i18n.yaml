@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/testing/2026-08-29-windows-lane-hook-and-lefthook-budget.md
+2026-08-29-windows-lane-hook-and-lefthook-budget.md: c219eda07581836a15f7c166a4a41cb77d2f807e
+2026-08-29-windows-lane-hook-and-lefthook-budget.zh.md: 345dc89f13faa135d7c864483c62a80600744fa4

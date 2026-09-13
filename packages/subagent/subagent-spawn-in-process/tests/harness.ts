@@ -1,7 +1,6 @@
 import { Context } from '@singula-ai/cordis'
 import type { Agent } from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
 import { LocalBashExecutor } from '@singula-ai/alego-bash-local'
 import * as BashEnvPlugin from '@singula-ai/alego-shell-env'
@@ -25,9 +24,8 @@ export async function spawnHarness(workdir: string): Promise<Context> {
   // spawned children render it. It stays neutral for both roles; the
   // delegation nudge lives in the e2e's user prompt and the subagent tool's
   // own description.
-  await ctx.plugin(SessionProjectionRegistry)
   await mountAgentLoopTestDependencies(ctx, {
-    systemPrompt: { persona: 'You are a coding agent. Report only when the requested work is done.' },
+    systemPrompt: { personaPrefix: 'You are a coding agent. Report only when the requested work is done.' },
   })
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(LlmDeepSeek)

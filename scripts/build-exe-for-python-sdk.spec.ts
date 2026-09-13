@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process'
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
@@ -23,6 +23,32 @@ function run(env: NodeJS.ProcessEnv, ...args: string[]) {
 }
 
 describe('Python runtime executable builder CLI', () => {
+  it('keeps the single-file dispatcher on the Python packaging surface', () => {
+    const bootstrapPath = resolve(root, 'python/sdk-runtime/runtime-bootstrap.mjs')
+    const bootstrap = readFileSync(bootstrapPath, 'utf8')
+    const cliConfig = readFileSync(resolve(root, 'apps/cli/tsdown.config.ts'), 'utf8')
+    const cliTsconfig = readFileSync(resolve(root, 'apps/cli/tsconfig.json'), 'utf8')
+    const cliManifest = JSON.parse(readFileSync(resolve(root, 'apps/cli/package.json'), 'utf8')) as {
+      dependencies?: Record<string, string>
+      devDependencies?: Record<string, string>
+    }
+    const runtimeManifest = JSON.parse(readFileSync(resolve(root, 'python/sdk-runtime/package.json'), 'utf8')) as {
+      dependencies?: Record<string, string>
+    }
+
+    expect(existsSync(resolve(root, 'apps/cli/src/runtime-bootstrap.ts'))).toBe(false)
+    expect(cliConfig).not.toContain('runtime-bootstrap')
+    expect(cliConfig).toContain("clean: ['lib/*.js']")
+    expect(cliTsconfig).not.toContain('packages/subprocess/subprocess-local')
+    expect(cliManifest.dependencies).not.toHaveProperty('@singula-ai/alego-subprocess-local')
+    expect(cliManifest.devDependencies).toHaveProperty('@singula-ai/alego-subprocess-local')
+    expect(runtimeManifest.dependencies).toHaveProperty('@singula-ai/alego-subprocess-local')
+    expect(bootstrap).toContain("import('@singula-ai/alego/lib/bin.js')")
+    expect(bootstrap).toContain('await runCli()')
+    expect(bootstrap).toContain("import('@singula-ai/alego-subprocess-local/runner')")
+    expect(bootstrap).toContain('await runSelectedSubprocessRunner(selection)')
+  })
+
   it('runs pnpm through its JavaScript entrypoint without a command shell', () => {
     const result = run(
       { npm_execpath: 'C:\\tools\\pnpm.cjs' },
@@ -34,6 +60,11 @@ describe('Python runtime executable builder CLI', () => {
     expect(result.status).toBe(0)
     expect(result.stdout).toContain(`${process.execPath} C:\\tools\\pnpm.cjs run verify-runtime-closure`)
     expect(result.stdout).toContain(`${process.execPath} C:\\tools\\pnpm.cjs --filter alego-python-runtime-closure deploy`)
+    const deploy = result.stdout.split('\n').find(line => line.includes(' --filter alego-python-runtime-closure deploy'))
+    expect(deploy).toContain('--prod --config.allow-unused-patches=true')
+    expect(result.stdout.split('--config.allow-unused-patches=true')).toHaveLength(2)
+    expect(result.stdout).not.toContain(resolve(root, 'python/sdk-runtime/runtime-bootstrap.mjs'))
+    expect(result.stdout).toContain('"bin":"runtime-bootstrap.mjs"')
     expect(result.stdout).toContain(`${process.execPath} C:\\tools\\pnpm.cjs exec pkg`)
     expect(result.stdout).not.toMatch(/pnpm\.cmd/i)
   })

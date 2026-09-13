@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-input-trigger",
   "description": "Input trigger pipeline: '/' and '@' detection, candidate menu, pick routing to registered sources",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -41,9 +41,6 @@
     "watch": "tsdown --watch"
   },
   "license": "MIT",
-  "dependencies": {
-    "clsx": "^2.0.0"
-  },
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:^"
   },
@@ -61,7 +58,8 @@
     "@singula-ai/alego-api-session-controller": "workspace:^",
     "@singula-ai/alego-client-store": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
-    "@singula-ai/alego-client-ui-session": "workspace:^"
+    "@singula-ai/alego-client-ui-session": "workspace:^",
+    "clsx": "^2.0.0"
   },
   "files": [
     "lib/index.js",

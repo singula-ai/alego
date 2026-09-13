@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-llm-retry",
   "description": "Provider-routed LLM request retry policy for the Alego",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -61,6 +61,7 @@
     "@singula-ai/alego-llm-deepseek": "workspace:^",
     "@singula-ai/alego-llm-mock-server": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^",
     "@singula-ai/alego-session-persistence-jsonl": "workspace:^",
     "@singula-ai/alego-system-prompt": "workspace:^",
     "@singula-ai/alego-timeout": "workspace:^",

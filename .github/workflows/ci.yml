@@ -30,7 +30,8 @@ jobs:
   node-24:
     if: github.event_name == 'pull_request'
     runs-on: >-
-      ${{ vars.ALEGO_CI_FAILOVER_LINUX == 'selfhosted'
+      ${{ vars.ALEGO_CI_FAILOVER_LINUX == 'blacksmith' && 'blacksmith-16vcpu-ubuntu-2404'
+          || vars.ALEGO_CI_FAILOVER_LINUX == 'selfhosted'
           && github.event.pull_request.user.login != 'dependabot[bot]'
           && fromJSON('["self-hosted", "linux", "x64", "vm-backup"]')
           || 'ubuntu-24.04' }}
@@ -41,11 +42,22 @@ jobs:
       # does not keep burning enterprise runner time on the remaining gates.
       ALEGO_GATE_FAIL_FAST: '1'
     steps:
+      # Runner cleanup owns tool caches and fixtures, including cancelled runs.
+      - name: Use runner-owned temporary storage
+        run: |
+          echo "TMPDIR=${{ runner.temp }}" >> "$GITHUB_ENV"
+
       # Fetch complete history so the archive gate can read the trusted PR base from a reused shallow checkout.
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           persist-credentials: false
+
+      # Redirect the Node compile cache (enabled by pnpm and TypeScript) off
+      # the root partition's /tmp before the first pnpm call in this lane —
+      # see .agents/notes/implemented/process/2026-08-28-ci-node-compile-cache-data-disk.md.
+      - name: Redirect Node compile cache to runner temp
+        run: echo "NODE_COMPILE_CACHE=${{ runner.temp }}/node-compile-cache" >> "$GITHUB_ENV"
 
       - uses: pnpm/action-setup@v4
         with:
@@ -85,7 +97,8 @@ jobs:
   node-24-coverage:
     if: github.event_name == 'pull_request'
     runs-on: >-
-      ${{ vars.ALEGO_CI_FAILOVER_LINUX == 'selfhosted'
+      ${{ vars.ALEGO_CI_FAILOVER_LINUX == 'blacksmith' && 'blacksmith-16vcpu-ubuntu-2404'
+          || vars.ALEGO_CI_FAILOVER_LINUX == 'selfhosted'
           && github.event.pull_request.user.login != 'dependabot[bot]'
           && fromJSON('["self-hosted", "linux", "x64", "vm-backup"]')
           || 'ubuntu-24.04' }}
@@ -96,13 +109,32 @@ jobs:
       ALEGO_COVERAGE_MAX_WORKERS: '3'
       ALEGO_COVERAGE_PARTITIONS: '2'
       ALEGO_GATE_CONCURRENCY: '3'
+      # Managed-scope teardown cases run past the default per-test budget when
+      # this lane's partitions, workers, and sibling gates share one host: the
+      # disposal cases in subprocess-local and bash-sandbox exceeded 5000ms on
+      # the hosted image (run 34449848541) while the same commit stayed inside
+      # the budget on the in-house pool; the lane is green with this value
+      # (run 34457655892). The Windows coverage lane grants the same budget for
+      # the same reason.
+      ALEGO_COVERAGE_TEST_TIMEOUT_MS: '90000'
       # A gate failure aborts the sibling gate instead of waiting out its
       # multi-minute instrumented run.
       ALEGO_GATE_FAIL_FAST: '1'
     steps:
+      # Runner cleanup owns tool caches and fixtures, including cancelled runs.
+      - name: Use runner-owned temporary storage
+        run: |
+          echo "TMPDIR=${{ runner.temp }}" >> "$GITHUB_ENV"
+
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
+
+      # Redirect the Node compile cache (enabled by pnpm and TypeScript) off
+      # the root partition's /tmp before the first pnpm call in this lane —
+      # see .agents/notes/implemented/process/2026-08-28-ci-node-compile-cache-data-disk.md.
+      - name: Redirect Node compile cache to runner temp
+        run: echo "NODE_COMPILE_CACHE=${{ runner.temp }}/node-compile-cache" >> "$GITHUB_ENV"
 
       - uses: pnpm/action-setup@v4
         with:
@@ -120,9 +152,8 @@ jobs:
           store_path=$(PNPM_CONFIG_STORE_DIR="$store_root" pnpm store path --silent)
           echo "path=$store_path" >> "$GITHUB_OUTPUT"
 
-      # Skipped under failover: the self-hosted VM's persistent pnpm store
-      # already serves warm installs, while restoring the hosted archive
-      # would spend ~52 s pulling ~180 MB into that populated store.
+      # Self-hosted runners reuse the shared persistent pnpm store.
+      # Hosted runners restore the remote cache into their ephemeral store.
       - uses: actions/cache/restore@v4
         if: vars.ALEGO_CI_FAILOVER_LINUX != 'selfhosted' || github.event.pull_request.user.login == 'dependabot[bot]'
         with:
@@ -147,25 +178,13 @@ jobs:
       - name: Run exhaustive coverage
         run: pnpm run check:ci:coverage
 
-  node-24-consumers:
+  node-24-bench:
     if: github.event_name == 'pull_request'
-    runs-on: >-
-      ${{ vars.ALEGO_CI_FAILOVER_LINUX == 'selfhosted'
-          && github.event.pull_request.user.login != 'dependabot[bot]'
-          && fromJSON('["self-hosted", "linux", "x64", "vm-backup"]')
-          || 'ubuntu-24.04' }}
-    name: node 24 / snapshots and artifacts
-    env:
-      # Each consumer gate owns parallel subprocesses; the four-CPU hosted
-      # runner executes one gate at a time while retaining that inner parallelism.
-      ALEGO_GATE_CONCURRENCY: '1'
-      ALEGO_NODE_COMPAT_SKIP_TYPECHECK: '1'
-      ALEGO_OXLINT_THREADS: '4'
-      ALEGO_PUBLINT_CONCURRENCY: '4'
-      ALEGO_WEB_SNAPSHOT_WORKERS: '2'
-      # A failed gate stops the remaining consumer inventory.
-      ALEGO_GATE_FAIL_FAST: '1'
-      ALEGO_SNAPSHOT_MAX_CONCURRENCY: '2'
+    runs-on: ubuntu-24.04
+    name: node 24 / benchmarks
+    # Wall-clock budgets need an otherwise idle runner, so this job runs the
+    # benchmark lane alone instead of joining a concurrent gate aggregate.
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
         with:
@@ -187,11 +206,82 @@ jobs:
           store_path=$(PNPM_CONFIG_STORE_DIR="$store_root" pnpm store path --silent)
           echo "path=$store_path" >> "$GITHUB_OUTPUT"
 
+      - uses: actions/cache/restore@v4
+        with:
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: ${{ runner.os }}-node-${{ env.PRIMARY_NODE_VERSION }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ env.PRIMARY_NODE_VERSION }}-pnpm-
+
+      - name: Install (immutable)
+        run: pnpm install --frozen-lockfile
+
+      - name: Install benchmark browser and hosted dependencies
+        run: pnpm --filter @singula-ai/alego-benchmarks exec playwright install --with-deps chromium
+
+      - name: Run performance benchmarks
+        env:
+          ALEGO_GATE_VERBOSE: '1'
+        run: pnpm run check:ci:bench
+
+  node-24-consumers:
+    if: github.event_name == 'pull_request'
+    runs-on: >-
+      ${{ vars.ALEGO_CI_FAILOVER_LINUX == 'blacksmith' && 'blacksmith-16vcpu-ubuntu-2404'
+          || vars.ALEGO_CI_FAILOVER_LINUX == 'selfhosted'
+          && github.event.pull_request.user.login != 'dependabot[bot]'
+          && fromJSON('["self-hosted", "linux", "x64", "vm-backup"]')
+          || 'ubuntu-24.04' }}
+    name: node 24 / snapshots and artifacts
+    env:
+      # Each consumer gate owns parallel subprocesses; the four-CPU hosted
+      # runner executes one gate at a time while retaining that inner parallelism.
+      ALEGO_GATE_CONCURRENCY: '1'
+      ALEGO_NODE_COMPAT_SKIP_TYPECHECK: '1'
+      ALEGO_OXLINT_THREADS: '4'
+      ALEGO_PUBLINT_CONCURRENCY: '4'
+      ALEGO_WEB_SNAPSHOT_WORKERS: '2'
+      # A failed gate stops the remaining consumer inventory.
+      ALEGO_GATE_FAIL_FAST: '1'
+      ALEGO_SNAPSHOT_MAX_CONCURRENCY: '2'
+    steps:
+      # Runner cleanup owns tool caches and fixtures, including cancelled runs.
+      - name: Use runner-owned temporary storage
+        run: |
+          echo "TMPDIR=${{ runner.temp }}" >> "$GITHUB_ENV"
+          echo "PLAYWRIGHT_BROWSERS_PATH=${RUNNER_TEMP%/*}/ms-playwright" >> "$GITHUB_ENV"
+
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      # Redirect the Node compile cache (enabled by pnpm and TypeScript) off
+      # the root partition's /tmp before the first pnpm call in this lane —
+      # see .agents/notes/implemented/process/2026-08-28-ci-node-compile-cache-data-disk.md.
+      - name: Redirect Node compile cache to runner temp
+        run: echo "NODE_COMPILE_CACHE=${{ runner.temp }}/node-compile-cache" >> "$GITHUB_ENV"
+
+      - uses: pnpm/action-setup@v4
+        with:
+          dest: ${{ runner.temp }}/setup-pnpm-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+
+      - name: Configure pnpm store path
+        id: pnpm-store
+        run: |
+          store_root="$HOME/.local/share/pnpm/store"
+          echo "PNPM_CONFIG_STORE_DIR=$store_root" >> "$GITHUB_ENV"
+          store_path=$(PNPM_CONFIG_STORE_DIR="$store_root" pnpm store path --silent)
+          echo "path=$store_path" >> "$GITHUB_OUTPUT"
+
       # Pull requests restore the pnpm store and Playwright caches without paying
       # compression and upload on the required path. No master job saves these
       # hosted cache keys, so each restore-keys fallback hits the matching archived
-      # entry until it evicts, after which the store is cold. Skipped under failover
-      # — the self-hosted VM's persistent store is already warm.
+      # entry until it evicts, after which the store is cold. Self-hosted runners
+      # reuse the shared persistent store instead of restoring the remote archive.
       - uses: actions/cache/restore@v4
         if: vars.ALEGO_CI_FAILOVER_LINUX != 'selfhosted' || github.event.pull_request.user.login == 'dependabot[bot]'
         with:
@@ -200,11 +290,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-${{ env.PRIMARY_NODE_VERSION }}-pnpm-
 
-      # Skipped under failover: the VM's persistent browser cache is already warm.
+      # Self-hosted runners retain their own browser cache between jobs.
       - uses: actions/cache/restore@v4
         if: vars.ALEGO_CI_FAILOVER_LINUX != 'selfhosted' || github.event.pull_request.user.login == 'dependabot[bot]'
         with:
-          path: ~/.cache/ms-playwright
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
           key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-playwright-
@@ -238,8 +328,17 @@ jobs:
 
   node-compat:
     if: github.event_name == 'pull_request'
-    # Each compatibility contract receives an independent standard hosted job.
-    runs-on: ${{ matrix.runner }}
+    # Under the selfhosted leg this job admits only repository-owned PR code
+    # to the persistent shared VM; the blacksmith branch targets ephemeral
+    # runners and carries none of those predicates.
+    runs-on: >-
+      ${{ vars.ALEGO_CI_FAILOVER_LINUX == 'blacksmith' && 'blacksmith-4vcpu-ubuntu-2404'
+          || vars.ALEGO_CI_FAILOVER_LINUX == 'selfhosted'
+          && github.event.pull_request.head.repo.full_name == github.repository
+          && github.event.pull_request.head.repo.fork == false
+          && github.event.pull_request.user.login != 'dependabot[bot]'
+          && fromJSON('["self-hosted", "linux", "x64", "vm-backup"]')
+          || matrix.runner }}
     name: ${{ matrix.name }}
     env:
       ALEGO_GATE_CONCURRENCY: ${{ matrix.gate_concurrency }}
@@ -268,15 +367,39 @@ jobs:
             gate_concurrency: '1'
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      # Shared hosts keep version installs and generated caches inside runner temp.
+      - name: Isolate compatibility caches
+        if: runner.environment == 'self-hosted'
+        run: |
+          echo "NODE_COMPILE_CACHE=$RUNNER_TEMP/node-compile-cache" >> "$GITHUB_ENV"
+          echo "npm_config_devdir=$RUNNER_TEMP/node-gyp" >> "$GITHUB_ENV"
+          echo "PNPM_CONFIG_STORE_DIR=$HOME/.local/share/pnpm/store" >> "$GITHUB_ENV"
 
       - uses: pnpm/action-setup@v4
         with:
           dest: ${{ runner.temp }}/setup-pnpm-${{ github.run_id }}-${{ github.run_attempt }}
 
       - uses: actions/setup-node@v6
+        env:
+          # The runner overwrites RUNNER_* step env before starting JavaScript actions.
+          NODE_OPTIONS: ${{ runner.environment == 'self-hosted' && '--import=./scripts/ci-compatible-toolcache.mjs' || '' }}
         with:
           node-version: ${{ matrix.node }}
-          cache: pnpm
+          cache: ${{ runner.environment == 'github-hosted' && 'pnpm' || '' }}
+          package-manager-cache: false
+
+      - name: Verify isolated Node installation
+        if: runner.environment == 'self-hosted'
+        run: |
+          node_path=$(node -p process.execPath)
+          echo "Node executable: $node_path"
+          case "$node_path" in
+            "$RUNNER_TEMP/node-compat-toolcache/"*) ;;
+            *) echo "::error::Node compatibility installation is outside runner temp"; exit 1 ;;
+          esac
 
       - name: Install (immutable)
         run: pnpm install --frozen-lockfile
@@ -311,107 +434,17 @@ jobs:
         run: uv run --python 3.10 --group test --project python/sdk pytest
 
   # The reusable builder owns each published executable, wheel, clean-install,
-  # keyless black-box, and trusted real-API path. All native release targets are
-  # required because a platform wheel cannot be validated by another carrier.
+  # keyless black-box, and trusted real-API path. Linux/Windows x64 block PRs;
+  # Linux ARM64 and both macOS architectures run in ci-master.yml.
   python-runtime:
     if: github.event_name == 'pull_request'
     name: python runtime / release-shaped matrix
     uses: ./.github/workflows/build-exe-for-python-sdk.yml
     with:
-      targets: node24-linux-x64,node24-linux-arm64,node24-macos-arm64,node24-macos-x64,node24-win-x64
+      targets: node24-linux-x64,node24-win-x64
       ci: true
     secrets:
       DEEPSEEK_API_KEY_EXTERNAL: ${{ secrets.DEEPSEEK_API_KEY_EXTERNAL }}
-
-  # The required pull-request Windows signal: the two blocking win32 surfaces
-  # (workspace build, production site) execute with real, checksum-verified
-  # Windows Node under Wine on standard hosted Linux. The independent
-  # windows-native job below keeps the complete native-kernel inventory —
-  # including the observational portability gates this lane does not run —
-  # on real Windows. This job only provisions runner state (caches,
-  # apt); scripts/wine-windows-gates.sh owns the gate logic and is the same
-  # script the optional local gate `pnpm run check:windows-wine` runs.
-  # Current topology and fidelity limits live in
-  # .agents/notes/implemented/process/2026-08-08-native-windows-pull-request-ci.md
-  windows:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    name: windows node 24 / wine blocking
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          persist-credentials: false
-
-      - uses: pnpm/action-setup@v4
-        with:
-          dest: ${{ runner.temp }}/setup-pnpm-${{ github.run_id }}-${{ github.run_attempt }}
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
-
-      - name: Configure pnpm store path
-        id: pnpm-store
-        run: |
-          store_root="$HOME/.local/share/pnpm/store"
-          echo "PNPM_CONFIG_STORE_DIR=$store_root" >> "$GITHUB_ENV"
-          store_path=$(PNPM_CONFIG_STORE_DIR="$store_root" pnpm store path --silent)
-          echo "path=$store_path" >> "$GITHUB_OUTPUT"
-
-      - uses: actions/cache/restore@v4
-        with:
-          path: ${{ steps.pnpm-store.outputs.path }}
-          key: ${{ runner.os }}-node-${{ env.PRIMARY_NODE_VERSION }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ env.PRIMARY_NODE_VERSION }}-pnpm-
-
-      # Master's wine-apt-cache job in ci-master.yml seeds the default-branch
-      # scope every pull request can read; a save from this job only reaches
-      # reruns of the same merge ref.
-      - name: Compose Wine apt cache key
-        id: wine-cache-key
-        run: echo "key=wine-debs-${ImageOS:-linux}-${ImageVersion:-v0}" >> "$GITHUB_OUTPUT"
-
-      - uses: actions/cache@v4
-        with:
-          path: ~/wine-debs
-          key: ${{ steps.wine-cache-key.outputs.key }}
-
-      # Runner provisioning only — a developer machine installs Wine through
-      # its own package manager; the gate script assumes a wine binary and
-      # fails loud without one. Wine from the apt cache when present; else
-      # download the full dependency closure once and keep it for the next
-      # run. The `wine` dispatcher package (not bare `wine64`) is what puts a
-      # binary on PATH.
-      - name: Install Wine
-        run: |
-          if compgen -G "$HOME/wine-debs/*.deb" > /dev/null; then
-            # The restored archive is the full --download-only closure of
-            # `wine` for this runner image, so installing the .debs directly
-            # with dpkg needs no repository access. apt-get would instead
-            # re-download the same 100+ MB closure from the mirror, which has
-            # stalled the job past its budget on a degraded runner network.
-            # If the archive cannot satisfy the closure, fall back to the apt
-            # network install.
-            if ! sudo DEBIAN_FRONTEND=noninteractive dpkg -i "$HOME"/wine-debs/*.deb; then
-              sudo DEBIAN_FRONTEND=noninteractive dpkg --configure -a || true
-              sudo apt-get install -y --no-install-recommends "$HOME"/wine-debs/*.deb
-            fi
-          else
-            sudo apt-get update
-            sudo apt-get install -y --no-install-recommends --download-only wine
-            mkdir -p "$HOME/wine-debs"
-            cp /var/cache/apt/archives/*.deb "$HOME/wine-debs/" 2>/dev/null || true
-            sudo apt-get install -y --no-install-recommends wine
-          fi
-
-      - name: Run the Wine Windows gates
-        run: bash scripts/wine-windows-gates.sh
-
-      - name: Shut down wineserver
-        if: always()
-        run: wineserver -k 2>/dev/null || true
 
   # Every pull request also gets real Windows-kernel signals. The former
   # monolithic windows-native job is split into smaller jobs so one slow
@@ -422,7 +455,8 @@ jobs:
   windows-build:
     if: github.event_name == 'pull_request'
     runs-on: >-
-      ${{ vars.ALEGO_CI_FAILOVER_WINDOWS == 'selfhosted'
+      ${{ vars.ALEGO_CI_FAILOVER_WINDOWS == 'blacksmith' && 'blacksmith-16vcpu-windows-2025'
+          || vars.ALEGO_CI_FAILOVER_WINDOWS == 'selfhosted'
           && github.event.pull_request.user.login != 'dependabot[bot]'
           && fromJSON('["self-hosted", "alego-win-ci", "windows"]')
           || 'windows-2025' }}
@@ -466,7 +500,8 @@ jobs:
   windows-coverage:
     if: github.event_name == 'pull_request'
     runs-on: >-
-      ${{ vars.ALEGO_CI_FAILOVER_WINDOWS == 'selfhosted'
+      ${{ vars.ALEGO_CI_FAILOVER_WINDOWS == 'blacksmith' && 'blacksmith-16vcpu-windows-2025'
+          || vars.ALEGO_CI_FAILOVER_WINDOWS == 'selfhosted'
           && github.event.pull_request.user.login != 'dependabot[bot]'
           && fromJSON('["self-hosted", "alego-win-ci", "windows"]')
           || 'windows-2025' }}
@@ -533,7 +568,7 @@ jobs:
         # Coverage flakes must not prevent the cache from building; the
         # measured durations remain useful even when a partition failed. The
         # per-run key keeps every save a fresh immutable cache entry.
-        if: always()
+        if: ${{ !cancelled() }}
         uses: actions/cache/save@v4
         with:
           path: .coverage-times.json
@@ -542,7 +577,8 @@ jobs:
   windows-native-tests:
     if: github.event_name == 'pull_request'
     runs-on: >-
-      ${{ vars.ALEGO_CI_FAILOVER_WINDOWS == 'selfhosted'
+      ${{ vars.ALEGO_CI_FAILOVER_WINDOWS == 'blacksmith' && 'blacksmith-16vcpu-windows-2025'
+          || vars.ALEGO_CI_FAILOVER_WINDOWS == 'selfhosted'
           && github.event.pull_request.user.login != 'dependabot[bot]'
           && fromJSON('["self-hosted", "alego-win-ci", "windows"]')
           || 'windows-2025' }}
@@ -591,7 +627,8 @@ jobs:
     if: github.event_name == 'pull_request'
     continue-on-error: true
     runs-on: >-
-      ${{ vars.ALEGO_CI_FAILOVER_WINDOWS == 'selfhosted'
+      ${{ vars.ALEGO_CI_FAILOVER_WINDOWS == 'blacksmith' && 'blacksmith-16vcpu-windows-2025'
+          || vars.ALEGO_CI_FAILOVER_WINDOWS == 'selfhosted'
           && github.event.pull_request.user.login != 'dependabot[bot]'
           && fromJSON('["self-hosted", "alego-win-ci", "windows"]')
           || 'windows-2025' }}
@@ -634,14 +671,11 @@ jobs:
   # Single stable required check for branch protection: require "all checks
   # passed" instead of enumerating matrix legs whose names change as lanes and
   # node versions evolve. Every blocking job in THIS workflow must be listed in
-  # `needs`. The required Wine job is listed as `windows`; `windows-native` is
-  # deliberately absent so its independent result never delays or changes this
-  # verdict. (`needs` cannot reach across workflow files; the master-only jobs in
-  # ci-master.yml are intentionally not part of this PR verdict.)
-  # `if: always()` is load-bearing: without it a failed dependency
-  # would SKIP this job, and GitHub counts a skipped required check as passing
-  # — so this job always runs and fails on any non-success result, including
-  # 'cancelled' and 'skipped'.
+  # `needs`. Native Windows build and process checks are required; Wine and
+  # the deferred Python runtime targets live in ci-master.yml and do not
+  # participate in this PR verdict. `needs` cannot cross workflow files.
+  # An explicit status function runs the verdict after failed/skipped needs
+  # without keeping a cancelled workflow alive for an obsolete verdict.
   all-checks-passed:
     name: all checks passed
     # This bookkeeping-only verdict must not depend on custom-pool
@@ -649,14 +683,18 @@ jobs:
     # the worker jobs it aggregates, so a standard-hosted outage cannot strand
     # the branch-protection verdict either. It retargets with the Linux switch
     # (ALEGO_CI_FAILOVER_LINUX), not the Windows one, because it aggregates the
-    # required Linux workers and runs on the vm-backup pool.
+    # required Linux workers and runs on the vm-backup pool. Under the
+    # 'blacksmith' value the verdict shares Blacksmith's pool with its workers
+    # through the same selector, so a Blacksmith outage strands both together —
+    # the accepted consequence of the explicit opt-in switch.
     runs-on: >-
-      ${{ vars.ALEGO_CI_FAILOVER_LINUX == 'selfhosted'
+      ${{ vars.ALEGO_CI_FAILOVER_LINUX == 'blacksmith' && 'blacksmith-4vcpu-ubuntu-2404'
+          || vars.ALEGO_CI_FAILOVER_LINUX == 'selfhosted'
           && github.event.pull_request.user.login != 'dependabot[bot]'
           && fromJSON('["self-hosted", "linux", "x64", "vm-backup"]')
           || 'ubuntu-latest' }}
-    needs: [node-24, node-24-coverage, node-24-consumers, node-compat, python-sdk, python-runtime, windows, windows-build, windows-native-tests]
-    if: always() && github.event_name == 'pull_request'
+    needs: [node-24, node-24-coverage, node-24-bench, node-24-consumers, node-compat, python-sdk, python-runtime, windows-build, windows-native-tests]
+    if: ${{ !cancelled() && github.event_name == 'pull_request' }}
     steps:
       - name: Fail if any needed job did not succeed
         if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') || contains(needs.*.result, 'skipped')

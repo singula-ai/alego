@@ -1,4 +1,4 @@
-import type { GenerateOptions, LlmModelReasoningInfo, LlmResolvedModelInfo, StreamChunk } from '@singula-ai/alego-llm'
+import type { GenerateOptions, LlmModelReasoningInfo, LlmResolvedModelInfo, StreamChunk, SystemPromptUpdate } from '@singula-ai/alego-llm'
 import { ToolCallId, LlmAdapter } from '@singula-ai/alego-llm'
 
 /** Helpers to write scripted responses tersely. */
@@ -71,6 +71,8 @@ export interface HangAfter {
  */
 export class MockAdapter extends LlmAdapter {
   requests: GenerateOptions[] = []
+  /** Declared system prompt update mode of every route this adapter serves. */
+  systemPromptUpdate?: SystemPromptUpdate
 
   constructor(
     private script: (StreamChunk[] | ((options: GenerateOptions) => StreamChunk[]) | 'hang' | 'hang-slow' | HangAfter)[],
@@ -90,6 +92,7 @@ export class MockAdapter extends LlmAdapter {
       name: model,
       ...this.reasoning === undefined ? {} : { reasoning: this.reasoning },
       ...this.defaultMaxTokens === undefined ? {} : { defaultMaxTokens: this.defaultMaxTokens },
+      ...this.systemPromptUpdate === undefined ? {} : { systemPromptUpdate: this.systemPromptUpdate },
     })
   }
 

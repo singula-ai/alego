@@ -15,7 +15,7 @@ import {
   type NormalizeContext,
 } from '@singula-ai/alego-session-snapshot'
 import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@singula-ai/alego-loader-smoke'
-import { createUserMessage } from '@singula-ai/alego-llm'
+import { createMessage, createUserMessage } from '@singula-ai/alego-llm'
 import { SessionSeq, SESSION_FORMAT_VERSION, SessionId, type SessionEvent, type SessionHeader } from '@singula-ai/alego-session'
 import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import { describe, expect, it } from 'vitest'
@@ -31,7 +31,7 @@ const childId = SessionId('subagent-diagnostic-child')
 const refreshing = process.env.ALEGO_SNAPSHOT === 'refresh'
 const task = 'Call list_agents once and report what it shows.'
 
-/** Compare one current normalized Session with its generation-aware committed fixture. */
+/** Compare current normalized Session records without historical migration. */
 async function expectSession(actual: string, expectedPath: string): Promise<void> {
   const expected = await readFile(expectedPath, 'utf8')
   const parse = (content: string): Record<string, unknown>[] => content.split('\n')
@@ -59,8 +59,15 @@ async function seedDescriptorlessChild(root: string, cwd: string): Promise<void>
   }
   const parentEvents: SessionEvent[] = [
     { type: 'turn/start', seq: SessionSeq(0), time: 10, data: { turn: 1 } },
-    { type: 'user/message', seq: SessionSeq(1), time: 11, data: createUserMessage({ content: [{ type: 'text', text: 'Start a background job.' }], source: { kind: 'user' } }), surfaceOp: 'append' },
-    { type: 'turn/end', seq: SessionSeq(2), time: 12, data: { turn: 1, reason: { kind: 'completed' } } },
+    { type: 'step/start', seq: SessionSeq(1), time: 11, data: { turn: 1, step: 1 } },
+    {
+      type: 'system/message', seq: SessionSeq(2), time: 12,
+      data: { turn: 1, step: 1, message: createMessage({ role: 'system', content: [], source: { kind: 'plugin', plugin: '@singula-ai/alego-system-prompt' } }) },
+      surfaceOp: 'append',
+    },
+    { type: 'user/message', seq: SessionSeq(3), time: 13, data: createUserMessage({ content: [{ type: 'text', text: 'Start a background job.' }], source: { kind: 'user' } }), surfaceOp: 'append' },
+    { type: 'step/end', seq: SessionSeq(4), time: 14, data: { turn: 1, step: 1 } },
+    { type: 'turn/end', seq: SessionSeq(5), time: 15, data: { turn: 1, reason: { kind: 'completed' } } },
   ]
   const childMeta: SessionHeader = {
     version: SESSION_FORMAT_VERSION,

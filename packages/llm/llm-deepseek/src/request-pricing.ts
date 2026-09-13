@@ -2,7 +2,7 @@
  * Provider-side request-image pricing for DeepSeek routes: reproduces the
  * adapter's deterministic request projection (per-model pixel budget,
  * oldest-first offload under the raw-byte and count budgets) and prices every
- * retained image with the published v4 vision-token accounting. Consumed
+ * retained image with the published vision-token accounting. Consumed
  * synchronously by the token meter through `LlmAdapter.imageRequestPricing`;
  * provider usage remains the authoritative anchor for completed requests.
  *
@@ -20,7 +20,7 @@ import type { DeepSeekCatalogModel, DeepSeekConnectionOptions } from './adapter.
 export const DEFAULT_MAX_REQUEST_FILES_BYTES = 128 * 1024 * 1024
 /** Provider request image-count limit. */
 export const DEFAULT_MAX_IMAGES_PER_REQUEST = 600
-/** Total-pixel budget matching DeepSeek's normal vision projection. */
+/** Default total-pixel budget for harness request-image projection. */
 export const DEFAULT_REQUEST_IMAGE_PIXEL_BUDGET = 640_000
 /** Total-pixel budget matching provider low-detail image input. */
 export const DEFAULT_LOW_DETAIL_IMAGE_PIXEL_BUDGET = 512 * 512

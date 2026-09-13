@@ -30,15 +30,18 @@ function validate(events: readonly SessionEvent[], fail: InvariantFailure): void
 /** Install replay and pre-append validation for the owned event stream. */
 const install: InvariantInstaller = Object.assign((ctx: Context, fail: InvariantFailure) => {
   for (const session of ctx.sessions.list()) {
+    // oxlint-disable-next-line typescript/no-deprecated -- Existing Session history read; migration deferred.
     validate(session.ownEvents(), fail)
   }
   ctx.on('session/created', (session) => {
+    // oxlint-disable-next-line typescript/no-deprecated -- Existing Session history read; migration deferred.
     validate(session.ownEvents(), fail)
   }, { global: true })
   ctx.on('internal/dispatch', (_mode, eventName, args) => {
     if (eventName !== 'session/event') return
     const [session, event] = args as [Session, SessionEvent]
     if (event.type !== 'schedule/change') return
+    // oxlint-disable-next-line typescript/no-deprecated -- Existing Session history read; migration deferred.
     validate([...session.ownEvents(), event], fail)
   }, { global: true })
 }, { inject: ['sessions'] })

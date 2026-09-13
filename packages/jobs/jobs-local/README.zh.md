@@ -9,7 +9,7 @@ kind: "package-reference"
 
 ## 概述
 
-`alego-jobs-local` 在 harness 进程内运行后台任务：工作会在 agent 继续推进的同时保持运行，拥有它的 agent 可以读取、等待、列出和取消它；同时挂载 `alego-tool-jobs` 时，完成以会话内通知送达。它用内存记录实现 `alego-jobs` 约定，并且只交出全新快照，从不交出实时状态。按所有者的并发上限（默认 10）约束一个 agent 同时处于运行或停止中的任务数量；任务会随 harness 进程终止而消失，无法跨重启持久。
+`alego-jobs-local` 在 harness 进程内运行后台任务：工作会在 agent（智能体）继续推进的同时保持运行，拥有它的 agent 可以读取、等待、列出和取消它；同时挂载 `alego-tool-jobs` 时，完成以会话内通知送达。它用内存记录实现 `alego-jobs` 约定，并且只交出全新快照，从不交出实时状态。按所有者的并发上限（默认 10）约束一个 agent 同时处于运行或停止中的任务数量；任务会随 harness 进程终止而消失，无法跨重启持久。
 
 ## 目录
 
@@ -80,7 +80,7 @@ kind: "package-reference"
 | 文件 | 职责 |
 |---|---|
 | [`src/index.ts`](src/index.ts) | 插件入口：`Config` schema、`LocalJobRegistry`、准入、生命周期、销毁 |
-| — | 不发布运行时不变式伴生入口；快照检查位于 `alego-jobs/invariant`。 |
+| — | 不发布运行时不变式伴生入口；快照的标识、状态、时间戳与所有者检查位于 `@singula-ai/alego-jobs/invariant`。此提供方的准入决策使用私有配置，并且必须在后端启动器运行前失败；当前生产方由 `LocalJobRegistry.start()` 同步执行该决策。发布后再重复聚合只会向 companion 暴露私有配置，也无法验证失败发生在启动前。 |
 
 ### scope 分层
 
@@ -103,12 +103,12 @@ kind: "package-reference"
 
 当包级约定不够用时阅读以下页面。它们从注册表约定逐步进入模型侧控制与设计记录。
 
-- [后台任务运行时子系统](../../../docs/subsystems/jobs.zh.md)——任务类型、快照字段与 `ctx.jobs` 的 cordis 接口面。
+- [后台任务运行时子系统](../../../docs/subsystems/jobs.zh.md)——任务类型、快照字段与 `ctx.jobs` 的 Cordis 接口面。
 - [jobs 组映射](../README.zh.md)——同级组页面及其包表格。
 - [注册表约定](../jobs/README.zh.md)——本包实现的抽象 `ctx.jobs` 服务。
 - [模型侧任务控制](../tool-jobs/README.zh.md)——`job_output`、`job_list` 与 `job_kill` 工具及完成通知。
 - [通用长时间运行工具运行时 Agent Note](../../../.agents/notes/implemented/architecture/2026-06-20-generic-long-running-tool-runtime.zh.md)——后台任务运行时背后的设计。
-- [任务注册表 seam Agent Note](../../../.agents/notes/implemented/architecture/2026-07-26-job-registry-seam.zh.md)——按所有者隔离的注册表约定及其理由。
+- [任务注册表 seam Agent Note](../../../.agents/notes/archived/architecture/2026-07-26-job-registry-seam.md)——按所有者隔离的注册表约定及其理由。
 
 -----
 

@@ -4,4 +4,4 @@ export { releasedV1SessionFormatCodec } from '@singula-ai/alego-session-format-v
 export * from './codec.ts'
 export * from './dispositions.ts'
 export * from './migration.ts'
-export * from './validation.ts'
+export { assertReleasedV2Header, restoreReleasedV2Artifact } from './validation.ts'

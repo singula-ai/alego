@@ -11,7 +11,7 @@
  * The policy only decides WHEN to spill and composes the notice.
  *
  * A second arm applies the SAME cap to the durable log: the
- * `tools/ptc-dispatch-log` waterfall bounds the `tool/code-dispatch` event's
+ * `tools/ptc-dispatch-log` waterfall bounds the `tool/ptc-dispatch` event's
  * copy of an oversized `run_code` sub-call result (the program's value is
  * untouched; UIs and replay read the full text through the spill artifact).
  *
@@ -46,13 +46,14 @@
 import type { Context } from '@singula-ai/cordis'
 import z from '@singula-ai/schemastery'
 import type { ContentBlock } from '@singula-ai/alego-llm'
-import { TextRetainer, describeOmitted } from '@singula-ai/alego-output-retention'
+import { TextRetainer } from '@singula-ai/alego-output-retention'
 import type { Omitted } from '@singula-ai/alego-output-retention'
 import type { SaveTextSpill, SpillRef } from '@singula-ai/alego-spill'
 import type { SessionId } from '@singula-ai/alego-session'
 import type { ToolCallId } from '@singula-ai/alego-llm'
 import type { PostToolDecision, ToolExecution } from '@singula-ai/alego-tools'
 import type { SpillPolicyExec } from './types.ts'
+import { formatSpillNotice } from './notice.ts'
 
 export type { SpillPolicyExec } from './types.ts'
 
@@ -101,12 +102,6 @@ function preview(text: string, budget: number): { text: string; omitted: Omitted
   return { text: kept.text, omitted: kept.omittedBytes }
 }
 
-/** The spill-notice line for a given omission + saved reference (no preview, no leading blank line). */
-function spillNotice(omitted: Omitted, ref: SpillRef): string {
-  const omission = describeOmitted(omitted, 'bytes')
-  return `(${omission} Full formatted result stored at: ${ref.locator}. ${ref.retrievalHint})`
-}
-
 export function apply(ctx: Context, config: Config): void {
   const maxInlineBytes = config.maxInlineBytes
   // Omitted ⇒ no automatic spill policy: register nothing at all.
@@ -146,7 +141,7 @@ export function apply(ctx: Context, config: Config): void {
     }
     const save: SaveTextSpill = {
       owner: { sessionId },
-      source: { toolName, callId, label },
+      source: { kind: 'tool', toolName, callId, label },
       suggestedName: `${toolName}.txt`,
       content: text,
     }
@@ -168,10 +163,10 @@ export function apply(ctx: Context, config: Config): void {
     // count (the full byte total): its digit count bounds the real count's, so
     // the reserved size is a safe upper bound and the final notice is never
     // longer than what we reserved. `\n\n` is the 2-byte join.
-    const reserve = Buffer.byteLength(spillNotice({ kind: 'exact', count: totalBytes }, ref), 'utf8') + 2
+    const reserve = Buffer.byteLength(formatSpillNotice({ kind: 'exact', count: totalBytes }, ref), 'utf8') + 2
     const previewBudget = Math.max(0, cap - reserve)
     const { text: previewText, omitted } = preview(text, previewBudget)
-    const notice = spillNotice(omitted, ref)
+    const notice = formatSpillNotice(omitted, ref)
     const replacedText = previewText.length > 0 ? `${previewText}\n\n${notice}` : notice
     // Invariant: the policy NEVER emits a replacement larger than the cap. When
     // the notice alone exceeds maxInlineBytes (a tiny cap or a long spill root),
@@ -208,7 +203,7 @@ export function apply(ctx: Context, config: Config): void {
     return { kind: 'accept', content: replaced, ...decision.additionalContexts ? { additionalContexts: decision.additionalContexts } : {} }
   }, { prepend: true })
 
-  // The durable-log arm: bound the `tool/code-dispatch` event's copy of an
+  // The durable-log arm: bound the `tool/ptc-dispatch` event's copy of an
   // oversized sub-call result the same way the model-facing arm bounds an
   // outer result. The program's returned value is untouched (it already
   // crossed the worker boundary whole); only the session log's copy shrinks

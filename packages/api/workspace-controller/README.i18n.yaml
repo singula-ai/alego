@@ -3,4 +3,4 @@
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/api/workspace-controller/README.md
 README.md: f7c361e1bbc598c2cb5f79c49a4baaa180a03390
-README.zh.md: 04e4ed51918c7bef4e082cbf88128d1c2592f151
+README.zh.md: 6edefc35e0f3ba64a099a02437731c694b0f8442

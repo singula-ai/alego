@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import Loader from '@singula-ai/cordis-plugin-loader'
-import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import AgentRegistry from '@singula-ai/alego-agent'
 import type { Agent, AgentStatus } from '@singula-ai/alego-agent'
 import CommandRuntime from '@singula-ai/alego-commands'
 import GoalService from '@singula-ai/alego-goal'
@@ -9,6 +9,7 @@ import type { GoalRef } from '@singula-ai/alego-goal'
 import SessionStore, { Session, SessionId, type SessionEvent } from '@singula-ai/alego-session'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import * as commandGoal from '@singula-ai/alego-command-goal'
+import { createInboxStub } from '@singula-ai/alego-agent-loop-testkit'
 
 interface Harness {
   readonly ctx: Context
@@ -21,7 +22,7 @@ interface Harness {
 function stubAgent(ctx: Context, id: string): { agent: Agent; session: Session } {
   // Store-created: the command executor durably logs lifecycle events on it.
   const session = ctx.sessions.create(SessionId(id))
-  const inbox = new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} })
+  const inbox = createInboxStub()
   let status: AgentStatus = 'idle'
   const agent: Agent = {
     id: session.id,
@@ -33,7 +34,7 @@ function stubAgent(ctx: Context, id: string): { agent: Agent; session: Session }
     send: () => {},
     followup: () => {},
     steer: () => {},
-    inject(input) { inbox.append('next-step', input) },
+    inject(input) { this.inbox.append('next-step', input) },
     cancel() { status = 'idle' },
     runMaintenance: task => task(new AbortController().signal),
     whenIdle() { return Promise.resolve() },
@@ -45,9 +46,9 @@ function stubAgent(ctx: Context, id: string): { agent: Agent; session: Session }
 async function harness(): Promise<Harness> {
   const ctx = new Context()
   await ctx.plugin(SessionStore)
+  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(CommandRuntime)
   await ctx.plugin(AgentRegistry)
-  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(GoalService)
   const plugin = await ctx.plugin(commandGoal)
   const { agent, session } = stubAgent(ctx, `command-goal-${Math.random()}`)
@@ -97,8 +98,9 @@ describe('@singula-ai/alego-command-goal registration', () => {
     expect(loader.unwrapExports(commandGoal)).toBe(commandGoal)
 
     expect(test.ctx.commands.list(test.agent)).toContainEqual({
+      definitionId: '@singula-ai/alego-command-goal',
       name: 'goal',
-      description: 'set or view the goal for a long-running task',
+      description: 'Set or view the goal for a long-running task',
       input: { hint: '[<objective>|clear|edit <objective>|pause|resume]', attachments: true },
     })
     expect(test.ctx.commands.find(test.agent, 'goal')).toBeDefined()

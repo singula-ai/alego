@@ -383,6 +383,7 @@ export class SessionTitleService extends Service {
    * @returns latest title snapshot, or `undefined` before eligible input.
    */
   get(session: Session): SessionTitleSnapshot | undefined {
+    // oxlint-disable-next-line typescript/no-deprecated -- Existing Session history read; migration deferred.
     return foldSessionTitle(session.snapshotEvents())
   }
 
@@ -593,6 +594,7 @@ export class SessionTitleService extends Service {
       this.assertCurrent(session, work)
       await this.ensureFallback(session)
       this.assertCurrent(session, work)
+      // oxlint-disable-next-line typescript/no-deprecated -- Existing Session history read; migration deferred.
       const messages = collectSessionTitleMessages(session.snapshotEvents(), work.throughSeq)
       const result = await work.registration.provider.generate({
         session,

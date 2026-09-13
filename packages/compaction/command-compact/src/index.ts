@@ -4,6 +4,7 @@
  */
 
 import type { Context } from '@singula-ai/cordis'
+import { CommandDefinitionId } from '@singula-ai/alego-commands/brand'
 import { ManualCompactionError } from '@singula-ai/alego-compaction'
 import type { CommandInvocation, CommandResult } from '@singula-ai/alego-commands'
 
@@ -98,6 +99,7 @@ export function apply(ctx: Context): void {
     // invocation can enter while already-started handler promises quiesce.
     yield async () => { await Promise.allSettled(active) }
     yield ctx.commands.register({
+      definitionId: CommandDefinitionId('@singula-ai/alego-command-compact'),
       name: 'compact',
       description: 'Compact older conversation history',
       handler,

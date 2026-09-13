@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/simplification/2026-08-10-source-run-without-managed-installer.md
+2026-08-10-source-run-without-managed-installer.md: eda55ca8ebd31d29fad6df9c9f2d3c298a559342
+2026-08-10-source-run-without-managed-installer.zh.md: f902e981f3a21a93e45ca6ad60c964a0688d84c2

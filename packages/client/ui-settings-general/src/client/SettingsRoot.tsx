@@ -1,9 +1,9 @@
 /**
  * Settings shell root: the sidebar-foot trigger row plus the centered modal
  * panel (figma 501:29947, 1080x700) with the section nav rail. The shell is
- * a pure composition face — every piece of text (trigger label, panel title,
+ * a pure composition face — slot-owned text (trigger label, panel title,
  * close label, sections) arrives from registrants through slots; accessible
- * names resolve to that content (trigger: its own text; dialog:
+ * names resolve from localized content (trigger: shell locale; dialog:
  * aria-labelledby the title node; close: visually-hidden slot text). Modal
  * open state and the active section id are component-local viewing state;
  * the onboarding coordinator mounts exactly one ordered registrant while the
@@ -184,6 +184,7 @@ export function SettingsRoot(props: SettingsRootComponentProps) {
           ref={triggerButton}
           type="button"
           className={clsx(css.trigger, !wide && css.rail)}
+          aria-label={t('trigger')}
           aria-haspopup="dialog"
           aria-expanded={open}
           onClick={() => { setOpen(true) }}

@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import type { GlobalStandardProps } from '@singula-ai/alego-client-ui-slots'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { bindSnapshotSelector, RemoteError } from '@singula-ai/alego-client-test-runtime'
@@ -6,6 +7,10 @@ import { Context } from '@singula-ai/cordis'
 import { SettingsSchemaService } from '@singula-ai/alego-client-ui-settings/src/client/schema.ts'
 import { SettingsDescribeMirror } from '@singula-ai/alego-client-ui-settings/src/client/settings-mirror.ts'
 import { SettingsScopeController } from '@singula-ai/alego-client-ui-settings/src/client/settings-scope.ts'
+
+// Every fixture carries the resource hook the resources plugin merges into GlobalStandardProps.
+const useResource = (() => ({ status: 'none' as const, value: undefined, failure: undefined, reload: () => {} })) as GlobalStandardProps['useResource']
+const usePanelInfo: GlobalStandardProps['usePanelInfo'] = selector => selector({ activePanelId: null })
 
 /** Stateless schema service for scope construction in this jsdom fixture. */
 const schemaService = new SettingsSchemaService(new Context())
@@ -89,6 +94,7 @@ function mount(
     openSection: vi.fn(),
     useSessions: unusedHook,
     useSessionPendingInteraction,
+    usePanelInfo, useResource,
     useWorkspaces: unusedHook,
     controller,
     useWelcome: bindSnapshotSelector(controller.store),

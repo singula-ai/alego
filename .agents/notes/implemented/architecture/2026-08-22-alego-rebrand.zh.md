@@ -16,7 +16,7 @@ Status: implemented
 
 **`dsh` 仅在作为完整标识符片段时才被重命名。** 片段由分隔符或大小写变化界定：`dsh-`、`dsh_`、`DSH_`、`Dsh`、`dsh` 后接大写字母，以及处于单词边界的裸 `dsh`。位于单词内部的 `dsh` 保持不变，这正是 `handshake` 得以完好的原因。
 
-DeepSeek HTTP 扩展保留上游协议名称 `x-dsh-user-id`、`x-dsh-session-id`、`x-dsh-compact`、`dsh_plugin_packages` 和 `dsh_session_log`。它们标识提供方协议字段，而非 Alego 命令或配置。User-Agent 中的产品名和包身份仍使用 Alego。
+DeepSeek HTTP 扩展保留上游协议名称 `x-deepseek-harness-user-id`、`x-deepseek-harness-session-id`、`x-deepseek-harness-compact`、`dsh_plugin_packages` 和 `dsh_session_log`。它们标识提供方协议字段，而非 Alego 命令或配置。User-Agent 中的产品名和包身份仍使用 Alego。
 
 **scope 命名公司，前缀命名产品**，与上游的做法完全一致。`@deepseek-ai/dsh-<name>` 变为 `@singula-ai/alego-<name>`，而 CLI 包——上游的裸 `@deepseek-ai/dsh`——变为裸 `@singula-ai/alego`，因此对外发布的入口是 `npx @singula-ai/alego web`。Singula AI 拥有不止一个产品，所以 scope 归公司所有，产品名落在包名里。
 
@@ -30,25 +30,19 @@ scope 命名的是公司，但用户实际输入的一切都没有随之改变�
 
 ## Upstream synchronization
 
-源码基线为 [deepseek-ai/deepseek-harness 的 `d347e703908d0406b7a7ef80e3a0e594d86b2215`](https://github.com/deepseek-ai/deepseek-harness/commit/d347e703908d0406b7a7ef80e3a0e594d86b2215)，版本为 `0.1.3-alpha.1`。导入包含上游的每个受跟踪文件，并移除过时源码路径；fork 的改动集中于命名、品牌图形和仓库目标。运行时行为、会话迁移、包布局和测试结构均由上游定义。源码安装脚本仍作为 Alego 的便捷分发方式。
+源码基线为 [deepseek-ai/deepseek-harness 的 `c291e7961a515f6d7af9304e7fd1d257929aef26`](https://github.com/deepseek-ai/deepseek-harness/commit/c291e7961a515f6d7af9304e7fd1d257929aef26)，版本为 `0.1.5-rc.2`。导入包含上游的每个受跟踪源码路径，并移除过时源码路径。运行时行为、会话迁移、包布局和测试结构由上游定义；fork 负责产品命名、品牌图形、仓库目标及其源码安装脚本。
 
-现有归档三件套保留逐字节内容及封存哈希。上游只新增三件套，不修改旧文件；新导入文件在首次 Alego 封存前应用相同的品牌映射。二进制图片和不透明编码数据不参与文本替换。包含字面 NUL 测试输入的源文件仍须更新标识符。
+现有归档三件套保留逐字节内容及封存哈希。新导入的上游归档文件在首次 Alego 封存前应用品牌映射。二进制图片和不透明编码数据不参与文本替换。包含字面 NUL 测试输入的源文件仍须更新标识符。
 
-侧栏和首屏使用相同的 Alego 积木标志。首屏保留上游 slot 及遵循减少动画偏好的悬停动画，以积木图形替换鲸鱼路径形变。GitHub 源码链接和 push 工作流指向 `singula-ai/alego` 的 `main`；必需 CI 使用本仓库可用的托管 runner。Cloudflare 预览要求仓库显式启用 `ALEGO_CLOUDFLARE_PREVIEW_ENABLED`。
+侧栏和首屏使用相同的 Alego 积木标志。首屏将本地化的彩虹 ALEGO 标题与上游的预览徽章及遵循减少动画偏好的悬停动画组合。浏览器标题、npm 和 Python 包、桌面资源、插件 manifest 以及发布产物名称均使用 Alego 身份。
 
-自托管备用演练要求启用 `ALEGO_SELF_HOSTED_STANDBY_ENABLED`；本仓库没有配置备用 runner。Issue 和 Project 自动化仅在仓库启用 Issues 时运行；该功能关闭时不申请 App token，也不要求关联 Issue。仅适用于上游的 CDN 发布记录以原始基础设施身份归档。本地验证要求文档构建显式解析 Vue，并在删除会话目录前释放 subagent-list 与 Agent Teams 测试的 context；两者均不改变应用行为。
+GitHub 源码链接和 push 工作流指向 `singula-ai/alego` 的 `main`。必需 CI 使用可用的托管 runner。Cloudflare 预览要求启用 `ALEGO_CLOUDFLARE_PREVIEW_ENABLED`；自托管备用演练要求启用 `ALEGO_SELF_HOSTED_STANDBY_ENABLED`。Issue 和 Project 自动化仅在仓库启用 Issues 时申请 App token。托管 runner 的覆盖率检查使用两个分区，Linux 消费端任务每次运行一个门禁，同时保留各门禁内部的并行执行。
 
-E2E 工作流的可选 `record_brand_demo` 输入选择现有的真实 Host、真实模型首轮发送冒烟测试，并上传同一次隔离运行的空白、输入完成和回复完成画面，同时记录服务器源地址和全新状态目录。普通运行保留完整 E2E 套件。截图流程通过 UI 确认新用户欢迎声明，然后等待持久化的 Assistant 回复及其精确渲染文本，而非提示词回显中的标记。UI 文案门禁允许各语言共用字面量 `alego` 字标，但仍拒绝包含它的未翻译短语。
+桌面打包和上传必须通过 `DOWNLOAD_TEST_ORIGIN` 或 `DOWNLOAD_PROD_ORIGIN` 提供所选环境的 HTTPS origin。两者均使用 `_/alego/desktop/stable/<target>/`；Alego 构建不会默认连接 DeepSeek 的下载服务器。现有更新器、签名、公证、COS 上传和平台选择机制保持完整。
 
-托管 Linux 和 Windows 任务使用[四核 runner](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)。覆盖率检查采用两个单 worker 插桩分区和一个豁免套件 worker，为子进程保留余量。Linux 消费端任务每次运行一个门禁，同时保留各门禁内部的并行执行。产品的超时限制和覆盖率阈值保持不变。
+此分支保留终端启动检查，在接受输入前等待受控的 PowerShell 提示符。测试夹具通过调用已获准执行和中止信号来同步 Python 绑定的延迟完成，并将浏览器临时根目录转换为规范路径，避免 macOS 路径别名改变 Vite 资源名称。
 
-Web 快照浏览器使用 `Asia/Shanghai`，使其与保留的 `clientTimeZone` 字段一致，不受宿主时区影响。PowerShell 录制包含当前 headless profile 的策略事件、系统提示词和工具 schema。这两项调整均保持应用行为不变，并比较完整的持久化回放，不增加归一化例外。
-
-持久 PowerShell 后端在启动期间要求提示符标记证明就绪，详见 [pwsh 决策](2026-08-11-pwsh-persistent-pty.zh.md)；普通命令的就绪规则和截止时间保持不变。邮箱恢复 fixture 在销毁恢复后的 Lead 前等待已准入的派发完成，避免用内存中的确认代替已完成的持久化。
-
-PowerShell 真实 shell fixture 在收到 `inferred_idle` 后以空输入继续轮询，直到确认就绪，且整个命令共用一个截止时间；它们不会重新提交命令。工作区创建 fixture 等待新 Session 的持久化关联和已选中的侧栏行，再进行下一次交互，避免与布局更新竞争。npm 解析 fixture 在 Windows 覆盖率任务的 90 秒测试预算内，为 npm 冷启动和 package-lock 生成分配 60 秒，并为进程退出和注册表清理保留时间；它不为仅验证元数据的断言设置性能阈值。
-
-浏览器布局 fixture 在同一次浏览器任务中读取相关面板的矩形，避免共享动画在测量之间推进。文件夹导航 fixture 在插入完整查询前清除上一轮触发菜单；细化查询期间保留的前缀匹配结果不能证明就绪。上游对待完成查询中选择操作的处理保持不变。CI 进程表遍历允许保留的父进程 ID 形成环，并支持宽子列表，详见[门禁运行器决策](../process/2026-08-27-gate-runner-fail-fast.zh.md)。
+E2E 工作流的可选 `record_brand_demo` 输入从隔离状态捕获真实 Host、真实模型的首轮发送流程。普通运行保留完整 E2E 套件。UI 文案门禁允许各语言共用 Alego 字标，但拒绝包含它的未翻译短语。
 
 ## Alternatives considered
 

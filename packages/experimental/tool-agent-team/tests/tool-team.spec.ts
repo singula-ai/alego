@@ -9,7 +9,6 @@ import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-tes
 import { ToolCallId } from '@singula-ai/alego-llm'
 import { scopeOf } from '@singula-ai/alego-scope'
 import { SessionId } from '@singula-ai/alego-session'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import SessionQueryEngine from '@singula-ai/alego-session-query'
 import SubagentService from '@singula-ai/alego-subagent'
@@ -56,7 +55,6 @@ afterEach(() => {
 async function setup(script: ConstructorParameters<typeof MockAdapter>[0], legacyControl = false) {
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
-  await ctx.plugin(SessionProjectionRegistry)
   const storageRoot = mkdtempSync(join(tmpdir(), 'alego-tool-team-'))
   roots.push(storageRoot)
   await ctx.plugin(JsonlSessionPersistence, { root: storageRoot })

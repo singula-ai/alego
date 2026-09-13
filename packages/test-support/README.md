@@ -1,5 +1,5 @@
 ---
-description: "The test-support group map: keyless test harnesses, LLM mock and replay servers, and Loader smoke helpers for developers writing repository tests."
+description: "The test-support group map: keyless test harnesses, LLM mock and replay servers, and Loader smoke helpers for developers writing and running repository tests."
 kind: "package-group"
 ---
 
@@ -27,6 +27,7 @@ The test-support group gives repository tests deterministic, keyless ways to exe
 | [`session-snapshot`](session-snapshot/README.md) | Provides session-log snapshot support and protocol adapters for profile-driven tests |
 | [`agent-loop-testkit`](agent-loop-testkit/README.md) | Provides the shared prerequisite services for tests that exercise the concrete AgentLoop |
 | [`client-runtime`](client-runtime/README.md) | Provides the jsdom slot test bench for browser feature specs |
+| [`remote-mock`](remote-mock/README.md) | Provides the endpoint-named Typert Remote mock and the Connection carrier face whole-client specs install |
 | [`loader-smoke`](loader-smoke/README.md) | Boots Loader-composed applications and drives fixture turns for smoke tests |
 | [`llm-mock-server`](llm-mock-server/README.md) | Provides a scriptable OpenAI-compatible fault server for recovery tests |
 | [`llm-replay`](llm-replay/README.md) | Replays recorded model streams for keyless tests and demos |

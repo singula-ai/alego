@@ -11,7 +11,7 @@ import type {
 import type { FileUploadReceiptId } from '@singula-ai/alego-client-file-upload/types'
 import type {} from '@singula-ai/alego-client-file-upload'
 import {
-  ReasoningEffortId, createUserMessage, expandAssistantStream, freezeMessage,
+  ReasoningEffortId, assistantStreamChunks, createUserMessage, freezeMessage,
 } from '@singula-ai/alego-llm'
 import type { MessageSource } from '@singula-ai/alego-llm'
 import { SessionLogOffset, SessionSeq } from '@singula-ai/alego-session'
@@ -19,6 +19,7 @@ import type { SessionEvent, SessionHeader, SessionId, UserMessage } from '@singu
 import { SessionQueryError, type SessionObservation } from '@singula-ai/alego-session-query'
 import { SessionTitleInvalidError } from '@singula-ai/alego-session-title'
 import { canonicalClientTimeZone } from '@singula-ai/alego-util-time'
+import { assertNever } from '@singula-ai/alego-util-values'
 import { RemoteError, remoteErrorOf } from '@singula-ai/alego-typert-protocol'
 import type { Workspace } from '@singula-ai/alego-workspace'
 import {
@@ -55,6 +56,14 @@ interface SessionReadState {
   readonly id: SessionId
   readonly header: SessionHeader
   readonly events: readonly SessionEvent[]
+}
+
+type PromptContentCandidate =
+  | SessionPromptRequest['content'][number]
+  | Extract<SessionUpdateQueueRequest['action'], { readonly kind: 'edit' }>['content'][number]
+
+function hasPromptContent(content: readonly PromptContentCandidate[]): boolean {
+  return content.some(part => part.type !== 'text' || part.text.trim().length > 0)
 }
 
 /** Implements Session business commands delegated by the Session Controller Remote service. */
@@ -286,11 +295,18 @@ export class SessionCommandController {
   }
 
   /**
-   * Admit one browser prompt after explicit Agent resume and image validation.
+   * Reject empty content, then admit one prompt after Agent and attachment validation.
    * @param request - Session identity, prompt content, source metadata, and delivery mode.
    * @returns acknowledgement that the Agent accepted the prompt.
    */
   async prompt(request: SessionPromptRequest): Promise<SessionPromptValue> {
+    if (!hasPromptContent(request.content)) {
+      throw new RemoteError(
+        'gateway/bad-request',
+        'prompt content must include non-whitespace text or an attachment',
+        {},
+      )
+    }
     const clientTimeZone = request.clientTimeZone === undefined
       ? undefined
       : canonicalClientTimeZone(request.clientTimeZone)
@@ -406,20 +422,34 @@ export class SessionCommandController {
    * @returns acknowledgement that the queue mutation was applied.
    */
   updateQueue(request: SessionUpdateQueueRequest): SessionUpdateQueueValue {
-    if (request.action.kind === 'edit'
-      && request.action.content.some(block => block.type !== 'text')) {
-      throw new RemoteError(
-        'session/attachment-invalid',
-        'queue edits accept text content only',
-        { reason: 'QUEUE_EDIT_NON_TEXT' },
-      )
+    if (request.action.kind === 'edit') {
+      if (request.action.content.some(block => block.type !== 'text')) {
+        throw new RemoteError(
+          'session/attachment-invalid',
+          'queue edits accept text content only',
+          { reason: 'QUEUE_EDIT_NON_TEXT' },
+        )
+      }
+      if (!hasPromptContent(request.action.content)) {
+        throw new RemoteError(
+          'gateway/bad-request',
+          'queue edit content must include non-whitespace text',
+          {},
+        )
+      }
     }
     const agent = this.ctx.agents.get(request.sessionId)
-    if (agent !== undefined && hasApiSessionSubagentOwner(this.ctx, agent.session, agent)) {
-      throw apiSessionSubagentOwnershipError(request.sessionId)
-    }
     if (agent === undefined) {
       throw new RemoteError('session/queue-item-not-found', 'queued item is no longer pending', { itemId: request.itemId })
+    }
+    if (hasApiSessionSubagentOwner(this.ctx, agent.session, agent)) {
+      const identity = this.ctx.sessionProjections
+        .snapshot(agent.session, ['subagent'])
+        .values.subagent
+      if (identity?.mode !== 'continuable'
+        || !agent.session.isOwnSeq(identity.seq)) {
+        throw apiSessionSubagentOwnershipError(request.sessionId)
+      }
     }
     const nextTurn = agent.inbox.nextTurn.find(message => message.id === request.itemId)
     const nextStep = agent.inbox.nextStep.find(message => message.id === request.itemId)
@@ -433,20 +463,28 @@ export class SessionCommandController {
     if (request.action.kind === 'steer' && (target !== 'next-turn' || agent.status !== 'running')) {
       throw new RemoteError('session/steer-unavailable', 'current turn no longer accepts steering', { itemId: request.itemId })
     }
-    if (request.action.kind === 'edit') {
-      agent.inbox.replace(request.itemId, freezeMessage<UserMessage>({
-        ...message,
-        content: [...request.action.content],
-      }))
-    } else {
-      agent.inbox.remove(request.itemId)
-      if (request.action.kind === 'remove') {
+    switch (request.action.kind) {
+      case 'edit':
+        agent.inbox.replace(request.itemId, freezeMessage<UserMessage>({
+          ...message,
+          content: [...request.action.content],
+        }))
+        break
+      case 'remove': {
+        agent.inbox.remove(request.itemId)
         const source = message.source
         if (source.kind === 'user' && 'rpcId' in source) {
           this.ctx.fileUploads.retirePrompt(agent, source.rpcId)
         }
+        break
       }
-      if (request.action.kind === 'steer') agent.steer(message)
+      case 'steer':
+        agent.inbox.remove(request.itemId)
+        agent.steer(message)
+        break
+      /* v8 ignore next 2 -- closed-union exhaustiveness guard */
+      default:
+        assertNever(request.action, 'queue action')
     }
     return { accepted: true }
   }
@@ -503,6 +541,7 @@ export class SessionCommandController {
   private async readSessionState(sessionId: SessionId): Promise<SessionReadState> {
     const attached = this.ctx.sessions.get(sessionId)
     if (attached !== undefined) {
+      // oxlint-disable-next-line typescript/no-deprecated -- Existing Session history read; migration deferred.
       return { id: attached.id, header: attached.header, events: attached.snapshotEvents() }
     }
     const inspected = await inspectApiSession(this.ctx, sessionId)
@@ -549,6 +588,7 @@ function hasPromptRequest(agent: Agent, requestId: SessionRequestId): boolean {
     return source.kind === 'user' && 'rpcId' in source && source.rpcId === requestId
   }
   if (agent.inbox.nextTurn.some(matches) || agent.inbox.nextStep.some(matches)) return true
+  // oxlint-disable-next-line typescript/no-deprecated -- Existing Session history read; migration deferred.
   return agent.session.snapshotEvents().some((event) => {
     if (event.type !== 'user/message') return false
     const source = event.data.source
@@ -593,8 +633,7 @@ function imageInEvent(
     if (found !== undefined) return found
   }
   if (event.type === 'assistant/message' || event.type === 'assistant/attempt') {
-    for (const { chunk } of expandAssistantStream(event.data.stream)) {
-      if (chunk.type !== 'block-end') continue
+    for (const chunk of assistantStreamChunks(event.data.stream, 'block-end')) {
       const found = imageBlockIn([chunk.block], match)
       if (found !== undefined) return found
     }

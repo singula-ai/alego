@@ -2,7 +2,7 @@
 import type { Context } from '@singula-ai/cordis'
 import {
   ConnectionController,
-  type ConnectionConfig,
+  type ConnectionRecoveryConfig,
   type ConnectionGeneration,
   type ConnectionGenerationSource,
   type ConnectionSinks,
@@ -12,6 +12,7 @@ import { createFixtureConnectionRpc } from './fixture.ts'
 import { createWebConnectionRpc, type RpcFetch, type RpcStreamOpen } from './rpc.ts'
 import { isLoopbackHostname } from '../loopback-hostname.ts'
 import type { ClientConnectionRpc } from '../rpc.ts'
+import { resolveConnectionConfig } from '../recovery-config.ts'
 
 declare module '@singula-ai/cordis' {
   interface Events {
@@ -39,7 +40,7 @@ export {
 // Connection loop types are public through ConnectionHandle.start; the
 // controller remains package-internal.
 export type {
-  ConnectionConfig,
+  ConnectionRecoveryConfig,
   ConnectionGeneration,
   ConnectionGenerationSource,
   ConnectionHostInfo,
@@ -77,9 +78,15 @@ export const inject: string[] = []
  * provides both halves here instead of forking this plugin.
  */
 export interface ClientTransportHooks {
-  /** Transport for generic unary RPC channels (the Typert gateway). */
-  fetch: RpcFetch
-  /** Worker-local Gateway stream carrier; absent when the page uses the Gateway WebSocket. */
+  /**
+   * Already decoded logical RPC carrier. When present it replaces the HTTP
+   * caller outright: no envelopes, no `fetch`, no `openStream` (an in-process
+   * Host such as a test mock plugs in here).
+   */
+  rpc?: ClientConnectionRpc
+  /** Transport for generic unary RPC channels (the Typert gateway); unused when `rpc` is present. */
+  fetch?: RpcFetch
+  /** Worker-local Gateway stream carrier; absent when the page uses the Gateway WebSocket or `rpc` is present. */
   openStream?: RpcStreamOpen
   /**
    * Bundle transport for the module system, present when the carrier also owns
@@ -101,6 +108,7 @@ export interface ClientTransportHooks {
 /** Page global carrying {@link ClientTransportHooks}; absent in the served web app. */
 interface ClientTransportGlobal {
   __ALEGO_TRANSPORT__?: ClientTransportHooks
+  __ALEGO_CONNECTION_RECOVERY__?: unknown
 }
 
 /**
@@ -133,10 +141,10 @@ export interface ConnectionHandle {
    * Start the connect/reconnect loop with the consumer's state callbacks.
    * API Gateway owns the loop; a second call throws.
    * @param sinks - connection-state callbacks.
-   * @param config - reconnect timing tunables.
+   * @param config - explicit timing overrides; omitted fields use Host bootstrap timing.
    * @returns lifecycle controls for the loop.
    */
-  start(sinks: ConnectionSinks, config?: ConnectionConfig): ConnectionLoop
+  start(sinks: ConnectionSinks, config?: ConnectionRecoveryConfig): ConnectionLoop
 }
 
 /** Controls retained by the sole owner of a running connection loop. */
@@ -182,7 +190,8 @@ export function apply(ctx: Context): void {
   const fixture = pageLocation !== undefined && new URLSearchParams(pageLocation.search).has('fixture')
   const fixtureRpc = fixture ? createFixtureConnectionRpc() : undefined
   const transport = (globalThis as ClientTransportGlobal).__ALEGO_TRANSPORT__
-  const rpc = fixtureRpc ?? createWebConnectionRpc(transport?.fetch, transport?.openStream)
+  const recovery = resolveConnectionConfig((globalThis as ClientTransportGlobal).__ALEGO_CONNECTION_RECOVERY__)
+  const rpc = fixtureRpc ?? transport?.rpc ?? createWebConnectionRpc(transport?.fetch, transport?.openStream)
   let generationSource: ConnectionGenerationSource | undefined
   let owner: ConnectionOwner | undefined
   let generationId = 0
@@ -274,7 +283,7 @@ export function apply(ctx: Context): void {
           publishState(state)
           sinks.onStateChange?.(state)
         },
-      }, config ?? {})
+      }, { ...recovery, ...config })
       const current = { token, source, controller, stopNetworkWatch: watchBrowserNetwork(controller) }
       owner = current
       controller.start()

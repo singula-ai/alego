@@ -1,0 +1,17 @@
+- id: headless-startup
+  disabled: true
+
+- id: headless-runner
+  disabled: true
+
+- insert:
+    - id: mcp-pagination-cycle
+      name: '@singula-ai/alego-mcp-client'
+      config:
+        transport: stdio
+        serverName: pagination-cycle
+        command: !!js process.execPath
+        args: !!js '[process.env.ALEGO_MCP_PAGINATION_FIXTURE]'
+        failOnStartupError: true
+        reconnect:
+          enabled: false

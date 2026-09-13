@@ -20,6 +20,7 @@ import type {
   ModelModality,
   ResolvedRetryPolicy,
   StreamChunk,
+  SystemPromptUpdate,
 } from '@singula-ai/alego-llm'
 import type {
   AttachmentId,
@@ -63,6 +64,12 @@ export interface DeepSeekCatalogModel {
   imagePixelBudget?: number | 'low'
   /** Encoded-byte target for one deterministic request preview; the smallest quality-ladder output is used when no quality fits. */
   imageMaxBytes?: number
+  /**
+   * `'in-history'` declares that the endpoint reads the latest `system`
+   * message at any position of the conversation as the complete effective
+   * system prompt; omission means only a leading system message is read.
+   */
+  systemPromptUpdate?: SystemPromptUpdate
 }
 
 /**
@@ -407,6 +414,7 @@ export class DeepSeekAdapter extends LlmAdapter {
         : modelInfo(provider, configured),
       context: { contextWindow },
       defaultMaxTokens: configured?.maxTokens ?? connection.maxTokens,
+      ...configured?.systemPromptUpdate === undefined ? {} : { systemPromptUpdate: configured.systemPromptUpdate },
       ...connection.defaults.thinking === 'disabled'
         ? {
           reasoning: {
@@ -533,12 +541,12 @@ export class DeepSeekAdapter extends LlmAdapter {
       'content-type': 'application/json',
       'accept': 'text/event-stream',
       ...attributionHeaders(),
-      'x-dsh-user-id': String(userId),
+      'x-deepseek-harness-user-id': String(userId),
       ...options.sessionId !== undefined
-        ? { 'x-dsh-session-id': String(options.sessionId) }
+        ? { 'x-deepseek-harness-session-id': String(options.sessionId) }
         : {},
       ...options.purpose === 'compaction'
-        ? { 'x-dsh-compact': '1' }
+        ? { 'x-deepseek-harness-compact': '1' }
         : {},
     }
 

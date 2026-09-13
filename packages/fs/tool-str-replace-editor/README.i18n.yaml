@@ -3,4 +3,4 @@
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/fs/tool-str-replace-editor/README.md
 README.md: 03b7e145f4d88ebc48cdde6ba527c3ec2a106c71
-README.zh.md: 80899a71537359c8dfdcc196c3c8c7d945fbabcd
+README.zh.md: 9e834f868e4e0a6e1dde56bdfc8ae8e22cf7e64b

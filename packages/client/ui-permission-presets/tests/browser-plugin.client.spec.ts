@@ -9,13 +9,15 @@
  * its Settings row and invalidates that row on host settings changes.
  */
 import { Context } from '@singula-ai/cordis'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, onTestFinished } from 'vitest'
 import { SlotRegistry } from '@singula-ai/alego-client-ui-renderer/client'
 import type { SessionId } from '@singula-ai/alego-session/types'
 import { LocaleRuntime } from '@singula-ai/alego-client-locale/client'
-import { TestRemote, scriptedSettingsRemote } from '@singula-ai/alego-client-test-runtime'
+import { TestRemote } from '@singula-ai/alego-client-test-runtime'
+import { remoteDefaultResponses } from '@singula-ai/alego-client-test-runtime/src/assembly/remote-default-responses.ts'
+import { RemoteMock } from '@singula-ai/alego-remote-mock'
 import { apply as settingsApply, inject as settingsInject } from '@singula-ai/alego-client-ui-settings/client'
-import type { CommandDecoration } from '@singula-ai/alego-client-ui-commands/client'
+import type { CommandDecoration, PopupSelectSpec } from '@singula-ai/alego-client-ui-commands/client'
 import type { PermissionSelect } from '@singula-ai/alego-permission-presets/client'
 import {
   PermissionRow, type PermissionRowInjected,
@@ -40,8 +42,9 @@ async function bench() {
   const locale = new LocaleRuntime(ctx)
   locale.setLocale('en')
   ctx.provide('locale', locale)
-  const settingsRemote = scriptedSettingsRemote()
-  const remote = new TestRemote(ctx, { settings: settingsRemote.settings })
+  const mock = RemoteMock.create().load(remoteDefaultResponses)
+  onTestFinished(() => { mock.assertNoUnmatched() })
+  const remote = new TestRemote(ctx, { settings: mock.remote.settings })
   ctx.slots.register({
     name: 'root',
     children: {
@@ -82,6 +85,11 @@ async function bench() {
     ctx, fiber, locale, values, commands, remote,
     setResult: (r: { ok: boolean; matched?: boolean }) => { commandResult = r },
     decoration: () => decoration,
+    popup: (): PopupSelectSpec => {
+      const ui = decoration!.ui
+      if (ui.kind !== 'popupSelect') throw new Error('expected the popupSelect kind')
+      return ui
+    },
     permissionRow: () => ctx.slots.entries('settings.general.item')
       .find(entry => entry.component === PermissionRow),
   }
@@ -110,11 +118,11 @@ describe('ui-permission browser plugin', () => {
     expect(c.available(proj)).toBe(false)
     b.values.set(sid('s1'), { ...SELECT, options: [...SELECT.options, { value: 'custom', name: 'Custom' }], currentValue: 'custom' })
     expect(c.available(proj)).toBe(true)
-    const options = await c.ui.options(proj, new AbortController().signal)
+    const options = await b.popup().options(proj, new AbortController().signal)
     expect(options.map(option => option.id)).toEqual(['read-only', 'workspace-write', 'danger-full-access'])
     expect(options.every(option => option.active !== true)).toBe(true)
     b.values.set(sid('s1'), SELECT)
-    const again = await c.ui.options(proj, new AbortController().signal)
+    const again = await b.popup().options(proj, new AbortController().signal)
     expect(again.find(option => option.id === 'workspace-write')?.active).toBe(true)
     expect(again.find(option => option.id === 'read-only')?.detail).toBe('Reads only.')
     // English built-ins use product labels; other kebab-case names title-case.
@@ -127,7 +135,7 @@ describe('ui-permission browser plugin', () => {
       confirmLabel: 'Enable Full access',
     })
     b.locale.setLocale('zh')
-    const localized = await c.ui.options(proj, new AbortController().signal)
+    const localized = await b.popup().options(proj, new AbortController().signal)
     expect(localized.map(option => option.label)).toEqual(['仅可查看', '工作区内修改', '完全权限'])
     expect(localized.find(option => option.id === 'danger-full-access')?.confirmation).toEqual({
       title: '确认启用完全权限？',
@@ -143,28 +151,27 @@ describe('ui-permission browser plugin', () => {
       { value: '__proto__', name: '__proto__' },
       { value: 'plain', name: 'Ask Every Time' },
     ] })
-    const passthrough = await c.ui.options(proj, new AbortController().signal)
+    const passthrough = await b.popup().options(proj, new AbortController().signal)
     expect(passthrough.map(option => option.label)).toEqual([
       'Project Files', 'Operator Mode', 'Custom Mode', '__proto__', 'Ask Every Time',
     ])
     // A projection that vanished between availability and open throws.
-    expect(() => c.ui.options({ sessionId: sid('ghost') }, new AbortController().signal))
+    expect(() => b.popup().options({ sessionId: sid('ghost') }, new AbortController().signal))
       .toThrow(/not available on this host/)
   })
 
   it('a pick submits the /permission line; rejection and unmatched throw', async () => {
     const b = await bench()
-    const c = b.decoration()!
     const proj = { sessionId: sid('s1') }
     b.values.set(sid('s1'), SELECT)
-    await c.ui.onSelect({ id: 'danger-full-access', label: 'danger-full-access' }, proj)
+    await b.popup().onSelect({ id: 'danger-full-access', label: 'danger-full-access' }, proj)
     expect(b.commands).toEqual(['/permission danger-full-access'])
     b.setResult({ ok: false })
-    await expect(c.ui.onSelect({ id: 'read-only', label: 'read-only' }, proj)).rejects.toThrow(/permission switch failed/)
+    await expect(b.popup().onSelect({ id: 'read-only', label: 'read-only' }, proj)).rejects.toThrow(/permission switch failed/)
     b.setResult({ ok: true, matched: false })
-    await expect(c.ui.onSelect({ id: 'read-only', label: 'read-only' }, proj)).rejects.toThrow(/no \/permission command/)
+    await expect(b.popup().onSelect({ id: 'read-only', label: 'read-only' }, proj)).rejects.toThrow(/no \/permission command/)
     // An unmaterialized session throws before any submit.
-    await expect(c.ui.onSelect({ id: 'read-only', label: 'read-only' }, { sessionId: sid('ghost') }))
+    await expect(b.popup().onSelect({ id: 'read-only', label: 'read-only' }, { sessionId: sid('ghost') }))
       .rejects.toThrow(/not materialized/)
   })
 

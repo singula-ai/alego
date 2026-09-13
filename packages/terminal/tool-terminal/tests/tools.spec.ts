@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import { ToolCallId } from '@singula-ai/alego-llm'
 import { Session, SessionId } from '@singula-ai/alego-session'
-import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import AgentRegistry from '@singula-ai/alego-agent'
 import type { Agent } from '@singula-ai/alego-agent'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime, { renderToolsSdk } from '@singula-ai/alego-tools'
@@ -12,13 +12,14 @@ import type { TerminalBackend, TerminalBackendSession, TerminalSendOperation, Te
 import LocalJobRegistry from '@singula-ai/alego-jobs-local'
 import * as ToolTasks from '@singula-ai/alego-tool-jobs'
 import * as ToolPty from '@singula-ai/alego-tool-terminal'
+import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 function fakeAgent(ctx: Context, rawId: string): Agent {
   const scope = ctx.plugin(() => {})
   const id = SessionId(rawId)
   const session = Session.create(id)
   const agent: Agent = {
-    id, options: {}, session, inbox: new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} }),
+    id, options: {}, session, inbox: unsupportedInbox(),
     status: 'idle',
     ctx: scope.ctx,
     send: () => {},

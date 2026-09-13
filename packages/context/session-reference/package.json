@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-session-reference",
   "description": "Cross-session snapshot references and durable untrusted model context (ctx.sessionReferenceResolver)",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -60,24 +60,38 @@
     "@singula-ai/alego-session-projection-cache": "workspace:^",
     "@singula-ai/alego-session-query": "workspace:^",
     "@singula-ai/alego-session-title": "workspace:^",
+    "@singula-ai/alego-spill": "workspace:^",
+    "@singula-ai/alego-system-prompt": "workspace:^",
     "@singula-ai/alego-typert-protocol": "workspace:^"
   },
   "peerDependenciesMeta": {
+    "@singula-ai/alego-spill": {
+      "optional": true
+    },
     "@singula-ai/alego-session-projection-cache": {
       "optional": true
     }
   },
   "devDependencies": {
     "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/cordis-plugin-include": "workspace:^",
+    "@singula-ai/cordis-plugin-loader": "workspace:^",
     "@singula-ai/alego-agent": "workspace:^",
     "@singula-ai/alego-compaction": "workspace:^",
+    "@singula-ai/alego-fs-local": "workspace:^",
     "@singula-ai/alego-llm": "workspace:^",
     "@singula-ai/alego-output-retention": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/alego-session-projection": "workspace:^",
     "@singula-ai/alego-session-projection-cache": "workspace:^",
     "@singula-ai/alego-session-query": "workspace:^",
+    "@singula-ai/alego-session-query-sqlite": "workspace:^",
     "@singula-ai/alego-session-title": "workspace:^",
+    "@singula-ai/alego-spill": "workspace:^",
+    "@singula-ai/alego-spill-local": "workspace:^",
+    "@singula-ai/alego-system-prompt": "workspace:^",
+    "@singula-ai/alego-tool-fs": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
     "@singula-ai/alego-typert-protocol": "workspace:^"
   }
 }

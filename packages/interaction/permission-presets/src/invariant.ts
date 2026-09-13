@@ -21,6 +21,7 @@ function validateEvent(ctx: Context, event: SessionEvent, fail: InvariantFailure
 /** Install validation that loaded and newly appended preset events remain resolvable. */
 const install: InvariantInstaller = Object.assign((ctx: Context, fail: InvariantFailure) => {
   for (const session of ctx.sessions.list()) {
+    // oxlint-disable-next-line typescript/no-deprecated -- Existing Session history read; migration deferred.
     for (const event of session.snapshotEvents()) validateEvent(ctx, event, fail)
   }
   ctx.on('internal/dispatch', (_mode, eventName, args) => {

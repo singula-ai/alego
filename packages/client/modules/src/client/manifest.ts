@@ -30,6 +30,7 @@
  */
 
 import type {} from '@singula-ai/cordis'
+import type { AlegoClientManifest } from '@singula-ai/alego-package-manifest'
 import type { ClientModuleSystem } from './system.ts'
 
 declare module '@singula-ai/cordis' {
@@ -142,6 +143,51 @@ export function optionalStringArray(subject: string, field: string, value: unkno
     throw new Error(`client-modules: ${subject} ${field} must be a string array`)
   }
   return value as string[]
+}
+
+/**
+ * Narrow an unknown parsed JSON value to the `alego.client` declaration. Shared
+ * by the node half's Loader scan and the roster generator, so both read a
+ * package's browser declaration through one validator.
+ * @param pkgName - package name used as the diagnostic prefix.
+ * @param value - the raw `alego.client` field of the package manifest.
+ * @returns the validated declaration, or undefined when the field is absent.
+ * @throws {Error} when the field is present but any member is malformed.
+ */
+export function parseAlegoClient(pkgName: string, value: unknown): AlegoClientManifest | undefined {
+  if (value === undefined) return undefined
+  if (typeof value !== 'object' || value === null) {
+    throw new Error(`client-modules: ${pkgName} has a non-object alego.client declaration`)
+  }
+  const decl = value as Record<string, unknown>
+  if (typeof decl.platform !== 'string') {
+    throw new Error(`client-modules: ${pkgName} alego.client.platform must be a string`)
+  }
+  const inject = optionalStringArray(pkgName, 'alego.client.inject', decl.inject)
+  const external = optionalStringArray(pkgName, 'alego.client.external', decl.external)
+  if (decl.immediately !== undefined && typeof decl.immediately !== 'boolean') {
+    throw new Error(`client-modules: ${pkgName} alego.client.immediately must be a boolean`)
+  }
+  return {
+    platform: decl.platform,
+    ...(inject !== undefined ? { inject } : {}),
+    ...(external !== undefined ? { external } : {}),
+    ...(decl.immediately !== undefined ? { immediately: decl.immediately } : {}),
+  }
+}
+
+/**
+ * The bare package-root specifier `specifier` names, or undefined for a subpath, a path, or any scheme-qualified
+ * specifier (`cordis:` builtins, `node:` modules, URLs).
+ * @param specifier - Loader row name.
+ * @returns the package name, or undefined.
+ */
+export function exactPackageSpecifier(specifier: string): string | undefined {
+  if (specifier.startsWith('@')) {
+    const parts = specifier.split('/')
+    return parts.length === 2 && parts.every(Boolean) ? specifier : undefined
+  }
+  return specifier.length > 0 && !specifier.includes('/') && !specifier.includes(':') ? specifier : undefined
 }
 
 /**

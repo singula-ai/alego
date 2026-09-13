@@ -8,7 +8,7 @@ import Loader from '@singula-ai/cordis-plugin-loader'
 import Include from '@singula-ai/cordis-plugin-include'
 import { ToolCallId } from '@singula-ai/alego-llm'
 import { SESSION_FORMAT_VERSION, Session, SessionId } from '@singula-ai/alego-session'
-import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import AgentRegistry from '@singula-ai/alego-agent'
 import type { Agent } from '@singula-ai/alego-agent'
 import TerminalSessionService from '@singula-ai/alego-terminal'
 import * as TerminalLocal from '@singula-ai/alego-terminal-bash'
@@ -20,6 +20,7 @@ import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime from '@singula-ai/alego-tools'
 import * as ToolBashPersistent from '@singula-ai/alego-tool-bash-persistent'
+import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 let root: string | undefined
 let context: Context | undefined
@@ -47,7 +48,7 @@ function agent(ctx: Context, cwd: string): Agent {
     id,
     options: {},
     session,
-    inbox: new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} }),
+    inbox: unsupportedInbox(),
     status: 'idle',
     ctx: scope.ctx,
     send: () => {},
@@ -148,20 +149,26 @@ suite('persistent Bash through a real cordis.yml Loader composition', () => {
       'multiline',
       'value="line one"\nprintf "%s:%s\\n" "$value" "it\'s fine"',
     ))
-    expect(multiline).toBe("line one:it's fine")
+    expect(multiline).toBe("line one:it's fine\n[Command finished with exit code 0]")
     expect(multiline).not.toContain('ALEGO_PERSISTENT_BASH')
 
     const heredoc = text(await execute(
       'heredoc',
       "cat <<'EOF'\nalpha\nbeta\nEOF",
     ))
-    expect(heredoc).toBe('alpha\nbeta')
+    expect(heredoc).toBe('alpha\nbeta\n[Command finished with exit code 0]')
 
     const pipeline = text(await execute(
       'pipeline',
       '{ sleep 0.1; printf "delayed\\n"; } | cat',
     ))
-    expect(pipeline).toBe('delayed')
+    expect(pipeline).toBe('delayed\n[Command finished with exit code 0]')
+
+    // Every trailing newline is dropped before the status trailer.
+    const trailing = text(await execute('trailing-newlines', 'printf "tail\\n\\n\\n"'))
+    expect(trailing).toBe('tail\n[Command finished with exit code 0]')
+    expect(text(await execute('nonzero', 'exit_code() { return 3; }; exit_code')))
+      .toBe('[Command finished with exit code 3]')
 
     const large = text(await execute('large-output', 'seq 1 12050'))
     expect(large.startsWith('1\n2\n3\n')).toBe(true)
@@ -176,6 +183,6 @@ suite('persistent Bash through a real cordis.yml Loader composition', () => {
 
     const exited = text(await execute('exit', 'exit'))
     expect(exited).toContain('next bash call starts from the workspace')
-    expect(text(await execute('after-exit', 'printf "%s\\n" "$PWD"'))).toBe(root)
+    expect(text(await execute('after-exit', 'printf "%s\\n" "$PWD"'))).toBe(`${root}\n[Command finished with exit code 0]`)
   }, 20_000)
 })

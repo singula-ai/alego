@@ -2,21 +2,22 @@
 
 [English](README.md) | 中文
 
-`alego` 是唯一受支持的 Node 应用启动器；profile 由多个插件组合包 patch 层按顺序叠加而成，其上再应用用户自己的覆盖配置。SDK 与 ACP 都是 profile，而不是独立的公开 bin。Python 运行时 wheel 会打包同一个命令；SDK 默认使用 `sdk`，极简示例选择 `sdk-minimal`。[`src/args.ts`](src/args.ts) 负责命令语法，[`src/bin.ts`](src/bin.ts) 只加载选中的运行器。无效命令、来自其他模式的选项、配置错误和启动失败都会以非零状态退出。
+`alego` 是唯一受支持的 Node 应用启动器；profile 由多个插件组合包 patch 层按顺序叠加而成，其上再应用用户自己的覆盖配置。SDK 与 ACP（Agent Client Protocol）都是 profile，而不是独立的公开可执行命令。Python 运行时 wheel 包中也包含同一个命令；SDK 默认使用 `sdk`，极简示例选择 `sdk-minimal`。[`src/args.ts`](src/args.ts) 负责命令语法，[`src/bin.ts`](src/bin.ts) 只加载选中的运行器。无效命令、来自其他模式的选项、配置错误和启动失败都会以非零状态退出。
 
 ## 入口模式
 
 | 命令 | 用途 |
 |---|---|
 | `alego --profile <name>` | 启动位于 `$ALEGO_HOME/profiles/<name>` 的指定 profile。 |
-| `alego --profile acp` | 通过 ACP stdio 为自动化 client 提供服务，直至断开连接。 |
+| `alego --profile <name> --from-default-profile <template>` | 从随附模板创建新的自定义 profile，然后启动它。 |
+| `alego --profile acp` | 通过 ACP stdio 为自动化客户端提供服务，直至断开连接。 |
 | `alego --profile headless "job"` | 运行一个全新的持久化会话，打印最终答案并退出。 |
-| `alego --profile sdk` | 通过 JSON-RPC stdio 为 SDK client 提供服务，直至关闭或断开连接。 |
-| `alego --profile sdk-minimal` | 以独立极简 agent 配置树为 SDK client 提供服务。 |
+| `alego --profile sdk` | 通过 JSON-RPC stdio 为 SDK 客户端提供服务，直至关闭或断开连接。 |
+| `alego --profile sdk-minimal` | 以独立极简 agent（智能体）配置树为 SDK 客户端提供服务。 |
 | `alego web` | `--profile web` 的别名。 |
 | `alego plugin --profile <name> <pnpm args>` | 通过在 profile 目录中转发给 pnpm 来管理该 profile 的插件。 |
 
-运行命令时所在的目录将作为默认 workspace 根目录。`web`、`headless`、`sdk`、`sdk-minimal` 和 `acp` profile 在首次使用时会从随附模板自动初始化；其他任何 profile 都必须通过 `alego plugin` 创建。
+运行命令时所在的目录将作为默认 workspace 根目录。`web`、`headless`、`sdk`、`sdk-minimal` 和 `acp` profile 在首次使用时会从随附模板自动初始化。使用 `--from-default-profile` 可以基于这些模板之一，在尚未使用的非内置名称处创建其他 profile；通过 `alego plugin` 则可以初始化一个以 base 为基础的 profile。`desktop` 名称保留给 Electron 持有的 profile，因此 CLI（命令行界面）会拒绝针对它的启动、配置 dump 和插件管理请求。
 
 ## 应用参数
 
@@ -44,11 +45,11 @@ profile 目录包含一个 `package.json`，其中记录树外插件依赖，以
 
 使用 `--dump-default-config` 和 `--dump-config` 可在不启动的情况下检查组合后的配置树。
 
-层的确切优先级、flag、关闭行为、部署默认值和源码执行方式，以 [CLI（命令行界面）行为参考](reference/README.zh.md)为准。
+层的确切优先级、flag、关闭行为、部署默认值和源码执行方式，以 [CLI 行为参考](reference/README.zh.md)为准。
 
-## 可选 Overlay
+## 可选覆盖层
 
-`config/examples/` 交付 GitHub 评审 webhook、会话内 Schedule、记忆 MCP 服务与运行时 Cordis 工具的可选 overlay。它们绝不属于默认 profile；安装与安全说明由[用户指南](../../docs/user/guide/index.zh.md)和[开发实战指南](../../docs/user/develop/practice/index.zh.md)负责。
+`config/examples/` 交付 GitHub 评审 webhook、会话内 Schedule、记忆 MCP 服务器与运行时 Cordis 工具的可选覆盖层。它们绝不属于默认 profile；设置与安全说明由[用户指南](../../docs/user/guide/index.zh.md)和[开发实战指南](../../docs/user/develop/practice/index.zh.md)负责。
 
 ## 开发
 

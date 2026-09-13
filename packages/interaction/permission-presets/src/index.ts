@@ -11,6 +11,7 @@
  */
 
 import { Context, Service } from '@singula-ai/cordis'
+import { CommandDefinitionId } from '@singula-ai/alego-commands/brand'
 import z from '@singula-ai/schemastery'
 import { z as zod } from 'zod'
 import type { Session, SessionEvent } from '@singula-ai/alego-session'
@@ -254,6 +255,7 @@ export class PermissionPresetService extends Service {
     // activates only when a command registry is composed.
     ctx.inject(['commands'], (commandCtx) => {
       commandCtx.commands.register({
+        definitionId: CommandDefinitionId('@singula-ai/alego-permission-presets'),
         name: 'permission',
         description: 'Switch the permission preset (sandbox mode + approval policy)',
         input: { hint: '<preset>' },

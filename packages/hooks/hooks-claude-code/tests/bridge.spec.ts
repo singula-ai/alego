@@ -15,7 +15,6 @@ import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 import { scopeTarget } from '@singula-ai/alego-scope'
 import SubagentRuntime, { SubagentRunId } from '@singula-ai/alego-subagent'
 import * as HooksClaude from '@singula-ai/alego-hooks-claude-code'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 
 /**
@@ -58,7 +57,6 @@ async function harnessWithFiber(
 ): Promise<{ ctx: Context; hooks: Fiber }> {
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
-  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(LocalSubprocessRuntime)
   await ctx.plugin(LocalBashExecutor, { timeoutMs: 10_000 })
@@ -356,7 +354,6 @@ describe('hooks-claude-code bridge — load resilience', () => {
     const adapter = new MockAdapter([textResponse('fine')])
     const ctx = new Context()
     await mountAgentLoopTestDependencies(ctx)
-    await ctx.plugin(SessionProjectionRegistry)
     await ctx.plugin(AgentLoop, { agents: [] })
     await ctx.plugin(LocalSubprocessRuntime)
     await ctx.plugin(LocalBashExecutor, { timeoutMs: 10_000 })
@@ -417,7 +414,6 @@ describe('hooks-claude-code bridge — load resilience', () => {
     const adapter = new MockAdapter([textResponse('ok')])
     const ctx = new Context()
     await mountAgentLoopTestDependencies(ctx)
-    await ctx.plugin(SessionProjectionRegistry)
     await ctx.plugin(AgentLoop, { agents: [] })
     await ctx.plugin(LocalSubprocessRuntime)
     await ctx.plugin(LocalBashExecutor, { timeoutMs: 10_000 })

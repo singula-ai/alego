@@ -6,12 +6,13 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import Loader from '@singula-ai/cordis-plugin-loader'
 import Include from '@singula-ai/cordis-plugin-include'
-import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import AgentRegistry from '@singula-ai/alego-agent'
 import type { Agent, AgentStatus } from '@singula-ai/alego-agent'
 import CommandRuntime from '@singula-ai/alego-commands'
 import SessionStore, { SessionId } from '@singula-ai/alego-session'
 import * as CommandFeedback from '@singula-ai/alego-command-feedback'
 import { getOrCreateAnonymousUserId } from '@singula-ai/alego-anonymous-user-id'
+import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 let root: string | undefined
 let context: Context | undefined
@@ -29,13 +30,12 @@ function agent(ctx: Context): Agent {
   const scope = ctx.plugin(() => {})
   const id = SessionId('feedback-loader-agent')
   const session = ctx.sessions.create(id)
-  const inbox = new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} })
   let status: AgentStatus = 'idle'
   const value: Agent = {
     id,
     options: {},
     session,
-    inbox,
+    inbox: unsupportedInbox(),
     ctx: scope.ctx,
     get status() { return status },
     send: () => {},
@@ -93,7 +93,7 @@ describe('/feedback real Loader composition through cordis.yml', () => {
     const userId = getOrCreateAnonymousUserId({ env: { ALEGO_HOME: root } })
     expect(accepted?.result).toEqual({
       kind: 'success',
-      text: `Feedback recorded for session feedback-loader-agent\nAnonymous user: ${userId}. Session sharing is not configured.`,
+      text: `Feedback recorded for session feedback-loader-agent\nAnonymous user: ${userId}.`,
     })
     const rejected = await context.commands.execute(owner, '/feedback', [], signal)
     expect(rejected?.result).toEqual({

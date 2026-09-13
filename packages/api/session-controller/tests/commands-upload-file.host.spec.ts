@@ -1,5 +1,6 @@
 import { Context } from '@singula-ai/cordis'
-import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import AgentRegistry from '@singula-ai/alego-agent'
+import { createInboxStub } from '@singula-ai/alego-agent-loop-testkit'
 import type { Agent, ModelSelectionRef } from '@singula-ai/alego-agent'
 import AttachmentStore, { AttachmentId } from '@singula-ai/alego-attachment'
 import type {
@@ -38,7 +39,7 @@ async function uploadHarness(origin?: 'subagent'): Promise<{
   const session = ctx.sessions.create(SESSION, {
     meta: { cwd: '/workspace', ...(origin === undefined ? {} : { origin }) },
   })
-  const inbox = new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} })
+  const inbox = createInboxStub()
   const followup = vi.fn()
   const agent = {
     id: session.id,

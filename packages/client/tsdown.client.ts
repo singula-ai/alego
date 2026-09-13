@@ -58,7 +58,7 @@ function styleInjectionModule(
  * Everything else under @singula-ai/* is either a module-table entry
  * (external) or a leak the purity gate rejects.
  */
-export const INLINE_SAFE = /^(?:@singula-ai\/alego-(?:file-reference|session|llm|tools|brand|deque|typert-protocol|util-crypto|util-values|util-workspace-path)(?:\/|$)|@singula-ai\/alego-token-meter\/client$|@singula-ai\/alego-agent-presets\/display$)/
+export const INLINE_SAFE = /^(?:@singula-ai\/alego-(?:file-reference|session|llm|tools|brand|deque|output-retention|typert-protocol|util-crypto|util-values|util-workspace-path)(?:\/|$)|@singula-ai\/alego-token-meter\/client$|@singula-ai\/alego-host-open-in-app\/shared$|@singula-ai\/alego-agent-presets\/display$|@singula-ai\/alego-spill-policy\/notice$)/
 
 /**
  * Vendored framework libraries: rescoped into @singula-ai, so the gate below

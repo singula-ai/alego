@@ -120,6 +120,7 @@ describe('command-compact real Loader composition', () => {
       reserveTurnAdmission: () => () => undefined,
     } as unknown as Agent
     expect(context.commands.list(agent)).toContainEqual({
+      definitionId: '@singula-ai/alego-command-compact',
       name: 'compact',
       description: 'Compact older conversation history',
     })

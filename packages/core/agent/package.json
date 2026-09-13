@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-agent",
   "description": "Agent interface, registry, initiator scope, and event vocabulary for the Alego",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -41,20 +41,22 @@
     "@singula-ai/alego-llm": "workspace:^",
     "@singula-ai/alego-scope": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^",
     "@singula-ai/alego-system-prompt": "workspace:^",
     "@singula-ai/alego-typert-protocol": "workspace:^",
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-session-projection": "workspace:^"
+    "@singula-ai/alego-util-values": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
     "@singula-ai/alego-invariants": "workspace:^",
     "@singula-ai/alego-llm": "workspace:^",
     "@singula-ai/alego-scope": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^",
     "@singula-ai/alego-system-prompt": "workspace:^",
     "@singula-ai/alego-typert-protocol": "workspace:^",
     "@singula-ai/alego-typert-registry": "workspace:^",
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-session-projection": "workspace:^"
+    "@singula-ai/alego-util-values": "workspace:^",
+    "@singula-ai/cordis": "workspace:^"
   }
 }

@@ -15,6 +15,7 @@
 import type {} from '@singula-ai/alego-api-remotes/client'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
 import type {} from '@singula-ai/alego-client-locale/client'
+import type {} from '@singula-ai/alego-client-ui-sidebar-right/client'
 import type { Context as ClientContext } from '@singula-ai/cordis'
 import type { ISessions } from '@singula-ai/alego-api-session-controller/client'
 import { relativeTime } from '@singula-ai/alego-client-ui-primitives'
@@ -24,13 +25,13 @@ import type {
 import { formatFileMention } from '@singula-ai/alego-file-reference/grammar'
 import type { FileReferenceCandidate } from '@singula-ai/alego-file-reference/types'
 import type { SessionReferenceMentionCandidate } from '@singula-ai/alego-session-reference/types'
-import { abbreviateHomePath } from '@singula-ai/alego-util-workspace-path'
+import { abbreviateHomePath, fileAddressFor } from '@singula-ai/alego-util-workspace-path'
 import { en, NS, zh, type ReferenceKey } from './locales.ts'
 
 /** Required services: the trigger registry, the Remote namespaces, and the copy. */
 export const inject = [
   'inputTriggers', 'locale', 'sessions', 'remote', 'remote.fileReferences',
-  'remote.sessionReferenceResolver',
+  'remote.sessionReferenceResolver', 'sidebarRight',
 ]
 
 /**
@@ -106,6 +107,13 @@ export function apply(ctx: ClientContext): void {
         }
       }
       return undefined
+    },
+    openReference(session, { ref, appearance }) {
+      if (appearance !== 'file') return false
+      const path = ref.startsWith('@"') ? ref.slice(2, -1) : ref.slice(1)
+      const cwd = sessions.list.getSnapshot().byId[session.sessionId]?.cwd
+      ctx.sidebarRight.openResource(fileAddressFor(session.sessionId, cwd, path))
+      return true
     },
     codec: {
       clipboardText: ref => ref,

@@ -99,6 +99,15 @@ describe('client bundle purity gate', () => {
     expect(resolveId('@singula-ai/alego-token-meter/client')).toBeNull()
     expect(() => resolveId('@singula-ai/alego-token-meter')).toThrow(/purity/)
     expect(() => resolveId('@singula-ai/alego-token-meter/client/internal')).toThrow(/purity/)
+    expect(resolveId('@singula-ai/alego-host-open-in-app/shared')).toBeNull()
+    expect(() => resolveId('@singula-ai/alego-host-open-in-app')).toThrow(/purity/)
+  })
+
+  it('admits only the pure spill notice entry, not its Host policy', () => {
+    expect(resolveId('@singula-ai/alego-spill-policy/notice')).toBeNull()
+    expect(resolveId('@singula-ai/alego-output-retention')).toBeNull()
+    expect(() => resolveId('@singula-ai/alego-spill-policy')).toThrow(/purity/)
+    expect(() => resolveId('@singula-ai/alego-spill-policy/notice/internal')).toThrow(/purity/)
   })
 
   it('lets exact generated Remote contributions inline without admitting their package implementation', () => {

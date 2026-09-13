@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/subsystems/subprocess.md
-subprocess.md: 80db4224fcc119b3bd4900eaeae5cd18f211a33c
-subprocess.zh.md: 5e6cd653364b056d2594b8f72ba485a51eb3ff66
+subprocess.md: 472fd53821b108092ed3b0968c469d4ab3f10074
+subprocess.zh.md: ce117df295b66988d5b6be60666ce8bed22801a8

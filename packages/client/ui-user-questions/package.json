@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-user-questions",
   "description": "Web ask_user_question composer takeover and plan-review presentation UI",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -43,9 +43,6 @@
     "watch": "tsdown --watch"
   },
   "license": "MIT",
-  "dependencies": {
-    "clsx": "^2.0.0"
-  },
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:^"
   },
@@ -68,7 +65,8 @@
     "react": "^18.2.0",
     "@singula-ai/alego-client-ui-conversation": "workspace:^",
     "@singula-ai/alego-client-connection": "workspace:^",
-    "@singula-ai/alego-session": "workspace:^"
+    "@singula-ai/alego-session": "workspace:^",
+    "clsx": "^2.0.0"
   },
   "files": [
     "lib/index.js",

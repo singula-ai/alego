@@ -6,7 +6,7 @@
 
 import { Context, Service } from '@singula-ai/cordis'
 import z from '@singula-ai/schemastery'
-import { BlockAssembler, expandAssistantStream } from '@singula-ai/alego-llm'
+import { assembleAssistantStream } from '@singula-ai/alego-llm'
 import type { LlmImageRequestPricing, LlmRuntime, Message, TokenUsage } from '@singula-ai/alego-llm'
 import { deepFreeze } from '@singula-ai/alego-util-values'
 import type {
@@ -31,7 +31,7 @@ import type {
 } from './types.ts'
 import { contextBreakdownProjectionDefinition } from './breakdown-projection.ts'
 import { contextPressureProjectionDefinition, tokenUsageProjectionDefinition } from './usage-projection.ts'
-import { estimateContent, estimateHeader, estimateMessage, ROLE_OVERHEAD } from './estimate.ts'
+import { estimateContent, estimateMessage, estimateToolsTokens, ROLE_OVERHEAD } from './estimate.ts'
 import { commitSurfaceTokens, planSurfaceTokens } from './surface-fold.ts'
 import type { MeterSurfaceNode } from './surface-fold.ts'
 import { priceSurface } from './route-pricing.ts'
@@ -50,7 +50,7 @@ export type * from './breakdown-projection.ts'
  */
 interface MeasurementAnchor {
   readonly header: EpochHeader | undefined
-  /** Surface snapshot the anchored request was derived from. */
+  /** Priced surface immediately before the anchored assistant message commits. */
   readonly nodes: readonly MeterSurfaceNode[]
   /** Fixed-heuristic price of the call's provider output. */
   readonly assistantTokens: number
@@ -62,7 +62,7 @@ interface ReplayState {
   consumedEvents: SessionLogOffsetType
   header: EpochHeader | undefined
   surface: MeterSurfaceNode[]
-  stepStart: { turn: number; step: number; nodes: readonly MeterSurfaceNode[] } | undefined
+  stepStart: { turn: number; step: number } | undefined
   anchor: MeasurementAnchor | undefined
 }
 
@@ -131,7 +131,8 @@ export class TokenMeter extends Service {
    * usage is reused only when the latest successful call's canonical request
    * envelope matches `requestHeader` and its total is no lower than that
    * call's full route-priced anchor; otherwise the complete envelope and
-   * surface are repriced.
+   * surface are repriced. The anchor includes all surface nodes immediately
+   * before the assistant message, including inputs admitted after step/start.
    *
    * `requestHeader` replaces the latest logged envelope for pressure and node
    * pricing; the node set always describes the current session surface. Every
@@ -159,7 +160,7 @@ export class TokenMeter extends Service {
       // compares like with like.
       const anchorSurfaceTokens = priceSurface(anchor.nodes, pricing, fileText).surfaceTokens
         + anchor.assistantTokens
-      const estimatedAnchorTokens = estimateHeader(header) + anchorSurfaceTokens
+      const estimatedAnchorTokens = estimateToolsTokens(header) + anchorSurfaceTokens
       const usage = anchor.usage
       // Signed heuristic deltas remain conservative only from an anchor
       // that is at least as large as the matching full heuristic price.
@@ -173,7 +174,7 @@ export class TokenMeter extends Service {
     } else {
       baseline = {
         kind: 'estimated',
-        tokens: estimateHeader(header) + surface.surfaceTokens,
+        tokens: estimateToolsTokens(header) + surface.surfaceTokens,
       }
       surfaceDeltaTokens = 0
     }
@@ -228,7 +229,8 @@ export class TokenMeter extends Service {
     }
 
     while (state.consumedEvents < session.seq) {
-      // oxlint-disable-next-line typescript/no-non-null-assertion -- contiguous session seqs index the durable log
+      // Contiguous session seqs index the durable log; existing Session history read, migration deferred.
+      // oxlint-disable-next-line typescript/no-non-null-assertion, typescript/no-deprecated
       const event = session.eventAt(SessionSeq(state.consumedEvents))!
       this._foldEvent(state, event)
       state.consumedEvents = SessionLogOffset(state.consumedEvents + 1)
@@ -256,7 +258,7 @@ export class TokenMeter extends Service {
             `token meter: step/start at seq ${event.seq} arrived before turn ${state.stepStart.turn}/step ${state.stepStart.step} ended`,
           )
         }
-        nextStepStart = { ...event.data, nodes: [...state.surface] }
+        nextStepStart = { ...event.data }
         break
       case 'step/end':
         if (state.stepStart === undefined
@@ -285,17 +287,20 @@ export class TokenMeter extends Service {
       // assistant/message is surface-mandatory at every append/seed boundary.
       // oxlint-disable-next-line typescript/no-non-null-assertion
       const eventTokens = plan!.tokens
+      // The loop admits prompts and user messages after step/start; retries may
+      // replace them before succeeding. Only the pre-assistant surface is priced
+      // by this call. Provider output stays separate from durable output rewrites.
       if (event.data.usage !== undefined && nextHeader !== undefined) {
         nextAnchor = {
           header: nextHeader,
-          nodes: stepStart.nodes,
+          nodes: [...state.surface],
           assistantTokens: this._estimateProviderAssistant(event),
           usage: event.data.usage,
         }
       } else {
         nextAnchor = {
           header: nextHeader,
-          nodes: stepStart.nodes,
+          nodes: [...state.surface],
           assistantTokens: eventTokens,
           usage: undefined,
         }
@@ -316,9 +321,7 @@ export class TokenMeter extends Service {
   private _estimateProviderAssistant(
     event: SessionEvent<'assistant/message'>,
   ): number {
-    const assembler = new BlockAssembler()
-    for (const member of expandAssistantStream(event.data.stream)) assembler.push(member.chunk)
-    const providerContent = assembler.blocks()
+    const providerContent = assembleAssistantStream(event.data.stream).blocks()
     return providerContent.length === 0 ? 0 : estimateContent(providerContent) + ROLE_OVERHEAD
   }
 }

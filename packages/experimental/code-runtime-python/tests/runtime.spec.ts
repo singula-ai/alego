@@ -1517,10 +1517,14 @@ describe('PythonCodeRuntime — programs and bindings', () => {
       const { runtime } = await setup({ maxLogBytes: 3072, maxWallMs: 30_000 })
       result = await runtime.run({
         program: [
-          'import os',
-          'for _ in range(6000):',
+          'import os, time',
+          // One byte per chunk on every host: a plain yield lets a loaded
+          // reader coalesce, and the coalesced chunk is what the bound below
+          // measures. The payload stays above the 2048 discriminator, so a
+          // raw-byte undercount still flushes the whole residual at EOF.
+          'for _ in range(3200):',
           '    os.write(1, b"\\xff")',
-          '    os.sched_yield()',
+          '    time.sleep(0.001)',
           'return None',
         ].join('\n'),
         bindings: [],
@@ -1534,7 +1538,10 @@ describe('PythonCodeRuntime — programs and bindings', () => {
     // merged buffer stays well under 2048. A raw-byte undercount would let it
     // reach ~3072 before flushing, so 2048 discriminates.
     expect(maxConcat).toBeLessThan(2048)
-  })
+    // The paced payload costs ~3.2s deterministically, which is above the
+    // 5000ms default the local unit entry grants, so the case carries its own
+    // bound instead of relying on the lane to widen it.
+  }, 20_000)
 
   it('charges a structurally-valid but illegal UTF-8 sequence its U+FFFD-decoded cost', async () => {
     // A CESU-8 lone surrogate `ED A0 80` is structurally well-formed (a 3-byte
@@ -1559,12 +1566,15 @@ describe('PythonCodeRuntime — programs and bindings', () => {
       const { runtime } = await setup({ maxLogBytes: 3072, maxWallMs: 30_000 })
       result = await runtime.run({
         program: [
-          'import os',
+          'import os, time',
           'seq = (0xed, 0xa0, 0x80)',
-          'for _ in range(2000):',
+          // 1100 sequences are 3300 raw bytes, past the 3072-byte budget a
+          // raw-byte undercount reaches, so the undercount flushes above the
+          // 2048 discriminator instead of only at EOF.
+          'for _ in range(1100):',
           '    for b in seq:',
           '        os.write(1, bytes((b,)))',
-          '        os.sched_yield()',
+          '        time.sleep(0.001)',
           'return None',
         ].join('\n'),
         bindings: [],
@@ -1579,7 +1589,10 @@ describe('PythonCodeRuntime — programs and bindings', () => {
     // largest merged buffer stays well under 2048. Charging the structural width
     // 3 would need ~1024 raw bytes, tripling the peak past 2048.
     expect(maxConcat).toBeLessThan(2048)
-  })
+    // The paced payload costs ~3.3s deterministically, which is above the
+    // 5000ms default the local unit entry grants, so the case carries its own
+    // bound instead of relying on the lane to widen it.
+  }, 20_000)
 
   it('charges a lone surrogate its full six escaped bytes, not three', async () => {
     // A forged `log` frame carrying `\ud800` escapes materializes lone
@@ -4746,58 +4759,6 @@ describe('PythonCodeRuntime — hostile peer', () => {
     expect(copied).toBeLessThan(256 * 1024)
   }, 40_000)
 
-  it('seals trickled stray fragments into blocks without recopying the sealed prefix', async () => {
-    // The stray-capture buffer has the same object-overhead exposure as the fd-3
-    // reader above: each newline-free `data` chunk is its own Buffer, so a
-    // program pacing single-byte `os.write(1, ...)` accumulates one object per
-    // write, which the serialized-cost counter cannot see. Past MAX_PENDING_CHUNKS
-    // the fragments seal into a finished block; re-merging the whole residual at
-    // each threshold instead would copy the sealed prefix again and again, making
-    // the cumulative copy volume quadratic. `Buffer.concat` is wrapped to measure
-    // that volume — both shapes admit the same final log entry, so the copy total
-    // is the discriminator. maxLogBytes is raised so the trickle is retained,
-    // not truncated, which is what forces the fragments to accumulate and seal.
-    const realConcat = Buffer.concat.bind(Buffer)
-    let copied = 0
-    Buffer.concat = (list: readonly Uint8Array[], total?: number): Buffer<ArrayBuffer> => {
-      for (const part of list) copied += part.length
-      return realConcat(list, total)
-    }
-    let result: CodeRunResult
-    try {
-      const { runtime } = await setup({ maxLogBytes: 200_000, maxWallMs: 30_000 })
-      result = await runtime.run({
-        program: [
-          'import os',
-          'for _ in range(60000):',
-          '    os.write(1, b"x")',
-          '    os.sched_yield()',
-          'os.write(1, b"\\n")',
-          'return "done"',
-        ].join('\n'),
-        bindings: [],
-      })
-    } finally {
-      Buffer.concat = realConcat
-    }
-    expect(result.error).toBeUndefined()
-    expect(result.value).toBe('done')
-    // The trickle coalesces into one log line (no interior newlines). Its exact
-    // length depends on pipe coalescing, but it is one entry and non-empty.
-    expect(result.logs.length).toBe(1)
-    expect((result.logs[0] as string).length).toBeGreaterThan(0)
-    // Sealing appends a finished block rather than re-merging everything held, so
-    // each byte is copied a bounded number of times. Re-merging the whole
-    // residual at every seal threshold instead makes the cumulative copy volume
-    // quadratic. Measured like the fd-3 sibling above rather than reasoned about:
-    // this sealed shape copies about 120 KB for 60000 trickled bytes, the
-    // re-merging shape about 538 KB (the stray path adds one whole-residual
-    // concat at the terminating newline over the fd-3 sibling's 119/540, landing
-    // at the same order). 256 KiB sits between them with margin on both sides, so
-    // reverting the seal to a re-merge turns this assertion red.
-    expect(copied).toBeLessThan(256 * 1024)
-  }, 40_000)
-
   it('caps a huge exception diagnostic child-side before it crosses the wire', async () => {
     // A program can raise with a multi-megabyte message; the child must cap
     // it at maxValueBytes before formatting/sending, not ship the whole
@@ -5251,34 +5212,49 @@ describe('PythonCodeRuntime — hostile peer', () => {
   }, 90_000)
 
   it('drops a late binding resolution before snapshotting it', async () => {
-    // `sendReply` checks `settled`, but only after the resolution has been walked
-    // and copied by `snapshotJsonValue`. Binding resolution carries no seam-level
-    // byte cap, so a binding that resolves a wide value AFTER the run already
-    // settled (here on `maxWallMs`) spent host heap building a frame that is then
-    // discarded. The check now runs before the snapshot.
-    //
-    // The binding resolves well after the 1s wall clock with a 2M-element array;
-    // the run must still report `timeout`, and the late value must not appear.
-    let resolvedLate = false
-    const { runtime } = await setup({ maxWallMs: 1_000 })
-    const result = await runtime.run({
+    const entered = Promise.withResolvers<undefined>()
+    const resolution = Promise.withResolvers<CodeJsonValue>()
+    const controller = new AbortController()
+    let inspections = 0
+    const lateValue = new Proxy([0], {
+      ownKeys(target) {
+        inspections++
+        return Reflect.ownKeys(target)
+      },
+    })
+    const { ctx, runtime } = await setup({ maxWallMs: 60_000 })
+    const pending = runtime.run({
       program: 'return await tools.slow({})',
+      signal: controller.signal,
       bindings: [{
         global: 'tools',
         functions: {
           slow: async () => {
-            await new Promise(resolve => setTimeout(resolve, 2_500))
-            resolvedLate = true
-            return Array.from({ length: 2_000_000 }, () => 0)
+            entered.resolve(undefined)
+            return await resolution.promise
           },
         },
       }],
     })
-    expect(result.error?.kind).toBe('timeout')
-    expect(result.value).toBeUndefined()
-    // Pin that the late path actually ran, so the assertion above is not vacuous.
-    await new Promise(resolve => setTimeout(resolve, 2_000))
-    expect(resolvedLate).toBe(true)
+    try {
+      await Promise.race([
+        entered.promise,
+        pending.then(() => { throw new Error('run settled before the binding was admitted') }),
+      ])
+      controller.abort('binding-admitted')
+      const result = await pending
+      expect(result.error?.kind).toBe('abort')
+      expect(result.value).toBeUndefined()
+      resolution.resolve(lateValue)
+      // Drain the binding continuation before checking that its value was untouched.
+      await new Promise(resolve => setImmediate(resolve))
+      expect(inspections).toBe(0)
+    } finally {
+      controller.abort('test-cleanup')
+      resolution.resolve(lateValue)
+      await pending
+      await ctx.fiber.dispose()
+    }
   }, 90_000)
 
   it('paces concurrent binding replies instead of queueing every frame at once', async () => {

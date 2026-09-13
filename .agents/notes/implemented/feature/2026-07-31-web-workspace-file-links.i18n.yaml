@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-31-web-workspace-file-links.md
-2026-07-31-web-workspace-file-links.md: c0102fc2b41ee19021ea13f219613d82afe164f5
-2026-07-31-web-workspace-file-links.zh.md: 45b69c420bd4d2102fd320e8508014c1a3c4348e
+2026-07-31-web-workspace-file-links.md: dc0bab8b10075eca14e8ed1ea27a16ef5be123c1
+2026-07-31-web-workspace-file-links.zh.md: fa3b0e57c852f08384733bc1a24c95131036c59e

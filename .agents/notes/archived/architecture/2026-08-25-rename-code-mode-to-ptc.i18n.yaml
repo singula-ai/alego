@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/architecture/2026-08-25-rename-code-mode-to-ptc.md
+2026-08-25-rename-code-mode-to-ptc.md: 6fb814ffec79bbabbcf1385a0cba54bd99d81458
+2026-08-25-rename-code-mode-to-ptc.zh.md: 3459fe3cf8d6e512c6134442f7a3873e77c7d3f8

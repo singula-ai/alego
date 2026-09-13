@@ -42,17 +42,35 @@ afterEach(() => {
 })
 
 describe('release families', () => {
-  it('excludes private experimental packages from the alego release', () => {
+  it('publishes Agent Teams while excluding private experimental packages', () => {
     const members = releaseFamily('alego').members(resolve(import.meta.dirname, '../..'))
 
-    expect(members.some(member => member.directory.startsWith('packages/experimental/'))).toBe(false)
-    expect(members.map(member => member.name)).not.toContain('@singula-ai/alego-experimental-agent-team')
+    expect(members
+      .filter(member => member.directory.startsWith('packages/experimental/'))
+      .map(member => member.name)).toEqual([
+      '@singula-ai/alego-experimental-agent-team-profile',
+      '@singula-ai/alego-experimental-agent-team-web-profile',
+      '@singula-ai/alego-experimental-agent-team',
+      '@singula-ai/alego-experimental-client-ui-agent-team',
+      '@singula-ai/alego-experimental-tool-agent-team',
+    ])
+    expect(members.map(member => member.name)).not.toContain('@singula-ai/alego-experimental-inspector')
   })
 
-  it('bumps private alego packages without adding release tags', () => {
+  it('excludes private applications from the publish set', () => {
+    const root = mkdtempSync(join(tmpdir(), 'alego-release-private-'))
+    roots.push(root)
+    write(join(root, 'apps/public/package.json'), '{"name":"@singula-ai/alego-public","version":"0.0.1"}\n')
+    write(join(root, 'apps/private/package.json'), '{"name":"@singula-ai/alego-private","version":"0.0.1","private":true}\n')
+
+    expect(releaseFamily('alego').members(root).map(entry => entry.name)).toEqual(['@singula-ai/alego-public'])
+  })
+
+  it('bumps private alego workspaces without adding release tags', () => {
     const root = mkdtempSync(join(tmpdir(), 'alego-release-version-'))
     roots.push(root)
     write(join(root, 'package.json'), '{"version":"0.0.1"}\n')
+    write(join(root, 'apps/desktop/package.json'), '{"version":"0.0.1","private":true}\n')
     write(join(root, 'packages/experimental/prototype/package.json'), '{"version":"0.0.1","private":true}\n')
     write(join(root, 'packages/core/unselected/package.json'), '{"version":"0.0.1"}\n')
 
@@ -63,6 +81,7 @@ describe('release families', () => {
     expect(planned.map(entry => ({ path: entry.manifestPath, tag: entry.tag }))).toEqual([
       { path: 'package.json', tag: undefined },
       { path: 'packages/core/published/package.json', tag: 'alego-v0.0.2' },
+      { path: 'apps/desktop/package.json', tag: undefined },
       { path: 'packages/experimental/prototype/package.json', tag: undefined },
     ])
   })

@@ -19,7 +19,7 @@ Both carriers execute the same `alego` grammar and shipped profiles, including t
 - `bundled_package_dir() -> Path` returns the installed module-data root and verifies its release metadata.
 - `bundled_runtime_path() -> Path` returns the current platform executable and verifies required sidecars.
 - `resolve_bundled_launch_args(mode=None) -> tuple[str, ...]` returns the executable argv by default. Explicit `mode="node"` or `ALEGO_RUNTIME_MODE=node` selects the repo-only Node carrier.
-- `main()` implements the installed `alego` console command and rejects an absent or blank `ALEGO_HOME` before replacing the Python process.
+- `main()` implements the installed `alego` console command and rejects an absent or blank `ALEGO_HOME`. On Windows it waits for the bundled process with inherited standard streams and forwards its exit status; on POSIX it replaces the Python process.
 
 Unsupported platforms and missing executables or sidecars raise `FileNotFoundError` with the build and installation routes. Unknown runtime modes raise `ValueError`.
 
@@ -30,6 +30,8 @@ Unsupported platforms and missing executables or sidecars raise `FileNotFoundErr
 External profile management uses `alego plugin --profile <name> ...`. That command requires `pnpm` on `PATH`; ordinary SDK/profile execution does not.
 
 ## Build and distribution
+
+Production deployment permits unused workspace patches for packages outside the runtime closure; patches for included packages must still apply successfully. This exception is confined to the deploy command; repository installation still rejects unused patches.
 
 From the repository root, `pnpm exec tsx scripts/build-exe-for-python-sdk.ts` verifies the closure, builds packages, deploys a symlink-free tree, packages the selected target, and syncs the executable and sidecars into this module. `scripts/build-python-release.py` stages release-shaped wheels at the root repository version and pins `alego-sdk` to the exact runtime version.
 

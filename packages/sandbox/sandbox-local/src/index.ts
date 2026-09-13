@@ -30,7 +30,7 @@ import {
   LAUNCHER_FAILURE_EXIT,
   launcherPath as landlockLauncherPath,
   probe as defaultProbeLandlock,
-} from '@singula-ai/node-addon-landlock-run'
+} from '@singula-ai/node-addon-system/landlock-run'
 import { Context } from '@singula-ai/cordis'
 import z from '@singula-ai/schemastery'
 import { SandboxProvider, SandboxUnavailableError } from '@singula-ai/alego-sandbox'

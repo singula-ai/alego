@@ -1,0 +1,77 @@
+{
+  "name": "@singula-ai/alego-client-ui-sidebar-right",
+  "description": "Right Sidebar: the docking surface's session-bound state, its panel and header expand control, and the navigation service over it",
+  "version": "0.1.5-rc.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/client/ui-sidebar-right"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "alego": {
+    "client": {
+      "inject": [
+        "@singula-ai/alego-api-session-controller",
+        "@singula-ai/alego-client-resources",
+        "@singula-ai/alego-client-ui-conversation",
+        "@singula-ai/alego-client-ui-layout",
+        "@singula-ai/alego-client-ui-session"
+      ],
+      "platform": "web"
+    }
+  },
+  "scripts": {
+    "bundle": "tsdown",
+    "watch": "tsdown --watch"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "@singula-ai/cordis": "workspace:^"
+  },
+  "devDependencies": {
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-api-session-controller": "workspace:^",
+    "@singula-ai/alego-client-locale": "workspace:^",
+    "@singula-ai/alego-client-resources": "workspace:^",
+    "@singula-ai/alego-client-store": "workspace:^",
+    "@singula-ai/alego-client-test-runtime": "workspace:^",
+    "@singula-ai/alego-client-ui-conversation": "workspace:^",
+    "@singula-ai/alego-client-ui-dockkit": "workspace:^",
+    "@singula-ai/alego-client-ui-layout": "workspace:^",
+    "@singula-ai/alego-client-ui-primitives": "workspace:^",
+    "@singula-ai/alego-client-ui-renderer": "workspace:^",
+    "@singula-ai/alego-client-ui-session": "workspace:^",
+    "@singula-ai/alego-client-ui-slots": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@testing-library/react": "^16.1.0",
+    "@types/picomatch": "^4.0.2",
+    "@types/react": "~18.3.1",
+    "@types/react-dom": "~18.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "picomatch": "^4.0.4",
+    "clsx": "^2.0.0"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/client.js",
+    "lib/types/**/*.d.ts"
+  ]
+}

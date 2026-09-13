@@ -7,6 +7,7 @@ import {
   ALEGO_HOME_DIR_NAME,
   canonicalizeWatchPath,
   defaultAlegoHome,
+  alegoCachePath,
   alegoHomeDisplay,
   alegoHomePath,
   expandHomePath,
@@ -56,6 +57,34 @@ describe('alego path helpers', () => {
     expect(alegoHomeDisplay('/some/other/root')).toBe('$ALEGO_HOME')
   })
 
+  it.each([
+    [undefined, join(homedir(), '.alego')],
+    ['', join(homedir(), '.alego')],
+    ['   ', join(homedir(), '.alego')],
+    ['~/env-alego', join(homedir(), 'env-alego')],
+    ['./relative-alego', resolve('./relative-alego')],
+  ] as const)('resolves cache paths with ALEGO_HOME=%j', (home, expectedHome) => {
+    vi.stubEnv('ALEGO_HOME', home)
+    try {
+      expect(alegoCachePath()).toBe(join(expectedHome, 'cache'))
+      expect(alegoCachePath('models', 'index.json')).toBe(join(expectedHome, 'cache', 'models', 'index.json'))
+    } finally {
+      vi.unstubAllEnvs()
+    }
+  })
+
+  it('resolves configured cache homes before the environment', () => {
+    vi.stubEnv('ALEGO_HOME', '~/env-alego')
+    try {
+      expect(alegoCachePath({ alegoHome: '~/explicit-alego' })).toBe(join(homedir(), 'explicit-alego', 'cache'))
+      expect(alegoCachePath({ alegoHome: './explicit-alego' }, 'attachments', 'request-images'))
+        .toBe(resolve('./explicit-alego/cache/attachments/request-images'))
+      expect(alegoCachePath({}, 'attachments')).toBe(join(homedir(), 'env-alego', 'cache', 'attachments'))
+    } finally {
+      vi.unstubAllEnvs()
+    }
+  })
+
   it('canonicalizes a watcher ancestor while preserving a missing suffix', async () => {
     const root = await mkdtemp(join(tmpdir(), 'alego-watch-path-'))
     const target = join(root, 'target')
@@ -63,6 +92,7 @@ describe('alego path helpers', () => {
     try {
       await mkdir(target)
       await symlink(target, alias, process.platform === 'win32' ? 'junction' : 'dir')
+      await expect(canonicalizeWatchPath(alias)).resolves.toBe(await realpath(target))
       await expect(canonicalizeWatchPath(join(alias, 'later', 'config.yml'))).resolves.toBe(
         join(await realpath(target), 'later', 'config.yml'),
       )

@@ -23,6 +23,7 @@
  */
 
 import { Context, Service } from '@singula-ai/cordis'
+import { brandString } from '@singula-ai/alego-brand'
 import { z as zod } from 'zod'
 import type { ZodType } from 'zod'
 import type { Agent, PreStepDecision } from '@singula-ai/alego-agent'
@@ -30,7 +31,7 @@ import { createUserMessage } from '@singula-ai/alego-llm'
 import type { Session, UserMessage } from '@singula-ai/alego-session'
 import { defineTool } from '@singula-ai/alego-tools'
 import { UserQuestionError } from '@singula-ai/alego-user-questions'
-import type { CommandId } from '@singula-ai/alego-commands'
+import type { CommandDefinitionId, CommandId } from '@singula-ai/alego-commands'
 import type {} from '@singula-ai/alego-session-projection'
 import type { ProjectionDefinition } from '@singula-ai/alego-session-projection'
 import type { PlanProjection, PlanUnitState } from './types.ts'
@@ -223,6 +224,7 @@ export class PlanModeController extends Service {
     // The command child activates only when a command registry is composed.
     ctx.inject(['commands'], (commandCtx) => {
       commandCtx.commands.register({
+        definitionId: brandString<CommandDefinitionId>('@singula-ai/alego-plan-mode'),
         name: 'plan',
         description: 'Enter or leave plan mode',
         input: { hint: '[off|message]', attachments: true },

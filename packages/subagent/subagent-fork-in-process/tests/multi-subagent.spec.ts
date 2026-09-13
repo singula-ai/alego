@@ -9,7 +9,6 @@ import * as SessionInvariant from '@singula-ai/alego-session/invariant'
 import * as AgentInvariant from '@singula-ai/alego-agent/invariant'
 import * as AgentLoopInvariant from '@singula-ai/alego-agent-loop/invariant'
 import SubagentRuntime, { type SubagentStartRequest } from '@singula-ai/alego-subagent'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import * as Spawn from '@singula-ai/alego-subagent-spawn-in-process'
 import { MockAdapter, textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import * as fork from '../src/index.ts'
@@ -38,7 +37,6 @@ async function setup(script: Script) {
   await mountAgentLoopTestDependencies(ctx)
   await mountInvariants(ctx)
   await ctx.plugin(AgentLoop, { agents: [] })
-  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(SubagentRuntime)
   await ctx.plugin(Spawn, { providerName: 'spawn' })
   await ctx.plugin(fork, { providerName: 'fork' })

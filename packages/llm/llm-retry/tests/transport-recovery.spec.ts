@@ -11,7 +11,6 @@ import type { MockLlmBehavior, MockLlmServer } from '@singula-ai/alego-llm-mock-
 import { startMockLlmServer } from '@singula-ai/alego-llm-mock-server'
 import { SessionId } from '@singula-ai/alego-session'
 import type { SessionEvent } from '@singula-ai/alego-session'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import * as Retry from '../src/index.ts'
 
 let context: Context | undefined
@@ -39,7 +38,6 @@ async function harness(
   vi.stubEnv('DEEPSEEK_API_KEY', 'mock-key')
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
-  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(LlmDeepSeek, {
     baseURL,
     streamIdleTimeoutMs: options.streamIdleTimeoutMs ?? 1_000,

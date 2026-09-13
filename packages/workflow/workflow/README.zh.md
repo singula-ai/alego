@@ -9,7 +9,7 @@ kind: "package-reference"
 
 ## 概述
 
-`alego-workflow` 运行一段纯 JavaScript 编排脚本，并交给调用方一个活动运行，其 result 在脚本结算时以脚本的最终 JSON 值兑现。脚本可以用 `agent()` 扇出 subagent，用 `parallel()` 和 `pipeline()` 组合独立工作，用 `phase()` 和 `log()` 叙述进度；agent 通常通过 `alego-tool-workflow` 的 `workflow` 工具驱动这一切。运行由持有方负责：其 result 绝不拒绝，取消与 dispose（资源释放）有界，每个子 agent 都归属于调用它的 agent。本包不附带执行引擎——当前引擎是 `alego-workflow-worker-thread`——因此可以用不同的隔离策略替换它，而不改变调用方或模型看到的内容。
+运行一段纯 JavaScript 编排脚本，将工作扇出给 subagent，并返回脚本的最终 JSON 值。脚本可以使用 `agent()`、`parallel()`、`pipeline()`、`phase()` 和 `log()`；模型通常通过 `workflow` 工具访问它们。每次运行都归调用方所有，将每个子 agent（智能体）归属于调用它的 agent，在失败或取消时以结果兑现而不拒绝，并在有界宽限期内完成 dispose（资源释放）。调用方必须提供执行引擎，因此可以更换隔离策略而不改变可见行为。
 
 ## 目录
 
@@ -54,7 +54,7 @@ return { reviewed: reviews.length }
 
 ### 失败与恢复
 
-无法解析的脚本、格式错误的 meta 块、不可用的提供方路由或不受支持的单次运行限制，都会在运行存在之前被同步拒绝；`workflow` 工具把这些报告为模型可以修正的错误。执行期间，钩子误用——错误参数、未知选项、不支持的 schema、超出上限——会响亮地终止脚本，而不会溶解为逐项 `null`。普通子 agent 失败不是基础设施错误：`agent()` 以 `null` 兑现，由脚本决定如何处理。
+无法解析的脚本、格式错误的 meta 块、不可用的提供方路由或不受支持的单次运行限制，都会在运行存在之前被同步拒绝；`workflow` 工具把这些报告为模型可以修正的错误。执行期间，钩子误用——错误参数、未知选项、不支持的 schema、超出上限——会明确终止脚本，而不会转为逐项 `null`。普通子 agent 失败不是基础设施错误：`agent()` 以 `null` 兑现，由脚本决定如何处理。
 
 -----
 
@@ -64,11 +64,11 @@ return { reviewed: reviews.length }
 <details>
 <summary>实现细节——点击展开</summary>
 
-本节解释能力如何拆分、契约位于何处；可观察行为已在[使用本包](#use-this-package)中完整说明。
+本节解释能力如何拆分、约定位于何处；可观察行为已在[使用本包](#use-this-package)中完整说明。
 
 ### 设计理念
 
-本包把脚本、运行、结果与事件契约同执行分开：任何引擎都可以在同一词汇背后实现 `ctx.workflowEngine`，一个上下文同时只有一个引擎——加载第二个引擎会立即失败，因此更换引擎意味着更改组合所加载的引擎插件。`workflow/*` 事件只供观察：payload 携带运行身份快照，绝不携带活动运行，因此监听器无法取得取消或 dispose 权限。
+本包把脚本、运行、结果与事件约定同执行分开：任何引擎都可以在同一词汇背后实现 `ctx.workflowEngine`，一个上下文同时只有一个引擎——加载第二个引擎会明确报错，因此更换引擎意味着更改组合所加载的引擎插件。`workflow/*` 事件只供观察：payload 携带运行身份快照，绝不携带活动运行，因此监听器无法取得取消或 dispose 权限。
 
 ### 源码地图
 
@@ -87,7 +87,7 @@ return { reviewed: reviews.length }
 
 ### 失败纪律
 
-`WorkflowError` 携带机器可路由的 code 与 `fatal` 标志；每个 code 都是致命的，`parallel()` 与 `pipeline()` 会重新抛出致命错误，而不是把条目映射为 `null`——拼错的选项必须响亮地终止脚本。code 覆盖启动失败、契约违规、超出上限、提供方与结果故障、不可序列化值与取消；完整集合与含义见 [`src/index.ts`](src/index.ts)。
+`WorkflowError` 携带机器可路由的 code 与 `fatal` 标志；每个 code 都是致命的，`parallel()` 与 `pipeline()` 会重新抛出致命错误，而不是把条目映射为 `null`——拼错的选项必须明确终止脚本。code 覆盖启动失败、约定违规、超出上限、提供方与结果故障、不可序列化值与取消；完整集合与含义见 [`src/index.ts`](src/index.ts)。
 
 逐项 `null` 只保留给子运行失败与阶段内普通脚本错误，因此以非完成结束原因正常结算的子 agent 不属于基础设施异常：`agent()` 返回 `null`，让脚本处理普通子 agent 失败。
 

@@ -12,7 +12,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
-import { LAUNCHER_FAILURE_EXIT } from '@singula-ai/node-addon-landlock-run'
+import { LAUNCHER_FAILURE_EXIT } from '@singula-ai/node-addon-system/landlock-run'
 import { SANDBOX_UNAVAILABLE, SandboxUnavailableError } from '@singula-ai/alego-sandbox'
 import type { SandboxPolicy } from '@singula-ai/alego-sandbox'
 import {

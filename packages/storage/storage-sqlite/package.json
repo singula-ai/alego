@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-storage-sqlite",
   "description": "SQLite storage backend (kv facet) for the Alego storage hub",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },

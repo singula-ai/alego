@@ -10,7 +10,7 @@ The adapter sends the additions to its resolved `baseURL`, including a configure
 
 | Location | Naming | Examples |
 |---|---|---|
-| HTTP field names | Lowercase kebab-case; HTTP matching remains case-insensitive | `user-agent`, `x-dsh-session-id` |
+| HTTP field names | Lowercase kebab-case; HTTP matching remains case-insensitive | `user-agent`, `x-deepseek-harness-session-id` |
 | DeepSeek request-body extension fields | Snake case with the provider's reserved `dsh_` prefix | `dsh_plugin_packages`, `dsh_session_log` |
 | ALEGO-owned nested JSON members | Camel case | `afterSeq`, `throughSeq`, `sessionId` |
 | Tagged values | Kebab-case strings; durable events use `domain/action` | `session-log-deepseek/delivery-accepted` |
@@ -24,11 +24,11 @@ The [`DeepSeekLlmApiExtensionRegistry`](../packages/llm/deepseek-llm-api-extensi
 | Header | Presence | Value |
 |---|---|---|
 | `user-agent` | Every provider HTTP request, including Files API operations | Application identity in `product/version (+url)` form; the default product is `alego` |
-| `x-dsh-user-id` | Every authorized chat-completion request | The stable anonymous UUID for the resolved Harness home |
-| `x-dsh-session-id` | Chat-completion requests carrying a Session id | The exact request `sessionId` string |
-| `x-dsh-compact` | Chat-completion requests whose purpose is `compaction` | The literal string `1` |
+| `x-deepseek-harness-user-id` | Every authorized chat-completion request | The stable anonymous UUID for the resolved Harness home |
+| `x-deepseek-harness-session-id` | Chat-completion requests carrying a Session id | The exact request `sessionId` string |
+| `x-deepseek-harness-compact` | Chat-completion requests whose purpose is `compaction` | The literal string `1` |
 
-Credential failure happens before anonymous-user-id resolution, so an unauthorized request neither sends these headers nor creates the identity file. A direct request without a Session omits `x-dsh-session-id`. Session-title requests have no additional purpose header; the ordinary Session-id rule still applies when one carries a `sessionId`.
+Credential failure happens before anonymous-user-id resolution, so an unauthorized request neither sends these headers nor creates the identity file. A direct request without a Session omits `x-deepseek-harness-session-id`. Session-title requests have no additional purpose header; the ordinary Session-id rule still applies when one carries a `sessionId`.
 
 ## Body-extension transaction
 
@@ -73,7 +73,7 @@ An enabled inventory with no qualifying entries sends `packages: []`; disabling 
 
 ## `dsh_session_log`
 
-[`@singula-ai/alego-session-log-deepseek`](../packages/session/session-log-deepseek/README.md) contributes one contiguous suffix of the canonical Session log. The field is disabled by default. When enabled, it applies to a request with a live Session and at least one event; a direct request, a stale Session id, or an empty log omits the field.
+[`@singula-ai/alego-session-log-deepseek`](../packages/session/session-log-deepseek/README.md) contributes one contiguous suffix of the canonical Session log. The field is disabled by default. When enabled, it applies to a request with a live Session and at least one event; a direct request, a stale Session id, or an empty log omits the field. The examples below use logical Session format 2 only to illustrate the wire fields; they do not identify the [current writer format](session-format-status.md).
 
 ```json
 {
@@ -119,7 +119,7 @@ The `session` member projects `Session.header`, not a complete runtime Session o
 
 | Member | Presence | Meaning |
 |---|---|---|
-| `version` | required | Logical Session format version; currently `2` |
+| `version` | required | Logical Session format version from `Session.header`; see [format status](session-format-status.md) |
 | `id` | required | Exact Session id |
 | `createdAt` | required | Non-negative safe-integer Unix epoch milliseconds |
 | `cwd` | optional | Absolute working directory recorded at Session creation |

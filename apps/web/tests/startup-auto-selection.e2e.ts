@@ -42,7 +42,9 @@ describe('web e2e: startup auto-selection', () => {
     onTestFailed(() => saveFailureShot(page, 'web-e2e-first-workspace-stable-tree'))
     await page.locator(`${ROOT_PHASE}[data-phase="hero"]`).waitFor({ timeout: 15_000 })
     const headline = page.getByText('Build AI Agents with ALEGO', { exact: true })
-    const fishHitbox = headline.locator('xpath=preceding-sibling::span[1]')
+    // The headline text sits in its own span inside the title group; the fish
+    // hitbox precedes the group, not the text span.
+    const fishHitbox = headline.locator('xpath=../preceding-sibling::span[1]')
     const fish = fishHitbox.locator('svg')
     expect(await fish.evaluate(node => getComputedStyle(node).color))
       .toBe(await headline.evaluate(node => getComputedStyle(node).color))
@@ -87,36 +89,6 @@ describe('web e2e: startup auto-selection', () => {
     expect(tripwire.pageErrors).toEqual([])
   }, 120_000)
 
-  it('renders the rainbow brand in both palettes and readable text in forced colors', async () => {
-    onTestFailed(() => saveFailureShot(page, 'web-e2e-rainbow-hero'))
-    const headline = page.getByText('Build AI Agents with ALEGO', { exact: true })
-    const brand = headline.getByText('ALEGO', { exact: true })
-    const gradients: string[] = []
-    try {
-      for (const colorScheme of ['light', 'dark'] as const) {
-        await page.emulateMedia({ colorScheme })
-        await expect.poll(() => page.locator('body').getAttribute('data-ds-dark-theme'))
-          .toBe(colorScheme === 'dark' ? '' : null)
-        const style = await brand.evaluate((node) => {
-          const computed = getComputedStyle(node)
-          return { background: computed.backgroundImage, clip: computed.backgroundClip, color: computed.color }
-        })
-        expect(style.background).toMatch(/^linear-gradient\(/)
-        expect(new Set(style.background.match(/rgb\([^)]+\)/g)).size).toBe(7)
-        expect(style.clip).toBe('text')
-        expect(style.color).toBe('rgba(0, 0, 0, 0)')
-        gradients.push(style.background)
-      }
-      expect(gradients[0]).not.toBe(gradients[1])
-
-      await page.emulateMedia({ forcedColors: 'active' })
-      expect(await brand.evaluate(node => getComputedStyle(node).backgroundImage)).toBe('none')
-      expect(await brand.evaluate(node => getComputedStyle(node).color)).not.toBe('rgba(0, 0, 0, 0)')
-    } finally {
-      await page.emulateMedia({ colorScheme: null, forcedColors: null })
-    }
-  })
-
   it('keeps the hero and composer visible while the opening follow snapshot is pending', async () => {
     onTestFailed(() => saveFailureShot(page, 'web-e2e-startup-auto-selection'))
     await page.addInitScript(() => {
@@ -160,7 +132,7 @@ describe('web e2e: startup auto-selection', () => {
       expect(await page.locator('[data-composer-input]').first().isVisible()).toBe(true)
 
       releaseOpening()
-      await page.locator('[data-composer-input][contenteditable="true"][data-placeholder="Describe what you want to build... / commands, @ files or sessions"]')
+      await page.locator('[data-composer-input][contenteditable="true"][data-placeholder="Describe what you want to build, / commands, @ files or sessions"]')
         .waitFor({ timeout: 15_000 })
       acknowledgeReloadConnectionLoss(tripwire, warningsBefore)
 

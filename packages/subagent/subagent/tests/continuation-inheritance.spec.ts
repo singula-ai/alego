@@ -19,7 +19,6 @@ import SandboxPolicyService, { setSandboxMode } from '@singula-ai/alego-sandbox-
 import { Session, SessionId } from '@singula-ai/alego-session'
 import type { SessionEvent } from '@singula-ai/alego-session'
 import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { queueHostSubagentPrompt } from '@singula-ai/alego-subagent/internal'
 import * as SubagentFork from '@singula-ai/alego-subagent-fork-in-process'
 import * as SubagentSpawn from '@singula-ai/alego-subagent-spawn-in-process'
@@ -43,7 +42,6 @@ async function setup(script: Script) {
   const ctx = new Context()
   contexts.push(ctx)
   await mountAgentLoopTestDependencies(ctx)
-  await ctx.plugin(SessionProjectionRegistry)
   const root = mkdtempSync(join(tmpdir(), 'alego-continuation-inherit-'))
   roots.push(root)
   await ctx.plugin(JsonlSessionPersistence, { root })

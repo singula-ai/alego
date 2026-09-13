@@ -6,8 +6,10 @@ import { Context } from '@singula-ai/cordis'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   apply,
+  type ClientConnectionRpc,
   type ClientTransportHooks,
   type ConnectionGenerationSource,
+  type RpcFetch,
   type ConnectionHandle,
   type ConnectionState,
 } from '../src/client/index.ts'
@@ -71,6 +73,51 @@ async function mount(): Promise<ConnectionHandle> {
 }
 
 describe('connection client apply', () => {
+  it('uses Host bootstrap timing when Gateway starts without overrides', async () => {
+    vi.useFakeTimers()
+    vi.stubGlobal('__ALEGO_CONNECTION_RECOVERY__', {
+      backoffBaseMs: 10, backoffMaxMs: 10, generationReadyTimeoutMs: 20,
+    })
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+    const handle = await mount()
+    const signals: AbortSignal[] = []
+    handle.registerGenerationSource(signal => new Promise<void>((resolve) => {
+      signals.push(signal)
+      signal.addEventListener('abort', () => { resolve() }, { once: true })
+    }))
+    const loop = handle.start({})
+    try {
+      await vi.advanceTimersByTimeAsync(20)
+      expect(signals[0]?.aborted).toBe(true)
+      expect(handle.state.getSnapshot()).toBe('connecting')
+      await vi.advanceTimersByTimeAsync(10)
+      expect(signals).toHaveLength(2)
+    } finally {
+      loop.stop()
+      await vi.advanceTimersByTimeAsync(0)
+      warnSpy.mockRestore()
+    }
+  })
+
+  it.each([{ generationReadyTimeoutMs: 0 }, { backoffFactor: NaN }])('rejects malformed bootstrap recovery before publishing the service: %j', (recovery) => {
+    vi.stubGlobal('__ALEGO_CONNECTION_RECOVERY__', recovery)
+    const ctx = new Context()
+    expect(() => { apply(ctx) }).toThrow()
+    expect(ctx.get('connection')).toBeUndefined()
+  })
+
+  it('rejects a NaN start override without acquiring the generation source', async () => {
+    const handle = await mount()
+    const source = vi.fn<ConnectionGenerationSource>()
+    const unregister = handle.registerGenerationSource(source)
+    try {
+      expect(() => handle.start({}, { backoffFactor: NaN })).toThrow(/backoffFactor.*finite/)
+      expect(source).not.toHaveBeenCalled()
+    } finally {
+      unregister()
+    }
+  })
+
   it('treats a runtime without browser location as local', async () => {
     delete (globalThis as Win).location
     expect((await mount()).isLoopback).toBe(true)
@@ -128,7 +175,6 @@ describe('connection client apply', () => {
       generations.push(handle.generation.getSnapshot()?.host.home)
     })
     expect(handle.generation.getSnapshot()).toBeUndefined()
-    // config omitted: the `config ?? {}` default arm is part of the surface.
     let connected = 0
     const loop = handle.start({ onConnected: () => { connected++ } })
     expect(() => handle.start({})).toThrow(/already owned by another consumer/)
@@ -439,6 +485,20 @@ describe('connection client apply', () => {
     })
   })
 
+  it('uses an already decoded rpc carrier from the transport hooks instead of the HTTP caller', async () => {
+    ;(globalThis as Win).location = { hostname: 'preview.example', search: '' }
+    const rpc: ClientConnectionRpc = {
+      call: vi.fn(async (_channel: string, endpoint: string, payload: unknown) => ({ ok: true as const, value: { endpoint, payload } })),
+      open: vi.fn((_channel: string, endpoint: string) => (async function *(): AsyncGenerator { yield endpoint })()),
+    }
+    ;(globalThis as Win).__ALEGO_TRANSPORT__ = { rpc }
+    const handle = await mount()
+    expect(handle.rpc).toBe(rpc)
+    await expect(handle.rpc.call('/api', 'session/list', { args: [] })).resolves.toEqual({
+      ok: true, value: { endpoint: 'session/list', payload: { args: [] } },
+    })
+  })
+
   it('exposes a worker-local Gateway stream through connection.rpc.open', async () => {
     ;(globalThis as Win).location = { hostname: 'preview.example', search: '' }
     const openStream = vi.fn<NonNullable<ClientTransportHooks['openStream']>>(
@@ -448,7 +508,7 @@ describe('connection client apply', () => {
       })(),
     )
     ;(globalThis as Win).__ALEGO_TRANSPORT__ = {
-      fetch: vi.fn<ClientTransportHooks['fetch']>(),
+      fetch: vi.fn<RpcFetch>(),
       openStream,
       ownsHost: true,
     }

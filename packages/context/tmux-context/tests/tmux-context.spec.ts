@@ -1,13 +1,14 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import { Session, SessionId } from '@singula-ai/alego-session'
-import AgentRegistry, { agentEvents, Inbox, type Agent } from '@singula-ai/alego-agent'
+import AgentRegistry, { agentEvents, type Agent } from '@singula-ai/alego-agent'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { createUserMessage } from '@singula-ai/alego-llm'
 import { ShellExecutor } from '@singula-ai/alego-shell'
 import type { ShellExecRequest, ShellExecSpec, ShellProcess, ShellRunResult } from '@singula-ai/alego-shell'
 import * as tmuxContext from '@singula-ai/alego-tmux-context'
 import type { Config } from '@singula-ai/alego-tmux-context'
+import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 const SIGNAL = new AbortController().signal
 
@@ -94,11 +95,11 @@ async function mount(
 }
 
 function sessionAgent(session: Session, id = 'agent'): Agent {
-  return {
+  const agent: Agent = {
     id: SessionId(id),
     options: {},
     session,
-    inbox: new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} }),
+    inbox: unsupportedInbox(),
     status: 'running',
     ctx: new Context(),
     send: () => {},
@@ -109,6 +110,7 @@ function sessionAgent(session: Session, id = 'agent'): Agent {
     runMaintenance: task => task(new AbortController().signal),
     whenIdle: () => Promise.resolve(),
   }
+  return agent
 }
 
 function openMessageTurn(session: Session, turn: number): void {

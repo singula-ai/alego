@@ -18,7 +18,7 @@ import type {
 } from './manifest.ts'
 
 export { ClientModuleSystem }
-export { parseBootManifest, stripClientSuffix } from './manifest.ts'
+export { exactPackageSpecifier, parseBootManifest, parseAlegoClient, stripClientSuffix } from './manifest.ts'
 export type {
   BootManifest, BootModuleRow, BootPluginRow, ClientBootstrapModule, ClientBundleRegistration,
   ClientModuleCreateOptions, ClientModuleLoader, ClientModuleLoaderTarget, ClientModuleRecord,

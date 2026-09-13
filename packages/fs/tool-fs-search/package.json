@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-tool-fs-search",
   "description": "Model-facing filesystem discovery tools (glob, grep) backed by the packaged ripgrep binary (@vscode/ripgrep)",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -52,6 +52,7 @@
     "@singula-ai/alego-system-prompt": "workspace:^",
     "@singula-ai/alego-timeout": "workspace:^",
     "@singula-ai/alego-tools": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-scope": "workspace:^"
   }
 }

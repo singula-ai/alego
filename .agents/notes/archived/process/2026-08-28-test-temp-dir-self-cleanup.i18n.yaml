@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/process/2026-08-28-test-temp-dir-self-cleanup.md
+2026-08-28-test-temp-dir-self-cleanup.md: 16a2fb399073df6b92e52a7c79c5d23f81222769
+2026-08-28-test-temp-dir-self-cleanup.zh.md: 04f645f1af20611be82d6ff1d3c2741fd0d785e8

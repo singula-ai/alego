@@ -1,10 +1,11 @@
 import { fileURLToPath } from 'node:url'
-import { agentEvents, Inbox, type Agent } from '@singula-ai/alego-agent'
+import { agentEvents, type Agent } from '@singula-ai/alego-agent'
 import { ToolCallId } from '@singula-ai/alego-llm'
 import { boot, loadOverlayPatches } from '@singula-ai/alego-app-boot'
 import { SessionId } from '@singula-ai/alego-session'
 import type {} from '@singula-ai/alego-skill'
 import type {} from '@singula-ai/alego-tools'
+import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 const overlayPath = process.argv[2]
 if (overlayPath === undefined) throw new Error('alego-badge snapshot requires an overlay path')
@@ -23,7 +24,7 @@ try {
     id: agentId,
     options: {},
     session,
-    inbox: new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} }),
+    inbox: unsupportedInbox(),
     status: 'idle',
     send: () => {},
     followup: () => {},

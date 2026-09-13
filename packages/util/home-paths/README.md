@@ -9,7 +9,7 @@ English | [中文](README.zh.md)
 
 ## Summary
 
-`alego-home-paths` resolves the single Alego home that all user data lives under, and joins child paths onto it, so every product package agrees on where its files go. Precedence is explicit: a configured path wins, then `$ALEGO_HOME`, then `~/.alego`, and an empty or whitespace-only `$ALEGO_HOME` counts as unset. The package also expands `~`, `~/...`, and `~\...` prefixes against the operating-system home, and canonicalizes a watch target so a native filesystem watcher gets one stable path spelling even when the final components do not exist yet. It is a zero-dependency library that product packages import directly; a `cordis.yml` cannot load it.
+`@singula-ai/alego-home-paths` lets package authors resolve one Alego data root and derive child paths from it. An explicit path wins over `$ALEGO_HOME`, which wins over `~/.alego`; blank environment values are ignored. Its public helpers can render the root without revealing an absolute machine path, expand only bare or current-user tilde forms, and canonicalize watch targets whose final components do not yet exist. Use it as a direct library dependency, not through `cordis.yml`.
 
 ## Table of Contents
 
@@ -29,13 +29,16 @@ Use these helpers wherever a package must agree with the rest of the harness abo
 ### Resolving the home
 
 ```ts
-import { resolveAlegoHome, alegoHomePath } from '@singula-ai/alego-home-paths'
+import { resolveAlegoHome, alegoHomePath, alegoCachePath } from '@singula-ai/alego-home-paths'
 
 const home = resolveAlegoHome()                // configured path, else $ALEGO_HOME, else ~/.alego
 const settings = alegoHomePath('settings')     // join one child onto the resolved home
+const cache = alegoCachePath('models')         // $ALEGO_HOME/cache/models, default ~/.alego/cache/models
 ```
 
 An explicit configured path has the highest precedence, then `$ALEGO_HOME`, then the default `~/.alego`. An empty or whitespace-only `$ALEGO_HOME` is treated as unset, so a blank override never resolves the home to the current working directory.
+
+`alegoCachePath(...segments)` derives paths from the resolved home's `cache` directory. With no segments it returns the cache directory itself. Pass an initial options object, `alegoCachePath({ alegoHome: home }, ...segments)`, to use an explicit configured home with the same precedence and tilde expansion. It returns an absolute path without creating directories.
 
 ### Displaying a home
 
@@ -64,7 +67,7 @@ The package is built on one principle: all harness user data lives under one roo
 | File | Role |
 |---|---|
 | [`src/index.ts`](src/index.ts) | Home resolution, path joining, display, tilde expansion, and watch-path canonicalization |
-| — | No runtime invariant companion is published; this pure utility owns no event stream or mutable runtime data; its value algebra is enforced by unit tests. |
+| — | No runtime invariant companion is published; this pure utility owns no event stream or mutable runtime data; its resolution rules and value algebra are enforced by unit tests. |
 
 ### Resolution rules
 

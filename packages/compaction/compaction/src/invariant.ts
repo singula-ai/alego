@@ -298,6 +298,7 @@ const install: InvariantInstaller = Object.assign((ctx: Context, fail: Invariant
       surface: new SurfaceManager(surfaceEvents),
     }
     traces.set(session, trace)
+    // oxlint-disable-next-line typescript/no-deprecated -- Existing Session history read; migration deferred.
     const events = session.snapshotEvents()
     const staleOrphanStartSeqs = inheritedOrphanStartSeqs(events)
     for (const event of events) {

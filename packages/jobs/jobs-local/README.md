@@ -103,12 +103,12 @@ Owner disposal (`disposeOwned`) cancels the owner's jobs, awaits their settlemen
 
 Read these pages when the package-level contract is not enough. They move from the registry contract to the model-facing controls and the design records.
 
-- [Background task runtime subsystem](../../../docs/subsystems/jobs.md) — the job types, snapshot fields, and `ctx.jobs` cordis surface.
+- [Background task runtime subsystem](../../../docs/subsystems/jobs.md) — the job types, snapshot fields, and `ctx.jobs` Cordis surface.
 - [jobs group map](../README.md) — the sibling group page and its package table.
 - [Registry contract](../jobs/README.md) — the abstract `ctx.jobs` service this package implements.
 - [Model-facing job controls](../tool-jobs/README.md) — the `job_output`, `job_list`, and `job_kill` tools and completion notices.
 - [Generic long-running tool runtime Agent Note](../../../.agents/notes/implemented/architecture/2026-06-20-generic-long-running-tool-runtime.md) — the design behind the background-job runtime.
-- [job-registry seam Agent Note](../../../.agents/notes/implemented/architecture/2026-07-26-job-registry-seam.md) — the owner-fenced registry contract and its rationale.
+- [job-registry seam Agent Note](../../../.agents/notes/archived/architecture/2026-07-26-job-registry-seam.md) — the owner-fenced registry contract and its rationale.
 
 -----
 

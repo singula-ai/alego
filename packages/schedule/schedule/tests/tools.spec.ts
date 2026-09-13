@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
-import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import AgentRegistry from '@singula-ai/alego-agent'
 import type { Agent, AgentCancelCause, InboxTarget } from '@singula-ai/alego-agent'
 import { ToolCallId } from '@singula-ai/alego-llm'
 import type { UserMessage } from '@singula-ai/alego-llm'
@@ -10,6 +10,7 @@ import ToolRuntime from '@singula-ai/alego-tools'
 import type { ToolExecutionResult } from '@singula-ai/alego-tools'
 import { registerScheduleTools } from '../src/tools.ts'
 import { runScheduleTransaction } from '../src/transaction.ts'
+import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 const signal = new AbortController().signal
 const contexts: Context[] = []
@@ -24,12 +25,11 @@ interface ToolHarness {
 
 function stubAgent(ctx: Context, id: string): Agent {
   const session = ctx.sessions.create(SessionId(id))
-  const inbox = new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} })
-  return {
+  const agent: Agent = {
     id: session.id,
     options: {},
     session,
-    inbox,
+    inbox: unsupportedInbox(),
     status: 'idle',
     ctx: new Context(),
     send(_message: UserMessage, _target: InboxTarget, _wakeup: boolean) {},
@@ -40,6 +40,7 @@ function stubAgent(ctx: Context, id: string): Agent {
     steer(_message: UserMessage) {},
     inject(_message: UserMessage) {},
   }
+  return agent
 }
 
 async function harness(withPersistence = true): Promise<ToolHarness> {

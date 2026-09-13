@@ -1,13 +1,9 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
-import LlmRuntime from '@singula-ai/alego-llm'
-import SessionStore, { SessionId } from '@singula-ai/alego-session'
-import SystemPrompt from '@singula-ai/alego-system-prompt'
-import ToolRuntime from '@singula-ai/alego-tools'
-import AgentRegistry from '@singula-ai/alego-agent'
+import { SessionId } from '@singula-ai/alego-session'
 
 import AgentLoop from '@singula-ai/alego-agent-loop'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
 import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek'
 import SubagentRuntime from '@singula-ai/alego-subagent'
 import * as Spawn from '@singula-ai/alego-subagent-spawn-in-process'
@@ -31,12 +27,7 @@ afterEach(async () => {
 
 async function harness(): Promise<Context> {
   const built = new Context()
-  await built.plugin(LlmRuntime)
-  await built.plugin(SessionStore)
-  await built.plugin(SessionProjectionRegistry)
-  await built.plugin(SystemPrompt)
-  await built.plugin(ToolRuntime)
-  await built.plugin(AgentRegistry)
+  await mountAgentLoopTestDependencies(built)
   await built.plugin(AgentLoop, { agents: [] })
   await built.plugin(LlmDeepSeek)
   await built.plugin(SubagentRuntime)

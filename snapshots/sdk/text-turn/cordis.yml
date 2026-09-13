@@ -32,3 +32,13 @@
   name: '@singula-ai/alego-session-log-deepseek'
   config:
     enabled: true
+
+- insert:
+    - id: snapshot-message-feedback
+      name: '@singula-ai/alego-message-feedback'
+      disabled: !!js "process.env.ALEGO_SNAPSHOT_FEEDBACK !== '1'"
+      config:
+        maxNoteBytes: 1024
+    - id: snapshot-feedback-producer
+      name: './feedback-producer.mjs'
+      disabled: !!js "process.env.ALEGO_SNAPSHOT_FEEDBACK !== '1'"

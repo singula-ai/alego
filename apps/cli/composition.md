@@ -156,8 +156,6 @@ flowchart LR
   cfg --> plugin_alego_base_tool_goal
   plugin_alego_base_tool_ralph["tool-ralph<br/>@singula-ai/alego-tool-ralph"]
   cfg --> plugin_alego_base_tool_ralph
-  plugin_alego_base_tool_str_replace_editor["tool-str-replace-editor<br/>@singula-ai/alego-tool-str-replace-editor"]
-  cfg --> plugin_alego_base_tool_str_replace_editor
   plugin_alego_base_repeat_tool_reminder["repeat-tool-reminder<br/>@singula-ai/alego-repeat-tool-reminder"]
   cfg --> plugin_alego_base_repeat_tool_reminder
   plugin_alego_base_web["web<br/>@singula-ai/alego-web"]
@@ -256,7 +254,6 @@ flowchart LR
 | `tool-todo` | `@singula-ai/alego-tool-todo` |
 | `tool-goal` | `@singula-ai/alego-tool-goal` |
 | `tool-ralph` | `@singula-ai/alego-tool-ralph` |
-| `tool-str-replace-editor` | `@singula-ai/alego-tool-str-replace-editor` |
 | `repeat-tool-reminder` | `@singula-ai/alego-repeat-tool-reminder` |
 | `web` | `@singula-ai/alego-web` |
 | `web-search-deepseek` | `@singula-ai/alego-web-search-deepseek` |
