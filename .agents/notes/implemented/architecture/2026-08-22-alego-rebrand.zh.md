@@ -40,7 +40,7 @@ GitHub 源码链接和 push 工作流指向 `singula-ai/alego` 的 `main`。必�
 
 桌面打包和上传必须通过 `DOWNLOAD_TEST_ORIGIN` 或 `DOWNLOAD_PROD_ORIGIN` 提供所选环境的 HTTPS origin。两者均使用 `_/alego/desktop/stable/<target>/`；Alego 构建不会默认连接 DeepSeek 的下载服务器。现有更新器、签名、公证、COS 上传和平台选择机制保持完整。
 
-此分支保留终端启动检查，在接受输入前等待受控的 PowerShell 提示符。测试夹具通过调用已获准执行和中止信号来同步 Python 绑定的延迟完成，并将浏览器临时根目录转换为规范路径，避免 macOS 路径别名改变 Vite 资源名称。
+此分支保留终端启动检查，在接受输入前等待受控的 PowerShell 提示符。测试夹具使用进程 CPU 时间衡量后代进程的 CPU 工作量，通过调用已获准执行和中止信号来同步 Python 绑定的延迟完成，并将浏览器临时根目录转换为规范路径，避免 macOS 路径别名改变 Vite 资源名称。
 
 E2E 工作流的可选 `record_brand_demo` 输入从隔离状态捕获真实 Host、真实模型的首轮发送流程。普通运行保留完整 E2E 套件。UI 文案门禁允许各语言共用 Alego 字标，但拒绝包含它的未翻译短语。
 

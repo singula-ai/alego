@@ -40,7 +40,7 @@ GitHub source links and push workflows target `singula-ai/alego` on `main`. Requ
 
 Desktop packaging and uploads require the selected HTTPS origin through `DOWNLOAD_TEST_ORIGIN` or `DOWNLOAD_PROD_ORIGIN`. Both use `_/alego/desktop/stable/<target>/`; no Alego build defaults to DeepSeek's download server. The existing updater, signing, notarization, COS upload, and platform selection mechanisms remain in place.
 
-The fork retains the terminal startup check that waits for a controlled PowerShell prompt before accepting input. Test fixtures synchronize late Python binding completion on admission and abort, and canonicalize temporary browser roots so macOS path aliases do not change Vite asset names.
+The fork retains the terminal startup check that waits for a controlled PowerShell prompt before accepting input. Test fixtures measure descendant CPU workloads with process CPU time, synchronize late Python binding completion on admission and abort, and canonicalize temporary browser roots so macOS path aliases do not change Vite asset names.
 
 The E2E workflow's opt-in `record_brand_demo` input captures the real-host, real-model first-send flow from isolated state. Ordinary runs retain the complete E2E suite. The UI-copy gate permits the literal Alego wordmark across locales and rejects untranslated phrases containing it.
 
