@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-session-persistence-jsonl",
   "description": "JSONL durable session persistence backend for the Alego",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,6 +23,7 @@
   },
   "files": [
     "lib/index.js",
+    "lib/worker.cjs",
     "lib/types/**/*.d.ts"
   ],
   "license": "MIT",
@@ -32,9 +33,11 @@
     "@singula-ai/cordis": "workspace:^"
   },
   "dependencies": {
+    "@singula-ai/alego-llm": "workspace:^",
     "@singula-ai/alego-session-format": "workspace:^",
     "@singula-ai/alego-session-format-catalog": "workspace:^",
-    "fs-ext": "2.1.1",
+    "@singula-ai/alego-session-format-v2-to-v3": "workspace:^",
+    "@singula-ai/node-addon-system": "workspace:^",
     "koffi": "^3.1.0",
     "@singula-ai/schemastery": "workspace:^"
   },
@@ -42,7 +45,6 @@
     "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/alego-session-format-v0-to-v1": "workspace:^",
     "@singula-ai/alego-session-persistence": "workspace:^",
-    "@singula-ai/cordis": "workspace:^",
-    "@types/fs-ext": "2.0.3"
+    "@singula-ai/cordis": "workspace:^"
   }
 }

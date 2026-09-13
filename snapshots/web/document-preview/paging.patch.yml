@@ -1,0 +1,5 @@
+# Test-only paging cap; all other WorkspaceFiles fields keep their Config defaults.
+- id: workspace-files
+  name: '@singula-ai/alego-api-workspace-files'
+  config:
+    maxLines: 64

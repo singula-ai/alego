@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-plan-mode",
   "description": "Logged per-agent plan mode with deployment guidance, a direct slash command, and a user-reviewed exit",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -58,6 +58,7 @@
     }
   },
   "dependencies": {
+    "@singula-ai/alego-brand": "workspace:^",
     "zod": "^4.4.3"
   },
   "devDependencies": {

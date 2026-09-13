@@ -9,7 +9,7 @@ English | [中文](README.zh.md)
 
 ## Summary
 
-The `code-runtime/` group provides program execution: a model writes one program that calls host-provided functions as ordinary async calls, and a runtime executes it in isolation and returns only what the program printed and returned. One package defines the shared capability (`ctx.codeRuntime`), a second executes TypeScript programs in a fresh Node worker thread, and a third owns the wire protocol between a Node host and a CPython subprocess for the Python backend. Every run is independent — no state carries from one program to the next — and failures come back as part of the result, so the caller can see why a program failed and feed that back to the model.
+The `code-runtime/` group lets a model write one program that calls host-provided functions as ordinary async calls, then returns only the program's printed output and return value. Choose the TypeScript backend for execution in an isolated Node worker, or the experimental Python backend when a CPython process is required. Each run starts without state from earlier programs. Failures are returned as results so callers can diagnose them or provide them to the model.
 
 ## Table of Contents
 
@@ -37,7 +37,7 @@ These three packages together provide program execution; each README describes w
 
 Start with the subsystem reference for the service contract, then the PTC mode design that consumes this capability and the capability-seam model it follows.
 
-- [Code runtime subsystem reference](../../docs/subsystems/code-runtime.md) — request/result vocabulary, bindings, and the `ctx.codeRuntime` cordis surface.
+- [Code runtime subsystem reference](../../docs/subsystems/code-runtime.md) — request/result vocabulary, bindings, and the `ctx.codeRuntime` Cordis surface.
 - [PTC mode Agent Note](../../.agents/notes/implemented/feature/2026-06-15-ptc.md) — how the tool registry presents `run_code` to the model.
 - [Capability seams](../../docs/capability-seams.md) — the Service Definition / Service Provider / Consumer split this family follows.
 

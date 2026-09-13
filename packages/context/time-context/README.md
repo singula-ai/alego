@@ -27,7 +27,7 @@ English | [中文](README.zh.md)
 
 Mount this plugin when the model should interpret unqualified dates and times in the user's zone, and when a request-local browser zone is available or a configured fallback is acceptable. Each injection is one additional user-role message in the durable history; schedule it with `refreshIntervalMs` when per-step readings are more than the conversation needs.
 
-### What the agent gets
+### What the model gets
 
 Each injected reading has three lines: an ISO-shaped timestamp with numeric offset and IANA zone, the browser-zone policy for the request, and the elapsed duration in compact whole-second units. Step 1 measures from the latest preceding model-visible message; later steps measure from the preceding time-context event in the same turn. A missing baseline reports `unavailable`, and backward wall-clock movement clamps elapsed time to zero.
 
@@ -88,7 +88,6 @@ When an injection is due, the plugin samples the wall clock, derives the browser
 
 Read these pages when the package-level contract is not enough. They move from the design decision to the composition that mounts the plugin and the exhaustive configuration.
 
-- [Durable per-step time-context decision record](../../../.agents/notes/implemented/feature/2026-07-16-durable-per-step-time-context.md) — design rationale for the durable reading.
 - [Schedule user guide](../../../docs/user/guide/schedule.md) — the official configuration path for mounting this plugin.
 - [Context group map](../README.md) — sibling request-context packages.
 - [Generated configuration catalog](../../../docs/config-catalog.md#singula-aialego-time-context) — every accepted config field and its source declaration.
@@ -126,7 +125,7 @@ Each reading accumulates until compaction shadows it. A positive interval reduce
 
 #### KV Cache effect
 
-Append-only; newly visible content follows the reusable request prefix and does not invalidate existing KV-cache entries.
+Append-only; newly visible content follows the reusable request prefix and does not invalidate existing KV Cache entries.
 
 ## Known Limitations and Deferred Work
 

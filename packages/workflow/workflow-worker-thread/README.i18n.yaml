@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/workflow/workflow-worker-thread/README.md
-README.md: a266280ee11ad1731a070918af156d7685509603
-README.zh.md: 2c51e88f9c0958256008bd3889b032a54c87c4b1
+README.md: 0d5d6f9c36a61c81d28a642c8033d496511ea287
+README.zh.md: e4228b7a3ddc8b37658a8cf028092641d81ffa51

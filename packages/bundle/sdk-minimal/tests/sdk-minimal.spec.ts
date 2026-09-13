@@ -39,7 +39,6 @@ describe('alego-sdk-minimal bundle', () => {
       ['pty', '@singula-ai/alego-terminal'],
       ['terminal-bash', '@singula-ai/alego-terminal-bash'],
       ['terminal-pwsh', '@singula-ai/alego-terminal-bash'],
-      ['fs-local', '@singula-ai/alego-fs-local'],
       ['timer', '@singula-ai/cordis-plugin-timer'],
       ['llm', '@singula-ai/alego-llm'],
       ['session', '@singula-ai/alego-session'],
@@ -57,7 +56,6 @@ describe('alego-sdk-minimal bundle', () => {
       ['agent-loop', '@singula-ai/alego-agent-loop'],
       ['persistent-bash', '@singula-ai/alego-tool-bash-persistent'],
       ['persistent-pwsh', '@singula-ai/alego-tool-pwsh-persistent'],
-      ['str-replace-editor', '@singula-ai/alego-tool-str-replace-editor'],
       ['sessions', '@singula-ai/alego-session-persistence-jsonl'],
     ])
     expect(rows.find(row => row.id === 'sdk-app-startup')?.config).toEqual({ profile: 'sdk-minimal' })
@@ -73,7 +71,7 @@ describe('alego-sdk-minimal bundle', () => {
     expect(rows.find(row => row.id === 'system-prompt')?.config).toEqual({
       includeHarnessIdentity: false,
       includeRuntimeContext: false,
-      persona: { __jsExpr: "process.env.ALEGO_SYSTEM_PROMPT ?? 'You are a helpful software engineer assistant.'" },
+      personaPrefix: { __jsExpr: "process.env.ALEGO_SYSTEM_PROMPT ?? 'You are a helpful software engineer assistant.'" },
     })
     expect(rows.find(row => row.id === 'agent-loop')?.config).toEqual({ agents: [] })
     expect(rows.find(row => row.id === 'terminal-bash')).toMatchObject({

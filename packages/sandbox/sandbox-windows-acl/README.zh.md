@@ -9,7 +9,7 @@ kind: "package-library"
 
 ## 概述
 
-`alego-sandbox-windows-acl` 通过写入限制隔离 Windows 进程：子进程在受限令牌下运行，其写访问仅限于工作区与私有临时目录，因此 `workspace-write` 允许这些写入，`read-only` 则不允许任何写入。它作为 `alego-sandbox-local` 的 win32 档交付：在 Windows 上挂载本地提供方，就能让每次受限 bash 或 pwsh 调用自动使用此后端。也可以通过 `AclSandbox` API 直接嵌入，以捕获 stdio 的方式 spawn 受限子进程。每个 Win32 调用都有检查，失败即抛出异常，因此子进程绝不会不受限制地 spawn。强制执行按设计为部分实现——受限令牌必须为进程初始化保留 Everyone，且 NTFS 硬链接可以把同一文件对象别名为多个路径——因此后端报告 `partial`，需要绝对边界的调用方可以向上暴露它。
+在 Windows 上，本包将子进程的写入限制在工作区和私有临时目录内。`workspace-write` 授予对这两个位置的写入权限，`read-only` 则均不授予。挂载 `alego-sandbox-local` 后，受限的 bash 和 PowerShell 命令会自动获得此行为；调用方也可以直接使用公开 `AclSandbox` API，并捕获标准流。任何 Win32 操作失败都会阻止子进程在不受限制的情况下启动。该保证特意标记为部分强制，因为进程启动会保留 Everyone 访问权限，NTFS 硬链接也可以通过其他路径暴露同一文件；调用方可通过报告的 `partial` 强制级别检测此限制。
 
 ## 目录
 
@@ -63,7 +63,7 @@ sandbox.dispose() // revokes the revocable (temp) grant, keeps the standing work
 rmSync(tempDir, { recursive: true, force: true })
 ```
 
-工作区 ACE 以常驻方式授予——`dispose()` 保留它们，因为它们是跨实例的复用缓存——而不同的临时 SID 以可回收方式授予。服务端对应物是 `AclWriteGrant` 类：每个目录一次 `add(path, standing)`，`dispose()` 撤销可回收路径并释放 SID。
+工作区 ACE 以常驻方式授予——`dispose()` 保留它们，因为它们是跨实例的复用缓存——而不同的临时 SID 以可回收方式授予。服务端对应实现是 `AclWriteGrant` 类：每个目录一次 `add(path, standing)`，`dispose()` 撤销可回收路径并释放 SID。
 
 ### 隔离给你带来什么
 
@@ -119,13 +119,13 @@ seam 先把确定性工作区 SID 的 ACE 常驻物化（每个工作区每服�
 - **受限子进程的临时能力按每个活跃的会话/工作区对私有。** runner 在 spawn 之前把 TMP/TEMP 改写为该私有目录；共享同一工作区 SID 的两个令牌无法写入彼此的临时目录。
 - **受限令牌下 `whoami` 与令牌检查 cmdlet 会失败。** 子进程对复制令牌的 `GetTokenInformation` 部分不可用，这是诊断噪音而非运行故障。
 
-### 头部验证与源码地图
+### 头文件验证与源码索引
 
 沙箱拥有的 SID、ACL、令牌、文件与锁声明由 [`verify/abi-probe.cpp`](verify/abi-probe.cpp) 对照 Windows 头文件检查。共享进程、stdio 与 Job ABI 由 [`@singula-ai/alego-win32-process`](../../subprocess/win32-process/README.zh.md#header-verification) 归属并验证。
 
 | 文件 | 职责 |
 |---|---|
-| [`src/index.ts`](src/index.ts) | `AclSandbox`：受限令牌策略、DACL 授权、故障关闭的 spawn 与 dispose |
+| [`src/index.ts`](src/index.ts) | `AclSandbox`：受限令牌策略、DACL 授权、fail-closed 的 spawn 与 dispose |
 | [`src/runner.ts`](src/runner.ts) | 基于共享 Win32 进程原语的 runner 入口 |
 | [`src/grant.ts`](src/grant.ts) | `AclWriteGrant`：服务端授权物化与撤销 |
 | [`src/token.ts`](src/token.ts) + [`src/acl.ts`](src/acl.ts) | 沙箱背后的 Win32 令牌与 DACL 原语 |

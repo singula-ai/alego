@@ -7,7 +7,6 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { LlmAdapter, type GenerateOptions, type StreamChunk } from '@singula-ai/alego-llm'
 import SessionStore, { SessionId } from '@singula-ai/alego-session'
 import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
@@ -52,7 +51,6 @@ async function mountRuntime(root: string, adapter: RecordingAdapter): Promise<Co
   const ctx = new Context()
   contexts.push(ctx)
   await mountAgentLoopTestDependencies(ctx)
-  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(JsonlSessionPersistence, { root, compression: 'none' })
   ctx.llm.registerAdapter(['mock'], adapter)
@@ -86,7 +84,11 @@ async function settleCurrentTasks(): Promise<void> {
 async function readStored(ctx: Context, id: SessionId) {
   const handle = await ctx.sessionPersistence.open(id, 'read')
   try {
-    return { header: handle.header, inheritedEventCount: handle.inheritedEventCount, events: await handle.read() }
+    return {
+      header: handle.header,
+      inheritedEventCount: handle.inheritedEventCount,
+      events: (await handle.read()).events,
+    }
   } finally {
     await handle.close()
   }

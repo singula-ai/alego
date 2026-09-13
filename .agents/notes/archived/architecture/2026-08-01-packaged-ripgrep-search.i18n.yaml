@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/architecture/2026-08-01-packaged-ripgrep-search.md
+2026-08-01-packaged-ripgrep-search.md: 622190b1c064be1494bb754ba98457158d9b5d2e
+2026-08-01-packaged-ripgrep-search.zh.md: 3d88b105e30e2c5c454f18cd05ca577293ea4ef6

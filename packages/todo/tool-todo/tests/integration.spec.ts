@@ -5,7 +5,6 @@ import { SessionId, type SessionEvent } from '@singula-ai/alego-session'
 import type { Agent } from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import * as ToolTodo from '@singula-ai/alego-tool-todo'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 
@@ -18,7 +17,6 @@ import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent
 async function harness(adapter: MockAdapter): Promise<Context> {
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
-  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(ToolTodo, { allowParallelInProgress: true })
   ctx.llm.registerAdapter(['mock'], adapter)

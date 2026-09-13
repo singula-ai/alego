@@ -10,7 +10,7 @@
  * @module @singula-ai/alego-subagent/assistant-output
  */
 
-import { expandAssistantStream, type ContentBlock } from '@singula-ai/alego-llm'
+import { joinAssistantStreamText, type ContentBlock } from '@singula-ai/alego-llm'
 import type { SessionEvent } from '@singula-ai/alego-session'
 
 /**
@@ -35,9 +35,7 @@ export class AssistantOutputFold {
       if (content.length > 0) this.message = content
     }
     if (event.type === 'assistant/message' || event.type === 'assistant/attempt') {
-      for (const { chunk } of expandAssistantStream(event.data.stream)) {
-        if (chunk.type === 'text-delta') this.pushText(chunk.text)
-      }
+      this.pushText(joinAssistantStreamText(event.data.stream))
     }
   }
 

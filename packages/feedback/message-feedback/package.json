@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-message-feedback",
-  "description": "Lifecycle-bound per-message rating and note sidecar for the Alego",
-  "version": "0.1.3-alpha.1",
+  "description": "Canonical Session-log ratings and notes for finalized assistant messages",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -48,9 +48,9 @@
     "@singula-ai/alego-llm": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/alego-session-persistence": "workspace:^",
-    "@singula-ai/alego-storage-domain": "workspace:^",
     "@singula-ai/alego-typert-protocol": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-command-feedback": "workspace:^"
   },
   "dependencies": {
     "@singula-ai/schemastery": "workspace:^",
@@ -64,10 +64,8 @@
     "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/alego-session-persistence": "workspace:^",
     "@singula-ai/alego-session-persistence-jsonl": "workspace:^",
-    "@singula-ai/alego-storage": "workspace:^",
-    "@singula-ai/alego-storage-domain": "workspace:^",
-    "@singula-ai/alego-storage-json": "workspace:^",
     "@singula-ai/alego-typert-protocol": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-command-feedback": "workspace:^"
   }
 }

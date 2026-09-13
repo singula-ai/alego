@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/feature/2026-08-10-telemetry-default-off.md
+2026-08-10-telemetry-default-off.md: fc02648ad6bda54191cb1e8f9e8b5fb7267ae68e
+2026-08-10-telemetry-default-off.zh.md: 4d4820cb591cbea2e0aec96193e87fb4d9e24e13

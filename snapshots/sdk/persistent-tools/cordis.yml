@@ -2,6 +2,12 @@
 # editor as model-facing tools, with process-local providers and an explicit
 # danger-full-access / never-ask policy.
 
+- insert:
+    - id: tool-str-replace-editor
+      name: '@singula-ai/alego-tool-str-replace-editor'
+      config:
+        maxOutputChars: 16000
+
 - id: llm-deepseek
   name: '@singula-ai/alego-llm-deepseek'
   config:
@@ -118,7 +124,7 @@
   name: '@singula-ai/alego-system-prompt'
   config:
     includeHarnessIdentity: false
-    persona: !!js process.env.ALEGO_SYSTEM_PROMPT ?? 'You are a helpful software engineer assistant.'
+    personaPrefix: !!js process.env.ALEGO_SYSTEM_PROMPT ?? 'You are a helpful software engineer assistant.'
 
 - id: session-persistence-jsonl
   name: '@singula-ai/alego-session-persistence-jsonl'

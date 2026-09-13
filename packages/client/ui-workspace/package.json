@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-workspace",
   "description": "Workspace picker plugin: one WorkspacePicker registered into the sidebar and empty-state workspace slots",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -34,6 +34,7 @@
         "@singula-ai/alego-client-connection",
         "@singula-ai/alego-client-locale",
         "@singula-ai/alego-client-ui-conversation",
+        "@singula-ai/alego-client-ui-layout",
         "@singula-ai/alego-client-ui-renderer",
         "@singula-ai/alego-client-ui-session",
         "@singula-ai/alego-client-ui-sidebar"
@@ -46,9 +47,6 @@
     "watch": "tsdown --watch"
   },
   "license": "MIT",
-  "dependencies": {
-    "clsx": "^2.0.0"
-  },
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:^"
   },
@@ -61,6 +59,7 @@
     "@singula-ai/alego-client-store": "workspace:^",
     "@singula-ai/alego-client-test-runtime": "workspace:^",
     "@singula-ai/alego-client-ui-conversation": "workspace:^",
+    "@singula-ai/alego-client-ui-layout": "workspace:^",
     "@singula-ai/alego-client-ui-primitives": "workspace:^",
     "@singula-ai/alego-client-ui-renderer": "workspace:^",
     "@singula-ai/alego-client-ui-session": "workspace:^",
@@ -72,7 +71,8 @@
     "@singula-ai/alego-util-workspace-path": "workspace:^",
     "@types/react": "~18.3.1",
     "@singula-ai/cordis": "workspace:^",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "clsx": "^2.0.0"
   },
   "files": [
     "lib/index.js",

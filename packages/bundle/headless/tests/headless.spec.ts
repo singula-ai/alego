@@ -2,12 +2,14 @@
 
 import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
-import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import AgentRegistry from '@singula-ai/alego-agent'
 import type { Agent, AgentHandle, AssistantStreamFrame, CreateAgentOptions } from '@singula-ai/alego-agent'
 import AgentDefaultModelConfig from '@singula-ai/alego-agent-default-model'
 import { LlmAttemptId, createAssistantMessage, type StreamChunk } from '@singula-ai/alego-llm'
 import SessionStore from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import type { Session, UserMessage } from '@singula-ai/alego-session'
+import { createInboxStub } from '@singula-ai/alego-agent-loop-testkit'
 import { apply, Config, internals } from '../src/index.ts'
 
 const originalInternals = { ...internals }
@@ -82,6 +84,7 @@ async function bench(script: Script): Promise<{
   let err = ''
   const order: string[] = []
   await ctx.plugin(SessionStore)
+  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(AgentRegistry)
   await ctx.plugin(AgentDefaultModelConfig, { provider: 'test-provider', model: 'test-model' })
   ctx.agents.setFactory({
@@ -89,16 +92,15 @@ async function bench(script: Script): Promise<{
       const session = ctx.sessions.create(options.sessionId, {
         ...options.meta === undefined ? {} : { meta: options.meta },
       })
+      const inbox = createInboxStub()
       let idle = Promise.resolve()
-      const agent = {} as Agent
-      const agentCtx = ownerCtx.extend({ agent })
-      Object.assign(agent, {
+      const agent: Agent = {
         id: session.id,
         options: options.agentOptions ?? {},
         session,
-        inbox: new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} }),
+        inbox,
         status: 'idle',
-        ctx: agentCtx,
+        ctx: ownerCtx,
         cancel: () => {},
         runMaintenance: () => Promise.reject(new Error('not used')),
         send: () => {},
@@ -109,8 +111,8 @@ async function bench(script: Script): Promise<{
         steer: () => {},
         inject: () => {},
         whenIdle: () => idle,
-      } satisfies Partial<Agent>)
-      await options.setup?.(agentCtx)
+      }
+      await options.setup?.(ownerCtx, agent)
       script.before?.(session)
       ctx.agents.register(agent)
       return { agent, dispose: () => Promise.resolve() }
@@ -154,6 +156,25 @@ describe('headless runner', () => {
       out: 'final answer\n',
       err: '',
       order: ['flush', 'exit'],
+    })
+    await test.ctx.fiber.dispose()
+  })
+
+  it('ignores durable inbox events before the first owned turn', async () => {
+    const test = await bench({
+      afterPrompt(session, message) {
+        session.append('agent/inbox/spliced', {
+          target: 'next-turn',
+          start: 0,
+          inserted: [message],
+        })
+        appendTurn(session, 1, message, 'answer after inbox activity', true)
+      },
+    })
+    expect(await test.run()).toMatchObject({
+      code: 0,
+      out: 'answer after inbox activity\n',
+      err: '',
     })
     await test.ctx.fiber.dispose()
   })
@@ -336,16 +357,20 @@ describe('headless runner', () => {
   })
 
   it('fails when an event below the captured Session length cannot be read', async () => {
+    let capturedLength = 0
     const test = await bench({
       afterPrompt(session, message) {
         appendTurn(session, 1, message, 'unreachable', true)
+        capturedLength = session.seq
         Object.defineProperty(session, 'eventAt', { value: () => undefined })
       },
     })
-    expect(await test.run()).toMatchObject({
+    const result = await test.run()
+    expect(capturedLength).toBeGreaterThan(0)
+    expect(result).toMatchObject({
       code: 1,
       out: '',
-      err: 'alego: headless summary cannot read seq 0 below captured length 7\n',
+      err: `alego: headless summary cannot read seq 0 below captured length ${String(capturedLength)}\n`,
     })
     await test.ctx.fiber.dispose()
   })

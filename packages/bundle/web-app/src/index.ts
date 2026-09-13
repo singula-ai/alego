@@ -21,7 +21,7 @@ import z from '@singula-ai/schemastery'
 import { addHarnessSourceSection } from '@singula-ai/alego-app-boot'
 import type {} from '@singula-ai/alego-client-connection'
 import * as FrontendStatic from '@singula-ai/alego-host-frontend-static'
-import { launchEnvironmentOf } from '@singula-ai/alego-launch-environment'
+import { launchedThroughSsh, launchEnvironmentOf } from '@singula-ai/alego-launch-environment'
 import { scrubbedParentEnv } from '@singula-ai/alego-subprocess'
 import type {} from '@singula-ai/cordis-plugin-loader'
 import type {} from '@singula-ai/alego-host-webserver'
@@ -80,15 +80,6 @@ const ALEGO_WEB_URL = 'ALEGO_WEB_URL' as const
 const LOOPBACK_HOST = '127.0.0.1'
 /** The webserver schema's all-interfaces bind literal. */
 const ALL_INTERFACES_HOST = '0.0.0.0'
-
-/** Whether this process was launched through SSH, including a forwarded-port session. */
-function launchedThroughSsh(ctx: Context): boolean {
-  const environment = launchEnvironmentOf(ctx)
-  return ['SSH_CONNECTION', 'SSH_TTY'].some((name) => {
-    const value = environment.getFrom(name, ['process'])?.value
-    return value !== undefined && value !== ''
-  })
-}
 
 const BROWSER_OPENER_MODULE = import.meta.resolve('open')
 
@@ -235,7 +226,7 @@ export function apply(ctx: Context, config: Config): void {
   const runtime = resolveLanTrust(ctx.webServer.host, config.trustedHosts)
   // The loopback URL belongs to this host. Under SSH, the operator reaches it
   // through a local forwarding address that this process cannot derive.
-  const handoffBrowser = config.openBrowser && !launchedThroughSsh(ctx)
+  const handoffBrowser = config.openBrowser && !launchedThroughSsh(launchEnvironmentOf(ctx))
   // Release dependent rows only after bind-dependent trust has been sampled once.
   ctx.provide(WEB_RUNTIME_SERVICE, runtime)
   ctx.plugin(FrontendStatic, { distIndex: internals.resolveDistIndex() })

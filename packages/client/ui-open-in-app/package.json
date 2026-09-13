@@ -1,0 +1,68 @@
+{
+  "name": "@singula-ai/alego-client-ui-open-in-app",
+  "description": "Web Session-header \"Open In...\" split button opening the session workspace directory in a locally installed application",
+  "version": "0.1.5-rc.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/client/ui-open-in-app"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/client.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "scripts": {
+    "bundle": "tsdown",
+    "watch": "tsdown --watch"
+  },
+  "license": "MIT",
+  "alego": {
+    "client": {
+      "inject": [
+        "@singula-ai/alego-client-locale",
+        "@singula-ai/alego-client-ui-conversation",
+        "@singula-ai/alego-client-ui-renderer",
+        "@singula-ai/alego-client-ui-session"
+      ],
+      "platform": "web"
+    }
+  },
+  "peerDependencies": {
+    "@singula-ai/cordis": "workspace:^"
+  },
+  "devDependencies": {
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-api-session-controller": "workspace:^",
+    "@singula-ai/alego-client-locale": "workspace:^",
+    "@singula-ai/alego-client-store": "workspace:^",
+    "@singula-ai/alego-client-test-runtime": "workspace:^",
+    "@singula-ai/alego-client-ui-conversation": "workspace:^",
+    "@singula-ai/alego-client-ui-primitives": "workspace:^",
+    "@singula-ai/alego-client-ui-renderer": "workspace:^",
+    "@singula-ai/alego-client-ui-session": "workspace:^",
+    "@singula-ai/alego-client-ui-slots": "workspace:^",
+    "@singula-ai/alego-host-open-in-app": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@types/react": "~18.3.1",
+    "react": "^18.2.0"
+  }
+}

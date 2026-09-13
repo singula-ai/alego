@@ -4,7 +4,7 @@
  * @module @singula-ai/alego-sandbox-local/profiles
  */
 
-import { grantArgs as landlockGrantArgs } from '@singula-ai/node-addon-landlock-run'
+import { grantArgs as landlockGrantArgs } from '@singula-ai/node-addon-system/landlock-run'
 import { writableRoots } from '@singula-ai/alego-sandbox'
 import type { SandboxPolicy } from '@singula-ai/alego-sandbox'
 

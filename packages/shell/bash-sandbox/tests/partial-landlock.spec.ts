@@ -10,7 +10,7 @@ import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
-import { LAUNCHER_FAILURE_EXIT } from '@singula-ai/node-addon-landlock-run'
+import { LAUNCHER_FAILURE_EXIT } from '@singula-ai/node-addon-system/landlock-run'
 import { SANDBOX_UNAVAILABLE, SandboxUnavailableError } from '@singula-ai/alego-sandbox'
 import { LocalSandboxProvider } from '@singula-ai/alego-sandbox-local'
 import { SandboxPolicyService } from '@singula-ai/alego-sandbox-policy'
@@ -100,7 +100,7 @@ describe('partial Landlock runner-failure classification', () => {
     const task = bash.start(bash.resolve({ command: 'true' }))
     await task.done
     expect(task.status).toBe('killed')
-    expect(task.readOutput().delta).toContain(`spawn failed: Error: spawn ${runner}`)
+    expect(task.readOutput().delta).toContain(`subprocess failed before reporting an outcome: Error: spawn ${runner}`)
     expect(task.sandbox).toEqual({
       mode: 'read-only',
       denied: false,
@@ -134,7 +134,7 @@ describe('partial Landlock runner-failure classification', () => {
       const task = bash.start(bash.resolve(request))
       await task.done
       expect(task.status).toBe('killed')
-      expect(task.readOutput().delta).toContain(`spawn failed: Error: spawn ${runner} ENOENT`)
+      expect(task.readOutput().delta).toContain(`subprocess failed before reporting an outcome: Error: spawn ${runner} ENOENT`)
       expect(task.sandbox).toEqual({
         mode: 'read-only',
         denied: false,
@@ -188,7 +188,7 @@ describe('partial Landlock runner-failure classification', () => {
       const output = background.readOutput().delta
       expect(output.startsWith('[stderr]\n')).toBe(true)
       expect(output.length).toBeGreaterThan('[stderr]\n'.length)
-      expect(output).not.toContain('spawn failed:')
+      expect(output).not.toContain('subprocess failed before reporting an outcome:')
     }
 
     const accounting = (bash as unknown as { processFacts: Map<unknown, unknown> }).processFacts

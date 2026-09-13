@@ -126,6 +126,9 @@ export function assertDualAlegoInstallLayout(packageLock: NpmPackageLock): Alego
 
   for (const [path, manifest] of installed) {
     const name = packageNameAtPath(path, manifest)
+    if (name === 'react' || name === 'react-dom') {
+      errors.push(`${path}: ${name} is a browser build input, not a dependency of the synthetic ALEGO-only consumer`)
+    }
     if (name === undefined || !isAlegoPackage(name)) continue
     const version = manifest.version
     if (version !== nestedVersion && version !== rootVersion) {

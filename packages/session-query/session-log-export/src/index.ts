@@ -1,6 +1,7 @@
 /** Session-log download command and Host-owned streaming route. */
 
 import type { Context } from '@singula-ai/cordis'
+import type { CommandDefinitionId } from '@singula-ai/alego-commands/brand'
 import Schema from '@singula-ai/schemastery'
 import { brandString } from '@singula-ai/alego-brand'
 import type {} from '@singula-ai/alego-attachment'
@@ -76,6 +77,7 @@ const REQUESTED: CommandResult = {
  */
 export function apply(ctx: Context, config: Config = {}): void {
   ctx.effect(() => ctx.commands.register({
+    definitionId: brandString<CommandDefinitionId>('@singula-ai/alego-session-log-export'),
     name: 'export',
     description: 'Download this Session log as a ZIP archive',
     handler: invocation => Promise.resolve(invocation.rawInput.trim() === ''

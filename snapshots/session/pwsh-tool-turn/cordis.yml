@@ -38,7 +38,7 @@
 - id: system-prompt
   name: '@singula-ai/alego-system-prompt'
   config:
-    persona: You are a concise snapshot agent working in {{cwd}}.
+    personaPrefix: You are a concise snapshot agent working in {{cwd}}.
 
 - id: goal
   name: '@singula-ai/alego-goal'

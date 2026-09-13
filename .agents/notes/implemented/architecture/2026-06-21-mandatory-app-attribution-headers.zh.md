@@ -41,7 +41,7 @@ OpenRouter 应用归属刻意未实现。`HTTP-Referer`、`X-OpenRouter-Title`�
 | 目标 | 映射 |
 |---|---|
 | 所有基于 HTTP 的适配器 | `User-Agent: {product}/{version} (+{url})`——括号中的 `+url` 注释符合 RFC 9110 保守的 product/comment 语法。 |
-| 直连 DeepSeek 端点 | `User-Agent` 用于应用归属；`x-dsh-user-id` 与条件性的 `x-dsh-session-id` 由 DeepSeek 特有决策作为独立请求身份管理。除非 DeepSeek 文档化了等效约定，否则不发送 OpenRouter 特有头部。 |
+| 直连 DeepSeek 端点 | `User-Agent` 用于应用归属；`x-deepseek-harness-user-id` 与条件性的 `x-deepseek-harness-session-id` 由 DeepSeek 特有决策作为独立请求身份管理。除非 DeepSeek 文档化了等效约定，否则不发送 OpenRouter 特有头部。 |
 | OpenRouter 端点 | 仅发送 `User-Agent`。本决策排除 `HTTP-Referer`、`X-OpenRouter-Title`、`X-Title` 与 `X-OpenRouter-Categories`。 |
 | 未来提供方 | 仅 `User-Agent`，除非后续提供方特有的 Agent Note 接受额外头部。不要类比复用 `HTTP-Referer`。 |
 

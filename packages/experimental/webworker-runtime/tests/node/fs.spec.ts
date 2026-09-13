@@ -115,6 +115,13 @@ check('rmSync removes', fs.existsSync('/alego/renamed.txt'), false)
 fs.writeFileSync('/alego/log-handle.jsonl', 'header\n')
 const appendHandle = await fsp.open('/alego/log-handle.jsonl', 'a')
 check('append handle sees the existing size', (await appendHandle.stat()).size, 7)
+const appendHandleStats = await appendHandle.stat({ bigint: true }) as VfsBigIntStats
+const appendPathStats = await fsp.stat('/alego/log-handle.jsonl', { bigint: true }) as VfsBigIntStats
+check('bigint handle stat matches the path identity', [
+  typeof appendHandleStats.ino,
+  appendHandleStats.ino === appendPathStats.ino,
+  appendHandleStats.dev === appendPathStats.dev,
+], ['bigint', true, true])
 await appendHandle.writeFile('batch-1\n')
 await appendHandle.sync()
 check('handle.sync flushes the active VFS', flushes, 1)
@@ -205,6 +212,10 @@ fs.renameSync('/alego/secrets.tmp', '/alego/secrets.yaml')
 check('a wx write with mode 600 stats as 600 after rename', plainMode('/alego/secrets.yaml'), 0o600)
 fs.writeFileSync('/alego/secrets.yaml', 'k: w\n')
 check('a rewrite keeps the creation bits', plainMode('/alego/secrets.yaml'), 0o600)
+const chmodHandle = await fsp.open('/alego/secrets.yaml', 'r+')
+await chmodHandle.chmod(0o640)
+await chmodHandle.close()
+check('FileHandle.chmod updates the opened file', plainMode('/alego/secrets.yaml'), 0o640)
 fs.chmodSync('/alego/secrets.yaml', 0o640)
 check('chmod reads back exactly what was set', plainMode('/alego/secrets.yaml'), 0o640)
 await fsp.chmod('/alego/secrets.yaml', 0o600)

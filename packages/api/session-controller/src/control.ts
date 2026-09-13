@@ -1,11 +1,11 @@
 /** Live Session queue, jobs, and projection state with reconnect baselines. */
 
 import type { Context } from '@singula-ai/cordis'
-import type { Agent } from '@singula-ai/alego-agent'
+import type { Agent, InboxState } from '@singula-ai/alego-agent'
 import { Deque } from '@singula-ai/alego-deque'
 import type { JobSnapshot } from '@singula-ai/alego-jobs'
 import type {
-  Session, SessionEvent, SessionEventMap, SessionId, UserMessage,
+  Session, SessionId, UserMessage,
 } from '@singula-ai/alego-session'
 import type { JsonValue } from '@singula-ai/alego-util-values'
 import type {
@@ -23,7 +23,6 @@ export class SessionControlController {
 
   /** @param ctx - Host context carrying live Agent, projection, and jobs services. */
   constructor(private readonly ctx: Context) {
-    ctx.on('session/event', (session, event) => { this.onSessionEvent(session, event) })
     ctx.sessionProjections.onChanged((session, key, value, seq) => {
       this.broadcast({
         type: 'projection',
@@ -31,6 +30,14 @@ export class SessionControlController {
         key,
         value: value as JsonValue,
         seq,
+      })
+      if (key !== 'inbox') return
+      const agent = this.ctx.agents.get(session.id)
+      if (agent?.session !== session) return
+      this.broadcast({
+        type: 'queue',
+        sessionId: session.id,
+        items: queueItemsFromInbox(value as InboxState),
       })
     })
     ctx.inject(['jobs'], (jobsCtx) => {
@@ -93,17 +100,6 @@ export class SessionControlController {
       }
     }
     return blocks
-  }
-
-  private onSessionEvent(session: Session, event: SessionEvent): void {
-    if (event.type !== 'agent/inbox/spliced') return
-    const agent = this.ctx.agents.get(session.id)
-    if (agent?.session !== session) return
-    this.broadcast({
-      type: 'queue',
-      sessionId: session.id,
-      items: queueItems(agent, event.data),
-    })
   }
 
   private onJobsChanged(owner: Agent | undefined): void {
@@ -171,24 +167,22 @@ class ControlQueue {
   }
 }
 
-function queueItems(
-  agent: Agent,
-  splice?: SessionEventMap['agent/inbox/spliced'],
-): SessionQueuedItem[] {
-  const project = (target: 'next-turn' | 'next-step'): readonly UserMessage[] => {
-    const messages = target === 'next-turn' ? agent.inbox.nextTurn : agent.inbox.nextStep
-    return splice?.target === target
-      ? messages.toSpliced(splice.start, splice.removedCount ?? 0, ...splice.inserted)
-      : messages
-  }
+function queueItems(agent: Agent): SessionQueuedItem[] {
+  return queueItemsFromInbox({
+    'next-turn': agent.inbox.nextTurn,
+    'next-step': agent.inbox.nextStep,
+  })
+}
+
+function queueItemsFromInbox(inbox: InboxState): SessionQueuedItem[] {
   return [
-    ...project('next-turn').map(message => ({
+    ...inbox['next-turn'].map(message => ({
       id: message.id,
       placement: 'queued' as const,
       ...promptRpcId(message),
       message: { id: message.id, content: message.content as unknown as JsonValue[] },
     })),
-    ...project('next-step').map(message => ({
+    ...inbox['next-step'].map(message => ({
       id: message.id,
       placement: message.source.kind === 'user' ? 'steering' as const : 'context' as const,
       ...promptRpcId(message),

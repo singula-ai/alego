@@ -14,6 +14,7 @@ import * as Cordis from '@singula-ai/cordis'
 import * as ClientStore from '@singula-ai/alego-client-store'
 import * as UiSlots from '@singula-ai/alego-client-ui-slots'
 import * as UiPrimitives from '@singula-ai/alego-client-ui-primitives'
+import * as UiDockkit from '@singula-ai/alego-client-ui-dockkit'
 import type { PlatformModule } from './platform.ts'
 
 /**
@@ -33,5 +34,6 @@ export function getStaticModules(): Record<string, unknown> {
     '@singula-ai/alego-client-store': ClientStore,
     '@singula-ai/alego-client-ui-slots': UiSlots,
     '@singula-ai/alego-client-ui-primitives': UiPrimitives,
+    '@singula-ai/alego-client-ui-dockkit': UiDockkit,
   } satisfies Record<PlatformModule, unknown>
 }

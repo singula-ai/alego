@@ -1,0 +1,37 @@
+{
+  "name": "@singula-ai/alego-benchmarks",
+  "version": "0.1.3-alpha.1",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "playwright": "^1.49.0",
+    "@singula-ai/alego-llm-replay": "workspace:^",
+    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-agent-loop": "workspace:^",
+    "@singula-ai/alego-agent-loop-testkit": "workspace:^",
+    "@singula-ai/alego-agent-presets": "workspace:^",
+    "@singula-ai/alego-api-session-controller": "workspace:^",
+    "@singula-ai/alego-client-store": "workspace:^",
+    "@singula-ai/alego-client-ui-chat": "workspace:^",
+    "@singula-ai/alego-deque": "workspace:^",
+    "@singula-ai/alego-llm": "workspace:^",
+    "@singula-ai/alego-sdk-client": "workspace:^",
+    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/alego-session-persistence": "workspace:^",
+    "@singula-ai/alego-session-persistence-jsonl": "workspace:^",
+    "@singula-ai/alego-session-projection": "workspace:^",
+    "@singula-ai/alego-session-query": "workspace:^",
+    "@singula-ai/alego-session-stats": "workspace:^",
+    "@singula-ai/alego-session-title": "workspace:^",
+    "@singula-ai/alego-session-turn-outline": "workspace:^",
+    "@singula-ai/alego-subagent": "workspace:^",
+    "@singula-ai/alego-tools": "workspace:^",
+    "@singula-ai/alego-token-meter": "workspace:^",
+    "@singula-ai/alego-typert-protocol": "workspace:^"
+  },
+  "peerDependencies": {
+    "@singula-ai/cordis": "workspace:^"
+  }
+}

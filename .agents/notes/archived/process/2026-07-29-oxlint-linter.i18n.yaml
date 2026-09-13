@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/process/2026-07-29-oxlint-linter.md
+2026-07-29-oxlint-linter.md: 8379ad64a7147067a958a38f2895f8113979446d
+2026-07-29-oxlint-linter.zh.md: eae7c120838ef4a9a842cd0010b7215b972ccc60

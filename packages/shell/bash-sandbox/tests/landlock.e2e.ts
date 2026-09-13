@@ -5,7 +5,7 @@ import { homedir, tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
-import { launcherPath } from '@singula-ai/node-addon-landlock-run'
+import { launcherPath } from '@singula-ai/node-addon-system/landlock-run'
 import { LocalSandboxProvider } from '@singula-ai/alego-sandbox-local'
 import { SandboxPolicyService } from '@singula-ai/alego-sandbox-policy'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
@@ -21,7 +21,7 @@ import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
  * `@singula-ai/alego-sandbox-local`.
  *
  * Self-skips when the running kernel does not enforce Landlock. CI builds the launcher from
- * `native/landlock-run` before running this file.
+ * `native/system` before running this file.
  */
 
 const probe = spawnSync(launcherPath(), ['--probe'], { timeout: 5_000, encoding: 'utf8' })

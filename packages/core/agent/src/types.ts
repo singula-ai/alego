@@ -7,6 +7,7 @@
 import type { UserMessage } from '@singula-ai/alego-llm/types'
 import type { OptionalSessionSeq, SessionId, SessionSeq } from '@singula-ai/alego-session/types'
 import type { TypertContext, TypertLookup } from '@singula-ai/alego-typert-protocol'
+import type { JsonValue } from '@singula-ai/alego-util-values'
 
 /** Public live-agent handle; the runtime face augments its live capabilities. */
 export interface Agent {
@@ -27,6 +28,34 @@ declare module '@singula-ai/alego-typert-protocol' {
 
 /** One of the two ordered pending-message lists owned by an agent. */
 export type InboxTarget = 'next-turn' | 'next-step'
+
+/** Complete pending Inbox value reconstructed from durable splices. */
+export interface InboxState {
+  readonly 'next-turn': readonly UserMessage[]
+  readonly 'next-step': readonly UserMessage[]
+}
+
+/**
+ * Wire-JSON pending Inbox value. Each message round-trips the session log
+ * losslessly, but the fold state's full `UserMessage` type cannot cross a
+ * typert Remote boundary (its source union carries an `unknown` replay
+ * field), so the typed projection table keeps this JSON-safe form.
+ */
+export interface InboxWireState {
+  readonly 'next-turn': readonly JsonValue[]
+  readonly 'next-step': readonly JsonValue[]
+}
+
+declare module '@singula-ai/alego-session-projection/types' {
+  interface SessionProjectionStateMap {
+    /** Pending agent input reconstructed from durable inbox splices. */
+    inbox: InboxState
+  }
+  interface SessionProjectionMap {
+    /** Pending agent input reconstructed from durable inbox splices. */
+    inbox: InboxWireState
+  }
+}
 
 /**
  * Turn and step boundaries folded from one agent session log.
@@ -52,8 +81,8 @@ declare module '@singula-ai/alego-session/types' {
   interface SessionEventMap {
     /**
      * One normalized mutation of an agent's durable pending-message lists.
-     * Live dispatch precedes projection mutation, so synchronous observers may
-     * read the pre-splice inbox to recover the removed messages.
+     * The session-projection registry applies the committed event before
+     * `Session.append()` returns; Inbox live notifications follow that commit.
      */
     'agent/inbox/spliced': {
       target: InboxTarget

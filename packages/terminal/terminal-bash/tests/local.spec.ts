@@ -2,13 +2,13 @@ import { existsSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileS
 import { spawnSync } from 'node:child_process'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import { Session, SessionId } from '@singula-ai/alego-session'
-import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import AgentRegistry from '@singula-ai/alego-agent'
 import type { Agent } from '@singula-ai/alego-agent'
 import TerminalSessionService from '@singula-ai/alego-terminal'
-import type { TerminalSendOperation, TerminalSendResult, TerminalSessionId } from '@singula-ai/alego-terminal'
+import type { TerminalSendOperation } from '@singula-ai/alego-terminal'
 import SandboxProvider from '@singula-ai/alego-sandbox'
 import type { ConfinedArgv, SandboxPolicy } from '@singula-ai/alego-sandbox'
 import SandboxPolicyService from '@singula-ai/alego-sandbox-policy'
@@ -16,12 +16,12 @@ import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 import { resolvePwshPath } from '@singula-ai/alego-pwsh-local/src/resolve.ts'
 import * as ptyLocal from '@singula-ai/alego-terminal-bash'
+import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 const roots: string[] = []
 const contexts: Context[] = []
 
 afterEach(async () => {
-  vi.restoreAllMocks()
   for (const ctx of contexts.splice(0)) await ctx.fiber.dispose()
   for (const root of roots.splice(0)) rmSync(root, { recursive: true, force: true })
 })
@@ -39,8 +39,8 @@ function stubAgent(ctx: Context, rawId: string): Agent {
   const id = SessionId(rawId)
   const scope = ctx.plugin(() => {})
   const session = Session.create(id)
-  return {
-    id, options: {}, session, inbox: new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} }),
+  const agent: Agent = {
+    id, options: {}, session, inbox: unsupportedInbox(),
     status: 'idle',
     ctx: scope.ctx,
     send: () => {},
@@ -48,6 +48,7 @@ function stubAgent(ctx: Context, rawId: string): Agent {
     runMaintenance: task => task(new AbortController().signal),
     whenIdle: () => Promise.resolve(),
   }
+  return agent
 }
 
 async function harness(
@@ -318,49 +319,8 @@ const hasPwsh = spawnSync(
   { encoding: 'utf8' },
 ).status === 0
 
-/** Poll one command through silence settlements without resubmitting its input. */
-async function sendToPrompt(
-  ctx: Context, agent: Agent, sessionId: TerminalSessionId, text: string,
-): Promise<TerminalSendResult> {
-  const signal = AbortSignal.timeout(8_000)
-  let result = await ctx.terminals.startSend(agent, sessionId, { text, submit: true, signal }).done
-  let viewport = result.viewport
-  while (result.waitReason === 'inferred_idle') {
-    signal.throwIfAborted()
-    result = await ctx.terminals.startSend(agent, sessionId, { text: '', submit: false, signal }).done
-    viewport += result.viewport
-  }
-  signal.throwIfAborted()
-  expect(result.waitReason).toBe('stdin_read')
-  return { ...result, viewport }
-}
-
 describe.skipIf(!hasPwsh)('terminal-bash pwsh real shell', () => {
-  it('polls a silent command to its prompt without resubmitting it', async () => {
-    const { ctx, root, agent } = await harness('danger-full-access', { timeoutMs: 8_000 }, 'pwsh')
-    const created = await ctx.terminals.spawn(agent, { type: 'shell', name: 'polling', cwd: root })
-    const sent = vi.spyOn(ctx.terminals, 'startSend')
-    const command = "$n++; while (!(Test-Path './release')) { Start-Sleep -Milliseconds 20 }; Write-Output ('runs=' + $n)"
-    const completed = sendToPrompt(ctx, agent, created.sessionId, command).then(
-      result => ({ result }), (error: unknown) => ({ error }),
-    )
-    try {
-      // The child cannot complete before the test observes an empty poll.
-      await expect.poll(() => sent.mock.calls.some(([, , request]) => request.text === ''), {
-        timeout: 5_000,
-      }).toBe(true)
-    } finally {
-      writeFileSync(join(root, 'release'), '')
-      await completed
-    }
-    const outcome = await completed
-    if ('error' in outcome) throw outcome.error
-    expect(outcome.result.viewport).toContain('runs=1')
-    expect(sent.mock.calls.filter(([, , request]) => request.text !== '')).toHaveLength(1)
-    await ctx.terminals.kill(agent, created.sessionId)
-  }, 30_000)
-
-  it('bootstraps a persistent pwsh, persists state, and scrubs secrets', async () => {
+  it.each([false, true])('bootstraps a persistent pwsh, persists state, and scrubs secrets (hold command: %s)', async (holdCommand) => {
     const previous = process.env.ALEGO_TEST_SECRET
     process.env.ALEGO_TEST_SECRET = 'must-not-leak'
     try {
@@ -372,14 +332,33 @@ describe.skipIf(!hasPwsh)('terminal-bash pwsh real shell', () => {
       const created = await ctx.terminals.spawn(agent, { type: 'shell', name: 'main', cwd: root })
       expect(created.motd).toContain('alego> ')
 
-      await sendToPrompt(ctx, agent, created.sessionId, '$env:KEEP = "ok"; Set-Location /')
-      const result = await sendToPrompt(ctx, agent, created.sessionId,
-        'Write-Output "keep=$env:KEEP secret=$env:ALEGO_TEST_SECRET"')
-      expect(result.viewport).toContain('keep=ok')
-      expect(result.viewport).toContain('secret=')
-      expect(result.viewport).not.toContain('must-not-leak')
+      const releaseFile = join(root, 'release-command')
+      // Hold the command across the silence settlement without relying on host load.
+      const barrier = holdCommand
+        ? `while (-not [IO.File]::Exists('${releaseFile.replaceAll("'", "''")}')) { [Threading.Thread]::Sleep(10) }; `
+        : ''
+      const first = ctx.terminals.startSend(agent, created.sessionId, {
+        text: barrier + '$env:KEEP = "ok"; Set-Location /',
+        submit: true,
+      })
+      expect(['stdin_read', 'inferred_idle']).toContain((await first.done).waitReason)
+      const expected = 'keep=ok cwd=/ secret=END'
+      const command = "Write-Output ('keep={0} cwd={1} secret={2}END' -f $env:KEEP, (Get-Location).Path, $env:ALEGO_TEST_SECRET)"
+      expect(command).not.toContain(expected)
+      const second = ctx.terminals.startSend(agent, created.sessionId, { text: command, submit: true })
+      const result = await second.done
+      expect(['stdin_read', 'inferred_idle']).toContain(result.waitReason)
+      if (holdCommand) {
+        expect(result.waitReason).toBe('inferred_idle')
+        expect(result.viewport).not.toContain(expected)
+        writeFileSync(releaseFile, '')
+      }
 
-      expect(ctx.terminals.read(agent, created.sessionId, { offset: 0, count: 40 }).text).toContain('keep=ok')
+      // A silence-settled send stops collecting output; scrollback still receives
+      // the command's later output. Only the child can produce this formatted token.
+      const read = () => ctx.terminals.read(agent, created.sessionId, { offset: 0, count: 100 }).text
+      await expect.poll(read, { timeout: 8_000 }).toContain(expected)
+      expect(read()).not.toContain('must-not-leak')
       expect(await ctx.terminals.kill(agent, created.sessionId)).toBe(true)
       expect(ctx.terminals.list(agent)).toEqual([])
     } finally {
@@ -398,13 +377,19 @@ describe.skipIf(!hasPwsh)('terminal-bash pwsh real shell', () => {
     // The bootstrap itself must have pinned both encodings: the session byte
     // decode is UTF-8, so an un-pinned console writing its host code page
     // garbles every non-ASCII byte that follows.
-    const pinnedResult = await sendToPrompt(ctx, agent, created.sessionId,
-      '"console=" + [Console]::OutputEncoding.WebName + " out=" + $OutputEncoding.WebName')
+    const pinned = ctx.terminals.startSend(agent, created.sessionId, {
+      text: '"console=" + [Console]::OutputEncoding.WebName + " out=" + $OutputEncoding.WebName',
+      submit: true,
+    })
+    const pinnedResult = await pinned.done
     expect(pinnedResult.viewport).toContain('console=utf-8 out=utf-8')
     // Char codes keep the submitted line ASCII-only, so the assertion is a
     // pure output-decode check.
-    const result = await sendToPrompt(ctx, agent, created.sessionId,
-      "[Console]::Write([char]0x4E2D + [char]0x6587 + ' encoding-ok')")
+    const sent = ctx.terminals.startSend(agent, created.sessionId, {
+      text: "[Console]::Write([char]0x4E2D + [char]0x6587 + ' encoding-ok')",
+      submit: true,
+    })
+    const result = await sent.done
     expect(result.viewport).toContain('中文 encoding-ok')
     await ctx.terminals.kill(agent, created.sessionId)
   }, 30_000)

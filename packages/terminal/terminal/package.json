@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-terminal",
   "description": "Persistent PTY session seam for the Alego — owner-scoped ids, backend registry, interactive sends, reads, signals, and awaited cleanup",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@singula-ai/alego-agent": "workspace:^",
+    "@singula-ai/alego-agent-loop-testkit": "workspace:^",
     "@singula-ai/alego-brand": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/cordis": "workspace:^"

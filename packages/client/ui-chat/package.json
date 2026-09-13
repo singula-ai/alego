@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-chat",
   "description": "Chat Conversation target, node definitions, renderers, and details surface",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -32,10 +32,12 @@
         "@singula-ai/alego-api-workspace-controller",
         "@singula-ai/alego-client-locale",
         "@singula-ai/alego-client-ui-conversation",
+        "@singula-ai/alego-client-ui-input-trigger",
         "@singula-ai/alego-client-ui-layout",
         "@singula-ai/alego-client-ui-renderer",
         "@singula-ai/alego-client-ui-session",
         "@singula-ai/alego-client-ui-settings",
+        "@singula-ai/alego-client-ui-sidebar-right",
         "@singula-ai/alego-client-ui-workspace"
       ],
       "platform": "web"
@@ -55,16 +57,20 @@
     "@singula-ai/alego-api-remotes": "workspace:^",
     "@singula-ai/alego-api-session-controller": "workspace:^",
     "@singula-ai/alego-api-workspace-controller": "workspace:^",
+    "@singula-ai/alego-api-workspace-files": "workspace:^",
     "@singula-ai/alego-attachment": "workspace:^",
     "@singula-ai/alego-client-locale": "workspace:^",
     "@singula-ai/alego-client-store": "workspace:^",
     "@singula-ai/alego-client-ui-approval": "workspace:^",
     "@singula-ai/alego-client-ui-conversation": "workspace:^",
+    "@singula-ai/alego-client-ui-input-trigger": "workspace:^",
     "@singula-ai/alego-client-ui-layout": "workspace:^",
     "@singula-ai/alego-client-ui-primitives": "workspace:^",
     "@singula-ai/alego-client-ui-renderer": "workspace:^",
     "@singula-ai/alego-client-ui-session": "workspace:^",
     "@singula-ai/alego-client-ui-settings": "workspace:^",
+    "@singula-ai/alego-client-ui-sidebar-documentpreview": "workspace:^",
+    "@singula-ai/alego-client-ui-sidebar-right": "workspace:^",
     "@singula-ai/alego-client-ui-slots": "workspace:^",
     "@singula-ai/alego-client-ui-workspace": "workspace:^",
     "@singula-ai/alego-commands": "workspace:^",
@@ -74,14 +80,14 @@
     "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/alego-session-stats": "workspace:^",
     "@singula-ai/alego-session-turn-outline": "workspace:^",
+    "@singula-ai/alego-settings": "workspace:^",
     "@singula-ai/alego-token-meter": "workspace:^",
     "@singula-ai/alego-tools": "workspace:^",
     "@singula-ai/alego-util-workspace-path": "workspace:^",
     "@types/react": "~18.3.1",
     "@types/react-dom": "~18.3.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "@singula-ai/alego-settings": "workspace:^"
+    "react-dom": "^18.2.0"
   },
   "dependencies": {
     "@singula-ai/schemastery": "workspace:^"

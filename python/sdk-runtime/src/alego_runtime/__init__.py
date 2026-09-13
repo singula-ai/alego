@@ -24,6 +24,7 @@ from __future__ import annotations
 import os
 import platform
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -156,7 +157,7 @@ def _node_launch_args() -> tuple[str, str]:
 
 
 def main() -> None:
-    """Execute the bundled alego CLI with an explicitly selected Harness home."""
+    """Launch the CLI with explicit ALEGO_HOME; wait on Windows, replace the process on POSIX."""
     if not os.environ.get("ALEGO_HOME", "").strip():
         print(
             "alego: the Python runtime command requires an explicit ALEGO_HOME; "
@@ -165,6 +166,9 @@ def main() -> None:
         )
         raise SystemExit(2)
     argv = (*resolve_bundled_launch_args(), *sys.argv[1:])
+    if sys.platform == "win32":
+        # Windows CRT exec does not replace the process; wait and preserve the runtime status.
+        raise SystemExit(subprocess.run(argv, env=os.environ).returncode)
     os.execvpe(argv[0], argv, os.environ)
 
 

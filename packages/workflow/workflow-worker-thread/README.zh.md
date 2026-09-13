@@ -9,7 +9,7 @@ kind: "package-reference"
 
 ## 概述
 
-`alego-workflow-worker-thread` 以每次运行一个 Node worker thread 的方式实现工作流引擎：编排脚本在一个全新 worker 内执行，其 `agent()` 调用通过带类型的宿主／worker 协议触达宿主 subagent。同步脚本循环不会阻塞 harness 事件循环，忽略取消的脚本可以连同其 worker 一起终止。这种隔离只是 containment（隔离），不是安全边界——由模型编写的脚本与模型已有的 bash 访问具有相同的信任前提，逃逸 `node:vm` 上下文即可重新取得 worker 的进程权限。挂载本引擎即为 `ctx.workflowEngine` 提供具体实现；与 `alego-tool-workflow` 一起加载的组合会把 `workflow` 工具交给模型。
+使用 `alego-workflow-worker-thread` 可让模型编写的工作流脚本在宿主事件循环之外运行。每次运行使用独立的 worker thread，因此同步循环不会阻塞 harness，忽略取消的脚本也可以被终止。本引擎支持已发布组合中的 `workflow` 与 `ralph` 工具，也可与 `alego-tool-workflow` 配合，在其他组合中公开 `workflow`。这种隔离可以限制可用性故障，但不是安全边界；真正不可信的脚本需要独立进程或容器。
 
 ## 目录
 
@@ -49,9 +49,9 @@ kind: "package-reference"
 
 ### 运行会得到什么
 
-运行启动后，脚本正文在 worker 中以顶层 `await` 执行，并可使用钩子 `agent()`、`parallel()`、`pipeline()`、`phase()` 与 `log()`；`meta` 与 `args` 以普通 JSON 数据到达，绝不作为代码求值。每次 `agent()` 调用都会在配置的提供方下启动一个宿主侧 subagent，并以运行的父级作为每个子 agent 的父级。运行以脚本的最终 JSON 值结算；普通子 agent 失败会把 `agent()` 兑现为 `null`，由脚本处理。
+运行启动后，脚本正文在 worker 中以顶层 `await` 执行，并可使用钩子 `agent()`、`parallel()`、`pipeline()`、`phase()` 与 `log()`；`meta` 与 `args` 以普通 JSON 数据到达，绝不作为代码求值。每次 `agent()` 调用都会在配置的提供方下启动一个宿主侧 subagent，并以运行的父级作为每个子 agent（智能体）的父级。运行以脚本的最终 JSON 值结算；普通子 agent 失败会把 `agent()` 兑现为 `null`，由脚本处理。
 
-格式错误的 meta 块、无法解析的正文、不可用的提供方路由或高于上限的单次运行上限，都会在 worker 存在之前被同步拒绝，调用方因此看到违规清单并可以修正调用。执行期间，钩子误用与超出上限会用致命工作流错误终止脚本。取消是有界的：忽略取消的脚本会在 `disposeGraceMs` 后被强制以 cancelled 结算，其 worker 被终止。
+格式错误的 meta 块、无法解析的正文、不可用的提供方路由或高于上限的单次运行上限，都会在 worker 存在之前被同步拒绝，调用方因此看到违规清单并可以修正调用。执行期间，钩子误用与超出上限会用致命工作流错误终止脚本。取消是有界的：忽略取消的脚本会在 `disposeGraceMs` 后被强制以取消状态结算，其 worker 被终止。
 
 ### 信任预期
 
@@ -80,12 +80,12 @@ kind: "package-reference"
 | [`src/index.ts`](src/index.ts) | 插件入口：`Config` schema、前置校验、`start()` 接线 |
 | [`src/host.ts`](src/host.ts) | 一次运行的宿主侧：worker 启动、子 agent 编排、结算、dispose |
 | [`src/worker.ts`](src/worker.ts) | worker 入口：脚本执行、钩子实现、值物化 |
-| [`src/runtime.ts`](src/runtime.ts) | 脚本运行时：钩子契约、`parallel()` 与 `pipeline()` 组合器 |
+| [`src/runtime.ts`](src/runtime.ts) | 脚本运行时：钩子约定、`parallel()` 与 `pipeline()` 组合器 |
 | [`src/realm.ts`](src/realm.ts) | 跨 realm 物化：普通 JSON 的接受与拒绝规则 |
 | [`src/protocol.ts`](src/protocol.ts) | 带类型的宿主／worker 消息协议 |
 | [`src/meta.ts`](src/meta.ts) | `meta` 形状校验与规范化 |
 | [`src/session.ts`](src/session.ts) | 子 agent 运行在跨入 worker 前的投影与快照 |
-| — | 不发布运行时不变式伴生入口；worker 测试覆盖该边界。 |
+| — | 不发布运行时不变式伴生入口；该进程边界实现不公开同进程事件关系；worker 协议与构建后 worker 测试对此提供覆盖。 |
 
 ### 运行顺序
 
@@ -99,7 +99,7 @@ kind: "package-reference"
 
 ### 取消与 dispose
 
-`cancel()` 记录第一个原因、通知 worker 取消、中止所有待处理与已发布子 agent 共享的唯一信号，并启动 `disposeGraceMs` 定时器；worker 钩子随后在下次 await 时抛出 `CANCELLED`。如果运行到期限仍未结算，宿主会将其以 cancelled 兑现、为悬空的子 agent 生命周期事件配对，并终止 worker。
+`cancel()` 记录第一个原因、通知 worker 取消、中止所有待处理与已发布子 agent 共享的唯一信号，并启动 `disposeGraceMs` 定时器；worker 钩子随后在下次 await 时抛出 `CANCELLED`。如果运行到期限仍未结算，宿主会将其以取消状态兑现、为悬空的子 agent 生命周期事件配对，并终止 worker。
 
 `dispose()` 是幂等的：它取消运行、立即启动宿主驱动的 dispose、在同一宽限期内等待结果与子 agent 完全停稳、无条件终止 worker，并执行最后一次幸存项扫描。每个子 agent 的 dispose 都会记忆化，使 worker RPC、宿主取消、死亡清理与公开 dispose 都汇入同一操作。
 
@@ -116,9 +116,9 @@ kind: "package-reference"
 <a id="further-exploration"></a>
 ## 进一步探索
 
-当引擎级契约不够用时阅读以下页面。它们从 seam 契约逐步进入面向模型的消费方与设计决策。
+当引擎级约定不够用时阅读以下页面。它们从 seam 契约逐步进入面向模型的消费方与设计决策。
 
-- [工作流子系统](../../../docs/subsystems/workflow.zh.md)——本引擎实现的 seam 契约。
+- [工作流子系统](../../../docs/subsystems/workflow.zh.md)——本引擎实现的 seam 约定。
 - [工作流 seam](../workflow/README.zh.md)——`ctx.workflowEngine` 背后的运行与结果词汇。
 - [workflow 工具](../tool-workflow/README.zh.md)——在本引擎上运行脚本的模型侧消费方。
 - [组地图](../README.zh.md)——工作流能力家族及其包。

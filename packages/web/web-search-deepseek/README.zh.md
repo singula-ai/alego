@@ -9,7 +9,7 @@ kind: "package-reference"
 
 ## 概述
 
-有了 `alego-web-search-deepseek`，harness 可以通过 DeepSeek 原生搜索检索 web，使用部署已有的 `DEEPSEEK_API_KEY`。当部署希望使用 DeepSeek 原生搜索、并接受一次搜索在延迟与 token 上消耗一个完整模型轮次时选择它，因为 DeepSeek 不提供专用搜索端点。结果来自 DeepSeek 返回的结构化搜索块，绝不会从回复文本中抓取。凭据缺失时调用以结构化错误失败；响应缺少搜索结果块时会响亮地失败，而非降级。面向模型的 `web_search` 工具位于 `alego-tool-web`。
+有了 `alego-web-search-deepseek`，harness 可以通过 DeepSeek 原生搜索检索 web，使用部署已有的 `DEEPSEEK_API_KEY`。当部署希望使用 DeepSeek 原生搜索、并接受一次搜索在延迟与 token 上消耗一个完整模型轮次时选择它，因为 DeepSeek 不提供专用搜索端点。结果来自 DeepSeek 返回的结构化搜索块，绝不会从回复文本中抓取。凭据缺失时调用以结构化错误失败；响应缺少搜索结果块时会明确报错，而非降级。面向模型的 `web_search` 工具位于 `alego-tool-web`。
 
 ## 目录
 
@@ -57,7 +57,7 @@ kind: "package-reference"
 
 ### 搜索返回什么
 
-`content` 始终省略：DeepSeek 的提供方文本不作为答案受到信任。`sources[]` 来自 `web_search_tool_result` 块内的 `web_search_result` 条目——`url`、`title`、`publishedAt` 取自 `page_age`——snippet 在存在摘录时按 URL 关联的 `cited_text` 条目拼接。结果按 URL 去重，且由于 DeepSeek 不公开结果数量旋钮，服务通过截断并标记来强制执行 `maxResults`。
+`content` 始终省略：DeepSeek 的提供方文本不作为答案受到信任。`sources[]` 来自 `web_search_tool_result` 块内的 `web_search_result` 条目——`url` 和 `title` 直接取自同名字段，`publishedAt` 取自 `page_age`——snippet 在存在摘录时按 URL 关联的 `cited_text` 条目拼接。结果按 URL 去重，且由于 DeepSeek 不公开结果数量旋钮，服务通过截断并标记来强制执行 `maxResults`。
 
 ### 请求日志
 
@@ -91,7 +91,7 @@ kind: "package-reference"
 | [`src/index.ts`](src/index.ts) | 插件入口：配置 schema、Settings 段安装、逐次选项投影 |
 | [`src/provider.ts`](src/provider.ts) | `DeepSeekSearchProvider`：Messages 请求分发、块解析、引用拼接、凭据解析 |
 | [`src/types.ts`](src/types.ts) | 搜索响应的 Anthropic 协议类型 |
-| — | 不发布运行时不变式伴生入口；约定在服务处强制执行。 |
+| — | 不发布运行时不变量配套入口；本包会在分发前发出日志事件，但没有后续的权威分发事件可与之关联；精确的请求包络相等性改由提供方边界保障。 |
 
 ### 请求流程
 

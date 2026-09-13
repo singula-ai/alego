@@ -1,5 +1,5 @@
 ---
-description: "Worker 线程代码执行，供用户与维护者组合、调优或排查这个已发布的 TypeScript 后端——它在全新的 Node worker 中运行每个程序。"
+description: "Worker 线程代码执行，面向组装、容量规划或调试已发布 TypeScript 后端的用户与维护者；该后端在全新的 Node worker 中运行每个程序。"
 kind: "package-reference"
 ---
 
@@ -9,7 +9,7 @@ kind: "package-reference"
 
 ## 概述
 
-`alego-code-runtime-worker-thread` 为 [`alego-code-runtime`](../code-runtime/README.zh.md) seam 执行 TypeScript 程序：每个程序都在一个全新的 Node Worker 线程中运行，宿主提供的绑定可作为普通异步函数调用，运行返回 `{ value, logs, error? }`。它是 `alego-tools` 中 PTC mode 的已发布后端，因此挂载它正是让模型编写的 TypeScript 执行在组合中生效的方式。运行时「包含」程序，但不隔离它：信任立场与 bash 等价，并带有空环境、堆上限、实测忙碌时间与墙钟预算，以及强制终止。程序每次请求只运行一次，运行之间不保留状态；每个失败——语法错误、预算到期、中止、OOM 退出或输出溢出——都以结果字段返回。
+本包让 PTC 组合能够使用宿主提供的绑定执行模型编写的 TypeScript，并取得完成值、顺序日志或结构化失败。每次请求都不继承先前运行的状态；语法错误、预算到期、中止、内存耗尽和输出溢出等失败会作为结果返回，而不是抛出。应将执行的代码视为与 bash 拥有同等权限：本包限制环境暴露和资源使用，但不将代码与宿主隔离。可配置的计算时间、墙钟时间、堆和输出上限会终止运行并限制其结果大小。
 
 ## 目录
 
@@ -46,19 +46,19 @@ kind: "package-reference"
 | `maxOutputBytes` | `67,108,864` | 序列化日志加完成值或失败消息的硬上限；至少 `4` |
 | `maxOldGenerationSizeMb` | `512` | worker 堆上限；溢出会杀死 worker，并以 `worker-exit` 呈现 |
 
-每个字段在加载时都会验证并提供默认值；没有其他可调项。生成的[配置目录](../../../docs/config-catalog.zh.md#singula-aialego-code-runtime-worker-thread)是每个受支持字段的穷尽式真源。
+每个字段在加载时都会验证并提供默认值；没有其他可调项。生成的[配置目录](../../../docs/config-catalog.zh.md#singula-aialego-code-runtime-worker-thread)是所有受支持字段的完整参考。
 
 ### 运行返回什么
 
 成功的运行把程序的无损 JSON 完成值作为 `result.value` 返回，把程序打印的文本按顺序作为 `result.logs` 返回。顶层 `await`／`return` 可用，程序可以把宿主提供的绑定函数（PTC mode 暴露一个 `tools` 对象）当作普通异步调用。
 
-### 包含而非安全边界
+### 隔离措施，而非安全边界
 
-程序运行时的权限与 bash 工具相当：它可以访问 Node API，后端也刻意不承诺与宿主的隔离。它提供的是包含——独立 isolate、空环境（没有环境变量凭据，也不继承 loader 标志）、可配置堆上限，以及也能终止同步热循环的强制终止。程序派生的 OS 进程在 `terminate()` 后仍然存活，需要部署层面的清理。
+程序运行时的权限与 bash 工具相当：它可以访问 Node API，后端也刻意不承诺与宿主的隔离。它提供的是隔离措施：独立 isolate、空环境（没有环境变量凭据，也不继承 loader 标志）、可配置堆上限，以及也能终止同步热循环的强制终止。程序派生的 OS 进程在 `terminate()` 后仍然存活，需要部署层面的清理。
 
 ### 可能出什么问题
 
-每个程序结果都以结果 resolve，因此失败的运行是 `result.error`，而不是 rejection：语法错误或不可擦除的 TypeScript（`enum`、namespace）在任何 worker 启动前就以 `exception` 失败；预算到期是 `timeout`；中止信号是 `abort`；堆溢出或其他 worker 终止是 `worker-exit`；不是无损 JSON 的完成值是 `invalid-output`；超出上限的序列化输出是 `output-limit`——并保留能容纳的已捕获日志前缀。reject 只表示调用方误用，例如在 dispose（资源释放）后提交运行。
+每次程序运行都会通过 resolve 返回结果，因此运行失败会体现在 `result.error` 中，而不是触发 rejection：语法错误或不可擦除的 TypeScript（`enum`、namespace）在任何 worker 启动前就以 `exception` 失败；预算到期是 `timeout`；中止信号是 `abort`；堆溢出或其他 worker 终止是 `worker-exit`；不是无损 JSON 的完成值是 `invalid-output`；超出上限的序列化输出是 `output-limit`——并保留能容纳的已捕获日志前缀。只有调用方误用才会触发 rejection，例如在 dispose（资源释放）后提交运行。
 
 -----
 
@@ -72,7 +72,7 @@ kind: "package-reference"
 
 ### 设计理念
 
-后端建立在一个分离之上：**包含，而非安全边界**。模型代码拥有与 bash 等价的信任（[PTC mode Agent Note](../../../.agents/notes/implemented/feature/2026-06-15-ptc.zh.md) 的 Trust posture），因此设计追求可重建性与有界资源使用，而非硬性的多租户边界——那需要等待容器级后端。每次运行使用一个全新的 worker，程序的世界随 worker 一同终止：不存在可泄漏、也无需记录的跨运行状态，仅凭会话日志即可重建一次运行。
+后端基于一项明确区分：**这是隔离措施，而非安全边界**。模型代码按与 bash 等价的信任等级处理（[PTC mode Agent Note](../../../.agents/notes/implemented/feature/2026-06-15-ptc.zh.md) 的 Trust posture），因此设计追求可重建性与有界资源使用，而非硬性的多租户边界——那需要等待容器级后端。每次运行使用一个全新的 worker，程序的世界随 worker 一同终止：不存在可泄漏、也无需记录的跨运行状态，仅凭会话日志即可重建一次运行。
 
 ### 执行流程
 
@@ -88,7 +88,7 @@ kind: "package-reference"
 
 ### 输出账本
 
-`maxOutputBytes` 统计外层 `logs` 数组加完成值或失败消息载荷的 JSON 序列化；固定的 `CodeRunResult` 字段名与信封语法不计入这份账本。未超过上限时返回精确值；有损完成值属于 `invalid-output`，组合溢出属于 `output-limit`，不会用 inspected string 代替。失败会保留日志中能容纳的已捕获前缀。
+`maxOutputBytes` 统计外层 `logs` 数组加完成值或失败消息载荷的 JSON 序列化；固定的 `CodeRunResult` 字段名与外层封装语法不计入这份账本。未超过上限时返回精确值；有损完成值属于 `invalid-output`，组合溢出属于 `output-limit`，不会用 inspected string 代替。失败会保留日志中能容纳的已捕获前缀。
 
 ### 源码地图
 
@@ -100,7 +100,7 @@ kind: "package-reference"
 | [`src/protocol.ts`](src/protocol.ts) | host 与 worker 之间的端口消息词汇 |
 | [`src/worker-json.ts`](src/worker-json.ts) | worker 侧无损 JSON 编解码 |
 | [`src/output-json.ts`](src/output-json.ts) | 外层账本的字节计量与截断 |
-| — | 不发布运行时不变式伴生入口；本进程边界实现不暴露可在同一进程内对照的事件关系，worker 协议测试与构建后 worker 测试负责覆盖。 |
+| — | 不发布运行时不变式伴生入口；这个进程边界实现不暴露同进程事件关系，worker 协议测试与构建后 worker 测试负责覆盖。 |
 
 ### 未构建与已构建的 worker 入口
 
@@ -125,7 +125,7 @@ kind: "package-reference"
 <a id="model-experience"></a>
 ## 模型体验
 
-通过 `alego-tools` 中的 PTC mode 间接提供，如果外层值能容纳则原样渲染，否则返回明确的 `invalid-output`／`output-limit` 失败，且只有外层 `run_code` 结果在其普通落盘策略下进入模型上下文，绑定通信与中间值始终只存在于执行环境中。
+通过 `alego-tools` 中的 PTC mode 间接提供，如果外层值能容纳则原样渲染，否则返回明确的 `invalid-output`／`output-limit` 失败，且只有外层 `run_code` 结果在其普通 spill 策略下进入模型上下文，绑定通信与中间值始终只存在于执行环境中。
 
 #### KV Cache 影响
 
@@ -143,7 +143,7 @@ kind: "package-reference"
 - **`computeMs` 到期最多可能超过一个轮询间隔**——系统每 25 ms 采样一次忙碌时间（内部常量，有意不做成配置）。
 - **程序获得一个含 5 个方法的 `console` shim**（`log`／`info`／`warn`／`error`／`debug`）——有意不提供 Node 的完整 console 接口。
 - **中间绑定值没有字节上限**——程序可以用永远不会成为外层输出的值耗尽进程或 worker 内存。
-- **默认 64 MiB 上限是拒绝边界，不是可恢复存储**——外层落盘只能保存发生 `output-limit` 后返回的有界日志和诊断；在运行时上限之外被拒绝的字节永远不会到达落盘层。
+- **默认 64 MiB 上限是拒绝边界，不是可恢复存储**——外层 spill 机制只能保存发生 `output-limit` 后返回的有界日志和诊断；在运行时上限之外被拒绝的字节永远不会到达 spill 层。
 
 <a id="dev-note"></a>
 ### 开发备注

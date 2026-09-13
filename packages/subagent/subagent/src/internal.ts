@@ -9,6 +9,7 @@ import type { ContentBlock, MessageId, MessageSource } from '@singula-ai/alego-l
 import type { SessionId } from '@singula-ai/alego-session'
 import type { ToolDefinition } from '@singula-ai/alego-tools'
 import type SubagentRuntime from './index.ts'
+import type { SubagentDelivery } from './inbox.ts'
 
 /** Process-stable identity carried only by the standard adjacent-Agent messaging tool. */
 export const adjacentAgentSendMessageTool = Symbol.for('alego.subagent.adjacentAgentSendMessageTool')
@@ -40,9 +41,6 @@ export function isAdjacentAgentSendMessageTool(definition: ToolDefinition | unde
  */
 export const deliverSubagentPrompt = Symbol.for('alego.subagent.deliverPrompt')
 
-/** Scheduling mode for one host-only direct-child prompt. */
-export type HostPromptDeliveryMode = 'queue' | 'steer'
-
 /** Runtime face required by the host-only prompt adapters. */
 export interface HostPromptDeliverer {
   [deliverSubagentPrompt](
@@ -51,7 +49,7 @@ export interface HostPromptDeliverer {
     content: ContentBlock[],
     source: MessageSource,
     signal: AbortSignal,
-    delivery: HostPromptDeliveryMode,
+    delivery: SubagentDelivery,
   ): Promise<MessageId>
 }
 

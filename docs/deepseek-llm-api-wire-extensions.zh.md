@@ -10,7 +10,7 @@
 
 | 位置 | 命名方式 | 示例 |
 |---|---|---|
-| HTTP 字段名 | 小写 kebab-case；HTTP 匹配仍不区分大小写 | `user-agent`, `x-dsh-session-id` |
+| HTTP 字段名 | 小写 kebab-case；HTTP 匹配仍不区分大小写 | `user-agent`, `x-deepseek-harness-session-id` |
 | DeepSeek 请求正文扩展字段 | 使用提供方保留 `dsh_` 前缀的 snake case | `dsh_plugin_packages`, `dsh_session_log` |
 | ALEGO 持有的嵌套 JSON 成员 | Camel case | `afterSeq`, `throughSeq`, `sessionId` |
 | 带标签的值 | 使用 kebab-case 字符串；持久事件采用 `domain/action` | `session-log-deepseek/delivery-accepted` |
@@ -24,11 +24,11 @@
 | 标头 | 出现条件 | 值 |
 |---|---|---|
 | `user-agent` | 每个提供方 HTTP 请求，包括 Files API 操作 | 采用 `product/version (+url)` 形式的应用身份；默认产品为 `alego` |
-| `x-dsh-user-id` | 每个已授权的聊天补全请求 | 已解析 Harness home 的稳定匿名 UUID |
-| `x-dsh-session-id` | 携带会话 id 的聊天补全请求 | 确切的请求 `sessionId` 字符串 |
-| `x-dsh-compact` | 用途为 `compaction` 的聊天补全请求 | 字面字符串 `1` |
+| `x-deepseek-harness-user-id` | 每个已授权的聊天补全请求 | 已解析 Harness home 的稳定匿名 UUID |
+| `x-deepseek-harness-session-id` | 携带会话 id 的聊天补全请求 | 确切的请求 `sessionId` 字符串 |
+| `x-deepseek-harness-compact` | 用途为 `compaction` 的聊天补全请求 | 字面字符串 `1` |
 
-凭据失败发生在解析匿名用户 id 之前，因此未授权请求既不会发送这些标头，也不会创建身份文件。没有会话的直接请求会省略 `x-dsh-session-id`。会话标题请求没有额外的用途标头；请求携带 `sessionId` 时，仍然适用普通的会话 id 规则。
+凭据失败发生在解析匿名用户 id 之前，因此未授权请求既不会发送这些标头，也不会创建身份文件。没有会话的直接请求会省略 `x-deepseek-harness-session-id`。会话标题请求没有额外的用途标头；请求携带 `sessionId` 时，仍然适用普通的会话 id 规则。
 
 ## 正文扩展事务
 
@@ -73,7 +73,7 @@
 
 ## `dsh_session_log`
 
-[`@singula-ai/alego-session-log-deepseek`](../packages/session/session-log-deepseek/README.zh.md) 贡献权威会话日志的一段连续后缀。该字段默认禁用。启用后，它适用于携带存活会话且至少存在一个事件的请求；直接请求、陈旧会话 id 或空日志会省略该字段。
+[`@singula-ai/alego-session-log-deepseek`](../packages/session/session-log-deepseek/README.zh.md) 贡献权威会话日志的一段连续后缀。该字段默认禁用。启用后，它适用于携带存活会话且至少存在一个事件的请求；直接请求、陈旧会话 id 或空日志会省略该字段。下方示例使用逻辑 Session 格式 2 仅为说明协议字段，并不标识[当前写入格式](session-format-status.zh.md)。
 
 ```json
 {
@@ -119,7 +119,7 @@
 
 | 成员 | 出现条件 | 含义 |
 |---|---|---|
-| `version` | 必需 | 逻辑 Session 格式版本；当前为 `2` |
+| `version` | 必需 | 来自 `Session.header` 的逻辑 Session 格式版本；见[格式状态](session-format-status.zh.md) |
 | `id` | 必需 | 确切的会话 id |
 | `createdAt` | 必需 | 非负安全整数 Unix epoch 毫秒数 |
 | `cwd` | 可选 | 创建会话时记录的绝对工作目录 |

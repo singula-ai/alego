@@ -6,7 +6,7 @@ import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import type { SandboxPolicy } from '@singula-ai/alego-sandbox'
-import { launcherPath } from '@singula-ai/node-addon-landlock-run'
+import { launcherPath } from '@singula-ai/node-addon-system/landlock-run'
 import { LocalSandboxProvider } from '@singula-ai/alego-sandbox-local'
 
 /**

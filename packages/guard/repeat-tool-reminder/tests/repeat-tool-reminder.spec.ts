@@ -6,7 +6,6 @@ import { defineContentToolFixture } from '@singula-ai/alego-tools'
 import type { Agent } from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import * as RepeatToolGuard from '@singula-ai/alego-repeat-tool-reminder'
 import type { Config } from '@singula-ai/alego-repeat-tool-reminder'
 import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
@@ -25,8 +24,6 @@ const testToolSignal = new AbortController().signal
 async function harness(config: Config = {}): Promise<Context> {
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
-  // AgentLoop declares the registry as a required injection.
-  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(RepeatToolGuard, config)
   ctx.tools.register(defineContentToolFixture({ name: 'probe', description: 'p', parameters: {}, async execute() { return [{ type: 'text', text: 'ok' }] } }))
@@ -373,7 +370,6 @@ describe('config validation fails loud', () => {
   async function spine(): Promise<Context> {
     const ctx = new Context()
     await mountAgentLoopTestDependencies(ctx)
-    await ctx.plugin(SessionProjectionRegistry)
     await ctx.plugin(AgentLoop, { agents: [] })
     return ctx
   }

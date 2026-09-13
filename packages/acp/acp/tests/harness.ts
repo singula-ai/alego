@@ -23,7 +23,6 @@ import type { ImageAttachmentLimits, ImageAttachmentRef, SaveImageAttachment, St
 import { type GenerateOptions, LlmAdapter, ReasoningEffortId, type LlmResolvedModelInfo, type StreamChunk } from '@singula-ai/alego-llm'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import TokenMeter from '@singula-ai/alego-token-meter'
 import * as AcpPlugin from '../src/index.ts'
@@ -231,11 +230,7 @@ export async function makeBridgeHarness(options: {
   const ctx = new Context()
   const ownsPersistenceRoot = options.persistenceRoot === undefined
   const persistenceRoot = options.persistenceRoot ?? await mkdtemp(join(tmpdir(), 'alego-acp-test-'))
-  await mountAgentLoopTestDependencies(ctx, { systemPrompt: { persona: options.persona ?? '' } })
-  // The agent loop and the composed approval/permission services declare
-  // sessionProjections a required injection: mount the registry (and with it
-  // the loop's turnBoundary unit) before the loop activates.
-  await ctx.plugin(SessionProjectionRegistry)
+  await mountAgentLoopTestDependencies(ctx, { systemPrompt: { personaPrefix: options.persona ?? '' } })
   await ctx.plugin(JsonlSessionPersistence, { root: persistenceRoot, compression: 'none' })
   await ctx.plugin(TokenMeter)
   if (options.attachments !== false) await ctx.plugin(MemoryAttachmentStore)

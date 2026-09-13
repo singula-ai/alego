@@ -11,7 +11,7 @@
 - id: system-prompt
   name: '@singula-ai/alego-system-prompt'
   config:
-    persona: 'Return the scripted ALEGO SDK failure.'
+    personaPrefix: 'Return the scripted ALEGO SDK failure.'
 
 - insert:
     - id: child-mock-llm

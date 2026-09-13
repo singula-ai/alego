@@ -1,4 +1,4 @@
-import { mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { Context } from '@singula-ai/cordis'
@@ -9,10 +9,14 @@ import LocalAttachmentStore from '../src/index.ts'
 
 const homes: string[] = []
 
-async function store(): Promise<LocalAttachmentStore> {
+async function home(): Promise<string> {
   const alegoHome = await mkdtemp(join(tmpdir(), 'alego-request-image-'))
   homes.push(alegoHome)
-  return new LocalAttachmentStore(new Context(), { alegoHome })
+  return alegoHome
+}
+
+async function store(): Promise<LocalAttachmentStore> {
+  return new LocalAttachmentStore(new Context(), { alegoHome: await home() })
 }
 
 async function image(width: number, height: number): Promise<Uint8Array> {
@@ -39,10 +43,44 @@ async function complexOpaqueAlphaImage(width: number, height: number): Promise<U
 }
 
 afterEach(async () => {
+  vi.unstubAllEnvs()
   await Promise.all(homes.splice(0).map(home => rm(home, { recursive: true, force: true })))
 })
 
 describe('local request-image cache', () => {
+  it('rebuilds a cleared cache without moving or losing durable attachments', async () => {
+    const fallbackHome = await home()
+    vi.stubEnv('ALEGO_HOME', fallbackHome)
+    try {
+      const alegoHome = await home()
+      const attachments = new LocalAttachmentStore(new Context(), { alegoHome })
+      const attachment = await attachments.saveImage({ data: await image(64, 32), mediaType: 'image/png' })
+      const stored = await attachments.readImage(attachment)
+      const fileData = Uint8Array.of(0, 1, 2, 255)
+      const file = await attachments.saveFile({ data: fileData, name: 'notes.bin' })
+      const policy = { maxPixels: 16 * 16, maxBytes: 4_096 }
+      const initial = await attachments.readImageRequest(attachment, policy)
+      const hash = String(initial.variantId).slice('sha256:'.length)
+      const cacheRoot = join(alegoHome, 'cache')
+      const path = join(cacheRoot, 'attachments', 'request-images', hash.slice(0, 2), hash)
+
+      expect(attachments.root).toBe(join(alegoHome, 'attachments', 'v1'))
+      await expect(readFile(path)).resolves.toEqual(Buffer.from(initial.data))
+      await expect(readFile(join(attachments.root, 'request-images', hash.slice(0, 2), hash)))
+        .rejects.toMatchObject({ code: 'ENOENT' })
+      await rm(cacheRoot, { recursive: true })
+
+      const reopened = new LocalAttachmentStore(new Context(), { alegoHome })
+      await expect(reopened.readImage(attachment)).resolves.toEqual(stored)
+      await expect(readFile(reopened.fileHostPath(file))).resolves.toEqual(Buffer.from(fileData))
+      await expect(reopened.readImageRequest(attachment, policy)).resolves.toEqual(initial)
+      await expect(readFile(path)).resolves.toEqual(Buffer.from(initial.data))
+      await expect(readdir(fallbackHome)).resolves.toEqual([])
+    } finally {
+      vi.unstubAllEnvs()
+    }
+  })
+
   it('passes through an in-budget attachment and composes ordered request reads', async () => {
     const attachments = await store()
     const first = await attachments.saveImage({ data: await image(8, 4), mediaType: 'image/png' })
@@ -81,12 +119,13 @@ describe('local request-image cache', () => {
   })
 
   it('regenerates invalid, oversized, incompatible, or mismatched cached variants', async () => {
-    const attachments = await store()
+    const alegoHome = await home()
+    const attachments = new LocalAttachmentStore(new Context(), { alegoHome })
     const attachment = await attachments.saveImage({ data: await image(64, 32), mediaType: 'image/png' })
     const policy = { maxPixels: 16 * 16, maxBytes: 4_096 }
     const initial = await attachments.readImageRequest(attachment, policy)
     const hash = String(initial.variantId).slice('sha256:'.length)
-    const path = join(attachments.root, 'request-images', hash.slice(0, 2), hash)
+    const path = join(alegoHome, 'cache', 'attachments', 'request-images', hash.slice(0, 2), hash)
     const noisyPixels = new Uint8Array(64 * 64 * 3)
     let state = 0x2545f491
     for (let index = 0; index < noisyPixels.length; index += 1) {

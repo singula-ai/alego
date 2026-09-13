@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import clsx from 'clsx'
 import type { PermissionSelect as PermissionSelectValue } from '@singula-ai/alego-permission-presets/client'
-import { IconChevronDownOutline14, Menu, RiskConfirmation } from '@singula-ai/alego-client-ui-primitives'
+import {
+  IconChevronDownOutline14, Menu, RiskConfirmation, SHIELD_OUTLINE_PATH, SHIELD_OUTLINE_STROKE,
+} from '@singula-ai/alego-client-ui-primitives'
 import type { MenuEntry } from '@singula-ai/alego-client-ui-primitives'
 import type { ComposerBarProps } from '../contract/slots.ts'
 import { en } from '../locales.ts'
@@ -10,16 +12,15 @@ import css from './PermissionSelect.module.css'
 
 const FULL_ACCESS = 'danger-full-access'
 
-/* Shield glyphs (design set 1556): check = read-only, pencil = workspace
-   write, exclamation = full access. currentColor so the trigger and menu
-   rows tint them with their own text color. */
-
-const shieldOutline = 'M8.20554 0.899994L14.7901 3.36857V7.01026C14.7901 12 11.0466 14.2103 8.20554 15.3C5.36446 14.2103 1.62012 12 1.62012 7.01026V3.36857L8.20554 0.899994Z'
+/* Shield glyphs (design set 1556) over the ui-primitives shield contour:
+   check = read-only, pencil = workspace write, exclamation = full access.
+   currentColor so the trigger and menu rows tint them with their own text
+   color. */
 
 const permissionGlyphs = new Map<string, ReactNode>([
   ['read-only', (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path d={shieldOutline} stroke="currentColor" strokeWidth="1.31831" strokeLinejoin="round" />
+      <path d={SHIELD_OUTLINE_PATH} stroke="currentColor" strokeWidth={SHIELD_OUTLINE_STROKE} strokeLinejoin="round" />
       <path d="M12.1654 5.7552L8.9447 9.41475C8.73044 9.65816 8.53628 9.8804 8.35774 10.0423C8.1713 10.2114 7.94235 10.3717 7.64016 10.4254C7.48207 10.4535 7.32 10.4552 7.16151 10.4294C6.85843 10.3801 6.62728 10.2223 6.43836 10.0559C6.25752 9.89653 6.06037 9.67732 5.84264 9.43705L4.72925 8.20897L5.63557 7.38707L6.74897 8.61594C6.98603 8.87755 7.12974 9.03533 7.24673 9.13839C7.31033 9.19443 7.34485 9.21476 7.35823 9.22122C7.38068 9.22484 7.40352 9.22515 7.42593 9.22122C7.40522 9.22502 7.42893 9.23294 7.53583 9.136C7.65132 9.03126 7.79316 8.87139 8.02643 8.60638L11.2479 4.94763L12.1654 5.7552Z" fill="currentColor" />
     </svg>
   )],
@@ -34,7 +35,7 @@ const permissionGlyphs = new Map<string, ReactNode>([
   )],
   [FULL_ACCESS, (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path d={shieldOutline} stroke="currentColor" strokeWidth="1.31831" strokeLinejoin="round" />
+      <path d={SHIELD_OUTLINE_PATH} stroke="currentColor" strokeWidth={SHIELD_OUTLINE_STROKE} strokeLinejoin="round" />
       <path d="M9.10094 4.5V8.75939H7.59888V4.5H9.10094Z" fill="currentColor" />
       <path d="M9.10094 9.8114V11.5H7.59888V9.8114H9.10094Z" fill="currentColor" />
     </svg>

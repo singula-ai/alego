@@ -6,7 +6,7 @@
  * FIXME: settle the intended `@singula-ai/alego-timeout-guard` rename before the
  * first tagged release — suggestion only, aligning the name with its `guard/`
  * home; decide at resolution time
- * ([regrouping Agent Note](../../../../.agents/notes/implemented/architecture/2026-07-29-package-regrouping.md)).
+ * ([regrouping Agent Note](../../../../.agents/notes/archived/architecture/2026-07-29-package-regrouping.md)).
  *
  * @module @singula-ai/alego-tool-call-timeout-policy
  */

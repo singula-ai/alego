@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-api-workspace-controller",
   "description": "Workspace Remote commands and reconnect-safe state transport",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -83,7 +83,9 @@
     "@singula-ai/alego-api-gateway": "workspace:^",
     "@singula-ai/alego-client-connection": "workspace:^",
     "@singula-ai/alego-client-store": "workspace:^",
+    "@singula-ai/alego-client-test-runtime": "workspace:^",
     "@singula-ai/alego-host-directory-picker": "workspace:^",
+    "@singula-ai/alego-remote-mock": "workspace:^",
     "@singula-ai/alego-session": "workspace:^",
     "@singula-ai/alego-storage-domain": "workspace:^",
     "@singula-ai/alego-typert-protocol": "workspace:^",

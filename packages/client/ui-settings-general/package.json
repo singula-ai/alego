@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-settings-general",
   "description": "Settings ownerless-copy and product onboarding plugin: the General section, shell trigger/header chrome content, settings dictionaries, and the versioned welcome notice",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -43,28 +43,29 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@singula-ai/schemastery": "workspace:^",
-    "clsx": "^2.0.0"
+    "@singula-ai/schemastery": "workspace:^"
   },
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:^"
   },
   "devDependencies": {
+    "@singula-ai/cordis": "workspace:^",
     "@singula-ai/alego-api-remotes": "workspace:^",
     "@singula-ai/alego-client-connection": "workspace:^",
     "@singula-ai/alego-client-locale": "workspace:^",
     "@singula-ai/alego-client-store": "workspace:^",
     "@singula-ai/alego-client-test-runtime": "workspace:^",
     "@singula-ai/alego-client-ui-primitives": "workspace:^",
+    "@singula-ai/alego-client-ui-renderer": "workspace:^",
+    "@singula-ai/alego-client-ui-session": "workspace:^",
     "@singula-ai/alego-client-ui-settings": "workspace:^",
     "@singula-ai/alego-client-ui-sidebar": "workspace:^",
     "@singula-ai/alego-client-ui-slots": "workspace:^",
-    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-remote-mock": "workspace:^",
+    "@singula-ai/alego-settings": "workspace:^",
     "@types/react": "~18.3.1",
-    "react": "^18.2.0",
-    "@singula-ai/alego-client-ui-renderer": "workspace:^",
-    "@singula-ai/alego-client-ui-session": "workspace:^",
-    "@singula-ai/alego-settings": "workspace:^"
+    "clsx": "^2.0.0",
+    "react": "^18.2.0"
   },
   "files": [
     "lib/index.js",

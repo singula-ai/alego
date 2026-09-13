@@ -11,12 +11,13 @@ import Loader from '@singula-ai/cordis-plugin-loader'
 import Include from '@singula-ai/cordis-plugin-include'
 import { ToolCallId } from '@singula-ai/alego-llm'
 import { Session, SessionId } from '@singula-ai/alego-session'
-import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import AgentRegistry from '@singula-ai/alego-agent'
 import type { Agent } from '@singula-ai/alego-agent'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime from '@singula-ai/alego-tools'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import * as ToolTodo from '@singula-ai/alego-tool-todo'
+import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 let root: string | undefined
 let context: Context | undefined
@@ -33,7 +34,7 @@ function agent(ctx: Context): Agent {
   const id = SessionId('todo-loader-agent')
   const session = Session.create(id)
   const value: Agent = {
-    id, options: {}, session, inbox: new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} }),
+    id, options: {}, session, inbox: unsupportedInbox(),
     status: 'idle', ctx: scope.ctx,
     followup: () => {}, steer: () => {}, inject: () => {}, send: () => {}, cancel() {},
     runMaintenance: task => task(new AbortController().signal),

@@ -11,7 +11,6 @@ import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
 import { LlmAdapter } from '@singula-ai/alego-llm'
 import type { GenerateOptions, StreamChunk } from '@singula-ai/alego-llm'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import * as jsonrpc from '../src/index.ts'
 
@@ -77,7 +76,6 @@ async function mountPlugin(
 ): Promise<ApplyHarness> {
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
-  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(JsonlSessionPersistence, { root: storageDir })
   await new Promise(resolve => setTimeout(resolve, 50))

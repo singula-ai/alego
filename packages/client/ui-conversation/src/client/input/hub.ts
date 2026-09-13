@@ -159,6 +159,23 @@ export class InputHub implements SessionInputResolver {
   }
 
   /**
+   * Query file intake without creating a Session input.
+   * @param id - target Session.
+   * @returns whether its mounted composer currently accepts files.
+   */
+  canPickFiles(id: SessionId): boolean {
+    return this.shells.get(id)?.canPickFiles() === true
+  }
+
+  /**
+   * Open the target composer's file dialog under its live intake policy.
+   * @param id - target Session.
+   */
+  pickFiles(id: SessionId): void {
+    this.shells.get(id)?.pickFiles()
+  }
+
+  /**
    * Resolve the optional slash controller for composer chrome that launches
    * the shared candidate menu without typing a trigger.
    * @param id - session id.
@@ -187,14 +204,14 @@ export class InputHub implements SessionInputResolver {
   }
 
   /**
-   * Steer every still-pending queued message into the running turn, in FIFO
-   * order — the same strict-steer operation as the queue dock's per-row
-   * button. A turn closing mid-way (`session/steer-unavailable`) or a row already
+   * Submit every still-pending queued message through QueueDock Steer, in FIFO
+   * request order — the same operation as the queue dock's per-row button.
+   * An Agent stopping before a command (`session/steer-unavailable`) or a row already
    * claimed by the agent (`session/queue-item-not-found`) converges silently, while a
    * genuine failure surfaces as one composer notice. Repeated triggers
    * (e.g. two rapid empty-draft chords) rely on that `session/queue-item-not-found`
    * convergence: the snapshot may still list a row the host already steered,
-   * and the duplicate strict steer is a silent no-op.
+   * and the duplicate Steer is a silent no-op.
    * @param session - the addressed host session.
    * @param shell - the resident shell (notice outlet).
    */

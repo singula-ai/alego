@@ -1,0 +1,17 @@
+- name: '@singula-ai/alego-session'
+- name: '@singula-ai/alego-system-prompt'
+- name: '@singula-ai/alego-tools'
+- name: '@singula-ai/alego-fs-local'
+- name: '@singula-ai/alego-tool-fs'
+- name: '@singula-ai/alego-session-query-sqlite'
+  config:
+    path: ':memory:'
+    openAt: never
+- name: '@singula-ai/alego-session-reference'
+  config:
+    maxReferenceBytes: 360
+- name: './source-session.ts'
+- name: '@singula-ai/alego-spill-local'
+  config:
+    root: '{{spillRoot}}'
+    cleanupPeriodDays: 0

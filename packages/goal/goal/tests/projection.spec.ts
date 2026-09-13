@@ -10,15 +10,15 @@
 
 import { describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
-import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import AgentRegistry, { agentEvents } from '@singula-ai/alego-agent'
 import type { Agent, AgentStatus } from '@singula-ai/alego-agent'
 import { createUserMessage } from '@singula-ai/alego-llm'
-import type { UserMessage } from '@singula-ai/alego-session'
 import SessionStore from '@singula-ai/alego-session'
 import type { Session } from '@singula-ai/alego-session'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import GoalService, { GoalId, applyGoalProjection, foldGoal, goalProjectionDefinition } from '@singula-ai/alego-goal'
 import type { GoalProjection, GoalProjectionState, GoalRef } from '@singula-ai/alego-goal'
+import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 interface Bench {
   ctx: Context
@@ -31,20 +31,17 @@ interface Bench {
 /** Register a minimal registry-compatible live agent over a store session. */
 function liveAgent(ctx: Context, session: Session): Agent {
   const status: AgentStatus = 'idle'
-  const inbox = new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} })
   const agent: Agent = {
     id: session.id,
     options: {},
     session,
-    inbox,
+    inbox: unsupportedInbox(),
     ctx,
     get status() { return status },
     send: () => {},
     followup: () => {},
     steer: () => ({ outcome: Promise.resolve({ status: 'rejected' as const }) }),
-    inject(input: UserMessage) {
-      inbox.append('next-step', input)
-    },
+    inject: () => { throw new Error('goal projection tests do not inject model context') },
     cancel() {},
     runMaintenance: task => task(new AbortController().signal),
     whenIdle() { return Promise.resolve() },
@@ -82,7 +79,7 @@ describe('goal projection unit', () => {
   it('serves null before the first create', async () => {
     const bench = await harness(true)
     seedMessage(bench.session)
-    expect(bench.tailValues()).toEqual({ goal: null })
+    expect(bench.tailValues().goal).toBeNull()
     expect(bench.tailAsOfSeq()).toBe(bench.session.seq - 1)
   })
 
@@ -130,10 +127,14 @@ describe('goal projection unit', () => {
     const created = bench.ctx.goals.create(bench.agent, { objective: 'stay cleared' })
     bench.ctx.goals.clear(bench.agent, created)
 
-    bench.agent.inbox.prepend('next-step', createUserMessage({
-      content: [{ type: 'text', text: 'unrelated pending context' }],
-      source: { kind: 'plugin', plugin: 'test' },
-    }))
+    bench.session.append('agent/inbox/spliced', {
+      target: 'next-step',
+      start: 0,
+      inserted: [createUserMessage({
+        content: [{ type: 'text', text: 'unrelated pending context' }],
+        source: { kind: 'plugin', plugin: 'test' },
+      })],
+    })
 
     expect(bench.tailValues().goal).toBeNull()
     expect(foldGoal(bench.session.snapshotEvents()).goal).toBeUndefined()
@@ -211,6 +212,9 @@ describe('goal projection unit', () => {
     const foreignKind = { type: 'goal/change', seq: 4, time: 5, data: { kind: 'not-a-goal-change' } } as never
     expect(applyGoalProjection(state, foreignKind).failure).toMatch(/invalid kind/)
 
+    const failed = { ...state, failure: 'stop replay' }
+    expect(applyGoalProjection(failed, foreignKind)).toBe(failed)
+
     const missingTimestamps = {
       ...state,
       current: { ...current, createdAt: undefined, updatedAt: undefined },
@@ -221,13 +225,17 @@ describe('goal projection unit', () => {
 
   it('fails host goal access when the projection retained a replay failure', async () => {
     const bench = await harness(true)
+    bench.ctx.goals.create(bench.agent, { objective: 'poisoned replay' })
     const failure = 'goal replay failed at session event 0: invalid restored goal stream'
     const state = bench.ctx.sessionProjections.stateOf(bench.session, 'goal')
     expect(state).toBeDefined()
     Object.assign(state!, { failure })
 
+    expect(() => {
+      agentEvents(bench.ctx, bench.agent).emit('agent/session-start', { source: 'resume' })
+    }).not.toThrow()
     expect(() => bench.ctx.goals.get(bench.agent)).toThrow(failure)
-    expect(bench.tailValues().goal).toBeNull()
+    expect(bench.tailValues().goal).toMatchObject({ goal: { objective: 'poisoned replay' } })
   })
 
   it('has no goal key when the goal service is not composed', async () => {
@@ -240,7 +248,7 @@ describe('goal projection unit', () => {
     const bench = await harness(false)
     seedMessage(bench.session)
     const fiber = await bench.ctx.plugin(GoalService)
-    expect(bench.tailValues()).toEqual({ goal: null })
+    expect(bench.tailValues().goal).toBeNull()
     await fiber.dispose()
     expect('goal' in (bench.tailValues() ?? {})).toBe(false)
   })

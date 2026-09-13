@@ -6,7 +6,6 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { SessionId, type SessionEvent } from '@singula-ai/alego-session'
 import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import type { Agent } from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
@@ -27,8 +26,6 @@ import { MockAdapter, textResponse, toolCallResponse } from '../../../core/agent
 async function harness(adapter: MockAdapter, sessionRoot?: string, alegoHome?: string) {
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
-  // AgentLoop declares the registry as a required injection.
-  await ctx.plugin(SessionProjectionRegistry)
   if (sessionRoot !== undefined) {
     await ctx.plugin(JsonlSessionPersistence, { root: sessionRoot, compression: 'none' })
   }

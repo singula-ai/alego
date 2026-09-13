@@ -9,8 +9,8 @@ import Loader from '@singula-ai/cordis-plugin-loader'
 import Include from '@singula-ai/cordis-plugin-include'
 import { ToolCallId } from '@singula-ai/alego-llm'
 import { SESSION_FORMAT_VERSION, Session, SessionId } from '@singula-ai/alego-session'
+import AgentRegistry from '@singula-ai/alego-agent'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
-import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
 import type { Agent } from '@singula-ai/alego-agent'
 import TerminalSessionService from '@singula-ai/alego-terminal'
 import * as TerminalBash from '@singula-ai/alego-terminal-bash'
@@ -22,6 +22,7 @@ import { resolvePwshPath } from '@singula-ai/alego-pwsh-local/src/resolve.ts'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRegistry from '@singula-ai/alego-tools'
 import * as ToolPwshPersistent from '@singula-ai/alego-tool-pwsh-persistent'
+import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 const hasPwsh = spawnSync(
   resolvePwshPath(), ['-NoLogo', '-NoProfile', '-NonInteractive', '-Command', '$true'],
@@ -54,7 +55,7 @@ function agent(ctx: Context, cwd: string): Agent {
     id,
     options: {},
     session,
-    inbox: new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} }),
+    inbox: unsupportedInbox(),
     status: 'idle',
     ctx: scope.ctx,
     send: () => {},

@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/testing/2026-08-23-installed-python-wheel-black-box-ci.md
-2026-08-23-installed-python-wheel-black-box-ci.md: 91fbbd4ad2956abadd2be0aa06274da9b0ea3112
-2026-08-23-installed-python-wheel-black-box-ci.zh.md: 29921f756c1a9833fd9fce653b811d6183686ed6
+2026-08-23-installed-python-wheel-black-box-ci.md: 88b64d7a7dff3367cc7700e4aef0f8c2a0c63d2c
+2026-08-23-installed-python-wheel-black-box-ci.zh.md: b2aefb44f84ae04c7c377f5407c91b170ab95d9b

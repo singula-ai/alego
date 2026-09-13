@@ -1,13 +1,14 @@
 import { describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import { Session, SessionId } from '@singula-ai/alego-session'
-import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import AgentRegistry from '@singula-ai/alego-agent'
 import type { Agent } from '@singula-ai/alego-agent'
 import { bindScopeParent, createScope, scopeOf } from '@singula-ai/alego-scope'
 import type { ScopeKey } from '@singula-ai/alego-scope'
 import { JobId } from '@singula-ai/alego-jobs'
 import type { JobHooks, JobKind, JobOutcome, JobSnapshot, JobStart } from '@singula-ai/alego-jobs'
 import LocalJobRegistry, { type Config as JobsConfig } from '@singula-ai/alego-jobs-local'
+import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 declare module '@singula-ai/alego-jobs' {
   interface JobKindMap {
@@ -34,7 +35,7 @@ function stubAgent(ctx: Context, rawId: string, presetScope?: ScopeKey): Agent {
     id,
     options: {},
     session,
-    inbox: new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} }),
+    inbox: unsupportedInbox(),
     status: 'idle' as const,
     ctx: agentCtx,
     send: () => {},
@@ -44,7 +45,7 @@ function stubAgent(ctx: Context, rawId: string, presetScope?: ScopeKey): Agent {
     cancel() {},
     runMaintenance: <T>(job: (signal: AbortSignal) => Promise<T>) => job(new AbortController().signal),
     whenIdle() { return Promise.resolve() },
-  }
+  } satisfies Agent
   agentScopeDisposers.set(agent, async () => { await scopeFiber.dispose() })
   return agent
 }

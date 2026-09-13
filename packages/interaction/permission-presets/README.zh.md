@@ -9,7 +9,7 @@ kind: "package-reference"
 
 ## 概述
 
-`alego-permission-presets` 为部署提供一个面向用户的 Permissions 选择器，把两个独立的执行旋钮——沙箱模式与审批策略——捆绑为具名预设。选择预设会同时应用沙箱模式与审批策略，而每个旋钮各自保留自己的值，因此沙箱执行、审批、提示词叙述与回放都读取各自的设置。默认表提供 `workspace-write`（workspace-write ＋ ask）与 `danger-full-access`（danger-full-access ＋ never）；不匹配任何预设的旋钮组合会读回推导出的 `custom`，客户端可以显示它，但不能选择它。该服务还拥有 `permission` 设置命名空间，其默认值只在之后创建会话时生效；两个可选子功能——`permissions` 会话投影单元与 `/permission` 命令——向 Web 客户端暴露同一表面。挂载它需要具有约束能力的 bash 执行器与审批服务；它自身不拥有任何执行权。
+权限预设让用户通过一个选择器同时应用沙箱模式和审批策略。部署可以配置具名预设以及新建会话的默认预设；更改该默认值不会影响现有会话，内置预设表包含 `workspace-write` 和 `danger-full-access`。如果当前组合不匹配任何预设，客户端会显示推导出的 `custom` 状态，但用户不能选择或持久化它；切换预设只会更改实际值不同的设置。`/permission` 命令用于报告或更改当前预设，而沙箱执行和审批处理仍由不同的执行机制负责。
 
 ## 目录
 
@@ -57,7 +57,7 @@ kind: "package-reference"
 
 ### 用户看到什么
 
-客户端渲染选择器：按表顺序列出每个可切换预设，并在当前值为 `custom` 时将其附加在末尾。`custom` 仅供显示——调用方可以从不匹配的旋钮组合切换出去，但不能通过此服务选中或持久化一个具名 custom 预设。
+客户端渲染选择器：按表顺序列出每个可切换预设，并仅在当前值为 `custom` 时显示它。`custom` 仅供显示——调用方可以从不匹配的旋钮组合切换出去，但不能通过此服务选中或持久化一个名为 `custom` 的预设。
 
 ### 会话默认值
 
@@ -106,7 +106,7 @@ kind: "package-reference"
 
 当包级约定不够用时阅读以下页面。它们从预设词汇逐步进入执行旋钮与设计依据。
 
-- [权限预设子系统参考](../../../docs/subsystems/permission-presets.zh.md)——预设表、选择器载荷与 `ctx.permissionPresets` 的 cordis 接口面。
+- [权限预设子系统参考](../../../docs/subsystems/permission-presets.zh.md)——预设表、选择器载荷与 `ctx.permissionPresets` 的 Cordis 接口面。
 - [沙箱切换设计 Agent Note](../../../.agents/notes/implemented/feature/2026-07-06-sandbox.zh.md)——沙箱模式与审批策略如何组合与切换。
 - [审批子系统参考](../../../docs/subsystems/approval.zh.md)——此服务捆绑的审批策略旋钮。
 - [交互组映射](../README.zh.md)——相邻的命令、审批与问答包。
@@ -116,7 +116,7 @@ kind: "package-reference"
 <a id="model-experience"></a>
 ## 模型体验
 
-间接地，通过 `alego-user-approval` 和 `alego-tool-bash`：二者渲染由此服务的旋钮事件所选择的审批策略提示词、切换通知与沙箱工具结果；`permission/preset` 本身只写入日志。
+间接地，通过 `alego-user-approval` 和 `alego-tool-bash`：二者渲染由此服务的旋钮事件所选择的审批策略提示词、切换通知与经沙箱执行的工具结果；`permission/preset` 本身只写入日志。
 
 #### KV Cache 影响
 
@@ -130,9 +130,9 @@ kind: "package-reference"
 这些限制说明预设服务不提供什么。它们是当前包约束，不是权限系统对比。
 
 - **只组合两个机制级旋钮**：预设选择沙箱模式和审批策略；agent（智能体）／profile 选择尚未纳入 `PresetSpec`。
-- **`custom` 只能推导得出**：调用方可以从不匹配的旋钮组合切换出去，但无法通过此服务选中或持久化一个名为 custom 的预设。
+- **`custom` 只能推导得出**：调用方可以从不匹配的旋钮组合切换出去，但无法通过此服务选中或持久化一个名为 `custom` 的预设。
 - **预设表是进程级配置**：配置在插件生命周期内固定；更改可用预设必须重新加载插件。
-- **已存储的默认值必须保留在 preset 表中**：移除被引用的 preset 会导致权限设置注册失败，直到更新或重置 `settings.yaml` 中的 `permission` 分节。
+- **已存储的默认值必须保留在预设表中**：移除被引用的预设会导致权限设置注册失败，直到更新或重置 `settings.yaml` 中的 `permission` 分节。
 
 <a id="dev-note"></a>
 ### 开发备注

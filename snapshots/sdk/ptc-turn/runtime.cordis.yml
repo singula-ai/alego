@@ -1,0 +1,3 @@
+- insert:
+    - id: code-runtime
+      name: '@singula-ai/alego-code-runtime-worker-thread'

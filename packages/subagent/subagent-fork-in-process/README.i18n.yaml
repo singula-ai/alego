@@ -3,4 +3,4 @@
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/subagent/subagent-fork-in-process/README.md
 README.md: 8cd83e77da540adf06cfe0493260998406bd9b3d
-README.zh.md: 7c9849ba2a2e04975036899a303135c501a19841
+README.zh.md: f0e6be55438728ce0088657596ee1018de9c54fa

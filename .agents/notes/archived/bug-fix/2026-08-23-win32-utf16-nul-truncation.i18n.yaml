@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/bug-fix/2026-08-23-win32-utf16-nul-truncation.md
+2026-08-23-win32-utf16-nul-truncation.md: 9e08e9999dd2707c4ba9f5e137e8b9517602e11a
+2026-08-23-win32-utf16-nul-truncation.zh.md: 714630e8f619c4b01f7986873c87abb39c59c012

@@ -1,6 +1,0 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-06-web-shell-dist-chunk-layout.md
-2026-08-06-web-shell-dist-chunk-layout.md: 32edc5d6a7f70ce3ae9e4d1cf3fed802457415f8
-2026-08-06-web-shell-dist-chunk-layout.zh.md: b7a578eab748575741047c786432414b2d6577e2

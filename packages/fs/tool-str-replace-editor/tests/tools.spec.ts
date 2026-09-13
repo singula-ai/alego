@@ -6,7 +6,7 @@ import { Context } from '@singula-ai/cordis'
 import { FsVersion } from '@singula-ai/alego-fs'
 import { ToolCallId } from '@singula-ai/alego-llm'
 import { SESSION_FORMAT_VERSION, Session, SessionId } from '@singula-ai/alego-session'
-import AgentRegistry, { Inbox } from '@singula-ai/alego-agent'
+import AgentRegistry from '@singula-ai/alego-agent'
 import type { Agent } from '@singula-ai/alego-agent'
 import LocalFileSystem from '@singula-ai/alego-fs-local'
 import * as FsPolicy from '@singula-ai/alego-fs-observation-policy'
@@ -16,6 +16,7 @@ import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime from '@singula-ai/alego-tools'
 import * as ToolStrReplaceEditor from '@singula-ai/alego-tool-str-replace-editor'
+import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 const contexts: Context[] = []
 const roots: string[] = []
@@ -36,7 +37,7 @@ function agent(ctx: Context, cwd: string): Agent {
     id,
     options: {},
     session,
-    inbox: new Inbox(session, { inserted: () => {}, discarded: () => {}, claimed: () => {} }),
+    inbox: unsupportedInbox(),
     status: 'idle',
     ctx: scope.ctx,
     send: () => {},

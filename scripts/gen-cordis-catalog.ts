@@ -85,6 +85,7 @@ export const SERVICE_PAGE: Record<string, string> = {
   llm: 'llm-streaming.md',
   lsp: 'lsp.md',
   messageFeedback: 'feedback.md',
+  sessionFeedback: 'feedback.md',
   permissionPresets: 'permission-presets.md',
   planMode: 'plan.md',
   terminals: 'terminal.md',
@@ -123,6 +124,7 @@ export const SERVICE_PAGE: Record<string, string> = {
   webhookRuntime: 'webhook.md',
   workspaceRegistry: 'workspace.md',
   workspaceController: 'workspace.md',
+  workspaceFiles: 'workspace.md',
   directoryPickerController: 'workspace.md',
 }
 
@@ -145,7 +147,6 @@ export const SERVICE_PAGE: Record<string, string> = {
  * to a model as `cordis_runtime_inspect what:"client"`).
  */
 export const SERVICE_WALK_EXEMPTIONS: Record<string, string> = {
-  agent: 'not a service: the DX accessor field on Agent.ctx (root accessor defaulting to undefined) — docs/subsystems/core.md owns the Agent handle',
   appReady: 'not a service: launcher-provided successful-startup signal — packages/boot/cmdline/README.md owns the launcher contract',
   appExit: 'not a service: launcher-provided bounded process-exit callback — packages/boot/cmdline/README.md owns the launcher contract',
   cmdlineArgs: 'not a service: launcher-provided immutable app argument accessor — packages/boot/cmdline/README.md owns the launcher contract',
@@ -175,6 +176,10 @@ export const SERVICE_WALK_EXEMPTIONS: Record<string, string> = {
   slots: 'client-side interface-typed browser service — packages/client/ui-renderer/README.md owns the API',
   theme: 'client-side interface-typed browser service — packages/client/ui-theme/README.md owns the API',
   workspaces: 'client-side interface-typed browser service — packages/api/workspace-controller/README.md owns the API',
+  resources: 'client-side resource model (protocol providers, pins, live sources) — packages/client/resources/README.md owns the API',
+  sidebarRight: 'client-side right-Sidebar navigation face — packages/client/ui-sidebar-right/README.md owns the API',
+  sidebarRightTabs: 'client-side right-Sidebar tab-type registry — packages/client/ui-sidebar-right/README.md owns the API',
+  documentPreviews: 'client-side document renderer registry — docs/subsystems/sidebar-right.md owns the API',
 }
 
 /**
@@ -204,6 +209,7 @@ export const EVENT_SCOPE_PAGE: Record<string, string> = {
   'subagent': 'subagent.md',
   'system-prompt': 'system-prompt.md',
   'session-telemetry': 'session-telemetry.md',
+  'feedback': 'feedback.md',
   'tools': 'tools.md',
   'user-questions': 'user-questions.md',
   'webserver': 'web-server.md',
@@ -252,6 +258,7 @@ export const LINK_MAP: Readonly<Record<string, string>> = {
   ContentBlock: 'llm-streaming.md',
   CreateAgentOptions: 'core.md',
   GenerateOptions: 'llm-streaming.md',
+  Inbox: 'core.md',
   InboxItem: 'core.md',
   InboxPlacement: 'core.md',
   InspectorJsonValue: 'extensions.md',
@@ -283,6 +290,8 @@ export const LINK_MAP: Readonly<Record<string, string>> = {
   MessageFeedbackFailure: 'feedback.md',
   MessageFeedbackItem: 'feedback.md',
   MessageFeedbackListRequest: 'feedback.md',
+  SessionFeedbackRecordRequest: 'feedback.md',
+  SessionFeedbackRecordResult: 'feedback.md',
   MessageFeedbackListResult: 'feedback.md',
   MessageFeedbackListValue: 'feedback.md',
   MessageFeedbackNoteBlank: 'feedback.md',
@@ -406,6 +415,7 @@ export const LINK_MAP: Readonly<Record<string, string>> = {
   CreateGoalRequest: 'goal.md',
   EditGoalRequest: 'goal.md',
   GoalBlockReason: 'goal.md',
+  GoalActivationChanged: 'goal.md',
   GoalChanged: 'goal.md',
   GoalRef: 'goal.md',
   GoalView: 'goal.md',
@@ -669,6 +679,9 @@ export const FOUNDATION_TYPE_NAMES: ReadonlySet<string> = new Set([
   'Promise',
   'Record',
   'Readonly',
+  'ReadonlyMap',
+  'Request',
+  'Response',
   'Uint8Array',
 ])
 
@@ -750,6 +763,15 @@ export const TYPE_LINK_EXEMPTIONS: Readonly<Record<string, string>> = {
   WorkflowAgentEndInfo: 'event-local snapshot is owned by packages/workflow/workflow/src/index.ts',
   WorkflowAgentInfo: 'event-local snapshot is owned by packages/workflow/workflow/src/index.ts',
   WorkflowResultInfo: 'event-local snapshot is owned by packages/workflow/workflow/src/index.ts',
+  WorkspaceFileScope: 'Host workspace file lookup contract is owned by packages/api/workspace-files/README.md',
+  WorkspaceByteRange: 'Host workspace file endpoint contract is owned by packages/api/workspace-files/README.md',
+  WorkspaceDirectoryListing: 'Host workspace file endpoint contract is owned by packages/api/workspace-files/README.md',
+  WorkspaceFileBytes: 'Host workspace file endpoint contract is owned by packages/api/workspace-files/README.md',
+  WorkspaceFileChange: 'Host workspace file endpoint contract is owned by packages/api/workspace-files/README.md',
+  WorkspaceFileWatchFrame: 'Host workspace file endpoint contract is owned by packages/api/workspace-files/README.md',
+  WorkspaceFileRange: 'Host workspace file endpoint contract is owned by packages/api/workspace-files/README.md',
+  WorkspaceFileStat: 'Host workspace file endpoint contract is owned by packages/api/workspace-files/README.md',
+  WorkspaceFileText: 'Host workspace file endpoint contract is owned by packages/api/workspace-files/README.md',
 }
 
 /** Repository data policy consumed by the Cordis catalog projector. */

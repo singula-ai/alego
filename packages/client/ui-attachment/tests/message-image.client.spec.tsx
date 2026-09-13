@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 
+import type { GlobalStandardProps } from '@singula-ai/alego-client-ui-slots'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, waitFor } from '@testing-library/react'
 import { AttachmentId } from '@singula-ai/alego-attachment'
@@ -8,6 +9,10 @@ import { EMPTY_CONVERSATION_SNAPSHOT } from '@singula-ai/alego-client-ui-convers
 import { ImageGallery, MessageImage } from '../src/MessageImage.tsx'
 import type { MessageImageLabels } from '../src/MessageImage.tsx'
 import { MessageImages } from '../src/client/MessageImages.tsx'
+
+// Every session-scope fixture carries the resource hook the resources plugin merges into GlobalStandardProps.
+const useResource = (() => ({ status: 'none' as const, value: undefined, failure: undefined, reload: () => {} })) as GlobalStandardProps['useResource']
+const usePanelInfo: GlobalStandardProps['usePanelInfo'] = selector => selector({ activePanelId: null })
 
 afterEach(cleanup)
 
@@ -268,6 +273,7 @@ describe('ImageGallery', () => {
       sessionId: 'message-images-test' as MessageImagesProps['sessionId'],
       useSession,
       useSessions,
+      usePanelInfo, useResource,
       useSessionPendingInteraction,
       useWorkspaces,
       useProjection: () => undefined,

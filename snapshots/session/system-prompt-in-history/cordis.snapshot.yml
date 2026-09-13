@@ -1,0 +1,31 @@
+# Keyless replay counterpart of system-prompt-in-history/cordis.yml: the
+# replay route declares the same in-history capability.
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek'
+  disabled: true
+
+- id: agent-default-model
+  name: '@singula-ai/alego-agent-default-model'
+  config:
+    provider: deepseek-official
+    model: deepseek-flash
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: none
+
+- insert:
+    - id: llm-replay
+      name: '@singula-ai/alego-llm-replay'
+      config:
+        providers:
+          - id: deepseek-official
+            name: DeepSeek
+            models:
+              - id: deepseek-flash
+                systemPromptUpdate: in-history
+                inputModalities: [text, image]
+    - id: in-history-prompt-update
+      name: '../../../packages/test-support/session-snapshot/tests/fixtures/in-history-prompt-update.ts'

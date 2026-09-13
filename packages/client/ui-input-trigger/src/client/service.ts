@@ -9,6 +9,7 @@ import { Service } from '@singula-ai/cordis'
 import type { Context } from '@singula-ai/cordis'
 import type { Context as ClientContext } from '@singula-ai/cordis'
 import type { ISessions } from '@singula-ai/alego-api-session-controller/client'
+import type {} from '@singula-ai/alego-client-locale/client'
 import type { SessionId } from '@singula-ai/alego-session/types'
 import type { InputTriggerSource } from '../types.ts'
 import { InputTriggerController } from './controller.ts'
@@ -37,6 +38,9 @@ export class InputTriggerService extends Service implements InputTriggerServiceC
    */
   constructor(ctx: Context) {
     super(ctx, 'inputTriggers')
+    ctx.on('locale/change', () => {
+      for (const controller of this.live.controllers.values()) controller.refreshOpenMenu()
+    })
   }
 
   /**

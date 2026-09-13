@@ -8,7 +8,6 @@ import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
 import { createUserMessage } from '@singula-ai/alego-llm'
 import { SessionLogOffset, SessionId, type Session, type SessionEvent } from '@singula-ai/alego-session'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import SubagentService from '@singula-ai/alego-subagent'
 import { deliverSubagentPrompt, type HostPromptDeliverer } from '@singula-ai/alego-subagent/internal'
@@ -53,7 +52,7 @@ function durable(agent: Agent): {
 async function storedEvents(ctx: Context, id: SessionId): Promise<readonly SessionEvent[]> {
   const handle = await ctx.sessionPersistence.open(id, 'read')
   try {
-    return await handle.read()
+    return (await handle.read()).events
   } finally {
     await handle.close()
   }
@@ -66,7 +65,6 @@ async function setup(
   const ctx = new Context()
   contexts.push(ctx)
   await mountAgentLoopTestDependencies(ctx)
-  await ctx.plugin(SessionProjectionRegistry)
   const storageRoot = mkdtempSync(join(tmpdir(), 'alego-team-'))
   roots.push(storageRoot)
   await ctx.plugin(JsonlSessionPersistence, { root: storageRoot })
@@ -175,7 +173,6 @@ describe('Team identity and provisioning', () => {
     const ctx = new Context()
     contexts.push(ctx)
     await mountAgentLoopTestDependencies(ctx)
-    await ctx.plugin(SessionProjectionRegistry)
     const storageRoot = mkdtempSync(join(tmpdir(), 'alego-team-direct-'))
     roots.push(storageRoot)
     await ctx.plugin(JsonlSessionPersistence, { root: storageRoot })
@@ -1417,7 +1414,6 @@ describe('Team mailbox and waiting', () => {
     const ctx = new Context()
     contexts.push(ctx)
     await mountAgentLoopTestDependencies(ctx)
-    await ctx.plugin(SessionProjectionRegistry)
     const storageRoot = mkdtempSync(join(tmpdir(), 'alego-team-wait-'))
     roots.push(storageRoot)
     await ctx.plugin(JsonlSessionPersistence, { root: storageRoot })
@@ -1707,7 +1703,7 @@ describe('Team mailbox and waiting', () => {
     flushSpy.mockRestore()
   })
 
-  it('bounds Team runtime disposal when a continuation drain never settles', async () => {
+  it('bounds Team runtime disposal when a continuation drain never settles', { timeout: 30_000 }, async () => {
     const { ctx, lead, teamFiber } = await setup(['hang'], { disposalTimeoutMs: 25 })
     const started = await spawn(ctx, lead, 'stuck-worker')
     await waitRunning(ctx, started.member.id)

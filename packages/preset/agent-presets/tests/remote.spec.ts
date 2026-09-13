@@ -79,10 +79,10 @@ async function harness(
   ctx.loader.builtins.include = Include
   await ctx.plugin(LlmRuntime)
   await ctx.plugin(SessionStore)
-  await ctx.plugin(SystemPrompt, { persona: '' })
+  await ctx.plugin(SessionProjectionRegistry)
+  await ctx.plugin(SystemPrompt, { personaPrefix: '' })
   await ctx.plugin(ToolRuntime)
   await ctx.plugin(AgentRegistry)
-  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(AgentPresets, roster)
   return ctx
@@ -117,6 +117,7 @@ describe('the roster a client reads', () => {
     const roster = await ctx.agentPresets.remoteExportList()
 
     expect(roster.authorable).toBe(true)
+    expect(roster.modeSelectionEnabled).toBe(true)
     expect(roster.presets).toEqual([
       { id: 'minimal', trust: 'system', isDefault: true },
       { id: 'standard', trust: 'system', isDefault: false },
@@ -152,7 +153,7 @@ describe('the roster a client reads', () => {
 
     // Composing no presets is a valid deployment: every session then shares
     // the host composition, and nothing can be written either.
-    expect(roster).toEqual({ presets: [], authorable: false })
+    expect(roster).toEqual({ presets: [], authorable: false, modeSelectionEnabled: true })
   })
 })
 

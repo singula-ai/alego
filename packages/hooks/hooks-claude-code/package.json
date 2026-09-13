@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-hooks-claude-code",
   "description": "Bridge plugin: run a Claude Code hooks.json / settings hook config on the Alego interception seams",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },

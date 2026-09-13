@@ -9,7 +9,7 @@ kind: "package-group"
 
 ## 概述
 
-workflow 组让 agent 可以运行一段由模型编写的编排脚本，把工作扇出到多个 subagent 并返回最终值。`workflow` 包提供运行服务，worker-thread 包在隔离线程中执行脚本，两个面向模型的工具公开编排能力：通用的 `workflow` 工具用于脚本化扇出，固定的 `ralph` 工具用于全新 agent 迭代循环。脚本用钩子协调 agent，实际工作由 agent 完成。引擎把脚本的同步工作移出宿主事件循环，但这只是隔离，不是安全边界。
+workflow 组让 agent（智能体）可以运行一段由模型编写的编排脚本，把工作扇出到多个 subagent 并返回最终值。`workflow` 包提供运行服务，worker-thread 包在隔离线程中执行脚本，两个面向模型的工具公开编排能力：通用的 `workflow` 工具用于脚本化扇出，固定的 `ralph` 工具用于全新 agent 迭代循环。脚本用钩子协调 agent，实际工作由 agent 完成。引擎把脚本的同步工作移出宿主事件循环，但这只是隔离，不是安全边界。
 
 ## 目录
 
@@ -39,7 +39,7 @@ workflow 组让 agent 可以运行一段由模型编写的编排脚本，把工�
 - [生成的工具目录](../../docs/tool-catalog.zh.md#singula-aialego-tool-ralph)——模型接收的 `ralph` 工具 schema。
 - [生成的配置目录](../../docs/config-catalog.zh.md#singula-aialego-workflow-worker-thread)——每个受支持的引擎配置字段。
 - [动态工作流 Agent Note](../../.agents/notes/implemented/feature/2026-07-05-dynamic-workflows.zh.md)——seam 设计及其决策。
-- [Ralph 工具 Agent Note](../../.agents/notes/implemented/feature/2026-07-19-fresh-agent-ralph-workflow-tool.zh.md)——固定全新 agent 循环的设计与暂缓事项。
+- [Harness 层目标式执行 Agent Note](../../.agents/notes/implemented/feature/2026-07-16-harness-level-loop.zh.md)——固定全新 agent 循环的设计与暂缓事项。
 
 -----
 

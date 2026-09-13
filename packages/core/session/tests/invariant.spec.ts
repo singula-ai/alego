@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import { createScope, scopeTarget } from '@singula-ai/alego-scope'
-import { createUserMessage, ToolCallId, createMessage, createToolResultMessage, freezeMessage } from '@singula-ai/alego-llm'
+import { createSystemMessage, createUserMessage, ToolCallId, createMessage, createToolResultMessage, freezeMessage } from '@singula-ai/alego-llm'
 import SessionStore, { SessionId, SessionSeq, TOOL_NOT_STARTED } from '@singula-ai/alego-session'
 import * as SessionInvariant from '@singula-ai/alego-session/invariant'
 import InvariantRegistry, { InvariantError } from '@singula-ai/alego-invariants'
@@ -234,6 +234,16 @@ describe('session-log invariants', () => {
     }, { surfaceOp: 'append' })).toThrow(/no prior tool\/call/)
   })
 
+  it('requires a system/message to name the open step', async () => {
+    const session = (await setup()).ctx.sessions.create()
+    session.append('turn/start', { turn: 1 })
+    const message = createSystemMessage('You are terse.', '@singula-ai/alego-system-prompt')
+    expect(() => session.append('system/message', { turn: 1, step: 1, message }, { surfaceOp: 'append' }))
+      .toThrow(/open is turn 1\/step null/)
+    session.append('step/start', { turn: 1, step: 1 })
+    expect(() => session.append('system/message', { turn: 1, step: 1, message }, { surfaceOp: 'append' })).not.toThrow()
+  })
+
   it('keeps fresh tool-result appends open-step checked', async () => {
     const { ctx } = await setup()
     const session = ctx.sessions.create()
@@ -284,7 +294,7 @@ describe('session-log invariants', () => {
         }] satisfies typeof original.data.message.content,
       }),
     }, {
-      surfaceOp: { op: 'replace', start: original.seq, end: original.seq },
+      surfaceOp: { op: 'replace', startSeq: original.seq, endSeq: original.seq },
       sourceEventSeqs: [original.seq],
     })).not.toThrow()
   })
@@ -323,7 +333,7 @@ describe('session-log invariants', () => {
         }] satisfies typeof original.data.message.content,
       }),
     }, {
-      surfaceOp: { op: 'replace', start: original.seq, end: original.seq },
+      surfaceOp: { op: 'replace', startSeq: original.seq, endSeq: original.seq },
       sourceEventSeqs: [original.seq],
     })).toThrow(/outside any open turn/)
   })

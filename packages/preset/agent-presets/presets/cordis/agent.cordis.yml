@@ -17,8 +17,9 @@
 - id: persona
   name: '@singula-ai/alego-persona'
   config:
-    text: |-
-      You are a coding agent powered by the {{model}} model, running on the Alego. Your working directory is {{cwd}}.
+    suffix: Your working directory is {{cwd}}.
+    prefix: |-
+      You are a coding agent powered by the {{model}} model, running on the Alego.
 
       You can read and modify the harness you run on. Its composition is Cordis: every capability is a plugin row in a `cordis.yml`, and an agent preset is one such file mounted for a single session.
 
@@ -260,3 +261,6 @@
 
 - id: tool-skill
   name: '@singula-ai/alego-tool-skill'
+
+- id: present
+  name: '@singula-ai/alego-tool-present'

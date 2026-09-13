@@ -6,13 +6,13 @@ English | [中文](2026-08-11-deepseek-request-user-id-header.zh.md)
 
 ## Problem
 
-Direct DeepSeek requests already carried `x-dsh-session-id` when the caller supplied `GenerateOptions.sessionId`, which lets provider-side support and diagnostics correlate turns within one conversation. They lacked a stable identity across sessions even though the harness already persists an anonymous user id for telemetry and feedback. A separate id would break correlation, while putting it in the provider-neutral attribution helper would send a stable per-user identifier through every HTTP adapter.
+Direct DeepSeek requests already carried `x-deepseek-harness-session-id` when the caller supplied `GenerateOptions.sessionId`, which lets provider-side support and diagnostics correlate turns within one conversation. They lacked a stable identity across sessions even though the harness already persists an anonymous user id for telemetry and feedback. A separate id would break correlation, while putting it in the provider-neutral attribution helper would send a stable per-user identifier through every HTTP adapter.
 
 The user id is transport metadata, not model input. It must not enter the request body, prompt, token accounting, KV-cache identity, or session log. The destination is the adapter's resolved `baseURL`, which can be DeepSeek itself or a configured gateway, so the privacy boundary must be explicit.
 
 ## Decision
 
-`alego-llm-deepseek` sends `x-dsh-user-id` on every provider request sent after successful credential resolution. The value comes from `@singula-ai/alego-anonymous-user-id` and therefore matches the OpenTelemetry Resource `user.id` and `/feedback` acknowledgement for the same `$ALEGO_HOME`. The adapter continues to send `x-dsh-session-id` only when `GenerateOptions.sessionId` is present; the agent loop supplies the current durable `Session.id` for ordinary agent, title-generation, and compaction requests.
+`alego-llm-deepseek` sends `x-deepseek-harness-user-id` on every provider request sent after successful credential resolution. The value comes from `@singula-ai/alego-anonymous-user-id` and therefore matches the OpenTelemetry Resource `user.id` and `/feedback` acknowledgement for the same `$ALEGO_HOME`. The adapter continues to send `x-deepseek-harness-session-id` only when `GenerateOptions.sessionId` is present; the agent loop supplies the current durable `Session.id` for ordinary agent, title-generation, and compaction requests.
 
 The plugin resolves the user id lazily after credentials succeed and memoizes it for that plugin instance. A missing credential therefore does not create `.anonymous-user-id`, while the first authorized provider request can create it even when `ALEGO_TELEMETRY_DISABLED` is set. The direct adapter constructor accepts a `resolveUserId` dependency so wire behavior remains deterministic in unit tests.
 

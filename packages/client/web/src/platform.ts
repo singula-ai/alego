@@ -10,6 +10,7 @@ export const PLATFORM_MODULES = [
   '@singula-ai/alego-client-store',
   '@singula-ai/alego-client-ui-slots',
   '@singula-ai/alego-client-ui-primitives',
+  '@singula-ai/alego-client-ui-dockkit',
 ] as const
 
 /** Client-bundle specifiers whose factories the parser preloads before the shell starts. */

@@ -39,11 +39,14 @@ const DUPLICATE_SAFE_PACKAGES: readonly string[] = [
 
 /**
  * Runtime exports whose values remain valid when npm installs another package copy.
+ * New entries are forbidden by default. Automated agents must not add an
+ * exception; every addition requires explicit human review and a dedicated,
+ * prominent heading in the pull request description.
  */
 const SAFE_HOST_DEPENDENCY_EXPORTS = {
   '@singula-ai/alego-credentials': ['credentialKey'],
   '@singula-ai/alego-deque': ['Deque'],
-  '@singula-ai/alego-llm': ['BlockAssembler', 'callConfigEquals', 'expandAssistantStream'],
+  '@singula-ai/alego-llm': ['callConfigEquals'],
   '@singula-ai/alego-session-format': ['sessionFormatLogFilename'],
   '@singula-ai/alego-timeout': ['MAX_TIMER_DELAY_MS'],
   '@singula-ai/schemastery': ['default'],

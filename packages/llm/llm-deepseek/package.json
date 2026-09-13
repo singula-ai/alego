@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-llm-deepseek",
   "description": "DeepSeek chat-completions adapter for the Alego LLM seam",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -52,6 +52,7 @@
     "@singula-ai/alego-anonymous-user-id": "workspace:^",
     "@singula-ai/alego-atomic-write": "workspace:^",
     "@singula-ai/alego-attachment": "workspace:^",
+    "@singula-ai/alego-attachment-local": "workspace:^",
     "@singula-ai/alego-credentials": "workspace:^",
     "@singula-ai/alego-deepseek-llm-api-extensions": "workspace:^",
     "@singula-ai/alego-fs": "workspace:^",

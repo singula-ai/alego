@@ -53,6 +53,7 @@ function visibleBaselineSource(
     }
   }
   for (const seq of agent.session.surface.nodes.toReversed()) {
+    // oxlint-disable-next-line typescript/no-deprecated -- Existing Session history read; migration deferred.
     const event = agent.session.eventAt(seq)
     if (event?.type === 'user/message'
       && event.data.source.kind === 'agent-instructions'
@@ -228,6 +229,7 @@ export function apply(ctx: Context, config: Config): void {
     const alreadySupplied = desired !== undefined && (
       claimed.some(message => sameContextPayload(message, desired))
       || agent.session.surface.nodes.some((seq) => {
+        // oxlint-disable-next-line typescript/no-deprecated -- Existing Session history read; migration deferred.
         const event = agent.session.eventAt(seq)
         return event?.type === 'user/message' && sameContextPayload(event.data, desired)
       })

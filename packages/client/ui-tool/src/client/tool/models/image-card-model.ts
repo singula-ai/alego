@@ -1,7 +1,7 @@
 /** Pure image-card derivation from raw result content and metadata. @module */
 import type { AttachmentId, ImageAttachmentRef, ImageMediaType } from '@singula-ai/alego-attachment'
-import { abbreviateHomePath } from '@singula-ai/alego-util-workspace-path'
-import { relativizeToCwd, type ToolCallBlock } from './tool-call-model.ts'
+import { abbreviateHomePath, relativizeToCwd } from '@singula-ai/alego-util-workspace-path'
+import type { ToolCallBlock } from './tool-call-model.ts'
 import { parsedToolCall } from './raw-tool-call.ts'
 
 /**

@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-api-remotes",
   "description": "Remote BFF assembly for application-selected Host capabilities",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -60,6 +60,7 @@
   },
   "devDependencies": {
     "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-agent": "workspace:^",
     "@singula-ai/alego-agent-presets": "workspace:^",
     "@singula-ai/alego-api-gateway": "workspace:^",
     "@singula-ai/alego-api-settings-controller": "workspace:^",
@@ -82,6 +83,8 @@
     "@singula-ai/alego-typert-protocol": "workspace:^",
     "@singula-ai/alego-scope": "workspace:^",
     "@singula-ai/alego-api-session-controller": "workspace:^",
-    "zod": "^4.4.3"
+    "@singula-ai/alego-api-workspace-files": "workspace:^",
+    "zod": "^4.4.3",
+    "@singula-ai/alego-command-feedback": "workspace:^"
   }
 }

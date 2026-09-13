@@ -5,9 +5,9 @@ import Loader from '@singula-ai/cordis-plugin-loader'
 import Include from '@singula-ai/cordis-plugin-include'
 import LlmRuntime from '@singula-ai/alego-llm'
 import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime from '@singula-ai/alego-tools'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import AgentRegistry, { assembleContextFor } from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import InvariantRegistry from '@singula-ai/alego-invariants'
@@ -28,10 +28,10 @@ async function harness(roster: Partial<Config> = {}): Promise<Context> {
   ctx.loader.builtins.include = Include
   await ctx.plugin(LlmRuntime)
   await ctx.plugin(SessionStore)
-  await ctx.plugin(SystemPrompt, { persona: '' })
+  await ctx.plugin(SessionProjectionRegistry)
+  await ctx.plugin(SystemPrompt, { personaPrefix: '' })
   await ctx.plugin(ToolRuntime)
   await ctx.plugin(AgentRegistry)
-  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(AgentPresets, { default: 'standard', roots: ROOTS, includeShippedRoot: false, includeUserRoot: false, ...roster })
   await ctx.plugin(InvariantRegistry)

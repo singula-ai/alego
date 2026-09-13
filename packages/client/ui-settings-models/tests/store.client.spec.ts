@@ -4,7 +4,17 @@ import type { RpcResponse } from '@singula-ai/alego-api-remotes/client'
 import { RemoteError } from '@singula-ai/alego-client-test-runtime'
 import { SettingsDescribeMirror } from '@singula-ai/alego-client-ui-settings/src/client/settings-mirror.ts'
 import { settingsSchema } from './settings-schema.client.ts'
-import { ModelsSettingsStore } from '../src/client/store.ts'
+import { joinProviderDirectory, ModelsSettingsStore } from '../src/client/store.ts'
+
+it.each([false, true])('retains configuration diagnostics when the route is active: %s', (active) => {
+  expect(joinProviderDirectory(active ? [{ id: 'openai', name: 'openai' }] : [], [{
+    provider: 'openai', displayName: 'openai', settingsNs: 'llm-pi-ai', settingsPath: ['providers', 'openai'],
+    error: 'catalog unavailable',
+  }])).toEqual([{
+    provider: 'openai', displayName: 'openai', settingsNs: 'llm-pi-ai', settingsPath: ['providers', 'openai'],
+    active, error: 'catalog unavailable',
+  }])
+})
 
 let nextRpc = 0
 function ok<T>(value: T): RpcResponse<T> {

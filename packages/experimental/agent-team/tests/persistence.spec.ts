@@ -4,20 +4,18 @@ import { rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { Context } from '@singula-ai/cordis'
-import type { Agent } from '@singula-ai/alego-agent'
+import type { Agent, AgentHandle } from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
 import { createUserMessage } from '@singula-ai/alego-llm'
-import { SessionId } from '@singula-ai/alego-session'
-import type { SessionEvent } from '@singula-ai/alego-session'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
+import { SessionId, type SessionEvent } from '@singula-ai/alego-session'
 import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import SubagentService, { snapshotSubagentDescriptor } from '@singula-ai/alego-subagent'
 import * as SubagentSpawn from '@singula-ai/alego-subagent-spawn-in-process'
 import { MockAdapter, textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import TeamService, { TeamId, TeamMessageId } from '../src/index.ts'
-import { teamProjectionDefinition } from '../src/projection.ts'
 import type { TeamMailbox } from '../src/mailbox.ts'
+import { teamProjectionDefinition } from '../src/projection.ts'
 import type { TeamMemberSnapshot, TeamMessageSnapshot, TeamTaskSnapshot } from '../src/index.ts'
 import { TestSessionQuery } from './test-session-query.ts'
 
@@ -47,10 +45,16 @@ function durable(agent: Agent): {
 async function storedEvents(ctx: Context, id: SessionId): Promise<readonly SessionEvent[]> {
   const handle = await ctx.sessionPersistence.open(id, 'read')
   try {
-    return await handle.read()
+    return (await handle.read()).events
   } finally {
     await handle.close()
   }
+}
+
+/** Await mailbox acknowledgements through their flush and dispatch completion. */
+async function settleMailbox(ctx: Context): Promise<void> {
+  const { mailbox } = ctx.agentTeams as unknown as { readonly mailbox: TeamMailbox }
+  await Promise.all(mailbox.pendingDispatches())
 }
 
 async function disposeContext(ctx: Context): Promise<void> {
@@ -103,7 +107,6 @@ async function stack(
   const ctx = new Context()
   contexts.add(ctx)
   await mountAgentLoopTestDependencies(ctx)
-  await ctx.plugin(SessionProjectionRegistry)
   await backend.mount(ctx, root)
   await ctx.plugin(TestSessionQuery)
   await ctx.plugin(AgentLoop, { agents: [] })
@@ -364,9 +367,8 @@ for (const backend of backends) {
         },
       }), { surfaceOp: 'append' })
       await first.ctx.sessions.flush(targetHandle.agent.session)
-      // Let the pre-queue acknowledgement observer prove there is no mailbox
-      // row yet before authoring the simulated crash prefix below.
-      await new Promise<void>((resolve) => { setTimeout(resolve, 0) })
+      // Finish the target observer before writing the crash-only queued prefix.
+      await settleMailbox(first.ctx)
       await targetHandle.dispose()
 
       const queued: TeamMessageSnapshot = {
@@ -386,17 +388,41 @@ for (const backend of backends) {
       await first.dispose()
 
       const second = await stack(backend, storageRoot, [])
-      const rootHandle = await second.ctx.agents.resume({
-        resumeSessionId: rootId,
-        agentOptions: { provider: 'mock', model: 'mock' },
+      const { mailbox } = second.ctx.agentTeams as unknown as { readonly mailbox: TeamMailbox }
+      const flush = second.ctx.sessions.flush.bind(second.ctx.sessions)
+      const checkpointEntered = Promise.withResolvers<undefined>()
+      const releaseCheckpoint = Promise.withResolvers<undefined>()
+      const delayedCheckpoint = vi.spyOn(second.ctx.sessions, 'flush').mockImplementation(async (session) => {
+        if (session.id === rootId && session.snapshotEvents().some(event =>
+          event.type === 'team/message/delivered' && event.data.messageId === messageId)) {
+          checkpointEntered.resolve(undefined)
+          await releaseCheckpoint.promise
+        }
+        return await flush(session)
       })
-      await vi.waitFor(() => { expect(durable(rootHandle.agent).pendingMessages).toEqual([]) })
-      // The in-memory acknowledgement precedes the dispatch's durable completion.
-      const mailbox = (second.ctx.agentTeams as unknown as { mailbox: TeamMailbox }).mailbox
-      await Promise.all(mailbox.pendingDispatches())
-      const acknowledged = await storedEvents(second.ctx, rootId)
-      expect(acknowledged.some(event => event.type === 'team/message/delivered'
-        && event.data.messageId === messageId)).toBe(true)
+      let rootHandle: AgentHandle
+      try {
+        rootHandle = await second.ctx.agents.resume({
+          resumeSessionId: rootId,
+          agentOptions: { provider: 'mock', model: 'mock' },
+        })
+        await checkpointEntered.promise
+        expect(durable(rootHandle.agent).pendingMessages).toEqual([])
+        expect(mailbox.pendingDispatches().length).toBeGreaterThan(0)
+        let settled = false
+        const settlement = settleMailbox(second.ctx).then(() => { settled = true })
+        await Promise.resolve()
+        expect(settled).toBe(false)
+        releaseCheckpoint.resolve(undefined)
+        await settlement
+      } finally {
+        releaseCheckpoint.resolve(undefined)
+        try {
+          await settleMailbox(second.ctx)
+        } finally {
+          delayedCheckpoint.mockRestore()
+        }
+      }
       expect(second.ctx.agents.get(started.member.id)).toBeUndefined()
       expect(second.adapter.requests).toEqual([])
 
@@ -471,6 +497,7 @@ for (const backend of backends) {
       await vi.waitFor(() => {
         expect(durable(rootHandle.agent).pendingMessages).toEqual([])
       })
+      await settleMailbox(second.ctx)
       expect(second.adapter.requests).toEqual([])
       expect(second.ctx.agents.get(childId)).toBeUndefined()
       const stored = await storedEvents(second.ctx, childId)

@@ -5,7 +5,6 @@ import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
 import { createUserMessage, ToolCallId  } from '@singula-ai/alego-llm'
 import { SessionId } from '@singula-ai/alego-session'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import SubagentRuntime from '@singula-ai/alego-subagent'
 import { STRUCTURED_OUTPUT_TOOL } from '@singula-ai/alego-subagent-in-process-driver'
 import * as spawn from '@singula-ai/alego-subagent-spawn-in-process'
@@ -21,7 +20,6 @@ async function mountRalph(script: MockScript, config: toolRalph.Config) {
   const ctx = new Context()
   const adapter = new MockAdapter(script)
   await mountAgentLoopTestDependencies(ctx)
-  await ctx.plugin(SessionProjectionRegistry)
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(SubagentRuntime)
   await ctx.plugin(spawn, { providerName: 'spawn' })
@@ -59,7 +57,6 @@ describe('alego-tool-ralph over the real spawn and worker-thread stack', () => {
       toolCallResponse('round-2', STRUCTURED_OUTPUT_TOOL, finalReport),
     ])
     await mountAgentLoopTestDependencies(ctx)
-    await ctx.plugin(SessionProjectionRegistry)
     await ctx.plugin(AgentLoop, { agents: [] })
     await ctx.plugin(SubagentRuntime)
     await ctx.plugin(spawn, { providerName: 'spawn' })

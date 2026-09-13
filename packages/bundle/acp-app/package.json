@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-acp-app",
   "description": "The alego ACP profile bundle: automation-only JSON-RPC stdio and process lifecycle over alego-base",
-  "version": "0.1.3-alpha.1",
+  "version": "0.1.5-rc.2",
   "publishConfig": {
     "access": "public"
   },

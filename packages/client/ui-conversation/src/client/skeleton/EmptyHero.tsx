@@ -87,10 +87,12 @@ export function HeroShell({ t, renderSlot, children }: HeroShellProps) {
               fallback: <AlegoMark size={34} className={css.mark} />,
             })}
           </span>
-          <span className={css.headlineText}>
-            {beforeBrand}<span className={css.brand}>{t('hero.brand')}</span>{afterBrand}
+          <span className={css.titleGroup}>
+            <span className={css.headlineText}>
+              {beforeBrand}<span className={css.brand}>{t('hero.brand')}</span>{afterBrand}
+            </span>
+            <span className={css.previewBadge}>{t('hero.preview')}</span>
           </span>
-          <span className={css.previewBadge}>{t('hero.preview')}</span>
         </div>
         <div className={css.body}>
           {/* The composer remains mounted outside this component. */}

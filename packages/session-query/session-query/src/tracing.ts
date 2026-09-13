@@ -6,7 +6,6 @@ import type {
   SessionId,
   SessionSeq,
   SurfaceEvent,
-  SurfaceEventType,
 } from '@singula-ai/alego-session'
 import { SessionQueryError } from './config.ts'
 import type {
@@ -220,7 +219,7 @@ function analyzeEventLog(
 }
 
 function eventSources(event: SessionEvent): readonly SessionSeq[] {
-  return (event as SessionEvent<SurfaceEventType>).sourceEventSeqs ?? []
+  return event.sourceEventSeqs ?? []
 }
 
 function buildDescendants(

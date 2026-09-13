@@ -2,7 +2,6 @@ import { writeFile } from 'node:fs/promises'
 import { Context } from '@singula-ai/cordis'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
-import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { createUserMessage, ToolCallId, type GenerateOptions, LlmAdapter, type StreamChunk  } from '@singula-ai/alego-llm'
 import { SessionId } from '@singula-ai/alego-session'
 import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
@@ -38,7 +37,6 @@ class CrashAdapter extends LlmAdapter {
 
 const ctx = new Context()
 await mountAgentLoopTestDependencies(ctx)
-await ctx.plugin(SessionProjectionRegistry)
 await ctx.plugin(AgentLoop, { agents: [] })
 await ctx.plugin(JsonlSessionPersistence, { root: persistenceRoot, compression: 'none' })
 await ctx.plugin(checkpointPolicy)

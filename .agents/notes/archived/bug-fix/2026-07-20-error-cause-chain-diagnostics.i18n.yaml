@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/bug-fix/2026-07-20-error-cause-chain-diagnostics.md
+2026-07-20-error-cause-chain-diagnostics.md: 729d28dc68c5f452f78d16dbcc61206a0fbf4893
+2026-07-20-error-cause-chain-diagnostics.zh.md: 27bb32df1b9b38607754188d6349f61788de3afb

@@ -5,6 +5,8 @@
   disabled: true
 
 - insert:
+    - id: acp-diagnostic-release-on-job-output
+      name: './release-on-job-output.mjs'
     - id: llm-replay
       name: '@singula-ai/alego-llm-replay'
       config:
@@ -25,6 +27,7 @@
         env:
           MOCK_PERMISSION: '1'
           MOCK_TOOL_KIND: execute
+          MOCK_PROMPT_HOLD: .alego/acp-diagnostic-prompt-hold
     - id: tool-subagent-acp-diagnostic
       name: '@singula-ai/alego-tool-subagent'
       config:

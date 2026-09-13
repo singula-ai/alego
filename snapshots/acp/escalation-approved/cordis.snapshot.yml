@@ -42,3 +42,11 @@
 
     - id: subagent-settlement-marker
       name: './subagent-settlement-marker.ts'
+
+- insert:
+    - id: snapshot-shell-path
+      name: ../../../scripts/snapshot-shell-path.ts
+      config:
+        command: "printf 'escalated\\n' > /tmp/alego-escalated.txt && cat /tmp/alego-escalated.txt && rm /tmp/alego-escalated.txt"
+        recordedPath: /tmp/alego-escalated.txt
+        livePath: !!js process.env.ALEGO_SNAPSHOT_SPILL_ROOT + '/alego-escalated.txt'
