@@ -10,7 +10,7 @@ Status: implemented
 
 ## Decision
 
-根目录 [`install.sh`](../../../../install.sh) 以 `curl -fsSL https://raw.githubusercontent.com/singula-ai/alego/main/install.sh | bash` 运行，端到端完成受支持的源码安装：校验 `git` 与 engines 范围（`^22.19.0 || >=24`），缺少 pnpm 时通过 `corepack enable` 提供、由 `packageManager` 钉住版本，`--depth 1` 克隆到 `ALEGO_SRC_DIR`（默认 `~/.alego-src`，刻意避开运行时持有的 `~/.alego`），执行 `pnpm install --frozen-lockfile` 与完整 `pnpm run build`，再向 `ALEGO_BIN_DIR`（默认 `~/.local/bin`）写入两行启动器，exec `node <检出>/apps/cli/lib/bin.js`。重复运行会拉取 ref 并重新构建；受管检出内的本地修改在更新时被丢弃，脚本会予以声明。`ALEGO_REPO` 与 `ALEGO_REF` 用于选择 fork 与分支。
+根目录 [`install.sh`](../../../../install.sh) 以 `curl -fsSL https://raw.githubusercontent.com/singula-ai/alego/main/install.sh | bash` 运行，端到端完成受支持的源码安装：校验 `git` 与 engines 范围（`^22.19.0 || >=24`），缺少 pnpm 时通过 `corepack enable` 提供、由 `packageManager` 钉住版本，`--depth 1` 克隆到 `ALEGO_SRC_DIR`（默认 `~/.alego-src`，刻意避开运行时持有的 `~/.alego`），执行 `pnpm install --frozen-lockfile` 与完整 `pnpm run build`，再向 `ALEGO_BIN_DIR`（默认 `~/.local/bin`）写入两行启动器，exec `node <检出>/apps/cli/lib/bin.js`。重复运行会拉取 ref，在 frozen 安装之后执行 `pnpm run clean`，再重新构建；受管检出内的本地修改在更新时被丢弃，脚本会予以声明。清理步骤必不可少，因为 `git reset --hard` 会保留被忽略的构建产物：上游删除 `packages/settings/settings-file` 后，其过期的 `lib/types/index.js` 仍匹配 tsdown 工作区通配 `packages/*/*`，使更新时的构建因已移除的 `SettingsProvider` 导出而失败。`ALEGO_REPO` 与 `ALEGO_REF` 用于选择 fork 与分支。
 
 全局命令是写出的启动器文件，而非包管理器链接。`pnpm link --global` 要求已配置全局 bin 目录（`pnpm setup` / `PNPM_HOME`），在从未运行过它的机器上以 `ERR_PNPM_NO_GLOBAL_BIN_DIR` 失败；`npm link` 会孤立地安装 `apps/cli`，其 `workspace:^` 范围在那里无从解析。启动器文件只依赖 `PATH`，且当 bin 目录不在 PATH 上时脚本会明说。
 
@@ -26,4 +26,5 @@ Status: implemented
 
 - 仅支持 Linux 与 macOS；Windows 继续走 npm 路径与手动检出。脚本为 bash 且从不提权：一切落在 `$HOME` 之下。
 - 启动器硬编码检出路径，移动 `ALEGO_SRC_DIR` 意味着重新运行安装器。
+- 每次运行都从零重新构建，因为清理步骤同样会移除现存包的构建产物。
 - 已在干净前缀上端到端验证：匿名克隆公开仓库、frozen 安装、完整构建，并通过写出的启动器运行 `alego --version`。
