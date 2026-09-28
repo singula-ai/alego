@@ -162,6 +162,8 @@ class LocalSendOperation implements TerminalSendOperation {
   private cancellationRequested = false
   private initialForegroundLeftWait: boolean
   private initialForegroundPgid: number | undefined
+  /** Terminal data chunk count at the latest accepted stdin wait, cleared by any poll without one. */
+  private stdinWaitChunks: number | undefined
 
   constructor(
     maxBytes: number,
@@ -226,6 +228,21 @@ class LocalSendOperation implements TerminalSendOperation {
     return waiting && this.initialForegroundLeftWait
   }
 
+  /**
+   * Record an accepted stdin wait at the current terminal data count.
+   * @param chunks - terminal data chunks received so far.
+   * @returns true when the previous poll also accepted a wait and no terminal data arrived since.
+   */
+  confirmStdinWait(chunks: number): boolean {
+    const confirmed = this.stdinWaitChunks === chunks
+    this.stdinWaitChunks = chunks
+    return confirmed
+  }
+
+  resetStdinWait(): void {
+    this.stdinWaitChunks = undefined
+  }
+
   cancel(): boolean {
     if (this.finished) return false
     this.cancellationRequested = true
@@ -265,6 +282,8 @@ export class LocalPtySession implements TerminalBackendSession {
   private shellPgid: number | undefined
   private initializing = false
   private lastOutputAt = Date.now()
+  /** Terminal data chunks received, including chunks the sanitizer reduces to no text. */
+  private terminalChunks = 0
   private closing = false
   private closePromise: Promise<void> | undefined
   private transportFailure: Error | undefined
@@ -482,6 +501,7 @@ export class LocalPtySession implements TerminalBackendSession {
   }
 
   private readonly onTerminalData = (chunk: Buffer | Uint8Array | string): void => {
+    this.terminalChunks += 1
     const bytes = typeof chunk === 'string' ? Buffer.from(chunk, 'utf8') : chunk
     const data = this.decoder.decode(bytes, { stream: true })
     this.queueEmulatorData(data)
@@ -584,8 +604,15 @@ export class LocalPtySession implements TerminalBackendSession {
       const acceptsStdinWait = !operation.requireControlledPrompt && startupHasOutput && foreground !== undefined
         && operation.acceptsStdinWait(foreground.processGroupId, foreground.inputWaiting)
       if (elapsed >= this.config.exactProbeAfterMs && acceptsStdinWait) {
-        this.settleActive('stdin_read')
-        return
+        // The foreground wrote its output before blocking on stdin, but the last bytes can still be
+        // unread in the PTY when this poll runs. The event loop's I/O phase runs before the next
+        // poll, so settle only when a later poll observes the wait with no terminal data since.
+        if (operation.confirmStdinWait(this.terminalChunks)) {
+          this.settleActive('stdin_read')
+          return
+        }
+      } else {
+        operation.resetStdinWait()
       }
       // A prompt candidate can race bash's foreground handoff, but an interactive
       // child also inherits PROMPT_COMMAND. Silence therefore remains the bound

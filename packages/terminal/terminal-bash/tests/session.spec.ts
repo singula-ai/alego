@@ -660,9 +660,44 @@ describe('LocalPtySession readiness and output', () => {
     expect(terminal.writes).toEqual(['python3\r'])
     inspector.pgid = 789
     terminal.emitData('Python\r\n>>> ')
-    await vi.advanceTimersByTimeAsync(20)
+    await vi.advanceTimersByTimeAsync(30)
     expect(await operation.done).toMatchObject({ waitReason: 'stdin_read', viewport: 'Python\n>>> ', sessionStatus: { kind: 'running' } })
     expect(operation.cancel()).toBe(false)
+  })
+
+  it('keeps output written before an exact stdin wait in the send that produced it', async () => {
+    vi.useFakeTimers()
+    const terminal = new FakeTerminal()
+    const inspector = new FakeInspector()
+    const session = makeSession(terminal, inspector, config())
+    await initialize(session, terminal)
+
+    const operation = session.startSend({ text: 'print many lines', submit: true })
+    await vi.advanceTimersByTimeAsync(0)
+    terminal.emitData('head\r\n')
+    await vi.advanceTimersByTimeAsync(10)
+    // By the first exact probe the command has written its tail and blocked on stdin, but the tail
+    // is still unread in the PTY, so it reaches the session only in the event loop's next I/O phase.
+    let tailUnread = true
+    inspector.isStdinWaiting = () => {
+      if (tailUnread) {
+        tailUnread = false
+        setImmediate(() => { terminal.emitData('tail\r\n') })
+      }
+      return true
+    }
+    // A caller issues its next command as soon as the send settles, before another I/O phase.
+    const successorStarted = operation.done.then(() => session.startSend({ text: 'echo next', submit: true }))
+    await vi.advanceTimersByTimeAsync(30)
+    const settled = await operation.done
+    expect(settled.waitReason).toBe('stdin_read')
+    expect(settled.viewport).toContain('head\ntail')
+
+    const successor = await successorStarted
+    terminal.emitData('next\r\n\x1b]133;D;0\x07alego> ')
+    await vi.advanceTimersByTimeAsync(10)
+    expect((await successor.done).viewport).toBe('next\nalego> ')
+    await session.close('buffered tail cleanup')
   })
 
   it('does not reuse a pre-write stdin wait as post-write readiness', async () => {
@@ -683,7 +718,7 @@ describe('LocalPtySession readiness and output', () => {
     await vi.advanceTimersByTimeAsync(10)
     expect(settled).toBe(false)
     inspector.waiting = true
-    await vi.advanceTimersByTimeAsync(10)
+    await vi.advanceTimersByTimeAsync(20)
     expect((await operation.done).waitReason).toBe('stdin_read')
   })
 
@@ -706,6 +741,8 @@ describe('LocalPtySession readiness and output', () => {
     await vi.advanceTimersByTimeAsync(10)
     inspector.waiting = true
     await vi.advanceTimersByTimeAsync(30)
+    expect(settled).toBe(false)
+    await vi.advanceTimersByTimeAsync(10)
     expect(settled).toBe(false)
     await vi.advanceTimersByTimeAsync(10)
     expect(settled).toBe(true)
