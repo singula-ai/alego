@@ -577,7 +577,7 @@ test('the publisher counts merged history through the production API path', asyn
     api: async (path, options) => {
       if (path.includes('/comments?')) return []
       if (path === '/graphql') {
-        assert.equal(options.body.variables.owner, 'alego')
+        assert.equal(options.body.variables.owner, 'singula-ai')
         return { data: { repository: { pullRequests: {
           nodes: Array.from({ length: 25 }, (_, i) => ({
             number: i + (options.body.variables.after ? 200 : 100), author: { id: event.pull_request.user.node_id },

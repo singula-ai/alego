@@ -1,8 +1,8 @@
 Usage: alego [--profile] <name> [options] [app-args...]
        alego plugin --profile <name> <pnpm-args...>
 
-alego: boot an Alego profile — an ordered stack of plugin-bundle patch
-layers under your own overrides.
+alego: boot an Alego profile — an ordered stack of plugin-bundle patch layers
+under your own overrides.
 
 Arguments:
   args                           arguments for the booted profile's app (see:

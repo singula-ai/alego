@@ -83,9 +83,9 @@
     "166d96cf5548261d768f2ca6566611cfed9b98c954cbf1abfb6349e5f6a1f16e": 1
   },
   "apps/web/tests/assembled-boot.ts": {
+    "01442c6c220945f560598d401563530a7fd9fc2305c62ebed55b7d1720a66c0e": 1,
     "203f87d9e4f18ce1f00bf575fe96f724975341cbb67b8c51ea45d4cbb8e60005": 1,
-    "56cede35ce34488cdae4b19aec217c9c939377eb891fe68827fbd64cd019170c": 1,
-    "fda84896a47e7f9d046fcd7e10e9096c8b002bc5f1ea0c7753e57abe87528dea": 1
+    "56cede35ce34488cdae4b19aec217c9c939377eb891fe68827fbd64cd019170c": 1
   },
   "apps/web/tests/onboarding-deepseek-config.e2e.ts": {
     "326597b335539db945b2e3b7c86638d40849d2077c0a5670d064e45486f4e407": 2
@@ -385,7 +385,7 @@
     "2e78263d16d54ccfd8d322bcdf1bf738bd8134e15c24063ece9a1d1b52f4ebd9": 1
   },
   "packages/bundle/web-app/tests/document-conversion.e2e.ts": {
-    "743a7488a765c578e607d08ba6bdcf6f2f2971f67b05a42d5097aad2458134a1": 1
+    "c0e8312071e8a254b60629ea980f3ab155831cd1f3e02c9f706d0b8d5fc49ced": 1
   },
   "packages/bundle/web-app/tests/document-preview.spec.ts": {
     "154da39139a0074bad3d13a624e5fa62d1f7ce19dc8b9c28a73af3263cd7f10e": 1
@@ -654,8 +654,8 @@
     "85f4d0d762126e709ae2178ca656f586dac1ba425eb1d8dd402cb5577d6e8225": 1
   },
   "packages/client/ui-settings-plugin-inventory/tests/components.client.spec.tsx": {
-    "0d78ec7c8ca39f70a4033ff4d330f8ef26832bb89932f98d1c87d76b4ce16d00": 1,
-    "79c53da50aa08004e201cebca842267ae2650a543b435a7906960f6492c2398b": 1,
+    "0b823405f0095681b74d9b2da36b92b6478c606dc305b8d8ca94d434c2286dcc": 1,
+    "414fff80f1ba58d80dc57df83c920d34b4796c9e848231fc30a652ba50f5c1f1": 1,
     "a3c1509d552d0102e118f3071a234002a5c83c30ca6923f8a87e9e3733ce0dcf": 1
   },
   "packages/client/ui-settings/tests/schema.client.spec.ts": {
@@ -678,8 +678,8 @@
     "fb9804cc2774409af6935d5a1369497b433c34cd9305cac88e3400eae0f70936": 1
   },
   "packages/client/ui-sidebar-documentpreview/tests/pdf-body.client.spec.tsx": {
-    "6061de0a1e01547eb1abf9d4e1b5fa79fda112fa35dda980775491123413dcce": 1,
-    "daaeb704a25654054557bac941f940572d4259209a3a942e3c361a1ff2804ca9": 1
+    "06e0a0b327e5efdfd8786afa485f9024fe83180d9cb696f805705ca12cba9af1": 1,
+    "6061de0a1e01547eb1abf9d4e1b5fa79fda112fa35dda980775491123413dcce": 1
   },
   "packages/client/ui-sidebar-documentpreview/tests/pdf-document.client.spec.ts": {
     "09acce5c2c2785f021136cb1c978ffa5f510a8ef67fab5b0631c7827eef39e24": 1,
@@ -838,7 +838,7 @@
     "9dae2342b022f2c9c7f61de694191cf5e0be290723a4e1235c603a7a78c6d4ca": 1
   },
   "packages/compaction/compaction-tool-result-pruner/tests/loader-composition.spec.ts": {
-    "cf608c9b27ee8323dcd5ca6261251861abf5243d4f61896effb2e7e765d14759": 1
+    "6fb641b5f1344925295f5616e3fbd029ac5dcd5481f3e95dd103732efceb329f": 1
   },
   "packages/compaction/compaction/tests/compaction.spec.ts": {
     "6517a00893f4956fa1670426a26a1e2e6e7fe21136e82bf1b42731394998f221": 1
@@ -1058,7 +1058,7 @@
     "d80a3368311f07e812a76ff265125b072175f58b6003d9f96a37d4f3e70e3dec": 1
   },
   "packages/credentials/credentials-local/tests/drain.spec.ts": {
-    "a96f4a3497a1c661f76e47ef5fda3c32d2759a7a5f9c519527fa46801a91bf79": 1
+    "0ea8449b446becb4494be700f3dd39cb4d8efdcf56e645078e6a2c026abea6a6": 1
   },
   "packages/credentials/credentials-local/tests/watcher.spec.ts": {
     "6dfe702b6cb8848eeb1d56c5af6ff723d84841aaa1d96790295db4ed70616c65": 1
@@ -1356,7 +1356,7 @@
     "52e6bc7e2a6c58a465a5e1c7a1e92caa4f771235b19ebf4642df5c0845de72aa": 1
   },
   "packages/jobs/jobs-local/tests/loader-composition.spec.ts": {
-    "6dc45d44a978dd86bb9ac2c9baf5d31aed699055698709e09bb34e99150e239d": 1
+    "d818df833ffc971147e7128cd0440454698b272f1cf10cc76e3618e1aaade49b": 1
   },
   "packages/jobs/tool-jobs/src/index.ts": {
     "64ab5463fdb068e88a33f022baff473b7a0da77854c4ecf8e26412763d6dccf6": 1
@@ -1412,9 +1412,9 @@
     "7fe58280287ff63d40e979e72329f975e11015a95e9a8eec207a5a78748d3c89": 1
   },
   "packages/llm/llm/tests/content.spec.ts": {
-    "04959370a75f3f9a892c22d75f197644c1a0e3294dc26f7ad1c348f2f03b6c9a": 1,
     "621ac96176adb0beeb705154dd3c14fc91307f028e84b58e6e4435ba79cb1fcc": 1,
-    "a6a6bf47476c1f30f147aeb8fbb36748074a2313224094621e1b5a4528aa7ed6": 1
+    "a6a6bf47476c1f30f147aeb8fbb36748074a2313224094621e1b5a4528aa7ed6": 1,
+    "d1aa6238ae2688b76e79a85c8fa3324a4021298bfdfea0295dc66fc9095b4023": 1
   },
   "packages/llm/llm/tests/retry-policy.spec.ts": {
     "8b01166e4fd19d967aafe6db1830bfbd7623073becaa6a0ef68cbf4f6df60126": 1,
@@ -1795,9 +1795,9 @@
     "50ac027a8a646160d7f7f539375421b31a9aa3da906d9a6be03222aaa8cb029a": 1
   },
   "packages/shell/shell-env/tests/shell-env.spec.ts": {
-    "014c444306e31df9dc3346c26a12100e5f0653fd49275d8b07079cb3b8909628": 1,
+    "0ba093baee650bc47574dad850f52c5f71a7bc0c1b13e0d4e2347f9a4e8fd99b": 1,
     "5d098ecf1fa4d0ea3cf3889de5cdedfca2c219051ba3925c1b4d9ec25b8eaea3": 1,
-    "c77441f56443f3297573e49d7beb18437b69e5041fc5f4f9ec056e30d0d34adf": 1
+    "f905b2bb0171e3df32f5549d1c1f43b3b90ae65ee5e57def48007163fa083f29": 1
   },
   "packages/shell/tool-bash-persistent/tests/loader-composition.spec.ts": {
     "59c63f734e8bba862325f776e3fcbebd78a84cfb4161f8df41c216950d9bf351": 1
@@ -1838,7 +1838,7 @@
     "52faf4558fcd91bd27dbdfa7e497843e8eeb75ea5f68ee231335018d5b3f2053": 2
   },
   "packages/spill/spill-local/tests/loader-composition.spec.ts": {
-    "a1bc71cd51432754ad8ccc5a1d1cb7f764e8e423d46f685bee8715b79bd2df04": 1
+    "4c3ecb1a0d67b243faaf5dc92821014b582205701dc8b09351362a3a42f12c19": 1
   },
   "packages/spill/spill-policy/tests/spill-policy.spec.ts": {
     "454b667cdac6de305d79d51ef853272212a80166952a84385c7c915f595ae0a6": 1
@@ -1866,6 +1866,10 @@
     "daa15206e19d6a8fbae646d678889b2e6933ece824e48dd06c95d2096861d5c1": 2,
     "ea9ae2bf5224204cbf222eccd26cd385ed84a3843e48c47452597d36a616ae65": 1,
     "f77e5cbd2d2d911087f7faecc4b0b5bffdfb44ca5d0bcf7823ba9777feca7799": 2
+  },
+  "packages/subagent/subagent-alego-sdk/tests/subagent-alego-sdk.spec.ts": {
+    "daa15206e19d6a8fbae646d678889b2e6933ece824e48dd06c95d2096861d5c1": 2,
+    "f77e5cbd2d2d911087f7faecc4b0b5bffdfb44ca5d0bcf7823ba9777feca7799": 1
   },
   "packages/subagent/subagent-claude-code/tests/real-deepseek.e2e.ts": {
     "dee4487a97778a2383f1b378d59b3dae098152273d956dc360f23c69680fe0ea": 1
@@ -1896,10 +1900,6 @@
     "101af668daf0fb9a7df21757c781ed58f7cf6770a1f5021a5da4ce58080c1f5f": 1,
     "aa1a9402165afaeb270967390b13cae2a59916bc52f13b4f600315d7a0fe2032": 1,
     "fa05a5e504ed74b5a07cb6281c787b507eb6c44db768803f4dad034dd69cb3b9": 1
-  },
-  "packages/subagent/subagent-alego-sdk/tests/subagent-alego-sdk.spec.ts": {
-    "daa15206e19d6a8fbae646d678889b2e6933ece824e48dd06c95d2096861d5c1": 2,
-    "f77e5cbd2d2d911087f7faecc4b0b5bffdfb44ca5d0bcf7823ba9777feca7799": 1
   },
   "packages/subagent/subagent-in-process-driver/src/structured.ts": {
     "2994ddac72096564a65b1d11cfe50c5b5f21de0cca775ed7b758d031b9a4df99": 1
@@ -2021,16 +2021,16 @@
     "f5b7ed19aea21153c86ef4e2596f39d1b667b3b8a1d1ba2b2a2a95bf90869b58": 1
   },
   "packages/terminal/terminal-bash/tests/index.spec.ts": {
-    "2878860b606c2614696f97227e4e580a65b1ae1680b6261f233163cd8b838ee0": 1,
+    "06eb71ff8d0abca333e391a47b1e2e70115a25a74bcdc09703b0b76fc6943b39": 1,
     "30c8c859832405858e95a7de1493488b75a9030e3baa8fcaf3647e071bd5bbf1": 1,
+    "365ea82d17850a582d93d3a794588cfe3d966a49e0f6ac8b712ba854b7eecb6e": 1,
     "6d3dc24d166f2c9d373b869b5e9810906741932830e4b7f695014bc121e6ab24": 1,
-    "9112a2d5c1256fa954c76768f4135294dd6a6a4ffd13871fab2e54d90a894e90": 1,
     "9890d3018d70b3a93d39d6c12b2a56c3011e77d38cd6b34919e93ba526360c6e": 2,
-    "9f84551b52cab038fe0cb49c70862fcd68d5008c8f32d8f43b8c6bfaea694f66": 1,
     "ad770543b1406f728aa6a91fc8ede6bf3a6b6a2b76b32870151d77ffd28c6711": 1,
     "b33f57d0f6305110b507b0caa10a49574fa86ed9fcd41992e6a7b9aec8db9769": 1,
     "b35ecf6f26fe1f37a664a8845e319f31d8e53a954f8fa0b882cbca3bbef70f15": 1,
-    "cd1ee4add9efb17e75b8490177dbe86cb0c4de4d5db404650376de3841be180a": 1
+    "cd1ee4add9efb17e75b8490177dbe86cb0c4de4d5db404650376de3841be180a": 1,
+    "ef1e309332f4d3656bddcf6f5eeeff904303ff95569e5102197497f029c25f65": 1
   },
   "packages/terminal/terminal-bash/tests/session.spec.ts": {
     "18212835b0bf110a8b3694aa4ddc90a710b10321ee133aeaeaa86c305642a474": 1,
