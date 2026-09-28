@@ -5,8 +5,8 @@
 #
 # Clones the repository, installs dependencies with the pinned pnpm, builds the
 # runtime and Web UI, and writes an `alego` launcher into a bin directory.
-# Re-running updates the checkout and rebuilds; local changes inside the
-# managed checkout are discarded on update.
+# Re-running updates the checkout, removes the previous build output, and
+# rebuilds; local changes inside the managed checkout are discarded on update.
 #
 # Environment overrides:
 #   ALEGO_SRC_DIR  checkout directory       (default: ~/.alego-src)
@@ -66,6 +66,10 @@ fi
 
 info "installing dependencies (pnpm install --frozen-lockfile)"
 pnpm -C "$SRC_DIR" install --frozen-lockfile
+# An update keeps ignored build output, including the lib/ trees of packages the
+# fetched revision deleted; the workspace bundler would still build those.
+info "removing previous build output (pnpm run clean)"
+pnpm -C "$SRC_DIR" run clean
 info "building the runtime and Web UI (pnpm run build) — this takes a few minutes"
 pnpm -C "$SRC_DIR" run build
 
