@@ -1,6 +1,61 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/session/session-telemetry-otel/README.md
-README.md: 4c6a8206933b8f42bf7cfea3759c4c0e1e516f9d
-README.zh.md: 0ac502e4b792915bc33321bba2b1989657a65353
+/:
+  en: 356614b4af1ad375
+  zh: f76a068b5f056574
+/singula-ai-alego-session-telemetry-otel:
+  en: 55ee23edb382fe0f
+  zh: f55877e4c2095103
+/singula-ai-alego-session-telemetry-otel/summary:
+  en: 426d747627bbdcc5
+  zh: 42dd20b7d08e51a7
+/singula-ai-alego-session-telemetry-otel/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-session-telemetry-otel/use-this-package:
+  en: 9b82f2819ddaa3f4
+  zh: b6ad90b11e7e0ef7
+/singula-ai-alego-session-telemetry-otel/use-this-package/modes:
+  en: 85d5865d8ba4808b
+  zh: 83ec50f5ebdcf373
+/singula-ai-alego-session-telemetry-otel/use-this-package/minimal-configuration:
+  en: 11845fd50dc0a494
+  zh: ee990bfca3621bd3
+/singula-ai-alego-session-telemetry-otel/use-this-package/what-leaves-the-machine:
+  en: 3800313a5165d08a
+  zh: 955acfa4a3c9c7dd
+/singula-ai-alego-session-telemetry-otel/use-this-package/failures-and-shutdown:
+  en: a66831cb9de57e04
+  zh: 3ada28bb868e0932
+/singula-ai-alego-session-telemetry-otel/understand-the-implementation:
+  en: ee672a6a6f0fa02d
+  zh: c3bab8e6b60e768c
+/singula-ai-alego-session-telemetry-otel/understand-the-implementation/design-concept:
+  en: 34f8a88224a1f6cf
+  zh: 40839dabaea39602
+/singula-ai-alego-session-telemetry-otel/understand-the-implementation/source-map:
+  en: 0b99d2e5c27213cd
+  zh: 3cbdaa7f6a45d81a
+/singula-ai-alego-session-telemetry-otel/understand-the-implementation/capture-wiring:
+  en: 5c85eb0992eb5b2b
+  zh: a19cdd5814c0e2b9
+/singula-ai-alego-session-telemetry-otel/understand-the-implementation/field-mapping:
+  en: a42e9e081fb93bee
+  zh: b8e817c2455278b9
+/singula-ai-alego-session-telemetry-otel/further-exploration:
+  en: d61b8b91b892d2b9
+  zh: aa29462a361e85f0
+/singula-ai-alego-session-telemetry-otel/model-experience:
+  en: a5a1c890ddacd9a9
+  zh: 019c0d113e141853
+/singula-ai-alego-session-telemetry-otel/model-experience/kv-cache-effect:
+  en: 7593cf5d0d2cedd6
+  zh: f57cc48a1b5cbfa9
+/singula-ai-alego-session-telemetry-otel/known-limitations-and-deferred-work:
+  en: e43087aea7af4c9e
+  zh: f8b529e2012b4c63
+/singula-ai-alego-session-telemetry-otel/known-limitations-and-deferred-work/dev-note:
+  en: 0065df2648b09ac9
+  zh: b5bac41fc3aec70e

@@ -1,6 +1,313 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for tool-catalog.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/tool-catalog.md
-tool-catalog.md: 5a7b7c63deae90ccf5a96dadd3f9689b993d7244
-tool-catalog.zh.md: 2145403bf2c10c5a6fce055742c6f510e2f8640a
+/:
+  en: 0be8ffbf23193557
+  zh: ce2c69aa86875171
+/tool-schema-catalog:
+  en: 1f1517e033aa02ce
+  zh: 95d7a2557de6e559
+/tool-schema-catalog/tool-package-map:
+  en: 6cc918f826a65464
+  zh: fab610b76e6b83b0
+/tool-schema-catalog/singula-ai-alego-plugin-manager:
+  en: bc7004e50b971e52
+  zh: bc7004e50b971e52
+/tool-schema-catalog/singula-ai-alego-plugin-manager/plugin-manager:
+  en: 2329476068e45d0c
+  zh: 636e254d3e47147d
+/tool-schema-catalog/singula-ai-alego-mcp-resources:
+  en: 6db8b76197e1a1dc
+  zh: 6db8b76197e1a1dc
+/tool-schema-catalog/singula-ai-alego-mcp-resources/list-mcp-resource-templates:
+  en: 96275ece9d040944
+  zh: 1fa9744642601ece
+/tool-schema-catalog/singula-ai-alego-mcp-resources/list-mcp-resources:
+  en: bf4236607199d61e
+  zh: 82f4f749dcabc89f
+/tool-schema-catalog/singula-ai-alego-mcp-resources/read-mcp-resource:
+  en: dded0256ef91356b
+  zh: 175916d9efd9837a
+/tool-schema-catalog/singula-ai-alego-experimental-browser-use-stagehand-native:
+  en: 4eda470e1ef54d96
+  zh: 4eda470e1ef54d96
+/tool-schema-catalog/singula-ai-alego-experimental-browser-use-stagehand-native/stagehand-act:
+  en: c4b27bf62c534dcc
+  zh: 70c53824ed57ac23
+/tool-schema-catalog/singula-ai-alego-experimental-browser-use-stagehand-native/stagehand-extract:
+  en: ec7462ab99848155
+  zh: 632fe0249040708e
+/tool-schema-catalog/singula-ai-alego-experimental-browser-use-stagehand-native/stagehand-navigate:
+  en: ef97f063a037a006
+  zh: 27727ccc908e007f
+/tool-schema-catalog/singula-ai-alego-experimental-browser-use-stagehand-native/stagehand-observe:
+  en: 2068f1baa0a59e1b
+  zh: 5743c7b33e2c5ccb
+/tool-schema-catalog/singula-ai-alego-experimental-browser-use-stagehand-native/stagehand-screenshot:
+  en: 4910ab327694ee97
+  zh: 17e79e4366cb636d
+/tool-schema-catalog/singula-ai-alego-experimental-browser-use-stagehand-native/stagehand-tabs:
+  en: c782f9bb6f409358
+  zh: ca3018470bd80ada
+/tool-schema-catalog/singula-ai-alego-tool-ask-user:
+  en: cc2e6ed95de9f7eb
+  zh: cc2e6ed95de9f7eb
+/tool-schema-catalog/singula-ai-alego-tool-ask-user/ask-user-question:
+  en: c3603dd456ea060c
+  zh: 7910103b2da586f3
+/tool-schema-catalog/singula-ai-alego-tools:
+  en: 7d309f0ec77304a4
+  zh: 7d309f0ec77304a4
+/tool-schema-catalog/singula-ai-alego-tools/run-code:
+  en: 8393949966c305b4
+  zh: 2d0b715feabf1e77
+/tool-schema-catalog/singula-ai-alego-plan-mode:
+  en: fae9c7f8b5ca4091
+  zh: fae9c7f8b5ca4091
+/tool-schema-catalog/singula-ai-alego-plan-mode/exit-plan-mode:
+  en: fbda147b88c524c9
+  zh: 84686b162494629d
+/tool-schema-catalog/singula-ai-alego-tool-bash:
+  en: 2e876545f1fd908e
+  zh: 2e876545f1fd908e
+/tool-schema-catalog/singula-ai-alego-tool-bash/bash:
+  en: 5a640aa449acb6c2
+  zh: 1d013558ed61cdeb
+/tool-schema-catalog/singula-ai-alego-tool-present:
+  en: d29b8f75ff85a3bb
+  zh: d29b8f75ff85a3bb
+/tool-schema-catalog/singula-ai-alego-tool-present/present:
+  en: 7132e8b1f5e76853
+  zh: f5ebe2b6945e8d4b
+/tool-schema-catalog/singula-ai-alego-tool-pwsh:
+  en: 4f0f9654c53dcbdd
+  zh: 4f0f9654c53dcbdd
+/tool-schema-catalog/singula-ai-alego-tool-pwsh/pwsh:
+  en: cfc4a7efd19cf2f6
+  zh: 6dda15eac8b3deb4
+/tool-schema-catalog/singula-ai-alego-tool-cordis:
+  en: 0d7f42f3a644597c
+  zh: 0d7f42f3a644597c
+/tool-schema-catalog/singula-ai-alego-tool-cordis/cordis-inspect-list:
+  en: 594e5b42047969cc
+  zh: 72189ca21345c210
+/tool-schema-catalog/singula-ai-alego-tool-cordis/cordis-inspect-query:
+  en: ec48722e9bc6ce85
+  zh: 824f3c4cbee89056
+/tool-schema-catalog/singula-ai-alego-tool-bash-persistent:
+  en: c63800df85b96dd2
+  zh: c63800df85b96dd2
+/tool-schema-catalog/singula-ai-alego-tool-bash-persistent/bash:
+  en: 56635f40bc481872
+  zh: f5a45513b08c224d
+/tool-schema-catalog/singula-ai-alego-tool-pwsh-persistent:
+  en: 2fb66432e7e48e0c
+  zh: 2fb66432e7e48e0c
+/tool-schema-catalog/singula-ai-alego-tool-pwsh-persistent/pwsh:
+  en: b901391639ff86cd
+  zh: 619231963650d553
+/tool-schema-catalog/singula-ai-alego-tool-str-replace-editor:
+  en: 3ca56cc62fa22ce8
+  zh: 3ca56cc62fa22ce8
+/tool-schema-catalog/singula-ai-alego-tool-str-replace-editor/str-replace-editor:
+  en: 2f65550ab8d14034
+  zh: 83457276d30d224e
+/tool-schema-catalog/singula-ai-alego-tool-fs:
+  en: 6416bedb7f9cdb90
+  zh: 6416bedb7f9cdb90
+/tool-schema-catalog/singula-ai-alego-tool-fs/edit:
+  en: 5b6a252adde51af6
+  zh: 7aa172a5d8b9cbd2
+/tool-schema-catalog/singula-ai-alego-tool-fs/read:
+  en: 94bfc5b03c63baef
+  zh: 339338a0e74696c3
+/tool-schema-catalog/singula-ai-alego-tool-fs/read-image:
+  en: f6f7a1140066ce04
+  zh: d528e01a0939795a
+/tool-schema-catalog/singula-ai-alego-tool-fs/write:
+  en: 0883dee61b0f524b
+  zh: 4573ee3af7ddc68a
+/tool-schema-catalog/singula-ai-alego-tool-fs-search:
+  en: 80aa763cda671085
+  zh: 80aa763cda671085
+/tool-schema-catalog/singula-ai-alego-tool-fs-search/glob:
+  en: 3ba734ba7852cdd5
+  zh: c6ce31ff2c195520
+/tool-schema-catalog/singula-ai-alego-tool-fs-search/grep:
+  en: 8e258ccc5111e712
+  zh: 3927377957eb620a
+/tool-schema-catalog/singula-ai-alego-tool-terminal:
+  en: 22ada06093279e5e
+  zh: 22ada06093279e5e
+/tool-schema-catalog/singula-ai-alego-tool-terminal/terminal-close:
+  en: 6d6e428c866ac6c1
+  zh: 8033539fcdcb6e7b
+/tool-schema-catalog/singula-ai-alego-tool-terminal/terminal-list:
+  en: ae7d5bce32142aa5
+  zh: e956a650a5bf294b
+/tool-schema-catalog/singula-ai-alego-tool-terminal/terminal-open:
+  en: c542bd7f7e872441
+  zh: 14731de81780b518
+/tool-schema-catalog/singula-ai-alego-tool-terminal/terminal-read:
+  en: 6a7491d2436e4404
+  zh: 772ff408ec0a67e3
+/tool-schema-catalog/singula-ai-alego-tool-terminal/terminal-send:
+  en: e24ca8735dd59adb
+  zh: 24f7140a0aed0968
+/tool-schema-catalog/singula-ai-alego-tool-terminal/terminal-signal:
+  en: 19575594416b40e2
+  zh: 758b0a35149e40f4
+/tool-schema-catalog/singula-ai-alego-tool-goal:
+  en: 854ddd69141f3a8f
+  zh: 854ddd69141f3a8f
+/tool-schema-catalog/singula-ai-alego-tool-goal/create-goal:
+  en: 9ae877cdf8a641a3
+  zh: f83c3c09e80e4190
+/tool-schema-catalog/singula-ai-alego-tool-goal/get-goal:
+  en: 0b517f13dfde11fe
+  zh: b7ee7482e8ecde56
+/tool-schema-catalog/singula-ai-alego-tool-goal/update-goal:
+  en: 69499f295aa41b07
+  zh: 51cc4e15f5f774dd
+/tool-schema-catalog/singula-ai-alego-schedule:
+  en: 5eb10315f240db92
+  zh: 5eb10315f240db92
+/tool-schema-catalog/singula-ai-alego-schedule/schedule-create:
+  en: 0a10b5db8919d316
+  zh: 175d680a29f59b63
+/tool-schema-catalog/singula-ai-alego-schedule/schedule-delete:
+  en: cff096695f06e298
+  zh: 3d0063a1e529377f
+/tool-schema-catalog/singula-ai-alego-schedule/schedule-list:
+  en: d8543c8503d0947e
+  zh: fe7381bd1bce202f
+/tool-schema-catalog/singula-ai-alego-schedule/schedule-update:
+  en: c947ed03f2e9bef7
+  zh: ba22bafbbd9d5b02
+/tool-schema-catalog/singula-ai-alego-tool-lsp:
+  en: 27c72468305e7da3
+  zh: 27c72468305e7da3
+/tool-schema-catalog/singula-ai-alego-tool-lsp/lsp:
+  en: c4e396076cfd8daa
+  zh: 91f8147afdf49816
+/tool-schema-catalog/singula-ai-alego-tool-ralph:
+  en: fa552f4a97f67fde
+  zh: fa552f4a97f67fde
+/tool-schema-catalog/singula-ai-alego-tool-ralph/ralph:
+  en: 668332a4b99cf734
+  zh: 48553366bd333df3
+/tool-schema-catalog/singula-ai-alego-tool-skill:
+  en: e4662101aa564bb1
+  zh: e4662101aa564bb1
+/tool-schema-catalog/singula-ai-alego-tool-skill/skill:
+  en: c3e654c8076d79a1
+  zh: e5ebb7b9015078ae
+/tool-schema-catalog/singula-ai-alego-tool-session-query:
+  en: 6314de0060db4fe0
+  zh: 6314de0060db4fe0
+/tool-schema-catalog/singula-ai-alego-tool-session-query/session-event-read:
+  en: 6687105065ac3a5f
+  zh: 48b2f4d38536e4c7
+/tool-schema-catalog/singula-ai-alego-tool-session-query/session-event-search:
+  en: 41251b4cbe9af70d
+  zh: 8855a5f32b4720e5
+/tool-schema-catalog/singula-ai-alego-tool-session-query/session-event-trace:
+  en: 14b5ec05fa8c0932
+  zh: 3c85d44c13cc42c5
+/tool-schema-catalog/singula-ai-alego-tool-session-query/session-search:
+  en: 8263202c97568fc3
+  zh: 92067337294c7a00
+/tool-schema-catalog/singula-ai-alego-tool-session-query/session-trace:
+  en: 56065f6ff930ec37
+  zh: 9ee8eeb8ab357eb4
+/tool-schema-catalog/singula-ai-alego-tool-subagent:
+  en: 811e23b2ed63bb15
+  zh: 811e23b2ed63bb15
+/tool-schema-catalog/singula-ai-alego-tool-subagent/list-subagent-models:
+  en: c89084b31ffccbce
+  zh: d7b3b7000f2d2be9
+/tool-schema-catalog/singula-ai-alego-tool-subagent/subagent:
+  en: b6d017700ff983c3
+  zh: f4cdd5eec7fb8d3f
+/tool-schema-catalog/singula-ai-alego-tool-subagent-control:
+  en: c767f9e4baef8712
+  zh: c767f9e4baef8712
+/tool-schema-catalog/singula-ai-alego-tool-subagent-control/interrupt-agent:
+  en: 0cec3f2520050839
+  zh: 06735f086cea84f1
+/tool-schema-catalog/singula-ai-alego-tool-subagent-control/list-agents:
+  en: ae22e8543d123c39
+  zh: 4943a5c5980fc2d3
+/tool-schema-catalog/singula-ai-alego-tool-subagent-control/send-message:
+  en: 966e1b2793abacc7
+  zh: f76b440e99570b07
+/tool-schema-catalog/singula-ai-alego-tool-jobs:
+  en: 14e42964a6b33366
+  zh: 14e42964a6b33366
+/tool-schema-catalog/singula-ai-alego-tool-jobs/job-kill:
+  en: 14294cc1988ae768
+  zh: 80a9152bdc02723f
+/tool-schema-catalog/singula-ai-alego-tool-jobs/job-list:
+  en: 0c37fb1fed979d72
+  zh: 5ea9d07f5a4a8a6c
+/tool-schema-catalog/singula-ai-alego-tool-jobs/job-output:
+  en: ecfb9684d62f4e38
+  zh: 97b219dd9d1d7de5
+/tool-schema-catalog/singula-ai-alego-experimental-tool-agent-team:
+  en: 9c0f7862d8983a45
+  zh: 9c0f7862d8983a45
+/tool-schema-catalog/singula-ai-alego-experimental-tool-agent-team/interrupt-agent:
+  en: c3c7af05ceb9f8c9
+  zh: ec379e0b42110c6a
+/tool-schema-catalog/singula-ai-alego-experimental-tool-agent-team/list-agents:
+  en: f9457f033f75f00a
+  zh: a2d60ec44118c34c
+/tool-schema-catalog/singula-ai-alego-experimental-tool-agent-team/send-message:
+  en: e99455aec4656ff2
+  zh: a8f88ec35cfe38b8
+/tool-schema-catalog/singula-ai-alego-experimental-tool-agent-team/spawn-teammate:
+  en: 02d6cc746e234b99
+  zh: 49bc60ac098bca48
+/tool-schema-catalog/singula-ai-alego-experimental-tool-agent-team/team-task-create:
+  en: 91e84febe063c3bd
+  zh: 550555d0f44f603b
+/tool-schema-catalog/singula-ai-alego-experimental-tool-agent-team/team-task-get:
+  en: 1c6ae0aba0b8041d
+  zh: f8d634387b74121d
+/tool-schema-catalog/singula-ai-alego-experimental-tool-agent-team/team-task-list:
+  en: 2084d494aae8798a
+  zh: e4c136c91028a7b1
+/tool-schema-catalog/singula-ai-alego-experimental-tool-agent-team/team-task-update:
+  en: 2eac7360ba68b1bd
+  zh: b5d676bf288c245e
+/tool-schema-catalog/singula-ai-alego-experimental-tool-agent-team/wait-agent:
+  en: 3e4df48455aa12bf
+  zh: 6d7f63b6c76ef9a0
+/tool-schema-catalog/singula-ai-alego-tool-todo:
+  en: 208259139424ef3b
+  zh: 208259139424ef3b
+/tool-schema-catalog/singula-ai-alego-tool-todo/todo-write:
+  en: edecd55c058d3409
+  zh: 2160c3e8370e40f5
+/tool-schema-catalog/singula-ai-alego-tool-workflow:
+  en: 8038fd28d4ca2095
+  zh: 8038fd28d4ca2095
+/tool-schema-catalog/singula-ai-alego-tool-workflow/workflow:
+  en: b3ac635f585588d3
+  zh: 912f9e56e46e0864
+/tool-schema-catalog/singula-ai-alego-tool-workspace-dependencies:
+  en: a149c8890cb75f0a
+  zh: a149c8890cb75f0a
+/tool-schema-catalog/singula-ai-alego-tool-workspace-dependencies/load-workspace-dependencies:
+  en: e7d66a3f696d39bb
+  zh: 01330b9b9ba205ff
+/tool-schema-catalog/singula-ai-alego-tool-web:
+  en: c4f8f71088e0d84e
+  zh: c4f8f71088e0d84e
+/tool-schema-catalog/singula-ai-alego-tool-web/web-fetch:
+  en: 8673f203aea9bdf2
+  zh: 4e17783ffdf34c83
+/tool-schema-catalog/singula-ai-alego-tool-web/web-search:
+  en: cc1ad38bf0006710
+  zh: 324eacb827a09e93

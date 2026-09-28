@@ -16,14 +16,13 @@ import Include from '@singula-ai/cordis-plugin-include'
 import type { Agent } from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
-import AgentPresets from '@singula-ai/alego-agent-presets'
+import AgentPresets from '@singula-ai/alego-agent-preset-registry'
 import { SessionId } from '@singula-ai/alego-session'
 import { snapshotSubagentDescriptor } from '@singula-ai/alego-subagent'
 import { MockAdapter, textResponse } from '../../../core/agent-loop/tests/mock-adapter.ts'
 import { startInProcessRun } from '../src/index.ts'
 
 const FIXTURES = join(dirname(fileURLToPath(import.meta.url)), 'fixtures')
-const ROOTS = [{ path: join(FIXTURES, 'presets'), trust: 'system' as const }]
 
 const contexts: Context[] = []
 
@@ -40,7 +39,10 @@ async function setupPresetHost(): Promise<{ ctx: Context; adapter: MockAdapter; 
   ctx.loader.builtins.include = Include
   await mountAgentLoopTestDependencies(ctx)
   await ctx.plugin(AgentLoop, { agents: [] })
-  await ctx.plugin(AgentPresets, { default: 'coding', roots: ROOTS, includeShippedRoot: false, includeUserRoot: false })
+  await ctx.plugin(AgentPresets, { default: 'coding' })
+  for (const [id, tool] of [['coding', 'preset_only'], ['reviewing', 'reviewing_only']] as const) {
+    await ctx.agentPresets.register({ id, plugins: [{ name: pathToFileURL(join(FIXTURES, 'plugins/preset-tool.js')).href, config: { tool } }] })
+  }
   const adapter = new MockAdapter([textResponse('parent idle'), textResponse('child done')])
   ctx.llm.registerAdapter(['mock'], adapter)
   const handle = await ctx.agents.create({

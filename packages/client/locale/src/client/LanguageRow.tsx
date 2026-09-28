@@ -6,7 +6,7 @@
  */
 import { useState } from 'react'
 import type { PropsLocale, PropsRuntime, PropsStore } from '@singula-ai/alego-client-ui-slots'
-import { IconChevronDownOutline14, Menu } from '@singula-ai/alego-client-ui-primitives'
+import { IconChevronDownOutlineRegular, Menu } from '@singula-ai/alego-client-ui-primitives'
 import type {} from '@singula-ai/alego-client-ui-settings/client'
 import type { createLanguageRowStore } from './settings-store.ts'
 import css from './LanguageRow.module.css'
@@ -58,7 +58,7 @@ export function LanguageRow({ t, setLocale, useStore }: LanguageRowComponentProp
             onClick={() => { setOpen(v => !v) }}
           >
             {activeLabel}
-            <IconChevronDownOutline14 className={css.chevron} />
+            <IconChevronDownOutlineRegular className={css.chevron} />
           </button>
         )}
       />

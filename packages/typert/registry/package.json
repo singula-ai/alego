@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-typert-registry",
   "description": "Runtime registry for generated package reflection and Zod schemas",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -51,10 +51,10 @@
     "zod": "^4.4.3"
   },
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-typert-protocol": "workspace:^"
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-typert-protocol": "workspace:*"
   }
 }

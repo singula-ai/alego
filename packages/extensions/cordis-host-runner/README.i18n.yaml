@@ -1,6 +1,67 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/extensions/cordis-host-runner/README.md
-README.md: 98637c64dd718dff083d121e4d35ced60e678e76
-README.zh.md: 730a3f002e3b356969f4bf84084f1305658bcd7c
+/:
+  en: ac7eacf5f9b1e727
+  zh: 61461cb68f91fcce
+/singula-ai-alego-cordis-host-runner:
+  en: 86ea462d094026e6
+  zh: 787ac41e5dd34a49
+/singula-ai-alego-cordis-host-runner/summary:
+  en: 13e86b4a5784135a
+  zh: b60fcf2775696e04
+/singula-ai-alego-cordis-host-runner/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-cordis-host-runner/use-this-package:
+  en: bdaba8036acf80c9
+  zh: 2dd8f972c3023a8a
+/singula-ai-alego-cordis-host-runner/use-this-package/minimal-configuration:
+  en: bbdd4ee3f551d372
+  zh: ea677edc2ef41859
+/singula-ai-alego-cordis-host-runner/use-this-package/what-a-run-does:
+  en: a3c86c081974a710
+  zh: 180e1b7824c070d4
+/singula-ai-alego-cordis-host-runner/use-this-package/what-happens-to-definitions:
+  en: d1a8777f171d22bb
+  zh: 7f6aa4c2680557b1
+/singula-ai-alego-cordis-host-runner/use-this-package/trust-stance:
+  en: e8d0b0cb9aa4ba91
+  zh: 1d36ad8fabe86ab8
+/singula-ai-alego-cordis-host-runner/understand-the-implementation:
+  en: b0a536c0d00cbdb8
+  zh: 08e5d813aa6a612a
+/singula-ai-alego-cordis-host-runner/understand-the-implementation/design-philosophy:
+  en: 2193b1c446b388fc
+  zh: 6173e0e3e2df6812
+/singula-ai-alego-cordis-host-runner/understand-the-implementation/source-map:
+  en: f567eacc1072b96c
+  zh: 7f50499d9740f802
+/singula-ai-alego-cordis-host-runner/understand-the-implementation/how-a-run-flows:
+  en: 00896689d0163321
+  zh: 31a8e1264d950a7a
+/singula-ai-alego-cordis-host-runner/further-exploration:
+  en: eed166723f881928
+  zh: d4cefef6ae938916
+/singula-ai-alego-cordis-host-runner/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-cordis-host-runner/model-experience/run-outcomes-refusals-and-diagnostics-relayed-to-the-owning-session:
+  en: f53130bb645f50df
+  zh: 603361c566527789
+/singula-ai-alego-cordis-host-runner/model-experience/run-outcomes-refusals-and-diagnostics-relayed-to-the-owning-session/what-the-model-sees:
+  en: 743dbef78fa3a8ad
+  zh: 2aa4e404e908cf22
+/singula-ai-alego-cordis-host-runner/model-experience/run-outcomes-refusals-and-diagnostics-relayed-to-the-owning-session/token-effect:
+  en: c7ef63dd8179a97e
+  zh: e66545088d00956a
+/singula-ai-alego-cordis-host-runner/model-experience/run-outcomes-refusals-and-diagnostics-relayed-to-the-owning-session/kv-cache-effect:
+  en: bbc4338c3035757a
+  zh: f51f4848786d5606
+/singula-ai-alego-cordis-host-runner/known-limitations-and-deferred-work:
+  en: 1f10688ae249a077
+  zh: ab2ff597e1769b81
+/singula-ai-alego-cordis-host-runner/known-limitations-and-deferred-work/dev-note:
+  en: 8111315620c52980
+  zh: 261bf47eecf96bad

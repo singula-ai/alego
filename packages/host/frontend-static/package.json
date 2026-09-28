@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-host-frontend-static",
   "description": "SPA dist server for the Web shell: owns the webserver fallback seat, serving explicit index entries and static assets with traversal rejection and 404 misses",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,18 +27,18 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-host-webserver": "workspace:^",
-    "@singula-ai/alego-client-connection": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-host-webserver": "workspace:*",
+    "@singula-ai/alego-client-connection": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "dependencies": {
-    "@singula-ai/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis-plugin-loader": "workspace:^",
-    "@singula-ai/alego-client-connection": "workspace:^",
-    "@singula-ai/alego-credentials-local": "workspace:^",
-    "@singula-ai/alego-host-webserver": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/alego-client-connection": "workspace:*",
+    "@singula-ai/alego-credentials-local": "workspace:*",
+    "@singula-ai/alego-host-webserver": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

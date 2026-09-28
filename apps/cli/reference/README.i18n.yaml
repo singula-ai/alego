@@ -1,6 +1,31 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write apps/cli/reference/README.md
-README.md: a05ca072e44dad616100cb0acf72d3b3f2067d21
-README.zh.md: d9b98daccd582d0eb6e44d59834fad27d0c4ae1d
+/alego-cli-behavior-reference:
+  en: e6f471e23d274eb2
+  zh: 97d1a8e242c4dd8c
+/alego-cli-behavior-reference/profile-boot:
+  en: 5ac93d9677e917cc
+  zh: 4e72c2f716c75eb8
+/alego-cli-behavior-reference/profile-boot/app-arguments:
+  en: f16a365b995a61d9
+  zh: 316f4be1cfd450c6
+/alego-cli-behavior-reference/profile-boot/config-schema-dump:
+  en: edbdbb69642920de
+  zh: a7be0cb4d2ba7872
+/alego-cli-behavior-reference/startup-diagnostics:
+  en: 4865536b616a7ca1
+  zh: 5eb764a847c427d2
+/alego-cli-behavior-reference/plugin-management:
+  en: 290e8fb1bddac726
+  zh: 5db77be64e3e2012
+/alego-cli-behavior-reference/web-profile:
+  en: 7dcf6177d8609b7f
+  zh: 02141a6bcc15e63b
+/alego-cli-behavior-reference/shared-deployment-behavior:
+  en: e2e1e3a5f148203e
+  zh: c5572c8734127054
+/alego-cli-behavior-reference/source-execution:
+  en: 9d1ef96690f5ecfd
+  zh: 366d2d81cd64ad0d

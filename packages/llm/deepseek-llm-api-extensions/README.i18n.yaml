@@ -1,6 +1,31 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/llm/deepseek-llm-api-extensions/README.md
-README.md: 6a3044819e343b49d218a849ef2d2059fa5df5d3
-README.zh.md: a12b388a4edd26c7e3f9ec7da68fcd3442387dc1
+/:
+  en: 8805672f8507e16d
+  zh: 07696ec60f8d86e8
+/singula-ai-alego-deepseek-llm-api-extensions:
+  en: 23089912b2b81e0c
+  zh: f2ba0671ac1ef827
+/singula-ai-alego-deepseek-llm-api-extensions/summary:
+  en: 6799ac05e696ea17
+  zh: 66f280f8b3cc5754
+/singula-ai-alego-deepseek-llm-api-extensions/table-of-contents:
+  en: 6b7f62c318c9aad6
+  zh: 5e22d58884e60c87
+/singula-ai-alego-deepseek-llm-api-extensions/service:
+  en: 41c036fa1711a760
+  zh: ba1eb4c4eafb428e
+/singula-ai-alego-deepseek-llm-api-extensions/model-experience:
+  en: dfa665b54ffa9512
+  zh: b408f27be435530c
+/singula-ai-alego-deepseek-llm-api-extensions/model-experience/kv-cache-effect:
+  en: 83eb7f1e6ce80b45
+  zh: 516811171411ffca
+/singula-ai-alego-deepseek-llm-api-extensions/known-limitations-and-deferred-work:
+  en: 440169524f1a1323
+  zh: 935424afe40201b7
+/singula-ai-alego-deepseek-llm-api-extensions/known-limitations-and-deferred-work/dev-note:
+  en: 0718d089fcbe4223
+  zh: 5d6f73b7ecfe86ef

@@ -1,6 +1,76 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/interaction/commands/README.md
-README.md: cb637957912681c802f393950e51947625180b8d
-README.zh.md: 0e41d559568b505610458073d02e1d5a96a38591
+/:
+  en: d331b9706513154d
+  zh: 20e08461c498d058
+/singula-ai-alego-commands:
+  en: 454bff3422e3e8c1
+  zh: bbde3273942d578a
+/singula-ai-alego-commands/summary:
+  en: f79f58ae4b58d134
+  zh: a06102c4c5bc96be
+/singula-ai-alego-commands/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-commands/use-this-package:
+  en: 6eee80c31dad122b
+  zh: 8f261f844a22ddad
+/singula-ai-alego-commands/use-this-package/registering-a-command:
+  en: 81cefbf12580c26a
+  zh: 01c49d94aca89a07
+/singula-ai-alego-commands/use-this-package/command-syntax:
+  en: f9160436da4939e7
+  zh: 90af200afaf3bb4c
+/singula-ai-alego-commands/use-this-package/agent-scoped-commands:
+  en: b2e46875757e31c8
+  zh: 6f97db278fcbc58a
+/singula-ai-alego-commands/use-this-package/attachments:
+  en: 5239ef9c245c3a6b
+  zh: 34e2f89e4e7f5554
+/singula-ai-alego-commands/use-this-package/dispatching-from-an-adapter:
+  en: a5c6aecf74468137
+  zh: 5548d846d600d29a
+/singula-ai-alego-commands/use-this-package/cancellation:
+  en: ee26e9855ce39626
+  zh: 7c092436d03b84a9
+/singula-ai-alego-commands/understand-the-implementation:
+  en: 063b49f26f48d628
+  zh: 2ec899aa6f01359f
+/singula-ai-alego-commands/understand-the-implementation/source-map:
+  en: c0a1ffbf3bd434e7
+  zh: 6b0b5699d749e38f
+/singula-ai-alego-commands/understand-the-implementation/lifecycle-events:
+  en: c9fcc06089f8035d
+  zh: 74072476994a2093
+/singula-ai-alego-commands/understand-the-implementation/scoping:
+  en: d2d9d05bb5efbec4
+  zh: 85ab0abcf728c56d
+/singula-ai-alego-commands/understand-the-implementation/attachment-admission:
+  en: ee0efa5308dcf1e3
+  zh: da5a1d938301426c
+/singula-ai-alego-commands/further-exploration:
+  en: cbaf89b20d197a21
+  zh: 437f01620e4a83b9
+/singula-ai-alego-commands/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-commands/model-experience/direct-human-commands:
+  en: 47824d39a7117a5c
+  zh: 05fefe83ee7f8ad6
+/singula-ai-alego-commands/model-experience/direct-human-commands/what-the-model-sees:
+  en: 6973b55e4a476b9c
+  zh: 61dea6c5daee8ebd
+/singula-ai-alego-commands/model-experience/direct-human-commands/token-effect:
+  en: d212d42f4315c80c
+  zh: 433dd07e1a167f12
+/singula-ai-alego-commands/model-experience/direct-human-commands/kv-cache-effect:
+  en: a0683fff79d40075
+  zh: 3d14d36c8a640031
+/singula-ai-alego-commands/known-limitations-and-deferred-work:
+  en: 7e930763024d2644
+  zh: 351bbea360cab6d3
+/singula-ai-alego-commands/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

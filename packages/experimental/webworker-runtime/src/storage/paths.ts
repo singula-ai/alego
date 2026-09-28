@@ -13,7 +13,7 @@ export const ALEGO_HOME = `${ALEGO_ROOT}/home`
 /** Flat, symlink-free package tree resolved by the worker module loader. */
 export const ALEGO_NODE_MODULES = `${ALEGO_ROOT}/node_modules`
 
-/** Directory holding the composed cordis.yml and the agent-preset tree. */
+/** Directory holding the composed cordis.yml. */
 export const ALEGO_CONFIG = `${ALEGO_ROOT}/config`
 
 /** Default (empty) workspace directory. */

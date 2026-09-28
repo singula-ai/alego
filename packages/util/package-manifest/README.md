@@ -43,7 +43,7 @@ const manifest: AlegoPackageManifest = {
 }
 ```
 
-`AlegoPackageManifest` describes the package.json fields used by ALEGO, with required `name` and `version`; it is not an exhaustive npm schema. Local profile readers use `Partial<AlegoPackageManifest>` because profiles need no published version. `AlegoManifest` describes only public author fields under `alego`. TypeScript checks the example and erases `import type`; these interfaces do not parse JSON or write a file.
+`AlegoPackageManifest` describes the package.json fields used by ALEGO, with required `name` and `version`; it is not an exhaustive npm schema. Local profile readers use `Partial<AlegoPackageManifest>` because profiles need no published version. `AlegoManifest` describes only public author fields under `alego`. `AlegoBundleManifest.patch` is one patch file path or an ordered list of them, each relative to the package root; the launcher applies a list in order as one bundle layer. TypeScript checks the example and erases `import type`; these interfaces do not parse JSON or write a file.
 
 The following metadata fields are optional. Omitting them leaves the format version or compatible host versions undeclared; readers do not infer defaults.
 
@@ -51,6 +51,8 @@ The following metadata fields are optional. Omitting them leaves the format vers
 |---|---|
 | `alego.manifestVersion` | Manifest format identifier; the declared format is `1`, independent of the npm package version and Session format version. |
 | `engines.alego` | Author-declared compatible ALEGO versions as a SemVer range, including exact prerelease versions. This field sits beside `engines.node` and `engines.npm`; an engines object may omit `alego`. |
+
+`LocalizedText` carries literal text or a language map with a required English fallback. `PluginLocalizedMeta` carries optional display title, description, an image data URL resolved from `package.json.icon`, and metadata diagnostics for installed plugins. [App boot](../../boot/app-boot/README.md) reads these values; this package only supplies their types.
 
 Public composition declarations are defined in [`src/types.ts`](src/types.ts). Internal `configTrees`, `sessionFormatMigration`, and generated `moduleFallback` metadata remain owned by their image-packer, catalog, and launcher readers; the public types do not expose them.
 

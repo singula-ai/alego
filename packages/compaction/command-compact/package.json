@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-command-compact",
   "description": "Human-facing slash command for explicit session compaction",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,18 +27,18 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-commands": "workspace:^",
-    "@singula-ai/alego-compaction": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-commands": "workspace:*",
+    "@singula-ai/alego-compaction": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis-plugin-include": "workspace:^",
-    "@singula-ai/cordis-plugin-loader": "workspace:^",
-    "@singula-ai/alego-agent": "workspace:^",
-    "@singula-ai/alego-commands": "workspace:^",
-    "@singula-ai/alego-compaction": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/alego-session": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis-plugin-include": "workspace:~",
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-commands": "workspace:*",
+    "@singula-ai/alego-compaction": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

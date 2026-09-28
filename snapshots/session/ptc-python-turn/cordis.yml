@@ -1,4 +1,4 @@
-# Private Python PTC composition: replace the headless worker provider through
+# Python PTC composition: replace the Node provider through
 # the real Loader and render the generated Python SDK prompt.
 - id: agent-default-model
   name: '@singula-ai/alego-agent-default-model'
@@ -22,12 +22,18 @@
   config:
     mode: ptc
 
-- id: code-runtime
+- id: ptc-runtime
+  disabled: true
+
+- id: workflow-ptc
+  disabled: true
+
+- id: tool-workflow
   disabled: true
 
 - insert:
-    - id: code-runtime-python
-      name: '@singula-ai/alego-experimental-code-runtime-python'
+    - id: ptc-runtime-python
+      name: '@singula-ai/alego-experimental-ptc-runtime-python'
 
 - id: system-prompt
   name: '@singula-ai/alego-system-prompt'

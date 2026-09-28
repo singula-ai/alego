@@ -1,0 +1,44 @@
+{
+  "name": "@singula-ai/alego-tool-workspace-dependencies",
+  "description": "The load_workspace_dependencies tool: absolute paths into a bundled Python, Node.js, and pnpm payload",
+  "version": "0.1.7-rc.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/skill/tool-workspace-dependencies"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
+  },
+  "devDependencies": {
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/cordis-plugin-include": "workspace:~",
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-system-prompt": "workspace:*"
+  },
+  "dependencies": {
+    "@singula-ai/schemastery": "workspace:~"
+  }
+}

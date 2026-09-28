@@ -1,0 +1,4 @@
+- alert: 本页面的插件未能完成同步；服务端的启用状态保持不变。
+- list:
+  - listitem: "@singula-ai/alego-client-modules: Error: client-modules: replacing bootstrap module @singula-ai/alego-client-modules requires a page reload"
+- button "重试本页面同步"

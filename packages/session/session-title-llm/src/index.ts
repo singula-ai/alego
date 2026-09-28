@@ -7,6 +7,13 @@
 import type { Context } from '@singula-ai/cordis'
 import z from '@singula-ai/schemastery'
 import { createUserMessage, BlockAssembler } from '@singula-ai/alego-llm'
+import type { ContextFormed } from '@singula-ai/alego-llm'
+declare module '@singula-ai/alego-llm' {
+  interface MessageSourceMap {
+    'alego-session-title-llm': { kind: 'alego-session-title-llm' } & ContextFormed
+  }
+}
+
 import type { FinishReason, GenerateOptions, Message } from '@singula-ai/alego-llm'
 import { deadline, MAX_TIMER_DELAY_MS } from '@singula-ai/alego-timeout'
 import { deepFreeze } from '@singula-ai/alego-util-values'
@@ -17,7 +24,7 @@ import {
 } from '@singula-ai/alego-session-title'
 import type {
   SessionTitleAutomaticMode,
-  SessionTitleModelProvenance,
+  SessionTitleModelIdentity,
   SessionTitleProviderRequest,
   SessionTitleProviderResult,
   SessionTitleUserMessage,
@@ -30,7 +37,7 @@ export interface SessionTitleLlmRequestEventData {
   /** Exact human `user/message` seqs represented in `messages`. */
   readonly messageSeqs: SessionSeq[]
   /** Exact auxiliary LLM route. */
-  readonly route: SessionTitleModelProvenance
+  readonly route: SessionTitleModelIdentity
   /** Exact auxiliary system prompt. */
   readonly system: string
   /** Exact auxiliary message list. */
@@ -174,7 +181,7 @@ export function registerSessionTitleLlmProvider(
 function resolveRoute(
   config: ResolvedSessionTitleLlmConfig,
   request: SessionTitleProviderRequest,
-): SessionTitleModelProvenance {
+): SessionTitleModelIdentity {
   if (config.provider !== undefined && config.model !== undefined) {
     return { provider: config.provider, model: config.model }
   }
@@ -247,7 +254,7 @@ export async function generateSessionTitleWithLlm(
   const route = resolveRoute(config, request)
   const messages: Message[] = [createUserMessage({
     content: [{ type: 'text', text: framedInput }],
-    source: { kind: 'plugin', plugin: 'alego-session-title-llm' },
+    source: { kind: 'alego-session-title-llm' },
   })]
   const system = systemPrompt(config)
   using callDeadline = deadline(request.signal, config.timeoutMs, SESSION_TITLE_TIMEOUT_CODE)

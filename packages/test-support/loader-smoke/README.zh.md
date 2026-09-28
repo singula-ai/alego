@@ -29,7 +29,7 @@ kind: "package-library"
 
 ### 启动应用 fixture
 
-`runLoaderSmoke` 接受可执行文件与配置路径、可选的完整可执行文件参数、环境覆盖、标准输入、运行前准备与清理前检查。它负责隔离工作目录、ALEGO 主目录、诊断、截止时间、终止、EOF 与清理；进程以零状态退出后返回两个流，失败时则拒绝并附带两个流：
+`runLoaderSmoke` 接受可执行文件与配置路径、可选的完整可执行文件参数、环境覆盖、标准输入、运行前准备与清理前检查。它负责隔离工作目录、ALEGO 主目录、诊断、截止时间、终止、EOF 与清理（只清理自己创建的 cwd，调用方自带的 cwd 原样保留）；进程以零状态退出后返回两个流，失败时则拒绝并附带两个流：
 
 ```text
 const result = await runLoaderSmoke({
@@ -41,11 +41,11 @@ const result = await runLoaderSmoke({
 })
 ```
 
-当场景固定一个设计好的失败面——即一次性轮次以错误结果结束——时设置 `expectedExitCode`；以任何其他方式退出（包括成功退出）都会使冒烟测试失败。
+源码 smoke 测试支持的 `alego` 启动器时，设置 `sourceImport: 'tsx/esm'`；built 模式忽略此选项。当场景固定一个设计好的失败面——即一次性轮次以错误结果结束——时设置 `expectedExitCode`；以任何其他方式退出（包括成功退出）都会使冒烟测试失败。
 
 ### 测试交付 profile
 
-Profile 集成 driver 使用仅限仓库内部的 `tests/fixtures/production-profile.ts` helper。它通过 `loadProfile` 加载指定的已交付 profile 及其组合包 patch，协调处理 profile 的模块回退，然后把组合包 patch 与测试 `*.patch.yml` 文件依次交给 `boot` 挂载的根 `cordis:include`。这些 patch 应只包含测试提供方或模型、隔离持久化路径及被测对象专用变更。只需要 agent loop（智能体循环）而不测试 profile 集成的包级单元测试改为在本地挂载 `alego-agent-loop-testkit`。
+Profile 集成 driver 使用仅限仓库内部的 `tests/fixtures/production-profile.ts` helper。它通过 `loadProfile` 加载指定的已交付 profile 及其组合包 patch，计算 runtime resolution，并通过 `PluginPackages` 安装它，然后把组合包 patch 与测试 `*.patch.yml` 文件依次交给 `boot` 挂载的根 `cordis:include`。这些 patch 应只包含测试提供方或模型、隔离持久化路径及被测对象专用变更。只需要 agent loop 而不测试 profile 集成的包级单元测试改为在本地挂载 `alego-agent-loop-testkit`。
 
 ### 驱动 fixture 轮次
 
@@ -73,7 +73,7 @@ Profile 集成 driver 使用仅限仓库内部的 `tests/fixtures/production-pro
 
 ### 设计
 
-harness 建立在一个分离之上：冒烟测试在隔离世界中的子进程里运行，测试进程只观察与断言。`runLoaderSmoke` 创建临时 cwd、在那里准备世界状态、以隔离的 ALEGO 主目录（临时 cwd 下的 `ALEGO_HOME`、`ALEGO_AGENTS_HOME`）spawn 解析出的可执行文件、立即关闭 stdin，并在截止时间内等待干净退出，然后在每种结果下都执行检查与清理。`runFixtureTurn` 留在进程内运行：它查找组合中的唯一根 agent，从持久收件箱收到任务起持续跟踪，直至整个 agent 完全停稳；随后汇总每步用量，并在返回前刷写会话。
+harness 建立在一个分离之上：冒烟测试在隔离世界中的子进程里运行，测试进程只观察与断言。`runLoaderSmoke` 创建临时 cwd（或复用调用方提供的 cwd）、在那里准备世界状态、以隔离的 ALEGO 主目录（该 cwd 下的 `ALEGO_HOME`、`ALEGO_AGENTS_HOME`）spawn 解析出的可执行文件、立即关闭 stdin，并在截止时间内等待干净退出，然后在每种结果下都执行检查，且只删除自己创建的 cwd。`runFixtureTurn` 留在进程内运行：它查找组合中的唯一根 agent，从持久收件箱收到任务起持续跟踪，直至整个 agent 完全停稳；随后汇总每步用量，并在返回前刷写会话。
 
 ### 源码地图
 

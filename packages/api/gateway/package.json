@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-api-gateway",
   "description": "Typert Remote Host dispatcher and Client API endpoint",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,7 +27,11 @@
       "default": "./lib/types/types.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./stream-protocol": {
+      "types": "./lib/types/stream-protocol.d.ts",
+      "default": "./lib/types/stream-protocol.js"
+    }
   },
   "alego": {
     "client": {
@@ -51,23 +55,26 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@singula-ai/alego-deque": "workspace:^",
-    "@singula-ai/alego-timeout": "workspace:^",
-    "@singula-ai/schemastery": "workspace:^",
+    "@singula-ai/alego-deque": "workspace:*",
+    "@singula-ai/alego-timeout": "workspace:*",
+    "@singula-ai/schemastery": "workspace:~",
     "ws": "^8.21.0",
-    "@singula-ai/alego-typert-protocol": "workspace:^"
+    "@singula-ai/alego-typert-protocol": "workspace:*"
   },
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-client-connection": "workspace:*"
   },
   "devDependencies": {
-    "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-client-connection": "workspace:^",
-    "@singula-ai/alego-host-webserver": "workspace:^",
-    "@singula-ai/alego-typert-registry": "workspace:^",
-    "@singula-ai/alego-util-crypto": "workspace:^",
+    "@singula-ai/alego-brand": "workspace:*",
+    "@singula-ai/alego-cmdline": "workspace:*",
+    "@singula-ai/alego-client-connection": "workspace:*",
+    "@singula-ai/alego-host-webserver": "workspace:*",
+    "@singula-ai/alego-remote-mock": "workspace:*",
+    "@singula-ai/alego-typert-registry": "workspace:*",
+    "@singula-ai/alego-util-crypto": "workspace:*",
     "@types/ws": "^8.18.1",
-    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/cordis": "workspace:~",
     "zod": "^4.4.3"
   }
 }

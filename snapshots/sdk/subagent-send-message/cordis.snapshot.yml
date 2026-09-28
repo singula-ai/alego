@@ -1,7 +1,7 @@
 # Keyless counterpart to subagent-send-message/cordis.yml: replace the live adapter
 # with replay and preserve its child and parent scheduling fence.
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   disabled: true
 
 - id: agent-default-model

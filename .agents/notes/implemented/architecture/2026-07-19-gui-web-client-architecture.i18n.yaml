@@ -1,6 +1,40 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-19-gui-web-client-architecture.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-19-gui-web-client-architecture.md
-2026-07-19-gui-web-client-architecture.md: 63550257382a5ce818a0168813d33b553e732198
-2026-07-19-gui-web-client-architecture.zh.md: 1427e97d7b71ae6a2458c3a8e00a1edb0d0d06d2
+/agent-note-web-client-architecture-the-client-cordis-plugin-tree-the-slot-system-and-the-react-free-object-layer:
+  en: 9e83f0b073cd3693
+  zh: fce263065776bb0a
+/agent-note-web-client-architecture-the-client-cordis-plugin-tree-the-slot-system-and-the-react-free-object-layer/problem:
+  en: c5a3dda6ccd57c9e
+  zh: 122307b113bb1c09
+/agent-note-web-client-architecture-the-client-cordis-plugin-tree-the-slot-system-and-the-react-free-object-layer/decision:
+  en: 29742775aee9fbc3
+  zh: 54a2df8816e2ea2e
+/agent-note-web-client-architecture-the-client-cordis-plugin-tree-the-slot-system-and-the-react-free-object-layer/the-client-cordis-tree-and-the-loading-chain:
+  en: 5f89ecf72369b413
+  zh: 33f2475a3564b41b
+/agent-note-web-client-architecture-the-client-cordis-plugin-tree-the-slot-system-and-the-react-free-object-layer/the-slot-system-how-the-page-composes:
+  en: a9973f1359055e15
+  zh: 3bbd79350508928f
+/agent-note-web-client-architecture-the-client-cordis-plugin-tree-the-slot-system-and-the-react-free-object-layer/services-and-scope-addressing:
+  en: db168a5bf6a48f18
+  zh: 334b1bdf0a3abc2a
+/agent-note-web-client-architecture-the-client-cordis-plugin-tree-the-slot-system-and-the-react-free-object-layer/the-data-object-layer-packages-api-session-controller-src-client:
+  en: 539c4a08bf3e8728
+  zh: d8604091394ed082
+/agent-note-web-client-architecture-the-client-cordis-plugin-tree-the-slot-system-and-the-react-free-object-layer/the-react-face-packages-client-ui-renderer:
+  en: c4e486a98aab1bca
+  zh: 93ca505c4cc88f66
+/agent-note-web-client-architecture-the-client-cordis-plugin-tree-the-slot-system-and-the-react-free-object-layer/directory-shape:
+  en: 74c45680c8aab51c
+  zh: fd431ae5d3656038
+/agent-note-web-client-architecture-the-client-cordis-plugin-tree-the-slot-system-and-the-react-free-object-layer/how-to-develop:
+  en: aee0c5e4142f0044
+  zh: 9601b1a846732eb0
+/agent-note-web-client-architecture-the-client-cordis-plugin-tree-the-slot-system-and-the-react-free-object-layer/consequences:
+  en: 56a9086da5783306
+  zh: 8147576101d22aa0
+/agent-note-web-client-architecture-the-client-cordis-plugin-tree-the-slot-system-and-the-react-free-object-layer/alternatives-considered:
+  en: 8bedf2e688b14322
+  zh: 7cda12f7474832ee

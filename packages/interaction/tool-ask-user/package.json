@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-tool-ask-user",
   "description": "Model-facing ask_user_question tool over the ctx.userQuestions seam",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,17 +27,17 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-agent": "workspace:^",
-    "@singula-ai/alego-tools": "workspace:^",
-    "@singula-ai/alego-user-questions": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/alego-user-questions": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-agent": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/alego-system-prompt": "workspace:^",
-    "@singula-ai/alego-tools": "workspace:^",
-    "@singula-ai/alego-user-questions": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-system-prompt": "workspace:*",
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/alego-user-questions": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

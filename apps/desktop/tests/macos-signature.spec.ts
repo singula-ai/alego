@@ -1,10 +1,3 @@
-import { mkdtempSync, rmSync } from 'node:fs'
-import { tmpdir } from 'node:os'
-import { join, relative } from 'node:path'
-import { createRequire } from 'node:module'
-import { FileMatcher } from 'app-builder-lib/out/fileMatcher.js'
-import { runtimeFixture } from './runtime-fixture.ts'
-import { verifyDesktopRuntime } from '../src/runtime-tree.ts'
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 import type { NotarizeOptions } from '@electron/notarize'
 import {
@@ -18,13 +11,10 @@ import {
   assertMacOSSignatureDetails,
 } from '../scripts/verify-macos-signature.mjs'
 
-// app-builder-lib omits this internal copier from its declarations; the regression exercises its actual file filter.
-const { copyFiles } = createRequire(import.meta.url)('app-builder-lib/out/fileMatcher.js') as {
-  copyFiles: (matchers: FileMatcher[]) => Promise<void>
-}
-
 const RELEASE_ENVIRONMENT = {
   ALEGO_DESKTOP_APP_ID: 'com.example.desktop',
+  ALEGO_DESKTOP_MANDATORY_UPDATE_TEST_ORIGIN: 'https://policy.example.com',
+  ALEGO_DESKTOP_MANDATORY_UPDATE_CONFIG: JSON.stringify({ allowedAuthOrigins: ['https://login.example.com'] }),
   ALEGO_DESKTOP_TARGET_PLATFORM: 'darwin',
   ALEGO_DESKTOP_TARGET_ARCH: 'arm64',
   ALEGO_DESKTOP_MACOS_SIGNING_IDENTITY: 'Example Company (TEAMID1234)',
@@ -32,7 +22,7 @@ const RELEASE_ENVIRONMENT = {
   APPLE_API_KEY: '/private/credentials/AuthKey_TEST123456.p8',
   APPLE_API_KEY_ID: 'TEST123456',
   APPLE_API_ISSUER: '11111111-2222-3333-4444-555555555555',
-  DOWNLOAD_TEST_ORIGIN: 'https://desktop-updates.example.com',
+  DOWNLOAD_TEST_ORIGIN: 'https://desktop-updates.example.com', DOWNLOAD_TEST_RELEASE_ID: '0123456789abcdef0123456789abcdef',
 }
 
 function portablePath(value: string): string {
@@ -51,19 +41,31 @@ describe('desktop macOS release signature', () => {
   it('loads release identifiers from the environment and requires code signing', async () => {
     const { createElectronBuilderConfig } = await import('../electron-builder.config.mjs')
     const config = createElectronBuilderConfig(RELEASE_ENVIRONMENT, 'darwin', 'arm64')
+    expect(config.protocols).toEqual([{ name: 'Alego', schemes: ['alego'] }])
     expect(portablePath(config.directories.output)).toContain('/.desktop-build/targets/mac-arm64/artifacts')
-    expect(config.extraResources).toHaveLength(3)
+    expect(config.mac.extendInfo.NSMicrophoneUsageDescription).toContain('microphone')
+    expect(config.extraResources).toHaveLength(2)
     expect(config.extraResources[0]?.to).toBe('runtime')
-    expect(config.extraResources[1]?.to).toBe('alego')
     expect(portablePath(config.extraResources[0]?.from ?? '')).toContain('/.desktop-build/targets/mac-arm64/runtime')
-    expect(portablePath(config.extraResources[1]?.from ?? '')).toContain('/.desktop-build/targets/mac-arm64/alego')
+    const [alegoFiles, alegoNodeModules] = config.files.slice(-2)
+    if (!alegoFiles || !alegoNodeModules || typeof alegoFiles === 'string' || typeof alegoNodeModules === 'string') {
+      throw new Error('desktop ALEGO resources must use electron-builder file mappings')
+    }
+    expect(portablePath(alegoFiles.from)).toContain('/.desktop-build/targets/mac-arm64/alego')
+    expect(alegoFiles.to).toBe('alego')
+    expect(portablePath(alegoNodeModules.from)).toContain('/.desktop-build/targets/mac-arm64/alego/node_modules')
+    expect(alegoNodeModules.to).toBe('alego/node_modules')
+    expect(config.asarUnpack).toEqual(expect.arrayContaining([
+      '**/*.{node,dylib,dll,so,exe}',
+      '**/@vscode/ripgrep-*/bin/rg',
+    ]))
     expect(config).toMatchObject({
       appId: RELEASE_ENVIRONMENT.ALEGO_DESKTOP_APP_ID,
       mac: {
         identity: RELEASE_ENVIRONMENT.ALEGO_DESKTOP_MACOS_SIGNING_IDENTITY,
         forceCodeSigning: true,
         notarize: true,
-        signIgnore: ['/Contents/Resources/alego(?:/|$)', '\\.pak$'],
+        signIgnore: ['/Contents/Resources/app\\.asar\\.unpacked/alego(?:/|$)', '/Contents/Resources/runtime/primary-runtime(?:/|$)', '\\.pak$'],
       },
       dmg: {
         sign: true,
@@ -71,7 +73,8 @@ describe('desktop macOS release signature', () => {
       },
       publish: [{
         provider: 'generic',
-        url: 'https://desktop-updates.example.com/_/alego/desktop/stable/mac-arm64/',
+        url: 'https://desktop-updates.example.com/alego-desk/0123456789abcdef0123456789abcdef/feeds/mac-arm64/',
+        channel: 'nightly',
       }],
     })
     expect(typeof config.artifactBuildCompleted).toBe('function')
@@ -92,30 +95,12 @@ describe('desktop macOS release signature', () => {
     ]) expect(ignored(path)).toBe(false)
   })
 
-  it('copies the complete runtime despite electron-builder excluding root node_modules', async () => {
-    const { createElectronBuilderConfig } = await import('../electron-builder.config.mjs')
-    const config = createElectronBuilderConfig(RELEASE_ENVIRONMENT, 'darwin', 'arm64')
-    const root = mkdtempSync(join(tmpdir(), 'desktop-resource-copy-'))
-    try {
-      const source = join(root, 'source')
-      const destination = join(root, 'resources')
-      runtimeFixture(source)
-      const sourceRoot = config.extraResources[1].from
-      const matchers = config.extraResources.slice(1).map(entry => new FileMatcher(
-        join(source, relative(sourceRoot, entry.from)), join(destination, entry.to), value => value,
-      ))
-      await copyFiles(matchers.slice(0, 1))
-      await expect(verifyDesktopRuntime(join(destination, 'alego'), '1.0.0')).rejects.toThrow(/ENOENT/u)
-      rmSync(destination, { recursive: true })
-      await copyFiles(matchers)
-      await expect(verifyDesktopRuntime(join(destination, 'alego'), '1.0.0')).resolves.toMatchObject({ release: { version: '1.0.0' } })
-    } finally { rmSync(root, { recursive: true, force: true }) }
-  })
-
   it('validates Windows signing without requiring macOS identifiers for a Windows target', async () => {
     const { createElectronBuilderConfig } = await import('../electron-builder.config.mjs')
     expect(() => createElectronBuilderConfig({
       ALEGO_DESKTOP_APP_ID: RELEASE_ENVIRONMENT.ALEGO_DESKTOP_APP_ID,
+      ALEGO_DESKTOP_MANDATORY_UPDATE_TEST_ORIGIN: 'https://policy.example.com',
+      ALEGO_DESKTOP_MANDATORY_UPDATE_CONFIG: JSON.stringify({ allowedAuthOrigins: ['https://login.example.com'] }),
       ALEGO_DESKTOP_TARGET_PLATFORM: 'win32',
     }, 'win32')).toThrow(/ALEGO_DESKTOP_WINDOWS_CER_FILE/u)
   })
@@ -124,6 +109,8 @@ describe('desktop macOS release signature', () => {
     const { createElectronBuilderConfig } = await import('../electron-builder.config.mjs')
     const config = createElectronBuilderConfig({
       ALEGO_DESKTOP_APP_ID: RELEASE_ENVIRONMENT.ALEGO_DESKTOP_APP_ID,
+      ALEGO_DESKTOP_MANDATORY_UPDATE_TEST_ORIGIN: 'https://policy.example.com',
+      ALEGO_DESKTOP_MANDATORY_UPDATE_CONFIG: JSON.stringify({ allowedAuthOrigins: ['https://login.example.com'] }),
       ALEGO_DESKTOP_TARGET_PLATFORM: 'win32',
       ALEGO_DESKTOP_UNSIGNED: '1',
     }, 'win32', 'x64')

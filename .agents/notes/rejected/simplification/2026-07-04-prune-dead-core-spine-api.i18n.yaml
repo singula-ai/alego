@@ -1,6 +1,25 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-04-prune-dead-core-spine-api.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/rejected/simplification/2026-07-04-prune-dead-core-spine-api.md
-2026-07-04-prune-dead-core-spine-api.md: 4b7e66e53ac62d3e5a38ae3bf68bbbda9028410f
-2026-07-04-prune-dead-core-spine-api.zh.md: 4fcff7be7a23ea4efa917974c66e3f63735efda8
+/agent-note-prune-dead-public-api-and-result-fields:
+  en: 58b330d9a71b979a
+  zh: e53b6a9ac5d1aa05
+/agent-note-prune-dead-public-api-and-result-fields/problem:
+  en: 277564591633536c
+  zh: ddfbc0231a04b51d
+/agent-note-prune-dead-public-api-and-result-fields/problem/grouped-helper-export-inventory:
+  en: 64b7cee4ec1c8f32
+  zh: 8413470f7f5eef59
+/agent-note-prune-dead-public-api-and-result-fields/proposal:
+  en: 414aca8de0a22c38
+  zh: 9458a8db0cea11e7
+/agent-note-prune-dead-public-api-and-result-fields/alternatives-considered:
+  en: e8eecc41540c8d67
+  zh: 60110bcdfaba5dad
+/agent-note-prune-dead-public-api-and-result-fields/acceptance-criteria:
+  en: ef426fe8180fdfe8
+  zh: 7e7f4cdb5d2ce655
+/agent-note-prune-dead-public-api-and-result-fields/risks:
+  en: c88948f52999d392
+  zh: 3b1b98c54d082ae1

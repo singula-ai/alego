@@ -1,6 +1,67 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/storage/storage/README.md
-README.md: 066f73a7e2e77e1afb04d01d699d89c737bacf89
-README.zh.md: b051b9bf98dc846aa72a2336bb950c12cbd29f8c
+/:
+  en: 8f04de41fc5df74d
+  zh: 966708180702ef43
+/singula-ai-alego-storage:
+  en: 94c0f9d67af47e3a
+  zh: d1588be5c61e9dc5
+/singula-ai-alego-storage/summary:
+  en: 7c5609e874012864
+  zh: 3faf8726d5aad165
+/singula-ai-alego-storage/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-storage/use-this-package:
+  en: 1328892ee0bc22ed
+  zh: a49eab5e48a7e70b
+/singula-ai-alego-storage/use-this-package/when-to-use-it:
+  en: 6e4ea48645af5d26
+  zh: cfe3e192216030d1
+/singula-ai-alego-storage/use-this-package/a-minimal-composition:
+  en: ba65985b88975008
+  zh: fa039e9bb77a66e1
+/singula-ai-alego-storage/use-this-package/what-you-get:
+  en: 240ae33969a3b666
+  zh: e9efb4a5d9a599e2
+/singula-ai-alego-storage/use-this-package/failures-and-recovery:
+  en: 85739a991b3ff5fc
+  zh: 2a8776196600a8af
+/singula-ai-alego-storage/understand-the-implementation:
+  en: c0990f4e7806a4c4
+  zh: 5250e7b6a80653a4
+/singula-ai-alego-storage/understand-the-implementation/design-concept:
+  en: bbdc4833afb85dad
+  zh: 7494de01d5a4aecf
+/singula-ai-alego-storage/understand-the-implementation/the-backend-contract:
+  en: 28b6c4e8efb4ffd1
+  zh: 4726c72b925c333f
+/singula-ai-alego-storage/understand-the-implementation/source-map:
+  en: dc862f7fc6c02d10
+  zh: 4600aeb07e2fdd4f
+/singula-ai-alego-storage/further-exploration:
+  en: 3c689cc7663172fd
+  zh: b4cb1f952a0dac0a
+/singula-ai-alego-storage/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-storage/model-experience/backend-and-form-registrations:
+  en: 28a0394f484bf87b
+  zh: 9a08192ffdbb8ac3
+/singula-ai-alego-storage/model-experience/backend-and-form-registrations/what-the-model-sees:
+  en: fda1261c4b916ad3
+  zh: f8f4974cbf427621
+/singula-ai-alego-storage/model-experience/backend-and-form-registrations/token-effect:
+  en: 5b83ac7ce1ea1346
+  zh: 04b7d01da48ec90d
+/singula-ai-alego-storage/model-experience/backend-and-form-registrations/kv-cache-effect:
+  en: 5126a2c239cb5913
+  zh: 0869bc380ea1dc1a
+/singula-ai-alego-storage/known-limitations-and-deferred-work:
+  en: 5462228bbc34ae70
+  zh: b3cc2863eb1a8d06
+/singula-ai-alego-storage/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

@@ -1,0 +1,67 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/skill/tool-workspace-dependencies/README.md
+/:
+  en: e562521af5095c9b
+  zh: f879f7db6ee3c2b9
+/singula-ai-alego-tool-workspace-dependencies:
+  en: 59f0a24a561c051f
+  zh: b2ff50fb2da45cf7
+/singula-ai-alego-tool-workspace-dependencies/summary:
+  en: 564382de2022c781
+  zh: 22657ad5d2c8efd2
+/singula-ai-alego-tool-workspace-dependencies/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 43ad67236ccda19a
+/singula-ai-alego-tool-workspace-dependencies/use-this-package:
+  en: 911b4e97ab23864c
+  zh: 704a568c07266190
+/singula-ai-alego-tool-workspace-dependencies/use-this-package/minimal-configuration:
+  en: 97b1f99b4e9c2569
+  zh: bf6c6ce74073413f
+/singula-ai-alego-tool-workspace-dependencies/use-this-package/payload-layout:
+  en: e7459b466f9a54df
+  zh: 3fcd9b222df09206
+/singula-ai-alego-tool-workspace-dependencies/use-this-package/build-a-carrier-payload:
+  en: 3efc08232e83dd29
+  zh: 2eca0281df769c1a
+/singula-ai-alego-tool-workspace-dependencies/understand-the-implementation:
+  en: 6483ea7f648cf57f
+  zh: 772c40e5cbed21f7
+/singula-ai-alego-tool-workspace-dependencies/further-exploration:
+  en: 9148bb933ee8cbf3
+  zh: 0d0f60f805679b00
+/singula-ai-alego-tool-workspace-dependencies/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-tool-workspace-dependencies/model-experience/tool-schema:
+  en: e4c7376d4f29dbd5
+  zh: 6b7a9eaf69c9ea53
+/singula-ai-alego-tool-workspace-dependencies/model-experience/tool-schema/what-the-model-sees:
+  en: 344b1755238da006
+  zh: a4ef3616f6e109cc
+/singula-ai-alego-tool-workspace-dependencies/model-experience/tool-schema/token-effect:
+  en: 615cce9c7fcb746d
+  zh: 6b9f58e263a38d61
+/singula-ai-alego-tool-workspace-dependencies/model-experience/tool-schema/kv-cache-effect:
+  en: 4ee92571a5f8a71a
+  zh: 6fa2a5b21b9f0150
+/singula-ai-alego-tool-workspace-dependencies/model-experience/tool-result:
+  en: f8ffc2b983f05ffc
+  zh: 8573891441963be4
+/singula-ai-alego-tool-workspace-dependencies/model-experience/tool-result/what-the-model-sees:
+  en: c25c9db51e7d06da
+  zh: a4cdcd37bd501503
+/singula-ai-alego-tool-workspace-dependencies/model-experience/tool-result/token-effect:
+  en: 0efada793d1e65b1
+  zh: 3eed908f43174b88
+/singula-ai-alego-tool-workspace-dependencies/model-experience/tool-result/kv-cache-effect:
+  en: 42325f307b6c259d
+  zh: d53a45f1c00ba16f
+/singula-ai-alego-tool-workspace-dependencies/known-limitations-and-deferred-work:
+  en: 8aeacc5404854231
+  zh: 43d970fa23ac2473
+/singula-ai-alego-tool-workspace-dependencies/known-limitations-and-deferred-work/dev-note:
+  en: fde820e12e629517
+  zh: b2665606ca8d142c

@@ -1,6 +1,40 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-04-task-surface.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/proposed/feature/2026-08-04-task-surface.md
-2026-08-04-task-surface.md: 3aef8666f88550ea2045f513deeee3cc7e2582ca
-2026-08-04-task-surface.zh.md: 595dbf6bc4664dcf9dd2caea705ac3ac05ea27c9
+/agent-note-task-surface-for-structured-session-interaction:
+  en: faa8ca971b800a19
+  zh: e9599aa98ba481ec
+/agent-note-task-surface-for-structured-session-interaction/problem:
+  en: a4c96dae864a027e
+  zh: 432e6de734832966
+/agent-note-task-surface-for-structured-session-interaction/proposal:
+  en: 7f8d02649159a3a6
+  zh: f63982864b6ad943
+/agent-note-task-surface-for-structured-session-interaction/declarative-model:
+  en: 9650ef8f65049b7d
+  zh: c0925b701a6b681c
+/agent-note-task-surface-for-structured-session-interaction/tool-and-presentation-contract:
+  en: d333922d90d38390
+  zh: 7432f520f3816ea3
+/agent-note-task-surface-for-structured-session-interaction/submission-contract:
+  en: 480c434bc0825063
+  zh: bbcace61f8d82188
+/agent-note-task-surface-for-structured-session-interaction/lifecycle-and-recovery:
+  en: df3d8eeb2f59d7f1
+  zh: d26aa7ebe9ba9099
+/agent-note-task-surface-for-structured-session-interaction/package-boundaries-and-dependencies:
+  en: 02aad87dd24d822f
+  zh: 9d49b5fa588e5e11
+/agent-note-task-surface-for-structured-session-interaction/delivery-stages:
+  en: 25d0951356cf412d
+  zh: 994619aaab7c2348
+/agent-note-task-surface-for-structured-session-interaction/alternatives-considered:
+  en: 121ceb5920763980
+  zh: 7d7c1576faf4f331
+/agent-note-task-surface-for-structured-session-interaction/acceptance-criteria:
+  en: e5db6c885617dd5d
+  zh: 0a54a00d2a195bfb
+/agent-note-task-surface-for-structured-session-interaction/risks:
+  en: 84a297fcdef9aaad
+  zh: a9ce38547d650e55

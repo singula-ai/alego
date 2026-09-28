@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-08-browser-gif-evidence-chain.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-08-08-browser-gif-evidence-chain.md
-2026-08-08-browser-gif-evidence-chain.md: 440cd704a70e408868e9102876fca7ca8c0555e1
-2026-08-08-browser-gif-evidence-chain.zh.md: a3fc53ba74458a2f8994bccf8851ec503c0535d0
+/agent-note-browser-gifs-preserve-one-evidence-chain:
+  en: f025ce0bab5a19af
+  zh: d389adacc109d51e
+/agent-note-browser-gifs-preserve-one-evidence-chain/problem:
+  en: 427edb924ca3106e
+  zh: 2115278719f9fd25
+/agent-note-browser-gifs-preserve-one-evidence-chain/decision:
+  en: 1bad321a352fff02
+  zh: e4c807e9b1de2607
+/agent-note-browser-gifs-preserve-one-evidence-chain/alternatives-considered:
+  en: 7c8b16109ffaf01a
+  zh: d978945c49912639
+/agent-note-browser-gifs-preserve-one-evidence-chain/consequences:
+  en: 18e112842a2a0ac8
+  zh: bb562ffcbd660b83

@@ -1,4 +1,4 @@
-/** Pure history responses shared by the local Remote fake and assembled Session tests. */
+/** Pure history response builders for assembled Session tests. */
 import { SESSION_FORMAT_VERSION } from '@singula-ai/alego-session/types'
 import type {
   SessionAssistantStreamBaseline, SessionFollowFrame, SessionFollowRequest, SessionPage, SessionProjectionBaseline,

@@ -1,6 +1,85 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/compaction/compaction/README.md
-README.md: c6d9ba8dd22124a6739b325649d1740e99fde43b
-README.zh.md: fa61576fb7a29ac5290b57a0efa0744a161a7466
+/:
+  en: 5c47c9629036f119
+  zh: 7730d7468a38b38d
+/singula-ai-alego-compaction:
+  en: 5fd0c8ea47ce0485
+  zh: c52f4ed9ce3fe398
+/singula-ai-alego-compaction/summary:
+  en: 27edb7614a1d50c2
+  zh: cde31ff852037497
+/singula-ai-alego-compaction/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-compaction/use-this-package:
+  en: 7d1dad97626dbd2e
+  zh: 075fef4e1844ad12
+/singula-ai-alego-compaction/use-this-package/when-to-choose-it:
+  en: c3178901e4b7e93e
+  zh: 9dcebd2eadefb6bf
+/singula-ai-alego-compaction/use-this-package/what-condensation-looks-like:
+  en: 0abbee3a3b929a90
+  zh: 334736dffe93488d
+/singula-ai-alego-compaction/use-this-package/turning-condensation-on:
+  en: 994af15b23279b59
+  zh: 6e48a452a54327e9
+/singula-ai-alego-compaction/use-this-package/implementing-a-backend:
+  en: 631b6793c4b384e2
+  zh: bfbddfa32be98886
+/singula-ai-alego-compaction/use-this-package/recognizing-condensed-history:
+  en: 35502487f2850f05
+  zh: 333d2b86cc1d6eb0
+/singula-ai-alego-compaction/understand-the-implementation:
+  en: 321c3dc665ea03ff
+  zh: f0fa408cde7b0454
+/singula-ai-alego-compaction/understand-the-implementation/design-philosophy:
+  en: 4b4ce818dd693394
+  zh: 720ac1b70d02563a
+/singula-ai-alego-compaction/understand-the-implementation/service-api:
+  en: 4af0d718a18d2c22
+  zh: 80c5a7e923d78747
+/singula-ai-alego-compaction/understand-the-implementation/manual-failure-taxonomy:
+  en: 7f498ef00aed57fe
+  zh: a7598763f3327904
+/singula-ai-alego-compaction/understand-the-implementation/tool-pairing-boundaries:
+  en: 15dad68a04d6c86b
+  zh: 3b95acf1b7e503bf
+/singula-ai-alego-compaction/understand-the-implementation/the-surface-contract:
+  en: 4ef9a54502db96d3
+  zh: 55939e3ea8b76caa
+/singula-ai-alego-compaction/understand-the-implementation/source-map:
+  en: 121139cf1878d7cf
+  zh: f8f9d8d3eb9866b5
+/singula-ai-alego-compaction/understand-the-implementation/locking-and-serialization:
+  en: 68caa51bed28bada
+  zh: 3f8261f9dcba95ed
+/singula-ai-alego-compaction/understand-the-implementation/events:
+  en: b9be9d301283d828
+  zh: 0083bb7a8562f9a4
+/singula-ai-alego-compaction/further-exploration:
+  en: a68d8e2a42a58804
+  zh: 6cf8477f67aefdac
+/singula-ai-alego-compaction/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-compaction/model-experience/conversation-history-when-a-backend-is-invoked:
+  en: 94de97ed1e85db85
+  zh: c8e37d8050609e63
+/singula-ai-alego-compaction/model-experience/conversation-history-when-a-backend-is-invoked/what-the-model-sees:
+  en: 3c4875a13da17814
+  zh: 9b257950a9e2c7c1
+/singula-ai-alego-compaction/model-experience/conversation-history-when-a-backend-is-invoked/token-effect:
+  en: be91f4a4bbb9338b
+  zh: 2b5de31d4d7caff1
+/singula-ai-alego-compaction/model-experience/conversation-history-when-a-backend-is-invoked/kv-cache-effect:
+  en: 40ba838a2309c44a
+  zh: c609fc1587a0d666
+/singula-ai-alego-compaction/known-limitations-and-deferred-work:
+  en: fee9ba06d3e5f35c
+  zh: 2bb5241e2447d15d
+/singula-ai-alego-compaction/known-limitations-and-deferred-work/dev-note:
+  en: 270e23ae6414aff0
+  zh: c6d219b8a547dbca

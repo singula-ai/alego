@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-session-format",
   "description": "Streaming adjacent Session format migration machinery",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,12 +27,12 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@singula-ai/alego-util-values": "workspace:^"
+    "@singula-ai/alego-util-values": "workspace:*"
   },
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   }
 }

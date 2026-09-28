@@ -15,16 +15,18 @@ export function assertMacOSSignatureDetails(details: string, expected: MacOSSign
 export function assertMacOSRuntimeSignatureDetails(details: string, expected: MacOSSigningEnvironment): void
 
 /**
- * Sign one Mach-O file embedded in the runtime tree.
+ * Sign one Mach-O file using the packaging-owned CSC_KEYCHAIN; missing setup rejects before signing.
  * @param path - Writable standalone Mach-O file.
  * @param identifier - Stable code-signing identifier derived from the release app ID and CAS digest.
  * @param expected - Public release identity.
+ * @param entitlements - Optional entitlement plist for this executable.
  * @returns Resolves after codesign exits successfully.
  */
 export function signMacOSRuntimeCode(
   path: string,
   identifier: string,
   expected: MacOSSigningEnvironment,
+  entitlements?: string,
 ): Promise<void>
 
 /**

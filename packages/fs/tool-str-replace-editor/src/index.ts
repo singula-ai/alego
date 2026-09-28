@@ -8,6 +8,7 @@ import type { Context } from '@singula-ai/cordis'
 import z from '@singula-ai/schemastery'
 import { FsError } from '@singula-ai/alego-fs'
 import type { FsInfo, FsTarget, FsWriteIntent } from '@singula-ai/alego-fs'
+import { truncateWithoutSplittingSurrogatePair } from '@singula-ai/alego-output-retention'
 import { sandboxDenialMarker } from '@singula-ai/alego-sandbox'
 import type { SandboxExecutionPolicy } from '@singula-ai/alego-sandbox'
 import type { SandboxPolicyService } from '@singula-ai/alego-sandbox-policy'
@@ -33,7 +34,7 @@ Notes for using the \`str_replace\` command:
 function maybeTruncate(content: string, maxOutputChars: number): string {
   return content.length <= maxOutputChars
     ? content
-    : content.slice(0, maxOutputChars) + TRUNCATED_MESSAGE
+    : truncateWithoutSplittingSurrogatePair(content, maxOutputChars) + TRUNCATED_MESSAGE
 }
 
 function codepointCompare(left: string, right: string): number {

@@ -1,6 +1,40 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-06-16-typed-event-schemas.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/rejected/architecture/2026-06-16-typed-event-schemas.md
-2026-06-16-typed-event-schemas.md: 480406b025a20f19cad8b3340d4c7dd29dae7c2e
-2026-06-16-typed-event-schemas.zh.md: 7ce7ddb11a04f954b99bafd8cecf9784ea5f7ab6
+/agent-note-runtime-schemas-for-the-event-vocabulary-zod-vs-the-merge-extensible-map-pattern:
+  en: 49d67d8fb8df73ea
+  zh: aa089dfb45505b9d
+/agent-note-runtime-schemas-for-the-event-vocabulary-zod-vs-the-merge-extensible-map-pattern/problem:
+  en: a1d610c259ed7122
+  zh: ac253e4f7bca53d1
+/agent-note-runtime-schemas-for-the-event-vocabulary-zod-vs-the-merge-extensible-map-pattern/why-this-is-not-a-persistence-change:
+  en: 6b557b7cbaa4157d
+  zh: 4084eec3325c5e89
+/agent-note-runtime-schemas-for-the-event-vocabulary-zod-vs-the-merge-extensible-map-pattern/blast-radius-measured:
+  en: 906adc2677053f31
+  zh: 55bd611e86642886
+/agent-note-runtime-schemas-for-the-event-vocabulary-zod-vs-the-merge-extensible-map-pattern/alternatives-considered:
+  en: 6119e2aff3b6be5a
+  zh: 76136ef5249c23eb
+/agent-note-runtime-schemas-for-the-event-vocabulary-zod-vs-the-merge-extensible-map-pattern/alternatives-considered/a-status-quo-merge-extensible-types-isjsonvalue-at-the-durable-boundary:
+  en: d5ea1b3124b341a7
+  zh: 766ed3689efc1802
+/agent-note-runtime-schemas-for-the-event-vocabulary-zod-vs-the-merge-extensible-map-pattern/alternatives-considered/b-header-closed-shape-validation-only-schemastery-events-stay-opaque:
+  en: 5120fc56473696d1
+  zh: 611d6f53efa282f0
+/agent-note-runtime-schemas-for-the-event-vocabulary-zod-vs-the-merge-extensible-map-pattern/alternatives-considered/c-runtime-schema-registry-for-the-whole-vocabulary-zod-or-schemastery:
+  en: db3cebf2efcf1fcd
+  zh: 631a39e8900c0e1d
+/agent-note-runtime-schemas-for-the-event-vocabulary-zod-vs-the-merge-extensible-map-pattern/proposal:
+  en: 33078a5945dc2aa3
+  zh: 32baff49e47e9823
+/agent-note-runtime-schemas-for-the-event-vocabulary-zod-vs-the-merge-extensible-map-pattern/acceptance-criteria:
+  en: 37626ef8a2dcd7e0
+  zh: 0b215089ce58e65d
+/agent-note-runtime-schemas-for-the-event-vocabulary-zod-vs-the-merge-extensible-map-pattern/risks:
+  en: 79e720cfffe60257
+  zh: b4aea0d52f3ee072
+/agent-note-runtime-schemas-for-the-event-vocabulary-zod-vs-the-merge-extensible-map-pattern/open-questions:
+  en: afc8275e1598eb34
+  zh: f3684ee3aba33cf1

@@ -97,8 +97,8 @@ export async function rename(noteId: string, title: string): Promise<void> {
     "./typert": { "types": "./lib/typert.host.d.ts", "default": "./lib/typert.host.js" },
     "./remote": { "types": "./lib/typert.remote-client.d.ts", "default": "./lib/typert.remote-client.js" }
   },
-  "peerDependencies": { "@singula-ai/alego-typert-protocol": "workspace:^" },
-  "devDependencies": { "@singula-ai/alego-typert-protocol": "workspace:^" }
+  "peerDependencies": { "@singula-ai/alego-typert-protocol": "workspace:*" },
+  "devDependencies": { "@singula-ai/alego-typert-protocol": "workspace:*" }
 }
 ```
 

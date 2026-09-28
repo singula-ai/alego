@@ -1,6 +1,40 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-schedule/README.md
-README.md: 3114917a139716763e8369646ade663ce934882f
-README.zh.md: 96b3dd1246fd5e49987365c24154b6e38cac30d0
+/:
+  en: 265778d19fe0dd76
+  zh: 78b0a191a4bd4e4e
+/singula-ai-alego-client-ui-schedule:
+  en: cccb1ca4798e7e7b
+  zh: d2748e635e582378
+/singula-ai-alego-client-ui-schedule/summary:
+  en: 8dfc371c14bb4415
+  zh: 9b3545c1a7468a7a
+/singula-ai-alego-client-ui-schedule/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 405b30feaf48c087
+/singula-ai-alego-client-ui-schedule/use-this-package:
+  en: f7073a66f7b85cef
+  zh: 3c1f0c401198e33b
+/singula-ai-alego-client-ui-schedule/use-this-package/time-zone-data-source:
+  en: d43db9664044090f
+  zh: 1e9064f6514934fb
+/singula-ai-alego-client-ui-schedule/understand-the-implementation:
+  en: 9c5a1140e004541a
+  zh: e9ebb2e8e731ef7b
+/singula-ai-alego-client-ui-schedule/further-exploration:
+  en: 19eb0f85659a9fa3
+  zh: 6831d7136e41f5f1
+/singula-ai-alego-client-ui-schedule/model-experience:
+  en: a8838aba5fd29fd8
+  zh: b9f67d82c81dd030
+/singula-ai-alego-client-ui-schedule/model-experience/kv-cache-effect:
+  en: 4b81350950285d47
+  zh: 6dc3d5cf7ca8a622
+/singula-ai-alego-client-ui-schedule/known-limitations-and-deferred-work:
+  en: b0410879b949243a
+  zh: dd8a14597db8b763
+/singula-ai-alego-client-ui-schedule/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: a4b126f9a4eaca6f

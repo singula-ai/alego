@@ -1,7 +1,7 @@
 # Keyless replay counterpart: deterministic HTTP remains real; only the model
 # adapter is replaced by replay.
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   disabled: true
 
 - insert:

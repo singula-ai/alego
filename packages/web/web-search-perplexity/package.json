@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-web-search-perplexity",
   "description": "Perplexity-backed search provider for the Alego web capability seam (ctx.web)",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,17 +27,17 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-launch-environment": "workspace:^",
-    "@singula-ai/alego-web": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-launch-environment": "workspace:*",
+    "@singula-ai/alego-web": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "dependencies": {
-    "@singula-ai/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-launch-environment": "workspace:^",
-    "@singula-ai/alego-web": "workspace:^",
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-http-proxy": "workspace:^"
+    "@singula-ai/alego-launch-environment": "workspace:*",
+    "@singula-ai/alego-web": "workspace:*",
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-http-proxy": "workspace:*"
   }
 }

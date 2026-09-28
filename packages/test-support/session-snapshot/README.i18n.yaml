@@ -1,6 +1,61 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/test-support/session-snapshot/README.md
-README.md: 05cb7683baeb60707f761488c7dfc8e305b2f2ab
-README.zh.md: 59640eb29413bf03c6cc2f8fe20833e8584c6700
+/:
+  en: 35f64a68381efbd0
+  zh: dd2c508ba263d788
+/singula-ai-alego-session-snapshot:
+  en: b3b6b8e63cc8e957
+  zh: 4a643670ad2763f3
+/singula-ai-alego-session-snapshot/summary:
+  en: cc7f0c7b768c769c
+  zh: 5cf21a2da265e646
+/singula-ai-alego-session-snapshot/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-session-snapshot/use-this-package:
+  en: 594ad1f3e6f02054
+  zh: 7ca4f565976704be
+/singula-ai-alego-session-snapshot/use-this-package/writing-a-snapshot-suite:
+  en: ece751852adbd254
+  zh: cd6e7a81c05c8b4c
+/singula-ai-alego-session-snapshot/use-this-package/record-replay-and-refresh:
+  en: 0c570125ec808303
+  zh: a9378a8f47f8209d
+/singula-ai-alego-session-snapshot/use-this-package/pinning-request-headers-and-system-prompts:
+  en: 6b11d5111e1a3222
+  zh: de4d3889b1a5ebb4
+/singula-ai-alego-session-snapshot/use-this-package/platform-and-composition-variants:
+  en: 64666ea2894acc4a
+  zh: 0e78df32bcfd3633
+/singula-ai-alego-session-snapshot/use-this-package/what-can-go-wrong:
+  en: 5f43acaa585960c8
+  zh: 2674909be407aecc
+/singula-ai-alego-session-snapshot/understand-the-implementation:
+  en: 18ff76b440fe40da
+  zh: 4dbf2eb5f9ee98a2
+/singula-ai-alego-session-snapshot/understand-the-implementation/design:
+  en: 8771607f15c4f4e1
+  zh: 7c2cf395f704717c
+/singula-ai-alego-session-snapshot/understand-the-implementation/source-map:
+  en: 4c3ff235ca8fe261
+  zh: 0f03425b926721cc
+/singula-ai-alego-session-snapshot/understand-the-implementation/data-flow:
+  en: a71c8ab2e78798c5
+  zh: 419cebed1c023fbf
+/singula-ai-alego-session-snapshot/further-exploration:
+  en: d1495eaea5f26bae
+  zh: 52df0d9428aa0768
+/singula-ai-alego-session-snapshot/model-experience:
+  en: 9f12d94ab5e31ade
+  zh: 7c75a17565caca1c
+/singula-ai-alego-session-snapshot/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: f57cc48a1b5cbfa9
+/singula-ai-alego-session-snapshot/known-limitations-and-deferred-work:
+  en: 29807d63ae8b9fb3
+  zh: 2e30455da6c8cbdb
+/singula-ai-alego-session-snapshot/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

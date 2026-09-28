@@ -1,7 +1,7 @@
 /**
  * Frozen contract of the client command surface. Types only. The
  * CommandUiRuntime (`ctx.commandUi`) implements this face; business packages
- * consume `register` alone.
+ * consume its registration and dismissal operations.
  */
 import type { ComponentType } from 'react'
 import type { Context as ClientContext } from '@singula-ai/cordis'
@@ -21,7 +21,15 @@ export interface SelectConfirmation {
 export interface SelectOption {
   readonly id: string
   readonly label: string
+  /** Optional short marker rendered as a superscript beside the label. */
+  readonly badge?: string
   readonly detail?: string
+  /**
+   * The row the shell's highlight parks on when the panel opens, so an accept
+   * gesture made without looking confirms the value in use. A business package
+   * that marks a row `active` for presentation alone would make that row the
+   * default pick.
+   */
   readonly active?: boolean
   /** Optional in-page risk gate owned by the shared popup shell. */
   readonly confirmation?: SelectConfirmation
@@ -108,6 +116,8 @@ export interface CommandUiContract {
    * Duplicate names throw at registration.
    */
   decorate(decoration: CommandDecoration): () => void
+  /** Close this command's open popups and confirmations without consuming composer drafts. */
+  dismiss(name: string): void
   /** Resolve the per-session popup controller for one session scope (wiring/overlay layer). */
   popupFor(actx: ClientContext): unknown
 }

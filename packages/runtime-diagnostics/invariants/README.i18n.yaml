@@ -1,6 +1,61 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/runtime-diagnostics/invariants/README.md
-README.md: dcf83d48e2e90d0b17a089d89c84ab36e9d642eb
-README.zh.md: e4e9659535f11e507425c860337f7cd640cc9cc6
+/:
+  en: 42e5357bcc6d4525
+  zh: 59891074b3705f9e
+/singula-ai-alego-invariants:
+  en: 9912294471a77f24
+  zh: 76d4d778c15c2630
+/singula-ai-alego-invariants/summary:
+  en: 233af3a34ac4335d
+  zh: c95858b91a211da2
+/singula-ai-alego-invariants/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-invariants/use-this-package:
+  en: f0ff84f9852dca9b
+  zh: dd4ea4390478f0b7
+/singula-ai-alego-invariants/use-this-package/when-to-use-it:
+  en: 09e0351a9c45b65c
+  zh: 9926d98b2ab7ce36
+/singula-ai-alego-invariants/use-this-package/enabling-checks-and-selecting-packages:
+  en: 8298c8445afbbe34
+  zh: eb5fa14421084c47
+/singula-ai-alego-invariants/use-this-package/which-checks-run:
+  en: 91bdb4fa6da45f3c
+  zh: e59d39ec3cbddfb9
+/singula-ai-alego-invariants/use-this-package/adding-a-companion-to-a-custom-composition:
+  en: 25319ae89e0d6f21
+  zh: e447f24be7b6a2d1
+/singula-ai-alego-invariants/use-this-package/when-a-check-fails:
+  en: 74ced4bc91ead262
+  zh: 966b5e607f507aee
+/singula-ai-alego-invariants/understand-the-implementation:
+  en: 5b23215f6331afac
+  zh: e2beea6daa73b614
+/singula-ai-alego-invariants/understand-the-implementation/design-philosophy:
+  en: 8fd7fb75d99ecd5e
+  zh: 01e15bd76b1cf6f1
+/singula-ai-alego-invariants/understand-the-implementation/source-map:
+  en: 08ade90614209295
+  zh: d4862b249cb44379
+/singula-ai-alego-invariants/understand-the-implementation/selection-and-registration-lifecycle:
+  en: 314e6dd14cc9228b
+  zh: da047ded06701b40
+/singula-ai-alego-invariants/further-exploration:
+  en: d16e673da752e23f
+  zh: 242d95a21d13a81d
+/singula-ai-alego-invariants/model-experience:
+  en: 269727a21a370a19
+  zh: 9b9ab038146410cb
+/singula-ai-alego-invariants/model-experience/kv-cache-effect:
+  en: dffdf5a0451054bb
+  zh: 2a4a419d5b52f85e
+/singula-ai-alego-invariants/known-limitations-and-deferred-work:
+  en: bb103c7ea7eebdc7
+  zh: b90bd54ea38be4bb
+/singula-ai-alego-invariants/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

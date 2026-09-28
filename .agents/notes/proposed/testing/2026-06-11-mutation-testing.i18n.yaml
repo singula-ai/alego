@@ -1,6 +1,22 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-06-11-mutation-testing.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/proposed/testing/2026-06-11-mutation-testing.md
-2026-06-11-mutation-testing.md: 591d9012644a19ee2c67a916b63092d79f78db1f
-2026-06-11-mutation-testing.zh.md: a8e786ab6566d12762c55bc559b436a13f3b32b2
+/agent-note-mutation-testing-as-the-coverage-counterweight:
+  en: 5ff3e6867ab4d38b
+  zh: ff5d436f0d72148e
+/agent-note-mutation-testing-as-the-coverage-counterweight/problem:
+  en: 3536ce8c2a32cda0
+  zh: 5dcbcf8862f61988
+/agent-note-mutation-testing-as-the-coverage-counterweight/proposal:
+  en: 4aa172d4d1c7e419
+  zh: dae8a42d5693e509
+/agent-note-mutation-testing-as-the-coverage-counterweight/plan:
+  en: e5b6fbdf1fbdde82
+  zh: e3d050014107519f
+/agent-note-mutation-testing-as-the-coverage-counterweight/acceptance-criteria:
+  en: 3671f37e25e586f7
+  zh: e6af9b37fe92f775
+/agent-note-mutation-testing-as-the-coverage-counterweight/risks:
+  en: b1c2fce21adc8388
+  zh: b9c2292f55c3292b

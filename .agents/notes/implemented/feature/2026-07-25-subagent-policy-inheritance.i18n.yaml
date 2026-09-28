@@ -1,6 +1,22 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-25-subagent-policy-inheritance.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-25-subagent-policy-inheritance.md
-2026-07-25-subagent-policy-inheritance.md: 2252acf0ce483b22a8c94cceb183daba28923896
-2026-07-25-subagent-policy-inheritance.zh.md: b181c9b487c0e0ebea065563d9d10d7f7acf24c9
+/agent-note-in-process-subagent-policy-inheritance-the-child-starts-under-the-parent-s-sandbox-override:
+  en: 7e1d3151ea879f0f
+  zh: 57e939fdde46e8d2
+/agent-note-in-process-subagent-policy-inheritance-the-child-starts-under-the-parent-s-sandbox-override/problem:
+  en: 476b4a1b9ada2d8a
+  zh: 15b8051d22bb1dd0
+/agent-note-in-process-subagent-policy-inheritance-the-child-starts-under-the-parent-s-sandbox-override/decision:
+  en: be1d5c368f65312e
+  zh: 819f09ec469a77c6
+/agent-note-in-process-subagent-policy-inheritance-the-child-starts-under-the-parent-s-sandbox-override/decision/what-a-blocked-child-experiences:
+  en: c87f99c62e5f1d4a
+  zh: e9df512de488f36b
+/agent-note-in-process-subagent-policy-inheritance-the-child-starts-under-the-parent-s-sandbox-override/alternatives-considered:
+  en: e12fec411f901814
+  zh: ebe99a404df2c973
+/agent-note-in-process-subagent-policy-inheritance-the-child-starts-under-the-parent-s-sandbox-override/consequences:
+  en: d07c3ec0af8a2741
+  zh: 3df6cecdcaa64f36

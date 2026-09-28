@@ -1,0 +1,37 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/api/terminal-controller/README.md
+/:
+  en: 6a19f6d3fdfe0db2
+  zh: a361afe6b8cd3010
+/singula-ai-alego-api-terminal-controller:
+  en: 821868f9abdd9090
+  zh: 34e67cc84eee04f1
+/singula-ai-alego-api-terminal-controller/summary:
+  en: 8e645f037a71a0f6
+  zh: 421d962126692dd7
+/singula-ai-alego-api-terminal-controller/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 1fa9a72d1ee045cc
+/singula-ai-alego-api-terminal-controller/use-this-package:
+  en: 808712f19179fbcc
+  zh: 1636251c583784d1
+/singula-ai-alego-api-terminal-controller/understand-the-implementation:
+  en: 69627ffe86d402ca
+  zh: 56de4a07dcaa87cd
+/singula-ai-alego-api-terminal-controller/further-exploration:
+  en: c3ff6d49bd52bcc6
+  zh: ab24a023aa8f00e8
+/singula-ai-alego-api-terminal-controller/model-experience:
+  en: 2c52eec781441d2a
+  zh: 35a7c88f180f74a1
+/singula-ai-alego-api-terminal-controller/model-experience/kv-cache-effect:
+  en: 507d3b3b80596fdc
+  zh: 4659007c4671afdc
+/singula-ai-alego-api-terminal-controller/known-limitations-and-deferred-work:
+  en: 11f9ffdf2d66d7dc
+  zh: 32ae3c891a3341d5
+/singula-ai-alego-api-terminal-controller/known-limitations-and-deferred-work/dev-note:
+  en: 2acda84e5b9a3ce2
+  zh: f86e92da1c66ffff

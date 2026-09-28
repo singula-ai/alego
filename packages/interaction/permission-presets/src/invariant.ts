@@ -3,6 +3,7 @@
 import type { Context } from '@singula-ai/cordis'
 import type { Session, SessionEvent } from '@singula-ai/alego-session'
 import type { InvariantFailure, InvariantInstaller } from '@singula-ai/alego-invariants'
+import { AUTO_PRESET } from './index.ts'
 
 const PACKAGE_NAME = '@singula-ai/alego-permission-presets'
 
@@ -13,7 +14,9 @@ export const inject = ['invariants']
 
 /** Validate the package-owned event fields and ignore unrelated events. */
 function validateEvent(ctx: Context, event: SessionEvent, fail: InvariantFailure): void {
-  if (event.type === 'permission/preset' && !ctx.permissionPresets.names.includes(event.data.preset)) {
+  if (event.type === 'permission/preset'
+    && event.data.preset !== AUTO_PRESET
+    && !ctx.permissionPresets.names.includes(event.data.preset)) {
     fail(`permission/preset names unknown preset ${JSON.stringify(event.data.preset)}`)
   }
 }

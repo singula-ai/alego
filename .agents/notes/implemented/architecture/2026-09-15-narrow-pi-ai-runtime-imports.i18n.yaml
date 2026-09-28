@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-15-narrow-pi-ai-runtime-imports.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-15-narrow-pi-ai-runtime-imports.md
+/agent-note-narrow-pi-ai-runtime-imports:
+  en: 0773e85d1a117bd4
+  zh: ffc1580999732791
+/agent-note-narrow-pi-ai-runtime-imports/problem:
+  en: b1386dc623d1dd55
+  zh: d4fbb861c6df8be2
+/agent-note-narrow-pi-ai-runtime-imports/decision:
+  en: 9543a01c2854a5d0
+  zh: d2475dbdbe219d92
+/agent-note-narrow-pi-ai-runtime-imports/alternatives-considered:
+  en: c663ce67f3831d3f
+  zh: de280dc149d5a6a0
+/agent-note-narrow-pi-ai-runtime-imports/consequences:
+  en: 9707284a83c1294a
+  zh: c53be621aac00fc9

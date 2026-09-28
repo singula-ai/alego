@@ -1,6 +1,55 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/sdk/client/README.md
-README.md: 116a5202effbd4f9adf3c8d71ede9a626b483ee5
-README.zh.md: 4b01b2590917051b81d7ea5062efaa353f25cb0e
+/:
+  en: 3bb8c9309a51de29
+  zh: 261878ac5379d69f
+/singula-ai-alego-sdk-client:
+  en: 31acc4e65d95a5b8
+  zh: f29d7bab45f59593
+/singula-ai-alego-sdk-client/summary:
+  en: 979574577a112cea
+  zh: 9cbf8ccc98fb8092
+/singula-ai-alego-sdk-client/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-sdk-client/use-this-package:
+  en: d1adfd39c7b08065
+  zh: e266774c28dceb23
+/singula-ai-alego-sdk-client/use-this-package/running-agent-turns-with-alego:
+  en: 7818a3eedc349184
+  zh: 05d2e186b4c5e527
+/singula-ai-alego-sdk-client/use-this-package/lower-level-control-with-harnessclient:
+  en: c129af01dbfc3e3d
+  zh: d0128a706e69899a
+/singula-ai-alego-sdk-client/understand-the-implementation:
+  en: 8773f50c51da85f0
+  zh: 4649ebc69357deb0
+/singula-ai-alego-sdk-client/understand-the-implementation/design-concept:
+  en: 3080411c87c960c0
+  zh: b84d68580b801709
+/singula-ai-alego-sdk-client/understand-the-implementation/source-map:
+  en: 5498b1465ad1aae3
+  zh: 8ad0ff2ade696f4a
+/singula-ai-alego-sdk-client/understand-the-implementation/owned-activity-flow:
+  en: 94a42babac5f1c7d
+  zh: df9e42ed02f7d002
+/singula-ai-alego-sdk-client/understand-the-implementation/errors-and-teardown:
+  en: 165364de2cee0a9f
+  zh: c4dc37b44e1e621e
+/singula-ai-alego-sdk-client/further-exploration:
+  en: fb357431f7fcfeb4
+  zh: ac293dbaf070188f
+/singula-ai-alego-sdk-client/model-experience:
+  en: e82a55513d3cd30e
+  zh: ecd8c0875ff2fb87
+/singula-ai-alego-sdk-client/model-experience/kv-cache-effect:
+  en: 7abe0be104a791e7
+  zh: 445311f78b1069ca
+/singula-ai-alego-sdk-client/known-limitations-and-deferred-work:
+  en: 9d8dcbe656722411
+  zh: 47e849b030df3239
+/singula-ai-alego-sdk-client/known-limitations-and-deferred-work/dev-note:
+  en: 6177a56f053936a4
+  zh: 0f4b20228c2d15da

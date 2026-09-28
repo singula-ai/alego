@@ -5,6 +5,8 @@
  */
 
 import type { UserMessage } from '@singula-ai/alego-llm/types'
+// Type-only: the Workspace registry's archive-admission family map this registry merges `turn` into.
+import type {} from '@singula-ai/alego-workspace/types'
 import type { OptionalSessionSeq, SessionId, SessionSeq } from '@singula-ai/alego-session/types'
 import type { TypertContext, TypertLookup } from '@singula-ai/alego-typert-protocol'
 import type { JsonValue } from '@singula-ai/alego-util-values'
@@ -13,6 +15,13 @@ import type { JsonValue } from '@singula-ai/alego-util-values'
 export interface Agent {
   /** Session-backed Agent identity. */
   readonly id: SessionId
+}
+
+declare module '@singula-ai/alego-workspace/types' {
+  interface SessionActivityKindMap {
+    /** The session's own Agent is inside a turn, including one waiting for an approval or an answer. */
+    turn: true
+  }
 }
 
 declare module '@singula-ai/alego-typert-protocol' {

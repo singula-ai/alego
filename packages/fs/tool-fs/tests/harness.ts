@@ -5,7 +5,7 @@ import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-tes
 import LocalFileSystem from '@singula-ai/alego-fs-local'
 import * as FsPolicy from '@singula-ai/alego-fs-observation-policy'
 import * as ToolFs from '@singula-ai/alego-tool-fs'
-import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek'
+import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek-api-key'
 
 /**
  * Build the real fs-tool stack for with-key e2e tests. Agents have no session

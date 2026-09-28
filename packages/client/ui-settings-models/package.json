@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-settings-models",
   "description": "Models settings and shared product-onboarding dialogs over existing settings and credential joins",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -41,22 +41,27 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-remote-mock": "workspace:^",
-    "@singula-ai/alego-api-remotes": "workspace:^",
-    "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-store": "workspace:^",
-    "@singula-ai/alego-client-test-runtime": "workspace:^",
-    "@singula-ai/alego-client-ui-primitives": "workspace:^",
-    "@singula-ai/alego-client-ui-settings": "workspace:^",
-    "@singula-ai/alego-client-ui-slots": "workspace:^",
+    "@singula-ai/alego-host-webserver": "workspace:*",
+    "@singula-ai/alego-api-remotes": "workspace:*",
+    "@singula-ai/alego-client-locale": "workspace:*",
+    "@singula-ai/alego-client-store": "workspace:*",
+    "@singula-ai/alego-client-test-runtime": "workspace:*",
+    "@singula-ai/alego-client-ui-primitives": "workspace:*",
+    "@singula-ai/alego-client-ui-settings": "workspace:*",
+    "@singula-ai/alego-client-ui-slots": "workspace:*",
     "@types/react": "~18.3.1",
-    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/cordis": "workspace:~",
     "react": "^18.2.0",
-    "@singula-ai/alego-client-ui-renderer": "workspace:^",
-    "@singula-ai/alego-util-values": "workspace:^"
+    "@singula-ai/alego-client-ui-renderer": "workspace:*",
+    "@singula-ai/alego-util-values": "workspace:*",
+    "@singula-ai/alego-remote-mock": "workspace:*",
+    "@singula-ai/alego-client-product-analytics": "workspace:*"
+  },
+  "dependencies": {
+    "@singula-ai/schemastery": "workspace:~"
   },
   "files": [
     "lib/index.js",

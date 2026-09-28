@@ -1,0 +1,58 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/ptc-runtime/ptc-runtime-node/README.md
+/:
+  en: 0743cf05fedb8321
+  zh: 7ad0cfa1b6b8a46b
+/singula-ai-alego-ptc-runtime-node:
+  en: 50b2502061c657e5
+  zh: c4aa4ad755d746be
+/singula-ai-alego-ptc-runtime-node/summary:
+  en: 4d6be30d9289a58e
+  zh: b1b2b4d773d32029
+/singula-ai-alego-ptc-runtime-node/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 725b47765ee8f30b
+/singula-ai-alego-ptc-runtime-node/use-this-package:
+  en: b97c1b2bdfc072f8
+  zh: c7abe2c3c70d5c64
+/singula-ai-alego-ptc-runtime-node/use-this-package/configuration:
+  en: 7c85f452a32dc171
+  zh: be9ad6f041996ce3
+/singula-ai-alego-ptc-runtime-node/use-this-package/execution-and-results:
+  en: 6d65b39223ca9f7a
+  zh: 96f96341ecab1317
+/singula-ai-alego-ptc-runtime-node/use-this-package/deadlines-and-cancellation:
+  en: 03adfc379c5499db
+  zh: 4db50c96b3104263
+/singula-ai-alego-ptc-runtime-node/use-this-package/failures:
+  en: 7682e50f9dcfa25c
+  zh: ddcb3502e12be06f
+/singula-ai-alego-ptc-runtime-node/understand-the-implementation:
+  en: 9020b491a39e4bf5
+  zh: bcd1b2b1a3bde7f3
+/singula-ai-alego-ptc-runtime-node/understand-the-implementation/launch-and-control:
+  en: 45527dad94dd9362
+  zh: c1e1179391e89a3f
+/singula-ai-alego-ptc-runtime-node/understand-the-implementation/source-and-built-bootstraps:
+  en: c01071304a9d563a
+  zh: 2938a64b13a257d8
+/singula-ai-alego-ptc-runtime-node/understand-the-implementation/source-map:
+  en: a6702856dec3d449
+  zh: 0c442a74c8005571
+/singula-ai-alego-ptc-runtime-node/further-exploration:
+  en: 69c4dd23b934ba0e
+  zh: 20688680476c60c7
+/singula-ai-alego-ptc-runtime-node/model-experience:
+  en: 0d5470c8d2c4d7ae
+  zh: 78151219b6cdeea3
+/singula-ai-alego-ptc-runtime-node/model-experience/kv-cache-effect:
+  en: 40294c1c31b74824
+  zh: d91e7b78c0619c7e
+/singula-ai-alego-ptc-runtime-node/known-limitations-and-deferred-work:
+  en: 88eac5d4119c11f6
+  zh: ba0861bf07c5e9df
+/singula-ai-alego-ptc-runtime-node/known-limitations-and-deferred-work/dev-note:
+  en: 3cd4652a5b718c27
+  zh: dfa1273f74e9b594

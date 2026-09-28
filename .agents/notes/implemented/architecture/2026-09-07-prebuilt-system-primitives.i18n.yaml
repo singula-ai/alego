@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-07-prebuilt-system-primitives.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-07-prebuilt-system-primitives.md
-2026-09-07-prebuilt-system-primitives.md: d0f47fcd56a717e67f1bf14a9e64cf706111ef9b
-2026-09-07-prebuilt-system-primitives.zh.md: 42029d420f58cccc78a58db56438f80803f82fa0
+/agent-note-prebuilt-system-primitives:
+  en: ac831ff7a64203d1
+  zh: 93c1665d71915270
+/agent-note-prebuilt-system-primitives/problem:
+  en: 1d7458b11272d21a
+  zh: 534ac9709711f964
+/agent-note-prebuilt-system-primitives/decision:
+  en: e1aefb4e48b5eb7f
+  zh: 35d02a1bb0250ddf
+/agent-note-prebuilt-system-primitives/alternatives-considered:
+  en: 8dc5c0319fe6c7eb
+  zh: 26722ae58a788d0b
+/agent-note-prebuilt-system-primitives/consequences:
+  en: cd0a9aa852ac178b
+  zh: 6f5376d64625da88

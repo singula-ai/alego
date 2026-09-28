@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-10-desktop-web-wrapper.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-10-desktop-web-wrapper.md
+/agent-note-run-desktop-through-the-shared-web-application:
+  en: a143e8ab9ec01eb7
+  zh: 64204948cc7d11c8
+/agent-note-run-desktop-through-the-shared-web-application/problem:
+  en: 085b445846af76c1
+  zh: fdddf72401292bbd
+/agent-note-run-desktop-through-the-shared-web-application/decision:
+  en: 82d192f604e4fad6
+  zh: 064d86a9691e2331
+/agent-note-run-desktop-through-the-shared-web-application/alternatives-considered:
+  en: 9c5dfbf9cc788040
+  zh: 631f851909dd7234
+/agent-note-run-desktop-through-the-shared-web-application/consequences:
+  en: 43a80c01a8a95170
+  zh: 0d7a2d1d1c676a61

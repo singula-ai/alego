@@ -44,7 +44,7 @@ Mount the terminal service, a subprocess provider, the sandbox and policy servic
 - name: '@singula-ai/alego-tool-terminal'
 ```
 
-`danger-full-access` starts the shell directly. Confined modes require a same-world `ctx.sandbox` provider: without one, the spawn fails before the shell starts.
+`danger-full-access` starts the shell directly. Confined modes require a same-world `ctx.sandbox` provider: without one, the spawn fails before the shell starts. Confinement preparation receives the opening signal; cancellation prevents terminal allocation even if the provider returns later.
 
 ### Configuration
 
@@ -57,11 +57,11 @@ Mount the terminal service, a subprocess provider, the sandbox and policy servic
 | `timeoutMs` | `30000` | Absolute bound on one send wait |
 | `disposeGraceMs` | `3000` | Grace before teardown escalates to `SIGKILL` |
 
-The generated [configuration catalog](../../../docs/config-catalog.md#singula-aialego-terminal-bash) is the exhaustive source for every field, including the readiness timings (`pollIntervalMs`, `exactProbeAfterMs`, `idleSilenceMs`, `handoffGraceMs`), terminal size (`rows`, `cols`), and scrollback bounds (`scrollbackLines`, `scrollbackMaxBytes`).
+The generated [configuration catalog](../../../docs/config-catalog.md#singula-aialego-terminal-bash) is the exhaustive source for every field, including the readiness timings (`pollIntervalMs`, `exactProbeAfterMs`, `idleSilenceMs`, `handoffGraceMs`, `promptTailGraceMs`), terminal size (`rows`, `cols`), and scrollback bounds (`scrollbackLines`, `scrollbackMaxBytes`).
 
 ### Shell dialects and readiness
 
-Both dialects expose the same readiness contract, so consumers are dialect-agnostic. A send settles when the shell is ready again: after the controlled prompt is verified, after the foreground process group provably waits on stdin (Linux), after output silence (`inferred_idle`), or at the absolute `timeoutMs`. An `inferred_idle` or `timeout` result does not prove the foreground command exited.
+Both dialects expose the same readiness contract, so consumers are dialect-agnostic. A send settles when the shell is ready again: after the controlled prompt is verified, after the foreground process group provably waits on stdin (Linux), after output silence (`inferred_idle`), or at the absolute `timeoutMs`. A prompt marker whose printable tail has not arrived yet holds the send on the exact path for `promptTailGraceMs` beyond `idleSilenceMs + handoffGraceMs`, because the marker and its tail are written by the same prompt render. An `inferred_idle` or `timeout` result does not prove the foreground command exited.
 
 ### Sandboxing and safe operation
 
@@ -84,6 +84,8 @@ This section explains the design behind the backend and points at the code that 
 ### Design concept
 
 One backend serves both dialects: bash and pwsh share the same session machinery — sanitizer, bounded buffers, readiness polling, cancellation, and teardown — and differ only in argv, environment, and prompt installation. Bash receives a private marker through `PS1` plus `PROMPT_COMMAND`. Pwsh writes a prompt function, pins UTF-8 console encoding, and publishes startup only after verifying the controlled prompt marker and its exact printable tail; a byte-level stdin wait while setup is being echoed cannot publish the shell. A zero-scrollback `@xterm/headless` instance consumes raw PTY data and returns terminal-protocol replies through the same handle, while the line sanitizer remains the only output projection.
+
+Scrollback and unread send output retain independently owned strings with incremental byte and newline counts, so sanitized slices cannot retain discarded control sequences. Appending and evicting text takes amortized time proportional to incoming text; reads assemble the retained chunks. Retention preserves code-point boundaries and counts the empty line after a trailing newline. The [retention decision](../../../.agents/notes/implemented/bug-fix/2026-09-11-incremental-terminal-retention.md) owns the complexity and measurement rationale.
 
 ### Source map
 

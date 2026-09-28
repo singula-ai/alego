@@ -1,6 +1,22 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for maintaining-alego-code-review.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/cookbook/maintaining-alego-code-review.md
-maintaining-alego-code-review.md: bdfc39161077ce41f1cdf43b4be41e8d788b8213
-maintaining-alego-code-review.zh.md: 8b4335140de4b1d59bb2edacf4bd30a6d87d277a
+/maintaining-the-alego-code-review-skill:
+  en: 3cd4f2f4faa78cef
+  zh: 95854a004d560a5a
+/maintaining-the-alego-code-review-skill/what-the-maintainer-receives:
+  en: 321664afe9868570
+  zh: db49728ffe856551
+/maintaining-the-alego-code-review-skill/what-the-operator-does-with-a-candidate-diff:
+  en: 0c93c212f0720bcf
+  zh: 3bcd87b21ff69432
+/maintaining-the-alego-code-review-skill/when-a-run-produces-no-candidate:
+  en: feb6d261939d6c19
+  zh: 044d8238cd6537d3
+/maintaining-the-alego-code-review-skill/interruptions-and-handoff:
+  en: 43c41ee91ec5ee5f
+  zh: f13b0d36fab12009
+/maintaining-the-alego-code-review-skill/where-the-operator-s-private-setup-lives:
+  en: ae06145764738c16
+  zh: d527b944db8c52be

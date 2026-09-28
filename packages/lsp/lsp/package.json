@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-lsp",
   "description": "Abstract LSP capability seam (ctx.lsp) for the Alego — language-server provider registry keyed by branded id and extension mapping, order-independent per-query selection, normalized definition/references/implementation/hover requests and results, and the LspError taxonomy",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,13 +27,13 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-brand": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-brand": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

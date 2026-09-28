@@ -1,0 +1,5 @@
+- insert:
+    - id: ptc-runtime
+      name: '@singula-ai/alego-ptc-runtime-node'
+    - id: structured-denial-fixture
+      name: './deny.mjs'

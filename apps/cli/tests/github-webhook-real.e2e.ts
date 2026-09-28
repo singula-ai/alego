@@ -412,7 +412,7 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY)('GitHub webhook through the real 
       const admitted = await eventually(
         child,
         observation.text,
-        'webhook provenance, title, and permission events',
+        'webhook source, title, and permission events',
         async () => await history(baseUrl, sessionId),
         (page) => {
           const events = historyEvents(page)

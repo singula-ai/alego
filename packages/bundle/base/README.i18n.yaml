@@ -1,6 +1,61 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/bundle/base/README.md
-README.md: 2f25a77b3d5c06595ef741466ce66c511c61ad39
-README.zh.md: db2b9abfa0f9c6a5b5d6c2d295129bd71be9ebca
+/:
+  en: 6215947d64f70253
+  zh: 8560ef2885e583be
+/singula-ai-alego-base:
+  en: d298ef6033d97d51
+  zh: 24583123a35069cd
+/singula-ai-alego-base/summary:
+  en: e354c8a0c4c7f374
+  zh: 1403e1ab531605e9
+/singula-ai-alego-base/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-base/use-this-package:
+  en: 6bdde827de2cb547
+  zh: 6ecf8b3478c5ca06
+/singula-ai-alego-base/use-this-package/a-minimal-custom-profile:
+  en: 758d25019d724ded
+  zh: 97c06142240a8961
+/singula-ai-alego-base/use-this-package/what-you-get:
+  en: 5f4ae86490afe379
+  zh: 372d359a6c6cd5dc
+/singula-ai-alego-base/use-this-package/shell-tools-per-platform:
+  en: 2dce12f82d6ee955
+  zh: d4599eb899a3cd88
+/singula-ai-alego-base/use-this-package/changing-the-defaults:
+  en: 96a55abd5f7007dd
+  zh: d94f020708c38a17
+/singula-ai-alego-base/understand-the-implementation:
+  en: 094cfca8e26a0042
+  zh: de435e3e38420c01
+/singula-ai-alego-base/understand-the-implementation/composition-mechanics:
+  en: fd37bc66e39ac5e7
+  zh: 1a039afb8bf2d517
+/singula-ai-alego-base/understand-the-implementation/platform-gating:
+  en: 7b17c3930fd05deb
+  zh: 0ef341ee6b5a2610
+/singula-ai-alego-base/understand-the-implementation/source-map:
+  en: 3aaf655b9c93534b
+  zh: 5a1b627cc6385a17
+/singula-ai-alego-base/understand-the-implementation/invariant-ownership:
+  en: 533299d7bd555e61
+  zh: 0aed404f790ea447
+/singula-ai-alego-base/further-exploration:
+  en: c064fb85abc70236
+  zh: c90a168a60fc237e
+/singula-ai-alego-base/model-experience:
+  en: f6c4d2609b5f4bb6
+  zh: 869a9565a133fb01
+/singula-ai-alego-base/model-experience/kv-cache-effect:
+  en: e6e907c99df7cd0a
+  zh: f19f2f84a5f95177
+/singula-ai-alego-base/known-limitations-and-deferred-work:
+  en: f46498b00ce39b0f
+  zh: fc1099aed04ed160
+/singula-ai-alego-base/known-limitations-and-deferred-work/dev-note:
+  en: ca037cb236aa841a
+  zh: e06f3899be43b572

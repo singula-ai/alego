@@ -1,6 +1,73 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-workspace/README.md
-README.md: 1f06cc4dbcdff031865720eab6c728979220693b
-README.zh.md: 566683bcd29f2b6fefade977bf286faf91803a31
+/:
+  en: 3b12e610ebae11c1
+  zh: df01e47805f70723
+/singula-ai-alego-client-ui-workspace:
+  en: 171d5c43e566e128
+  zh: 279100614eb50acc
+/singula-ai-alego-client-ui-workspace/summary:
+  en: 1a76ace6a18e3ab5
+  zh: b274d1e98e133851
+/singula-ai-alego-client-ui-workspace/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-client-ui-workspace/use-this-package:
+  en: b164014ee565be16
+  zh: 6a741647932b93e6
+/singula-ai-alego-client-ui-workspace/use-this-package/reordering-and-view-options:
+  en: 515c9d860f9f5dcb
+  zh: 32bad0fafddba48a
+/singula-ai-alego-client-ui-workspace/use-this-package/workspace-hierarchy:
+  en: 5e049b90c55eddb3
+  zh: e06dc8d0d25c013f
+/singula-ai-alego-client-ui-workspace/use-this-package/search:
+  en: 9eab3bfbaf98c987
+  zh: 54e7e141dae5c9e8
+/singula-ai-alego-client-ui-workspace/use-this-package/managing-sessions:
+  en: 68c291b233495fbc
+  zh: 3daaab50dcac501a
+/singula-ai-alego-client-ui-workspace/use-this-package/pending-interactions:
+  en: 9fb88260380bf093
+  zh: 3bace2b96ecd4a82
+/singula-ai-alego-client-ui-workspace/use-this-package/active-schedule-markers:
+  en: f8edd49b0c55c283
+  zh: c09c995296be7481
+/singula-ai-alego-client-ui-workspace/understand-the-implementation:
+  en: 21590da1f7488361
+  zh: 95916475cced409e
+/singula-ai-alego-client-ui-workspace/understand-the-implementation/the-directory-flow-hole:
+  en: 978415ec6b2e0cc0
+  zh: 0d5c705ff34fb1da
+/singula-ai-alego-client-ui-workspace/understand-the-implementation/session-row-actions:
+  en: a3b80d0e844d2929
+  zh: 85fe5dfb2968b491
+/singula-ai-alego-client-ui-workspace/understand-the-implementation/session-row-actions/packaged-client-plugin:
+  en: 36934671b80b11ae
+  zh: 8e0aea6162e35e77
+/singula-ai-alego-client-ui-workspace/understand-the-implementation/session-row-actions/dynamic-client-package:
+  en: 6b8e4396a2626155
+  zh: f41ce0d2f6219bd7
+/singula-ai-alego-client-ui-workspace/understand-the-implementation/view-state:
+  en: 83031e7505fc228a
+  zh: 03e17c9428fe29fd
+/singula-ai-alego-client-ui-workspace/understand-the-implementation/hover-cards:
+  en: 34668e3c2e9c77b7
+  zh: c8bb72e29a3f2490
+/singula-ai-alego-client-ui-workspace/further-exploration:
+  en: 8be9567b14b4b9f5
+  zh: f82f648ec9c76a66
+/singula-ai-alego-client-ui-workspace/model-experience:
+  en: 3120df665299c634
+  zh: 1d9f365d091d0d2a
+/singula-ai-alego-client-ui-workspace/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: de54f3467ef3b9be
+/singula-ai-alego-client-ui-workspace/known-limitations-and-deferred-work:
+  en: 00d7b1ddda7390f5
+  zh: 1e5a1055d1be4d1d
+/singula-ai-alego-client-ui-workspace/known-limitations-and-deferred-work/dev-note:
+  en: 585813ff2c68c20c
+  zh: 18b43c0d64fa8a72

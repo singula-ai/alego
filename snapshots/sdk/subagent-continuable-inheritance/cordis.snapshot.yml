@@ -2,7 +2,7 @@
 # the live adapter with replay and switch the root session to read-only at
 # creation.
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   disabled: true
 
 - id: agent-default-model

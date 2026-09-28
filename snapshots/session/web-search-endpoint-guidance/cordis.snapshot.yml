@@ -1,7 +1,7 @@
 # Keyless replay counterpart: the failed search remains real; only the
 # conversation model adapter is replaced by replay.
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   disabled: true
 
 - id: plugin-package-inventory-deepseek

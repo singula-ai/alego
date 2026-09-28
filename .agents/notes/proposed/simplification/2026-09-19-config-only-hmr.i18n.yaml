@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-09-19-config-only-hmr.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/proposed/simplification/2026-09-19-config-only-hmr.md
+/agent-note-limit-alego-hmr-to-live-profile-configuration:
+  en: 639e443fc22b7da9
+  zh: dd381aa9d25ef16a
+/agent-note-limit-alego-hmr-to-live-profile-configuration/problem:
+  en: ac55102d1cf2bcd3
+  zh: 8b57fb983aab0f90
+/agent-note-limit-alego-hmr-to-live-profile-configuration/proposal:
+  en: cc28a1ca67018511
+  zh: a0bddf79696f4ead
+/agent-note-limit-alego-hmr-to-live-profile-configuration/alternatives-considered:
+  en: 0fcf64d878a874a2
+  zh: 227146efc8598e9b
+/agent-note-limit-alego-hmr-to-live-profile-configuration/acceptance-criteria:
+  en: ea1dbf4681f60fcf
+  zh: fa7b9f7888bfc24f
+/agent-note-limit-alego-hmr-to-live-profile-configuration/risks:
+  en: de00ca4e66cff7d0
+  zh: fb82e77bd554c1f6

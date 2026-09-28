@@ -1,6 +1,91 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/llm/llm-deepseek/README.md
-README.md: e935861e3d5c5f7d136e49bba14cc918bb1c391c
-README.zh.md: 9e415b59f305e72ab30018c2952039b3f15bc2e1
+/:
+  en: c6924d7c0d7c82ff
+  zh: 95fbf06db428f532
+/singula-ai-alego-llm-deepseek:
+  en: 9b76b5880656cb1b
+  zh: 4ced9886aa8c0402
+/singula-ai-alego-llm-deepseek/summary:
+  en: e1e37863a9b7be21
+  zh: d3b77a6a1ac8ab95
+/singula-ai-alego-llm-deepseek/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-llm-deepseek/use-this-package:
+  en: d6d0fc500810f540
+  zh: a2107e7030f4c836
+/singula-ai-alego-llm-deepseek/use-this-package/when-to-choose-it:
+  en: a8ec8fc1f8ff808d
+  zh: 2f4f8943ad98c9f1
+/singula-ai-alego-llm-deepseek/use-this-package/minimal-configuration:
+  en: 7ba90af4448d47e0
+  zh: 4ef2d637d11bb2e2
+/singula-ai-alego-llm-deepseek/use-this-package/endpoint-and-wire-format:
+  en: fce88d2ebad6296c
+  zh: 0c351f26b472d521
+/singula-ai-alego-llm-deepseek/use-this-package/account-credentials:
+  en: a077aadf518049a7
+  zh: 536b90a4767fe5e8
+/singula-ai-alego-llm-deepseek/use-this-package/streaming-with-thinking-and-images:
+  en: 9b82549c6ce25261
+  zh: 22a3978c5022576b
+/singula-ai-alego-llm-deepseek/use-this-package/dynamic-configuration:
+  en: 49290fc5647136b4
+  zh: 96fa9ce0f9e83c13
+/singula-ai-alego-llm-deepseek/use-this-package/provider-specific-request-fields:
+  en: f863390198cc177c
+  zh: 8856c62ba3fb36ca
+/singula-ai-alego-llm-deepseek/use-this-package/failures-and-recovery:
+  en: fb628364c8728ed4
+  zh: cd5141dbd1bd7964
+/singula-ai-alego-llm-deepseek/understand-the-implementation:
+  en: 1598ac8a8bb9b6bf
+  zh: fdd089c5ae7722cd
+/singula-ai-alego-llm-deepseek/understand-the-implementation/design-philosophy:
+  en: 829203c4c282dc46
+  zh: e05dada4a1420a95
+/singula-ai-alego-llm-deepseek/understand-the-implementation/source-map:
+  en: dc2d2409ad8c41cc
+  zh: 51fc4ad65dab6378
+/singula-ai-alego-llm-deepseek/understand-the-implementation/wire-flow:
+  en: 9477d8af3d762450
+  zh: 52a2967518509f94
+/singula-ai-alego-llm-deepseek/further-exploration:
+  en: 04a6516be16f16f5
+  zh: 425040ed44498f61
+/singula-ai-alego-llm-deepseek/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-llm-deepseek/model-experience/deepseek-request:
+  en: 1dc50052999253c6
+  zh: 7abf968fc18bffcd
+/singula-ai-alego-llm-deepseek/model-experience/deepseek-request/what-the-model-sees:
+  en: 14110610860656e8
+  zh: 995e28d6931ebe4e
+/singula-ai-alego-llm-deepseek/model-experience/deepseek-request/token-effect:
+  en: 07be9588beaa9c50
+  zh: e93ba35932073da5
+/singula-ai-alego-llm-deepseek/model-experience/deepseek-request/kv-cache-effect:
+  en: 87ac92776176ee15
+  zh: bb49edf3a68dda07
+/singula-ai-alego-llm-deepseek/model-experience/deepseek-response:
+  en: 957d6665495e5ca5
+  zh: 0aa72b2c2dc07167
+/singula-ai-alego-llm-deepseek/model-experience/deepseek-response/what-the-model-sees:
+  en: 36a3d0297d6ca209
+  zh: bfc68b8300f61593
+/singula-ai-alego-llm-deepseek/model-experience/deepseek-response/token-effect:
+  en: 533309d1f93b89de
+  zh: 4cc0b86f05c9be53
+/singula-ai-alego-llm-deepseek/model-experience/deepseek-response/kv-cache-effect:
+  en: ddfbea043596878d
+  zh: 4fbf5864a684c053
+/singula-ai-alego-llm-deepseek/known-limitations-and-deferred-work:
+  en: 49d18af1ea6b280d
+  zh: 3e510a21092db5f0
+/singula-ai-alego-llm-deepseek/known-limitations-and-deferred-work/dev-note:
+  en: b7c126152cde6dfb
+  zh: ab463f3b6d796d12

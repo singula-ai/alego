@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-07-win32-picker-foreground-alt-key.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-09-07-win32-picker-foreground-alt-key.md
-2026-09-07-win32-picker-foreground-alt-key.md: ebffff2ca258a9148508d41a5eb60112423eea87
-2026-09-07-win32-picker-foreground-alt-key.zh.md: 77faa2766a38f1ead17c5645b9e21a00cc0d8bf5
+/agent-note-foreground-activation-for-the-win32-picker-via-a-synthesized-alt-press:
+  en: a58ce467bb6a3a3b
+  zh: 680babf78f094064
+/agent-note-foreground-activation-for-the-win32-picker-via-a-synthesized-alt-press/problem:
+  en: b21a34182868057e
+  zh: 54cb143a2a11479b
+/agent-note-foreground-activation-for-the-win32-picker-via-a-synthesized-alt-press/decision:
+  en: d4cff7cc9b5c9379
+  zh: a8f3e238799a18ce
+/agent-note-foreground-activation-for-the-win32-picker-via-a-synthesized-alt-press/alternatives-considered:
+  en: 6344b18004cfbdbf
+  zh: 963da7d777749f9e
+/agent-note-foreground-activation-for-the-win32-picker-via-a-synthesized-alt-press/consequences:
+  en: 6e7c7c46cc48a95d
+  zh: bbed46fb61e53700

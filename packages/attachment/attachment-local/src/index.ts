@@ -8,7 +8,7 @@ import type {
   FileAttachmentRef,
   ImageAttachmentLimits,
   ImageAttachmentRef,
-  ImageRequestPolicy,
+  ImageRequestTarget,
   RequestImageAttachment,
   SaveFileAttachment,
   SaveFileStreamAttachment,
@@ -247,20 +247,20 @@ export class LocalAttachmentStore extends AttachmentStore {
 
   override async readImageRequest(
     ref: ImageAttachmentRef,
-    policy: ImageRequestPolicy,
+    target: ImageRequestTarget,
     signal?: AbortSignal,
   ): Promise<RequestImageAttachment> {
-    return this.requestVersion(ref, policy, undefined, signal)
+    return this.requestVersion(ref, target, undefined, signal)
   }
 
   private requestVersion(
     ref: ImageAttachmentRef,
-    policy: ImageRequestPolicy,
+    target: ImageRequestTarget,
     stored: StoredImageAttachment | undefined,
     signal: AbortSignal | undefined,
   ): Promise<RequestImageAttachment> {
     signal?.throwIfAborted()
-    const variantId = requestImageVariantId(ref, policy)
+    const variantId = requestImageVariantId(ref, target)
     const key = String(variantId)
     let operation = this.requestInflight.get(key)
     if (operation?.controller.signal.aborted) {
@@ -272,7 +272,7 @@ export class LocalAttachmentStore extends AttachmentStore {
         const request = await readRequestImageFile(
           this.cacheRoot,
           stored ?? await this.readImage(ref, sharedSignal),
-          policy,
+          target,
           sharedSignal,
         )
         return request

@@ -1,6 +1,61 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-settings-models/README.md
-README.md: 909a667faa53e1b58624c929adf4ea2e4e9f55c8
-README.zh.md: b32a8280851413364adea1ac089965e6afb18222
+/:
+  en: 4d3f2445d0a80187
+  zh: bdee5765d187e48f
+/singula-ai-alego-client-ui-settings-models:
+  en: c0ba34a59628cc31
+  zh: d95b59d6a9248eb6
+/singula-ai-alego-client-ui-settings-models/summary:
+  en: 1428af0fcbf1c876
+  zh: 9edf1a3cad183796
+/singula-ai-alego-client-ui-settings-models/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-client-ui-settings-models/use-this-package:
+  en: 43989714b9932e71
+  zh: 9158a4d9e6399395
+/singula-ai-alego-client-ui-settings-models/use-this-package/api-keys:
+  en: c2f2a5c06ef20d5b
+  zh: 49a7eb0b66b4ed53
+/singula-ai-alego-client-ui-settings-models/use-this-package/editing-a-provider:
+  en: ec0ba62a4e7185b4
+  zh: 37d1e1e7a3817d12
+/singula-ai-alego-client-ui-settings-models/use-this-package/adding-and-deleting-providers:
+  en: 9d533c65c82cd4a4
+  zh: 0a5da334e127c035
+/singula-ai-alego-client-ui-settings-models/use-this-package/first-run-dialogs:
+  en: 589397a35f82244e
+  zh: 342fbceee2c173a2
+/singula-ai-alego-client-ui-settings-models/use-this-package/extension-slots:
+  en: 65e9d8822b67b6c2
+  zh: 7e83be9defda28ee
+/singula-ai-alego-client-ui-settings-models/understand-the-implementation:
+  en: a87afbec5e339b36
+  zh: 6348c81af7e650e1
+/singula-ai-alego-client-ui-settings-models/understand-the-implementation/validation:
+  en: 92c0567f9c6ad07e
+  zh: 238b843994426f21
+/singula-ai-alego-client-ui-settings-models/understand-the-implementation/concurrency-and-credentials:
+  en: 670b8c066aed9b7a
+  zh: 2bedba9a2e0e3fee
+/singula-ai-alego-client-ui-settings-models/understand-the-implementation/onboarding-coordinator:
+  en: 5b18ec5319a96cfa
+  zh: 0eaa3078e7d87cad
+/singula-ai-alego-client-ui-settings-models/further-exploration:
+  en: 5bc51b390259c5d3
+  zh: 6c4556d55c2d4b1f
+/singula-ai-alego-client-ui-settings-models/model-experience:
+  en: 3120df665299c634
+  zh: 1d9f365d091d0d2a
+/singula-ai-alego-client-ui-settings-models/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: 9779c98fff4c949a
+/singula-ai-alego-client-ui-settings-models/known-limitations-and-deferred-work:
+  en: cc69c9934bf22302
+  zh: 4ea896f4b54aa203
+/singula-ai-alego-client-ui-settings-models/known-limitations-and-deferred-work/dev-note:
+  en: 4f6749870e661a48
+  zh: 4953f3ea814546a4

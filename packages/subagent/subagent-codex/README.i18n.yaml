@@ -1,6 +1,82 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/subagent/subagent-codex/README.md
-README.md: 0bc0e70cd654be407d3529a1a834f984c972d3e4
-README.zh.md: e855ebaa50b4f97cd795e318354ad8f1c7f8309c
+/:
+  en: c0c24742184eba37
+  zh: 2982b61ecfff95ce
+/singula-ai-alego-subagent-codex:
+  en: 9d6c16372c198c0f
+  zh: a25edc88b25eef30
+/singula-ai-alego-subagent-codex/summary:
+  en: b27cc98b72b64845
+  zh: 5e35a4cc98daca45
+/singula-ai-alego-subagent-codex/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-subagent-codex/use-this-package:
+  en: b5a419bc17f9938f
+  zh: d3f864c694dcc3df
+/singula-ai-alego-subagent-codex/use-this-package/installing-the-bundle:
+  en: fd1a741f9ef67dd5
+  zh: 6d4b6129543eeeed
+/singula-ai-alego-subagent-codex/use-this-package/configuration:
+  en: c034e29f9b8a47b6
+  zh: 01c033899dde0e12
+/singula-ai-alego-subagent-codex/use-this-package/exposing-the-tool:
+  en: ae49a2c17f98c205
+  zh: 8cd118bdf4a6ac57
+/singula-ai-alego-subagent-codex/use-this-package/what-you-get:
+  en: d095aece07cf4e43
+  zh: 124065171903083e
+/singula-ai-alego-subagent-codex/use-this-package/failure-and-recovery:
+  en: 4ffe0312c5a8f722
+  zh: 532a1997e9ae825b
+/singula-ai-alego-subagent-codex/understand-the-implementation:
+  en: d283c5564d6697e1
+  zh: 723aa78188880979
+/singula-ai-alego-subagent-codex/understand-the-implementation/design-concept:
+  en: 40315dca80a4e688
+  zh: 6b12db5e1037db98
+/singula-ai-alego-subagent-codex/understand-the-implementation/source-map:
+  en: ff3ba333a1cbb54e
+  zh: 1680115a5d1814b7
+/singula-ai-alego-subagent-codex/understand-the-implementation/run-flow:
+  en: d330494dbded9388
+  zh: ab996ff8a2f8b2fa
+/singula-ai-alego-subagent-codex/further-exploration:
+  en: b066c801bbeb5731
+  zh: c92c1ae1f15ae081
+/singula-ai-alego-subagent-codex/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-subagent-codex/model-experience/child-request:
+  en: 1796fa78833bfc2b
+  zh: d925d4c0d6c46552
+/singula-ai-alego-subagent-codex/model-experience/child-request/what-the-model-sees:
+  en: eb7be1567ceff373
+  zh: bec1a36af27bd3e9
+/singula-ai-alego-subagent-codex/model-experience/child-request/token-effect:
+  en: 7812d203a360434a
+  zh: 52c8b9a0cbfe39c3
+/singula-ai-alego-subagent-codex/model-experience/child-request/kv-cache-effect:
+  en: cd1fb7e2382ad2a2
+  zh: 2646d4b03a2e7220
+/singula-ai-alego-subagent-codex/model-experience/parent-scheduling-and-results-indirectly:
+  en: 4c391bb16e3cd380
+  zh: ab3847efe35fa6dc
+/singula-ai-alego-subagent-codex/model-experience/parent-scheduling-and-results-indirectly/what-the-model-sees:
+  en: f764c8a8f51f4dce
+  zh: d2cc9e16ac111fd2
+/singula-ai-alego-subagent-codex/model-experience/parent-scheduling-and-results-indirectly/token-effect:
+  en: 0bf99fe5b871cb64
+  zh: 6bb608e9b39ffb5b
+/singula-ai-alego-subagent-codex/model-experience/parent-scheduling-and-results-indirectly/kv-cache-effect:
+  en: fdbb7dcbf8b37f2b
+  zh: c7bcbf1e91ffe1d4
+/singula-ai-alego-subagent-codex/known-limitations-and-deferred-work:
+  en: 985b5230bb6b1d53
+  zh: c2199e6c4fa2a13a
+/singula-ai-alego-subagent-codex/known-limitations-and-deferred-work/dev-note:
+  en: 7ab7eb087a0e3abb
+  zh: 5f3d74e7ad285e36

@@ -1,6 +1,55 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-slots/README.md
-README.md: 392cf3247611ad1a4d849247aaa0f750cec8a7e7
-README.zh.md: 4fd871ba397296f1e48fe8b63c345284e91f3a6e
+/:
+  en: 928b67098d5077c4
+  zh: 6b122b785f9ab16d
+/singula-ai-alego-client-ui-slots:
+  en: 1ae6832a93c384c9
+  zh: 3d6d9a77072a6d88
+/singula-ai-alego-client-ui-slots/summary:
+  en: 097d42c6cd43dc35
+  zh: c184398e4dc9e1cf
+/singula-ai-alego-client-ui-slots/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-client-ui-slots/use-this-package:
+  en: 05691d44a0c6c48f
+  zh: 434033d5761297f3
+/singula-ai-alego-client-ui-slots/use-this-package/reusable-component-factories:
+  en: 301de67bf2779ae6
+  zh: 6e9d405ee1063d53
+/singula-ai-alego-client-ui-slots/use-this-package/the-five-framework-props-shares:
+  en: 45e2933a5e084956
+  zh: 938deedaf489f892
+/singula-ai-alego-client-ui-slots/use-this-package/store-seats:
+  en: 0d1c2948112841ec
+  zh: fc5a998cea485024
+/singula-ai-alego-client-ui-slots/use-this-package/declaration-discipline:
+  en: 8a41014931ffccd5
+  zh: 615f93335a682b01
+/singula-ai-alego-client-ui-slots/understand-the-implementation:
+  en: 983e6c0e71105f65
+  zh: 75af8d36dd8223fd
+/singula-ai-alego-client-ui-slots/understand-the-implementation/registration-and-routing:
+  en: 0638aaadacadb6f1
+  zh: cb6324ef5c9e1ade
+/singula-ai-alego-client-ui-slots/understand-the-implementation/the-renderer-contract:
+  en: 2b6058e98fb1efe7
+  zh: f32e37c8381809b9
+/singula-ai-alego-client-ui-slots/further-exploration:
+  en: dd64dae3a7c43562
+  zh: 34a00baa30034e17
+/singula-ai-alego-client-ui-slots/model-experience:
+  en: 3120df665299c634
+  zh: 67bb5e1fe59dae19
+/singula-ai-alego-client-ui-slots/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: de54f3467ef3b9be
+/singula-ai-alego-client-ui-slots/known-limitations-and-deferred-work:
+  en: 093b1c5076ddfd6d
+  zh: 3069c423115492fe
+/singula-ai-alego-client-ui-slots/known-limitations-and-deferred-work/dev-note:
+  en: 89e67d6054319245
+  zh: b55de4cfddf136a5

@@ -1,0 +1,37 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/client/ui-settings-shell/README.md
+/:
+  en: 375bf2e635c1a638
+  zh: d3bd6c910c063e36
+/singula-ai-alego-client-ui-settings-shell:
+  en: 0e34909827766765
+  zh: 8c7cf8dd8f00c7b1
+/singula-ai-alego-client-ui-settings-shell/summary:
+  en: 4a6764083793412e
+  zh: f177136090ceee7e
+/singula-ai-alego-client-ui-settings-shell/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-client-ui-settings-shell/use-this-package:
+  en: caaab79a5e1a76f6
+  zh: 31dbcaaef71d4a0e
+/singula-ai-alego-client-ui-settings-shell/understand-the-implementation:
+  en: 2c58855d6b1dfaa6
+  zh: 6e5546f2edb07687
+/singula-ai-alego-client-ui-settings-shell/further-exploration:
+  en: 328e22c4aeacb88d
+  zh: 3c6c01e0f24217c4
+/singula-ai-alego-client-ui-settings-shell/model-experience:
+  en: 6b7c6f82ab6c8435
+  zh: 4517689c899abcbe
+/singula-ai-alego-client-ui-settings-shell/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: 6e1c9a8fdde89577
+/singula-ai-alego-client-ui-settings-shell/known-limitations-and-deferred-work:
+  en: 51c2778fb17f8d1d
+  zh: 6425a598ba93833e
+/singula-ai-alego-client-ui-settings-shell/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: e88aeb617ffb74ea

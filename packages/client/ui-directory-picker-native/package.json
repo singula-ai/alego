@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-directory-picker-native",
-  "description": "Native directory-picker surface: the renderless workspace directory-flow occupant driving the host's OS chooser",
-  "version": "0.1.5-rc.2",
+  "description": "Native directory-picker surface: the renderless workspace directory-flow occupant driving the local Desktop or Host OS chooser",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -40,14 +40,15 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-client-ui-renderer": "workspace:^",
-    "@singula-ai/alego-client-ui-workspace": "workspace:^",
+    "@singula-ai/alego-client-test-runtime": "workspace:*",
+    "@singula-ai/alego-client-ui-renderer": "workspace:*",
+    "@singula-ai/alego-client-ui-workspace": "workspace:*",
     "@testing-library/react": "^16.1.0",
     "@types/react": "~18.3.1",
-    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/cordis": "workspace:~",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

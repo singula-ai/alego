@@ -48,6 +48,7 @@ The command orchestration shape is:
 pnpm run build:
 tsc -b tsconfig.host.json
 tsdown --env.ALEGO_BUILD_FACE host
+pnpm --filter @singula-ai/alego-desktop run bundle
 tsc -b tsconfig.client.json
 tsdown --env.ALEGO_BUILD_FACE client
 pnpm run build:web

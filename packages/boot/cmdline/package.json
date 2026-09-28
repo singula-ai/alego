@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-cmdline",
   "description": "Immutable command-line handoff from an alego launcher to any app plugin that injects cmdlineArgs",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,13 +27,13 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis-plugin-loader": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis-plugin-include": "workspace:^",
-    "@singula-ai/cordis-plugin-loader": "workspace:^",
+    "@singula-ai/cordis-plugin-include": "workspace:~",
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
     "commander": "^15.0.0",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   }
 }

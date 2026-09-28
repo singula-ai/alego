@@ -1,6 +1,31 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-05-durable-web-schedule.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-05-durable-web-schedule.md
-2026-08-05-durable-web-schedule.md: a6e2229826e67f04e6cd315156f32817e0102733
-2026-08-05-durable-web-schedule.zh.md: cee89d201ca1fe398671302759753af7aad15a7b
+/agent-note-durable-scheduled-reminders:
+  en: 9fe9fa40724d7e91
+  zh: 904ae761a52a97f9
+/agent-note-durable-scheduled-reminders/problem:
+  en: 85e09d88c1383aeb
+  zh: 2d90fcbf2fe5ad3c
+/agent-note-durable-scheduled-reminders/decision:
+  en: a15c7c13f167e5ac
+  zh: 63bcc2ef60c2f344
+/agent-note-durable-scheduled-reminders/decision/explicit-absolute-time-boundary:
+  en: 83a974970305c4f2
+  zh: 89ad9b5a00e75e44
+/agent-note-durable-scheduled-reminders/decision/bounded-fixed-rate-semantics:
+  en: c3b4bc06d6217ec3
+  zh: ce3868aaa84df1ce
+/agent-note-durable-scheduled-reminders/decision/queue-admission-is-not-completion:
+  en: 1d88821105254303
+  zh: 08982a1534d8fd18
+/agent-note-durable-scheduled-reminders/alternatives-considered:
+  en: 74cffa67497e2283
+  zh: 4a826a72a6ef2f4f
+/agent-note-durable-scheduled-reminders/verification:
+  en: 113a6d381ff1b145
+  zh: 59f9693741adbbab
+/agent-note-durable-scheduled-reminders/consequences:
+  en: 2121b1640094e601
+  zh: 9420468b80ff1155

@@ -14,6 +14,8 @@ import { ALEGO_ENV_PREFIX } from '@singula-ai/alego-shell'
 import type { AlegoEnvironment, AlegoEnvironmentKey } from '@singula-ai/alego-shell'
 import { ALEGO_HOME_ENV, resolveAlegoHome } from '@singula-ai/alego-home-paths'
 import type { ToolExecution } from '@singula-ai/alego-tools'
+// Declares `Context.profileContext`, the launcher-provided profile the built-ins read.
+import type {} from '@singula-ai/alego-app-boot'
 
 declare module '@singula-ai/cordis' {
   interface Context {
@@ -69,10 +71,14 @@ export interface BashEnvVariableInfo extends BashEnvVariable {
 
 const ALEGO_SHELL_KEY = `${ALEGO_ENV_PREFIX}SHELL` as const
 const ALEGO_SESSION_ID_KEY = `${ALEGO_ENV_PREFIX}SESSION_ID` as const
+const ALEGO_PROFILE_KEY = `${ALEGO_ENV_PREFIX}PROFILE` as const
+const ALEGO_PROFILE_DIR_KEY = `${ALEGO_ENV_PREFIX}PROFILE_DIR` as const
 const RESERVED_BASH_ENV_KEYS = new Set<AlegoEnvironmentKey>([
   ALEGO_HOME_ENV,
   ALEGO_SHELL_KEY,
   ALEGO_SESSION_ID_KEY,
+  ALEGO_PROFILE_KEY,
+  ALEGO_PROFILE_DIR_KEY,
 ])
 const BASH_ENV_KEY_SUFFIX = /^[A-Z][A-Z0-9_]*$/
 
@@ -154,6 +160,11 @@ export class ShellEnvRegistry extends Service {
     }
     if (execution.agent !== undefined) {
       values[ALEGO_SESSION_ID_KEY] = execution.agent.session.header.id
+    }
+    const profile = this.ctx.get('profileContext')
+    if (profile !== undefined) {
+      values[ALEGO_PROFILE_KEY] = profile.name
+      values[ALEGO_PROFILE_DIR_KEY] = profile.dir
     }
 
     for (const contributor of [...this.contributors.values()].sort((left, right) => left.name.localeCompare(right.name))) {

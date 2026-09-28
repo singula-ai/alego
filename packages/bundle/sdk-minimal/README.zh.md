@@ -1,5 +1,5 @@
 ---
-description: "供需要不含共享 base bundle 的极简跨平台 coding agent（编程智能体）的用户使用的独立单工具 SDK profile。"
+description: "供需要不含共享 base bundle 的极简跨平台 coding agent（编程智能体）的用户使用的独立 SDK profile，默认提供一个 shell 工具。"
 kind: "package-bundle"
 ---
 
@@ -9,7 +9,7 @@ kind: "package-bundle"
 
 ## 概述
 
-当 SDK 客户端需要小型、显式的 coding agent 运行时时，请使用 `alego --profile sdk-minimal`。该 profile 只公布按平台选择的持久 shell，把会话持久化为未压缩 JSONL，并从 SDK 初始化请求选择模型。它提供完整 Cordis 配置树，并刻意排除 `alego-base`、Web、settings、托管凭据、遥测、压缩（compaction）、文件系统工具、workspace 指令、skill（技能）、jobs 与 subagent。其 danger-full-access 策略允许 shell 修改进程可访问的任何路径，因此只能配合隔离 workspace 使用。
+当 SDK 客户端需要小型、显式的 coding agent 运行时时，请使用 `alego --profile sdk-minimal`。该 profile 默认只公布按平台选择的持久 shell，把会话持久化为未压缩 JSONL，并从 SDK 初始化请求选择模型。它提供完整 Cordis 配置树，并刻意排除 `alego-base`、Web、settings、托管凭据、遥测、压缩（compaction）、文件系统工具、workspace 指令、skill（技能）、jobs 与 subagent。其 danger-full-access 策略允许 shell 修改进程可访问的任何路径，因此只能配合隔离 workspace 使用。
 
 ## 目录
 
@@ -38,6 +38,8 @@ alego --profile sdk-minimal
 
 该 profile 只挂载一套持久 shell：Linux 和 macOS 使用 Bash，Windows 使用 PowerShell。两套配置都使用 300 秒超时与一个 agent 自有终端；另一平台的配置项保持禁用。
 
+与其他随附 profile 一样，它统一挂载 [MCP 资源](../../mcp/mcp-resources/README.zh.md)一次。只需配置 [MCP 客户端条目](../../mcp/mcp-client/README.zh.md)即可添加服务器。其他提供方挂载的客户端也属于已配置状态。调用方作用域中未配置服务器时，MCP 不贡献提示词文本或工具，默认仍只有一个 shell 工具。
+
 -----
 
 <a id="understand-the-implementation"></a>
@@ -46,7 +48,7 @@ alego --profile sdk-minimal
 <details>
 <summary>实现细节——点击展开</summary>
 
-该 bundle 的单个 insert 就是完整应用配置树：SDK stdio 启动与 JSON-RPC 服务、一个由环境配置的 DeepSeek 适配器、显式 agent 核心、本地子进程执行、按平台选择的持久 shell PTY，以及位于 `$ALEGO_HOME/sessions` 的未压缩 JSONL 持久化。它不继承其他 bundle，因此每个额外配置项都是显式 profile 变更。
+该 bundle 的单个 insert 就是完整应用配置树：SDK stdio 启动与 JSON-RPC 服务、一个由环境配置的 DeepSeek 适配器、显式 agent 核心、按配置启用的 MCP 资源工具、本地子进程执行、按平台选择的持久 shell PTY，以及位于 `$ALEGO_HOME/sessions` 的未压缩 JSONL 持久化。它不继承其他 bundle，因此每个额外配置项都是显式 profile 变更。
 
 ### 源码地图
 
@@ -77,11 +79,11 @@ alego --profile sdk-minimal
 
 #### 模型看到的内容
 
-系统提示词取 `ALEGO_SYSTEM_PROMPT`，未设置时使用 `You are a helpful software engineer assistant.`。对外公布的唯一工具是 Linux/macOS 上 agent 所有的持久 `bash` 或 Windows 上的 `pwsh`；运行时上下文、文件系统工具、workspace 指令、skill、jobs 控制、压缩与 Harness 身份均不存在。
+系统提示词取 `ALEGO_SYSTEM_PROMPT`，未设置时使用 `You are a helpful software engineer assistant.`。未配置 MCP 服务器时，对外公布的唯一工具是 Linux/macOS 上 agent 所有的持久 `bash` 或 Windows 上的 `pwsh`；运行时上下文、文件系统工具、workspace 指令、skill、jobs 控制、压缩与 Harness 身份均不存在。
 
 #### Token 影响
 
-一个稳定 persona 加一个工具 schema。工具结果与普通对话历史随会话增长。
+默认是一个稳定 persona 加一个工具 schema。已配置 MCP 服务器会添加自己的工具、共享资源工具及可用的服务器指令。工具结果与普通对话历史随会话增长。
 
 #### KV Cache 影响
 

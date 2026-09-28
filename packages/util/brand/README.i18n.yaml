@@ -1,6 +1,46 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/util/brand/README.md
-README.md: 284170b466dfe8d1f4a9ccb5fed77d6b977102fc
-README.zh.md: 4a504ba813806db01cdff5825c9fa6940b6cf5d6
+/:
+  en: 9c53a07c1a04a19a
+  zh: 1fd4666fbc6c39a8
+/singula-ai-alego-brand:
+  en: f2a74c0b7765da73
+  zh: 1e35c9438144f5be
+/singula-ai-alego-brand/summary:
+  en: 6e33faeadb2937e7
+  zh: 65ec7a8e79ae0e37
+/singula-ai-alego-brand/table-of-contents:
+  en: c992e0cd2e7042d6
+  zh: 2e8cd826664632d1
+/singula-ai-alego-brand/use-this-package:
+  en: abdf7a28d3af06f0
+  zh: 8d68807326b03898
+/singula-ai-alego-brand/use-this-package/branding-a-string:
+  en: 49b137dc146f5c0a
+  zh: 7fe82acb5ba633e8
+/singula-ai-alego-brand/use-this-package/branding-a-number:
+  en: fd9617ca2804f47b
+  zh: cd3c0e6bda613509
+/singula-ai-alego-brand/use-this-package/when-to-brand:
+  en: 30fd51c5b0e2525e
+  zh: 2a0aa987c70b52ba
+/singula-ai-alego-brand/understand-the-implementation:
+  en: 98a62299f46d5050
+  zh: 042d3c626e1fbe34
+/singula-ai-alego-brand/understand-the-implementation/source-map:
+  en: 4adda24125bd07aa
+  zh: bfcc7be63f134658
+/singula-ai-alego-brand/understand-the-implementation/how-values-stay-portable:
+  en: 6a126aa2e31591c0
+  zh: c85e395cdb0bbb0e
+/singula-ai-alego-brand/understand-the-implementation/why-it-stays-dependency-free:
+  en: eb49dc0043e7e0a1
+  zh: 49eba9332650174f
+/singula-ai-alego-brand/further-exploration:
+  en: f56f6c2ed3204816
+  zh: d5f46c4f5f22ace9
+/singula-ai-alego-brand/dev-note:
+  en: 5de1d6304e00c58f
+  zh: 8d8225361cfa29e5

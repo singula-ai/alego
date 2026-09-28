@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-14-unattended-browser-terminal-reclamation.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-09-14-unattended-browser-terminal-reclamation.md
+/agent-note-two-hour-reclamation-of-unattended-browser-terminals:
+  en: b4adc4ffa0d87a24
+  zh: 115d02a5cc8ad844
+/agent-note-two-hour-reclamation-of-unattended-browser-terminals/problem:
+  en: bd5cfc222df1a98c
+  zh: b58a3570a98298ee
+/agent-note-two-hour-reclamation-of-unattended-browser-terminals/decision:
+  en: 5f7cb88c9a2347ac
+  zh: 1935525225fbab16
+/agent-note-two-hour-reclamation-of-unattended-browser-terminals/alternatives-considered:
+  en: 165fedee22bdb52e
+  zh: 6b9b7054ddb2a3a9
+/agent-note-two-hour-reclamation-of-unattended-browser-terminals/consequences:
+  en: ded45621bb710e52
+  zh: f5f9624fa5f608e8

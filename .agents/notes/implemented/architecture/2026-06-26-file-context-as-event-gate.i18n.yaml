@@ -1,6 +1,43 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-06-26-file-context-as-event-gate.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-06-26-file-context-as-event-gate.md
-2026-06-26-file-context-as-event-gate.md: eb13f611847e767bd328a37adcbebf066defb1c0
-2026-06-26-file-context-as-event-gate.zh.md: 665fec869fb30f37768f0acdfbfe6eb284cbfbe8
+/agent-note-make-alego-fs-observation-policy-an-event-gate-plugin-not-a-method-interface:
+  en: 006fdc114dd22245
+  zh: 9f8f79c249d9a948
+/agent-note-make-alego-fs-observation-policy-an-event-gate-plugin-not-a-method-interface/problem:
+  en: 69b71b6f247dcd15
+  zh: 9d7eb4ced41845a1
+/agent-note-make-alego-fs-observation-policy-an-event-gate-plugin-not-a-method-interface/decision:
+  en: 3e15eca7ab807b62
+  zh: 341622b38d78d1c0
+/agent-note-make-alego-fs-observation-policy-an-event-gate-plugin-not-a-method-interface/the-policy-is-enforced-by-provider-cas-not-by-alego-fs-observation-policy-stat:
+  en: b63a3967e10aec0f
+  zh: 111b39ad2a234f00
+/agent-note-make-alego-fs-observation-policy-an-event-gate-plugin-not-a-method-interface/provider-contract-change-the-version-guard-is-optional:
+  en: faee96b59022b0d0
+  zh: 1067b9328911afed
+/agent-note-make-alego-fs-observation-policy-an-event-gate-plugin-not-a-method-interface/event-vocabulary-owned-by-alego-fs:
+  en: f38badc6cf79a3ca
+  zh: 0932150055990215
+/agent-note-make-alego-fs-observation-policy-an-event-gate-plugin-not-a-method-interface/tool-contract-alego-tool-fs:
+  en: fb24c235ff5f9e53
+  zh: d0f4a82c64c9ec5b
+/agent-note-make-alego-fs-observation-policy-an-event-gate-plugin-not-a-method-interface/policy-plugin-contract-alego-fs-observation-policy:
+  en: e1692ced18586ae6
+  zh: c56aa7b70b550f81
+/agent-note-make-alego-fs-observation-policy-an-event-gate-plugin-not-a-method-interface/bare-provider-behavior-no-alego-fs-observation-policy:
+  en: 250fb6816fc81556
+  zh: c1ca89e9e698711e
+/agent-note-make-alego-fs-observation-policy-an-event-gate-plugin-not-a-method-interface/supersedes:
+  en: ab7a83ec336d0985
+  zh: ba6c477e4e6bc963
+/agent-note-make-alego-fs-observation-policy-an-event-gate-plugin-not-a-method-interface/verification:
+  en: 326a6e6cd7fd8dea
+  zh: a7f09df50b30abf8
+/agent-note-make-alego-fs-observation-policy-an-event-gate-plugin-not-a-method-interface/alternatives-considered:
+  en: e05b3b913cd5b76f
+  zh: 6eaf32b88f1f43d4
+/agent-note-make-alego-fs-observation-policy-an-event-gate-plugin-not-a-method-interface/consequences:
+  en: 8331a4db71d50161
+  zh: 0f537cff44451457

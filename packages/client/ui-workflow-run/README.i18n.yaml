@@ -1,6 +1,49 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-workflow-run/README.md
-README.md: b2aae5db5c753fe91cb06c4c2bb339332080a78e
-README.zh.md: 265d18f154a1e31104bab233217aed36cea5abe2
+/:
+  en: a5d5f11089700505
+  zh: 5b5100c575287d3b
+/singula-ai-alego-client-ui-workflow-run:
+  en: bce7688fbdd50f9c
+  zh: e1c0008b028ed5f3
+/singula-ai-alego-client-ui-workflow-run/summary:
+  en: 729535deb0d7244e
+  zh: 9852426dae689750
+/singula-ai-alego-client-ui-workflow-run/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-client-ui-workflow-run/use-this-package:
+  en: f8bbd00704310da7
+  zh: 1252a83aef0e8242
+/singula-ai-alego-client-ui-workflow-run/use-this-package/navigating-the-node:
+  en: ced9d82bdf540585
+  zh: 34651e03ed937508
+/singula-ai-alego-client-ui-workflow-run/use-this-package/state-and-completion:
+  en: 03784e501ae8f70a
+  zh: 90b32daccf577780
+/singula-ai-alego-client-ui-workflow-run/understand-the-implementation:
+  en: d41b996f3fb6727b
+  zh: 6b40fdf1db894fff
+/singula-ai-alego-client-ui-workflow-run/understand-the-implementation/disclosure-choices:
+  en: adf86d983c51865e
+  zh: 014a4644d55be111
+/singula-ai-alego-client-ui-workflow-run/understand-the-implementation/composition:
+  en: 364d3c38e5f02149
+  zh: ca5dbee6ac27e141
+/singula-ai-alego-client-ui-workflow-run/further-exploration:
+  en: 2a7d092c2d06c0b1
+  zh: d7f7c41f513acc08
+/singula-ai-alego-client-ui-workflow-run/model-experience:
+  en: 62a75f801964a0bb
+  zh: a247663753a52ae9
+/singula-ai-alego-client-ui-workflow-run/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: de54f3467ef3b9be
+/singula-ai-alego-client-ui-workflow-run/known-limitations-and-deferred-work:
+  en: 43108757a1d2d414
+  zh: c1b5ac12c743531c
+/singula-ai-alego-client-ui-workflow-run/known-limitations-and-deferred-work/dev-note:
+  en: 8e5a74ff5f3bc069
+  zh: b5d05c4d192ac837

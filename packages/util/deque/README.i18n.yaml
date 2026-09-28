@@ -1,6 +1,46 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/util/deque/README.md
-README.md: e17d0e27a8c3c327c7cc3cd38864e402ca8a1f94
-README.zh.md: 5dd3cbbeb07af0584ec4ea8f7371c31ec4f8df0e
+/:
+  en: d0d9e1665b0ea874
+  zh: 6a8366be71b5d6d9
+/singula-ai-alego-deque:
+  en: 9f09e16b03245d30
+  zh: 045a7d2b44ec8758
+/singula-ai-alego-deque/summary:
+  en: 35e401d5a077e496
+  zh: 70bda7ead9fb6ff5
+/singula-ai-alego-deque/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-deque/use-this-package:
+  en: bbff250eba0f1b89
+  zh: 0a618f05cc88ee2b
+/singula-ai-alego-deque/use-this-package/when-to-use-it:
+  en: e9c6c998f8d0542a
+  zh: edc2133eaf273054
+/singula-ai-alego-deque/use-this-package/entry-point:
+  en: 3e3fca15c9656d45
+  zh: 43e70c7381fc21f9
+/singula-ai-alego-deque/understand-the-implementation:
+  en: 1439df275cf4305f
+  zh: 09fb7ae6048c065c
+/singula-ai-alego-deque/understand-the-implementation/source-map:
+  en: f3f22e80f9919ff5
+  zh: 839ed17098fdfee9
+/singula-ai-alego-deque/further-exploration:
+  en: 909a6944f84d2876
+  zh: 621ea3136b3d17ed
+/singula-ai-alego-deque/model-experience:
+  en: 8347ed3429dab61e
+  zh: c634a286fa463342
+/singula-ai-alego-deque/model-experience/kv-cache-effect:
+  en: e7ba08477bf22c4e
+  zh: f365439c69beb722
+/singula-ai-alego-deque/known-limitations-and-deferred-work:
+  en: ade2165d7c740ba7
+  zh: 05296ebd057e9beb
+/singula-ai-alego-deque/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

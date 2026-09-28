@@ -1,6 +1,25 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/sdk/README.md
-README.md: 77beaae6c63a295b0f1c4cb0b42da3093a514dd3
-README.zh.md: cd8187c77e81339476a863c7ce1474cc0e8072ce
+/:
+  en: 3345ee8fe0f8ee0c
+  zh: 541859dcfff0f0f4
+/sdk-drive-a-harness-runtime-from-another-process:
+  en: ec992cf42fdd2eb7
+  zh: 51c6903f1fe19caf
+/sdk-drive-a-harness-runtime-from-another-process/summary:
+  en: a415f8c9071ad11f
+  zh: c577af1bed63685d
+/sdk-drive-a-harness-runtime-from-another-process/table-of-contents:
+  en: 1eb35b015a6c423f
+  zh: a8a3dceee2c9e943
+/sdk-drive-a-harness-runtime-from-another-process/packages:
+  en: 9a43dcc9391fdca0
+  zh: df478eac2f2be9a7
+/sdk-drive-a-harness-runtime-from-another-process/related-documentation:
+  en: 8900c813ac2151b7
+  zh: 49257e78acfc5ee5
+/sdk-drive-a-harness-runtime-from-another-process/dev-note:
+  en: b75c8458928b72b9
+  zh: 003ba4e17b4b5269

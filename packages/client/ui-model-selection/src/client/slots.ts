@@ -4,6 +4,7 @@
  * entry; this package only contributes the single occupant, so no SlotMap
  * merge lives here.
  */
+import type { RemoteResult } from '@singula-ai/alego-typert-protocol'
 import type { ModelSelection } from '@singula-ai/alego-api-remotes/client'
 import type { SnapshotStore } from '@singula-ai/alego-client-store'
 import type { ModelDirectoryState } from './directory.ts'
@@ -19,7 +20,7 @@ export interface ModelSelectInjected {
   /**
    * Select a complete provider/model/reasoning selection.
    * @param selection - model selection and optional adapter-owned effort.
-   * @returns whether the host accepted the selection.
+   * @returns the Host outcome, or undefined when this Session cannot select a model.
    */
-  select: (selection: ModelSelection) => Promise<boolean>
+  select: (selection: ModelSelection) => Promise<RemoteResult<void> | undefined>
 }

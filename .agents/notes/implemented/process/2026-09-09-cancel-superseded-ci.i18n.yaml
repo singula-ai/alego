@@ -1,6 +1,22 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-09-cancel-superseded-ci.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-09-09-cancel-superseded-ci.md
-2026-09-09-cancel-superseded-ci.md: 92343ef255582874174041de393311a6ddcd7774
-2026-09-09-cancel-superseded-ci.zh.md: 81dab54f034a19801ba5583fd4ad7fd95f324c8a
+/agent-note-cancel-superseded-ci-validation:
+  en: e9a733cdf10caf2e
+  zh: 72d2ab01c1d94e26
+/agent-note-cancel-superseded-ci-validation/problem:
+  en: b436e3c8a7ffe727
+  zh: 80b9f77b5cb051de
+/agent-note-cancel-superseded-ci-validation/decision:
+  en: 47ebface77589a2f
+  zh: 2d8f86621cdbe2da
+/agent-note-cancel-superseded-ci-validation/alternatives-considered:
+  en: c7d012d6e43f35ec
+  zh: 6f3eaf1342319aeb
+/agent-note-cancel-superseded-ci-validation/consequences:
+  en: c226f645a79d0060
+  zh: 023071f83b9a126d
+/agent-note-cancel-superseded-ci-validation/verification:
+  en: 015f312772637350
+  zh: b703cdab8bd4f0ae

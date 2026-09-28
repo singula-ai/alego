@@ -1,0 +1,28 @@
+# Bilingual-pair consistency record for 2026-09-23-bounded-pnpm-runs.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-09-23-bounded-pnpm-runs.md
+/agent-note-bounding-a-pnpm-run-that-stops-progressing:
+  en: af804e1e7df42046
+  zh: 3885f694e9b5115d
+/agent-note-bounding-a-pnpm-run-that-stops-progressing/problem:
+  en: 55762916cf10fc7b
+  zh: d239f5d7c1ae4499
+/agent-note-bounding-a-pnpm-run-that-stops-progressing/decision:
+  en: 5eebd9e5123dcd27
+  zh: 44513512b297471e
+/agent-note-bounding-a-pnpm-run-that-stops-progressing/why-a-silence-bound-rather-than-a-duration-bound:
+  en: 31287e4e71e7f10f
+  zh: ff57c96539d51972
+/agent-note-bounding-a-pnpm-run-that-stops-progressing/alternatives-considered:
+  en: 125710ae84911ed4
+  zh: 5f35dbcda4447bea
+/agent-note-bounding-a-pnpm-run-that-stops-progressing/testing:
+  en: eb3c4907aec48db3
+  zh: 56b7168b732c782a
+/agent-note-bounding-a-pnpm-run-that-stops-progressing/related:
+  en: 9243fdb8f7b187d3
+  zh: f06861ffd59b8744
+/agent-note-bounding-a-pnpm-run-that-stops-progressing/consequences:
+  en: c13a64cd3dd381e9
+  zh: 83d2db47153e3d8c

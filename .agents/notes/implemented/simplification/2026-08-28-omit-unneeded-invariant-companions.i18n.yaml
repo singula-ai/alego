@@ -1,6 +1,28 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-28-omit-unneeded-invariant-companions.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-08-28-omit-unneeded-invariant-companions.md
-2026-08-28-omit-unneeded-invariant-companions.md: af924214a23431181fd1ec11e1567c8bbee87c15
-2026-08-28-omit-unneeded-invariant-companions.zh.md: 8e7704c4b464ac97c4fb9f97869299408c16d3a5
+/agent-note-omit-invariant-companions-without-independent-observations:
+  en: 95f9370cd9981ed9
+  zh: dfe7e9628df1eead
+/agent-note-omit-invariant-companions-without-independent-observations/problem:
+  en: 799a8844527fae05
+  zh: 8ce6216e8b2c767b
+/agent-note-omit-invariant-companions-without-independent-observations/decision:
+  en: a15c7c13f167e5ac
+  zh: 63bcc2ef60c2f344
+/agent-note-omit-invariant-companions-without-independent-observations/decision/independent-observations-justify-publication:
+  en: 611a10a814ad9de8
+  zh: 5a617fd775340651
+/agent-note-omit-invariant-companions-without-independent-observations/decision/omission-is-explicit-in-the-package-readme:
+  en: 465c523c29fd7836
+  zh: 9967d7e5b17f1adf
+/agent-note-omit-invariant-companions-without-independent-observations/decision/audit-result:
+  en: e33ae985f634c842
+  zh: 3793785b1b813e2e
+/agent-note-omit-invariant-companions-without-independent-observations/alternatives-considered:
+  en: 775a7ec66dfb3284
+  zh: 0a1126c274c7bd19
+/agent-note-omit-invariant-companions-without-independent-observations/consequences:
+  en: f9bdc0da765c36df
+  zh: 7bd0c4770a5d0b23

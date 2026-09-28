@@ -1,6 +1,58 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/test-support/loader-smoke/README.md
-README.md: 87d0b0a279a4e108b118c1679ab17f3faded75d5
-README.zh.md: 0f47edfd7599ecef87975dceafe7c538811a9482
+/:
+  en: 00a7ac59f751e4d0
+  zh: 35334966b956621d
+/singula-ai-alego-loader-smoke:
+  en: b372f5471405eca1
+  zh: 124ed8d746f4903d
+/singula-ai-alego-loader-smoke/summary:
+  en: ed921525d705d74d
+  zh: ad2d4794804850f9
+/singula-ai-alego-loader-smoke/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-loader-smoke/use-this-package:
+  en: 682780f6cbeb85cb
+  zh: 07a2458db985471a
+/singula-ai-alego-loader-smoke/use-this-package/booting-an-application-fixture:
+  en: ac8534c3d125d3de
+  zh: d4ae4cc6b2211eb5
+/singula-ai-alego-loader-smoke/use-this-package/testing-a-shipped-profile:
+  en: 72f9035b05ec2bda
+  zh: 4a2b173c610a95b0
+/singula-ai-alego-loader-smoke/use-this-package/driving-a-fixture-turn:
+  en: c99402b3d2219738
+  zh: cbff00f4bfb7d625
+/singula-ai-alego-loader-smoke/use-this-package/source-or-built-mode:
+  en: c50a062864af81a2
+  zh: 492f92696e0a81fe
+/singula-ai-alego-loader-smoke/use-this-package/what-can-go-wrong:
+  en: 95ddab170a6ddb94
+  zh: 98b9506379d57269
+/singula-ai-alego-loader-smoke/understand-the-implementation:
+  en: 3ffb8df759bf5071
+  zh: a93d3dd6472d9782
+/singula-ai-alego-loader-smoke/understand-the-implementation/design:
+  en: 991dbe9268b584fa
+  zh: ee080a41675ea5ff
+/singula-ai-alego-loader-smoke/understand-the-implementation/source-map:
+  en: 4212f963f739e76e
+  zh: 1a08bcb7654df951
+/singula-ai-alego-loader-smoke/further-exploration:
+  en: 674a04d670e96f32
+  zh: 38c4f6a00711a9d3
+/singula-ai-alego-loader-smoke/model-experience:
+  en: 27696a3c4d31d171
+  zh: 48b6df074e0b0911
+/singula-ai-alego-loader-smoke/model-experience/kv-cache-effect:
+  en: c204a02c386ca3a0
+  zh: ce9b24304f9644aa
+/singula-ai-alego-loader-smoke/known-limitations-and-deferred-work:
+  en: a3e0e21178bb00cc
+  zh: f3dc6139370330f6
+/singula-ai-alego-loader-smoke/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-file-reference-local",
   "description": "Local-filesystem ctx.fileReferences provider with bounded fuzzy indexes",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -32,20 +32,20 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@singula-ai/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:~"
   },
   "peerDependencies": {
-    "@singula-ai/alego-agent": "workspace:^",
-    "@singula-ai/alego-file-reference": "workspace:^",
-    "@singula-ai/alego-system-prompt": "workspace:^",
-    "@singula-ai/alego-tools": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-file-reference": "workspace:*",
+    "@singula-ai/alego-system-prompt": "workspace:*",
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-agent": "workspace:^",
-    "@singula-ai/alego-file-reference": "workspace:^",
-    "@singula-ai/alego-system-prompt": "workspace:^",
-    "@singula-ai/alego-tools": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-file-reference": "workspace:*",
+    "@singula-ai/alego-system-prompt": "workspace:*",
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

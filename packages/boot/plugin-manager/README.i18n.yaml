@@ -1,0 +1,55 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/boot/plugin-manager/README.md
+/:
+  en: 65283627208ef4c9
+  zh: aa3f833ec24bb65a
+/singula-ai-alego-plugin-manager:
+  en: 63d4e203dfe4d631
+  zh: dfbf96ff3d98cb1f
+/singula-ai-alego-plugin-manager/summary:
+  en: d6afcaa1594efcdb
+  zh: 459cb6ac0dcb2d46
+/singula-ai-alego-plugin-manager/table-of-contents:
+  en: 87679c51aa3693f5
+  zh: 11684a48a5806afb
+/singula-ai-alego-plugin-manager/use-this-package:
+  en: c6d468b30bb73cb1
+  zh: 42e19fad6cf9abaa
+/singula-ai-alego-plugin-manager/use-this-package/version-compatibility-and-exemptions:
+  en: b74e0d48d6b0941d
+  zh: 94159cff03403383
+/singula-ai-alego-plugin-manager/use-this-package/configuration:
+  en: 9d1a449e06c273fa
+  zh: d9cb03684f0ddfba
+/singula-ai-alego-plugin-manager/understand-the-implementation:
+  en: 8d389b4e6d97262a
+  zh: 5fb269b8b2cfce95
+/singula-ai-alego-plugin-manager/further-exploration:
+  en: 455317deb34d1393
+  zh: 545c7f4b86577f3d
+/singula-ai-alego-plugin-manager/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-plugin-manager/model-experience/management-tool:
+  en: 1815ec6ce56c80d4
+  zh: 2d7ac75d3b25eb6b
+/singula-ai-alego-plugin-manager/model-experience/management-tool/what-the-model-sees:
+  en: edfa90a3e3302278
+  zh: 126134011a78c665
+/singula-ai-alego-plugin-manager/model-experience/management-tool/token-effect:
+  en: bc70208bd361dbcd
+  zh: bb651d6066066c6c
+/singula-ai-alego-plugin-manager/model-experience/management-tool/kv-cache-effect:
+  en: c29f60be7f3edc1a
+  zh: d9b9388b96ef95cc
+/singula-ai-alego-plugin-manager/known-limitations-and-deferred-work:
+  en: b4cd70b7800951c4
+  zh: 2ac0989f5cde6996
+/singula-ai-alego-plugin-manager/known-limitations-and-deferred-work/failure-behavior:
+  en: 18a69eed2a756f88
+  zh: 3aa825591e0ee88d
+/singula-ai-alego-plugin-manager/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

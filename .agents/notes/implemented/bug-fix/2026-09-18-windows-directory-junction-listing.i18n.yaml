@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-18-windows-directory-junction-listing.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-09-18-windows-directory-junction-listing.md
+/agent-note-list-directory-links-in-the-workspace-file-tree:
+  en: fddd774b5dca23f2
+  zh: 20e4b187aa57e185
+/agent-note-list-directory-links-in-the-workspace-file-tree/problem:
+  en: eec5c2e8edd0e0ff
+  zh: 03c0f3490bb891c0
+/agent-note-list-directory-links-in-the-workspace-file-tree/decision:
+  en: 1e0641091723f646
+  zh: 465f808dc87def8c
+/agent-note-list-directory-links-in-the-workspace-file-tree/alternatives-considered:
+  en: 8a9daf7bd2d78b65
+  zh: 69f46ee1108c2747
+/agent-note-list-directory-links-in-the-workspace-file-tree/consequences:
+  en: 3cbc15d04a639292
+  zh: 4a9c94a1a1e8aeca

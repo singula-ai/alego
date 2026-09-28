@@ -1,6 +1,31 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for subprocess.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/subsystems/subprocess.md
-subprocess.md: 472fd53821b108092ed3b0968c469d4ab3f10074
-subprocess.zh.md: ce117df295b66988d5b6be60666ce8bed22801a8
+/subprocess:
+  en: 510ecb9c6403fa39
+  zh: 15350c0078b45e7c
+/subprocess/executable-lookup:
+  en: be4ddc71906d893d
+  zh: 49823ef13713dea0
+/subprocess/managed-environment-namespace-and-captured-output:
+  en: 7fa9e8a0c5b086fa
+  zh: f16ad2d2128d176b
+/subprocess/node-shaped-stdio-dispositions:
+  en: f591b05b1c765670
+  zh: e39f8bf1a6d02438
+/subprocess/the-fully-explicit-spawn-spec:
+  en: fbbe3aa52c088343
+  zh: 1496fedd080593d3
+/subprocess/handles-streams-readers-and-managed-range-termination:
+  en: 664ba5f23b9da1d9
+  zh: d3eb37a157e50728
+/subprocess/outcomes-carry-exit-facts-only:
+  en: b61bda6c2806b335
+  zh: 0adcb61c5c2af380
+/subprocess/terminal-process-primitive:
+  en: 5be34cb654c9ee03
+  zh: 7ac77d13abd9af3c
+/subprocess/service-behavior:
+  en: 76f742f8c5105d76
+  zh: bbbec011cb3dc88a

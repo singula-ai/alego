@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-03-normalized-unread-fs-tool-diagnostic.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-09-03-normalized-unread-fs-tool-diagnostic.md
-2026-09-03-normalized-unread-fs-tool-diagnostic.md: eaebc6fcd700dcb52e409f2bc67305c0fa1f277e
-2026-09-03-normalized-unread-fs-tool-diagnostic.zh.md: 7c27c2d444dcafa32321446b80e404bf63dffb15
+/agent-note-normalized-unread-filesystem-tool-diagnostic:
+  en: e0d5d1fa4ff0c748
+  zh: a2eb80ce97245260
+/agent-note-normalized-unread-filesystem-tool-diagnostic/problem:
+  en: 3325a961158e1db9
+  zh: b565b2b06e520b80
+/agent-note-normalized-unread-filesystem-tool-diagnostic/decision:
+  en: d746703dbb5820e4
+  zh: 790b03ab25fe3ace
+/agent-note-normalized-unread-filesystem-tool-diagnostic/alternatives-considered:
+  en: 3bcd8eba79b26bc0
+  zh: c36441a428fcc287
+/agent-note-normalized-unread-filesystem-tool-diagnostic/consequences:
+  en: 20abbdbfa3aa4edc
+  zh: d0555aac68cb7a1f

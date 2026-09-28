@@ -10,7 +10,7 @@
 - id: spill-policy
   name: '@singula-ai/alego-spill-policy'
   config:
-    maxInlineBytes: !!js process.env.ALEGO_SNAPSHOT && 800 || 50000
+    maxInlineTokens: !!js process.env.ALEGO_SNAPSHOT && 200 || 12500
 
 - insert:
     - id: snapshot-spill-locators

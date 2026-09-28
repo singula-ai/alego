@@ -19,7 +19,7 @@ import { ToolCallId } from '@singula-ai/alego-llm'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime, { TOOL_ABORTED } from '@singula-ai/alego-tools'
 import LocalJobRegistry from '@singula-ai/alego-jobs-local'
-import * as ToolTasks from '@singula-ai/alego-tool-jobs'
+import * as ToolJobs from '@singula-ai/alego-tool-jobs'
 import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 import { PwshLocalExecutor, resolvePwshPath } from '@singula-ai/alego-pwsh-local'
 import * as ToolPwsh from '@singula-ai/alego-tool-pwsh'
@@ -61,11 +61,13 @@ describe.skipIf(!hasPwsh)('pwsh tool over the real pwsh executor', () => {
     await ctx.plugin(SystemPrompt)
     await ctx.plugin(ToolRuntime)
     await ctx.plugin(LocalJobRegistry)
-    await ctx.plugin(ToolTasks)
+    await ctx.plugin(ToolJobs)
     await ctx.plugin(LocalSubprocessRuntime)
     await ctx.plugin(BashEnvPlugin)
     await ctx.plugin(PwshLocalExecutor, { timeoutMs: 20_000, graceMs: 200 })
-    await ctx.plugin(ToolPwsh)
+    // This suite pins the executor's own deadline behaviour; the job-backed
+    // foreground path is pinned by background.spec.
+    await ctx.plugin(ToolPwsh, { promoteOnTimeout: false })
   })
 
   afterEach(async () => {

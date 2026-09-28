@@ -133,12 +133,12 @@ function checkManifest(
     owner.packageName,
     manifest.alego,
   )
-  const expectedRange = 'workspace:^'
+  const expectedRange = 'workspace:*'
   const peerRange = manifest.peerDependencies?.['@singula-ai/alego-invariants']
   if (developmentOnlyInvariant ? peerRange !== undefined : peerRange !== expectedRange) {
     addViolation(violations, owner.manifestPath, developmentOnlyInvariant
       ? '@singula-ai/alego-invariants must not be a peerDependency under this package dependency policy'
-      : '@singula-ai/alego-invariants must be a workspace:^ peerDependency')
+      : '@singula-ai/alego-invariants must be a workspace:* peerDependency')
   }
   if (manifest.devDependencies?.['@singula-ai/alego-invariants'] !== expectedRange) {
     addViolation(

@@ -1,6 +1,43 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-05-sidebar-tab-types-and-navigation.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-05-sidebar-tab-types-and-navigation.md
-2026-09-05-sidebar-tab-types-and-navigation.md: 6ff6a9903ce335136b081551541bfbe84ee9ee60
-2026-09-05-sidebar-tab-types-and-navigation.zh.md: 04c7061adf3599fd2e0f151f9b0e223a77259dae
+/agent-note-right-sidebar-tab-types-and-navigation:
+  en: 8103a0da9b87eb4f
+  zh: c753478d7c4278b1
+/agent-note-right-sidebar-tab-types-and-navigation/problem:
+  en: 50f58bce6c704e49
+  zh: 323ab0486b9d21f9
+/agent-note-right-sidebar-tab-types-and-navigation/decision:
+  en: 905fd6fbedad540f
+  zh: 5420c0dff38012d8
+/agent-note-right-sidebar-tab-types-and-navigation/decision/the-type-registry-ctx-sidebarrighttabs:
+  en: f5b402e4d37b87a5
+  zh: 413d2be6e294aa5d
+/agent-note-right-sidebar-tab-types-and-navigation/decision/bodies-and-titles-keyed-slot-seats-under-the-definition-s-id:
+  en: 9e80f2d213b394fe
+  zh: 79f2e5c504b9863e
+/agent-note-right-sidebar-tab-types-and-navigation/decision/tab-occurrence-information:
+  en: b657904248e65fb9
+  zh: 6cf3c43c36af8d91
+/agent-note-right-sidebar-tab-types-and-navigation/decision/navigation-ctx-sidebarright:
+  en: b743e18feea37c92
+  zh: 46407b0a1440df42
+/agent-note-right-sidebar-tab-types-and-navigation/decision/addresses:
+  en: 55bdf175a39a20df
+  zh: 2fa8cb9735e8f555
+/agent-note-right-sidebar-tab-types-and-navigation/decision/entry-points:
+  en: 6386bde2654f9a0a
+  zh: 700439be6a01e162
+/agent-note-right-sidebar-tab-types-and-navigation/alternatives-considered:
+  en: 8875b96b277821b4
+  zh: 947650b90e81ade0
+/agent-note-right-sidebar-tab-types-and-navigation/consequences:
+  en: 3cdb1159ee55d851
+  zh: dcd068005e678a89
+/agent-note-right-sidebar-tab-types-and-navigation/testing:
+  en: 49449a6c8465c098
+  zh: 1f476cc1226aa9cd
+/agent-note-right-sidebar-tab-types-and-navigation/deferred:
+  en: fa27b7684e38329b
+  zh: d270e0cdcab73732

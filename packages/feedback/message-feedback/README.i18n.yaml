@@ -1,6 +1,55 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/feedback/message-feedback/README.md
-README.md: 1d7c343677ffaa37f71213f3caa6a94c0d6c01b2
-README.zh.md: a72d4c9556b0a226a0531ee1f028975833e295ff
+/:
+  en: f3648275facc4888
+  zh: 110c0e8aedf63e4e
+/singula-ai-alego-message-feedback:
+  en: be1de22c2810422c
+  zh: b9326d42a40e4f3e
+/singula-ai-alego-message-feedback/summary:
+  en: 07fec1cc63536ffb
+  zh: 530c8f20786c7af6
+/singula-ai-alego-message-feedback/table-of-contents:
+  en: 122f0d41696980b1
+  zh: 528864635b577290
+/singula-ai-alego-message-feedback/use-this-package:
+  en: 72a1c4cc4bd1938e
+  zh: b126825580571a44
+/singula-ai-alego-message-feedback/use-this-package/configuration:
+  en: 675b2f77f53a4216
+  zh: 1f49611586cd9aae
+/singula-ai-alego-message-feedback/use-this-package/reading-and-changing-feedback:
+  en: fed12d93b538866d
+  zh: 4b45e81d9e5a8260
+/singula-ai-alego-message-feedback/understand-the-implementation:
+  en: ee4615a04fa6503d
+  zh: ee2c5fb2204a43cf
+/singula-ai-alego-message-feedback/understand-the-implementation/canonical-log-and-durability:
+  en: 73ddbcf524f213a1
+  zh: 050f1a72c7f56fd6
+/singula-ai-alego-message-feedback/understand-the-implementation/source-map:
+  en: c5b216f3741c23d2
+  zh: 298e9fcfef37b660
+/singula-ai-alego-message-feedback/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-message-feedback/model-experience/message-feedback:
+  en: 73eacb58a40342f6
+  zh: 1ee3049173128f61
+/singula-ai-alego-message-feedback/model-experience/message-feedback/what-the-model-sees:
+  en: 3928187c2f20ec0f
+  zh: fd5273ee1a885bde
+/singula-ai-alego-message-feedback/model-experience/message-feedback/token-effect:
+  en: 5ff6c3ac5017b3ef
+  zh: 4ccd5af39b37dd1c
+/singula-ai-alego-message-feedback/model-experience/message-feedback/kv-cache-effect:
+  en: 2bdd13dcb4078358
+  zh: 591328cf1a061fca
+/singula-ai-alego-message-feedback/known-limitations-and-deferred-work:
+  en: a52392644425e2cd
+  zh: 70330e655d733780
+/singula-ai-alego-message-feedback/known-limitations-and-deferred-work/dev-note:
+  en: 3c3ce6ed67282e05
+  zh: 213816553e3581b4

@@ -8,6 +8,8 @@
 // root listener routes them through the keymap commands); draft writes drive
 // the shell (jsdom's beforeinput lacks the ranges Lexical needs).
 
+import './control-row-dom.ts'
+import type { InboxState } from '@singula-ai/alego-agent/types'
 import type { GlobalStandardProps } from '@singula-ai/alego-client-ui-slots'
 import { afterEach, describe, expect, it, onTestFinished, vi } from 'vitest'
 import { act, cleanup, fireEvent, render } from '@testing-library/react'
@@ -18,6 +20,7 @@ import {
 } from '@singula-ai/alego-client-test-runtime'
 import { createSnapshotStore } from '@singula-ai/alego-client-store'
 import type { SessionListState, SessionSnapshot } from '@singula-ai/alego-api-session-controller/client'
+import type { ContextPressureProjection } from '@singula-ai/alego-token-meter/client'
 import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
 import type { Context } from '@singula-ai/cordis'
 import type { SessionId } from '@singula-ai/alego-session/types'
@@ -25,12 +28,12 @@ import type { SubmitOutcome } from '../src/client/contract/input.ts'
 import { SessionInputShell } from '../src/client/input/facade.ts'
 import { $replaceDetectSpanWithText, $selectDetectSpan } from '../src/client/input/editor/span-map.ts'
 import type {
-  ComposerAttachment, ComposerAttachmentsOwnerProps, DraftFileUploads,
+  ComposerAttachment, ComposerAttachmentsOwnerProps, DraftFileUploads, InputActivityOwnerProps,
 } from '../src/client/contract/slots.ts'
 import type { DraftAttachmentId } from '../src/client/contract/input.ts'
 import { InputBar } from '../src/client/skeleton/InputBar.tsx'
 import type { InputBarProps } from '../src/client/skeleton/InputBar.tsx'
-import { zh } from '../src/client/locales.ts'
+import { en, zh } from '../src/client/locales.ts'
 
 // Every fixture carries the resource hook the resources plugin merges into GlobalStandardProps.
 const useResource = (() => ({ status: 'none' as const, value: undefined, failure: undefined })) as GlobalStandardProps['useResource']
@@ -58,9 +61,9 @@ interface BenchOptions {
   /** The `goal` projection value used only to prove attachment intake remains ordinary. */
   goal?: { phase: 'active'; objective: string }
   modelEntry?: React.ReactNode
+  permissionEntry?: React.ReactNode
   /** Hot text-ref lexicon (injects a minimal slash stub exposing only lexicon()). */
   lexicon?: ReadonlyMap<'/' | '@', readonly string[]>
-  permissions?: { options: { value: string; name: string; description?: string }[]; currentValue: string }
   /** The `imageLimits` projection value (absent = no attachment service). */
   imageLimits?: {
     maxImageBytes: number
@@ -80,32 +83,34 @@ interface BenchOptions {
   onRequestWorkspace?: () => void
   promptError?: SessionSnapshot['promptError']
   /** Authoritative queue rows served to the machine overlay (empty = none). */
-  queue?: SessionSnapshot['queue']
+  queue?: InboxState['next-turn']
+  nextStep?: InboxState['next-step']
   /** The hub's steer-all face (empty-draft accelerated Enter). */
   steerQueue?: () => void
   variant?: 'hero' | 'composer'
   placeholder?: string
   t?: InputBarProps['t']
-  command?: (line: string) => Promise<boolean>
   accessory?: React.ReactNode
   overlay?: React.ReactNode
   leftItems?: React.ReactNode
   rightItems?: React.ReactNode
+  activityEntry?: (owner: InputActivityOwnerProps) => React.ReactNode
+  contextPressure?: ContextPressureProjection
   footer?: React.ReactNode
   attachments?: readonly ComposerAttachment[]
   /** Upload states served for file-kind drafts (absent = every file is ready). */
   fileUploads?: DraftFileUploads
-  addFiles?: (files: readonly File[]) => string | null
+  addFiles?: (files: readonly File[], directories?: ReadonlySet<File>) => string | null
   commandMenuOpen?: boolean
   busyEnter?: 'queue' | 'steer'
   toggleCommandMenu?: (selection: { start: number; end: number }) => void
 }
 
 /** One pending queue row (the runtime snapshot shape, as the dock tests build it). */
-function row(id: string): SessionSnapshot['queue'][number] {
+function row(id: string): InboxState['next-turn'][number] {
   return {
-    id: id as never, messageId: `message-${id}` as never, placement: 'queued',
-    content: [{ type: 'text', text: id }], preview: id, text: id,
+    id: id as never, role: 'user', source: { kind: 'user' },
+    content: [{ type: 'text', text: id }],
   }
 }
 
@@ -123,17 +128,16 @@ function bench(over?: BenchOptions) {
     subagent: over?.subagent ?? null,
     removed: over?.disabled ?? false,
     promptError: over?.promptError ?? null,
-    queue: over?.queue ?? [],
   }))
   type ShellDeps = ConstructorParameters<typeof SessionInputShell>[0]
   const shell = new SessionInputShell({
     actx: SCTX,
     defaultSink: sink,
     commandAttachments: { serialize: () => Promise.resolve([]), release: () => {}, unsupportedNotice: (token: string) => `${token.trim()} attachments-unsupported` },
-    queue: {
-      getSnapshot: () => session.getSnapshot().queue,
-      subscribe: fn => session.subscribe(fn),
-    },
+    inbox: createSnapshotStore<InboxState>({
+      'next-turn': over?.queue ?? [],
+      'next-step': over?.nextStep ?? [],
+    }),
     ...(over?.steerQueue !== undefined ? { steerQueue: over.steerQueue } : {}),
     // Lexicon-only stub: adjudication untouched (undefined slash methods are
     // never reached — these benches drive plain-draft flows only).
@@ -152,6 +156,7 @@ function bench(over?: BenchOptions) {
   const removeAttachment = vi.fn((id: DraftAttachmentId) => { shell.removeAttachment(id) })
   const menuLauncher = createSnapshotStore<string | null>(over?.commandMenuOpen === true ? 'command' : null)
   const busyEnter = createSnapshotStore<'queue' | 'steer'>(over?.busyEnter ?? 'queue')
+  const stopShortcut = createSnapshotStore<readonly string[]>(['Esc', 'Esc'])
   const slotCalls: { key: string; owner: unknown }[] = []
   const renderSlot = ((key: string, owner: object) => {
     slotCalls.push({ key, owner })
@@ -160,7 +165,9 @@ function bench(over?: BenchOptions) {
     if (key === 'conversation.input.right') return over?.rightItems ?? null
     if (key === 'conversation.composer.dock') return over?.footer ?? null
     if (key === 'conversation.input.plan') return over?.planEntry ?? null
+    if (key === 'conversation.input.permission') return over?.permissionEntry ?? null
     if (key === 'conversation.input.model') return over?.modelEntry ?? null
+    if (key === 'conversation.input.activity') return over?.activityEntry?.(owner as InputActivityOwnerProps) ?? null
     return null
   }) as never
   const props: InputBarProps = {
@@ -169,21 +176,22 @@ function bench(over?: BenchOptions) {
     SessionProvider: ({ children }) => children,
     useSession: bindSnapshotSelector(session),
     useConversation: bindSnapshotSelector(createSnapshotStore(conversationFixture())),
-    useSessionPendingInteraction: bindSnapshotSelector(createSnapshotStore(new Map())),
+    useSessionStatus: bindSnapshotSelector(createSnapshotStore(new Map())),
+    useSessionRetainInfo: () => undefined,
     useResource,
     useSessions: bindSnapshotSelector(createSnapshotStore<SessionListState>({
-      ids: [], byId: {}, current: undefined, phase: 'ready',
-      subagentsByParent: {}, jobsBySession: {}, currentAddress: undefined,
+      ids: [], byId: {}, phase: 'ready',
+      projectionsBySession: {},
     })),
     useWorkspaces: bindSnapshotSelector(createSnapshotStore({
-      items: [], archivedSessionIds: [], state: 'idle', phase: 'ready', error: null,
+      items: [], archivedSessionIds: [], pinnedSessionIds: [], state: 'idle', phase: 'ready', error: null,
     })),
     useProjection: ((key: string, selector?: (v: unknown) => unknown) =>
-      (selector ?? (v => v))(key === 'permissions'
-        ? over?.permissions
-        : key === 'plan' ? over?.plan
-          : key === 'goal' ? over?.goal
-            : key === 'imageLimits' ? over?.imageLimits : undefined)),
+      (selector ?? (v => v))(key === 'plan'
+        ? over?.plan
+        : key === 'goal' ? over?.goal
+          : key === 'imageLimits' ? over?.imageLimits
+            : key === 'contextPressure' ? over?.contextPressure : undefined)),
     useInput: bindSnapshotSelector(shell.state),
     inputActions: shell.actions,
     keyboard: shell,
@@ -197,11 +205,11 @@ function bench(over?: BenchOptions) {
     }),
     toggleCommandMenu: over?.toggleCommandMenu ?? vi.fn(),
     useBusyEnter: bindSnapshotSelector(busyEnter),
+    useStopShortcut: bindSnapshotSelector(stopShortcut),
     useNotices: bindSnapshotSelector(shell.notices),
     useLexicon: bindSnapshotSelector(shell.lexicon),
     useMenuLauncher: bindSnapshotSelector(menuLauncher),
     stop,
-    command: over?.command ?? (() => Promise.resolve(true)),
     // Mirrors the real lookup chain (conversation namespace, then common).
     t: over?.t ?? makeTranslate(zh, commonZh),
     renderSlot,
@@ -240,7 +248,7 @@ function bench(over?: BenchOptions) {
   const interruptButton = view.container.querySelector<HTMLButtonElement>('button[aria-label="停止生成"]')
   return {
     view, textarea, button, interruptButton, props, sink, shell, wiring: shell, session, stop, removeAttachment, slotCalls,
-    menuLauncher, busyEnter,
+    menuLauncher, busyEnter, stopShortcut,
     steerQueue: over?.steerQueue,
     get placeholder() { return placeholderOf(view.container) },
     get inputDisabled() { return textarea.getAttribute('aria-disabled') === 'true' },
@@ -269,6 +277,23 @@ function editableOf(input: HTMLElement): boolean {
 function writeDraft(shell: SessionInputShell, text: string): void {
   act(() => { shell.setDraft(text) })
 }
+
+describe('composer focus handoff', () => {
+  it('focus() returns the keyboard to the editor through Lexical, not a bare DOM focus', () => {
+    const { shell, textarea } = bench()
+    writeDraft(shell, 'draft text')
+    textarea.blur()
+    expect(document.activeElement).not.toBe(textarea)
+
+    const lexicalFocus = vi.spyOn(shell.editor, 'focus')
+    act(() => { shell.focus() })
+    expect(document.activeElement).toBe(textarea)
+    // Lexical's own focus restores its stored selection; a bare DOM focus would
+    // land the caret at the start of the draft. jsdom carries no caret, so the
+    // selection itself is asserted in the browser lane.
+    expect(lexicalFocus).toHaveBeenCalled()
+  })
+})
 
 describe('composer placeholder visibility', () => {
   it.each([' ', '   ', '\t', '\n'])('hides for whitespace %j and returns after deletion', async (draft) => {
@@ -327,9 +352,32 @@ describe('image draft rail', () => {
         getData: () => '同时粘贴的文字',
       },
     })
-    expect(addFiles).toHaveBeenCalledWith([image])
+    expect(addFiles).toHaveBeenCalledWith([image], undefined)
     // The paste lands inside the PASTE_COMMAND update; its commit is a microtask away.
     await vi.waitFor(() => { expect(shell.snapshot.draft).toBe('同时粘贴的文字') })
+  })
+
+  it('passes known clipboard directories and keeps files whose entry metadata is unavailable', () => {
+    const addFiles = vi.fn(() => null)
+    const { textarea } = bench({ addFiles })
+    const folder = new File([], 'folder with spaces')
+    const emptyFile = new File([], 'empty-file')
+    const withoutApi = new File([], 'without-api')
+    const withoutEntry = new File([], 'without-entry')
+    fireEvent.paste(textarea, {
+      clipboardData: {
+        items: [
+          { kind: 'string', getAsFile: () => null },
+          { kind: 'file', getAsFile: () => folder, webkitGetAsEntry: () => ({ isDirectory: true }) },
+          { kind: 'file', getAsFile: () => emptyFile, webkitGetAsEntry: () => ({ isDirectory: false }) },
+          { kind: 'file', getAsFile: () => withoutApi },
+          { kind: 'file', getAsFile: () => withoutEntry, webkitGetAsEntry: () => null },
+          { kind: 'file', getAsFile: () => null },
+        ],
+        getData: () => '',
+      },
+    })
+    expect(addFiles).toHaveBeenCalledWith([folder, emptyFile, withoutApi, withoutEntry], new Set([folder]))
   })
 
   it('pre-checks projected limits at intake: whole-batch refusal with product copy, none added', () => {
@@ -369,7 +417,7 @@ describe('image draft rail', () => {
     const within = bench({ addFiles: vi.fn(() => null), imageLimits: limits })
     const fits = png(16, 'fits.png')
     intake(within, [fits])
-    expect(within.props.addFiles).toHaveBeenCalledWith([fits])
+    expect(within.props.addFiles).toHaveBeenCalledWith([fits], undefined)
     expect(within.view.queryByRole('alert')).toBeNull()
   })
 
@@ -392,7 +440,7 @@ describe('image draft rail', () => {
       new File([new ArrayBuffer(64)], 'b.pdf', { type: 'application/pdf' }),
     ]
     act(() => { attachmentOwner(result.slotCalls).onAddFiles(files) })
-    expect(addFiles).toHaveBeenCalledWith(files)
+    expect(addFiles).toHaveBeenCalledWith(files, undefined)
     expect(result.view.getByRole('alert').textContent).toContain('仅支持 PNG、JPG、WebP、GIF 格式的图片')
   })
 
@@ -409,6 +457,17 @@ describe('image draft rail', () => {
       },
     })
     expect(attachmentOwner(result.slotCalls).dropLimits).toEqual({ count: 20, size: '5MB' })
+  })
+
+  it('forwards dropped directories to addFiles and announces its refusal', () => {
+    const addFiles = vi.fn((_files: readonly File[], directories?: ReadonlySet<File>) =>
+      directories !== undefined && directories.size > 0 ? '只有桌面端支持添加文件夹，浏览器里请添加单个文件' : null)
+    const result = bench({ addFiles })
+    const folder = new File([], 'project')
+    const note = new File([Uint8Array.of(1)], 'notes.md', { type: 'text/markdown' })
+    act(() => { attachmentOwner(result.slotCalls).onAddFiles([folder, note], new Set([folder])) })
+    expect(addFiles).toHaveBeenCalledWith([folder, note], new Set([folder]))
+    expect(result.view.getByRole('alert').textContent).toContain('只有桌面端支持添加文件夹')
   })
 
   it('announces server attachment rejections as product copy, other codes as developer text', () => {
@@ -667,7 +726,7 @@ describe('Enter semantics', () => {
     // Pending steering rows are not the queue: nothing to flush.
     const steering = bench({
       running: true,
-      queue: [{ ...row('s-1'), placement: 'steering' }],
+      nextStep: [row('s-1')],
       steerQueue: vi.fn(),
     })
     fireEvent.keyDown(steering.textarea, { key: 'Enter', metaKey: true })
@@ -782,13 +841,36 @@ describe('Enter semantics', () => {
 })
 
 describe('running and lock semantics', () => {
+  it.each([
+    { messages: zh, label: '停止生成', trigger: 'hover' },
+    { messages: en, label: 'Stop generating', trigger: 'focus' },
+  ])('shows the registered Stop sequence on $trigger and removes it when unavailable', ({ messages, label, trigger }) => {
+    vi.useFakeTimers()
+    try {
+      const { view, stopShortcut } = bench({
+        running: true,
+        subagent: { address: { parentSessionId: 'parent' as SessionId, childSessionId: SID, mode: 'continuable' }, parentAvailable: true },
+        t: makeTranslate(messages, {}),
+      })
+      const stop = view.getByRole('button', { name: label })
+      if (trigger === 'hover') fireEvent.mouseEnter(stop)
+      else fireEvent.focus(stop)
+      act(() => { vi.advanceTimersByTime(500) })
+      expect(view.getByRole('tooltip').getAttribute('aria-label')).toBe(`${label} Esc Esc`)
+      act(() => { stopShortcut.set([]) })
+      expect(view.getByRole('tooltip').textContent).toBe(label)
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
   it('dismisses the Stop tooltip when an empty composer becomes idle', () => {
     vi.useFakeTimers()
     try {
       const { button, view, session } = bench({ running: true })
       fireEvent.mouseEnter(button)
       act(() => { vi.advanceTimersByTime(500) })
-      expect(view.getByRole('tooltip').textContent).toBe('停止生成')
+      expect(view.getByRole('tooltip').getAttribute('aria-label')).toBe('停止生成 Esc Esc')
 
       // Disabling a hovered native button need not deliver mouseleave.
       act(() => { session.set(snapshotOf({ running: false })) })
@@ -1288,9 +1370,9 @@ describe('machine pending lock', () => {
 })
 
 describe('decorations', () => {
-  /** The claim-token styled leaf (the transform's inline warn color). */
+  /** The claim-token styled leaf (the transform's inline accent color). */
   function tokenSpanOf(container: HTMLElement): HTMLElement | null {
-    return container.querySelector('[data-lexical-text][style*="warn-label"]')
+    return container.querySelector('[data-lexical-text][style*="business-primary"]')
   }
 
   it('claimed token styles the leading leaf and sets the blank-args hint variable', () => {
@@ -1513,6 +1595,17 @@ describe('insertText (scoped event body)', () => {
 })
 
 describe('strips and variants', () => {
+  it.each([zh, en])('shows localized guidance when another writer owns the Session', (dictionary) => {
+    const send = bench({
+      promptError: {
+        op: 'send',
+        error: new RemoteError('session/writer-held', 'internal writer diagnostic', { sessionId: SID }),
+      },
+      t: makeTranslate(dictionary, commonZh),
+    })
+    expect(send.view.getByRole('alert').textContent).toBe(dictionary['error.sessionInUse'])
+  })
+
   it('announces promptError as a fading toast (ordinary failure — no transaction UI, no Retry)', () => {
     vi.useFakeTimers()
     try {
@@ -1572,17 +1665,17 @@ describe('strips and variants', () => {
 })
 
 describe('command launcher chrome and control seats', () => {
-  it('renders the command launcher; the Access chip is absent without the permissions projection; the control seats render EMPTY without entries', () => {
+  it('renders the command launcher and dispatches every empty control seat', () => {
     const { view, slotCalls } = bench()
     expect(view.getByLabelText('添加文件或调用指令')).toBeTruthy()
-    // Capability absent (no projection value): the chip renders nothing.
+    // Capability absent (no permission slot entry): the chip renders nothing.
     expect(view.queryByLabelText(/^访问模式/)).toBeNull()
     // Every seat dispatched, nothing rendered (render passes may repeat; the
     // seat set is the contract).
     expect([...new Set(slotCalls.map(c => c.key))]).toEqual([
       'conversation.input.overlay', 'conversation.input.attachments',
-      'conversation.input.plan', 'conversation.input.left',
-      'conversation.input.right', 'conversation.input.model',
+      'conversation.input.permission', 'conversation.input.plan', 'conversation.input.left',
+      'conversation.input.right', 'conversation.input.model', 'conversation.input.activity',
       'conversation.composer.dock',
     ])
     expect(view.queryByLabelText('Plan mode')).toBeNull()
@@ -1601,155 +1694,32 @@ describe('command launcher chrome and control seats', () => {
     expect(launcher.getAttribute('aria-expanded')).toBe('true')
   })
 
-  it('the Access chip renders the projection value and submits a non-Full-access pick directly', async () => {
-    const command = vi.fn(() => Promise.resolve(true))
-    const permissions = {
-      options: [
-        { value: 'read-only', name: 'read-only' },
-        { value: 'workspace-write', name: 'workspace-write' },
-        { value: 'danger-full-access', name: 'danger-full-access' },
-      ],
-      currentValue: 'read-only',
-    }
-    const { view } = bench({ permissions, command })
-    const trigger = view.getByLabelText(/^访问模式/) as HTMLButtonElement
-    // Product-label display is presentation only; the menu ids stay machine names.
-    expect(trigger.textContent).toBe('仅可查看')
-    expect([...trigger.querySelectorAll('svg')]
-      .every(icon => icon.closest('[aria-hidden="true"]') !== null)).toBe(true)
-    fireEvent.click(trigger)
-    const items = view.getAllByRole('menuitem')
-    expect(items.map(o => o.textContent)).toEqual(['仅可查看', '工作区内修改', '完全权限'])
-    fireEvent.click(items[1]!)
-    // Optimistic pick + disable until admission resolves (command stub resolves true).
-    const busy = view.getByLabelText(/^访问模式/) as HTMLButtonElement
-    expect(busy.textContent).toBe('工作区内修改')
-    expect(busy.disabled).toBe(true)
-    expect(command).toHaveBeenCalledWith('/permission workspace-write')
-    await act(async () => {})
-    expect((view.getByLabelText(/^访问模式/) as HTMLButtonElement).disabled).toBe(false)
-  })
-
-  it('the Access chip preserves host labels for built-in preset values', () => {
-    const permissions = {
-      options: [
-        { value: 'read-only', name: 'Review Only' },
-        { value: 'workspace-write', name: 'Project Files' },
-        { value: 'danger-full-access', name: 'Operator Mode' },
-        { value: 'custom-mode', name: 'custom-mode' },
-        { value: '__proto__', name: '__proto__' },
-      ],
-      currentValue: 'workspace-write',
-    }
-    const { view } = bench({ permissions })
-    const trigger = view.getByLabelText(/^访问模式/) as HTMLButtonElement
-    expect(trigger.textContent).toBe('Project Files')
-    fireEvent.click(trigger)
-    expect(view.getAllByRole('menuitem').map(item => item.textContent))
-      .toEqual(['Review Only', 'Project Files', 'Operator Mode', 'Custom Mode', '__proto__'])
-  })
-
-  it('requires explicit risk acknowledgement before submitting full access', async () => {
-    const command = vi.fn(() => Promise.resolve(true))
-    const permissions = {
-      options: [
-        { value: 'workspace-write', name: 'workspace-write' },
-        { value: 'danger-full-access', name: 'danger-full-access' },
-      ],
-      currentValue: 'workspace-write',
-    }
-    const { view } = bench({ permissions, command })
-    fireEvent.click(view.getByLabelText(/^访问模式/))
-    fireEvent.click(view.getByRole('menuitem', { name: '完全权限' }))
-
-    expect(command).not.toHaveBeenCalled()
-    expect(view.getByRole('dialog', { name: '确认启用完全权限？' })).toBeTruthy()
-    const enable = view.getByRole('button', { name: '启用完全权限' }) as HTMLButtonElement
-    expect(enable.disabled).toBe(true)
-
-    fireEvent.click(view.getByRole('checkbox', { name: '我已了解风险，并愿意继续' }))
-    expect(enable.disabled).toBe(false)
-    fireEvent.click(enable)
-
-    expect(command).toHaveBeenCalledOnce()
-    expect(command).toHaveBeenCalledWith('/permission danger-full-access')
-    expect(view.queryByRole('dialog')).toBeNull()
-    expect((view.getByLabelText(/^访问模式/) as HTMLButtonElement).textContent).toBe('完全权限')
-    await act(async () => {})
-  })
-
-  it('cancels a full access selection without changing permission and resets acknowledgement', () => {
-    const command = vi.fn(() => Promise.resolve(true))
-    const permissions = {
-      options: [
-        { value: 'workspace-write', name: 'workspace-write' },
-        { value: 'danger-full-access', name: 'danger-full-access' },
-      ],
-      currentValue: 'workspace-write',
-    }
-    const { view } = bench({ permissions, command })
-    const openConfirmation = () => {
-      fireEvent.click(view.getByLabelText(/^访问模式/))
-      fireEvent.click(view.getByRole('menuitem', { name: '完全权限' }))
-    }
-
-    openConfirmation()
-    fireEvent.click(view.getByRole('checkbox'))
-    fireEvent.click(view.getByRole('button', { name: '取消' }))
-    expect(command).not.toHaveBeenCalled()
-    expect((view.getByLabelText(/^访问模式/) as HTMLButtonElement).textContent).toBe('工作区内修改')
-
-    openConfirmation()
-    expect((view.getByRole('checkbox') as HTMLInputElement).checked).toBe(false)
-    expect((view.getByRole('button', { name: '启用完全权限' }) as HTMLButtonElement).disabled).toBe(true)
-  })
-
-  it('revokes an open full access confirmation when the task locks', () => {
-    const command = vi.fn(() => Promise.resolve(true))
-    const permissions = {
-      options: [
-        { value: 'workspace-write', name: 'workspace-write' },
-        { value: 'danger-full-access', name: 'danger-full-access' },
-      ],
-      currentValue: 'workspace-write',
-    }
-    const { view, session } = bench({ permissions, command })
-    fireEvent.click(view.getByLabelText(/^访问模式/))
-    fireEvent.click(view.getByRole('menuitem', { name: '完全权限' }))
-    fireEvent.click(view.getByRole('checkbox'))
-    act(() => { session.set(snapshotOf({ removed: true })) })
-    expect(view.queryByRole('dialog')).toBeNull()
-    expect(command).not.toHaveBeenCalled()
-  })
-
-  it('resets an open full access confirmation when switching tasks', () => {
-    const command = vi.fn(() => Promise.resolve(true))
-    const permissions = {
-      options: [
-        { value: 'workspace-write', name: 'workspace-write' },
-        { value: 'danger-full-access', name: 'danger-full-access' },
-      ],
-      currentValue: 'workspace-write',
-    }
-    const { view, props } = bench({ permissions, command })
-    fireEvent.click(view.getByLabelText(/^访问模式/))
-    fireEvent.click(view.getByRole('menuitem', { name: '完全权限' }))
-    fireEvent.click(view.getByRole('checkbox'))
-    view.rerender(<InputBar {...props} sessionId={'s2' as SessionId} />)
-    expect(view.queryByRole('dialog')).toBeNull()
-    expect(command).not.toHaveBeenCalled()
+  it('opening the command menu from the button puts the keyboard in the editor first', () => {
+    const toggleCommandMenu = vi.fn()
+    const { view, textarea } = bench({ toggleCommandMenu })
+    // Tab to the button and activate it: the keyboard is on the button, and the
+    // menu is a combobox whose arrows live on the editor.
+    textarea.blur()
+    expect(document.activeElement).not.toBe(textarea)
+    fireEvent.click(view.getByLabelText('添加文件或调用指令'))
+    expect(document.activeElement).toBe(textarea)
+    expect(toggleCommandMenu).toHaveBeenCalledTimes(1)
   })
 
   it('a registered entry fills its seat and receives the locked owner prop', () => {
     const { view, slotCalls } = bench({
       disabled: true,
       planEntry: <i data-testid="plan-entry" />,
+      permissionEntry: <i data-testid="permission-entry" />,
       modelEntry: <i data-testid="model-entry" />,
     })
     expect(view.getByTestId('plan-entry')).toBeTruthy()
+    expect(view.getByTestId('permission-entry')).toBeTruthy()
     expect(view.getByTestId('model-entry')).toBeTruthy()
     // The bar hands its chrome disable state to the filling entry.
-    const controlKeys = new Set(['conversation.input.plan', 'conversation.input.model'])
+    const controlKeys = new Set([
+      'conversation.input.permission', 'conversation.input.plan', 'conversation.input.model',
+    ])
     const controls = slotCalls.filter(call => controlKeys.has(call.key))
     expect(controls.every(c => (c.owner as { locked: boolean }).locked)).toBe(true)
     expect(attachmentOwner(slotCalls).canAcceptDrop).toBe(false)
@@ -1760,13 +1730,50 @@ describe('command launcher chrome and control seats', () => {
     expect(attachmentOwner(live.slotCalls).canAcceptDrop).toBe(true)
   })
 
-  it('disabled locks the Access chip and command launcher (running does not)', () => {
-    const permissions = { options: [{ value: 'workspace-write', name: 'workspace-write' }], currentValue: 'workspace-write' }
-    const { view } = bench({ disabled: true, permissions })
+  it('disabled locks the command launcher while running does not', () => {
+    const { view } = bench({ disabled: true })
     expect((view.getByLabelText('添加文件或调用指令') as HTMLButtonElement).disabled).toBe(true)
-    expect((view.getByLabelText(/^访问模式/) as HTMLButtonElement).disabled).toBe(true)
     cleanup()
-    const live = bench({ running: true, permissions })
-    expect((live.view.getByLabelText(/^访问模式/) as HTMLButtonElement).disabled).toBe(false)
+    const live = bench({ running: true })
+    expect((live.view.getByLabelText('添加文件或调用指令') as HTMLButtonElement).disabled).toBe(false)
   })
+})
+
+it('lets a toolbar activity replace accessories without replacing the draft editor or send action', () => {
+  const { view } = bench({ draft: 'keep this draft', modelEntry: <button>model choice</button>,
+    activityEntry: owner => <>
+      <button onClick={() => { owner.onActiveChange(true) }}>expand activity</button>
+      <button onClick={() => { owner.onActiveChange(false) }}>close activity</button>
+    </>,
+  })
+  const editor = view.getByRole('textbox')
+  fireEvent.click(view.getByRole('button', { name: 'expand activity' }))
+  expect(view.queryByRole('button', { name: 'model choice' })).toBeNull()
+  expect(view.getByRole('textbox')).toBe(editor)
+  expect(editor.textContent).toBe('keep this draft')
+  expect(view.getByRole('button', { name: '发送消息' })).toBeTruthy()
+  fireEvent.click(view.getByRole('button', { name: 'close activity' }))
+  expect(view.getByRole('button', { name: 'model choice' })).toBeTruthy()
+})
+
+it('places context usage below the composer and hides it until the activity closes', () => {
+  const { view } = bench({ draft: 'draft', contextPressure: { pressureTokens: 32_000, contextWindow: 128_000 },
+    activityEntry: owner => <>
+      <button onClick={() => { owner.onActiveChange(true) }}>microphone</button>
+      <button onClick={() => { owner.onActiveChange(false) }}>close activity</button>
+    </>,
+  })
+  const meter = view.getByRole('button', { name: '上下文已用 25%' })
+  const microphone = view.getByRole('button', { name: 'microphone' })
+  expect(microphone.compareDocumentPosition(meter) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  fireEvent.click(meter)
+  expect(view.getByRole('dialog', { name: '上下文已用' })).toBeTruthy()
+  fireEvent.click(microphone)
+  expect(view.queryByRole('dialog', { name: '上下文已用' })).toBeNull()
+  expect(view.queryByRole('button', { name: '上下文已用 25%' })).toBeNull()
+  expect(view.getByRole('button', { name: '发送消息' })).toBeTruthy()
+  fireEvent.click(view.getByRole('button', { name: 'close activity' }))
+  fireEvent.click(view.getByRole('button', { name: '上下文已用 25%' }))
+  expect(view.getByRole('dialog', { name: '上下文已用' })).toBeTruthy()
+  expect(view.getByRole('button', { name: '发送消息' })).toBeTruthy()
 })

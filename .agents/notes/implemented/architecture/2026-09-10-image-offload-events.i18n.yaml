@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-09-10-image-offload-events.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-10-image-offload-events.md
+/agent-note-durable-image-offload-events:
+  en: bed64c4ecd1a1967
+  zh: 6c58832c40aaf5ee
+/agent-note-durable-image-offload-events/problem:
+  en: 416ff59af1b1a456
+  zh: 63b408552d11a3fe
+/agent-note-durable-image-offload-events/decision:
+  en: b09ed3c94504d102
+  zh: b1e086a14f93cfd8
+/agent-note-durable-image-offload-events/alternatives-considered:
+  en: f1ab95c3bf1a17f8
+  zh: 2708521190143182
+/agent-note-durable-image-offload-events/consequences:
+  en: 3a9b13af9673349b
+  zh: 7da10694e24edadc
+/agent-note-durable-image-offload-events/testing:
+  en: 6fa4e40e7666aa68
+  zh: e31ffd143463ca15

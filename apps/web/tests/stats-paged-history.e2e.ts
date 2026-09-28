@@ -50,7 +50,7 @@ function buildSeed(turns: number): string {
     if (turn === 1) {
       at({
         type: 'system/message',
-        data: { turn, step: 1, message: createSystemMessage('', '@singula-ai/alego-system-prompt') },
+        data: { turn, step: 1, message: createSystemMessage('') },
         surfaceOp: 'append',
       })
     }

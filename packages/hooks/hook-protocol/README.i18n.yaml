@@ -1,6 +1,61 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/hooks/hook-protocol/README.md
-README.md: 106480572e16c28f38fa5b4fa75036cff208c1e2
-README.zh.md: 08361c1f1a10cc86b4e5cc1b19438f5b5f2dc96b
+/:
+  en: 7cfe3761eedff848
+  zh: 80b0bed5743d0924
+/singula-ai-alego-hook-protocol:
+  en: d703533e76ecaaa6
+  zh: 04b45a06699af821
+/singula-ai-alego-hook-protocol/summary:
+  en: 83a4bf4991e5e19a
+  zh: 0140da54fdf7cce4
+/singula-ai-alego-hook-protocol/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-hook-protocol/use-this-package:
+  en: 7527cece0888c750
+  zh: 26f93fa220afd6fa
+/singula-ai-alego-hook-protocol/use-this-package/when-to-choose-it:
+  en: 78a0f7a5aaa4052f
+  zh: d507a3b593648724
+/singula-ai-alego-hook-protocol/use-this-package/what-a-hook-can-do:
+  en: 043f54b3a5b518a7
+  zh: a4115083a9b1cef1
+/singula-ai-alego-hook-protocol/use-this-package/what-you-see-when-hooks-run:
+  en: ba2d6ed1db063f53
+  zh: ab1b8d72dccd2ff1
+/singula-ai-alego-hook-protocol/understand-the-implementation:
+  en: 08b3960150e9c5e2
+  zh: 6bb2f236d697de01
+/singula-ai-alego-hook-protocol/understand-the-implementation/processing-pipeline:
+  en: 63b689afad9b9346
+  zh: 66b9a8319ffb7949
+/singula-ai-alego-hook-protocol/understand-the-implementation/hook-session-events:
+  en: 4b802552b755feea
+  zh: f49f1d7a6dd4e190
+/singula-ai-alego-hook-protocol/understand-the-implementation/design-philosophy:
+  en: a9037a4ccdf3aeeb
+  zh: a98403413fcf11dc
+/singula-ai-alego-hook-protocol/understand-the-implementation/source-map:
+  en: d613d9bd98d499fb
+  zh: afe2939d7df250ea
+/singula-ai-alego-hook-protocol/further-exploration:
+  en: f08fd65f844832f2
+  zh: f43a97063ab3d3e9
+/singula-ai-alego-hook-protocol/model-experience:
+  en: f17719cb1f7392c6
+  zh: f4777713900f3914
+/singula-ai-alego-hook-protocol/model-experience/kv-cache-effect:
+  en: e290ccc9b3c92c08
+  zh: cb3c8823f41e7afe
+/singula-ai-alego-hook-protocol/known-limitations-and-deferred-work:
+  en: fe4561702d9e1bc7
+  zh: 97378586e736bc7d
+/singula-ai-alego-hook-protocol/known-limitations-and-deferred-work/dev-note:
+  en: ac1d08360a93382b
+  zh: 6c58749bae9a6e65
+/singula-ai-alego-hook-protocol/known-limitations-and-deferred-work/dev-note/future-run-level-halt:
+  en: bfb3db50de22c1d0
+  zh: 2a979359b0edbbe7

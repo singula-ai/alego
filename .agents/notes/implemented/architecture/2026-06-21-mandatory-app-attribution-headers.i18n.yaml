@@ -1,6 +1,25 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-06-21-mandatory-app-attribution-headers.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-06-21-mandatory-app-attribution-headers.md
-2026-06-21-mandatory-app-attribution-headers.md: a4efdbadadaf4dff2f22066ed4f8e7c510fb1f3c
-2026-06-21-mandatory-app-attribution-headers.zh.md: c6f53064bccd1c1b22e57592280661f580c689a0
+/agent-note-mandatory-user-agent-attribution-for-provider-requests:
+  en: bf153918868673f0
+  zh: 9eccf0d8ea134876
+/agent-note-mandatory-user-agent-attribution-for-provider-requests/problem:
+  en: 5870c7b7e85747f6
+  zh: 7a2ff3ddde35914a
+/agent-note-mandatory-user-agent-attribution-for-provider-requests/investigation:
+  en: 5ea11f54f507ba64
+  zh: 22a83a0714a2fda3
+/agent-note-mandatory-user-agent-attribution-for-provider-requests/decision:
+  en: 7aa43dd02564781d
+  zh: 46e3654ac522b841
+/agent-note-mandatory-user-agent-attribution-for-provider-requests/verification:
+  en: 1c4a821d45cdaef9
+  zh: 2d20488ded9a1839
+/agent-note-mandatory-user-agent-attribution-for-provider-requests/alternatives-considered:
+  en: dd3cbfbfb14c1392
+  zh: 95783c0dbf50abc0
+/agent-note-mandatory-user-agent-attribution-for-provider-requests/consequences:
+  en: a9010e68445a0008
+  zh: 1ec6104ab2865919

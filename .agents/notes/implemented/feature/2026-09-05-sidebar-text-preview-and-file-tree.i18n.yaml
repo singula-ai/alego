@@ -1,6 +1,37 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-05-sidebar-text-preview-and-file-tree.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-09-05-sidebar-text-preview-and-file-tree.md
-2026-09-05-sidebar-text-preview-and-file-tree.md: fe01706f64b6854f974c11df77da31852aae152c
-2026-09-05-sidebar-text-preview-and-file-tree.zh.md: abee900a0a63faa74e8482963432d0e826975124
+/agent-note-sidebar-text-preview-and-file-tree:
+  en: c8e13e72f4645d77
+  zh: 8ff6af862937cd1c
+/agent-note-sidebar-text-preview-and-file-tree/problem:
+  en: 11ce63eb6ba2cadc
+  zh: 5bd0d62fae659bf2
+/agent-note-sidebar-text-preview-and-file-tree/decision:
+  en: f8ea6a52a404b064
+  zh: c91528d66487bb33
+/agent-note-sidebar-text-preview-and-file-tree/decision/the-guide:
+  en: 9906508ea432f14a
+  zh: 6287ffe395e97a3e
+/agent-note-sidebar-text-preview-and-file-tree/decision/the-text-preview:
+  en: d8317276d82c7fa1
+  zh: 62abf2837115ff46
+/agent-note-sidebar-text-preview-and-file-tree/decision/the-file-tree:
+  en: 9b9dcad22d4d24e3
+  zh: 9d21d62e60b3980f
+/agent-note-sidebar-text-preview-and-file-tree/alternatives-considered:
+  en: 87fddbd01f117061
+  zh: 1810d283202db648
+/agent-note-sidebar-text-preview-and-file-tree/consequences:
+  en: 00b1675fcd76ad0d
+  zh: caf3eb340c74aef7
+/agent-note-sidebar-text-preview-and-file-tree/testing:
+  en: 2987a6417b7e4c14
+  zh: 97eeb97e67536c70
+/agent-note-sidebar-text-preview-and-file-tree/deferred:
+  en: 6c788b26fb65227b
+  zh: 1bafda76bac92edd
+/agent-note-sidebar-text-preview-and-file-tree/related:
+  en: 5eb054a993e83757
+  zh: 33d36bdc6314e933

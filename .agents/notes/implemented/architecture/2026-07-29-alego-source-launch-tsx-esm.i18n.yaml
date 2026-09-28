@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-29-alego-source-launch-tsx-esm.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-29-alego-source-launch-tsx-esm.md
-2026-07-29-alego-source-launch-tsx-esm.md: 24081d53688d3db135d2fbbd081bfe4c8fee315f
-2026-07-29-alego-source-launch-tsx-esm.zh.md: c95e398df089c268f88826f78dbe734b77cda492
+/agent-note-alego-source-launch-through-the-tsx-esm-hook:
+  en: 1a37be42bd66d5e5
+  zh: 28b758a287b1b22e
+/agent-note-alego-source-launch-through-the-tsx-esm-hook/problem:
+  en: 6d0bf422441418ed
+  zh: 6b5296dfc0501ff4
+/agent-note-alego-source-launch-through-the-tsx-esm-hook/decision:
+  en: 8813b33398817b37
+  zh: dee15122e11819d7
+/agent-note-alego-source-launch-through-the-tsx-esm-hook/alternatives-considered:
+  en: c6eec3d899a61df1
+  zh: 128edd753d49c0da
+/agent-note-alego-source-launch-through-the-tsx-esm-hook/consequences:
+  en: 7c8eb105520ccae3
+  zh: 9dc85ecda408de5a

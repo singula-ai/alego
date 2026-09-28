@@ -1,28 +1,37 @@
-/** Host-backed completed-Turn transcript presentation policy. */
+/** Host-backed work-details presentation policy. */
 
 import { createSnapshotStore, type SnapshotStore } from '@singula-ai/alego-client-store'
-import type { SettingsScope } from '@singula-ai/alego-client-ui-settings/client'
+import type { ConfigForm } from '@singula-ai/alego-client-ui-settings/client'
 import {
-  DEFAULT_TRANSCRIPT_VIEW_MODE, TRANSCRIPT_VIEW_FIELD,
+  DEFAULT_TRANSCRIPT_VIEW_MODE, LEGACY_TRANSCRIPT_VIEW_MODE, LEGACY_EXPANDED_TRANSCRIPT_VIEW_MODE, TRANSCRIPT_VIEW_FIELD,
   type ChatSettings, type TranscriptViewMode,
 } from '../chat-settings.ts'
 
-/** Live transcript preference consumed by Chat and its Settings row. */
+/** Live work-details preference consumed by Chat and its Settings row. */
 export class TranscriptViewPolicy {
-  /** Reactive current mode; defaults to Compact before Host settings arrive. */
-  readonly mode: SnapshotStore<TranscriptViewMode> = createSnapshotStore(DEFAULT_TRANSCRIPT_VIEW_MODE)
+  private readonly unsubscribe: () => void
+  /** Reactive current mode, including the client default before Host settings arrive. */
+  readonly mode: SnapshotStore<TranscriptViewMode>
 
   /**
    * @param host - durable Chat settings scope.
+   * @param defaultMode - presentation used without an explicit saved mode.
    */
-  constructor(private readonly host: SettingsScope<ChatSettings>) {
-    host.subscribe(() => { this.adopt() })
+  constructor(
+    private readonly host: ConfigForm<ChatSettings>,
+    private readonly defaultMode: TranscriptViewMode = DEFAULT_TRANSCRIPT_VIEW_MODE,
+  ) {
+    this.mode = createSnapshotStore(defaultMode)
+    this.unsubscribe = host.subscribe(() => { this.adopt() })
     this.adopt()
   }
 
+  /** Release the accepted-value subscription. */
+  dispose(): void { this.unsubscribe() }
+
   /**
    * Publish and persist one explicit user choice.
-   * @param mode - Normal or Compact transcript presentation.
+   * @param mode - Compact, Standard, Detailed, or Verbose work details.
    */
   setMode(mode: TranscriptViewMode): void {
     if (this.mode.getSnapshot() === mode) return
@@ -33,7 +42,10 @@ export class TranscriptViewPolicy {
   /** Adopt the latest accepted Host section without writing it back. */
   private adopt(): void {
     const section = this.host.getSnapshot().value
-    if (section === undefined || this.mode.getSnapshot() === section.transcriptView) return
-    this.mode.set(section.transcriptView)
+    if (section === undefined) return
+    const saved = section.transcriptView
+    const mode = saved === LEGACY_TRANSCRIPT_VIEW_MODE || saved === LEGACY_EXPANDED_TRANSCRIPT_VIEW_MODE
+      ? 'detailed' : saved ?? this.defaultMode
+    if (this.mode.getSnapshot() !== mode) this.mode.set(mode)
   }
 }

@@ -1,6 +1,22 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-06-continuable-subagent-interrupt.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-06-continuable-subagent-interrupt.md
-2026-08-06-continuable-subagent-interrupt.md: 470bd4ba4bb4b165bf893dca98ac1695ae139269
-2026-08-06-continuable-subagent-interrupt.zh.md: 0e0914c401e17d77d38169d7277e627a4d8e6bed
+/agent-note-continuable-subagent-current-turn-interrupt:
+  en: 4fb7a256ff821214
+  zh: 27a7865fe5b27577
+/agent-note-continuable-subagent-current-turn-interrupt/problem:
+  en: be2b1e9ef5bb2511
+  zh: 36c7ee54c37c0700
+/agent-note-continuable-subagent-current-turn-interrupt/decision:
+  en: db543685b2fd2f88
+  zh: fcc848c04036253c
+/agent-note-continuable-subagent-current-turn-interrupt/alternatives-considered:
+  en: e7e953783cc4a332
+  zh: be5d47a503b47170
+/agent-note-continuable-subagent-current-turn-interrupt/consequences:
+  en: 9ae930c954c4ef3e
+  zh: 9925a32b12c45c20
+/agent-note-continuable-subagent-current-turn-interrupt/testing:
+  en: e46413bc89f9238e
+  zh: 4fb1639ae696e9a4

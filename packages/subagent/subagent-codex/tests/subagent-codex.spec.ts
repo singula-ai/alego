@@ -210,6 +210,7 @@ function fakeChild(options: FakeChildOptions = {}): FakeChild {
     })
   })
   const handle: SubprocessHandle = {
+    control: undefined,
     stdin: toChild,
     stdout: fromChild,
     stderr,
@@ -366,7 +367,7 @@ describe('task admission and package contracts', () => {
     expect(manifest.files).toContain('cordis.patch.yml')
     expect(manifest.dependencies).toHaveProperty(
       '@singula-ai/alego-sdk-protocol',
-      'workspace:^',
+      'workspace:*',
     )
     expect(manifest.dependencies).toHaveProperty('@openai/codex', CODEX_VERSION)
     expect(manifest.dependencies).not.toHaveProperty('@singula-ai/alego-subagent-claude-code')

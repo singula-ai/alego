@@ -9,7 +9,7 @@ kind: "package-reference"
 
 ## 概述
 
-运行一段纯 JavaScript 编排脚本，将工作扇出给 subagent，并返回脚本的最终 JSON 值。脚本可以使用 `agent()`、`parallel()`、`pipeline()`、`phase()` 和 `log()`；模型通常通过 `workflow` 工具访问它们。每次运行都归调用方所有，将每个子 agent（智能体）归属于调用它的 agent，在失败或取消时以结果兑现而不拒绝，并在有界宽限期内完成 dispose（资源释放）。调用方必须提供执行引擎，因此可以更换隔离策略而不改变可见行为。
+运行一段纯 JavaScript 编排脚本，将工作扇出给 subagent，并返回脚本的最终 JSON 值。脚本可以使用 `agent()`、`parallel()`、`pipeline()`、`phase()` 和 `log()`；模型通常通过 `workflow` 工具访问它们。每次运行都归调用方所有，将每个子 agent（智能体）归属于调用它的 agent，在失败或取消时以结果兑现而不拒绝，并在 dispose（资源释放）期间等待脚本与子 agent 清理完成。调用方必须提供执行引擎，因此可以更换隔离策略而不改变可见行为。
 
 ## 目录
 
@@ -50,7 +50,7 @@ return { reviewed: reviews.length }
 
 插件消费方可以直接启动运行：`ctx.workflowEngine.start({ script, meta, args?, parent, signal? })`。`parent` 把每个子 agent 归属于调用它的 agent；`signal` 在中止时取消运行。`start()` 在运行存在之前校验 meta 块并解析脚本，因此格式错误的请求会立即以违规清单失败。
 
-返回的运行公开 `id`、`meta`、`result`、`cancel(reason?)` 与 `dispose()`。result 绝不拒绝：脚本失败以 `stopReason: 'error'` 兑现，取消以 `'cancelled'` 兑现。调用方拥有该运行——每条路径都要调用 `dispose()`；它会取消剩余工作，并在有界宽限期内等待脚本与子 agent 完全停稳。
+返回的运行公开 `id`、`meta`、`result`、`cancel(reason?)` 与 `dispose()`。result 绝不拒绝：脚本失败以 `stopReason: 'error'` 兑现，取消以 `'cancelled'` 兑现。调用方拥有该运行——每条路径都要调用 `dispose()`；它会取消剩余工作，并按提供方的生命周期约定等待脚本与子 agent 清理完成。
 
 ### 失败与恢复
 
@@ -81,7 +81,7 @@ return { reviewed: reviews.length }
 
 ### 生命周期与归属
 
-运行由持有方负责：引擎插件卸载会阻止新的启动，但不会撤销已接受的运行，调用方必须 dispose 自己启动的每个运行。`dispose()` 在需要时取消，并在引擎文档规定的期限内等待脚本与子 agent 完全停稳，因此等待 `result` 的消费方绝不会因取消而卡死。
+运行由持有方负责：引擎插件卸载会阻止新的启动，但不会撤销已接受的运行，调用方必须 dispose 自己启动的每个运行。`dispose()` 在需要时取消，并等待脚本与子 agent 清理完成。PTC 引擎立即中止受管进程；子 agent 的资源释放仍遵循各 subagent 提供方的生命周期约定。
 
 `workflow/start` 与 `workflow/end` 为运行配对；`workflow/phase` 与 `workflow/log` 携带脚本叙述；`workflow/agent-start` 与 `workflow/agent-end` 按 `seq` 为每次子 agent 调用配对。每个监听器都独立隔离：抛错的监听器只记录日志，不会饿死同级监听器或改变执行，并且每个监听器都会收到自己的 payload 副本。
 
@@ -103,7 +103,7 @@ return { reviewed: reviews.length }
 - [工作流子系统](../../../docs/subsystems/workflow.zh.md)——完整类型词汇、启动请求与事件载荷。
 - [组地图](../README.zh.md)——工作流能力家族及其包。
 - [workflow 工具](../tool-workflow/README.zh.md)——拥有调用 schema 与结果包络的模型侧消费方。
-- [worker-thread 引擎](../workflow-worker-thread/README.zh.md)——当前执行引擎及其隔离边界。
+- [PTC 工作流引擎](../workflow-ptc/README.zh.md)——当前执行引擎及其隔离边界。
 - [动态工作流 Agent Note](../../../.agents/notes/implemented/feature/2026-07-05-dynamic-workflows.zh.md)——seam 设计及其决策。
 
 -----
@@ -138,6 +138,6 @@ return { reviewed: reviews.length }
 
 本开发备注是维护者的工作上下文：尚未决定的开放方向。它明确不具权威性——已交付的行为、限制与既定理由以上文、包代码与相关 Agent Note 为准。
 
-暂缓的方向：带 spill 句柄与分离收集的后台启动／轮询 API；已保存与嵌套工作流；跨子 agent 的 token 预算词汇；以及该 seam 的承诺——未来的进程或沙箱引擎可以在不改变模型侧表面的前提下替换 worker-thread 引擎。
+暂缓的方向：带 spill 句柄与分离收集的后台启动／轮询 API；已保存与嵌套工作流；以及跨子 agent 的 token 预算词汇。
 
 </details>

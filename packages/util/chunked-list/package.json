@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-chunked-list",
   "description": "Persistent append-only chunked lists with bounded copying and JSON checkpoint validation",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,10 +27,10 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "dependencies": {
     "zod": "^4.4.3"

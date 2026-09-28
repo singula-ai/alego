@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-theme",
   "description": "Theme plugin: Host bootstrap for the pre-plugin palette; DOM-free ThemeRuntime for light/dark/system state; --dsw-* token styles and Appearance settings row",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,7 +23,8 @@
       "default": "./lib/client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./brand-font.css": "./lib/styles/brand-font.css"
   },
   "alego": {
     "client": {
@@ -40,24 +41,24 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-api-remotes": "workspace:^",
-    "@singula-ai/alego-client-connection": "workspace:^",
-    "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-store": "workspace:^",
-    "@singula-ai/alego-client-test-runtime": "workspace:^",
-    "@singula-ai/alego-client-ui-primitives": "workspace:^",
-    "@singula-ai/alego-client-ui-renderer": "workspace:^",
-    "@singula-ai/alego-client-ui-settings": "workspace:^",
-    "@singula-ai/alego-client-ui-slots": "workspace:^",
-    "@singula-ai/alego-host-webserver": "workspace:^",
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-api-remotes": "workspace:*",
+    "@singula-ai/alego-client-connection": "workspace:*",
+    "@singula-ai/alego-client-locale": "workspace:*",
+    "@singula-ai/alego-client-store": "workspace:*",
+    "@singula-ai/alego-client-test-runtime": "workspace:*",
+    "@singula-ai/alego-client-ui-primitives": "workspace:*",
+    "@singula-ai/alego-client-ui-renderer": "workspace:*",
+    "@singula-ai/alego-client-ui-settings": "workspace:*",
+    "@singula-ai/alego-client-ui-slots": "workspace:*",
+    "@singula-ai/alego-host-webserver": "workspace:*",
     "@types/react": "~18.3.1",
     "react": "^18.2.0",
-    "@singula-ai/alego-settings": "workspace:^",
-    "clsx": "^2.0.0"
+    "clsx": "^2.0.0",
+    "@singula-ai/alego-settings": "workspace:*"
   },
   "files": [
     "lib/index.js",
@@ -70,6 +71,6 @@
     "watch": "tsdown --watch"
   },
   "dependencies": {
-    "@singula-ai/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:~"
   }
 }

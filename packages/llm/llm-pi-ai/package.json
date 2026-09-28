@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-llm-pi-ai",
   "description": "pi-ai-backed DeepSeek adapter for the Alego LLM seam (design-verification twin of alego-llm-deepseek)",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,33 +27,40 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-attachment": "workspace:^",
-    "@singula-ai/alego-authorization": "workspace:^",
-    "@singula-ai/alego-credentials": "workspace:^",
-    "@singula-ai/alego-fs": "workspace:^",
-    "@singula-ai/alego-launch-environment": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/alego-settings": "workspace:^",
-    "@singula-ai/alego-timeout": "workspace:^"
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-attachment": "workspace:*",
+    "@singula-ai/alego-authorization": "workspace:*",
+    "@singula-ai/alego-credentials": "workspace:*",
+    "@singula-ai/alego-fs": "workspace:*",
+    "@singula-ai/alego-launch-environment": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-timeout": "workspace:*",
+    "@singula-ai/cordis-plugin-loader": "workspace:~"
   },
   "dependencies": {
-    "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-util-values": "workspace:^",
-    "@singula-ai/schemastery": "workspace:^",
+    "@singula-ai/alego-brand": "workspace:*",
+    "@singula-ai/alego-util-values": "workspace:*",
+    "@singula-ai/schemastery": "workspace:~",
     "@earendil-works/pi-ai": "^0.85.1"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-attachment": "workspace:^",
-    "@singula-ai/alego-authorization": "workspace:^",
-    "@singula-ai/alego-credentials": "workspace:^",
-    "@singula-ai/alego-fs": "workspace:^",
-    "@singula-ai/alego-launch-environment": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/alego-llm-deepseek": "workspace:^",
-    "@singula-ai/alego-settings": "workspace:^",
-    "@singula-ai/alego-timeout": "workspace:^",
-    "@singula-ai/alego-http-proxy": "workspace:^"
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-attachment": "workspace:*",
+    "@singula-ai/alego-authorization": "workspace:*",
+    "@singula-ai/alego-credentials": "workspace:*",
+    "@singula-ai/alego-fs": "workspace:*",
+    "@singula-ai/alego-launch-environment": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-llm-deepseek": "workspace:*",
+    "@singula-ai/alego-llm-deepseek-api-key": "workspace:*",
+    "@singula-ai/alego-timeout": "workspace:*",
+    "@singula-ai/alego-http-proxy": "workspace:*",
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/alego-settings": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "@singula-ai/cordis-plugin-loader": {
+      "optional": true
+    }
   }
 }

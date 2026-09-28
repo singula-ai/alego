@@ -1,6 +1,88 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/interaction/user-approval/README.md
-README.md: 5de9b93544473a664bea93237a4b6389f57beee1
-README.zh.md: 1435fc2686c41ccef0a0de5f1579f37670b76ff9
+/:
+  en: 515e991a5671711d
+  zh: 194d48a8da9b51b0
+/singula-ai-alego-user-approval:
+  en: fdda743d8cd98772
+  zh: a7b97dd67cfd0b4f
+/singula-ai-alego-user-approval/summary:
+  en: 9b438f002e664c9e
+  zh: 1f1adf3db6a56ddc
+/singula-ai-alego-user-approval/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-user-approval/use-this-package:
+  en: dd034141bc1a7634
+  zh: a44f1f90dac2a444
+/singula-ai-alego-user-approval/use-this-package/composing-answerers:
+  en: 3618ddc3386e65f0
+  zh: d6c0ac91aae122bb
+/singula-ai-alego-user-approval/use-this-package/setting-the-policy:
+  en: 40451530aa706f7e
+  zh: f07433797535ae05
+/singula-ai-alego-user-approval/use-this-package/requesting-a-decision:
+  en: dc465de82799bab0
+  zh: 51144cc77bb15689
+/singula-ai-alego-user-approval/use-this-package/what-the-model-and-user-see:
+  en: 016bf3cd1891d3d7
+  zh: 33e7e5ffaf95f5e7
+/singula-ai-alego-user-approval/understand-the-implementation:
+  en: d07be7ba08baf010
+  zh: 665e68e9188e5d60
+/singula-ai-alego-user-approval/understand-the-implementation/source-map:
+  en: 3abbfecbac6271f1
+  zh: b14f235a230f561e
+/singula-ai-alego-user-approval/understand-the-implementation/dispatch:
+  en: 38c3646e45d3dddd
+  zh: 3363dde8c786d6b2
+/singula-ai-alego-user-approval/understand-the-implementation/policy-and-the-runtime-context-snapshot:
+  en: a8df8823aa0b015d
+  zh: ed0906f11645e7fd
+/singula-ai-alego-user-approval/understand-the-implementation/audit:
+  en: 2b8650dcd0032440
+  zh: 3e1f3070924b6052
+/singula-ai-alego-user-approval/further-exploration:
+  en: 1bff03b069b9efb9
+  zh: c7f8acdb6d5b7a54
+/singula-ai-alego-user-approval/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-user-approval/model-experience/current-approval-policy-context:
+  en: d23980f003b42fbb
+  zh: 532f0174de5d87b5
+/singula-ai-alego-user-approval/model-experience/current-approval-policy-context/what-the-model-sees:
+  en: a38775858ccd61f3
+  zh: c19c76827be7aabf
+/singula-ai-alego-user-approval/model-experience/current-approval-policy-context/what-the-model-sees/ask-policy-contribution:
+  en: b9f1262c97ec7568
+  zh: 8a6613695f896f70
+/singula-ai-alego-user-approval/model-experience/current-approval-policy-context/what-the-model-sees/never-policy-contribution:
+  en: f13f09fc2466513b
+  zh: 4a755a682551c481
+/singula-ai-alego-user-approval/model-experience/current-approval-policy-context/token-effect:
+  en: e96807422bdce44d
+  zh: 9fdcfafcc96bd004
+/singula-ai-alego-user-approval/model-experience/current-approval-policy-context/kv-cache-effect:
+  en: b4bac06588fdd1c3
+  zh: 60271562fdd52f72
+/singula-ai-alego-user-approval/model-experience/tool-outcome:
+  en: 54c140b4a1b4a5bc
+  zh: 8573891441963be4
+/singula-ai-alego-user-approval/model-experience/tool-outcome/what-the-model-sees:
+  en: fd0c40c0a6b4c967
+  zh: c7e18063e11080e9
+/singula-ai-alego-user-approval/model-experience/tool-outcome/token-effect:
+  en: 972a63ca590fecde
+  zh: 217b63d98365dbdb
+/singula-ai-alego-user-approval/model-experience/tool-outcome/kv-cache-effect:
+  en: f5d5f97a153f7c70
+  zh: 4db81881ebdcfcc4
+/singula-ai-alego-user-approval/known-limitations-and-deferred-work:
+  en: c6928515ff91ee7e
+  zh: c23bd844b4907f12
+/singula-ai-alego-user-approval/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

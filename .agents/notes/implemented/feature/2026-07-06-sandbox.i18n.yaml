@@ -1,6 +1,61 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-06-sandbox.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-06-sandbox.md
-2026-07-06-sandbox.md: 66d08fe12252c1ac47dcf686f6521efc551cd22e
-2026-07-06-sandbox.zh.md: 440474749b2c257acc55fc5255d2ea59ef88acc8
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes:
+  en: 5c8b4d24908a21a4
+  zh: d5d0f92277f466c2
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/problem:
+  en: 045e61bb682755dc
+  zh: ac95eb64ce892f8d
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/decision:
+  en: f4748553d52935ff
+  zh: 1802a543c6d989ef
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/decision/how-a-deployment-uses-it:
+  en: a9be4eb04320adbe
+  zh: 6095b4dc6f4195d7
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/decision/design-detail:
+  en: a6d7884e4359af3a
+  zh: e72588705942000a
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/decision/design-detail/scope-grounding:
+  en: 0c09534b59e2063e
+  zh: 5225d6750d13b9d7
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/decision/design-detail/the-seam-ctx-sandbox:
+  en: 115928c3090f8568
+  zh: d4989d39b3ef053e
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/decision/design-detail/local-backends-and-the-shipped-launcher:
+  en: 27c0d9d38ea8e37e
+  zh: da9a368fe12e5115
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/decision/design-detail/asynchronous-preparation:
+  en: 7bc0fab85c7c91d0
+  zh: 3eafcde6b1e3249c
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/decision/design-detail/the-bash-consumer:
+  en: 42b58d13b0b560ae
+  zh: 8f4b569f7644d6f8
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/decision/design-detail/escalation-one-approved-wider-retry-after-a-denial:
+  en: 9ac224f8683764c2
+  zh: 20a57617edb49223
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/decision/design-detail/per-session-modes-the-session-log-as-the-store:
+  en: e6df71e5d20355db
+  zh: d9717347f67d210c
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/decision/design-detail/in-process-tools:
+  en: 705a189f5883a618
+  zh: 7d14b453a0f44040
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/decision/testing:
+  en: c0189d491354eb48
+  zh: ac68b07188402f9c
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/deferred-phases:
+  en: f28b530000b8495e
+  zh: f256b8b32c4ce4ef
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/alternatives-considered:
+  en: 840bc74cba257282
+  zh: 07d154b461ec5753
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/consequences:
+  en: 4b323b6cc12a6b73
+  zh: 1616904418d8899d
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/faq:
+  en: 0613fb41c6a5bf04
+  zh: 520cdf4710df18dd
+/agent-note-the-subprocess-sandbox-confinement-seam-native-runners-escalation-and-per-session-modes/prior-art:
+  en: 0ca856993c0c0303
+  zh: 353c0c007ac9bc54

@@ -1,6 +1,55 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-06-approval-seam.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-06-approval-seam.md
-2026-07-06-approval-seam.md: cf3ef64c677e521cb9a7d2c9b601de2cbae6c2b6
-2026-07-06-approval-seam.zh.md: 80b79fabfae2b5f7cff822c65c2bde45ab751d77
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers:
+  en: 9335e7942f1d6df4
+  zh: e85437187fbf6f83
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers/problem:
+  en: ffaf4ec20bb8c741
+  zh: 894fde1ad0231b26
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers/decision:
+  en: 3314f2efc9a65747
+  zh: d6d3f5184925ff9d
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers/decision/how-a-deployment-uses-it:
+  en: 970382986a27cc0b
+  zh: cfba9c40772955d2
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers/decision/design-detail:
+  en: a6d7884e4359af3a
+  zh: e72588705942000a
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers/decision/design-detail/the-seam-mechanism-and-policy-split:
+  en: a5e298833b167606
+  zh: 052de436b4e49df6
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers/decision/design-detail/ask-routing-in-alego-tools:
+  en: 5789af56ea8da79d
+  zh: 38aa6892361d99f9
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers/decision/design-detail/the-per-session-policy-tier:
+  en: 260c0a54bc816119
+  zh: a989c3fce5836575
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers/decision/design-detail/the-acp-answerer:
+  en: c7b03958034650f5
+  zh: bb00963c485cab5f
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers/decision/design-detail/audit-and-what-the-model-sees:
+  en: d9f129e893e76bec
+  zh: 92929dbc54c65a5b
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers/decision/design-detail/entities-and-dependencies:
+  en: 11cd7f86b3abce2d
+  zh: 3d05d32b4778bd64
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers/decision/testing:
+  en: 01356985c175fcda
+  zh: b1bb3b68f619e698
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers/deferred:
+  en: 7c05462e3a84ae2c
+  zh: 0f7d910718e32035
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers/alternatives-considered:
+  en: 1496aa094f7dcc6b
+  zh: aac9cc82736a03d2
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers/consequences:
+  en: 9d2097d7b796dd63
+  zh: 4f1a0493dc109b12
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers/faq:
+  en: 4c2c31663a3b40ed
+  zh: fdea87f3232dbaa0
+/agent-note-the-approval-seam-one-shot-permission-decisions-over-a-waterfall-of-answerers/prior-art:
+  en: 8f492f4b7665ec83
+  zh: c6f8d113099f36eb

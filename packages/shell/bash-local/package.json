@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-bash-local",
   "description": "Local-subprocess implementation of the Alego bash executor seam",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,21 +27,19 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-shell": "workspace:^",
-    "@singula-ai/alego-subprocess": "workspace:^",
-    "@singula-ai/alego-timeout": "workspace:^",
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-settings": "workspace:^"
+    "@singula-ai/alego-shell": "workspace:*",
+    "@singula-ai/alego-subprocess": "workspace:*",
+    "@singula-ai/alego-timeout": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "dependencies": {
-    "@singula-ai/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-shell": "workspace:^",
-    "@singula-ai/alego-subprocess": "workspace:^",
-    "@singula-ai/alego-subprocess-local": "workspace:^",
-    "@singula-ai/alego-timeout": "workspace:^",
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-settings": "workspace:^"
+    "@singula-ai/alego-shell": "workspace:*",
+    "@singula-ai/alego-subprocess": "workspace:*",
+    "@singula-ai/alego-subprocess-local": "workspace:*",
+    "@singula-ai/alego-timeout": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

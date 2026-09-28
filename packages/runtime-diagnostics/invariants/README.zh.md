@@ -65,7 +65,7 @@ kind: "package-reference"
 | `alego-permission-presets`、`alego-user-approval`、`alego-commands` | preset 引用指向活动 preset、审批询问/决定配对、命令运行/完成配对 |
 | `alego-jobs`、`alego-tool-todo`、`alego-time-context` | 任务快照字段关系、整表 todo 形状、持久时钟读数 |
 | `alego-credentials`、`alego-settings`、`alego-storage-domain`、`alego-workspace` | 提交事件对照活动服务或内存状态、实体缓存镜像 |
-| `alego-agent-presets`、`alego-session-title`、`alego-plan-mode`、`alego-schedule` | preset 挂载位置、标题来源引用、plan-mode 载荷、schedule 流 |
+| `alego-agent-preset-registry`、`alego-session-title`、`alego-plan-mode`、`alego-schedule` | preset 挂载位置、标题来源引用、plan-mode 载荷、schedule 流 |
 | `alego-client-hmr`、`alego-client-modules`、`alego-client-runtime` | 浏览器/node 侧 stat-watcher 生命周期、启动入口图、slot 变更版本化 |
 
 其余工作区包省略配套入口，并在各自 README 中说明包级原因。

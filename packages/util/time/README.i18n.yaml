@@ -1,6 +1,34 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/util/time/README.md
-README.md: ba824880bcbbb64a392696f19b18bbc0d393c56e
-README.zh.md: 12a699f2af8e860a3470cea249a4c4b240ecc790
+/:
+  en: 1816778111548561
+  zh: 460c67cc44e59372
+/alego-util-time:
+  en: e63c56df62f1a9ca
+  zh: 15ecdca87ccaa4d3
+/alego-util-time/summary:
+  en: f37c9eb6571622ac
+  zh: d782978ff11bd40f
+/alego-util-time/table-of-contents:
+  en: cd2a60a905c978d6
+  zh: cc71d387d0cbd442
+/alego-util-time/use-this-package:
+  en: 1472cf19b0bd7447
+  zh: 73bf36759bc2d492
+/alego-util-time/api:
+  en: cbb4b726e939fc03
+  zh: e9df4a7487433146
+/alego-util-time/model-experience:
+  en: ef90ca3fd34d4578
+  zh: aed9cb885563707c
+/alego-util-time/model-experience/kv-cache-effect:
+  en: f63edbd9621eee70
+  zh: 5e3982508b32b039
+/alego-util-time/known-limitations-and-deferred-work:
+  en: 130db809b9a6db90
+  zh: 5b0b72ada5b131dd
+/alego-util-time/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: e88aeb617ffb74ea

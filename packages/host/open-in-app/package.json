@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-host-open-in-app",
   "description": "Host half of open-in-app: resolved application catalog, icons, and the launch endpoint as three webServer routes",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -36,17 +36,17 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@singula-ai/alego-launch-environment": "workspace:^",
-    "@singula-ai/alego-native-command": "workspace:^",
-    "@singula-ai/alego-subprocess": "workspace:^",
-    "@singula-ai/schemastery": "workspace:^"
+    "@singula-ai/alego-launch-environment": "workspace:*",
+    "@singula-ai/alego-native-command": "workspace:*",
+    "@singula-ai/alego-subprocess": "workspace:*",
+    "@singula-ai/schemastery": "workspace:~"
   },
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/cordis-plugin-loader": "workspace:^",
-    "@singula-ai/alego-host-webserver": "workspace:^"
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/alego-host-webserver": "workspace:*"
   }
 }

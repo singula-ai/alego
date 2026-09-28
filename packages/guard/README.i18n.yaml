@@ -1,6 +1,25 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/guard/README.md
-README.md: 971fcb70d6550e4d2d43e120be688a3d87ad0aa7
-README.zh.md: 6e66e2b3aef00848c40730ca35dc9de1a67f1361
+/:
+  en: 686a2d1a60d83d95
+  zh: a83604e78920e5f8
+/guard-loop-hygiene-guard-family:
+  en: 0c11c882bfbb3c7a
+  zh: fe9e12fc2509fecd
+/guard-loop-hygiene-guard-family/summary:
+  en: fa552a0781aa6a37
+  zh: cd8a7a844fd32f2f
+/guard-loop-hygiene-guard-family/table-of-contents:
+  en: 1eb35b015a6c423f
+  zh: a8a3dceee2c9e943
+/guard-loop-hygiene-guard-family/packages:
+  en: 5c171d112deae6e9
+  zh: be49b75798362556
+/guard-loop-hygiene-guard-family/related-documentation:
+  en: a6f15bc308d037ca
+  zh: 80d3fdf5ca084bfa
+/guard-loop-hygiene-guard-family/dev-note:
+  en: 5de1d6304e00c58f
+  zh: 8d8225361cfa29e5

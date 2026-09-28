@@ -1,6 +1,34 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-sidebar-files/README.md
-README.md: 814ecd2c0d308720c0162c5d78a63501e9d65de4
-README.zh.md: c5cb4651bc1681101d72ff8c09821b33a99f6155
+/:
+  en: 73b529785f359c4d
+  zh: 67ad78982fcd2bc7
+/singula-ai-alego-client-ui-sidebar-files:
+  en: 3dbc922b343cf01b
+  zh: 50e196d82c9a3d5f
+/singula-ai-alego-client-ui-sidebar-files/summary:
+  en: 1605ae92aee5c231
+  zh: ad519ddb9e338892
+/singula-ai-alego-client-ui-sidebar-files/table-of-contents:
+  en: 9411fb4809692e09
+  zh: dd13990d39c5be7f
+/singula-ai-alego-client-ui-sidebar-files/what-it-registers:
+  en: 6c176cb87e4c3ed9
+  zh: 21d52cef605a629b
+/singula-ai-alego-client-ui-sidebar-files/the-tree:
+  en: 9e6be296c5369d60
+  zh: b2e78b5ce13ebbbb
+/singula-ai-alego-client-ui-sidebar-files/model-experience:
+  en: a18a43f6842f1371
+  zh: 69f2a2b35f06dfc7
+/singula-ai-alego-client-ui-sidebar-files/model-experience/kv-cache-effect:
+  en: 5a6febb45089991a
+  zh: b17ed755fd098b83
+/singula-ai-alego-client-ui-sidebar-files/known-limitations-and-deferred-work:
+  en: c0e1831d8975186c
+  zh: 332aac8738458bb0
+/singula-ai-alego-client-ui-sidebar-files/known-limitations-and-deferred-work/dev-note:
+  en: 3e8f2f242d43973b
+  zh: fb919fb393d51b20

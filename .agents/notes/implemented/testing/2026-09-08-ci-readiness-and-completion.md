@@ -6,15 +6,15 @@ English | [中文](2026-09-08-ci-readiness-and-completion.zh.md)
 
 ## Problem
 
-The [empty master PR run](https://github.com/singula-ai/alego/actions/runs/34206953049) fails while waiting one second for webhook Session creation and five seconds for PowerShell output. Neither test measures a startup latency guarantee. A [separate run](https://github.com/singula-ai/alego/actions/runs/34207864157) shows the same short-budget problem in a desktop worker readiness test and captures a feedback acknowledgement while the composer still holds the submitted command.
+The empty master PR run (run 34206953049) fails while waiting one second for webhook Session creation and five seconds for PowerShell output. Neither test measures a startup latency guarantee. A separate run (run 34207864157) shows the same short-budget problem in a desktop worker readiness test and captures a feedback acknowledgement while the composer still holds the submitted command.
 
-Another [Windows coverage run](https://github.com/singula-ai/alego/actions/runs/34224004885/job/102053583437) reports a null publint child status and an LSP initialization-marker timeout. Their helpers impose five- and three-second limits inside the lane's 90-second test budget. These cases verify publication contents and cancellation behavior rather than cold-start latency.
+Another Windows coverage run (run 34224004885, job 102053583437) reports a null publint child status and an LSP initialization-marker timeout. Their helpers impose five- and three-second limits inside the lane's 90-second test budget. These cases verify publication contents and cancellation behavior rather than cold-start latency.
 
-The [ACP coverage run](https://github.com/singula-ai/alego/actions/runs/34242280527/job/102115221228) exhausts a one-second registry poll after transport failure. Disconnect cleanup includes cancellation, output draining, persistence, and owner disposal; registry removal alone does not establish complete teardown.
+The ACP coverage run (run 34242280527, job 102115221228) exhausts a one-second registry poll after transport failure. Disconnect cleanup includes cancellation, output draining, persistence, and owner disposal; registry removal alone does not establish complete teardown.
 
-A [worker-runtime coverage failure](https://github.com/singula-ai/alego/actions/runs/34248221544/job/102135631932) exhausts the slow-binding fixture's one-second compute allowance. Concurrent native Windows reproductions exceed that allowance before calling the binding. Worker initialization contributes measured active time; the delayed binding contributes idle time.
+A worker-runtime coverage failure (run 34248221544, job 102135631932) exhausts the slow-binding fixture's one-second compute allowance. Concurrent native Windows reproductions exceed that allowance before calling the binding. Worker initialization contributes measured active time; the delayed binding contributes idle time.
 
-The [Windows coverage run](https://github.com/singula-ai/alego/actions/runs/34324325375/job/102377982193) reports an SDK subprocess exit beyond a fixture's 200 ms confirmation window and an Inspector Worker startup beyond its ten-second default. Neither the protocol-error routing case nor the Cordis tree projection case measures those latency guarantees.
+The Windows coverage run (run 34324325375, job 102377982193) reports an SDK subprocess exit beyond a fixture's 200 ms confirmation window and an Inspector Worker startup beyond its ten-second default. Neither the protocol-error routing case nor the Cordis tree projection case measures those latency guarantees.
 
 ## Decision
 
@@ -28,7 +28,7 @@ The [ACP disconnect tests](../../../../packages/acp/acp/tests/dispose.spec.ts) a
 
 The [subagent teardown decision](2026-09-07-subagent-teardown-test-budgets.md) owns lifecycle cleanup budgets. The [persistent PowerShell decision](2026-09-07-pwsh-ci-observable-completion.md) owns exact versus inferred terminal readiness; a one-shot process's completion promise has different semantics.
 
-The [worker-runtime binding test](../../../../packages/code-runtime/code-runtime-worker-thread/tests/runtime.spec.ts) allows five seconds of compute for source-worker initialization and delays the binding for 6.5 seconds. Charging that idle delay would still exceed the entire compute allowance. The case retains its 15-second test limit and 30-second wall ceiling, registers Context and reply-timer cleanup, and leaves the hot-loop, decoy-dispatch, wall-ceiling, and abort controls at their existing limits. Production budgets remain unchanged.
+The [sandboxed Node decision](../architecture/2026-09-11-sandboxed-node-ptc-runtime.md) supersedes worker active-time accounting. The [Node runtime suite](../../../../packages/ptc-runtime/ptc-runtime-node/tests/runtime.spec.ts) exercises the replacement elapsed deadline through real managed processes. The other completion observations and fixture lifecycle rules in this note remain in force.
 
 The [SDK subagent protocol-error test](../../../../packages/subagent/subagent-alego-sdk/tests/subagent-alego-sdk.spec.ts) uses the provider's normal shutdown and exit grace periods and registers disposal before its assertions. The [Inspector tree tests](../../../../packages/experimental/inspector/tests/cordis-tree.host.spec.ts) pass the active test budget to Worker startup and register cleanup while startup is still pending. A cancelled test cannot receive a late-ready handle; cleanup awaits initialization and closes a successfully started Worker. Failed initialization already terminates the Worker before rejecting. A controlled late-start test verifies cancellation and closure through the real Worker's HTTP endpoint. Production defaults remain unchanged.
 

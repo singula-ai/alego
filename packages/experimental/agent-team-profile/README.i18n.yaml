@@ -1,6 +1,52 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/experimental/agent-team-profile/README.md
-README.md: c8387dde899ed400f04ded897754f88b9f7b87c9
-README.zh.md: 72bbdbb2275813aa85f4e705011d0555c93fcdc6
+/:
+  en: e263a0edd266210f
+  zh: c5779bf7f64631d3
+/singula-ai-alego-experimental-agent-team-profile:
+  en: 9b545fdd56df5a8c
+  zh: fc368cb1c25a16a6
+/singula-ai-alego-experimental-agent-team-profile/summary:
+  en: 7f43036a65c9ea49
+  zh: 5378c64e77a913c9
+/singula-ai-alego-experimental-agent-team-profile/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-experimental-agent-team-profile/use-this-package:
+  en: bbff250eba0f1b89
+  zh: 0a618f05cc88ee2b
+/singula-ai-alego-experimental-agent-team-profile/use-this-package/install-into-a-profile:
+  en: 0c3f975c91f21eba
+  zh: 995da79099a91b2d
+/singula-ai-alego-experimental-agent-team-profile/use-this-package/what-you-get:
+  en: 4d644ef45c8c358c
+  zh: 71b6ee35837fe91f
+/singula-ai-alego-experimental-agent-team-profile/understand-the-implementation:
+  en: 121d588c3a80d7a7
+  zh: 323988f3de4c2499
+/singula-ai-alego-experimental-agent-team-profile/further-exploration:
+  en: b36724f5069bb75c
+  zh: 301643519aec0376
+/singula-ai-alego-experimental-agent-team-profile/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-experimental-agent-team-profile/model-experience/team-policy-and-tools:
+  en: 8e1e365ff3b0dfb2
+  zh: c6c91fbf1e1df934
+/singula-ai-alego-experimental-agent-team-profile/model-experience/team-policy-and-tools/what-the-model-sees:
+  en: 9fbc165c23c1c397
+  zh: c4b6d30d3114d8f3
+/singula-ai-alego-experimental-agent-team-profile/model-experience/team-policy-and-tools/token-effect:
+  en: ad7e173284fae326
+  zh: e8b933a3402a5a81
+/singula-ai-alego-experimental-agent-team-profile/model-experience/team-policy-and-tools/kv-cache-effect:
+  en: e331337b094aacde
+  zh: bb2e5df5ebeb9305
+/singula-ai-alego-experimental-agent-team-profile/known-limitations-and-deferred-work:
+  en: 4d83d68c02477a65
+  zh: 22315fedd712b422
+/singula-ai-alego-experimental-agent-team-profile/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

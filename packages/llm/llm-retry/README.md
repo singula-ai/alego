@@ -34,7 +34,7 @@ Choose it when a composition runs the agent loop and wants durable request recov
 ### Minimal configuration
 
 ```yaml
-- name: '@singula-ai/alego-llm-deepseek'
+- name: '@singula-ai/alego-llm-deepseek-api-key'
   config:
     apiKeyEnv: DEEPSEEK_API_KEY
     retryPolicy:

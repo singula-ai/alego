@@ -1,6 +1,88 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/hooks/hooks-codex/README.md
-README.md: b60908f1efd714a75008cfc73d477d94f3aa9403
-README.zh.md: fc60bdc547e9b9df51d0fa950fd4e914d329f9de
+/:
+  en: 9ee4cd57e234a8ff
+  zh: 59e5d8f84fa762ff
+/singula-ai-alego-hooks-codex:
+  en: eb9388da22638d50
+  zh: a30d15193c6db479
+/singula-ai-alego-hooks-codex/summary:
+  en: 81c8ed28410a9056
+  zh: 8666c718357d43d0
+/singula-ai-alego-hooks-codex/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-hooks-codex/use-this-package:
+  en: 86b84a66b82845f8
+  zh: bd7fbd4e066d06f8
+/singula-ai-alego-hooks-codex/use-this-package/when-to-choose-it:
+  en: 44d77bc8d948bc6d
+  zh: 81afaf977570f4ef
+/singula-ai-alego-hooks-codex/use-this-package/smallest-working-setup:
+  en: 531c669919037dcb
+  zh: 329d4208b5f88feb
+/singula-ai-alego-hooks-codex/use-this-package/what-your-hooks-can-do:
+  en: dee90142e7e87214
+  zh: 8d83d7e0208ba1ef
+/singula-ai-alego-hooks-codex/use-this-package/how-hooks-run-and-fail:
+  en: 03b55a30e9ec5f0c
+  zh: 258907341232ca45
+/singula-ai-alego-hooks-codex/understand-the-implementation:
+  en: d33ddd080880b3f5
+  zh: 64328f5239c26752
+/singula-ai-alego-hooks-codex/understand-the-implementation/hook-point-mapping:
+  en: 755ca39231841ffc
+  zh: 30e793dfaf11a336
+/singula-ai-alego-hooks-codex/understand-the-implementation/payloads-and-environment:
+  en: 542413d7e8cfeaf4
+  zh: 3b5d0d3fdd0231f2
+/singula-ai-alego-hooks-codex/understand-the-implementation/matcher-subjects-and-serial-execution:
+  en: fd52c0eb70bf0094
+  zh: 6415f109fbd763d3
+/singula-ai-alego-hooks-codex/understand-the-implementation/detached-runs-and-disposal:
+  en: 9ad9b0d64bfd54df
+  zh: 102beb011db841c8
+/singula-ai-alego-hooks-codex/understand-the-implementation/design-philosophy:
+  en: 6f882aab3d924115
+  zh: 7ed83a6d16a22c77
+/singula-ai-alego-hooks-codex/understand-the-implementation/source-map:
+  en: 83f46561508c0787
+  zh: 11ba5b16d92dfe8c
+/singula-ai-alego-hooks-codex/further-exploration:
+  en: 8b2381ba13f91867
+  zh: 0b36454ce7df3d03
+/singula-ai-alego-hooks-codex/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-hooks-codex/model-experience/hook-provided-context:
+  en: 7b2f5028dacd7146
+  zh: e4d226735f7abfc2
+/singula-ai-alego-hooks-codex/model-experience/hook-provided-context/what-the-model-sees:
+  en: 3f94df641a34a437
+  zh: 21bc5823229dbb6c
+/singula-ai-alego-hooks-codex/model-experience/hook-provided-context/token-effect:
+  en: b70e3524b160cd63
+  zh: e1011ee18d1bf12b
+/singula-ai-alego-hooks-codex/model-experience/hook-provided-context/kv-cache-effect:
+  en: f5d5f97a153f7c70
+  zh: f681f89596f500f5
+/singula-ai-alego-hooks-codex/model-experience/blocked-prompt-or-tool-outcome:
+  en: 82be8d95921ef639
+  zh: 11c185068ec18932
+/singula-ai-alego-hooks-codex/model-experience/blocked-prompt-or-tool-outcome/what-the-model-sees:
+  en: fd44027de2255f3f
+  zh: d880eb4d2d3f6af8
+/singula-ai-alego-hooks-codex/model-experience/blocked-prompt-or-tool-outcome/token-effect:
+  en: 7c13e10d2a0e3151
+  zh: 54ffd88bca4fce3a
+/singula-ai-alego-hooks-codex/model-experience/blocked-prompt-or-tool-outcome/kv-cache-effect:
+  en: f84fa6c0511cd113
+  zh: f6ce9cdd47a72684
+/singula-ai-alego-hooks-codex/known-limitations-and-deferred-work:
+  en: 11c88847e78bdbc5
+  zh: dea334c689116d0f
+/singula-ai-alego-hooks-codex/known-limitations-and-deferred-work/dev-note:
+  en: 5f03857c3bb6834a
+  zh: 54f485d08db9020f

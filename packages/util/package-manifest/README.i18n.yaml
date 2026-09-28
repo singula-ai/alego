@@ -1,6 +1,37 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/util/package-manifest/README.md
-README.md: 00ac09d7cebcedb8c1d869e733adde3f330ddf03
-README.zh.md: de3cf83ef7178642f41fbccf85ab748931151854
+/:
+  en: f7dabe634101d0a5
+  zh: 26a163eda9403b8b
+/singula-ai-alego-package-manifest:
+  en: 31fd95ee83422b93
+  zh: 810f4cd84362cc5f
+/singula-ai-alego-package-manifest/summary:
+  en: 29f5d74ac09c5e59
+  zh: 9b21745938c63038
+/singula-ai-alego-package-manifest/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 1db86285abf6c499
+/singula-ai-alego-package-manifest/use-this-package:
+  en: 0badbe147a6a31a4
+  zh: 7f19fe73ba0efe7e
+/singula-ai-alego-package-manifest/understand-the-implementation:
+  en: 64e1e57d1c3761e0
+  zh: 9fc039770ce43c63
+/singula-ai-alego-package-manifest/further-exploration:
+  en: 750661862bbc0ac0
+  zh: 51a2ee8b6afce107
+/singula-ai-alego-package-manifest/model-experience:
+  en: 0b5aaa4787068a57
+  zh: bdb5dabe0b33ff9d
+/singula-ai-alego-package-manifest/model-experience/kv-cache-effect:
+  en: 2ed74a2a33958543
+  zh: 7d63c3a3801bef13
+/singula-ai-alego-package-manifest/known-limitations-and-deferred-work:
+  en: c1c1b6cf5b9a68ac
+  zh: e7724b1f41462982
+/singula-ai-alego-package-manifest/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

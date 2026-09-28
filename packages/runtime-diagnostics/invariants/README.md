@@ -65,7 +65,7 @@ Each companion protects relationships its package owns, and a companion installs
 | `alego-permission-presets`, `alego-user-approval`, `alego-commands` | Preset references to live presets, approval asked/decided pairing, command run/done pairing |
 | `alego-jobs`, `alego-tool-todo`, `alego-time-context` | Job snapshot field relationships, whole-list todo shape, durable clock readings |
 | `alego-credentials`, `alego-settings`, `alego-storage-domain`, `alego-workspace` | Commit events against the live service or memory state, entity-cache mirroring |
-| `alego-agent-presets`, `alego-session-title`, `alego-plan-mode`, `alego-schedule` | Preset mount placement, title source citation, plan-mode payload, schedule stream |
+| `alego-agent-preset-registry`, `alego-session-title`, `alego-plan-mode`, `alego-schedule` | Preset mount placement, title source citation, plan-mode payload, schedule stream |
 | `alego-client-hmr`, `alego-client-modules`, `alego-client-runtime` | Browser/node-half stat-watcher lifecycle, boot entry graph, slot mutation versioning |
 
 Every other workspace package omits the companion and states the package-specific reason in its README.

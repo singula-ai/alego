@@ -23,10 +23,10 @@ import { SessionSeq, type Session, type SessionEvent } from '@singula-ai/alego-s
 import type { Agent } from '@singula-ai/alego-agent'
 import { frameSummary } from './summarizer.ts'
 import type { SummarizationInput, SummaryResult } from './summarizer.ts'
-
 interface RegionDependencies {
   readonly meter: TokenMeter
   summarize(input: SummarizationInput, agent: Agent, signal?: AbortSignal): Promise<SummaryResult>
+  recover(error: unknown, agent: Agent, sourceEventSeqs: readonly SessionSeq[], signal?: AbortSignal): boolean
 }
 
 /** One validated inclusive span of current surface positions. */
@@ -226,6 +226,7 @@ export async function compactSurfaceRegion(
       agent,
       compactionId,
       options.sourceCommandId,
+      assertStable,
       signal,
     )
     if (options.owner === null) signal?.throwIfAborted()
@@ -389,9 +390,23 @@ async function summarizeCompaction(
   agent: Agent,
   compactionId: CompactionResult['compactionId'],
   sourceCommandId: CommandId | undefined,
+  assertStable: StabilityCheck,
   signal?: AbortSignal,
 ): Promise<SummarizedCompaction> {
-  const summaryResult = await dependencies.summarize(prepared.input, agent, signal)
+  let summaryResult: SummaryResult
+  for (;;) {
+    signal?.throwIfAborted()
+    try {
+      summaryResult = await dependencies.summarize(prepared.input, agent, signal)
+      break
+    } catch (error: unknown) {
+      if (signal?.aborted === true) throw error
+      assertStable(dependencies, agent.session, prepared)
+      if (!dependencies.recover(error, agent, prepared.shadowedSeqs, signal)) throw error
+      prepared = prepareCompaction(dependencies, agent.session,
+        validateSurfaceRegion(agent.session, prepared.start, prepared.end))
+    }
+  }
   const checkpointMessage = createUserMessage({
     content: frameSummary(summaryResult.summary),
     source: compactCheckpointSource(compactionId, sourceCommandId),
@@ -470,7 +485,7 @@ function commitCompactionBody(
     usage,
     checkpointMessage,
   } = summarized
-  const callProvenance = summarized.llmStreamCall === true
+  const callRecord = summarized.llmStreamCall === true
     ? { rawOutput: summarized.rawOutput, llmStreamCall: true as const }
     : summarized.rawOutput === undefined ? {} : { rawOutput: summarized.rawOutput }
   const summaryEvent = session.append('compaction/summary', {
@@ -479,7 +494,7 @@ function commitCompactionBody(
       ? {}
       : { sourceCommandId: startEvent.data.sourceCommandId },
     summary,
-    ...callProvenance,
+    ...callRecord,
     shadowedRange: { start, end },
     shadowedSeqs: [...shadowedSeqs],
     shadowedTokenCount,

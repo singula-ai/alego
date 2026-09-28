@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-host-plugin-inventory",
   "description": "Read-only Remote projection of current Cordis Loader plugin state",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -47,22 +47,24 @@
     "zod": "^4.4.3"
   },
   "peerDependencies": {
-    "@singula-ai/cordis-plugin-loader": "workspace:^",
-    "@singula-ai/alego-agent-presets": "workspace:^",
-    "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-typert-protocol": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/alego-agent-preset-registry": "workspace:*",
+    "@singula-ai/alego-brand": "workspace:*",
+    "@singula-ai/alego-typert-protocol": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "peerDependenciesMeta": {
-    "@singula-ai/alego-agent-presets": {
+    "@singula-ai/alego-agent-preset-registry": {
       "optional": true
     }
   },
   "devDependencies": {
-    "@singula-ai/cordis-plugin-loader": "workspace:^",
-    "@singula-ai/alego-agent-presets": "workspace:^",
-    "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-typert-protocol": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-app-boot": "workspace:*",
+    "@singula-ai/alego-package-manifest": "workspace:*",
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/alego-agent-preset-registry": "workspace:*",
+    "@singula-ai/alego-brand": "workspace:*",
+    "@singula-ai/alego-typert-protocol": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

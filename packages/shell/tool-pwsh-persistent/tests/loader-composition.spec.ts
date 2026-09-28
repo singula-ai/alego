@@ -3,7 +3,7 @@ import { mkdtemp, realpath, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import Loader from '@singula-ai/cordis-plugin-loader'
 import Include from '@singula-ai/cordis-plugin-include'
@@ -13,6 +13,7 @@ import AgentRegistry from '@singula-ai/alego-agent'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import type { Agent } from '@singula-ai/alego-agent'
 import TerminalSessionService from '@singula-ai/alego-terminal'
+import type { TerminalWaitReason } from '@singula-ai/alego-terminal'
 import * as TerminalBash from '@singula-ai/alego-terminal-bash'
 import SandboxProvider from '@singula-ai/alego-sandbox'
 import type { ConfinedArgv, SandboxPolicy } from '@singula-ai/alego-sandbox'
@@ -40,12 +41,12 @@ afterEach(async () => {
 })
 
 class PassthroughSandbox extends SandboxProvider {
-  confine(argv: readonly string[], _policy: SandboxPolicy): ConfinedArgv {
+  async confine(argv: readonly string[], _policy: SandboxPolicy): Promise<ConfinedArgv> {
     return { argv: [...argv], enforcement: 'full', denialSignatures: [], runnerFailureRules: [] }
   }
 }
 
-function agent(ctx: Context, cwd: string): Agent {
+async function agent(ctx: Context, cwd: string): Promise<Agent> {
   const id = SessionId('persistent-pwsh-loader-agent')
   const scope = ctx.plugin(() => {})
   const session = Session.create(id, [], {
@@ -66,7 +67,7 @@ function agent(ctx: Context, cwd: string): Agent {
     runMaintenance: task => task(new AbortController().signal),
     whenIdle: () => Promise.resolve(),
   }
-  ctx.agents.register(value)
+  await ctx.agents.register(value)
   return value
 }
 
@@ -95,8 +96,16 @@ describe.skipIf(!hasPwsh)('persistent pwsh through a real cordis.yml Loader comp
       '    shellDialect: pwsh',
       '    pollIntervalMs: 10',
       '    exactProbeAfterMs: 20',
-      '    idleSilenceMs: 300',
+      // The silence tier keeps its product default; the case body records each
+      // send's wait reason, which pins the controlled-prompt fast path directly
+      // instead of relying on how long silence would take to settle.
       '    handoffGraceMs: 300',
+      // The self-hosted Windows pool stalls the console renderer for seconds (issue 2487): the
+      // OSC marker reaches the session while the five-byte prompt tail that follows it does not
+      // arrive until the plain silence bound has passed, and every such send would otherwise
+      // settle as inferred_idle. The tolerance keeps those sends on the controlled-prompt path
+      // this case pins, without letting a missing prompt (no marker at all) escape the silence tier.
+      '    promptTailGraceMs: 5000',
       '    scrollbackLines: 20000',
       // The first call pays the full pwsh cold-start latency (spawn + .NET +
       // PSReadLine + Defender) inside the tool deadline; a 60s bound on the
@@ -140,7 +149,23 @@ describe.skipIf(!hasPwsh)('persistent pwsh through a real cordis.yml Loader comp
     await context.loader.create({ name: 'cordis:include', config: { path: pathToFileURL(configPath).href } })
     await context.loader.await()
 
-    const owner = agent(context, root)
+    const terminals = context.terminals
+    const startSend = terminals.startSend.bind(terminals)
+    // A send that lost the controlled-prompt fast path settles as inferred_idle
+    // after the silence tier, so recording why every send settled detects that
+    // regression immediately instead of through accumulated wall-clock.
+    const settleReasons: TerminalWaitReason[] = []
+    vi.spyOn(terminals, 'startSend').mockImplementation((owner, id, request) => {
+      const operation = startSend(owner, id, request)
+      void operation.done.then(
+        (settled) => { settleReasons.push(settled.waitReason) },
+        // A rejected send is the tool's error path, not a settle reason.
+        () => {},
+      )
+      return operation
+    })
+
+    const owner = await agent(context, root)
     const signal = new AbortController().signal
     const execute = (id: string, command: string) => context!.tools.execute({
       signal,
@@ -177,5 +202,13 @@ describe.skipIf(!hasPwsh)('persistent pwsh through a real cordis.yml Loader comp
     const exited = text(await execute('exit', 'exit'))
     expect(exited).toContain('next pwsh call starts from the workspace')
     expect(text(await execute('after-exit', 'Write-Output "$PWD"'))).toBe(root)
+
+    // Six commands settle on the controlled prompt; no send may fall back to the
+    // silence tier, which is the 3.5 s-per-call degradation this suite pins. The
+    // counts alone do not say which tier settled which send, so every reason the
+    // run recorded rides in the failure message (2026-09-25 self-hosted Windows
+    // lane reported one to two stdin_read settlements across three runs).
+    expect(settleReasons.filter(reason => reason === 'stdin_read').length, JSON.stringify(settleReasons)).toBeGreaterThanOrEqual(6)
+    expect(settleReasons).not.toContain('inferred_idle')
   }, 120_000)
 })

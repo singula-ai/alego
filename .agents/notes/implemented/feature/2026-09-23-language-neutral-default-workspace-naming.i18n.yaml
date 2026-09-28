@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-23-language-neutral-default-workspace-naming.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-09-23-language-neutral-default-workspace-naming.md
+/agent-note-language-neutral-default-workspace-naming:
+  en: f0e09e569bcb17fd
+  zh: 27f18f4b9cc4294b
+/agent-note-language-neutral-default-workspace-naming/problem:
+  en: c729e99645706e24
+  zh: 22a66eb69376c3a4
+/agent-note-language-neutral-default-workspace-naming/decision:
+  en: 032095b6eb582b0c
+  zh: cf638acbbc353d38
+/agent-note-language-neutral-default-workspace-naming/alternatives-considered:
+  en: 556df0ed81444162
+  zh: 5eee5029659419c3
+/agent-note-language-neutral-default-workspace-naming/consequences:
+  en: 5f710ca9cf60d514
+  zh: 9ea7bdaf8925fd44

@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-09-27-web-lane-assertions-name-their-input-state.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/testing/2026-09-27-web-lane-assertions-name-their-input-state.md
+/agent-note-web-lane-assertions-name-their-input-state:
+  en: 118576f4a6d57479
+  zh: 7289b9bf77c949ad
+/agent-note-web-lane-assertions-name-their-input-state/problem:
+  en: 12391509553e0152
+  zh: 86d02884ae9c1b09
+/agent-note-web-lane-assertions-name-their-input-state/decision:
+  en: c6a8e79707975429
+  zh: 4fe1f6abd6fd4c1e
+/agent-note-web-lane-assertions-name-their-input-state/alternatives-considered:
+  en: 49e9ffd2d3447c39
+  zh: 9491d366feab7bf7
+/agent-note-web-lane-assertions-name-their-input-state/verification:
+  en: afc5cf13c73aa948
+  zh: 640e21bd0f99b457
+/agent-note-web-lane-assertions-name-their-input-state/consequences:
+  en: 2ecf084ca4df49c4
+  zh: bbd8823fd0910609

@@ -6,7 +6,7 @@ import { isAbsolute } from 'node:path'
 import { brandString } from '@singula-ai/alego-brand'
 import type { ModelSelection } from '@singula-ai/alego-agent'
 import type {} from '@singula-ai/alego-agent-default-model'
-import type {} from '@singula-ai/alego-agent-presets'
+import type {} from '@singula-ai/alego-agent-preset-registry'
 import { boundContextSummary, createUserMessage, errorChain, type LlmCallConfig } from '@singula-ai/alego-llm'
 import type {} from '@singula-ai/alego-permission-presets'
 import type { SessionId } from '@singula-ai/alego-session'
@@ -109,7 +109,7 @@ function installInitialModelSelection(agentCtx: Context, selection: ModelSelecti
  * Agent remains lifecycle-owned by `ctx` and follows normal Session behavior.
  *
  * @param ctx - untraced runtime context that owns the resulting Agent.
- * @param delivery - exact verified provider delivery used for provenance.
+ * @param delivery - exact verified provider delivery recorded in the message source.
  * @param ruleId - rule that returned the request.
  * @param request - same-process rule result.
  * @param signal - registration lifetime cancellation through publication.
@@ -124,7 +124,8 @@ export async function createWebhookSession(
   const resolved = resolveRequest(ctx, request)
   ctx.permissionPresets.resolve(resolved.permissionPreset)
   const preset = await ctx.agentPresets.resolve(resolved.agentPreset)
-  await ctx.agentPresets.standingKeyFor(preset.id)
+  await using presetScope = await ctx.agentPresets.acquireScope(preset.id)
+  void presetScope
   signal.throwIfAborted()
 
   const workspace = await ctx.workspaceRegistry.create(resolved.workspacePath)

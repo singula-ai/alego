@@ -1,6 +1,10 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write native/system/packages/darwin-arm64/README.md
-README.md: 19028d5103cae347fe643c472e8ecc9fdd798bff
-README.zh.md: b98f50c332c1c123bf00ff4f8fd4ad7439c3d070
+/:
+  en: 934850f4ff9f8858
+  zh: 6910c34a221ae75e
+/singula-ai-node-addon-system-darwin-arm64:
+  en: 2dcf07cf9ecee3c3
+  zh: bb5433613780daad

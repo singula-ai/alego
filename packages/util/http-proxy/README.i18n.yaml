@@ -1,6 +1,55 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/util/http-proxy/README.md
-README.md: b70a83eaab1960a6fd34a9dbd1df739491f1b86c
-README.zh.md: 0e916f1dda2e4beb3acb3bcbac61b0069682783f
+/:
+  en: 117b4d191f773a9c
+  zh: 0b9e150f6cd23b04
+/singula-ai-alego-http-proxy:
+  en: 56b4f754da622f7a
+  zh: 434a1e35bdab0892
+/singula-ai-alego-http-proxy/summary:
+  en: c3b1b32ab36f5f97
+  zh: 143b744ab361f0d4
+/singula-ai-alego-http-proxy/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-http-proxy/use-this-package:
+  en: 55e8dff030a255fb
+  zh: b8d4f3b363ee69e0
+/singula-ai-alego-http-proxy/use-this-package/writing-a-new-outbound-call:
+  en: 782b24f91ee8ce71
+  zh: af4b75a0d5a98fdc
+/singula-ai-alego-http-proxy/use-this-package/what-the-policy-reads:
+  en: 000d397814543bd9
+  zh: 34f18f77b99e535e
+/singula-ai-alego-http-proxy/use-this-package/failures:
+  en: 4248bc9a662680ed
+  zh: 4150ade9f1aa9287
+/singula-ai-alego-http-proxy/understand-the-implementation:
+  en: ee4615a04fa6503d
+  zh: ee2c5fb2204a43cf
+/singula-ai-alego-http-proxy/understand-the-implementation/design-philosophy:
+  en: ed2d13cdc35cbe25
+  zh: e10c15ddc41f9e61
+/singula-ai-alego-http-proxy/understand-the-implementation/source-map:
+  en: a099f88dd0c7d394
+  zh: 7325b7ea973bce13
+/singula-ai-alego-http-proxy/understand-the-implementation/bypass-matching:
+  en: e9ad6c2e8ee2fc21
+  zh: c10de6995cf594bc
+/singula-ai-alego-http-proxy/further-exploration:
+  en: aa752d93c9636268
+  zh: 69b22368cb104710
+/singula-ai-alego-http-proxy/model-experience:
+  en: e0af6a1073934d5a
+  zh: d8bf9c77b54ed5ae
+/singula-ai-alego-http-proxy/model-experience/kv-cache-effect:
+  en: 7f12ca92e7722f98
+  zh: 97fa75de6a3f6a3f
+/singula-ai-alego-http-proxy/known-limitations-and-deferred-work:
+  en: de2afa7cb94d9660
+  zh: f5f69ac2e45c4e0d
+/singula-ai-alego-http-proxy/known-limitations-and-deferred-work/dev-note:
+  en: e7d8628ccd7e0d36
+  zh: 751da266bfb84bef

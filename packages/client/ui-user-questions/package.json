@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-user-questions",
   "description": "Web ask_user_question composer takeover and plan-review presentation UI",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -44,29 +44,30 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-agent": "workspace:^",
-    "@singula-ai/alego-api-remotes": "workspace:^",
-    "@singula-ai/alego-api-session-controller": "workspace:^",
-    "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-store": "workspace:^",
-    "@singula-ai/alego-system-prompt": "workspace:^",
-    "@singula-ai/alego-tools": "workspace:^",
-    "@singula-ai/alego-user-questions": "workspace:^",
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-api-remotes": "workspace:*",
+    "@singula-ai/alego-api-session-controller": "workspace:*",
+    "@singula-ai/alego-client-locale": "workspace:*",
+    "@singula-ai/alego-client-store": "workspace:*",
+    "@singula-ai/alego-system-prompt": "workspace:*",
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/alego-user-questions": "workspace:*",
     "@types/react": "~18.3.1",
-    "@singula-ai/alego-client-ui-primitives": "workspace:^",
-    "@singula-ai/alego-client-ui-slots": "workspace:^",
-    "@singula-ai/alego-client-ui-renderer": "workspace:^",
-    "@singula-ai/alego-client-ui-session": "workspace:^",
-    "@singula-ai/alego-typert-protocol": "workspace:^",
+    "@singula-ai/alego-client-ui-primitives": "workspace:*",
+    "@singula-ai/alego-client-ui-slots": "workspace:*",
+    "@singula-ai/alego-client-ui-renderer": "workspace:*",
+    "@singula-ai/alego-client-ui-session": "workspace:*",
+    "@singula-ai/alego-typert-protocol": "workspace:*",
     "react": "^18.2.0",
-    "@singula-ai/alego-client-ui-conversation": "workspace:^",
-    "@singula-ai/alego-client-connection": "workspace:^",
-    "@singula-ai/alego-session": "workspace:^",
-    "clsx": "^2.0.0"
+    "@singula-ai/alego-client-ui-conversation": "workspace:*",
+    "@singula-ai/alego-client-connection": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*",
+    "clsx": "^2.0.0",
+    "@singula-ai/alego-llm": "workspace:*"
   },
   "files": [
     "lib/index.js",

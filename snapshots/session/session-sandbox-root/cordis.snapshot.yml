@@ -1,7 +1,7 @@
 # Keyless replay counterpart of session-sandbox-root.cordis.yml: the replay
 # swap, recorded model pin, and distinct sandbox fallback form one profile patch.
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   disabled: true
 
 - id: agent-default-model

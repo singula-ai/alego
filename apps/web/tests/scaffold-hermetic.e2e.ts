@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { expect, it } from 'vitest'
 import type {} from '@singula-ai/alego-skill'
 import { SessionId } from '@singula-ai/alego-session'
-import type {} from '@singula-ai/alego-agent-presets'
+import type {} from '@singula-ai/alego-agent-preset-registry'
 import { launchWebScaffold, type WebScaffold } from './scaffold.ts'
 
 async function writeSkill(root: string, name: string): Promise<void> {

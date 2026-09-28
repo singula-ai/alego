@@ -1,6 +1,64 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/shell/pwsh-local/README.md
-README.md: 21a27b15df65abd6ca4889eb168a9f6f16ea573c
-README.zh.md: 457e6f35893817901d168fa6f875a7f4bbe2fb55
+/:
+  en: 07482fe1f03de5e9
+  zh: 8ec16b9f9ac73b38
+/singula-ai-alego-pwsh-local:
+  en: b9bdb034aaf00688
+  zh: 1dea5ef15db4bd56
+/singula-ai-alego-pwsh-local/summary:
+  en: 5689a7246c31df81
+  zh: 4a9716fd09d9a3e4
+/singula-ai-alego-pwsh-local/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-pwsh-local/use-this-package:
+  en: f53013bc78e9367f
+  zh: cc15b499f6a95080
+/singula-ai-alego-pwsh-local/use-this-package/when-to-choose-it:
+  en: 65ced394fa3eacc7
+  zh: dce4ad2c9b3e569c
+/singula-ai-alego-pwsh-local/use-this-package/minimal-configuration:
+  en: 7264d2e138b485dc
+  zh: 2d790ec59e7c53b1
+/singula-ai-alego-pwsh-local/use-this-package/running-commands:
+  en: d0efd217ca8ce07d
+  zh: 76eda93aa7300f87
+/singula-ai-alego-pwsh-local/use-this-package/background-processes:
+  en: 3c580842cc8452af
+  zh: 5a156670a7cacc2a
+/singula-ai-alego-pwsh-local/use-this-package/adjusting-budgets-at-runtime:
+  en: 1098db4c932a48f8
+  zh: 33f78ab65dbfeb1d
+/singula-ai-alego-pwsh-local/understand-the-implementation:
+  en: 05e2abe4a25886fd
+  zh: 3f7f1326dc3c1d3f
+/singula-ai-alego-pwsh-local/understand-the-implementation/design-concept:
+  en: d065be99a0cea908
+  zh: 50eee843e3b6860c
+/singula-ai-alego-pwsh-local/understand-the-implementation/source-map:
+  en: 299f4ffe25b4806d
+  zh: d0aced83a1950a91
+/singula-ai-alego-pwsh-local/understand-the-implementation/main-flow:
+  en: 1cb78cfddb484576
+  zh: 94e16b60c9cd458b
+/singula-ai-alego-pwsh-local/understand-the-implementation/invariants-and-ownership:
+  en: 630986a276d3b561
+  zh: 999941c50fc96b5e
+/singula-ai-alego-pwsh-local/further-exploration:
+  en: 2acc9433ec3c2e24
+  zh: 1e847167c5541a38
+/singula-ai-alego-pwsh-local/model-experience:
+  en: b4cd3cabef121cc7
+  zh: ff555cd889ec77c4
+/singula-ai-alego-pwsh-local/model-experience/kv-cache-effect:
+  en: 40294c1c31b74824
+  zh: 788a4799b1d65a8b
+/singula-ai-alego-pwsh-local/known-limitations-and-deferred-work:
+  en: dbe004f26cb332f2
+  zh: 83dc82454ee6a92d
+/singula-ai-alego-pwsh-local/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

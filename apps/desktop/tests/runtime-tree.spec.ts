@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, expect, it } from 'vitest'
 import { DESKTOP_HOST_PACKAGE, DESKTOP_HOST_RUNTIME_FILES } from '../src/core-package-set.ts'
-import { DESKTOP_RUNTIME_FILE, desktopRuntimeId, readDesktopRuntime, runtimePath, verifyDesktopRuntime } from '../src/runtime-tree.ts'
+import { DESKTOP_RUNTIME_FILE, readDesktopRuntime, runtimePath, verifyDesktopRuntime } from '../src/runtime-tree.ts'
 import { runtimeFixture } from './runtime-fixture.ts'
 
 const roots: string[] = []
@@ -19,7 +19,7 @@ it('verifies a runtime after relocation without depending on build paths', async
   const root = fixture()
   const before = await verifyDesktopRuntime(join(root, 'alego'), '1.0.0')
   cpSync(join(root, 'alego'), join(root, 'moved'), { recursive: true })
-  expect(desktopRuntimeId(await verifyDesktopRuntime(join(root, 'moved'), '1.0.0'))).toBe(desktopRuntimeId(before))
+  expect(await verifyDesktopRuntime(join(root, 'moved'), '1.0.0')).toEqual(before)
 })
 it.each(['changed', 'same-size', 'extra', 'missing'])('checks %s runtime bytes only during build verification', async (operation) => {
   const alego = join(fixture(), 'alego')
@@ -54,10 +54,10 @@ it.each(['missing', 'directory'])('checks a %s Host entry only during build veri
   expect(readDesktopRuntime(alego).release.version).toBe('1.0.0')
   await expect(verifyDesktopRuntime(alego, '1.0.0')).rejects.toThrow(/integrity/u)
 })
-it('checks the shell version only during build verification', async () => {
+it('checks the bundled version only during build verification', async () => {
   const alego = join(fixture(), 'alego')
   expect(readDesktopRuntime(alego).release.version).toBe('1.0.0')
-  await expect(verifyDesktopRuntime(alego, '2.0.0')).rejects.toThrow(/does not match Electron/u)
+  await expect(verifyDesktopRuntime(alego, '2.0.0')).rejects.toThrow(/bundled 1\.0\.0 is not the expected 2\.0\.0/u)
 })
 it.each([
   { schemaVersion: 2 },

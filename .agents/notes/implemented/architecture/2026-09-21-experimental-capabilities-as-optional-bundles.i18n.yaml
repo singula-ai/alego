@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-21-experimental-capabilities-as-optional-bundles.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-21-experimental-capabilities-as-optional-bundles.md
+/agent-note-ship-experimental-capabilities-as-optional-bundles:
+  en: 283fab5976018a7f
+  zh: 7e7fedf5cc81fd68
+/agent-note-ship-experimental-capabilities-as-optional-bundles/problem:
+  en: 2ba6c43b20a3d347
+  zh: 5647179ddaa38ad9
+/agent-note-ship-experimental-capabilities-as-optional-bundles/decision:
+  en: d8f58b22b287869a
+  zh: 2547748307c93324
+/agent-note-ship-experimental-capabilities-as-optional-bundles/alternatives-considered:
+  en: 9102a49807c7616e
+  zh: ba5692b2ac3d35de
+/agent-note-ship-experimental-capabilities-as-optional-bundles/consequences:
+  en: e7fb2a93a89ba9b6
+  zh: 37ed9f0a3ca44583

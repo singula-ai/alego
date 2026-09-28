@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-open-in-app",
-  "description": "Web Session-header \"Open In...\" split button opening the session workspace directory in a locally installed application",
-  "version": "0.1.5-rc.2",
+  "description": "Web \"Open In...\" controls: the Session-header split button opening the workspace directory in an installed application, and the document preview's default-application controls for one file",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -38,31 +38,44 @@
   "alego": {
     "client": {
       "inject": [
+        "@singula-ai/alego-api-gateway",
+        "@singula-ai/alego-api-remotes",
+        "@singula-ai/alego-api-session-controller",
         "@singula-ai/alego-client-locale",
+        "@singula-ai/alego-client-shortcuts",
         "@singula-ai/alego-client-ui-conversation",
+        "@singula-ai/alego-client-ui-layout",
         "@singula-ai/alego-client-ui-renderer",
-        "@singula-ai/alego-client-ui-session"
+        "@singula-ai/alego-client-ui-session",
+        "@singula-ai/alego-client-ui-sidebar-documentpreview"
       ],
       "platform": "web"
     }
   },
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-api-session-controller": "workspace:^",
-    "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-store": "workspace:^",
-    "@singula-ai/alego-client-test-runtime": "workspace:^",
-    "@singula-ai/alego-client-ui-conversation": "workspace:^",
-    "@singula-ai/alego-client-ui-primitives": "workspace:^",
-    "@singula-ai/alego-client-ui-renderer": "workspace:^",
-    "@singula-ai/alego-client-ui-session": "workspace:^",
-    "@singula-ai/alego-client-ui-slots": "workspace:^",
-    "@singula-ai/alego-host-open-in-app": "workspace:^",
-    "@singula-ai/alego-session": "workspace:^",
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-api-gateway": "workspace:*",
+    "@singula-ai/alego-api-remotes": "workspace:*",
+    "@singula-ai/alego-api-session-controller": "workspace:*",
+    "@singula-ai/alego-client-locale": "workspace:*",
+    "@singula-ai/alego-client-store": "workspace:*",
+    "@singula-ai/alego-client-test-runtime": "workspace:*",
+    "@singula-ai/alego-client-ui-conversation": "workspace:*",
+    "@singula-ai/alego-client-ui-layout": "workspace:*",
+    "@singula-ai/alego-client-ui-primitives": "workspace:*",
+    "@singula-ai/alego-client-ui-renderer": "workspace:*",
+    "@singula-ai/alego-client-ui-session": "workspace:*",
+    "@singula-ai/alego-client-ui-sidebar-documentpreview": "workspace:*",
+    "@singula-ai/alego-client-ui-slots": "workspace:*",
+    "@singula-ai/alego-host-open-in-app": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*",
     "@types/react": "~18.3.1",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "@singula-ai/alego-client-ui-deliverables": "workspace:*",
+    "@singula-ai/alego-native-command": "workspace:*",
+    "@singula-ai/alego-client-shortcuts": "workspace:*"
   }
 }

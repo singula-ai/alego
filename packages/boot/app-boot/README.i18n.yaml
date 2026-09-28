@@ -1,6 +1,73 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/boot/app-boot/README.md
-README.md: 4d841bcd1b1c6e746de9843590bee15e0955f2ad
-README.zh.md: 8d17814f0a04c599dc9dcdd0507dd91ff98bc354
+/:
+  en: e361963163f737ab
+  zh: 5d15c07c55f8be3f
+/singula-ai-alego-app-boot:
+  en: 877baa016f16de96
+  zh: 68f3e5c49f543afb
+/singula-ai-alego-app-boot/summary:
+  en: 9c3bcaec9ee7f328
+  zh: 60599cfed761ce4c
+/singula-ai-alego-app-boot/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-app-boot/use-this-package:
+  en: f6fa378225009c8f
+  zh: 324c0e4640bb1358
+/singula-ai-alego-app-boot/use-this-package/when-to-use-it:
+  en: 4b891d8577c8cc35
+  zh: 8edb85a5760ddbb4
+/singula-ai-alego-app-boot/use-this-package/starting-the-app:
+  en: 1099528bde0e2aee
+  zh: b68772bdb9bb7856
+/singula-ai-alego-app-boot/use-this-package/profiles:
+  en: 7530f14b175a30a5
+  zh: 08686cb7fcc8410f
+/singula-ai-alego-app-boot/use-this-package/previewing-the-effective-configuration:
+  en: 646a0ccdd7881ad1
+  zh: e3696acb1573dd7b
+/singula-ai-alego-app-boot/use-this-package/inspecting-plugin-configuration-schemas:
+  en: 5c2347169bc5289a
+  zh: a4b8a8c88225d6d5
+/singula-ai-alego-app-boot/use-this-package/reading-plugin-display-metadata:
+  en: 215e7da2bbff7cf0
+  zh: 77019211948bc62b
+/singula-ai-alego-app-boot/use-this-package/startup-and-reload-failures:
+  en: 6b4a3a0de0249d05
+  zh: ff1c7e3e611ce6e0
+/singula-ai-alego-app-boot/use-this-package/telling-the-agent-where-the-harness-lives:
+  en: 4ec88ffc54059e92
+  zh: 2b02bf3463c1c287
+/singula-ai-alego-app-boot/understand-the-implementation:
+  en: f4a2695cb4c8a570
+  zh: 89837235d2f376cf
+/singula-ai-alego-app-boot/understand-the-implementation/design-notes:
+  en: fb3bcdb8b20ca017
+  zh: 3b7fe8c2407acb76
+/singula-ai-alego-app-boot/understand-the-implementation/helper-behavior:
+  en: f7bc3a8dd4b00bdd
+  zh: 30098428aa769ad0
+/singula-ai-alego-app-boot/understand-the-implementation/source-map:
+  en: 25602fd8eb9b2907
+  zh: 870a33dd34a52c32
+/singula-ai-alego-app-boot/further-exploration:
+  en: 62c4a03e731e7337
+  zh: f9d382bfbeb04304
+/singula-ai-alego-app-boot/model-experience:
+  en: 769777f1cb1a9408
+  zh: f02b2834179df50d
+/singula-ai-alego-app-boot/model-experience/kv-cache-effect:
+  en: c4d49630b68ae896
+  zh: 6f450ec6ba39bb81
+/singula-ai-alego-app-boot/known-limitations-and-deferred-work:
+  en: bf1a49013cad8e9c
+  zh: 41b2b010f8650ec3
+/singula-ai-alego-app-boot/known-limitations-and-deferred-work/dev-note:
+  en: d2f0d68fe29fb750
+  zh: 323d21ee73a9e3f6
+/singula-ai-alego-app-boot/known-limitations-and-deferred-work/dev-note/open-yaml-config-dump-stability:
+  en: 63fe098811cdd691
+  zh: 924e9ca6936b934d

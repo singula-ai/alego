@@ -1,6 +1,82 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/web/web-search-perplexity/README.md
-README.md: 33f3a4f9b8e1a398e641d353a37f707c7fe39b67
-README.zh.md: c9be7a119fb7866b1f105d11ebf7de21756e36ed
+/:
+  en: 526b58d952111706
+  zh: 463049f0091c6fa3
+/singula-ai-alego-web-search-perplexity:
+  en: 744e094475974e63
+  zh: 92eb6267dfbaf167
+/singula-ai-alego-web-search-perplexity/summary:
+  en: bf566ac3d86fa545
+  zh: de3884c399494147
+/singula-ai-alego-web-search-perplexity/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-web-search-perplexity/use-this-package:
+  en: 1b854e582c65f3b4
+  zh: 0e5dd9657ac6a721
+/singula-ai-alego-web-search-perplexity/use-this-package/when-to-choose-it:
+  en: 194e1c83cf5a3281
+  zh: c262d5dd92b62ea7
+/singula-ai-alego-web-search-perplexity/use-this-package/minimal-configuration:
+  en: aeeb932ffb9e161b
+  zh: 58ab48c580fcc310
+/singula-ai-alego-web-search-perplexity/use-this-package/what-a-search-returns:
+  en: 99d01f74dcf5aed9
+  zh: 3c7bdaa3bd35847f
+/singula-ai-alego-web-search-perplexity/use-this-package/failures-and-recovery:
+  en: 5740595fa2cebf20
+  zh: d99555411a131d2f
+/singula-ai-alego-web-search-perplexity/understand-the-implementation:
+  en: 9842c69ad3636bb3
+  zh: 3cdc3f816cbdd0cb
+/singula-ai-alego-web-search-perplexity/understand-the-implementation/design-philosophy:
+  en: aee86ee45c4635c0
+  zh: 45cecc44ae467520
+/singula-ai-alego-web-search-perplexity/understand-the-implementation/source-map:
+  en: f481a8541f09f1cf
+  zh: c0c47902eae6973d
+/singula-ai-alego-web-search-perplexity/understand-the-implementation/request-and-mapping-flow:
+  en: ff5efa9c7b1a9cda
+  zh: ca1e246eb8e7eaee
+/singula-ai-alego-web-search-perplexity/further-exploration:
+  en: 541a3fee9d8e7e95
+  zh: 0426def0605815bf
+/singula-ai-alego-web-search-perplexity/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-web-search-perplexity/model-experience/auxiliary-perplexity-request:
+  en: 9d564a5863828a46
+  zh: 143112cfc85fe3f3
+/singula-ai-alego-web-search-perplexity/model-experience/auxiliary-perplexity-request/what-the-model-sees:
+  en: eacb10a5e907e796
+  zh: 74fbd30db7c983a1
+/singula-ai-alego-web-search-perplexity/model-experience/auxiliary-perplexity-request/token-effect:
+  en: 5f5b2bf40168d371
+  zh: 25bc3b50bc74ff20
+/singula-ai-alego-web-search-perplexity/model-experience/auxiliary-perplexity-request/kv-cache-effect:
+  en: ca308291b52b8028
+  zh: 12e8f89f79a2756c
+/singula-ai-alego-web-search-perplexity/model-experience/conversation-tool-result-indirectly:
+  en: 666f5753c99783ab
+  zh: b44328e99bcc45c9
+/singula-ai-alego-web-search-perplexity/model-experience/conversation-tool-result-indirectly/what-the-model-sees:
+  en: ac7e19713f4c0595
+  zh: 38e72825335adbac
+/singula-ai-alego-web-search-perplexity/model-experience/conversation-tool-result-indirectly/token-effect:
+  en: 8c5d9983ba129daf
+  zh: 3e7889629bed353d
+/singula-ai-alego-web-search-perplexity/model-experience/conversation-tool-result-indirectly/kv-cache-effect:
+  en: f5d5f97a153f7c70
+  zh: f681f89596f500f5
+/singula-ai-alego-web-search-perplexity/known-limitations-and-deferred-work:
+  en: 452d397f4e796ad9
+  zh: fc7e673c80069f1e
+/singula-ai-alego-web-search-perplexity/known-limitations-and-deferred-work/dev-note:
+  en: 7f775cc79dbce94b
+  zh: 12b8f68f9e7c48ca
+/singula-ai-alego-web-search-perplexity/known-limitations-and-deferred-work/dev-note/future-wider-perplexity-control-surface:
+  en: 86cd7f67c96e6b0e
+  zh: ab991807ddf2f470

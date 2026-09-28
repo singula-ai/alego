@@ -1,6 +1,25 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/mcp/README.md
-README.md: 9b8777e414133dbd12519eeaf1926eb587d2547e
-README.zh.md: d53051a57c6fffa0043d69704407c3da976769b3
+/:
+  en: e6a2aa771ce2d33c
+  zh: e072e7f0f03d7f0f
+/mcp-model-context-protocol:
+  en: 3853a996e0d0d35d
+  zh: 94b0d2d2c199aeba
+/mcp-model-context-protocol/summary:
+  en: b7924c83f407b302
+  zh: 87ce606631f8a3ec
+/mcp-model-context-protocol/table-of-contents:
+  en: 1eb35b015a6c423f
+  zh: a8a3dceee2c9e943
+/mcp-model-context-protocol/packages:
+  en: 7f35294838cdc455
+  zh: ceafd598e0b8de52
+/mcp-model-context-protocol/related-documentation:
+  en: 49c005fe47b5fef5
+  zh: f203ee7434fe5d1c
+/mcp-model-context-protocol/dev-note:
+  en: 5de1d6304e00c58f
+  zh: 8d8225361cfa29e5

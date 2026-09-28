@@ -1,6 +1,127 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/shell/tool-bash/README.md
-README.md: 19cb66a8f1ba3e26937aefa1eb5172b5e9238488
-README.zh.md: 74888f21c1481786e78768fdcbccbfec4db5ce70
+/:
+  en: aa0f6a31440050d2
+  zh: 388fc575115b9a4f
+/singula-ai-alego-tool-bash:
+  en: 6d341745026a970f
+  zh: eb64d552e7b041f0
+/singula-ai-alego-tool-bash/summary:
+  en: 10c6f6006af9a2a1
+  zh: c30b0d863761340d
+/singula-ai-alego-tool-bash/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-tool-bash/use-this-package:
+  en: 16bd24c44f429622
+  zh: beb8b675d3d2c0f8
+/singula-ai-alego-tool-bash/use-this-package/minimal-configuration:
+  en: a1236874b4f97f55
+  zh: b2f9fdd9747ae38e
+/singula-ai-alego-tool-bash/use-this-package/running-a-command:
+  en: 92fd68a57eecc265
+  zh: 715f22986827b692
+/singula-ai-alego-tool-bash/use-this-package/running-long-commands-in-the-background:
+  en: 11efeb3b5d12bcc3
+  zh: 1835723a2240613b
+/singula-ai-alego-tool-bash/use-this-package/foreground-commands-as-jobs:
+  en: 5eef538028ca60d6
+  zh: dc1c8ec24c81d2ca
+/singula-ai-alego-tool-bash/use-this-package/sandboxed-execution-and-escalation:
+  en: 4dc9ca7438c30a42
+  zh: f8a2e0d0c8cb0d2d
+/singula-ai-alego-tool-bash/use-this-package/what-can-go-wrong:
+  en: 0cc055914092feae
+  zh: ca546e2577067833
+/singula-ai-alego-tool-bash/understand-the-implementation:
+  en: 8d94a7381bca3fa9
+  zh: f4bd2866fff6fa8d
+/singula-ai-alego-tool-bash/understand-the-implementation/design-philosophy:
+  en: fd76520994ea45d1
+  zh: 5a5e604a35a10e04
+/singula-ai-alego-tool-bash/understand-the-implementation/source-map:
+  en: 5fe11138a292e82d
+  zh: e3e94af07b90b5ba
+/singula-ai-alego-tool-bash/understand-the-implementation/request-resolution:
+  en: b03c1d84aa4b5cd4
+  zh: 111eba387b7082ae
+/singula-ai-alego-tool-bash/understand-the-implementation/rendering-story:
+  en: 17361bc8fd2ed837
+  zh: 3a20c0068d8e230d
+/singula-ai-alego-tool-bash/further-exploration:
+  en: dd5189228b90a419
+  zh: 038504d30941547c
+/singula-ai-alego-tool-bash/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-tool-bash/model-experience/system-prompt:
+  en: cf78b9dd5596495f
+  zh: bd44560f8c2435e8
+/singula-ai-alego-tool-bash/model-experience/system-prompt/what-the-model-sees:
+  en: f8173d0103e0c6b6
+  zh: ed8b92539ee74156
+/singula-ai-alego-tool-bash/model-experience/system-prompt/what-the-model-sees/bash-guidance:
+  en: 2d65d6ca9b82df1d
+  zh: 016a14eee33eba62
+/singula-ai-alego-tool-bash/model-experience/system-prompt/token-effect:
+  en: a38d59e3e6d8a1c9
+  zh: 96d60abecd38307b
+/singula-ai-alego-tool-bash/model-experience/system-prompt/kv-cache-effect:
+  en: 06f29b209347522f
+  zh: 4dd39a5a3b738c59
+/singula-ai-alego-tool-bash/model-experience/tool-schemas:
+  en: 3039bc5e7a796b21
+  zh: 6b7a9eaf69c9ea53
+/singula-ai-alego-tool-bash/model-experience/tool-schemas/what-the-model-sees:
+  en: fdb0719158be6b8d
+  zh: c88c484751cd4736
+/singula-ai-alego-tool-bash/model-experience/tool-schemas/token-effect:
+  en: cdbd4262314e6856
+  zh: e8c12c0cf5492386
+/singula-ai-alego-tool-bash/model-experience/tool-schemas/kv-cache-effect:
+  en: 8b821a8b34948af9
+  zh: 858244c080bfc5cb
+/singula-ai-alego-tool-bash/model-experience/foreground-result:
+  en: d83f1f25a3719c54
+  zh: 445ca808e28dc936
+/singula-ai-alego-tool-bash/model-experience/foreground-result/what-the-model-sees:
+  en: a42551a2fe154720
+  zh: 940ef90b8368af39
+/singula-ai-alego-tool-bash/model-experience/foreground-result/token-effect:
+  en: b2018adbda15b8a7
+  zh: 79521073a45c7f80
+/singula-ai-alego-tool-bash/model-experience/foreground-result/kv-cache-effect:
+  en: f5d5f97a153f7c70
+  zh: 31911b4f3506d6c8
+/singula-ai-alego-tool-bash/model-experience/background-job-context-and-results:
+  en: 38ce70c1818a5694
+  zh: ed3ad10f12ed1b8e
+/singula-ai-alego-tool-bash/model-experience/background-job-context-and-results/what-the-model-sees:
+  en: 934cafc96e4e166e
+  zh: 071473af3b25b95f
+/singula-ai-alego-tool-bash/model-experience/background-job-context-and-results/token-effect:
+  en: 3a0d2d43640158d6
+  zh: 45ae711aedaa1d41
+/singula-ai-alego-tool-bash/model-experience/background-job-context-and-results/kv-cache-effect:
+  en: f5d5f97a153f7c70
+  zh: 31911b4f3506d6c8
+/singula-ai-alego-tool-bash/model-experience/tool-errors:
+  en: 2d4f2c8605eccab3
+  zh: 67f1f0218f73c6bf
+/singula-ai-alego-tool-bash/model-experience/tool-errors/what-the-model-sees:
+  en: 5bbe5114805ca2f6
+  zh: 2e2397ee00ea0c15
+/singula-ai-alego-tool-bash/model-experience/tool-errors/token-effect:
+  en: a3a78ef476ec5e56
+  zh: dd2c8ad0f69e8ff1
+/singula-ai-alego-tool-bash/model-experience/tool-errors/kv-cache-effect:
+  en: f5d5f97a153f7c70
+  zh: 31911b4f3506d6c8
+/singula-ai-alego-tool-bash/known-limitations-and-deferred-work:
+  en: 98680af23e39e875
+  zh: 8045b30dd71f9c47
+/singula-ai-alego-tool-bash/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

@@ -1,6 +1,10 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for agent-lifecycle.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/agent-lifecycle.md
-agent-lifecycle.md: 8d157e056153767bd1b8903f1da8a1c0518fbf2e
-agent-lifecycle.zh.md: 71406042e66f7b098e89a1a46c8d7f51fb1778ca
+/:
+  en: 41d772192075e133
+  zh: 305a6826a598b96d
+/agent-turn-and-step-lifecycle:
+  en: afaedef6aab89cca
+  zh: 5b9908deb2795de5

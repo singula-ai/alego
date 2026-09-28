@@ -11,9 +11,9 @@ import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl
 import MessageFeedback from '@singula-ai/alego-message-feedback'
 import { recordFeedback } from '@singula-ai/alego-command-feedback'
 import LlmRuntime, { createAssistantMessage, createUserMessage } from '@singula-ai/alego-llm'
-import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek'
+import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek-api-key'
 import DeepSeekLlmApiExtensions from '@singula-ai/alego-deepseek-llm-api-extensions'
-import { startMockLlmServer, type MockLlmServer } from '@singula-ai/alego-llm-mock-server'
+import { startMockLlmServer, type MockLlmServer, type MockLlmServerOptions } from '@singula-ai/alego-llm-mock-server'
 import * as SessionLogDeepSeek from '../src/index.ts'
 import type { DeepSeekSessionLogExtension } from '../src/types.ts'
 
@@ -31,17 +31,18 @@ afterEach(async () => {
   vi.unstubAllEnvs()
 })
 
-it('uploads freeform feedback and message put/edit/delete through the unchanged provider route', async () => {
+/** Boot the official upload route through the Loader with one session-log configuration. */
+async function boot(sessionLog: SessionLogDeepSeek.Config, mock: MockLlmServerOptions): Promise<{ ctx: Context; server: MockLlmServer }> {
   root = await mkdtemp(join(tmpdir(), 'alego-feedback-upload-'))
   vi.stubEnv('ALEGO_HOME', root)
   vi.stubEnv('DEEPSEEK_API_KEY', 'feedback-test-key')
-  server = await startMockLlmServer({ sequence: ['invalid_request', 'success', 'success'] })
+  server = await startMockLlmServer(mock)
   const modules = new Map<string, unknown>([
     ['@singula-ai/alego-session', SessionStore],
     ['@singula-ai/alego-session-persistence-jsonl', JsonlSessionPersistence],
     ['@singula-ai/alego-message-feedback', MessageFeedback],
     ['@singula-ai/alego-llm', LlmRuntime],
-    ['@singula-ai/alego-llm-deepseek', LlmDeepSeek],
+    ['@singula-ai/alego-llm-deepseek-api-key', LlmDeepSeek],
     ['@singula-ai/alego-deepseek-llm-api-extensions', DeepSeekLlmApiExtensions],
     ['@singula-ai/alego-session-log-deepseek', SessionLogDeepSeek],
   ])
@@ -52,10 +53,10 @@ it('uploads freeform feedback and message put/edit/delete through the unchanged 
       ? { config: { root: join(root!, 'sessions'), compression: 'none' } }
       : name === '@singula-ai/alego-message-feedback'
         ? { config: { maxNoteBytes: 1024 } }
-        : name === '@singula-ai/alego-llm-deepseek'
+        : name === '@singula-ai/alego-llm-deepseek-api-key'
           ? { config: { baseURL: server!.baseURL } }
           : name === '@singula-ai/alego-session-log-deepseek'
-            ? { config: { enabled: true } }
+            ? { config: sessionLog }
             : {},
   }))))
   ctx = new Context()
@@ -72,14 +73,22 @@ it('uploads freeform feedback and message put/edit/delete through the unchanged 
   await ctx.loader.create({ name: 'cordis:include', config: { path: pathToFileURL(config).href } })
   await ctx.loader.await()
   expect([...ctx.loader.entries()].filter(entry => entry.fiber === undefined && !entry.disabled)).toEqual([])
+  return { ctx, server }
+}
 
+it('uploads freeform feedback and message put/edit/delete through the unchanged provider route', async () => {
+  const { ctx, server } = await boot({ enabled: true }, { sequence: ['invalid_request', 'success', 'success'] })
   const session = ctx.sessions.create(SessionId('feedback-upload'))
   const handle = await ctx.sessionPersistence.create(session.header)
   try {
     const user = createUserMessage({ content: [{ type: 'text', text: 'Question' }], source: { kind: 'user' } })
     const assistant = createAssistantMessage({ content: [{ type: 'text', text: 'Answer' }], source: { provider: 'deepseek-official', model: 'deepseek-v4-flash' } })
+    session.append('turn/start', { turn: 1 })
+    session.append('step/start', { turn: 1, step: 1 })
     session.append('user/message', user, { surfaceOp: 'append' })
     session.append('assistant/message', { message: assistant, stream: [], turn: 1, step: 1 }, { surfaceOp: 'append' })
+    session.append('step/end', { turn: 1, step: 1 })
+    session.append('turn/end', { turn: 1, reason: { kind: 'completed' } })
     const messages = session.deriveMessages()
     recordFeedback(session, { text: '  The session needs a clearer explanation.  ' })
     const created = await ctx.messageFeedback.put({ sessionId: session.id, messageId: assistant.id, rating: 'negative', note: 'Explain the result.', ifVersion: null })
@@ -87,7 +96,7 @@ it('uploads freeform feedback and message put/edit/delete through the unchanged 
     const initialPrefix = session.snapshotEvents()
     const request = async () => {
       const chunks = []
-      for await (const chunk of ctx!.llm.stream({ provider: 'deepseek-official', model: 'deepseek-v4-flash', sessionId: session.id, messages: session.deriveMessages() })) chunks.push(chunk)
+      for await (const chunk of ctx.llm.stream({ provider: 'deepseek-official', model: 'deepseek-v4-flash', sessionId: session.id, messages: session.deriveMessages() })) chunks.push(chunk)
       return chunks.at(-1)
     }
     expect(await request()).toMatchObject({ type: 'finish', reason: { kind: 'error' } })
@@ -124,15 +133,43 @@ it('uploads freeform feedback and message put/edit/delete through the unchanged 
     expect(session.deriveMessages()).toEqual(messages)
     expect(await ctx.messageFeedback.list({ sessionId: session.id })).toEqual({ ok: true, value: { items: [] } })
     for (const wire of server.requests) {
-      expect(wire.path).toBe('/chat/completions')
+      expect(wire.path).toBe('/v1/messages')
       expect(wire.body).not.toHaveProperty('alego_feedback')
       expect(wire.body).toMatchObject({ model: 'deepseek-v4-flash', messages: [
-        { role: 'user', content: 'Question' },
-        { role: 'assistant', content: 'Answer' },
+        { role: 'user', content: [{ type: 'text', text: 'Question' }] },
+        { role: 'assistant', content: [{ type: 'text', text: 'Answer' }] },
       ] })
     }
     await ctx.sessions.flush(session)
     expect((await handle.read()).events).toEqual(session.snapshotEvents())
+  } finally {
+    await handle.close()
+  }
+})
+
+it('drains a Session log above the configured maxBytes across consecutive routed requests', async () => {
+  const maxBytes = 4096
+  const { ctx, server } = await boot({ enabled: true, maxBytes }, { sequence: ['success'], repeatLast: true })
+  const session = ctx.sessions.create(SessionId('bounded-upload'))
+  const handle = await ctx.sessionPersistence.create(session.header)
+  try {
+    session.append('turn/start', { turn: 1 })
+    session.append('step/start', { turn: 1, step: 1 })
+    for (const letter of ['a', 'b', 'c']) {
+      session.append('user/message', createUserMessage({ content: [{ type: 'text', text: letter.repeat(1500) }], source: { kind: 'user' } }), { surfaceOp: 'append' })
+    }
+    const backlog = session.snapshotEvents()
+    for (let request = 0; request < 6 && SessionLogDeepSeek.acceptedThrough(session) < backlog.length - 1; request++) {
+      const chunks = []
+      for await (const chunk of ctx.llm.stream({ provider: 'deepseek-official', model: 'deepseek-v4-flash', sessionId: session.id, messages: session.deriveMessages() })) chunks.push(chunk)
+      expect(chunks.at(-1)).toMatchObject({ type: 'finish', reason: { kind: 'stop' } })
+    }
+    const uploads = server.requests.map(request => (request.body as { dsh_session_log: DeepSeekSessionLogExtension }).dsh_session_log)
+    expect(uploads.length).toBeGreaterThan(1)
+    expect(uploads.map(upload => upload.afterSeq)).toEqual([-1, ...uploads.slice(0, -1).map(upload => upload.throughSeq)])
+    for (const upload of uploads) expect(Buffer.byteLength(JSON.stringify(upload))).toBeLessThanOrEqual(maxBytes)
+    expect(uploads.flatMap(upload => upload.events).filter(event => event.type !== 'session-log-deepseek/delivery-accepted'))
+      .toEqual(backlog)
   } finally {
     await handle.close()
   }

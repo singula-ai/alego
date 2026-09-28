@@ -2,7 +2,7 @@
 # sandboxed filesystem stack already lives in `alego-base`; the ACP row re-pins
 # `deepseek-v4-flash` for the recorded corpus.
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   disabled: true
 
 - id: agent-default-model
@@ -49,7 +49,7 @@
 - id: spill-policy
   name: '@singula-ai/alego-spill-policy'
   config:
-    maxInlineBytes: 800
+    maxInlineTokens: 200
 
 - insert:
     - id: snapshot-spill-locators

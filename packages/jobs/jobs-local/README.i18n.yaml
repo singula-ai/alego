@@ -1,6 +1,67 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/jobs/jobs-local/README.md
-README.md: eeb5218b761dbf7900b578c55dcf33b5157c75f6
-README.zh.md: 0e6d11c53764c85031ebe601e738bb8bc74ad0f9
+/:
+  en: 0abe764a4bc3e3db
+  zh: 280ff3a1c1a8bc5c
+/singula-ai-alego-jobs-local:
+  en: ad628c9a223a3412
+  zh: fa2b85d6977200df
+/singula-ai-alego-jobs-local/summary:
+  en: b25d0db19b19141d
+  zh: a8b513d910cc7892
+/singula-ai-alego-jobs-local/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-jobs-local/use-this-package:
+  en: 45730c8381f62ae2
+  zh: d080f2b6999df03f
+/singula-ai-alego-jobs-local/use-this-package/when-to-choose-it:
+  en: 17479310883edc0a
+  zh: f1cea41c704dabe2
+/singula-ai-alego-jobs-local/use-this-package/minimal-configuration:
+  en: 6a1bd75ead99c7d0
+  zh: aefbd8452556c5a5
+/singula-ai-alego-jobs-local/use-this-package/what-each-owner-gets:
+  en: 9ab66aa770694092
+  zh: 38de930bcfbc132c
+/singula-ai-alego-jobs-local/use-this-package/lifecycle:
+  en: 91dd372f742dcdb8
+  zh: 58eeee0254d33cd1
+/singula-ai-alego-jobs-local/use-this-package/what-can-go-wrong:
+  en: 05654530d8bfb75a
+  zh: 3ac2cd71f3749030
+/singula-ai-alego-jobs-local/understand-the-implementation:
+  en: f782557ca8da3138
+  zh: e8f0082b9692cacc
+/singula-ai-alego-jobs-local/understand-the-implementation/design-philosophy:
+  en: b92e6e5415553e2e
+  zh: c3e0be579af4c7fb
+/singula-ai-alego-jobs-local/understand-the-implementation/source-map:
+  en: 12e6b1d7dd6b81da
+  zh: 9a9e0cfe8e3b6d50
+/singula-ai-alego-jobs-local/understand-the-implementation/scope-layers:
+  en: 2c53e11a60965985
+  zh: 63adc1628c71e62e
+/singula-ai-alego-jobs-local/understand-the-implementation/admission-and-settlement:
+  en: 8561de5b92a48ef9
+  zh: 14e5f82e72e7f5f8
+/singula-ai-alego-jobs-local/understand-the-implementation/teardown:
+  en: 49e8bd5e2c1f6ffd
+  zh: ad3e1aa712fd59b3
+/singula-ai-alego-jobs-local/further-exploration:
+  en: e310d89a06c6c588
+  zh: f02422349383181a
+/singula-ai-alego-jobs-local/model-experience:
+  en: 3cfacf96691d5163
+  zh: d2daf18114b5182c
+/singula-ai-alego-jobs-local/model-experience/kv-cache-effect:
+  en: e290ccc9b3c92c08
+  zh: d75d48f485447a74
+/singula-ai-alego-jobs-local/known-limitations-and-deferred-work:
+  en: 5284107cbd22e3dd
+  zh: 9aa0048908c94e25
+/singula-ai-alego-jobs-local/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

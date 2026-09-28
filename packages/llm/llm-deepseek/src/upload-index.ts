@@ -37,16 +37,16 @@ export interface UploadIndexCommit {
 }
 
 /**
- * Derive a non-secret stable index namespace without persisting or logging the API key.
+ * Derive a non-secret stable index namespace without persisting or logging authentication headers.
  * @param baseURL - normalized provider endpoint namespace.
- * @param apiKey - resolved credential used only as hash input.
+ * @param credentials - serialized authentication headers used only as hash input.
  * @returns branded SHA-256 namespace digest.
  */
-export function deepSeekFileScope(baseURL: string, apiKey: string): DeepSeekFileScopeType {
+export function deepSeekFileScope(baseURL: string, credentials: string): DeepSeekFileScopeType {
   const digest = createHash('sha256')
     .update(baseURL.replace(/\/+$/u, ''))
     .update('\0')
-    .update(apiKey)
+    .update(credentials)
     .digest('hex')
   return DeepSeekFileScope(digest)
 }
@@ -190,21 +190,20 @@ export class DeepSeekUploadIndex {
   }
 
   /**
-   * Remove one exact mapping without deleting a concurrently installed successor.
+   * Remove exact mappings in one locked rewrite without deleting concurrently installed successors.
    * @param scope - endpoint/API-key namespace.
-   * @param variantId - complete request-image transformation identity.
-   * @param fileId - exact remote generation being invalidated.
+   * @param generations - exact remote generations being invalidated; pairs absent from the index are ignored.
    */
   async remove(
     scope: DeepSeekFileScopeType,
-    variantId: ImageVariantIdType,
-    fileId: DeepSeekFileIdType,
+    generations: readonly Pick<DeepSeekUploadRecord, 'variantId' | 'fileId'>[],
   ): Promise<void> {
+    const invalidated = new Set(generations.map(generation => `${generation.variantId}\0${generation.fileId}`))
     await mkdir(dirname(this.path), { recursive: true, mode: 0o700 })
     await withFileLock(this.path, async () => {
       const index = await this.load()
       const records = index.records.filter(record => !(
-        record.scope === scope && record.variantId === variantId && record.fileId === fileId
+        record.scope === scope && invalidated.has(`${record.variantId}\0${record.fileId}`)
       ))
       if (records.length !== index.records.length) await this.save({ formatVersion: 3, records })
     })

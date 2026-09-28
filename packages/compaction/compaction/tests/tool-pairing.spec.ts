@@ -1,8 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import { createUserMessage, ToolCallId , createMessage, createToolResultMessage } from '@singula-ai/alego-llm'
-import { toolPairingBalancedAfter, toolPairingBalancedBefore } from '@singula-ai/alego-compaction'
+import type { ContextFormed } from '@singula-ai/alego-llm'
+import { CompactionId, compactCheckpointSource, toolPairingBalancedAfter, toolPairingBalancedBefore } from '@singula-ai/alego-compaction'
 import { Session, SessionId, SessionSeq } from '@singula-ai/alego-session'
 import type { SessionEvent, SessionSeq as SessionSeqType } from '@singula-ai/alego-session'
+
+declare module '@singula-ai/alego-llm' {
+  interface MessageSourceMap {
+    'test': { kind: 'test' } & ContextFormed
+  }
+}
 
 const SURFACE = { surfaceOp: 'append' as const }
 
@@ -138,7 +145,7 @@ describe('tool-pairing boundaries', () => {
     }, SURFACE)
     midStep.append('user/message', createUserMessage({
       content: [{ type: 'text', text: 'background update' }],
-      source: { kind: 'plugin', plugin: 'test' },
+      source: { kind: 'test' },
     }), SURFACE)
     midStep.append('tool/result', {
       turn: 1, step: 1,
@@ -170,7 +177,7 @@ describe('tool-pairing surface identity', () => {
     const nodes = session.surface.nodes
     session.append('user/message', createUserMessage({
       content: [{ type: 'text', text: 'checkpoint' }],
-      source: { kind: 'plugin', plugin: 'compact' },
+      source: compactCheckpointSource(CompactionId('tool-pairing-compaction')),
     }), {
       surfaceOp: { op: 'replace', startSeq: nodes[0]!, endSeq: nodes.at(-1)! },
       sourceEventSeqs: [...nodes],

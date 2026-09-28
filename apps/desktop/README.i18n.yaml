@@ -1,6 +1,70 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write apps/desktop/README.md
-README.md: 2fc547fe4e00bb708ee4844cfded0cbf931187f2
-README.zh.md: afd484d6ce283b03399ee59aca7bb2f08c8d124a
+/alego-desktop:
+  en: 8757dec5ee25ae89
+  zh: ca7aef60bde677b9
+/alego-desktop/closing-the-window-and-quitting:
+  en: 4bb16746a750a866
+  zh: 407d269a2c978c53
+/alego-desktop/key-technical-decisions:
+  en: 093fee133dcaab93
+  zh: 93c3ca89f9b8db4f
+/alego-desktop/key-technical-decisions/bundled-workspace-dependencies:
+  en: 49cb989c56d734e5
+  zh: 8d64be7bb2d1df89
+/alego-desktop/installation-ownership:
+  en: 3d83733fe8265fd4
+  zh: dd7bb7c33b615f28
+/alego-desktop/installation-ownership/runtime-and-plugin-activation:
+  en: 7cb053eb422a2783
+  zh: 787c07b7283cc20d
+/alego-desktop/develop:
+  en: f23210b145e3bb70
+  zh: 1df7230dbd159485
+/alego-desktop/develop/startup-onboarding:
+  en: 1b8594fdf3e2873c
+  zh: b4ea9e7a9c6ffec1
+/alego-desktop/develop/welcome-window-appearance:
+  en: 820ea924f74eee97
+  zh: a24ccb8492b99af6
+/alego-desktop/package:
+  en: 4cd8a8da6977928d
+  zh: 9f624855a2edac37
+/alego-desktop/package/release-versions:
+  en: beb582c6fae3733d
+  zh: b9d4a7d5c0f2140a
+/alego-desktop/package/runtime-file-selection:
+  en: 9bf1c82e231eabe8
+  zh: 144e2f99ece9a964
+/alego-desktop/package/upload-updates:
+  en: 6bc141b82ef05098
+  zh: 20da5380c85aee74
+/alego-desktop/package/unsigned-windows-test-installer:
+  en: e6ad8b33ab3998ff
+  zh: f0342f894becd5a6
+/alego-desktop/package/windows-installer-interface:
+  en: 2253276ea22119d3
+  zh: 06871cdd406b8b43
+/alego-desktop/package/windows-ev-signing:
+  en: 3fa05bd6d632285a
+  zh: 0d4ef00ac9c9fb86
+/alego-desktop/updates:
+  en: 4ef8c5b2b2fd2be5
+  zh: 2fdbb0f2c5679808
+/alego-desktop/updates/mandatory-update-policy:
+  en: 61fa9b663fd0fbda
+  zh: 886047ca08d6a2ad
+/alego-desktop/updates/local-updater-qualification:
+  en: f0a749be4b35decc
+  zh: a050cd8806e22350
+/alego-desktop/low-level-development-overrides:
+  en: 5092e7ccf97445fa
+  zh: fb8bc856dca565d4
+/alego-desktop/known-limitations:
+  en: 0b002638bb8d6a0b
+  zh: 483a0cea4255b7b5
+/alego-desktop/dev-note:
+  en: 3d1f2b71abe8e0cb
+  zh: 3f08ca53c4f89ff6

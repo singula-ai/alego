@@ -1,0 +1,68 @@
+{
+  "name": "@singula-ai/alego-experimental-browser-use-stagehand-native",
+  "description": "Experimental Stagehand browser tools with separately configured native models",
+  "version": "0.1.7-rc.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/experimental/browser-use-stagehand-native"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json",
+    "./worker": {
+      "types": "./lib/types/worker.d.ts",
+      "default": "./lib/worker.js"
+    }
+  },
+  "files": [
+    "lib/index.js",
+    "lib/worker.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-browser-use": "workspace:*",
+    "@singula-ai/alego-system-prompt": "workspace:*",
+    "@singula-ai/alego-tools": "workspace:*"
+  },
+  "dependencies": {
+    "@browserbasehq/stagehand": "4.1.0",
+    "@singula-ai/alego-experimental-browser-use-runtime": "workspace:*",
+    "@singula-ai/alego-mcp-client": "workspace:*",
+    "@singula-ai/alego-util-values": "workspace:*",
+    "@singula-ai/schemastery": "workspace:~",
+    "zod": "^4.4.3",
+    "@singula-ai/alego-subprocess": "workspace:*",
+    "@puppeteer/browsers": "3.2.2"
+  },
+  "devDependencies": {
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/cordis-plugin-include": "workspace:~",
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-agent-loop": "workspace:*",
+    "@singula-ai/alego-agent-loop-testkit": "workspace:*",
+    "@singula-ai/alego-attachment": "workspace:*",
+    "@singula-ai/alego-attachment-local": "workspace:*",
+    "@singula-ai/alego-browser-use": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*",
+    "@singula-ai/alego-session-projection": "workspace:*",
+    "@singula-ai/alego-system-prompt": "workspace:*",
+    "@singula-ai/alego-tools": "workspace:*",
+    "tsx": "^4.19.2"
+  }
+}

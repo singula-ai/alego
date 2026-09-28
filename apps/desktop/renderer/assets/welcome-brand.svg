@@ -1,0 +1,16 @@
+<svg width="472" height="40" viewBox="0 0 472 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+  :root {
+    --dsw-alias-label-primary: #0f1115;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --dsw-alias-label-primary: #f9fafb;
+    }
+  }
+</style>
+<g transform="translate(166.000 0) scale(1.66667)">
+<path transform="translate(0 3)" d="M2.4 6.4V2.4Q2.4 1.2 3.6 1.2H5.2Q6.4 1.2 6.4 2.4V6.4ZM9.6 6.4V2.4Q9.6 1.2 10.8 1.2H12.4Q13.6 1.2 13.6 2.4V6.4ZM16.8 6.4V2.4Q16.8 1.2 18 1.2H19.6Q20.8 1.2 20.8 2.4V6.4ZM2.6 5.2H21.4Q23 5.2 23 6.8V15.2Q23 16.8 21.4 16.8H2.6Q1 16.8 1 15.2V6.8Q1 5.2 2.6 5.2Z" fill="var(--dsw-alias-label-primary)"/>
+<text x="30" y="17.5" fill="var(--dsw-alias-label-primary)" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="18" font-weight="600" letter-spacing="-0.4">alego</text>
+</g>
+</svg>

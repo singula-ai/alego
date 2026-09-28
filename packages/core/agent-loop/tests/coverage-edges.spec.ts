@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import LlmRuntime, { createUserMessage, ToolCallId, LlmError, StreamChunk, errorChain  } from '@singula-ai/alego-llm'
+import type { ContextFormed } from '@singula-ai/alego-llm'
 import SessionStore, { SessionId, TurnEndReason } from '@singula-ai/alego-session'
 import type { SessionEvent } from '@singula-ai/alego-session'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
@@ -10,6 +11,12 @@ import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { MockAdapter, textResponse, toolCallResponse } from './mock-adapter.ts'
+
+declare module '@singula-ai/alego-llm' {
+  interface MessageSourceMap {
+    'test': { kind: 'test' } & ContextFormed
+  }
+}
 
 function driverDone(agent: Agent): Promise<void> {
   return (agent as Agent & { done: Promise<void> }).done
@@ -237,7 +244,7 @@ describe('structured tool error propagation (the runtime-validation Agent Note, 
     await waitForIdle(ctx, agent)
 
     const toolResult = agent.session.snapshotEvents().find(e => e.type === 'tool/result')
-    expect(toolResult?.type === 'tool/result' && toolResult.data.message.content[0].isError).toBe(true)
+    expect(toolResult?.type === 'tool/result' && toolResult.data.message.isError).toBe(true)
     expect(toolResult?.type === 'tool/result' && toolResult.data.error)
       .toEqual({ name: 'HarnessError', code: 'BOOM' })
   })
@@ -493,7 +500,7 @@ describe('driver bookkeeping edges', () => {
     ctx.on('agent/turn-stopping', ({ agent: subject }) => {
       subject.inject(createUserMessage({
         content: [{ type: 'text', text: 'do not enter the next step' }],
-        source: { kind: 'plugin', plugin: 'test' },
+        source: { kind: 'test' },
       }))
     })
 

@@ -7,6 +7,7 @@ import {
   mkdtempSync,
   lstatSync,
   readFileSync,
+  realpathSync,
   renameSync,
   rmSync,
   symlinkSync,
@@ -16,12 +17,9 @@ import { tmpdir } from 'node:os'
 import { dirname, isAbsolute, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { afterEach, describe, expect, it } from 'vitest'
-import { removeFixtureSafely, unlinkFixtureLinks } from './test-fixture-cleanup.ts'
+import { removeFixtureSafely } from './test-fixture-cleanup.ts'
 
 const installer = fileURLToPath(new URL('./install-lefthook.mjs', import.meta.url))
-const pairingMergeDriver = 'scripts/merge-translation-pairing-driver.sh %O %A %B %P'
-const scriptsDirectory = fileURLToPath(new URL('.', import.meta.url))
-const tsxPackageDirectory = dirname(fileURLToPath(import.meta.resolve('tsx/package.json')))
 const fixtures: string[] = []
 
 interface Fixture {
@@ -125,12 +123,6 @@ function installFakeLefthook(root: string): void {
   chmodSync(shim, 0o755)
 }
 
-function installPairingProbeFixture(root: string): void {
-  const linkType = process.platform === 'win32' ? 'junction' : 'dir'
-  symlinkSync(scriptsDirectory, join(root, 'scripts'), linkType)
-  symlinkSync(tsxPackageDirectory, join(root, 'node_modules/tsx'), linkType)
-}
-
 function createFixture(names: { main?: string; linked?: string } = {}): Fixture {
   const container = mkdtempSync(join(tmpdir(), 'alego-lefthook-'))
   fixtures.push(container)
@@ -160,8 +152,6 @@ function createFixture(names: { main?: string; linked?: string } = {}): Fixture 
   write(join(linked, 'lefthook.yml'), 'linked-worktree-config\n')
   installFakeLefthook(main)
   installFakeLefthook(linked)
-  installPairingProbeFixture(main)
-  installPairingProbeFixture(linked)
   return fixture
 }
 
@@ -169,9 +159,15 @@ function gitDirectory(fixture: Fixture, root: string): string {
   return git(fixture, root, ['rev-parse', '--absolute-git-dir'])
 }
 
+// The installer resolves the common directory against Git's own top-level path, and the host
+// spells that path differently from the fixture directory this file created: Git canonicalizes
+// Windows 8.3 short names and the macOS `/var` symlink, while `mkdtempSync` returns the temp
+// directory's own spelling. Canonicalizing the fixture-side directory collapses both spellings
+// onto the one directory the installer touches, so an injected failure on this path reaches the
+// installer's own lock instead of a differently spelled name for it.
 function commonDirectory(fixture: Fixture): string {
   const output = git(fixture, fixture.main, ['rev-parse', '--git-common-dir'])
-  return isAbsolute(output) ? output : resolve(fixture.main, output)
+  return realpathSync.native(isAbsolute(output) ? output : resolve(fixture.main, output))
 }
 
 function hooksPath(fixture: Fixture, root: string): string {
@@ -194,9 +190,10 @@ function runInstaller(
   fixture: Fixture,
   root: string,
   extraEnv: NodeJS.ProcessEnv = {},
+  nodeArgs: string[] = [],
 ): Promise<CommandResult> {
   return new Promise((resolveResult, reject) => {
-    const child = spawn(process.execPath, [installer], {
+    const child = spawn(process.execPath, [...nodeArgs, installer], {
       cwd: root,
       env: { ...fixture.env, ...extraEnv },
       stdio: ['ignore', 'pipe', 'pipe'],
@@ -241,9 +238,6 @@ describe('worktree-local Lefthook installer', { timeout: 90_000 }, () => {
       expect(git(fixture, fixture.main, ['config', '--get', 'core.repositoryFormatVersion'])).toBe('0')
       expect(existsSync(hooksPath(fixture, fixture.main))).toBe(false)
       expect(existsSync(join(common, 'config.worktree'))).toBe(false)
-      expect(gitResult(fixture, fixture.main, [
-        'config', '--get', 'merge.alego-translation-pairing.driver',
-      ]).status).toBe(1)
     })
   }
 
@@ -263,12 +257,6 @@ describe('worktree-local Lefthook installer', { timeout: 90_000 }, () => {
     expect(mainHooks).not.toBe(linkedHooks)
     expect(git(fixture, fixture.main, ['config', '--worktree', '--get', 'core.hooksPath'])).toBe(mainHooks)
     expect(git(fixture, fixture.linked, ['config', '--worktree', '--get', 'core.hooksPath'])).toBe(linkedHooks)
-    expect(git(fixture, fixture.main, [
-      'config', '--worktree', '--get', 'merge.alego-translation-pairing.driver',
-    ])).toBe(pairingMergeDriver)
-    expect(git(fixture, fixture.linked, [
-      'config', '--worktree', '--get', 'merge.alego-translation-pairing.driver',
-    ])).toBe(pairingMergeDriver)
 
     const mainHook = readFileSync(join(mainHooks, 'pre-commit'), 'utf8')
     const linkedHook = readFileSync(join(linkedHooks, 'pre-commit'), 'utf8')
@@ -290,10 +278,6 @@ describe('worktree-local Lefthook installer', { timeout: 90_000 }, () => {
     expect(gitResult(fixture, fixture.main, ['config', '--file', commonConfig, '--get', 'core.bare']).status).toBe(1)
 
     const mainHookBeforeRemoval = readFileSync(join(mainHooks, 'pre-commit'), 'utf8')
-    // Windows Git follows the fixture's MOUNT_POINT junctions into their real
-    // targets while removing a worktree; unlink them first so the removal
-    // cannot delete the repository's scripts/ or tsx package.
-    unlinkFixtureLinks(fixture.linked)
     git(fixture, fixture.main, ['worktree', 'remove', '--force', fixture.linked])
     expect(readFileSync(join(mainHooks, 'pre-commit'), 'utf8')).toBe(mainHookBeforeRemoval)
     expect(readFileSync(legacyHook, 'utf8')).toBe('#!/bin/sh\n# legacy hook\n')
@@ -309,7 +293,6 @@ describe('worktree-local Lefthook installer', { timeout: 90_000 }, () => {
     git(fixture, fixture.main, ['worktree', 'add', '-b', 'late-linked', lateLinked])
     write(join(lateLinked, 'lefthook.yml'), 'late-linked-worktree-config\n')
     installFakeLefthook(lateLinked)
-    installPairingProbeFixture(lateLinked)
     expect(git(fixture, lateLinked, ['config', '--worktree', '--get', 'core.hooksPath'])).toBe(mainHooks)
 
     const linkedInstall = await runInstaller(fixture, lateLinked)
@@ -345,20 +328,105 @@ describe('worktree-local Lefthook installer', { timeout: 90_000 }, () => {
     expect(existsSync(join(hooksPath(fixture, fixture.main), '.fake-lefthook-running'))).toBe(false)
   })
 
+  /** Inject one lock-access failure and assert the installer's documented outcome. */
+  async function expectInjectedLockAccessFailure(
+    fixture: Fixture,
+    { operation, code, expires }: { operation: string; code: string; expires: boolean },
+  ): Promise<void> {
+    const lockPath = installLockPath(fixture)
+    const probe = join(fixture.container, 'lock-access-probe')
+    const preload = join(fixture.container, 'lock-access.cjs')
+    if (operation !== 'openSync') {
+      writeFileSync(lockPath, `${process.pid} 00000000-0000-4000-8000-000000000001\n`)
+    }
+    // The subprocess owns the injected filesystem error and clock; the test process stays unchanged.
+    writeFileSync(preload, `
+const fs = require('node:fs')
+const { syncBuiltinESMExports } = require('node:module')
+const lockPath = ${JSON.stringify(lockPath)}
+const operation = ${JSON.stringify(operation)}
+const original = fs[operation]
+const now = Date.now
+let injected = false
+fs[operation] = function(path, ...args) {
+  if (path === lockPath && !injected) {
+    injected = true
+    fs.writeFileSync(${JSON.stringify(probe)}, 'injected')
+    if (operation !== 'openSync') fs.unlinkSync(lockPath)
+    if (${expires}) Date.now = () => now() + 31000
+    throw Object.assign(new Error('injected lock access failure'), { code: ${JSON.stringify(code)} })
+  }
+  return original.call(this, path, ...args)
+}
+syncBuiltinESMExports()
+`)
+
+    const result = await runInstaller(fixture, fixture.main, {}, ['--require', preload])
+
+    expect(existsSync(probe), `lock injection missing: exit ${result.status}\n${result.stderr}`).toBe(true)
+    expect(readFileSync(probe, 'utf8')).toBe('injected')
+    const recovers = process.platform === 'win32' && code === 'EPERM' && !expires
+    expect(result.status, result.stderr).toBe(recovers ? 0 : 1)
+    if (recovers) {
+      expect(existsSync(join(hooksPath(fixture, fixture.main), 'pre-push'))).toBe(true)
+      expect(existsSync(lockPath)).toBe(false)
+    } else {
+      expect(result.stderr).toContain('injected lock access failure')
+      expect(existsSync(hooksPath(fixture, fixture.main))).toBe(false)
+    }
+  }
+
+  it.each([
+    { operation: 'openSync', code: 'EPERM', expires: false },
+    { operation: 'readFileSync', code: 'EPERM', expires: false },
+    { operation: 'lstatSync', code: 'EPERM', expires: false },
+    { operation: 'openSync', code: 'EPERM', expires: true },
+    { operation: 'openSync', code: 'EACCES', expires: false },
+  ])('handles $operation $code with expired deadline=$expires', async ({ operation, code, expires }) => {
+    await expectInjectedLockAccessFailure(createFixture(), { operation, code, expires })
+  })
+
+  // The alias forces the installer's resolved common directory to differ from the path this spec
+  // composes on every host — a junction on Windows, a directory symlink elsewhere — instead of
+  // depending on a runner whose temp directory happens to carry a short name.
+  it('handles an injected lock failure through an aliased worktree root', async () => {
+    const fixture = createFixture()
+    const alias = join(fixture.container, 'main-alias')
+    symlinkSync(fixture.main, alias, process.platform === 'win32' ? 'junction' : 'dir')
+    fixture.main = alias
+
+    await expectInjectedLockAccessFailure(fixture, { operation: 'openSync', code: 'EPERM', expires: false })
+  })
+
   it('waits for a concurrent installer to finish publishing its lock record', async () => {
     const fixture = createFixture()
     const lockPath = installLockPath(fixture)
+    const publicationBarrier = join(fixture.container, 'lock-publication')
+    const observationBarrier = join(fixture.container, 'lock-observation')
     const publishing = runInstaller(fixture, fixture.main, {
-      ALEGO_TEST_LEFTHOOK_LOCK_WRITE_DELAY_MS: '200',
+      ALEGO_TEST_LEFTHOOK_LOCK_PUBLISH_BARRIER: publicationBarrier,
     })
-    await waitForPath(lockPath)
-    expect(readFileSync(lockPath, 'utf8')).toBe('')
-
-    const waiting = runInstaller(fixture, fixture.linked)
-    const results = await Promise.all([publishing, waiting])
-
-    for (const result of results) expect(result.status, result.stderr).toBe(0)
-    expect(existsSync(lockPath)).toBe(false)
+    let waiting: Promise<CommandResult> | undefined
+    const release = (): void => {
+      writeFileSync(`${publicationBarrier}.release`, '')
+      writeFileSync(`${observationBarrier}.release`, '')
+    }
+    try {
+      await waitForPath(`${publicationBarrier}.ready`)
+      expect(readFileSync(lockPath, 'utf8')).toBe('')
+      waiting = runInstaller(fixture, fixture.linked, {
+        ALEGO_TEST_LEFTHOOK_LOCK_OBSERVE_BARRIER: observationBarrier,
+      })
+      await waitForPath(`${observationBarrier}.ready`)
+      expect(readFileSync(lockPath, 'utf8')).toBe('')
+      release()
+      const results = await Promise.all([publishing, waiting])
+      for (const result of results) expect(result.status, result.stderr).toBe(0)
+      expect(existsSync(lockPath)).toBe(false)
+    } finally {
+      release()
+      await Promise.allSettled([publishing, ...waiting === undefined ? [] : [waiting]])
+    }
   })
 
   it('repairs its owned absolute hook path after the checkout moves', async () => {
@@ -710,48 +778,7 @@ describe('worktree-local Lefthook installer', { timeout: 90_000 }, () => {
     expect(result.stderr).toContain('command-scoped core.hooksPath')
     expect(readFileSync(sentinel, 'utf8')).toBe('#!/bin/sh\n# command-scope sentinel\n')
     expect(gitResult(fixture, fixture.main, ['config', '--get', 'core.hooksPath']).status).toBe(1)
-    expect(gitResult(fixture, fixture.main, [
-      'config', '--get', 'merge.alego-translation-pairing.driver',
-    ]).status).toBe(1)
     expect(existsSync(hooksPath(fixture, fixture.main))).toBe(false)
-  })
-
-  it('never replaces a custom worktree pairing merge driver', async () => {
-    const fixture = createFixture()
-    const commonConfig = join(commonDirectory(fixture), 'config')
-    git(fixture, fixture.main, ['config', '--file', commonConfig, 'core.repositoryFormatVersion', '1'])
-    git(fixture, fixture.main, ['config', '--file', commonConfig, 'extensions.worktreeConfig', 'true'])
-    git(fixture, fixture.main, [
-      'config', '--worktree', 'merge.alego-translation-pairing.driver', 'custom-driver %A',
-    ])
-
-    const result = await runInstaller(fixture, fixture.main)
-
-    expect(result.status).toBe(1)
-    expect(result.stderr).toContain('refusing to replace worktree merge.alego-translation-pairing.driver')
-    expect(git(fixture, fixture.main, [
-      'config', '--worktree', '--get', 'merge.alego-translation-pairing.driver',
-    ])).toBe('custom-driver %A')
-    expect(gitResult(fixture, fixture.main, ['config', '--get', 'core.hooksPath']).status).toBe(1)
-  })
-
-  it('never masks an inherited custom pairing merge driver', async () => {
-    const fixture = createFixture()
-    git(fixture, fixture.main, [
-      'config', '--local', 'merge.alego-translation-pairing.driver', 'inherited-driver %A',
-    ])
-
-    const result = await runInstaller(fixture, fixture.main)
-
-    expect(result.status).toBe(1)
-    expect(result.stderr).toContain('refusing to mask inherited merge.alego-translation-pairing.driver')
-    expect(git(fixture, fixture.main, [
-      'config', '--local', '--get', 'merge.alego-translation-pairing.driver',
-    ])).toBe('inherited-driver %A')
-    expect(gitResult(fixture, fixture.main, [
-      'config', '--worktree', '--get', 'merge.alego-translation-pairing.driver',
-    ]).status).toBe(1)
-    expect(gitResult(fixture, fixture.main, ['config', '--get', 'core.hooksPath']).status).toBe(1)
   })
 
   it('does not pass unrelated command-scoped Git config to Lefthook', async () => {
@@ -803,27 +830,7 @@ describe('worktree-local Lefthook installer', { timeout: 90_000 }, () => {
     expect(result.stderr).toContain('exit status 77')
     expect(gitResult(fixture, fixture.main, ['config', '--worktree', '--get', 'core.hooksPath']).status).toBe(1)
     expect(gitResult(fixture, fixture.main, ['config', '--get', 'core.hooksPath']).status).toBe(1)
-    expect(gitResult(fixture, fixture.main, [
-      'config', '--worktree', '--get', 'merge.alego-translation-pairing.name',
-    ]).status).toBe(1)
-    expect(gitResult(fixture, fixture.main, [
-      'config', '--worktree', '--get', 'merge.alego-translation-pairing.driver',
-    ]).status).toBe(1)
     expect(readFileSync(legacyHook, 'utf8')).toBe('#!/bin/sh\n# legacy pre-push\n')
-  })
-
-  it('does not publish worktree integration when the pairing driver probe fails', async () => {
-    const fixture = createFixture()
-    rmSync(join(fixture.main, 'node_modules/tsx'), { recursive: true, force: true })
-
-    const result = await runInstaller(fixture, fixture.main)
-
-    expect(result.status).toBe(1)
-    expect(result.stderr).toContain('merge-translation-pairing.ts --probe failed')
-    expect(gitResult(fixture, fixture.main, ['config', '--get', 'core.hooksPath']).status).toBe(1)
-    expect(gitResult(fixture, fixture.main, [
-      'config', '--get', 'merge.alego-translation-pairing.driver',
-    ]).status).toBe(1)
   })
 
   it('reports installation and hook-path rollback failures together', async () => {
@@ -839,7 +846,6 @@ describe('worktree-local Lefthook installer', { timeout: 90_000 }, () => {
     expect(result.stderr).toContain('exit status 77')
     expect(result.stderr).toContain('worktree integration rollback also failed')
     expect(result.stderr).toContain('git config --worktree --unset-all core.hooksPath failed')
-    expect(result.stderr).toContain('git config --worktree --unset-all merge.alego-translation-pairing.driver failed')
   })
 
   it('refuses an unowned directory at the reserved worktree hook path', async () => {

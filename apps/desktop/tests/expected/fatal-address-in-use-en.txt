@@ -1,0 +1,5 @@
+Alego is unavailable
+The application could not start or stopped unexpectedly.
+Another ALEGO instance (such as alego web or the desktop app) is running. They cannot start at the same time. Quit the other running ALEGO instance, then restart.
+Exit
+Restart

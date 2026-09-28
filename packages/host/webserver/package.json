@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-host-webserver",
   "description": "Web route-registration plugin: HTTP and upgrade routes, index transform taps, and static dist fallback; knows no harness concepts",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,15 +27,15 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "dependencies": {
-    "@singula-ai/schemastery": "workspace:^",
+    "@singula-ai/schemastery": "workspace:~",
     "compression": "^1.8.1",
     "negotiator": "^1.0.0"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/cordis": "workspace:~",
     "@types/compression": "^1.8.1",
     "@types/negotiator": "^0.6.5"
   }

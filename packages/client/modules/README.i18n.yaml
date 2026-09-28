@@ -1,6 +1,70 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/modules/README.md
-README.md: 06f09bc5461490a828e566d8d87a20a64abe41f9
-README.zh.md: 068b1d3b34af1e4d9e7f5503f11463fa1a8da444
+/:
+  en: 97d39db1617684ea
+  zh: de11ba354583a044
+/singula-ai-alego-client-modules:
+  en: c31b1d1b49532fca
+  zh: fd4e4531a08625fe
+/singula-ai-alego-client-modules/summary:
+  en: 109eb77e54335b52
+  zh: 25822b934be6ffcd
+/singula-ai-alego-client-modules/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-client-modules/use-this-package:
+  en: 5ae30e08f4472390
+  zh: e097aea0b573f5dc
+/singula-ai-alego-client-modules/use-this-package/declaring-a-client-plugin:
+  en: 55cf115c5327e561
+  zh: 913876f91c50472e
+/singula-ai-alego-client-modules/use-this-package/what-the-browser-loads:
+  en: 1383d68472b3c057
+  zh: 94dd7d9abbdbccf3
+/singula-ai-alego-client-modules/use-this-package/live-plugin-composition:
+  en: 45740a56e931d094
+  zh: b3362af77c804459
+/singula-ai-alego-client-modules/use-this-package/sharing-modules:
+  en: e4b0d60b0221f275
+  zh: e72ee9f143604db0
+/singula-ai-alego-client-modules/use-this-package/build-requirements:
+  en: b6a4d3b901c89efe
+  zh: 615b5f3eec41f281
+/singula-ai-alego-client-modules/understand-the-implementation:
+  en: 7ab11d2c2bdc6eaa
+  zh: 54c3c9091cf59711
+/singula-ai-alego-client-modules/understand-the-implementation/design-concept:
+  en: a7bb3891929bc896
+  zh: dd980a06964d41b6
+/singula-ai-alego-client-modules/understand-the-implementation/lazy-cjs-model:
+  en: 6d16b74acb333e3b
+  zh: fcb3a20cc8c39e4a
+/singula-ai-alego-client-modules/understand-the-implementation/incremental-composition:
+  en: 1b54c654b3f7344d
+  zh: c20d3499b51f0b4d
+/singula-ai-alego-client-modules/understand-the-implementation/boot-manifest-injection:
+  en: 253d9f265cd83ed0
+  zh: 9d0f8df84d9d3ac9
+/singula-ai-alego-client-modules/understand-the-implementation/entry-ownership:
+  en: ae59769034d692fa
+  zh: f71914d6f39b033a
+/singula-ai-alego-client-modules/understand-the-implementation/source-map:
+  en: 073e62130b607d3d
+  zh: 01dea907450673da
+/singula-ai-alego-client-modules/further-exploration:
+  en: 89eb53561c20e91b
+  zh: c6e84c2fbd35485e
+/singula-ai-alego-client-modules/model-experience:
+  en: abb2fc0416e1482c
+  zh: 0e8a913d424a0c28
+/singula-ai-alego-client-modules/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: de54f3467ef3b9be
+/singula-ai-alego-client-modules/known-limitations-and-deferred-work:
+  en: d0908712f037c479
+  zh: 14034e5df3c34e7f
+/singula-ai-alego-client-modules/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

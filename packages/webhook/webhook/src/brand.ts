@@ -1,4 +1,4 @@
-/** Opaque webhook identities shared by adapters, rules, and Session provenance. */
+/** Opaque webhook identities shared by adapters, rules, and Session message sources. */
 
 import type { Branded } from '@singula-ai/alego-brand'
 

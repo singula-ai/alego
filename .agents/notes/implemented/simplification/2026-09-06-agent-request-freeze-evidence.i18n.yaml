@@ -1,0 +1,25 @@
+# Bilingual-pair consistency record for 2026-09-06-agent-request-freeze-evidence.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-09-06-agent-request-freeze-evidence.md
+/agent-note-reuse-only-loop-proven-message-freezes:
+  en: bc1ebe8a73da174b
+  zh: 6bb2d95eaf7e911f
+/agent-note-reuse-only-loop-proven-message-freezes/problem:
+  en: e56e09139c295127
+  zh: 8cf99e036c9bd9bd
+/agent-note-reuse-only-loop-proven-message-freezes/decision:
+  en: c8d7d7881674cb64
+  zh: 13637cebc4fa5b87
+/agent-note-reuse-only-loop-proven-message-freezes/measurement-evidence:
+  en: 731e00bb5059b1f3
+  zh: 118464dc6e640431
+/agent-note-reuse-only-loop-proven-message-freezes/measurement-evidence/standard-hosted-ci-calibration:
+  en: 22ad93c82afc0572
+  zh: 86e43487e7791148
+/agent-note-reuse-only-loop-proven-message-freezes/alternatives-considered:
+  en: 8a00552d7797826c
+  zh: 765a6b84eb663bab
+/agent-note-reuse-only-loop-proven-message-freezes/consequences:
+  en: 5947b38f7722d4db
+  zh: 147b5ea3d681ebd7

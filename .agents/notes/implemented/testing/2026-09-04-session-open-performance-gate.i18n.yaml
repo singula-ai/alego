@@ -1,6 +1,25 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-04-session-open-performance-gate.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/testing/2026-09-04-session-open-performance-gate.md
-2026-09-04-session-open-performance-gate.md: aa16eca678dd845b4292596c7bd1a54c4945c1aa
-2026-09-04-session-open-performance-gate.zh.md: 3bd1fab3720708fe15bfcb6f7ae8be1b4a588f1c
+/agent-note-required-ci-performance-gate-for-opening-large-sessions:
+  en: ddf145ac8f2e9af2
+  zh: 6bb35e14b662bf89
+/agent-note-required-ci-performance-gate-for-opening-large-sessions/problem:
+  en: 00ba1f66195351e2
+  zh: a738b81adceda351
+/agent-note-required-ci-performance-gate-for-opening-large-sessions/decision:
+  en: 88fc561b4a848417
+  zh: 392eec21ba9e6f3a
+/agent-note-required-ci-performance-gate-for-opening-large-sessions/calibration-evidence:
+  en: f1001a139470f6b7
+  zh: b7b46f96b84b1271
+/agent-note-required-ci-performance-gate-for-opening-large-sessions/calibration-evidence/indexed-traversal-of-stored-json-arrays:
+  en: 4ff4df8437e978a8
+  zh: 642ac8ab685c7a11
+/agent-note-required-ci-performance-gate-for-opening-large-sessions/alternatives-considered:
+  en: 5debbc2a0382ed13
+  zh: 415d11776f73f871
+/agent-note-required-ci-performance-gate-for-opening-large-sessions/consequences:
+  en: 40e87c1b7d95df93
+  zh: 73fa006e9d98ae93

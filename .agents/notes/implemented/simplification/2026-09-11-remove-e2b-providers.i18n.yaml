@@ -1,0 +1,25 @@
+# Bilingual-pair consistency record for 2026-09-11-remove-e2b-providers.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-09-11-remove-e2b-providers.md
+/agent-note-remove-the-e2b-execution-providers:
+  en: 35627fef88164420
+  zh: a8caa39d0c76199d
+/agent-note-remove-the-e2b-execution-providers/problem:
+  en: 92edfc6f0da7a874
+  zh: 21487929a5631087
+/agent-note-remove-the-e2b-execution-providers/decision:
+  en: 5f117792749d9a9e
+  zh: 6f8ed241338c7474
+/agent-note-remove-the-e2b-execution-providers/alternatives-considered:
+  en: dc8a267887d4a65c
+  zh: 806f4a6c844b6284
+/agent-note-remove-the-e2b-execution-providers/consequences:
+  en: bb09558117faf7cf
+  zh: 54549fbfb1ad9f57
+/agent-note-remove-the-e2b-execution-providers/reintroduction-conditions:
+  en: 57f46b2fd830c366
+  zh: 5e2fc868c18d2411
+/agent-note-remove-the-e2b-execution-providers/verification:
+  en: d4f3b559dd32d80a
+  zh: c4ba5b64178faf81

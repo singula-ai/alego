@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-llm",
   "description": "Provider-neutral LLM service interface for the Alego",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -61,20 +61,20 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "dependencies": {
-    "@singula-ai/alego-util-crypto": "workspace:^",
-    "@singula-ai/schemastery": "workspace:^",
+    "@singula-ai/alego-util-crypto": "workspace:*",
+    "@singula-ai/schemastery": "workspace:~",
     "zod": "^4.4.3",
-    "@singula-ai/alego-timeout": "workspace:^",
-    "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-util-values": "workspace:^",
-    "@singula-ai/alego-typert-protocol": "workspace:^"
+    "@singula-ai/alego-timeout": "workspace:*",
+    "@singula-ai/alego-brand": "workspace:*",
+    "@singula-ai/alego-util-values": "workspace:*",
+    "@singula-ai/alego-typert-protocol": "workspace:*"
   },
   "devDependencies": {
-    "@singula-ai/alego-attachment": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-attachment": "workspace:*",
+    "@singula-ai/alego-invariants": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

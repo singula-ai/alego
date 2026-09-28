@@ -74,6 +74,6 @@ A generic keyless conformance test boots the real ACP demo twice and uses only t
 
 ## Consequences
 
-External automation projects can use ALEGO through stable ACP v1 instead of maintaining a ALEGO-specific runtime protocol. The bridge is a larger control surface but remains smaller than a UI: it owns lifecycle and semantic interoperability, while human presentation and interaction stay in product clients.
+External automation projects can use ALEGO through stable ACP v1 instead of maintaining an ALEGO-specific runtime protocol. The bridge is a larger control surface but remains smaller than a UI: it owns lifecycle and semantic interoperability, while human presentation and interaction stay in product clients.
 
 Persistent lifecycle and request MCP mounting make session creation stricter. Misconfiguration and initial MCP failure reject before publication, and close waits for real quiescence and persistence. This cost is the ownership proof required to avoid partial Agents, leaked tools, or orphaned processes.

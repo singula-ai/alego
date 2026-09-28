@@ -1,0 +1,54 @@
+{
+  "darwin:en-US": {
+    "menu": [
+      { "label": "About Alego", "role": "about" },
+      { "type": "separator" }
+    ],
+    "options": {
+      "applicationName": "Alego",
+      "applicationVersion": "1.0.0",
+      "version": "",
+      "copyright": "",
+      "iconPath": "<app icon>"
+    }
+  },
+  "darwin:zh-CN": {
+    "menu": [
+      { "label": "关于 Alego", "role": "about" },
+      { "type": "separator" }
+    ],
+    "options": {
+      "applicationName": "Alego",
+      "applicationVersion": "1.0.0",
+      "version": "",
+      "copyright": "",
+      "iconPath": "<app icon>"
+    }
+  },
+  "win32:zh-CN": {
+    "menu": [
+      { "label": "关于 Alego" },
+      { "type": "separator" }
+    ],
+    "options": {
+      "applicationName": "Alego",
+      "applicationVersion": "1.0.0",
+      "version": "",
+      "copyright": "",
+      "iconPath": "<app icon>"
+    }
+  },
+  "win32:en-US": {
+    "menu": [
+      { "label": "About Alego" },
+      { "type": "separator" }
+    ],
+    "options": {
+      "applicationName": "Alego",
+      "applicationVersion": "1.0.0",
+      "version": "",
+      "copyright": "",
+      "iconPath": "<app icon>"
+    }
+  }
+}

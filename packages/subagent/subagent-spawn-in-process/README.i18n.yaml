@@ -1,6 +1,79 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/subagent/subagent-spawn-in-process/README.md
-README.md: f0c859767efa5e3251c16abfda3530a14409047c
-README.zh.md: b9a23fa7454eb24556e16035b2d5078331aeec7f
+/:
+  en: d510765ec1bebc28
+  zh: 35efb9f71f05f326
+/singula-ai-alego-subagent-spawn-in-process:
+  en: b6d459ef4cd5d58b
+  zh: a8f6774fd6d70712
+/singula-ai-alego-subagent-spawn-in-process/summary:
+  en: 5d90820dd5603656
+  zh: 33515df7d23235b6
+/singula-ai-alego-subagent-spawn-in-process/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-subagent-spawn-in-process/use-this-package:
+  en: c54f9923d89f23de
+  zh: 309993ab172f3eed
+/singula-ai-alego-subagent-spawn-in-process/use-this-package/when-to-choose-it:
+  en: 5f14443940e59bb5
+  zh: 3e8610aec21c55e8
+/singula-ai-alego-subagent-spawn-in-process/use-this-package/minimal-configuration:
+  en: 97f203769601c787
+  zh: bfa0a9d6143000fd
+/singula-ai-alego-subagent-spawn-in-process/use-this-package/what-a-delegation-does:
+  en: 9f4e6f31ad4d86d1
+  zh: 4ad77e0b80c6efcc
+/singula-ai-alego-subagent-spawn-in-process/understand-the-implementation:
+  en: 9e00b9dc2f9cf38c
+  zh: 60ce00ce6c3b5564
+/singula-ai-alego-subagent-spawn-in-process/understand-the-implementation/design-concept:
+  en: 248292da18c009d2
+  zh: 5f6b1ceadfb9470e
+/singula-ai-alego-subagent-spawn-in-process/understand-the-implementation/source-map:
+  en: 6252313b7a004fda
+  zh: 85c1b0a872d4d846
+/singula-ai-alego-subagent-spawn-in-process/understand-the-implementation/run-flow:
+  en: 7b55a5649bc38155
+  zh: 51fe220c84ca759a
+/singula-ai-alego-subagent-spawn-in-process/understand-the-implementation/ownership-and-scope:
+  en: 8af949dc29cb4a5c
+  zh: f4e4f9f9f4a4b7c9
+/singula-ai-alego-subagent-spawn-in-process/further-exploration:
+  en: 64e70e1d378ace65
+  zh: 6ab4398594b54ab3
+/singula-ai-alego-subagent-spawn-in-process/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-subagent-spawn-in-process/model-experience/child-agent-request:
+  en: 05e6180f1498fdf9
+  zh: 2b05d2b97bfa67da
+/singula-ai-alego-subagent-spawn-in-process/model-experience/child-agent-request/what-the-model-sees:
+  en: 2035bdd8640e5a8a
+  zh: 5afa645d7dbe31a5
+/singula-ai-alego-subagent-spawn-in-process/model-experience/child-agent-request/token-effect:
+  en: e74d21e38e4a53a9
+  zh: 6a5e3ef5fe0f4f14
+/singula-ai-alego-subagent-spawn-in-process/model-experience/child-agent-request/kv-cache-effect:
+  en: 78d800b26fb3b0af
+  zh: 313169b62c29af1d
+/singula-ai-alego-subagent-spawn-in-process/model-experience/parent-tool-result-indirectly:
+  en: 75d061c2151624a7
+  zh: 71e58e020b60ff90
+/singula-ai-alego-subagent-spawn-in-process/model-experience/parent-tool-result-indirectly/what-the-model-sees:
+  en: ed142addc365bf8b
+  zh: 1ba0a10b2e1a54f2
+/singula-ai-alego-subagent-spawn-in-process/model-experience/parent-tool-result-indirectly/token-effect:
+  en: ff8045aa0f466c2a
+  zh: e38fc5c6af2ce076
+/singula-ai-alego-subagent-spawn-in-process/model-experience/parent-tool-result-indirectly/kv-cache-effect:
+  en: f5d5f97a153f7c70
+  zh: 3d6bc05b9eadfbc2
+/singula-ai-alego-subagent-spawn-in-process/known-limitations-and-deferred-work:
+  en: 68720f2a663a4aad
+  zh: a472436c5cc2b801
+/singula-ai-alego-subagent-spawn-in-process/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

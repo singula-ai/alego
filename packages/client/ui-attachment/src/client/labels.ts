@@ -2,7 +2,7 @@ import type { TranslateNS } from '@singula-ai/alego-client-ui-slots'
 import type { AttachmentRailLabels } from '../AttachmentRail.tsx'
 import type { DropOverlayLabels } from '../DropOverlay.tsx'
 import type { FileCardLabels } from '../FileCard.tsx'
-import type { ImageLightboxLabels } from '../ImageLightbox.tsx'
+import type { ImageLightboxLabels } from '@singula-ai/alego-client-ui-primitives'
 import type { MessageImageLabels } from '../MessageImage.tsx'
 
 /**

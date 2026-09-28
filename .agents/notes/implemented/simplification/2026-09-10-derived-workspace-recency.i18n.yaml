@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-09-10-derived-workspace-recency.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-09-10-derived-workspace-recency.md
+/agent-note-derive-workspace-recency-independently-of-manual-order:
+  en: 9619406535c283ed
+  zh: c1c725488aa394f5
+/agent-note-derive-workspace-recency-independently-of-manual-order/problem:
+  en: 796dc4d186169b89
+  zh: 058b6a8438e46238
+/agent-note-derive-workspace-recency-independently-of-manual-order/decision:
+  en: 6027e7ae2e6205d1
+  zh: 3ebb6f12436157bb
+/agent-note-derive-workspace-recency-independently-of-manual-order/alternatives-considered:
+  en: 0e74f1c4f176107a
+  zh: 66a66eaa811c8b11
+/agent-note-derive-workspace-recency-independently-of-manual-order/consequences:
+  en: f4658d8f0f3ff8d3
+  zh: 68c3c8c87b9c4e31
+/agent-note-derive-workspace-recency-independently-of-manual-order/testing:
+  en: 82b15f31cd5b5315
+  zh: 5f14bfe0d0e8ef0c

@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-09-awaited-agent-creation.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-09-awaited-agent-creation.md
+/agent-note-awaited-per-agent-initialization:
+  en: 8cd04c3d9c13be88
+  zh: 96648037977fac1d
+/agent-note-awaited-per-agent-initialization/problem:
+  en: 03e6b75365b29406
+  zh: cc880a33cf2303d0
+/agent-note-awaited-per-agent-initialization/decision:
+  en: 935d4eaa6da79465
+  zh: 31b02fd749adb9e8
+/agent-note-awaited-per-agent-initialization/alternatives-considered:
+  en: 466a9ebbb13f68c6
+  zh: ab88fb34786d2c2b
+/agent-note-awaited-per-agent-initialization/consequences:
+  en: d8cfe8d88ccacfc8
+  zh: 8d2aa21408e6e40e

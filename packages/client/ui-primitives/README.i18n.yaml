@@ -1,6 +1,61 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-primitives/README.md
-README.md: 2c1fd5335226600d123024cf6f9901ebcab9e0e1
-README.zh.md: 397b6d494b30926eb406af283252a586511e7e3c
+/:
+  en: 6b8967e09a4e728f
+  zh: 955bda400ec48db6
+/singula-ai-alego-client-ui-primitives:
+  en: fd48a4f6e01dad83
+  zh: 9744185971fb7a89
+/singula-ai-alego-client-ui-primitives/summary:
+  en: 458efebc0a3ae94b
+  zh: e5b8cff056b031e6
+/singula-ai-alego-client-ui-primitives/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-client-ui-primitives/use-this-package:
+  en: ddec1f6f9b018747
+  zh: 9555f132daf8901c
+/singula-ai-alego-client-ui-primitives/use-this-package/component-catalog:
+  en: f5861003942fce1f
+  zh: 88cefef8b2f19bfc
+/singula-ai-alego-client-ui-primitives/use-this-package/controls-and-icons:
+  en: e46440a31c338843
+  zh: e957e1e7a7cb9db5
+/singula-ai-alego-client-ui-primitives/use-this-package/rendering-agent-output:
+  en: 9b952bfd12d004e9
+  zh: eadd01fd375b7ac3
+/singula-ai-alego-client-ui-primitives/use-this-package/localizing-copy:
+  en: 4aef65dea11de083
+  zh: abc22cd7c65cdf38
+/singula-ai-alego-client-ui-primitives/understand-the-implementation:
+  en: 7ab2a4d5ca8c304c
+  zh: 0d9b612d2a2d164b
+/singula-ai-alego-client-ui-primitives/understand-the-implementation/source-map:
+  en: 44eb32370cbeafe8
+  zh: 728009c66375c6bb
+/singula-ai-alego-client-ui-primitives/understand-the-implementation/input-modality:
+  en: 286ae41bf656a734
+  zh: 2808871bf662e165
+/singula-ai-alego-client-ui-primitives/understand-the-implementation/streaming-markdown:
+  en: 8bbfa14c27f3bfd7
+  zh: 88f7548ac3a114e1
+/singula-ai-alego-client-ui-primitives/understand-the-implementation/geometry-and-overflow:
+  en: 49f6341d81ded00e
+  zh: cab87dc54a42ba69
+/singula-ai-alego-client-ui-primitives/further-exploration:
+  en: c8042729802f5e7e
+  zh: b489521026871fee
+/singula-ai-alego-client-ui-primitives/model-experience:
+  en: 3120df665299c634
+  zh: 1d9f365d091d0d2a
+/singula-ai-alego-client-ui-primitives/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: de54f3467ef3b9be
+/singula-ai-alego-client-ui-primitives/known-limitations-and-deferred-work:
+  en: dd6017748ed0190f
+  zh: 866429588aca5edb
+/singula-ai-alego-client-ui-primitives/known-limitations-and-deferred-work/dev-note:
+  en: ae1d5d1bcc80c932
+  zh: 15709ccdbfcdf26c

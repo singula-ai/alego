@@ -1,0 +1,64 @@
+# Bilingual-pair consistency record for 2026-09-19-profile-resolution-lookup-order.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-19-profile-resolution-lookup-order.md
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer:
+  en: 5ab997a7272d0cd3
+  zh: c15f995a6641bd83
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/problem:
+  en: aae006cf1ba7843f
+  zh: 0a291500a7c54e68
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/decision:
+  en: ce45bf03589a8f50
+  zh: 55bf2f2d0e639abe
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/decision/part-1-resolution-rules:
+  en: de6ea16534218e69
+  zh: fd8e1d470a2cf056
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/decision/part-1-resolution-rules/1-the-ancestor-chain-node-s-ancestor-node-modules-lookup:
+  en: 2420dbca89a916a4
+  zh: 422f3c61f648ed7e
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/decision/part-1-resolution-rules/2-the-interception-layer-the-runtime-resolution-occupies-alego-home-profiles-node-modules-package:
+  en: fc2d819764e0c419
+  zh: 7a8e41869dce1f9d
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/decision/part-1-resolution-rules/3-linked-directories-peer-interception-at-each-ancestor-position:
+  en: 6d2e588aac82fcf2
+  zh: bdd93eadbf9c58fc
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/decision/part-1-resolution-rules/4-what-the-interception-layer-holds-the-runtime-resolution-s-scan-contents:
+  en: d182d635b5148fe4
+  zh: 4d56e3facc610bb7
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/decision/part-1-resolution-rules/5-hook-coverage:
+  en: fc6ba825fd477999
+  zh: bfe64bae8f0a97e7
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/decision/part-1-resolution-rules/6-package-directories-and-module-files:
+  en: c85f82cb1c60360e
+  zh: c535f1c0ec58345e
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/decision/part-2-walkthroughs:
+  en: 906e0d58e3c2aff3
+  zh: ccc3a709034865b9
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/decision/part-2-walkthroughs/table-1-ancestor-chain-and-interception-for-esm-and-commonjs-across-request-forms:
+  en: 6fb464f56648df90
+  zh: ef95f02b86dea1f1
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/decision/part-2-walkthroughs/table-2-interception-position-for-the-web-and-desktop-profiles:
+  en: 40075e50c27891f2
+  zh: ec5addcc7efffa00
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/decision/part-2-walkthroughs/table-3-ancestor-chain-when-a-plugin-is-linked-outside-the-tree:
+  en: d0a47ffd10baf739
+  zh: 39361bf9fa0e5357
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/decision/part-3-developer-integration-guide:
+  en: 35f27b53d995d59f
+  zh: 58a47c7bfced79a0
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/decision/part-3-developer-integration-guide/1-normal-installation:
+  en: 488296beb87e2199
+  zh: caf56187424989c0
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/decision/part-3-developer-integration-guide/2-development-mode-the-plugin-repository-is-outside-the-profile-tree:
+  en: f438316e22bca613
+  zh: 9fac5be69cf9a83e
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/alternatives-considered:
+  en: 313f2b67de292891
+  zh: a46f40ce5350c39a
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/verification:
+  en: 328fbaca95eac5ff
+  zh: b41fbe45097d3ea9
+/agent-note-resolve-profile-modules-along-the-ancestor-chain-with-an-interception-layer/consequences:
+  en: d7092af79b5f2b14
+  zh: 7b92af355b65525e

@@ -1,49 +1,93 @@
-/** Upstream-Node child lifecycle and streaming custom-protocol carrier. */
+/** Electron Node-mode child lifecycle for the shared Web application. */
 
 import { spawn, type ChildProcess } from 'node:child_process'
-import { once } from 'node:events'
 import { join } from 'node:path'
-import { Readable, Writable } from 'node:stream'
-import {
-  DESKTOP_HOST_PROTOCOL_VERSION,
-  DESKTOP_PIPE_CHUNK_BYTES,
-  DESKTOP_REQUEST_PIPE_FD,
-  DESKTOP_RESPONSE_PIPE_FD,
-  DesktopHostResponseDecoder,
-  encodeDesktopRequestCancel,
-  encodeDesktopRequestData,
-  encodeDesktopRequestEnd,
-  encodeDesktopRequestStart,
-  type DesktopHostCommand,
-  type DesktopHostEvent,
-  type DesktopHostResponseFrame,
-} from './host-protocol.ts'
+import type { PlatformSession } from '@singula-ai/alego-deepseek-account'
+import { desktopNodeEnvironment } from './node-environment.ts'
 
-interface PendingResponse {
-  readonly resolve: (response: Response) => void
-  readonly reject: (error: Error) => void
-  responseStarted: boolean
-  uploadOpen: boolean
-  controller?: ReadableStreamDefaultController<Uint8Array>
-  requestReader?: ReadableStreamDefaultReader<Uint8Array>
-  removeAbort?: () => void
+interface ReadyEvent {
+  readonly type: 'ready'
+  readonly url: string
+  readonly injections?: readonly unknown[] | undefined
 }
+
+interface FatalEvent {
+  readonly type: 'fatal'
+  readonly message: string
+  /** The Host's complete inspected error: stack, enumerable properties, cause chain. */
+  readonly diagnostic?: string
+}
+
+interface PlatformSessionEvent {
+  readonly type: 'platform-session'
+  readonly session: PlatformSession | null
+}
+
+type DesktopHostEvent = ReadyEvent | FatalEvent | PlatformSessionEvent | { readonly type: 'shutdown-complete' } | {
+  readonly type: 'update-tasks'
+  readonly requestId: number
+  readonly active: boolean
+  readonly error?: string
+} | {
+  readonly type: 'quit-inspection'
+  readonly requestId: number
+  readonly activeTasks: boolean
+  readonly scheduledTasks: boolean
+  readonly error?: string
+}
+
+/** Correlated answer to one shell control request. */
+type DesktopHostControlResponse = Extract<DesktopHostEvent, { readonly requestId: number }>
+
+/** What quitting now would affect, as reported by the Host. */
+export interface DesktopQuitInspection {
+  readonly activeTasks: boolean
+  readonly scheduledTasks: boolean
+}
+
+/** Quit inspection deadline; a slower Host counts as unknown work and the shell asks before quitting. */
+export const QUIT_INSPECTION_DEADLINE_MS = 2_000
+
+const MAX_HOST_DIAGNOSTIC_CHARS = 64 * 1024
 
 function isDesktopHostEvent(message: unknown): message is DesktopHostEvent {
   if (typeof message !== 'object' || message === null || !('type' in message)) return false
   const candidate = message as Record<string, unknown>
   switch (candidate.type) {
+    case 'shutdown-complete':
+      return true
     case 'ready':
-      return candidate.protocolVersion === DESKTOP_HOST_PROTOCOL_VERSION && typeof candidate.alegoVersion === 'string'
+      return typeof candidate.url === 'string'
+    case 'platform-session': {
+      const session = candidate.session
+      if (session === null) return true
+      if (typeof session !== 'object' || !('origin' in session) || !('token' in session)
+        || typeof session.origin !== 'string' || typeof session.token !== 'string' || session.token.length === 0) return false
+      if (!('userId' in session) || (session.userId !== null
+        && (typeof session.userId !== 'string' || session.userId.length === 0))) return false
+      if ('embeddedPageDist' in session && typeof session.embeddedPageDist !== 'string') return false
+      if ('requestHeaders' in session && (typeof session.requestHeaders !== 'object' || session.requestHeaders === null
+        || Array.isArray(session.requestHeaders)
+        || Object.entries(session.requestHeaders).some(([name, value]) => typeof value !== 'string'
+          || name !== name.toLowerCase() || /[\r\n]/.test(value)
+          || ['authorization', 'x-dsh-auth-token', 'host', 'content-length', 'transfer-encoding', 'connection', 'content-type'].includes(name)))) return false
+      try {
+        const url = new URL(session.origin)
+        return url.origin === session.origin && !url.username && !url.password
+          && (url.protocol === 'https:' || (url.protocol === 'http:' && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname)))
+      } catch { return false }
+    }
     case 'fatal':
-      return typeof candidate.message === 'string'
+      return typeof candidate.message === 'string' && (candidate.diagnostic === undefined || typeof candidate.diagnostic === 'string')
+    case 'update-tasks':
+      return Number.isSafeInteger(candidate.requestId) && typeof candidate.active === 'boolean'
+        && (candidate.error === undefined || typeof candidate.error === 'string')
+    case 'quit-inspection':
+      return Number.isSafeInteger(candidate.requestId) && typeof candidate.activeTasks === 'boolean'
+        && typeof candidate.scheduledTasks === 'boolean' && (candidate.error === undefined || typeof candidate.error === 'string')
     default:
       return false
   }
-}
-
-function errorOf(reason: unknown, fallback: string): Error {
-  return reason instanceof Error ? reason : new Error(fallback)
 }
 
 async function exitsWithin(exit: Promise<void>, milliseconds: number): Promise<boolean> {
@@ -59,22 +103,40 @@ async function exitsWithin(exit: Promise<void>, milliseconds: number): Promise<b
   }
 }
 
-/** Ready facts reported by one installed alego child. */
+/** Browser authentication URL reported by the running Web application. */
 export interface DesktopHostReady {
-  readonly protocolVersion: typeof DESKTOP_HOST_PROTOCOL_VERSION
-  readonly alegoVersion: string
+  readonly url: string
+  readonly injections?: readonly unknown[] | undefined
 }
 
-/** One alego backend running under the bundled upstream Node.js executable. */
+/** The child has exited, but task teardown did not finish successfully. */
+export class DesktopHostUncleanExitError extends Error {}
+
+/**
+ * A Host failure reported over IPC before the process exited. `message` is what
+ * the Host chose to show; `diagnostic` is its complete inspected error, kept
+ * separately so a crash report can print it verbatim instead of a string escaped
+ * inside another error's properties.
+ */
+export class DesktopHostFatalError extends Error {
+  readonly #diagnostic: string | undefined
+
+  /**
+   * @param message - The Host's failure message.
+   * @param diagnostic - The Host's inspected error, when the Host supplied one.
+   */
+  constructor(message: string, diagnostic: string | undefined) {
+    super(message)
+    this.#diagnostic = diagnostic
+  }
+
+  /** The Host's inspected error; a getter so `util.inspect` of this error does not repeat it as an escaped property. */
+  get diagnostic(): string | undefined { return this.#diagnostic }
+}
+
+/** One Web backend running under the Electron executable in Node mode. */
 export class DesktopHostProcess {
   private child: ChildProcess | undefined
-  private requestPipe: Writable | undefined
-  private responsePipe: Readable | undefined
-  private readonly responseDecoder = new DesktopHostResponseDecoder()
-  private requestWriteTail: Promise<void> = Promise.resolve()
-  private nextStreamId = 1
-  private readonly pending = new Map<number, PendingResponse>()
-  private readonly blockedResponses = new Set<number>()
   private readyResolve!: (ready: DesktopHostReady) => void
   private readyReject!: (error: Error) => void
   private readonly readyPromise = new Promise<DesktopHostReady>((resolve, reject) => {
@@ -84,14 +146,25 @@ export class DesktopHostProcess {
   private exitPromise: Promise<void> | undefined
   private stderr = ''
   private failureReported = false
+  private stopping = false
+  private shutdownCompleted = false
+  private nextControlId = 1
+  private readonly controlRequests = new Map<number, {
+    resolve: (response: DesktopHostControlResponse) => void
+    reject: (error: Error) => void
+  }>()
 
   /**
-   * @param node - absolute bundled upstream Node.js executable.
-   * @param runtimeDir - immutable packages carried by the current application.
-   * @param projectDir - active or staged desktop plugin profile.
-   * @param inspectPort - optional loopback inspector port for workspace development.
-   * @param environment - Child environment; runtime and package-manager overrides are removed.
-   * @param onFailure - Receives the first fatal child or transport failure, including after readiness.
+   * @param node - Absolute Electron executable in Node mode.
+   * @param runtimeDir - Immutable packages carried by the current application.
+   * @param projectDir - Desktop plugin profile and child working directory.
+   * @param inspectPort - Optional loopback inspector port for workspace development.
+   * @param environment - Environment inherited by the Host and its plugin subprocesses.
+   * @param onFailure - Receives the first unexpected child failure, including after readiness.
+   * @param primaryRuntime - Optional bundled dependency payload; when supplied, missing sibling
+   *   `office-skills` resources fail Host startup.
+   * @param packageManager - Bundled pnpm entry and Node launcher directory, scoped to package operations.
+   * @param onPlatformSession - Private credential updates for embedded Platform views.
    */
   constructor(
     private readonly node: string,
@@ -100,55 +173,54 @@ export class DesktopHostProcess {
     private readonly inspectPort?: number,
     private readonly environment: NodeJS.ProcessEnv = process.env,
     private readonly onFailure?: (error: Error) => void,
+    private readonly primaryRuntime?: string,
+    private readonly packageManager?: { readonly pnpm: string; readonly nodeBin: string },
+
+    private readonly onPlatformSession?: (session: PlatformSession | null) => void,
   ) {}
 
-  /** Start the child once and resolve only after its complete composition is active. */
+  /**
+   * Start this child once and await its Web application URL.
+   * @returns Ready facts supplied by the child after application startup.
+   */
   async start(): Promise<DesktopHostReady> {
     if (this.child !== undefined) return this.readyPromise
     const entry = join(this.runtimeDir, 'node_modules', '@singula-ai', 'alego-desktop-host', 'lib', 'index.js')
     const child = spawn(this.node, [
+      '--expose-internals',
       ...(this.inspectPort === undefined ? [] : [`--inspect=127.0.0.1:${String(this.inspectPort)}`]),
       entry,
       this.runtimeDir,
       this.projectDir,
-      ...(this.inspectPort === undefined ? [] : ['--allow-linked-profile']),
+      this.primaryRuntime ?? join(this.runtimeDir, '..', 'runtime', 'primary-runtime'),
+      ...this.packageManager === undefined ? [] : [this.packageManager.pnpm, this.packageManager.nodeBin],
     ], {
       cwd: this.projectDir,
-      env: Object.fromEntries(Object.entries(this.environment).filter(([name]) => (
-        name !== 'NODE_OPTIONS' && name !== 'NODE_PATH' && !/^ALEGO_DESKTOP_/u.test(name) && !/^(?:npm|pnpm|corepack)_/iu.test(name)
-      ))),
-      stdio: ['ignore', 'pipe', 'pipe', 'pipe', 'pipe', 'ipc'],
+      env: desktopNodeEnvironment(this.node, undefined, this.environment),
+      stdio: ['ignore', 'pipe', 'pipe', 'ipc'],
     })
-    const requestPipe = child.stdio[DESKTOP_REQUEST_PIPE_FD]
-    const responsePipe = child.stdio[DESKTOP_RESPONSE_PIPE_FD]
-    if (!(requestPipe instanceof Writable) || !(responsePipe instanceof Readable)) {
-      child.kill('SIGTERM')
-      throw new Error('alego desktop host did not expose the required byte pipes and IPC channel')
-    }
     this.child = child
-    this.requestPipe = requestPipe
-    this.responsePipe = responsePipe
     child.stderr?.setEncoding('utf8')
-    child.stderr?.on('data', (chunk: string) => { this.stderr += chunk })
+    child.stderr?.on('data', (chunk: string) => { this.stderr = (this.stderr + chunk).slice(-MAX_HOST_DIAGNOSTIC_CHARS) })
     child.stdout?.pipe(process.stdout)
-    responsePipe.on('data', (chunk: Buffer) => { this.acceptResponseBytes(chunk) })
-    responsePipe.once('end', () => {
-      try {
-        this.responseDecoder.finish()
-        this.fail(new Error('alego desktop host response pipe ended'))
-      } catch (error) {
-        this.fail(errorOf(error, 'alego desktop host response pipe failed'))
-      }
-    })
-    requestPipe.once('error', (error) => { this.fail(error) })
-    responsePipe.once('error', (error) => { this.fail(error) })
     child.on('message', (message: unknown) => {
       if (!isDesktopHostEvent(message)) {
         this.fail(new Error('alego desktop host sent an invalid IPC event'))
         child.kill('SIGTERM')
         return
       }
-      this.handleMessage(message)
+      if (message.type === 'ready') this.readyResolve({ url: message.url, injections: message.injections })
+      else if (message.type === 'platform-session') this.onPlatformSession?.(message.session)
+      else if (message.type === 'shutdown-complete') {
+        if (this.stopping) this.shutdownCompleted = true
+        else this.fail(new Error('alego desktop host acknowledged an unrequested shutdown'))
+      }
+      else if (message.type === 'fatal') this.fail(new DesktopHostFatalError(message.message, message.diagnostic))
+      else {
+        const request = this.controlRequests.get(message.requestId)
+        if (message.error === undefined) request?.resolve(message)
+        else request?.reject(new Error(message.error))
+      }
     })
     child.once('error', (error) => { this.fail(error) })
     this.exitPromise = new Promise<void>((resolve) => {
@@ -162,60 +234,66 @@ export class DesktopHostProcess {
     return this.readyPromise
   }
 
-  /** Forward one `alego-app://app` request to the child without buffering its body. */
-  async fetch(request: Request): Promise<Response> {
-    await this.start()
-    const child = this.child
-    if (child === undefined || !child.connected || this.requestPipe === undefined) {
-      throw new Error('alego desktop host is unavailable')
-    }
-    if (this.nextStreamId > 0xffff_ffff) throw new Error('alego desktop host exhausted its request stream ids')
-    const streamId = this.nextStreamId++
-    const method = request.method.toUpperCase()
-    const hasBody = method !== 'GET' && method !== 'HEAD' && request.body !== null
-    return new Promise<Response>((resolve, reject) => {
-      const pending: PendingResponse = {
-        resolve,
-        reject,
-        responseStarted: false,
-        uploadOpen: hasBody,
-      }
-      const abort = (): void => {
-        if (!this.pending.has(streamId)) return
-        const error = errorOf(request.signal.reason, 'request aborted')
-        pending.uploadOpen = false
-        void pending.requestReader?.cancel(error).catch(() => undefined)
-        this.enqueueRequestFrame(encodeDesktopRequestCancel(streamId)).catch((pipeError: unknown) => {
-          this.fail(errorOf(pipeError, 'alego desktop request pipe failed'))
-        })
-        if (pending.controller === undefined) pending.reject(error)
-        else pending.controller.error(error)
-        this.finishPending(streamId, false)
-      }
-      if (request.signal.aborted) {
-        reject(errorOf(request.signal.reason, 'request aborted'))
-        return
-      }
-      request.signal.addEventListener('abort', abort, { once: true })
-      pending.removeAbort = () => { request.signal.removeEventListener('abort', abort) }
-      this.pending.set(streamId, pending)
-      this.pumpRequest(streamId, request, hasBody).catch((error: unknown) => {
-        this.failPending(streamId, errorOf(error, 'alego desktop request upload failed'))
-      })
-    })
+  /**
+   * Inspect active work or lock request admission for update handoff.
+   * @param action - Read-only inspection, admission lock, or recovery unlock.
+   * @returns Whether live tasks would be affected. Locking drains admitted API requests before inspecting tasks;
+   * an unanswered drain fails at the control-request deadline without authorizing installation.
+   */
+  async updateTasks(action: 'inspect' | 'lock' | 'unlock'): Promise<boolean> {
+    const response = await this.control({ type: 'update-tasks', action }, 10_000, 'desktop update: task inspection timed out')
+    if (response.type !== 'update-tasks') throw new Error('desktop update: Host answered with a different control response')
+    return response.active
   }
 
-  /** Request graceful teardown, then wait for child exit. */
-  async stop(): Promise<void> {
+  /**
+   * Ask the Host what quitting now would interrupt.
+   * @returns Active tasks and armed scheduled reminders; rejects when the Host is unavailable or misses
+   * {@link QUIT_INSPECTION_DEADLINE_MS}, and the shell then asks before quitting.
+   */
+  async inspectQuit(): Promise<DesktopQuitInspection> {
+    const response = await this.control({ type: 'quit-inspection' }, QUIT_INSPECTION_DEADLINE_MS, 'desktop quit: inspection timed out')
+    if (response.type !== 'quit-inspection') throw new Error('desktop quit: Host answered with a different control response')
+    return { activeTasks: response.activeTasks, scheduledTasks: response.scheduledTasks }
+  }
+
+  private async control(
+    request: { readonly type: 'update-tasks'; readonly action: 'inspect' | 'lock' | 'unlock' } | { readonly type: 'quit-inspection' },
+    deadlineMs: number, deadlineMessage: string,
+  ): Promise<DesktopHostControlResponse> {
+    const child = this.child
+    if (child === undefined || !child.connected || this.failureReported || this.stopping) {
+      throw new Error(`${request.type === 'update-tasks' ? 'desktop update' : 'desktop quit'}: Host is unavailable`)
+    }
+    const requestId = this.nextControlId++
+    let timer: ReturnType<typeof setTimeout> | undefined
+    try {
+      return await new Promise<DesktopHostControlResponse>((resolve, reject) => {
+        this.controlRequests.set(requestId, { resolve, reject })
+        timer = setTimeout(() => { reject(new Error(deadlineMessage)) }, deadlineMs)
+        child.send({ ...request, requestId }, (error) => { if (error !== null) reject(error) })
+      })
+    } finally {
+      clearTimeout(timer)
+      this.controlRequests.delete(requestId)
+    }
+  }
+
+  /**
+   * Request teardown and await child exit, escalating termination when needed.
+   * @param requireGraceful - Reject update handoff after forced termination or unsuccessful child exit.
+   * @returns Completion of owned process teardown. DesktopHostUncleanExitError confirms exit but refuses installation;
+   * other failures do not confirm exit.
+   */
+  async stop(requireGraceful = false): Promise<void> {
     const child = this.child
     if (child === undefined) return
-    this.blockedResponses.clear()
-    this.responsePipe?.resume()
-    if (child.connected) this.send({ type: 'shutdown' })
-    // Closing the parent-owned write end releases the Host's pending Windows pipe read.
-    this.requestPipe?.destroy()
+    this.stopping = true
+    this.onPlatformSession?.(null)
+    if (child.connected) child.send({ type: 'shutdown' }, (error) => { if (error !== null) this.fail(error) })
     const exited = this.exitPromise ?? Promise.resolve()
-    if (!await exitsWithin(exited, 10_000)) child.kill('SIGTERM')
+    const graceful = await exitsWithin(exited, 10_000)
+    if (!graceful) child.kill('SIGTERM')
     if (!await exitsWithin(exited, 5_000)) {
       child.kill('SIGKILL')
       if (!await exitsWithin(exited, 5_000)) {
@@ -223,205 +301,22 @@ export class DesktopHostProcess {
       }
     }
     this.child = undefined
-    this.requestPipe = undefined
-    this.responsePipe = undefined
-  }
-
-  private async pumpRequest(streamId: number, request: Request, hasBody: boolean): Promise<void> {
-    await this.enqueueRequestFrame(encodeDesktopRequestStart(streamId, {
-      url: request.url,
-      method: request.method.toUpperCase(),
-      headers: [...request.headers.entries()],
-      hasBody,
-    }))
-    if (!hasBody) return
-    const body = request.body
-    if (body === null) throw new Error('alego desktop request body disappeared before upload')
-    const reader = body.getReader()
-    const pending = this.pending.get(streamId)
-    if (pending === undefined) {
-      await reader.cancel()
-      return
-    }
-    pending.requestReader = reader
-    try {
-      for (;;) {
-        const next = await reader.read()
-        if (next.done) break
-        for (let offset = 0; offset < next.value.byteLength; offset += DESKTOP_PIPE_CHUNK_BYTES) {
-          if (!this.pending.has(streamId)) return
-          await this.enqueueRequestFrame(encodeDesktopRequestData(
-            streamId,
-            next.value.subarray(offset, offset + DESKTOP_PIPE_CHUNK_BYTES),
-          ))
-        }
-      }
-      const live = this.pending.get(streamId)
-      if (live !== undefined) {
-        await this.enqueueRequestFrame(encodeDesktopRequestEnd(streamId))
-        live.uploadOpen = false
-      }
-    } finally {
-      reader.releaseLock()
-      const live = this.pending.get(streamId)
-      if (live?.requestReader === reader) delete live.requestReader
-    }
-  }
-
-  private enqueueRequestFrame(frame: Buffer): Promise<void> {
-    const write = this.requestWriteTail.then(async () => {
-      const pipe = this.requestPipe
-      if (pipe === undefined || pipe.destroyed) throw new Error('alego desktop host request pipe is unavailable')
-      if (!pipe.write(frame)) await once(pipe, 'drain')
-    })
-    this.requestWriteTail = write.catch(() => undefined)
-    return write
-  }
-
-  private send(message: DesktopHostCommand): void {
-    const child = this.child
-    if (child === undefined || !child.connected) throw new Error('alego desktop host IPC is unavailable')
-    child.send(message, (error) => { if (error !== null) this.fail(error) })
-  }
-
-  private acceptResponseBytes(chunk: Buffer): void {
-    try {
-      for (const frame of this.responseDecoder.push(chunk)) this.handleResponseFrame(frame)
-    } catch (error) {
-      this.fail(errorOf(error, 'alego desktop host response pipe failed'))
-      this.child?.kill('SIGTERM')
-    }
-  }
-
-  private handleResponseFrame(frame: DesktopHostResponseFrame): void {
-    const pending = this.pending.get(frame.streamId)
-    if (pending === undefined) {
-      if (frame.streamId >= this.nextStreamId) {
-        throw new Error(`alego desktop host responded for unknown stream ${String(frame.streamId)}`)
-      }
-      return
-    }
-    switch (frame.type) {
-      case 'start': {
-        if (pending.responseStarted) throw new Error(`alego desktop host started stream ${String(frame.streamId)} twice`)
-        pending.responseStarted = true
-        let body: ReadableStream<Uint8Array> | null = null
-        if (frame.hasBody) {
-          body = new ReadableStream<Uint8Array>({
-            start: (controller) => { pending.controller = controller },
-            pull: () => {
-              this.blockedResponses.delete(frame.streamId)
-              this.resumeResponsePipe()
-            },
-            cancel: (reason) => { this.cancelResponse(frame.streamId, reason) },
-          })
-        }
-        pending.resolve(new Response(body, {
-          status: frame.status,
-          headers: new Headers(frame.headers.map(([name, value]) => [name, value] as [string, string])),
-        }))
-        return
-      }
-      case 'data': {
-        const controller = pending.controller
-        if (!pending.responseStarted || controller === undefined) {
-          throw new Error(`alego desktop host sent body data before a body start for stream ${String(frame.streamId)}`)
-        }
-        controller.enqueue(frame.data)
-        if ((controller.desiredSize ?? 0) <= 0) {
-          this.blockedResponses.add(frame.streamId)
-          this.responsePipe?.pause()
-        }
-        return
-      }
-      case 'end':
-        if (!pending.responseStarted) {
-          throw new Error(`alego desktop host ended stream ${String(frame.streamId)} before its response start`)
-        }
-        pending.controller?.close()
-        this.finishPending(frame.streamId, true)
-        return
-      case 'error':
-        this.failPending(frame.streamId, new Error(frame.message))
-        return
-      default:
-        frame satisfies never
-    }
-  }
-
-  private cancelResponse(streamId: number, reason: unknown): void {
-    const pending = this.pending.get(streamId)
-    if (pending === undefined) return
-    pending.uploadOpen = false
-    void pending.requestReader?.cancel(reason).catch(() => undefined)
-    this.enqueueRequestFrame(encodeDesktopRequestCancel(streamId)).catch((error: unknown) => {
-      this.fail(errorOf(error, 'alego desktop request pipe failed'))
-    })
-    this.finishPending(streamId, false)
-  }
-
-  private failPending(streamId: number, error: Error): void {
-    const pending = this.pending.get(streamId)
-    if (pending === undefined) return
-    pending.uploadOpen = false
-    void pending.requestReader?.cancel(error).catch(() => undefined)
-    if (pending.controller === undefined) pending.reject(error)
-    else pending.controller.error(error)
-    this.enqueueRequestFrame(encodeDesktopRequestCancel(streamId)).catch((pipeError: unknown) => {
-      this.fail(errorOf(pipeError, 'alego desktop request pipe failed'))
-    })
-    this.finishPending(streamId, false)
-  }
-
-  private finishPending(streamId: number, cancelOpenUpload: boolean): void {
-    const pending = this.pending.get(streamId)
-    if (pending === undefined) return
-    if (cancelOpenUpload && pending.uploadOpen) {
-      pending.uploadOpen = false
-      void pending.requestReader?.cancel().catch(() => undefined)
-      this.enqueueRequestFrame(encodeDesktopRequestCancel(streamId)).catch((error: unknown) => {
-        this.fail(errorOf(error, 'alego desktop request pipe failed'))
-      })
-    }
-    pending.removeAbort?.()
-    this.pending.delete(streamId)
-    this.blockedResponses.delete(streamId)
-    this.resumeResponsePipe()
-  }
-
-  private resumeResponsePipe(): void {
-    if (this.blockedResponses.size === 0) this.responsePipe?.resume()
-  }
-
-  private handleMessage(message: DesktopHostEvent): void {
-    switch (message.type) {
-      case 'ready':
-        this.readyResolve(message)
-        return
-      case 'fatal':
-        this.fail(new Error(message.message))
-        return
-      default:
-        message satisfies never
+    if (requireGraceful && (!graceful || child.exitCode !== 0 || !this.shutdownCompleted)) {
+      // This diagnostic reaches expandable UI; arbitrary plugin stderr can contain credentials.
+      throw new DesktopHostUncleanExitError(`desktop update: Host did not complete graceful task teardown (exit ${String(child.exitCode)}, signal ${String(child.signalCode)}, shutdown acknowledged ${String(this.shutdownCompleted)}, graceful deadline exceeded ${String(!graceful)})`)
     }
   }
 
   private fail(error: Error): void {
+    this.onPlatformSession?.(null)
     this.readyReject(error)
-    if (!this.failureReported) {
+    for (const request of this.controlRequests.values()) request.reject(error)
+    this.controlRequests.clear()
+    if (!this.failureReported && !this.stopping) {
       this.failureReported = true
       try { this.onFailure?.(error) } catch (listenerError) {
         console.error('desktop host failure listener failed', listenerError)
       }
     }
-    for (const pending of this.pending.values()) {
-      void pending.requestReader?.cancel(error).catch(() => undefined)
-      if (pending.controller === undefined) pending.reject(error)
-      else pending.controller.error(error)
-      pending.removeAbort?.()
-    }
-    this.pending.clear()
-    this.blockedResponses.clear()
-    this.responsePipe?.resume()
   }
 }

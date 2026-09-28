@@ -2,6 +2,7 @@
 
 import type { Scoped } from '@singula-ai/alego-scope'
 import type { Agent } from '@singula-ai/alego-agent/types'
+import type { ToolCallId } from '@singula-ai/alego-llm/brand'
 
 /** One selectable answer offered to the user. */
 export interface AskUserQuestionOption {
@@ -27,6 +28,8 @@ export type AskUserQuestionIntent = {
    * An `approve` naming no option of its own question is rejected at `ask()`.
    */
   approve: string
+  /** Logged tool invocation whose arguments contain the reviewed plan. */
+  callId?: ToolCallId
 }
 
 /** One question in a user-questions request. */

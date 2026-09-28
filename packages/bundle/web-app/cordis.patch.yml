@@ -42,13 +42,28 @@
 # `alego.client` rows are the browser roster the modules node half scans into
 # window.__ALEGO_BOOT__; the modules row is simultaneously a host row.
 - insert:
+    - id: desktop-product-telemetry
+      name: '@singula-ai/alego-host-product-telemetry-otel'
+      disabled: !!js "ctx.get('profileContext')?.name !== 'desktop'"
+      config:
+        timeoutMillis: 1000
+        exportTimeoutMillis: 1500
+        shutdownTimeoutMillis: 2000
+        serviceName: alego-desktop
+        serviceVersion: !!js process.env.ALEGO_CLIENT_VERSION
+        endpoint: !!js process.env.ALEGO_PRODUCT_ANALYTICS_OTLP_URL
+
+    - id: product-analytics
+      name: '@singula-ai/alego-client-product-analytics'
+      disabled: !!js "ctx.get('profileContext')?.name !== 'desktop'"
+      config:
+        enabled: true
+        appVersion: !!js process.env.ALEGO_CLIENT_VERSION
+
     # Host-owned opt-in sampled when a new Web session receives its preset
     # delegation tools. The Plugins page edits this settings namespace.
     - id: subagent-model-selection-settings
       name: '@singula-ai/alego-tool-subagent/model-selection-settings'
-
-    - id: code-runtime
-      name: '@singula-ai/alego-code-runtime-worker-thread'
 
     - id: message-feedback
       name: '@singula-ai/alego-message-feedback'
@@ -105,13 +120,25 @@
     - id: session-controller
       name: '@singula-ai/alego-api-session-controller'
 
+    # One background job's observation record streamed over Typert Remote;
+    # the roster rides the session control stream above.
+    - id: job-controller
+      name: '@singula-ai/alego-api-job-controller'
     # Workspace file service: bounded read, directory listing, and the
     # agent-write change feed inside the session workspace root.
+    - id: terminal-controller
+      name: '@singula-ai/alego-api-terminal-controller'
     - id: workspace-files
       name: '@singula-ai/alego-api-workspace-files'
 
     # Configuration-surface reads and writes over Typert Remote. Each method
     # reports an actionable error when its settings-domain provider is absent.
+    - id: ui-settings-account
+      name: '@singula-ai/alego-client-ui-settings-account'
+
+    - id: account-controller
+      name: '@singula-ai/alego-api-account-controller'
+
     - id: settings-controller
       name: '@singula-ai/alego-api-settings-controller'
 
@@ -121,6 +148,12 @@
 
     - id: cordis-host-runner
       name: '@singula-ai/alego-cordis-host-runner'
+
+    # The Host inspect providers are process-global: the registry rejects a
+    # duplicate id, so they register here once and every preset's `tool-cordis`
+    # row reads them.
+    - id: cordis-inspect-providers
+      name: '@singula-ai/alego-tool-cordis/host'
 
     # Ordinary provider for the parsed Web flags. Its plugin-level injection
     # waits for cmdlineArgs; no launcher metadata or special row kind is needed.
@@ -146,8 +179,9 @@
     # assembly fact of alego-web-app, never user config), mounts the
     # frontend-static fallback owner, registers the web-surface prompt
     # section and the bash runtime variable, prints the URL line, and opens the
-    # canonical local URL after the full tree settles. The webStartup provider
-    # supplies invocation-only values; after the server binds, this row samples
+    # canonical local URL after the full Loader tree settles and the required-
+    # entry audit passes. The
+    # webStartup provider supplies invocation-only values; after the server binds, this row samples
     # LAN trust once and provides `webRuntime`. A complete agent-preset persona
     # suppresses the prompt section for that agent while retaining the host-owned
     # shell variable.
@@ -204,6 +238,12 @@
     - id: locale
       name: '@singula-ai/alego-client-locale'
 
+    - id: shortcuts
+      name: '@singula-ai/alego-client-shortcuts'
+
+    - id: ui-shortcuts
+      name: '@singula-ai/alego-client-ui-shortcuts'
+
     - id: ui-layout
       name: '@singula-ai/alego-client-ui-layout'
 
@@ -225,11 +265,21 @@
       name: '@singula-ai/alego-client-ui-sidebar-right'
 
 
+    - id: office-to-pdf
+      name: '@singula-ai/alego-office-to-pdf'
+
     # The right Sidebar's document tab: bounded file reads with selectable
-    # Markdown, code, HTML, PDF, and plain-text renderers.
+    # Markdown, code, HTML, PDF, Office, and plain-text renderers.
     - id: ui-sidebar-documentpreview
       name: '@singula-ai/alego-client-ui-sidebar-documentpreview'
 
+    # Web profiles opt in; Desktop retains sandboxed HTTP(S) Browser tabs.
+    - id: ui-sidebar-browser
+      name: '@singula-ai/alego-client-ui-sidebar-browser'
+      disabled: !!js "ctx.get('profileContext')?.name !== 'desktop'"
+
+    - id: ui-sidebar-terminal
+      name: '@singula-ai/alego-client-ui-sidebar-terminal'
     # The right Sidebar's workspace file tree tab type.
     - id: ui-sidebar-files
       name: '@singula-ai/alego-client-ui-sidebar-files'
@@ -243,6 +293,14 @@
     - id: ui-settings-models
       name: '@singula-ai/alego-client-ui-settings-models'
 
+    # Plugin management: the sidebar Plugins page installs, enables, disables,
+    # and removes the profile's bundles through the `pluginManager` Remote.
+    # Without a profile-backed Host it reports itself unavailable.
+    - id: ui-plugin-manager
+      name: '@singula-ai/alego-client-ui-plugin-manager'
+
+    # Read-only Plugin list tab in the Settings Plugins section; the built-in
+    # bundles the sidebar page leaves out are inspected here.
     - id: ui-settings-plugin-inventory
       name: '@singula-ai/alego-client-ui-settings-plugin-inventory'
 
@@ -269,19 +327,25 @@
     - id: ui-cordis
       name: '@singula-ai/alego-client-ui-cordis'
 
-    # Durable workflow lifecycle as an independent Chat node after the
-    # existing generic workflow tool row.
-    - id: ui-workflow-run
-      name: '@singula-ai/alego-client-ui-workflow-run'
-
-    # Turn tail: the produced-files row under each closing assistant message.
-    # Remove this entry to turn the surface off; the tail hole renders empty.
+    # Turn tail: the changed-files card and delivery cards under each closing
+    # assistant message. Remove this entry to turn the surface off; the tail
+    # hole renders empty.
     - id: ui-deliverables
       name: '@singula-ai/alego-client-ui-deliverables'
+
+    # Records each top-level turn's changed files from git working-tree
+    # snapshots; the changed-files card above renders its events.
+    - id: workspace-changes
+      name: '@singula-ai/alego-workspace-changes'
 
 
     - id: ui-workspace
       name: '@singula-ai/alego-client-ui-workspace'
+
+    # Durable workflow lifecycle as an independent Chat node after the
+    # existing generic workflow tool row.
+    - id: ui-workflow-run
+      name: '@singula-ai/alego-client-ui-workflow-run'
 
     # Input triggers: the '/' | '@' pipeline (ui-input-trigger), the command surface over
     # it (ui-commands), and the reference sources (ui-skill / ui-reference).
@@ -300,14 +364,9 @@
     - id: ui-reference
       name: '@singula-ai/alego-client-ui-reference'
 
-    # Read-only active Schedule catalog. The shipped Web graph resolves the
-    # client package but leaves it disabled; the explicit Schedule overlay
-    # enables this same row together with the host Schedule services.
-    - id: ui-schedule
-      name: '@singula-ai/alego-client-ui-schedule'
-      disabled: true
 
-    # Background jobs: the session-header list over the jobsBySession mirror.
+    # Background jobs: the session-header roster with on-demand streaming
+    # record panels over the session job-output service.
     - id: ui-jobs
       name: '@singula-ai/alego-client-ui-jobs'
 
@@ -333,10 +392,26 @@
     - id: ui-agent-preset
       name: '@singula-ai/alego-client-ui-agent-preset'
 
-    # Plugin configuration: the host-plane sections a user owns, as expandable
-    # cards. A namespace this deployment does not expose renders nothing.
+    # The Built-in plugins settings section: the navigation entry and the tab
+    # row the inventory tab registers into. The official configuration pages
+    # are the companion rows below.
     - id: ui-settings-plugins
       name: '@singula-ai/alego-client-ui-settings-plugins'
+
+    # The official settings pages: one companion package per host-plane
+    # namespace, each registering its page into the Plugins page while the
+    # Host serves the namespace.
+    - id: ui-settings-shell
+      name: '@singula-ai/alego-client-ui-settings-shell'
+
+    - id: ui-settings-agent-loop
+      name: '@singula-ai/alego-client-ui-settings-agent-loop'
+
+    - id: ui-settings-subagent
+      name: '@singula-ai/alego-client-ui-settings-subagent'
+
+    - id: ui-settings-web-search
+      name: '@singula-ai/alego-client-ui-settings-web-search'
 
     # Plan control: the composer plan seat over the plan projection + /plan channel.
     - id: ui-plan
@@ -364,6 +439,9 @@
 # the criterion for host-plane ownership — injection resolves before any session
 # exists, so there is no agent to key by. Behind a preset realm those variables
 # would never reach the model's shell at all.
+
+- id: tool-plugin-manager
+  disabled: true
 
 - id: tool-bash
   disabled: true
@@ -452,12 +530,15 @@
 - id: tool-subagent-fork
   disabled: true
 
-- id: workflow-worker-thread
+- id: workflow-ptc
   disabled: true
 
 - id: tool-workflow
   disabled: true
 
+# `base` ships this row disabled; the preset-plane gate reads declared row ids
+# without regard to `disabled`, so this row must stay to keep `tool-ralph` off
+# the host plane and out of collision with every preset's row.
 - id: tool-ralph
   disabled: true
 
@@ -470,15 +551,11 @@
 - id: tool-web
   disabled: true
 
-# The preset roster. The shipped presets are bundled inside
-# `alego-agent-presets` itself and prepended as a read-only `system` root
-# (`includeShippedRoot`); `$ALEGO_HOME/.agent-presets` is where a person — or an
-# agent — authors their own, appended by the same package (`includeUserRoot`),
-# and carries the same trust as shell access because a preset IS a
-# composition. This row only names the default and any deployment-added
-# `roots`; no launcher patching is involved.
+# The preset selection registry. The shipped preset declarations follow as
+# separate patch files under `presets/`, listed after this file in
+# `package.json` `alego.bundle.patch`.
 - insert:
-    - id: agent-presets
-      name: '@singula-ai/alego-agent-presets'
+    - id: agent-preset-registry
+      name: '@singula-ai/alego-agent-preset-registry'
       config:
         default: standard

@@ -1,6 +1,67 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/web/web/README.md
-README.md: 1bac7407928ba8ad0cb2f669e939fce9269755ed
-README.zh.md: 0217261097f0e77999b286b84da771595e1ee5a6
+/:
+  en: 31868a4f15364a93
+  zh: 86824e1a18e237a7
+/singula-ai-alego-web:
+  en: 3620201afd2fd2d3
+  zh: 377e22ffa4b3fcd3
+/singula-ai-alego-web/summary:
+  en: f62c5d431e7d043f
+  zh: bde859e338e0383a
+/singula-ai-alego-web/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-web/use-this-package:
+  en: 3fe88c42bbe518c7
+  zh: d29c1ff4afaded37
+/singula-ai-alego-web/use-this-package/when-to-choose-it:
+  en: 96fd12222fb56c7b
+  zh: 652cec499cd73a64
+/singula-ai-alego-web/use-this-package/minimal-configuration:
+  en: e6f080cfa017d078
+  zh: caaf4f48edf8612e
+/singula-ai-alego-web/use-this-package/searching-and-fetching:
+  en: 5e1eadf8ee5e42ff
+  zh: e4f3a1d448c8118e
+/singula-ai-alego-web/use-this-package/provider-selection:
+  en: a1d16fc8e3d3d7eb
+  zh: d7c91ce0bbd5e0e7
+/singula-ai-alego-web/use-this-package/failures-and-recovery:
+  en: d8d09ed3839f6474
+  zh: 7164d902f333592a
+/singula-ai-alego-web/understand-the-implementation:
+  en: a3364d8193deb7f0
+  zh: d1c4afbf25a7ae4d
+/singula-ai-alego-web/understand-the-implementation/design-philosophy:
+  en: c4d5437cfb1e2157
+  zh: 411b1b398de73426
+/singula-ai-alego-web/understand-the-implementation/source-map:
+  en: 75e450b263def321
+  zh: 7f28ff78ba2a5f03
+/singula-ai-alego-web/understand-the-implementation/data-model:
+  en: c34c79931680ca56
+  zh: bc28bded5808d9b4
+/singula-ai-alego-web/understand-the-implementation/selection-flow:
+  en: 07dcd35a0a6369b2
+  zh: 927fe797d9079547
+/singula-ai-alego-web/further-exploration:
+  en: c2b29df75906fc56
+  zh: df79d640b115ae7c
+/singula-ai-alego-web/model-experience:
+  en: 44a85e0101c58185
+  zh: 9b66612ae5cc1da4
+/singula-ai-alego-web/model-experience/kv-cache-effect:
+  en: 40294c1c31b74824
+  zh: d75d48f485447a74
+/singula-ai-alego-web/known-limitations-and-deferred-work:
+  en: 8613b8b99f53cc94
+  zh: 708546c991472a9d
+/singula-ai-alego-web/known-limitations-and-deferred-work/dev-note:
+  en: 7f775cc79dbce94b
+  zh: 12b8f68f9e7c48ca
+/singula-ai-alego-web/known-limitations-and-deferred-work/dev-note/future-observing-provider-state:
+  en: 855f97574a820579
+  zh: 360ff6cd2ed82904

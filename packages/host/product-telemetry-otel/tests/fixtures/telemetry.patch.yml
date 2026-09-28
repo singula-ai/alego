@@ -1,0 +1,15 @@
+- id: session-telemetry-otel
+  disabled: true
+- id: headless-startup
+  disabled: true
+- id: headless-runner
+  disabled: true
+- insert:
+    - id: product-telemetry-otel
+      name: '@singula-ai/alego-host-product-telemetry-otel'
+      config:
+        endpoint: !!js process.env.ALEGO_PRODUCT_TELEMETRY_TEST_ENDPOINT
+        serviceName: alego-telemetry-test
+        serviceVersion: !!js process.env.ALEGO_APP_VERSION
+        compression: gzip
+        scheduledDelayMillis: 60000

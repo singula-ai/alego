@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-15-platform-office-engines.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-15-platform-office-engines.md
+/agent-note-one-office-engine-per-platform:
+  en: 50ab0c53b3de1e83
+  zh: 2a509207d70a313c
+/agent-note-one-office-engine-per-platform/problem:
+  en: 62fb0018599ce472
+  zh: 0340861cf742b3e2
+/agent-note-one-office-engine-per-platform/decision:
+  en: 8cea2cb889666af7
+  zh: 346adb1e99787c78
+/agent-note-one-office-engine-per-platform/alternatives-considered:
+  en: 547b6d1b638c8fe7
+  zh: 5724e86ea9b420b6
+/agent-note-one-office-engine-per-platform/consequences:
+  en: 54327e3ae889e0f8
+  zh: 6379d3860d911454

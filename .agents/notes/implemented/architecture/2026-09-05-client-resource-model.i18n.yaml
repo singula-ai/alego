@@ -1,6 +1,40 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-05-client-resource-model.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-05-client-resource-model.md
-2026-09-05-client-resource-model.md: b32a018a37f1be76a552775bd8f11df94755a345
-2026-09-05-client-resource-model.zh.md: 86b99f9a18ca25de9afcb66a7e23482bd1beaf82
+/agent-note-client-resource-model:
+  en: 0f212112cec1a47b
+  zh: 6982bc80907bf3d0
+/agent-note-client-resource-model/problem:
+  en: 22aec3ac5b197342
+  zh: 0cd0b1f8094addb3
+/agent-note-client-resource-model/decision:
+  en: 0e8ffb10d9d6afa6
+  zh: 3a709d3d56009164
+/agent-note-client-resource-model/decision/addresses:
+  en: 7c724eba9d1660d6
+  zh: 372ec2001486b899
+/agent-note-client-resource-model/decision/the-service:
+  en: f42277e961bb7209
+  zh: 9f3f8a50ad55cf4a
+/agent-note-client-resource-model/decision/the-hook:
+  en: 4f082c4f5a44320a
+  zh: eba5449b7a1fd52e
+/agent-note-client-resource-model/decision/frames:
+  en: cd0867314dadd0f3
+  zh: 1a49427f86c6380b
+/agent-note-client-resource-model/decision/lifecycle:
+  en: f49b7913c4c76f2f
+  zh: 55abff49d9fd5171
+/agent-note-client-resource-model/alternatives-considered:
+  en: 7b9b055cf0e32b49
+  zh: c6fa2c074fcd1e20
+/agent-note-client-resource-model/consequences:
+  en: 3eda54cb5d74ed00
+  zh: ce60b6fef04acb9a
+/agent-note-client-resource-model/testing:
+  en: ca2c610e4f0352ac
+  zh: fbaa69ee8de7e4c1
+/agent-note-client-resource-model/deferred:
+  en: 8896897406c3cdb6
+  zh: b00fae75b5ea9d9d

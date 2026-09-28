@@ -1,6 +1,52 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/core/scope/README.md
-README.md: 68c869b207badaa2b99b041c70055cdc14bac523
-README.zh.md: f1f6828449836140a3c751028da840799f973db5
+/:
+  en: 47f2816e2d2cecb9
+  zh: e051427327761450
+/singula-ai-alego-scope:
+  en: ba61470ea882d295
+  zh: ca6082a1f62ba2ac
+/singula-ai-alego-scope/summary:
+  en: 08e1d5225fca87ca
+  zh: 2c7c5ef4353b3c7d
+/singula-ai-alego-scope/table-of-contents:
+  en: 80b31a934611cb4a
+  zh: 05f3f7f9cb2fd881
+/singula-ai-alego-scope/use-this-package:
+  en: 6ebbde076057bbc7
+  zh: dcde2ef4fc16fc99
+/singula-ai-alego-scope/use-this-package/mint-a-scope:
+  en: e7bfa7a59f61fd72
+  zh: 852d6d4b113babd1
+/singula-ai-alego-scope/use-this-package/route-scoped-events:
+  en: 7439a6c862956a63
+  zh: bfeda5194bb8cdc9
+/singula-ai-alego-scope/use-this-package/build-a-scoped-registry-layer:
+  en: 187aa0e904782395
+  zh: 14fa36d3716eaff2
+/singula-ai-alego-scope/understand-the-implementation:
+  en: ce7e776e9d516bdb
+  zh: 59d2751743db7795
+/singula-ai-alego-scope/understand-the-implementation/design-concept:
+  en: 1d19d421fa6f3546
+  zh: ed6679cfc9166f14
+/singula-ai-alego-scope/understand-the-implementation/source-map:
+  en: 52dd18180452c174
+  zh: 47d0198266697794
+/singula-ai-alego-scope/understand-the-implementation/the-parent-chain:
+  en: f0c433a9b0091de4
+  zh: 21cecb4194aff7d0
+/singula-ai-alego-scope/understand-the-implementation/event-filtering:
+  en: 9ec9b8d491c7dfe7
+  zh: da82e63bac268535
+/singula-ai-alego-scope/further-exploration:
+  en: 35566cf63d292419
+  zh: 9410a0b1ecea5af9
+/singula-ai-alego-scope/known-limitations-and-deferred-work:
+  en: 87eea2029792dc14
+  zh: ba020413273d3235
+/singula-ai-alego-scope/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

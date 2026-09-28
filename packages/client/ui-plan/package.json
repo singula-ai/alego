@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-plan",
-  "description": "Plan-mode composer control: the conversation.input.plan seat over the plan projection and the /plan command channel",
-  "version": "0.1.5-rc.2",
+  "description": "Plan mode controls, persistent transcript plan cards, and sidebar Markdown previews",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -30,7 +30,12 @@
       "inject": [
         "@singula-ai/alego-api-remotes",
         "@singula-ai/alego-client-locale",
-        "@singula-ai/alego-client-ui-conversation"
+        "@singula-ai/alego-client-ui-conversation",
+        "@singula-ai/alego-client-ui-sidebar-right",
+        "@singula-ai/alego-client-ui-chat",
+        "@singula-ai/alego-client-ui-user-questions",
+        "@singula-ai/alego-client-resources",
+        "@singula-ai/alego-api-session-controller"
       ],
       "platform": "web"
     }
@@ -41,22 +46,32 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-api-remotes": "workspace:^",
-    "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-test-runtime": "workspace:^",
-    "@singula-ai/alego-client-ui-conversation": "workspace:^",
-    "@singula-ai/alego-client-ui-primitives": "workspace:^",
-    "@singula-ai/alego-client-ui-slots": "workspace:^",
-    "@singula-ai/alego-plan-mode": "workspace:^",
+    "@singula-ai/alego-client-store": "workspace:*",
+    "@singula-ai/alego-api-remotes": "workspace:*",
+    "@singula-ai/alego-client-locale": "workspace:*",
+    "@singula-ai/alego-client-test-runtime": "workspace:*",
+    "@singula-ai/alego-client-ui-conversation": "workspace:*",
+    "@singula-ai/alego-client-ui-primitives": "workspace:*",
+    "@singula-ai/alego-client-ui-slots": "workspace:*",
+    "@singula-ai/alego-plan-mode": "workspace:*",
     "@types/react": "~18.3.1",
-    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/cordis": "workspace:~",
     "react": "^18.2.0",
-    "@singula-ai/alego-session": "workspace:^",
-    "@singula-ai/alego-client-ui-renderer": "workspace:^",
-    "@singula-ai/alego-client-ui-session": "workspace:^"
+    "@singula-ai/alego-session": "workspace:*",
+    "@singula-ai/alego-client-ui-renderer": "workspace:*",
+    "@singula-ai/alego-client-ui-session": "workspace:*",
+    "@singula-ai/alego-api-session-controller": "workspace:*",
+    "@singula-ai/alego-client-ui-chat": "workspace:*",
+    "@singula-ai/alego-client-ui-sidebar-right": "workspace:*",
+    "@singula-ai/alego-client-ui-user-questions": "workspace:*",
+    "@singula-ai/alego-client-resources": "workspace:*",
+    "@singula-ai/alego-typert-protocol": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/alego-util-crypto": "workspace:*"
   },
   "files": [
     "lib/index.js",

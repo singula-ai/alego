@@ -52,7 +52,7 @@ async function harness(): Promise<Harness> {
   await ctx.plugin(GoalService)
   const plugin = await ctx.plugin(commandGoal)
   const { agent, session } = stubAgent(ctx, `command-goal-${Math.random()}`)
-  ctx.agents.register(agent)
+  await ctx.agents.register(agent)
   return { ctx, agent, session, plugin }
 }
 

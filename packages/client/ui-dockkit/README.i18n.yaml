@@ -1,6 +1,40 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-dockkit/README.md
-README.md: aacb043737c4c425e2c51a899731a7bc9956d054
-README.zh.md: 6d456ccd932912ef2d54b1c140ab0b762b5310fd
+/:
+  en: 28083c3ca77376fc
+  zh: 29a9207b17c92e37
+/singula-ai-alego-client-ui-dockkit:
+  en: cc2ed9f2a4c34d1a
+  zh: e2bcb7c8fce884b0
+/singula-ai-alego-client-ui-dockkit/summary:
+  en: 3ee4584a73215ef4
+  zh: 051170a6d0993fa5
+/singula-ai-alego-client-ui-dockkit/table-of-contents:
+  en: 42038fdc402b9c2a
+  zh: 99890f8f908624ce
+/singula-ai-alego-client-ui-dockkit/the-two-layers:
+  en: ea872ff2c2089037
+  zh: b3ec3a218eacd5c8
+/singula-ai-alego-client-ui-dockkit/embedding-it:
+  en: 789c879dd83f463a
+  zh: 37f2dc45f9588810
+/singula-ai-alego-client-ui-dockkit/interaction-rules-worth-keeping:
+  en: 7e5c1e9a9f9f244f
+  zh: 7e3a8fcef86bc7dd
+/singula-ai-alego-client-ui-dockkit/build-shape:
+  en: 21216ba5798d7f5f
+  zh: ac505fdcd5c114d4
+/singula-ai-alego-client-ui-dockkit/model-experience:
+  en: cdebb91645623401
+  zh: fe262db316714fa8
+/singula-ai-alego-client-ui-dockkit/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: f57cc48a1b5cbfa9
+/singula-ai-alego-client-ui-dockkit/known-limitations-and-deferred-work:
+  en: 4323810ca5a87e6c
+  zh: 3a24af2ea4467ab7
+/singula-ai-alego-client-ui-dockkit/known-limitations-and-deferred-work/dev-note:
+  en: 16f3726a4f1329de
+  zh: 6254d0bfdcc654f7

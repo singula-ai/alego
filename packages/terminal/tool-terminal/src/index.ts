@@ -9,11 +9,12 @@ import z from '@singula-ai/schemastery'
 import type { Agent } from '@singula-ai/alego-agent'
 import type { ContentBlock } from '@singula-ai/alego-llm'
 import { TerminalSessionId } from '@singula-ai/alego-terminal'
-import type { TerminalSendResult, TerminalSessionId as TerminalSessionIdType, TerminalSignal } from '@singula-ai/alego-terminal'
+import type { TerminalSendOperation, TerminalSendResult, TerminalSessionId as TerminalSessionIdType, TerminalSignal } from '@singula-ai/alego-terminal'
 import type {} from '@singula-ai/alego-jobs'
 import { defineTool } from '@singula-ai/alego-tools'
 import type { ToolDefinition } from '@singula-ai/alego-tools'
-import { boundTerminalText, renderList, renderRead, renderSend, renderSendRead, renderSpawn } from './render.ts'
+import { sendSource } from './background.ts'
+import { boundTerminalText, renderList, renderRead, renderSend, renderSpawn } from './render.ts'
 
 declare module '@singula-ai/alego-jobs' {
   interface JobKindMap {
@@ -105,7 +106,7 @@ const SESSION_SNAPSHOT_SCHEMA = {
   properties: SESSION_SNAPSHOT_PROPERTIES,
 } as const
 
-const BACKGROUND_TASK_OUTPUT_SCHEMA = {
+const BACKGROUND_JOB_OUTPUT_SCHEMA = {
   type: 'object',
   additionalProperties: false,
   properties: {
@@ -210,7 +211,7 @@ export function apply(ctx: Context, config: Config = {}): void {
     output: {
       schema: {
         oneOf: [
-          BACKGROUND_TASK_OUTPUT_SCHEMA,
+          BACKGROUND_JOB_OUTPUT_SCHEMA,
           {
             type: 'object',
             additionalProperties: false,
@@ -252,23 +253,25 @@ export function apply(ctx: Context, config: Config = {}): void {
         const jobs = ctx.get('jobs')
         if (jobs === undefined) throw new Error('background terminal sends require @singula-ai/alego-jobs and @singula-ai/alego-tool-jobs')
         let cancelRequested = false
+        let operation: TerminalSendOperation | undefined
         const jobId = jobs.start({
           kind: 'pty-send',
           label: `${id}: ${args.text || '(input)'}`,
-          owner,
+          owner: owner.id,
           outputLimitBytes: maxResultBytes,
+          output: [sendSource(() => operation)],
           run: () => {
-            const operation = ctx.terminals.startSend(owner, id, request)
+            const started = ctx.terminals.startSend(owner, id, request)
+            operation = started
             return {
               cancel: () => {
                 cancelRequested = true
-                operation.cancel()
+                started.cancel()
               },
-              done: operation.done.then(
+              done: started.done.then(
                 result => ({ status: cancelRequested ? 'killed' as const : 'completed' as const, detail: sendDetail(result) }),
                 (error: unknown) => ({ status: 'failed' as const, detail: String(error) }),
               ),
-              readOutput: () => renderSendRead(operation.readOutput()),
             }
           },
         })

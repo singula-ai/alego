@@ -1,6 +1,55 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/util/atomic-write/README.md
-README.md: 1b3f1b7d19bde0d7e502d84884dde093c84b3df6
-README.zh.md: 66737c2bf5cea12a2f8a2e752b944748de167e01
+/:
+  en: 1065a4fcafd0430d
+  zh: 40bc911b6d01288b
+/singula-ai-alego-atomic-write:
+  en: d8adf260f938426f
+  zh: 83805a6b5a621ae8
+/singula-ai-alego-atomic-write/summary:
+  en: ba8848e8a23370d4
+  zh: ef1c64e3deabf623
+/singula-ai-alego-atomic-write/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-atomic-write/use-this-package:
+  en: 9cc27a0ee5ae0808
+  zh: d0ee06b54452f600
+/singula-ai-alego-atomic-write/use-this-package/writing-a-file-atomically:
+  en: 7b757dc3c3b27335
+  zh: a097d90a2561475d
+/singula-ai-alego-atomic-write/use-this-package/coordinating-writers:
+  en: 77c865c1f78d2a0c
+  zh: 5a91874c352c6f18
+/singula-ai-alego-atomic-write/use-this-package/failures-to-plan-for:
+  en: 59308dc757e25273
+  zh: 01113ed577a413cb
+/singula-ai-alego-atomic-write/understand-the-implementation:
+  en: 93b537308f7c88c7
+  zh: 282e0d2042aeb1be
+/singula-ai-alego-atomic-write/understand-the-implementation/source-map:
+  en: 725509a8b621c668
+  zh: c11e3ffdf73af844
+/singula-ai-alego-atomic-write/understand-the-implementation/write-path:
+  en: 3505fb66a7d11152
+  zh: 1dbf3f50a70021ba
+/singula-ai-alego-atomic-write/understand-the-implementation/why-the-swap-stays-safe:
+  en: 784e985c1fb3a25e
+  zh: 4afda1b9bf5f29cc
+/singula-ai-alego-atomic-write/further-exploration:
+  en: 79642a4ead55569f
+  zh: 5d1ee12e13a4467a
+/singula-ai-alego-atomic-write/model-experience:
+  en: 225fc1d94a284905
+  zh: 7319a43c3b8a884d
+/singula-ai-alego-atomic-write/model-experience/kv-cache-effect:
+  en: 815e93723a98919c
+  zh: 921da870f67e4033
+/singula-ai-alego-atomic-write/known-limitations-and-deferred-work:
+  en: 5d0b395da8833bbb
+  zh: 6191bab46d288be7
+/singula-ai-alego-atomic-write/known-limitations-and-deferred-work/dev-note:
+  en: d3461ceeaf041974
+  zh: f59df2adbf52fed9

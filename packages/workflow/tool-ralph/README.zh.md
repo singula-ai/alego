@@ -70,7 +70,7 @@ kind: "package-reference"
 
 ### 生命周期与取消
 
-调用方 agent 是每个全新子 agent 的父级，因此会保留 cwd 与谱系，但不会复制其对话。`exec.signal` 进入工作流引擎，同时也桥接到 `run.cancel()`，以便不依赖具体实现。工具等待 `run.result` 并在 `finally` 中调用 `run.dispose()`，因此被取消的父级步骤会等到引擎完成有界终止且子 agent 完全停稳后才返回。
+调用方 agent 是每个全新子 agent 的父级，因此会保留 cwd 与谱系，但不会复制其对话。`exec.signal` 进入工作流引擎，同时也桥接到 `run.cancel()`，以便不依赖具体实现。工具等待 `run.result` 并在 `finally` 中调用 `run.dispose()`，因此被取消的父级步骤会等到进程与子 agent 清理完成后才返回。PTC 引擎不设整体工作流经过时间截止；调用方取消仍然生效。
 
 ### 渲染意图
 
@@ -94,7 +94,7 @@ kind: "package-reference"
 
 - [工作流子系统](../../../docs/subsystems/workflow.zh.md)——固定循环背后的 seam 约定。
 - [工作流 seam](../workflow/README.zh.md)——运行与结果词汇。
-- [worker-thread 引擎](../workflow-worker-thread/README.zh.md)——执行固定脚本的引擎。
+- [PTC 工作流引擎](../workflow-ptc/README.zh.md)——执行固定脚本的引擎。
 - [subagent seam](../../subagent/subagent/README.zh.md)——全新子 agent 的提供方约定。
 - [goal 组](../../goal/goal/README.zh.md)——面向普通长期目标的同会话 goal 工具。
 - [Harness 层目标式执行 Agent Note](../../../.agents/notes/implemented/feature/2026-07-16-harness-level-loop.zh.md)——策略、提供方要求与暂缓事项。

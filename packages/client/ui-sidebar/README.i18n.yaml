@@ -1,6 +1,55 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-sidebar/README.md
-README.md: 304e7164fbe1e385da36d34868085784dc2496b9
-README.zh.md: 13ef5d625de8c3b90fb75fda7f85add53eb9b45d
+/:
+  en: d0f0f6a3b8aeeef0
+  zh: 8c5fc0666017fd71
+/singula-ai-alego-client-ui-sidebar:
+  en: 9ab5f158aa3eab3a
+  zh: f3e7518ca0591e26
+/singula-ai-alego-client-ui-sidebar/summary:
+  en: 9f7805b351ee49d0
+  zh: b40fdfcec90d527b
+/singula-ai-alego-client-ui-sidebar/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-client-ui-sidebar/use-this-package:
+  en: a970f0547496634f
+  zh: 36ef9a85b26e19f1
+/singula-ai-alego-client-ui-sidebar/use-this-package/brand-and-new-session:
+  en: a7d7dca2bf2b792a
+  zh: b7bdd414f09915e6
+/singula-ai-alego-client-ui-sidebar/use-this-package/global-panel-entries:
+  en: 5d3300d3506254c5
+  zh: 541ae1ee1e10b921
+/singula-ai-alego-client-ui-sidebar/use-this-package/collapse-behavior:
+  en: 9425cbda8d289a0e
+  zh: 0734c53fe27f9745
+/singula-ai-alego-client-ui-sidebar/use-this-package/macos-desktop:
+  en: d7fe45aac1fba8cc
+  zh: e82443e23a69af03
+/singula-ai-alego-client-ui-sidebar/use-this-package/scrollbars:
+  en: d053b1ed0f4fd293
+  zh: ff25a56541f57530
+/singula-ai-alego-client-ui-sidebar/understand-the-implementation:
+  en: 676cd4c309b4110d
+  zh: 25d1bd0b2c7db645
+/singula-ai-alego-client-ui-sidebar/understand-the-implementation/slot-discipline:
+  en: 6eefc5c45abe8a8f
+  zh: 20b651e48a0ea903
+/singula-ai-alego-client-ui-sidebar/further-exploration:
+  en: a8d7fbfcab628d94
+  zh: 1f8fc767aef6aaa3
+/singula-ai-alego-client-ui-sidebar/model-experience:
+  en: 3120df665299c634
+  zh: 1d9f365d091d0d2a
+/singula-ai-alego-client-ui-sidebar/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: de54f3467ef3b9be
+/singula-ai-alego-client-ui-sidebar/known-limitations-and-deferred-work:
+  en: 262db5b10dfb7d98
+  zh: c1b5cf6aa58b054e
+/singula-ai-alego-client-ui-sidebar/known-limitations-and-deferred-work/dev-note:
+  en: c8d74533efbc8d23
+  zh: eb58f7098335f55e

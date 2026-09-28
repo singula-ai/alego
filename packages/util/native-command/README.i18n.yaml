@@ -1,6 +1,52 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/util/native-command/README.md
-README.md: 76d181b780ef134b210b3c91fca1b0a8adeccc4a
-README.zh.md: 44a4f007433872e3af33455d34d57ec9c9464e85
+/:
+  en: 3e0acbcc586810bb
+  zh: 688d34f126d1450e
+/singula-ai-alego-native-command:
+  en: 2affb059f583e5d0
+  zh: dd01e42271cfcc56
+/singula-ai-alego-native-command/summary:
+  en: a6c8088b4649b2da
+  zh: 6fc0fad1c3ad3590
+/singula-ai-alego-native-command/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-native-command/use-this-package:
+  en: aba695cba233905f
+  zh: c6359da30eb8e372
+/singula-ai-alego-native-command/use-this-package/running-a-command:
+  en: 3a499bda33e33102
+  zh: d01abbf863810607
+/singula-ai-alego-native-command/use-this-package/injecting-the-command-boundary:
+  en: 987bed629737b59d
+  zh: 258e30f813b0edcb
+/singula-ai-alego-native-command/use-this-package/opening-a-host-path:
+  en: b4ec677605b12ff8
+  zh: f35256957eea141a
+/singula-ai-alego-native-command/understand-the-implementation:
+  en: 78e86818bea36f9f
+  zh: 71dc1ad3e4cbe9f1
+/singula-ai-alego-native-command/understand-the-implementation/source-map:
+  en: a19bb4cb9f6de785
+  zh: cc930d8facf1ca07
+/singula-ai-alego-native-command/understand-the-implementation/what-execfile-gives-the-runner:
+  en: b16da99b2ed73bfd
+  zh: 5e806c31a6296366
+/singula-ai-alego-native-command/further-exploration:
+  en: 02453154388ab073
+  zh: 9b48d2b8dba544f0
+/singula-ai-alego-native-command/model-experience:
+  en: d478457568b9517e
+  zh: 0460368e7567a13f
+/singula-ai-alego-native-command/model-experience/kv-cache-effect:
+  en: 296c060e95197cc5
+  zh: b9d3fdf11b5ebe1e
+/singula-ai-alego-native-command/known-limitations-and-deferred-work:
+  en: d3af15e86d679b8e
+  zh: ee5aa3c8cbd9d2db
+/singula-ai-alego-native-command/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

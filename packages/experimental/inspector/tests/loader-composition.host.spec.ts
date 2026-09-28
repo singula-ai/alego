@@ -3,10 +3,11 @@
 import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { pathToFileURL } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import { Context } from '@singula-ai/cordis'
 import Include from '@singula-ai/cordis-plugin-include'
 import Loader from '@singula-ai/cordis-plugin-loader'
+import { loadOverlayPatches } from '@singula-ai/alego-app-boot'
 import WebServer from '@singula-ai/alego-host-webserver'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import * as Inspector from '../src/index.ts'
@@ -22,7 +23,7 @@ afterEach(async () => {
 })
 
 describe('experimental Inspector through a real Loader composition', () => {
-  it('loads the named-export Host face from cordis.yml and releases its endpoint', async () => {
+  it('mounts the bundle patch over a Web server row and releases its endpoint', async () => {
     root = await mkdtemp(join(tmpdir(), 'alego-inspector-loader-'))
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, [
@@ -30,12 +31,14 @@ describe('experimental Inspector through a real Loader composition', () => {
       '  config:',
       "    host: '127.0.0.1'",
       '    port: 0',
-      "- name: '@singula-ai/alego-experimental-inspector'",
-      '  config:',
-      '    port: 0',
-      '    captureFetch: false',
       '',
     ].join('\n'))
+    // The shipped bundle patch inserts the row by package name under a stable id; a later
+    // profile patch configures that id, as the Plugins page and a `--patch` overlay do.
+    const bundlePatches = loadOverlayPatches('test', fileURLToPath(new URL('../cordis.patch.yml', import.meta.url)))
+    expect(bundlePatches.flatMap(patch => patch.insert ?? [])).toEqual([
+      { id: 'experimental-inspector', name: '@singula-ai/alego-experimental-inspector' },
+    ])
 
     context = new Context()
     context.baseUrl = pathToFileURL(root).href + '/'
@@ -62,7 +65,10 @@ describe('experimental Inspector through a real Loader composition', () => {
     } as unknown as NonNullable<typeof context.loader.internal>
     await context.loader.create({
       name: 'cordis:include',
-      config: { path: pathToFileURL(configPath).href },
+      config: {
+        path: pathToFileURL(configPath).href,
+        patches: [...bundlePatches, { id: 'experimental-inspector', config: { port: 0, captureFetch: false } }],
+      },
     })
     await context.loader.await()
 

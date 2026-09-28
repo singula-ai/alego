@@ -1,6 +1,22 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-02-native-github-stacks-and-optional-rebases.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-08-02-native-github-stacks-and-optional-rebases.md
-2026-08-02-native-github-stacks-and-optional-rebases.md: e9c1d59c8721e99b30fc8de0b68c5ea8f7b1ff3f
-2026-08-02-native-github-stacks-and-optional-rebases.zh.md: 823cd896e42b0daed69587dcfdad92ff828e2138
+/agent-note-native-github-stacks-and-optional-pr-rebases:
+  en: 2431b4024418432d
+  zh: 6575cd74975bf6df
+/agent-note-native-github-stacks-and-optional-pr-rebases/problem:
+  en: 21312af191207fa6
+  zh: 86306b4c6dd08a0c
+/agent-note-native-github-stacks-and-optional-pr-rebases/decision:
+  en: 893a172d6f0fc764
+  zh: 5fdeca6898882bb2
+/agent-note-native-github-stacks-and-optional-pr-rebases/verification:
+  en: d336ece1dce09c10
+  zh: 9587dfbc9ab988e6
+/agent-note-native-github-stacks-and-optional-pr-rebases/alternatives-considered:
+  en: 9c601bc6dee773f1
+  zh: 72fb6396e76ba2a5
+/agent-note-native-github-stacks-and-optional-pr-rebases/consequences:
+  en: 7cb31f6445970432
+  zh: 0da95a9f9b521bea

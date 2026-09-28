@@ -81,6 +81,8 @@ A backend that summarizes through `ctx.llm.stream()` must forward the abort sign
 
 ### Manual failure taxonomy
 
+The synchronous `compaction/summary-error` waterfall lets a backend request durable input recovery for a failed summary and an explicit selection. A listener returns true only after recording progress, or calls `next()` to delegate. The backend checks cancellation and selection stability before dispatch, then re-derives and re-prices input before retrying. The event declaration documents its payload; image policy belongs to `alego-compaction-image-offload`.
+
 Expected manual failures throw `ManualCompactionError` with a stable `code` from a small closed set; only failures after the `compaction/start` marker are recorded — as a `compaction/end` carrying the error — while a `busy` rejection or pre-start cancellation leaves no record. The per-code semantics live in the [compaction subsystem reference](../../../docs/subsystems/compaction.md).
 
 <a id="tool-pairing-boundaries"></a>

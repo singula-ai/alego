@@ -1,7 +1,7 @@
 # Keyless generic ACP v1 control-surface patch over `alego --profile acp`.
 
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   disabled: true
 
 - id: acp

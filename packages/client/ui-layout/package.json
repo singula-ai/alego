@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-layout",
   "description": "Shell plugin: three-column AppFrame with drag handles, ctx.layout viewing-state service (navigation + panels)",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -31,7 +31,8 @@
         "@singula-ai/alego-client-locale",
         "@singula-ai/alego-client-ui-renderer",
         "@singula-ai/alego-client-ui-session",
-        "@singula-ai/alego-client-ui-theme"
+        "@singula-ai/alego-client-ui-theme",
+        "@singula-ai/alego-client-shortcuts"
       ],
       "platform": "web"
     }
@@ -42,19 +43,20 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-store": "workspace:^",
-    "@singula-ai/alego-client-ui-renderer": "workspace:^",
-    "@singula-ai/alego-client-ui-session": "workspace:^",
-    "@singula-ai/alego-client-ui-slots": "workspace:^",
-    "@singula-ai/alego-client-ui-theme": "workspace:^",
+    "@singula-ai/alego-brand": "workspace:*",
+    "@singula-ai/alego-client-locale": "workspace:*",
+    "@singula-ai/alego-client-store": "workspace:*",
+    "@singula-ai/alego-client-ui-renderer": "workspace:*",
+    "@singula-ai/alego-client-ui-session": "workspace:*",
+    "@singula-ai/alego-client-ui-slots": "workspace:*",
+    "@singula-ai/alego-client-ui-theme": "workspace:*",
     "@types/react": "~18.3.1",
-    "@singula-ai/cordis": "workspace:^",
-    "react": "^18.2.0"
+    "@singula-ai/cordis": "workspace:~",
+    "react": "^18.2.0",
+    "@singula-ai/alego-client-shortcuts": "workspace:*"
   },
   "files": [
     "lib/index.js",

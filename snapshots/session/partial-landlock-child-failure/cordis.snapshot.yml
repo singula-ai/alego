@@ -1,7 +1,7 @@
 # Keyless runner-classification composition: replay authored model turns and
 # replace the shipping provider with a deterministic process-launch stand-in.
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   disabled: true
 
 - id: sandbox

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { sessionFormatCatalog } from '@singula-ai/alego-session-format-catalog'
+import { v3Catalog as sessionFormatCatalog } from './catalog.ts'
 import { SessionFormatEventCollector, SessionFormatUnsupportedMigrationError } from '@singula-ai/alego-session-format'
 import type { SessionFormatEvent, SessionFormatJsonObject } from '@singula-ai/alego-session-format'
 import { releasedV3SessionFormatCodec, restoreReleasedV3Artifact } from '../src/index.ts'

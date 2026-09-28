@@ -1,6 +1,55 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-theme/README.md
-README.md: 3d2f1f063d72173c4181c0264d984fc126d9dde1
-README.zh.md: 6758a0a0d02be11f2336041e9c102341da79cded
+/:
+  en: b8353204cafa8b77
+  zh: 072f4ad23747a775
+/singula-ai-alego-client-ui-theme:
+  en: 12a20c508ee018bb
+  zh: 35c32f502ab93018
+/singula-ai-alego-client-ui-theme/summary:
+  en: 1d5ff2bb8af45562
+  zh: 639023fad39bdd95
+/singula-ai-alego-client-ui-theme/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-client-ui-theme/use-this-package:
+  en: 5d64b3d918d5edfa
+  zh: fc929354a0faf33a
+/singula-ai-alego-client-ui-theme/use-this-package/appearance-and-font-size:
+  en: 0b0177e1afefe4a7
+  zh: 52d88f12a8369ee8
+/singula-ai-alego-client-ui-theme/use-this-package/registering-a-theme:
+  en: 2cd32ccaba33b3e9
+  zh: 53ea78d19929ea02
+/singula-ai-alego-client-ui-theme/use-this-package/pre-plugin-palette:
+  en: e300d31ecb899c4b
+  zh: fa2a917e91f36771
+/singula-ai-alego-client-ui-theme/understand-the-implementation:
+  en: 532fb1273bc6d2aa
+  zh: b59f1469c6534850
+/singula-ai-alego-client-ui-theme/understand-the-implementation/stylesheets:
+  en: 3aff7a1917e19022
+  zh: 1cef74997773f833
+/singula-ai-alego-client-ui-theme/understand-the-implementation/scrollbar-rebinding:
+  en: 761249625593df1e
+  zh: b66250a5849368da
+/singula-ai-alego-client-ui-theme/understand-the-implementation/preference-persistence:
+  en: 7e9befd637b57a76
+  zh: cb6a4606427e100e
+/singula-ai-alego-client-ui-theme/further-exploration:
+  en: acf218ec457c9417
+  zh: 4defe4b6d3427a2e
+/singula-ai-alego-client-ui-theme/model-experience:
+  en: 3120df665299c634
+  zh: 1d9f365d091d0d2a
+/singula-ai-alego-client-ui-theme/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: de54f3467ef3b9be
+/singula-ai-alego-client-ui-theme/known-limitations-and-deferred-work:
+  en: 0d328dbced31a041
+  zh: 2951de356ba6bb82
+/singula-ai-alego-client-ui-theme/known-limitations-and-deferred-work/dev-note:
+  en: f1a2942985b11203
+  zh: 8196d82321e024b0

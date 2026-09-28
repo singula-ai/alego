@@ -1,6 +1,25 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/util/workspace-path/README.md
-README.md: e22710783faa29bfa81250b1e453d27a20ade0a2
-README.zh.md: de9cc65c6accb1620b0de75e8de304a5abefd0ca
+/:
+  en: e8d97ffa99a57ab7
+  zh: 2d7247c47412c30a
+/alego-util-workspace-path:
+  en: 17c7d018b987748d
+  zh: d8006feda1b7ffd9
+/alego-util-workspace-path/summary:
+  en: a7ee9a87492356d0
+  zh: fd6639d11dd636c0
+/alego-util-workspace-path/table-of-contents:
+  en: e8236aa6cbcb7dca
+  zh: 500e57982344c0fa
+/alego-util-workspace-path/file-addresses:
+  en: 77684bd37392a98a
+  zh: da03b7e8b329b01d
+/alego-util-workspace-path/known-limitations-and-deferred-work:
+  en: 1e6d448f4f0030c4
+  zh: c050dd5e470fe47b
+/alego-util-workspace-path/known-limitations-and-deferred-work/dev-note:
+  en: cfc7173facebc57c
+  zh: 4ea51377d7c9c147

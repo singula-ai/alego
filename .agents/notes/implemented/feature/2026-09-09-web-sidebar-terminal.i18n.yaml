@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-09-09-web-sidebar-terminal.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-09-09-web-sidebar-terminal.md
+/agent-note-web-sidebar-terminals:
+  en: ac174cbb944ca471
+  zh: 582a3d397110d723
+/agent-note-web-sidebar-terminals/problem:
+  en: 71813b1cb1f750ba
+  zh: 64d2b999933ccd98
+/agent-note-web-sidebar-terminals/decision:
+  en: 7c655b6711bfbdfd
+  zh: 6b4c0bcd08f21c25
+/agent-note-web-sidebar-terminals/alternatives-considered:
+  en: 1f05541ce2b04517
+  zh: b010442340a5f664
+/agent-note-web-sidebar-terminals/consequences:
+  en: 9bac95d170d386a2
+  zh: d6023e35f40824b8
+/agent-note-web-sidebar-terminals/related:
+  en: 1e05fbc42dfa6919
+  zh: bd3123148f314981

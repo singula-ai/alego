@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-09-15-bounded-office-conversion.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-15-bounded-office-conversion.md
+/agent-note-bounded-shared-office-conversion:
+  en: 1b915d4e167e0a05
+  zh: 2ab99df3abda9d72
+/agent-note-bounded-shared-office-conversion/problem:
+  en: b305613daff5a763
+  zh: 1aba13289664f65c
+/agent-note-bounded-shared-office-conversion/decision:
+  en: d9963972d9247e91
+  zh: aebd0d5b1eb60ee5
+/agent-note-bounded-shared-office-conversion/alternatives-considered:
+  en: 9d5cfb7fa5f66bd6
+  zh: 4f4133daa2f02f43
+/agent-note-bounded-shared-office-conversion/consequences:
+  en: c2800ff56c8f89d1
+  zh: 3b3710072b59c443
+/agent-note-bounded-shared-office-conversion/related:
+  en: 7d83d8813b089a86
+  zh: 0fb85838b8113343

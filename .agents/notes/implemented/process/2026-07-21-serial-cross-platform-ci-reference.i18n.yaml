@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-21-serial-cross-platform-ci-reference.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-21-serial-cross-platform-ci-reference.md
-2026-07-21-serial-cross-platform-ci-reference.md: 09abeae828bc01cb529cb267dd611ff3be542661
-2026-07-21-serial-cross-platform-ci-reference.zh.md: 201f3441eae98905742a9421b111a3406fb551b7
+/agent-note-serial-cross-platform-ci-reference:
+  en: 58005020261622e1
+  zh: fef2f4d79e99a69c
+/agent-note-serial-cross-platform-ci-reference/problem:
+  en: 4fb1c27a631b32d3
+  zh: 9dbe9a4b9aadfca9
+/agent-note-serial-cross-platform-ci-reference/decision:
+  en: 5ad7f5e0846ddc2b
+  zh: c15f7aee5dbba62e
+/agent-note-serial-cross-platform-ci-reference/alternatives-considered:
+  en: bc72a1e194e3b0e2
+  zh: 9a92cbac88adc7a7
+/agent-note-serial-cross-platform-ci-reference/consequences:
+  en: 7042125ce6a209d4
+  zh: ef2be4fa8a4d6320

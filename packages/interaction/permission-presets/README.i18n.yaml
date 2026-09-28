@@ -1,6 +1,64 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/interaction/permission-presets/README.md
-README.md: 90c07f9d6d8ba6169c130be7f9942041233146d8
-README.zh.md: cc49735991794c5172559f52e4e1d8ac2fe85a5d
+/:
+  en: a4e18d5b27337d71
+  zh: 2220eba5dfcdb1f3
+/singula-ai-alego-permission-presets:
+  en: 8be477ee6d0678e0
+  zh: 6c14037eaa083b2b
+/singula-ai-alego-permission-presets/summary:
+  en: 75a5c477313feb23
+  zh: 9e036411e14edf1b
+/singula-ai-alego-permission-presets/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-permission-presets/use-this-package:
+  en: 0b93409c92e2a769
+  zh: 4b4e10636760bb15
+/singula-ai-alego-permission-presets/use-this-package/configuring-presets:
+  en: a53faabe7729a256
+  zh: ee11e81fbc76215b
+/singula-ai-alego-permission-presets/use-this-package/switching-presets:
+  en: ede3169d799a7578
+  zh: cb88e3ade597e486
+/singula-ai-alego-permission-presets/use-this-package/what-users-see:
+  en: 628a5bdd956e206c
+  zh: 172be9a9748d65ce
+/singula-ai-alego-permission-presets/use-this-package/session-defaults:
+  en: 88218998b169a203
+  zh: 7a3646ff0ca28549
+/singula-ai-alego-permission-presets/understand-the-implementation:
+  en: f5c37bc882b3f0d1
+  zh: 8203bea78976aefc
+/singula-ai-alego-permission-presets/understand-the-implementation/source-map:
+  en: c240ef830a066e26
+  zh: 423ae941bed7e96c
+/singula-ai-alego-permission-presets/understand-the-implementation/write-path:
+  en: 0ccd75cdcb93bdba
+  zh: 344bd689f16665ce
+/singula-ai-alego-permission-presets/understand-the-implementation/read-side-and-custom:
+  en: c9ca792038f44654
+  zh: 83cc2641c800c114
+/singula-ai-alego-permission-presets/understand-the-implementation/session-pinning-and-blank-reuse:
+  en: 893cea88bce22903
+  zh: 2431e19ced670511
+/singula-ai-alego-permission-presets/understand-the-implementation/catalog-projection-and-optional-command:
+  en: 2e79bec74274b054
+  zh: 256526ab1b4b55e9
+/singula-ai-alego-permission-presets/further-exploration:
+  en: a9612e7e27a552c1
+  zh: d8e3a9cd48cd5cf5
+/singula-ai-alego-permission-presets/model-experience:
+  en: 76cef8f3ed62794a
+  zh: facd6cd30d21b0a0
+/singula-ai-alego-permission-presets/model-experience/kv-cache-effect:
+  en: 40294c1c31b74824
+  zh: ef3368fe16abff21
+/singula-ai-alego-permission-presets/known-limitations-and-deferred-work:
+  en: 8f245d69661be63f
+  zh: d14108248083eaa5
+/singula-ai-alego-permission-presets/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

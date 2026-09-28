@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-10-subagent-approval-pinned-never.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-10-subagent-approval-pinned-never.md
-2026-08-10-subagent-approval-pinned-never.md: 5ec726ea90fe72e23586a34831b4e2ab733cb391
-2026-08-10-subagent-approval-pinned-never.zh.md: be759b408726adc495d8662463a7babaef184edc
+/agent-note-delegated-subagents-run-with-approvals-pinned-to-never:
+  en: 15254adfeaa8215b
+  zh: 1f1ee8fb1c08af3a
+/agent-note-delegated-subagents-run-with-approvals-pinned-to-never/problem:
+  en: fa1add8bd8bb3733
+  zh: 35ac0951e676acaf
+/agent-note-delegated-subagents-run-with-approvals-pinned-to-never/decision:
+  en: 7ce945fbda50889f
+  zh: caa044ccc3df9c5f
+/agent-note-delegated-subagents-run-with-approvals-pinned-to-never/alternatives-considered:
+  en: f0ceade4c6b6a636
+  zh: 3b6eae01ffbb10c1
+/agent-note-delegated-subagents-run-with-approvals-pinned-to-never/consequences:
+  en: 2e44decb00894870
+  zh: 9121102791eeaab0

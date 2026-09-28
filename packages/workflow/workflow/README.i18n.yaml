@@ -1,6 +1,61 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/workflow/workflow/README.md
-README.md: dc6fb14a08e34df32c7e23228883e91be3496b56
-README.zh.md: 4a15310ca1378b8d717760aeb6b5e02b55c45457
+/:
+  en: 2db6c7ad9f69f2b8
+  zh: ccfc28844ee5cebd
+/singula-ai-alego-workflow:
+  en: 8a4f008abce0eab3
+  zh: a9429f1540daef8c
+/singula-ai-alego-workflow/summary:
+  en: c7603bd9094b5102
+  zh: 661b875a7683e5fc
+/singula-ai-alego-workflow/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-workflow/use-this-package:
+  en: bda974ed11bff0cb
+  zh: 91724b1f624a4ca6
+/singula-ai-alego-workflow/use-this-package/the-model-facing-path:
+  en: 84463dd39146a916
+  zh: 9aa94db64711d424
+/singula-ai-alego-workflow/use-this-package/running-a-workflow-script:
+  en: 938a268642212305
+  zh: 08d094d12060e349
+/singula-ai-alego-workflow/use-this-package/programmatic-runs:
+  en: 7a7173fc43e9e5f4
+  zh: 2488e8bb8c69bb4b
+/singula-ai-alego-workflow/use-this-package/failures-and-recovery:
+  en: 69e3e5358c089908
+  zh: 1d17b4e8aad5f028
+/singula-ai-alego-workflow/understand-the-implementation:
+  en: 32d9c2e2fd581462
+  zh: 04ed23a3d3bb4e19
+/singula-ai-alego-workflow/understand-the-implementation/design-concept:
+  en: 274b3de2f7b713ec
+  zh: e3953c1ae1f59442
+/singula-ai-alego-workflow/understand-the-implementation/source-map:
+  en: 67240e519a3e725f
+  zh: 495f806856054230
+/singula-ai-alego-workflow/understand-the-implementation/lifecycle-and-ownership:
+  en: 95b074d816b52323
+  zh: dfa070a1531651f9
+/singula-ai-alego-workflow/understand-the-implementation/failure-discipline:
+  en: e2c2a6e2876457e8
+  zh: 764cba9eede4bb79
+/singula-ai-alego-workflow/further-exploration:
+  en: 0cfd74368b79e976
+  zh: 6d5b572c87da254a
+/singula-ai-alego-workflow/model-experience:
+  en: fb93028027aba8f0
+  zh: 2207ddeef7889775
+/singula-ai-alego-workflow/model-experience/kv-cache-effect:
+  en: 243e59cc08420e3b
+  zh: 14d648f12ae48786
+/singula-ai-alego-workflow/known-limitations-and-deferred-work:
+  en: 5f6f60fbb44f67e9
+  zh: 0b1b9018f09aad25
+/singula-ai-alego-workflow/known-limitations-and-deferred-work/dev-note:
+  en: e225f492e530edc1
+  zh: 62234cac2367cc97

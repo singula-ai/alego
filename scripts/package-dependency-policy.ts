@@ -32,7 +32,9 @@ const CONFIGURATION_ONLY_DEV_DEPENDENCIES = {
 /** Workspace packages whose complete runtime surface is safe across duplicate installations. */
 const DUPLICATE_SAFE_PACKAGES: readonly string[] = [
   '@singula-ai/alego-brand',
+  '@singula-ai/alego-lazy-require',
   '@singula-ai/alego-typert-protocol',
+  '@singula-ai/alego-util-code-language',
   '@singula-ai/alego-util-crypto',
   '@singula-ai/alego-util-values',
 ]
@@ -54,7 +56,9 @@ const SAFE_HOST_DEPENDENCY_EXPORTS = {
 
 /** Runtime exports that require every consumer to resolve the provider's shared peer instance. */
 const PEER_REQUIRED_HOST_EXPORTS = {
-  '@singula-ai/alego-scope': ['carrierKeyOf', 'scopeOf', 'scopeTarget'],
+  '@singula-ai/alego-client-connection': ['OperatorPeer'],
+  '@singula-ai/alego-subprocess': ['SubprocessExecutableNotFoundError'],
+  '@singula-ai/alego-scope': ['carrierKeyOf', 'createScope', 'scopeOf', 'scopeTarget'],
   '@singula-ai/alego-session': ['SESSION_FORMAT_VERSION'],
   '@singula-ai/alego-session-persistence': ['SessionPersistenceNotFoundError'],
 } as const satisfies HostDependencyExports

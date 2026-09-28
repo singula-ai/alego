@@ -1,6 +1,97 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/mcp/mcp-client/README.md
-README.md: 2c170c30f294cbccc7d597fe61f7478044add775
-README.zh.md: 0a919224418565de5bb578ee59296cc42d7bfb6b
+/:
+  en: 6440e0efb151c0fa
+  zh: d767308eb95b9d3f
+/singula-ai-alego-mcp-client:
+  en: 43597836da96f861
+  zh: 6447882570a85c50
+/singula-ai-alego-mcp-client/summary:
+  en: d64336d268db5515
+  zh: 6447e489c73bc273
+/singula-ai-alego-mcp-client/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-mcp-client/use-this-package:
+  en: ffdab057309ac4fc
+  zh: 3d526211c803d093
+/singula-ai-alego-mcp-client/use-this-package/minimal-configuration:
+  en: 91801d8ac9fbf4e1
+  zh: be6a68e1b912b431
+/singula-ai-alego-mcp-client/use-this-package/tool-naming-and-coexistence:
+  en: 75ae9745d5b04796
+  zh: 8ae5b8ca6e73296e
+/singula-ai-alego-mcp-client/use-this-package/calling-tools-and-reading-results:
+  en: cad16c6102b0e316
+  zh: 03841eea6ead54cd
+/singula-ai-alego-mcp-client/use-this-package/startup-updates-and-reconnection:
+  en: d7b393106cf6b8fc
+  zh: a95bdc34e914b0da
+/singula-ai-alego-mcp-client/understand-the-implementation:
+  en: d33ddd080880b3f5
+  zh: 64328f5239c26752
+/singula-ai-alego-mcp-client/understand-the-implementation/design-philosophy:
+  en: 4e213d68082b07f0
+  zh: 7617949ba46a3b63
+/singula-ai-alego-mcp-client/understand-the-implementation/source-map:
+  en: ab2bbaa701f24c2c
+  zh: c6db79438239388e
+/singula-ai-alego-mcp-client/understand-the-implementation/lifecycle-and-sync:
+  en: ae9029b48b2a2e4e
+  zh: 048f08361b799667
+/singula-ai-alego-mcp-client/understand-the-implementation/tool-execution-internals:
+  en: b4333df1bd3f027c
+  zh: 6bb4be691452c27a
+/singula-ai-alego-mcp-client/understand-the-implementation/environment-scrubbing-stdio:
+  en: 558bc797799d827f
+  zh: e101f836f9a99bef
+/singula-ai-alego-mcp-client/further-exploration:
+  en: 365d359503b8e705
+  zh: b0a6bc18af11078a
+/singula-ai-alego-mcp-client/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-mcp-client/model-experience/discovered-mcp-tools:
+  en: 9f6397197d9a607d
+  zh: 79cf93aaf2e25a39
+/singula-ai-alego-mcp-client/model-experience/discovered-mcp-tools/what-the-model-sees:
+  en: 866a129e71634e0e
+  zh: b27e4b22a07c2f26
+/singula-ai-alego-mcp-client/model-experience/discovered-mcp-tools/token-effect:
+  en: 9af52cf1947256e0
+  zh: 2b4ce24b670a7e87
+/singula-ai-alego-mcp-client/model-experience/discovered-mcp-tools/kv-cache-effect:
+  en: dae97512f6d61027
+  zh: 5e6103fab15ab42d
+/singula-ai-alego-mcp-client/model-experience/tool-call-history-and-results:
+  en: a8503137ad03720c
+  zh: 611a2dadf7c0c706
+/singula-ai-alego-mcp-client/model-experience/tool-call-history-and-results/what-the-model-sees:
+  en: 5b3a7fe5bf11e73b
+  zh: e015c2468962fcf3
+/singula-ai-alego-mcp-client/model-experience/tool-call-history-and-results/token-effect:
+  en: cc030374eca00e1c
+  zh: d4b19b9db621b367
+/singula-ai-alego-mcp-client/model-experience/tool-call-history-and-results/kv-cache-effect:
+  en: f5d5f97a153f7c70
+  zh: 31911b4f3506d6c8
+/singula-ai-alego-mcp-client/model-experience/server-instructions:
+  en: a3cb7c5760a8c141
+  zh: ec9fc8d4f00a5eb6
+/singula-ai-alego-mcp-client/model-experience/server-instructions/what-the-model-sees:
+  en: d3e9d53702f9c494
+  zh: 62bd2b185abbd38c
+/singula-ai-alego-mcp-client/model-experience/server-instructions/token-effect:
+  en: 082214331ebf38d7
+  zh: 2251c4f8e4d2e05c
+/singula-ai-alego-mcp-client/model-experience/server-instructions/kv-cache-effect:
+  en: 189198f7ace2a991
+  zh: 00948145a803d614
+/singula-ai-alego-mcp-client/known-limitations-and-deferred-work:
+  en: 286633747cabd29e
+  zh: 3a6542dbd1078ed3
+/singula-ai-alego-mcp-client/known-limitations-and-deferred-work/dev-note:
+  en: bf4bf2a7ace53c6c
+  zh: b68e887ebb5815f6

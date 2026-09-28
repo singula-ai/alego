@@ -1,6 +1,6 @@
 # Keyless replay counterpart to persistent-pwsh.cordis.yml.
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   disabled: true
 
 - insert:

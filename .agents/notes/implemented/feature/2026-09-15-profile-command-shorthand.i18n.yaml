@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-15-profile-command-shorthand.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-09-15-profile-command-shorthand.md
+/agent-note-profile-command-shorthand:
+  en: 0ce953f6d0526e06
+  zh: 89126cae5de2d853
+/agent-note-profile-command-shorthand/problem:
+  en: b5c950343e5fbe8c
+  zh: df2a055d2c0b3f53
+/agent-note-profile-command-shorthand/decision:
+  en: 03ccdc761e231a27
+  zh: 86048d7ad37e489d
+/agent-note-profile-command-shorthand/alternatives-considered:
+  en: 8d10eee94348e187
+  zh: 5930dee3861058e1
+/agent-note-profile-command-shorthand/consequences:
+  en: 0fac55d6e0f93f15
+  zh: 4a0e8ef0516c36f2

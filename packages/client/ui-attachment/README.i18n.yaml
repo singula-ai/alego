@@ -1,6 +1,46 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-attachment/README.md
-README.md: 68534e171383feedb9e8a7644c1df27c6d2b13ad
-README.zh.md: bf4e914311d870e66bfa69214f45777457ea2c03
+/:
+  en: 414cbe20f39f7a82
+  zh: f56ebf03129a29b8
+/singula-ai-alego-client-ui-attachment:
+  en: fee60a7f6f0a14dc
+  zh: e8bbca83f9399bb2
+/singula-ai-alego-client-ui-attachment/summary:
+  en: f36aa7a85597dd66
+  zh: f7e87849791fe89a
+/singula-ai-alego-client-ui-attachment/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-client-ui-attachment/use-this-package:
+  en: 2812214b9e69dfd4
+  zh: 056745edeef87629
+/singula-ai-alego-client-ui-attachment/use-this-package/draft-attachments:
+  en: a77c8ec48e219aec
+  zh: 756d4fe881403006
+/singula-ai-alego-client-ui-attachment/use-this-package/message-images-and-the-lightbox:
+  en: 8b3d7729152d8060
+  zh: 815f932ccc9653f5
+/singula-ai-alego-client-ui-attachment/use-this-package/drop-overlay:
+  en: 836a62c8f73366ac
+  zh: 35da7836eaf68a67
+/singula-ai-alego-client-ui-attachment/understand-the-implementation:
+  en: 415bd2b09bb84b6b
+  zh: 2e49a39fb3957b4f
+/singula-ai-alego-client-ui-attachment/further-exploration:
+  en: 0c7fea863e4b503c
+  zh: 63b66e6c50fd08fe
+/singula-ai-alego-client-ui-attachment/model-experience:
+  en: 25566605d7b38667
+  zh: 927d3ea272893296
+/singula-ai-alego-client-ui-attachment/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: de54f3467ef3b9be
+/singula-ai-alego-client-ui-attachment/known-limitations-and-deferred-work:
+  en: 9a16cb4f174464cf
+  zh: 3de4b8288a74c594
+/singula-ai-alego-client-ui-attachment/known-limitations-and-deferred-work/dev-note:
+  en: a06a37a39a68c325
+  zh: d465458aa4406397

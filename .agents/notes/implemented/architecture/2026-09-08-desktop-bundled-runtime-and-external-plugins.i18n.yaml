@@ -1,6 +1,25 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-08-desktop-bundled-runtime-and-external-plugins.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-08-desktop-bundled-runtime-and-external-plugins.md
-2026-09-08-desktop-bundled-runtime-and-external-plugins.md: 0d64eba11b02eed04d95357508d2d84e9e166774
-2026-09-08-desktop-bundled-runtime-and-external-plugins.zh.md: 81620156615443518b34cac0d51a90a5eb8a5c74
+/agent-note-bundle-the-desktop-runtime-and-retain-external-plugins:
+  en: d6fc73361c78a74e
+  zh: a690cc6048a14349
+/agent-note-bundle-the-desktop-runtime-and-retain-external-plugins/problem:
+  en: fe97fe6ba33cb23a
+  zh: c83a1f023c4e352d
+/agent-note-bundle-the-desktop-runtime-and-retain-external-plugins/decision:
+  en: 1c8f3c4f5399138e
+  zh: 70e086d58b07bb56
+/agent-note-bundle-the-desktop-runtime-and-retain-external-plugins/package-ownership:
+  en: 3468e884b3163f82
+  zh: 37fd436057402fba
+/agent-note-bundle-the-desktop-runtime-and-retain-external-plugins/transactions-and-upgrades:
+  en: ac9c8b8def7ba2c3
+  zh: a54ddd2c582b23fc
+/agent-note-bundle-the-desktop-runtime-and-retain-external-plugins/alternatives-considered:
+  en: 7333fc84d2fd03c0
+  zh: c7134662d8828233
+/agent-note-bundle-the-desktop-runtime-and-retain-external-plugins/consequences:
+  en: 24f1f2c1b91a86ef
+  zh: 543218d457e16479

@@ -85,7 +85,7 @@ kind: "package-reference"
 
 准入允许每条消息最多 20 张图片与 200 MiB 源字节；单个源图最多 20 MiB、6400 万像素与单边 8192 像素。系统应用方向、移除元数据与色彩配置，并把规范化结果限制在 2048×2048 总像素预算、8192 像素长边和 4 MiB 编码字节目标内，因此，即使宽高比极端，图片也会保留短边分辨率。已经满足限制的干净、单帧、8-bit sRGB/sRGBA PNG、JPEG 或 WebP 会逐字节直通；GIF、动画、元数据、方向、16-bit PNG 与不兼容色彩空间会触发转换。
 
-请求版本位于由 `alegoCachePath` 解析的 `<ALEGO_HOME>/cache/attachments/request-images/`；显式 `alegoHome` 设置同时适用于缓存与持久存储。在两次请求之间清空此缓存会保留持久附件，后续读取会重新生成请求版本。`readImageRequest` 在不放大的前提下缩放到路由像素预算，再通过相同的 alpha 路由与质量阶梯应用独立编码字节目标。缓存身份包含附件 id、变换版本、预算与固定编码参数；缓存字节会先通过文件头探测格式、8-bit sRGB/sRGBA、尺寸与 alpha 信息，不匹配时重新生成。并发调用方共享一次变换与缓存写入，且只在没有等待方时由取消停止共享工作。`imageHostPath` 派生规范化对象的宿主路径，挂载的文件系统可以把该路径映射进执行世界，而不会写入持久历史。
+请求版本位于由 `alegoCachePath` 解析的 `<ALEGO_HOME>/cache/attachments/request-images/`；显式 `alegoHome` 设置同时适用于缓存与持久存储。在两次请求之间清空此缓存会保留持久附件，后续读取会重新生成请求版本。`readImageRequest` 在不放大的前提下缩放到路由选定的目标尺寸，缩放只按长边给定，短边由编码器按路由预测的方式推出，随后通过相同的 alpha 路由与质量阶梯应用独立编码字节目标。缓存身份包含附件 id、变换版本、目标尺寸、字节目标与固定编码参数；缓存字节会先通过文件头探测格式、8-bit sRGB/sRGBA、尺寸与 alpha 信息，不匹配时重新生成。并发调用方共享一次变换与缓存写入，且只在没有等待方时由取消停止共享工作。`imageHostPath` 派生规范化对象的宿主路径，挂载的文件系统可以把该路径映射进执行世界，而不会写入持久历史。
 
 通用文件字节的唯一规范对象位于 `<ALEGO_HOME>/attachments/v1/file-objects/<digest-prefix>/<digest>`。每条引用路径 `<ALEGO_HOME>/attachments/v1/files/<digest-prefix>/<digest>/<name>` 都是只读硬链接，所以名称不同但字节相同的文件不会重复占用磁盘。`readFileStream` 以有界分块读取引用路径，并在消费方成功结束前校验完整摘要与记录的字节数。对象缺失、被改写或截断时，消费方会失败，不会得到字节已经变化的完整导出。
 

@@ -9,6 +9,13 @@ import { Context, Service } from '@singula-ai/cordis'
 import z from '@singula-ai/schemastery'
 import type { Agent } from '@singula-ai/alego-agent'
 import { createUserMessage, type ToolCallId } from '@singula-ai/alego-llm'
+import type { ContextFormed } from '@singula-ai/alego-llm'
+declare module '@singula-ai/alego-llm' {
+  interface MessageSourceMap {
+    'user-approval': { kind: 'user-approval' } & ContextFormed
+  }
+}
+
 import { scopeTarget } from '@singula-ai/alego-scope'
 import type { Session } from '@singula-ai/alego-session'
 import { SessionSeq } from '@singula-ai/alego-session'
@@ -183,7 +190,7 @@ export class ApprovalService extends Service {
         type: 'text',
         text: `The approval policy changed from "${previous}" to "${policy}" (changed by the user).`,
       }],
-      source: { kind: 'plugin', plugin: 'user-approval' },
+      source: { kind: 'user-approval' },
     }))
   }
 

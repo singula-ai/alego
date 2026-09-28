@@ -33,6 +33,8 @@ kind: "package-bundle"
 
 SDK 使用 base 默认提供的 `read`、`write` 和 `edit`。要添加 `str_replace_editor`，请使用 [base 配置指南](../base/README.zh.md#use-this-package)中的显式插入 patch。独立的 `sdk-minimal` profile 自行决定其工具选择。
 
+打包的 Python runtime 默认启用 [Office 运行时查询与 skills](../../skill/tool-workspace-dependencies/README.zh.md#use-this-package)。`ALEGO_PRIMARY_RUNTIME` 覆盖随包 payload；空值禁用两行。没有载体默认路径的源码启动仍需显式启用。工具原位读取 payload。profile patch 可独立于 `workspace-dependencies` 禁用 `skill-office` 或替换其 `assetRoot`；同名文件系统 skills 优先于随包 skills。打包与配置见 [runtime 包](../../../python/sdk-runtime/README.zh.md)。
+
 -----
 
 <a id="model-experience"></a>
@@ -58,7 +60,7 @@ profile 在第一方指导之前提供 `You are a coding agent powered by the {{
 
 - **profile 可能省略 SDK server**：TypeScript client 选择的自定义 profile 必须保留本组合包或另一个 `alego-sdk-jsonrpc-server` 配置项；没有 peer 响应时，client 初始化会失败。
 - **用户插件可以破坏 stdout 纯净性**：profile 与逐次启动 patch 属于受信任应用组合。随附组合包不会向 stdout 写入非协议内容，但无法约束任意插入插件。
-- **配置变化需要重启**：随附 `sdk` profile 使用 `patchReload: startup`，因此一个 stdio 连接不会观察到 server 或 agent 依赖被替换。
+- **配置变化需要重启**：`sdk-app` 组合包在 YAML 中禁用 HMR，因此一个 stdio 连接不会观察到 server 或 agent 依赖被替换。
 
 
 <a id="dev-note"></a>

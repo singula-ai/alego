@@ -1,6 +1,73 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/subprocess/subprocess/README.md
-README.md: 8c84977335d62eae6a320981667779d6b89d8118
-README.zh.md: ec8a2a67a6f5adb806d9ca6e013c167ad4422d97
+/:
+  en: 04735af7a998f2ae
+  zh: ab6bf3d0f098877a
+/singula-ai-alego-subprocess:
+  en: aa72ea3f40949c9a
+  zh: 99a3b497fa05b798
+/singula-ai-alego-subprocess/summary:
+  en: 53e1190f8205072f
+  zh: 2e35d13e848b214f
+/singula-ai-alego-subprocess/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-subprocess/use-this-package:
+  en: a43391b5840a4c58
+  zh: a0a9c3fa577d92c0
+/singula-ai-alego-subprocess/use-this-package/mounting-the-service:
+  en: 82be7c63ab95994f
+  zh: 8810e7c489b444df
+/singula-ai-alego-subprocess/use-this-package/starting-a-managed-process:
+  en: 891cb74d5d35095c
+  zh: 296cb1890116fb05
+/singula-ai-alego-subprocess/use-this-package/choosing-how-output-is-delivered:
+  en: c02fe7246326c164
+  zh: 1d31096e31e1feee
+/singula-ai-alego-subprocess/use-this-package/using-a-control-pipe:
+  en: 32d2c1f251733517
+  zh: 14e85b9e67fb4090
+/singula-ai-alego-subprocess/use-this-package/managing-process-lifetime:
+  en: 83d662d278184411
+  zh: 2c4e7fbe76823fa8
+/singula-ai-alego-subprocess/use-this-package/running-a-terminal-session:
+  en: e3631497344c2ebd
+  zh: c4ebc7b08f0a316e
+/singula-ai-alego-subprocess/use-this-package/environment-every-child-starts-from:
+  en: d2eab67d970e6ee5
+  zh: a1e062047fdbe4d7
+/singula-ai-alego-subprocess/use-this-package/what-can-go-wrong:
+  en: 51f2f43087a1ed18
+  zh: 6d2ebb099b707df3
+/singula-ai-alego-subprocess/understand-the-implementation:
+  en: 25cd344c959cfd9e
+  zh: 045880776ab82d1e
+/singula-ai-alego-subprocess/understand-the-implementation/design-concept:
+  en: 4a68128b66fb346e
+  zh: 339ea026f82872d1
+/singula-ai-alego-subprocess/understand-the-implementation/source-map:
+  en: 8d611c33006ac5cf
+  zh: 13522df59384fe0f
+/singula-ai-alego-subprocess/understand-the-implementation/data-model-and-flow:
+  en: 9998dc0a990fbcf1
+  zh: ba179617f60cb9bc
+/singula-ai-alego-subprocess/understand-the-implementation/lifecycle-and-invariants:
+  en: a132325eea7cadb4
+  zh: 434cbbc61ff9cd0e
+/singula-ai-alego-subprocess/further-exploration:
+  en: 2cfa44bb38d83493
+  zh: d654197f0c3600a0
+/singula-ai-alego-subprocess/model-experience:
+  en: 36d8f1820f81de29
+  zh: da18a4123bdd28b7
+/singula-ai-alego-subprocess/model-experience/kv-cache-effect:
+  en: e290ccc9b3c92c08
+  zh: d75d48f485447a74
+/singula-ai-alego-subprocess/known-limitations-and-deferred-work:
+  en: 0b1c46aec1ba628d
+  zh: cf2a0db9d0682155
+/singula-ai-alego-subprocess/known-limitations-and-deferred-work/dev-note:
+  en: 56709c22873429b5
+  zh: c0e86c62982a3e29

@@ -1,6 +1,22 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-05-base-default-file-editor.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-09-05-base-default-file-editor.md
-2026-09-05-base-default-file-editor.md: 275b619191d9fbc3882e4bde69361c47c7aaa556
-2026-09-05-base-default-file-editor.zh.md: e1bed68d63dda9a3d52be291f747082da615da2b
+/agent-note-shared-base-default-file-editor-selection:
+  en: 0dd3dfeeb5670fd5
+  zh: b47d22b0de86b25b
+/agent-note-shared-base-default-file-editor-selection/problem:
+  en: b9cf9c91689aeca7
+  zh: 4fce9354bb6c2af0
+/agent-note-shared-base-default-file-editor-selection/decision:
+  en: 59f6349ceb684942
+  zh: 9f8f602ad45154e9
+/agent-note-shared-base-default-file-editor-selection/alternatives-considered:
+  en: 172ed2cdc1d47e20
+  zh: e12bbb0576244f43
+/agent-note-shared-base-default-file-editor-selection/consequences:
+  en: 886dab29e1e6580f
+  zh: 49a7b2ceafac0c48
+/agent-note-shared-base-default-file-editor-selection/verification:
+  en: 7e8cd8a29f33aff3
+  zh: ee6c24c9adf54998

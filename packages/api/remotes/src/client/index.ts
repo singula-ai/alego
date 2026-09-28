@@ -1,32 +1,54 @@
 /** Platform-neutral assembly of generated Host Remote contributions. */
 
 import type { Context } from '@singula-ai/cordis'
-import agentPresetsRemote from '@singula-ai/alego-agent-presets/remote'
+import productAnalyticsRemote from '@singula-ai/alego-client-product-analytics/remote'
+export type {} from '@singula-ai/alego-client-product-analytics/remote'
+import agentPresetsRemote from '@singula-ai/alego-agent-preset-registry/remote'
 import commandsRemote from '@singula-ai/alego-commands/remote'
+import accountRemote from '@singula-ai/alego-api-account-controller/remote'
 import settingsControllerRemote from '@singula-ai/alego-api-settings-controller/remote'
+import officeToPdfRemote from '@singula-ai/alego-office-to-pdf/remote'
 import goalsRemote from '@singula-ai/alego-goal/remote'
+import scheduleRemote from '@singula-ai/alego-schedule/remote'
 import llmRemote from '@singula-ai/alego-llm/remote'
 import dynamicRemote from '@singula-ai/alego-cordis-host-runner/remote'
+import pluginManagerRemote from '@singula-ai/alego-plugin-manager/remote'
+import pluginRegistryProbeRemote from '@singula-ai/alego-client-ui-plugin-manager/remote'
 import pluginInventoryRemote from '@singula-ai/alego-host-plugin-inventory/remote'
 import messageFeedbackRemote from '@singula-ai/alego-message-feedback/remote'
+import permissionPresetsRemote from '@singula-ai/alego-permission-presets/remote'
 import sessionFeedbackRemote from '@singula-ai/alego-command-feedback/remote'
 import fileUploadsRemote from '@singula-ai/alego-client-file-upload/remote'
 import sessionReferencesRemote from '@singula-ai/alego-session-reference/remote'
 import subagentsRemote from '@singula-ai/alego-subagent/remote'
 import sessionRemote from '@singula-ai/alego-api-session-controller/remote'
+import jobRemote from '@singula-ai/alego-api-job-controller/remote'
 import workspaceRemote from '@singula-ai/alego-api-workspace-controller/remote'
+import terminalRemote from '@singula-ai/alego-api-terminal-controller/remote'
 import workspaceFilesRemote from '@singula-ai/alego-api-workspace-files/remote'
 import type { ClientRemote } from '@singula-ai/alego-api-gateway/client'
 
 export type { ClientRemote } from '@singula-ai/alego-api-gateway/client'
+export type {
+  BundleInfo, BundleRowInfo, ChangeResult, IncompatiblePlugin, InspectOptions, InstallBundleOptions, InstallSpecKind, ManagementError,
+  PackageResult,
+  PluginChange, PluginEntryId, PluginInfo, PluginInspectProblem, PluginInstallCancellation, PluginInstallFailureKind,
+  PluginInstallLogChunk, PluginInstallProgress, PluginInstallRequestId, PluginRegistries, PluginSpecInspection, ReadOnlyReason, Registry,
+} from '@singula-ai/alego-plugin-manager/types'
+export type {} from '@singula-ai/alego-plugin-manager/remote'
+export type {} from '@singula-ai/alego-client-ui-plugin-manager/remote'
 export type { PluginInventorySnapshot } from '@singula-ai/alego-host-plugin-inventory/types'
-export type {} from '@singula-ai/alego-agent-presets/remote'
+export type {} from '@singula-ai/alego-agent-preset-registry/remote'
 export type {} from '@singula-ai/alego-commands/remote'
 export type {} from '@singula-ai/alego-api-settings-controller/remote'
+export type {} from '@singula-ai/alego-api-account-controller/remote'
 export type {} from '@singula-ai/alego-goal/remote'
+export type {} from '@singula-ai/alego-schedule/remote'
+export type {} from '@singula-ai/alego-office-to-pdf/remote'
 export type {} from '@singula-ai/alego-llm/remote'
 export type {} from '@singula-ai/alego-host-plugin-inventory/remote'
 export type {} from '@singula-ai/alego-message-feedback/remote'
+export type {} from '@singula-ai/alego-permission-presets/remote'
 export type {} from '@singula-ai/alego-command-feedback/remote'
 export type {} from '@singula-ai/alego-client-file-upload/remote'
 export type {} from '@singula-ai/alego-session-reference/remote'
@@ -34,11 +56,14 @@ export type {} from '@singula-ai/alego-subagent/remote'
 export type * from '@singula-ai/alego-subagent/client'
 export type {} from '@singula-ai/alego-api-session-controller/remote'
 export type * from '@singula-ai/alego-api-session-controller/types'
+export type {} from '@singula-ai/alego-api-job-controller/remote'
+export type * from '@singula-ai/alego-api-job-controller/types'
 export type {} from '@singula-ai/alego-api-workspace-controller/remote'
 export type * from '@singula-ai/alego-api-workspace-controller/types'
 export type {} from '@singula-ai/alego-api-workspace-files/remote'
 export type * from '@singula-ai/alego-api-workspace-files/types'
-export type { SessionJob as JobView } from '@singula-ai/alego-api-session-controller/types'
+export type {} from '@singula-ai/alego-api-terminal-controller/remote'
+export type * from '@singula-ai/alego-api-terminal-controller/types'
 // The forwarded-event allowlist's selection seat: without it in the consumer's
 // compilation face `TypertRemoteEvent` is `never` and every `$on` call fails.
 export type { ApiRemoteForwardedEvent } from '../types.ts'
@@ -49,7 +74,8 @@ export type {} from '@singula-ai/alego-commands/types'
 export type {} from '@singula-ai/alego-cordis-host-runner/types'
 export type {} from '@singula-ai/alego-credentials/types'
 export type {} from '@singula-ai/alego-llm/types'
-export type {} from '@singula-ai/alego-agent-presets/types'
+export type {} from '@singula-ai/alego-agent-preset-registry/types'
+export type {} from '@singula-ai/alego-permission-presets/types'
 export type {} from '@singula-ai/alego-settings/types'
 export type {} from '@singula-ai/alego-user-approval/types'
 export type {} from '@singula-ai/alego-user-questions/types'
@@ -151,9 +177,12 @@ export async function apply(ctx: Context): Promise<() => Promise<void>> {
   const disposers: Array<() => Promise<void>> = []
   try {
     for (const contribution of [
-      agentPresetsRemote, commandsRemote, settingsControllerRemote, goalsRemote, llmRemote, dynamicRemote,
-      pluginInventoryRemote, messageFeedbackRemote, sessionFeedbackRemote, fileUploadsRemote, sessionReferencesRemote,
-      subagentsRemote, sessionRemote, workspaceRemote, workspaceFilesRemote,
+      productAnalyticsRemote, agentPresetsRemote, commandsRemote, settingsControllerRemote, accountRemote,
+      goalsRemote, llmRemote, dynamicRemote, scheduleRemote,
+      pluginInventoryRemote, pluginManagerRemote, pluginRegistryProbeRemote, messageFeedbackRemote, sessionFeedbackRemote,
+      fileUploadsRemote, sessionReferencesRemote,
+      permissionPresetsRemote, subagentsRemote, sessionRemote, jobRemote, workspaceRemote, workspaceFilesRemote, terminalRemote,
+      officeToPdfRemote,
     ]) {
       disposers.push(await ctx.remote.$mount(contribution))
     }

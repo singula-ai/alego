@@ -1,6 +1,67 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/session-query/session-query/README.md
-README.md: 8d0f196d2a8a3fab43e75c8261d6819f41d5b618
-README.zh.md: 935c395834bc3186cfd08768f00eab2948b5f003
+/:
+  en: 3d1caf01d90c7f34
+  zh: 4fa615b905574d83
+/singula-ai-alego-session-query:
+  en: 182214d8df9a0d1e
+  zh: b4d3eb0a3252cb1b
+/singula-ai-alego-session-query/summary:
+  en: fd472562a14c55ad
+  zh: a4a809698ac7e620
+/singula-ai-alego-session-query/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-session-query/use-this-package:
+  en: 92dfbeca6edb1053
+  zh: b9474153b019dbc8
+/singula-ai-alego-session-query/use-this-package/what-you-can-do:
+  en: 742b1358d97e56cc
+  zh: 00d75ce6e5769559
+/singula-ai-alego-session-query/use-this-package/filters:
+  en: 1b95403461947ca1
+  zh: cffa21b03df9f0ad
+/singula-ai-alego-session-query/use-this-package/configuration:
+  en: bec9cedaa219e297
+  zh: e9cd16c0589fab4d
+/singula-ai-alego-session-query/use-this-package/failures-and-recovery:
+  en: fe410eb1234c1c45
+  zh: d2a1be75eb841be0
+/singula-ai-alego-session-query/understand-the-implementation:
+  en: 6a18034f1ccc247a
+  zh: aecd49a7b846f913
+/singula-ai-alego-session-query/understand-the-implementation/design-philosophy:
+  en: ded2929f755e10f5
+  zh: a9788fbdf3bd0d60
+/singula-ai-alego-session-query/understand-the-implementation/source-map:
+  en: 7c546162fa3f75d4
+  zh: c6910bc53ae0ff71
+/singula-ai-alego-session-query/understand-the-implementation/corpus-resolution:
+  en: efa560c55a869c71
+  zh: 451eb107825856ac
+/singula-ai-alego-session-query/understand-the-implementation/observation-cache:
+  en: abe122deb81566e5
+  zh: 4c4f327f2ee1144e
+/singula-ai-alego-session-query/understand-the-implementation/reads-and-traces:
+  en: 48922e284adddd1b
+  zh: 9956dcc57e027d77
+/singula-ai-alego-session-query/further-exploration:
+  en: 056acee97ebffd97
+  zh: 60223f519aa356bb
+/singula-ai-alego-session-query/model-experience:
+  en: dff12da8d1e64e66
+  zh: e054b0d54e29f899
+/singula-ai-alego-session-query/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: f57cc48a1b5cbfa9
+/singula-ai-alego-session-query/known-limitations-and-deferred-work:
+  en: e70a64614189c09c
+  zh: 88d2a6634385c501
+/singula-ai-alego-session-query/known-limitations-and-deferred-work/dev-note:
+  en: d2f0d68fe29fb750
+  zh: 323d21ee73a9e3f6
+/singula-ai-alego-session-query/known-limitations-and-deferred-work/dev-note/future-extractor-and-search-provider-registries:
+  en: 394a429cc402cd99
+  zh: 56712356df6cf063

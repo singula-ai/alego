@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-19-remove-knip.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-08-19-remove-knip.md
-2026-08-19-remove-knip.md: 64c2561e8e1f84d3e19df67578de0d80ec3fd187
-2026-08-19-remove-knip.zh.md: 22e63d5a4a2bfe199a9e89350c88f415c170603b
+/agent-note-remove-knip-from-repository-gates:
+  en: 139b57ca5be11f76
+  zh: 56e1aacd99201606
+/agent-note-remove-knip-from-repository-gates/problem:
+  en: d06535249b3f1806
+  zh: 141d4cffcdb2c65d
+/agent-note-remove-knip-from-repository-gates/decision:
+  en: c5d7ae84ed863e29
+  zh: 409dca40c2a63940
+/agent-note-remove-knip-from-repository-gates/alternatives-considered:
+  en: 95363dbc293712f3
+  zh: 9cbcb9937081f5f0
+/agent-note-remove-knip-from-repository-gates/consequences:
+  en: 7466ca9e99d0bb27
+  zh: 2ac417bc23865e14

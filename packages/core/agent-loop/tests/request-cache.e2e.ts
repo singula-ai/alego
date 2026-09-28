@@ -9,7 +9,7 @@ import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
 
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
-import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek'
+import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek-api-key'
 
 /**
  * With-key proof that log-derived requests translate into real provider cache hits: a

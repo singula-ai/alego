@@ -1,6 +1,67 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/attachment/attachment/README.md
-README.md: 894a3ad97d5028858eec5549fb76f44bbdb51cfe
-README.zh.md: a272c55eeaae65861899a533c641289c9718ab05
+/:
+  en: c8448ea82a8ce005
+  zh: 24444a57de8c007c
+/singula-ai-alego-attachment:
+  en: 26622f0362c10ad0
+  zh: e492a4948d5b8dc5
+/singula-ai-alego-attachment/summary:
+  en: fb3a813bcba30cdc
+  zh: b112e2aea1849bcc
+/singula-ai-alego-attachment/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-attachment/use-this-package:
+  en: 6b1f03067f5834a4
+  zh: 6b0f906614efa4dc
+/singula-ai-alego-attachment/use-this-package/attach-images-to-a-prompt:
+  en: b440422892839de9
+  zh: 0290b366b5a4ef88
+/singula-ai-alego-attachment/use-this-package/attach-any-other-file-to-a-prompt:
+  en: d5019c6ae76c0bcf
+  zh: b7aeaf7e6920ff10
+/singula-ai-alego-attachment/use-this-package/pass-attachments-to-commands:
+  en: 8a0fa64e84aa4450
+  zh: ed2ac44ef20250d4
+/singula-ai-alego-attachment/use-this-package/reuse-images-across-the-session:
+  en: c99e4e088be92c4f
+  zh: 34997ecb9a420d08
+/singula-ai-alego-attachment/use-this-package/what-can-go-wrong:
+  en: b35e2f7f17269ae1
+  zh: 57cf0ef9fee6c7e1
+/singula-ai-alego-attachment/understand-the-implementation:
+  en: 25d9c7d6c0899d23
+  zh: ad8380d14810ff1c
+/singula-ai-alego-attachment/understand-the-implementation/design-decisions:
+  en: 77bcd4e46d8f3c1a
+  zh: 1d261e15595bd81a
+/singula-ai-alego-attachment/understand-the-implementation/service-operations:
+  en: 4a35cdba790c3b8b
+  zh: 08d4a18bbad4b182
+/singula-ai-alego-attachment/understand-the-implementation/source-map:
+  en: a196e1f4cf9895ae
+  zh: 39b430b53d30297e
+/singula-ai-alego-attachment/further-exploration:
+  en: f942f0c1c78f7624
+  zh: e88f9c9ba74feca0
+/singula-ai-alego-attachment/model-experience:
+  en: 3a9fc2cc8896a2db
+  zh: 256ffa52315cb597
+/singula-ai-alego-attachment/model-experience/kv-cache-effect:
+  en: 2fcaf6d01d42da7c
+  zh: 81e61690b955dd18
+/singula-ai-alego-attachment/known-limitations-and-deferred-work:
+  en: d1ee04ac73471377
+  zh: 1abf40510951d5c2
+/singula-ai-alego-attachment/known-limitations-and-deferred-work/dev-note:
+  en: d56846da29ad869c
+  zh: 41e655e01351fd1d
+/singula-ai-alego-attachment/known-limitations-and-deferred-work/dev-note/future-reference-aware-garbage-collection:
+  en: 20c22bbf4263d41e
+  zh: f85699e18a0e5f43
+/singula-ai-alego-attachment/known-limitations-and-deferred-work/dev-note/future-audio-video-and-assistant-side-output:
+  en: 85353325b14af5a8
+  zh: c03fb041c2daee7e

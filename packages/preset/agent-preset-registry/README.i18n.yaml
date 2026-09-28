@@ -1,0 +1,49 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/preset/agent-preset-registry/README.md
+/:
+  en: e984a1ae0ffb6b97
+  zh: f1246772a5b47191
+/singula-ai-alego-agent-preset-registry:
+  en: d44b210f36062a56
+  zh: fb238248c8b955d7
+/singula-ai-alego-agent-preset-registry/summary:
+  en: a451ec1d5b54b334
+  zh: 777d5043e9c2e9eb
+/singula-ai-alego-agent-preset-registry/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: b3ad7867f23dad1c
+/singula-ai-alego-agent-preset-registry/use-this-package:
+  en: bbff250eba0f1b89
+  zh: b20a47f82d8ab6e0
+/singula-ai-alego-agent-preset-registry/use-this-package/minimal-configuration:
+  en: bd407f08d16b7d9d
+  zh: bce9314c6ca8622d
+/singula-ai-alego-agent-preset-registry/understand-the-implementation:
+  en: 11a1a4847ffc68b4
+  zh: 9e1ca14d642b43ac
+/singula-ai-alego-agent-preset-registry/further-exploration:
+  en: 97c71d50c6c84490
+  zh: 0b0aa9490c256f34
+/singula-ai-alego-agent-preset-registry/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-agent-preset-registry/model-experience/preset-selection:
+  en: 9c05062c86e3d148
+  zh: 2e894dd9d93b65ba
+/singula-ai-alego-agent-preset-registry/model-experience/preset-selection/what-the-model-sees:
+  en: 9266e780cd183409
+  zh: b07bfe9fdb8b6f45
+/singula-ai-alego-agent-preset-registry/model-experience/preset-selection/token-effect:
+  en: 5bc14d87cbb67afd
+  zh: 99f62bdfcb31ab90
+/singula-ai-alego-agent-preset-registry/model-experience/preset-selection/kv-cache-effect:
+  en: 5e043b0b4ee03719
+  zh: a929e47776e209e0
+/singula-ai-alego-agent-preset-registry/known-limitations-and-deferred-work:
+  en: 8a32adf5c133fca3
+  zh: a066085a05e9b103
+/singula-ai-alego-agent-preset-registry/known-limitations-and-deferred-work/dev-note:
+  en: b84837a00b08ed7b
+  zh: 9de7aee8b9357fe9

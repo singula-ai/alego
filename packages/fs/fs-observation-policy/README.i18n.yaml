@@ -1,6 +1,70 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/fs/fs-observation-policy/README.md
-README.md: 2ade4e48f41f3bd745d5e7299b89649b308f5398
-README.zh.md: d228561d3f187b9d9a3b53853501309bcac51201
+/:
+  en: 2e7d205b959bad5b
+  zh: 78111c063c98c309
+/singula-ai-alego-fs-observation-policy:
+  en: 4d9a744bb8b1e859
+  zh: d1e61a5e0f43318e
+/singula-ai-alego-fs-observation-policy/summary:
+  en: bd31d6826f719c5c
+  zh: 8f91bbb83372ebba
+/singula-ai-alego-fs-observation-policy/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-fs-observation-policy/use-this-package:
+  en: 236b7df6d9501bb6
+  zh: eb27d1d10665196b
+/singula-ai-alego-fs-observation-policy/use-this-package/minimal-composition:
+  en: d85e3b814b43768e
+  zh: 89d3672dbb2f6d30
+/singula-ai-alego-fs-observation-policy/use-this-package/what-changes-for-the-model:
+  en: 91686925a433794d
+  zh: 9ac2a197203d6549
+/singula-ai-alego-fs-observation-policy/use-this-package/failures-and-recovery:
+  en: 1ecc7b68f7c7b3f0
+  zh: f6a9800786ed30c0
+/singula-ai-alego-fs-observation-policy/understand-the-implementation:
+  en: 612e69f76edc8795
+  zh: 55edab9956941616
+/singula-ai-alego-fs-observation-policy/understand-the-implementation/design-concept:
+  en: 20b158c1a5380a76
+  zh: 35d4bc7a9df4660c
+/singula-ai-alego-fs-observation-policy/understand-the-implementation/source-map:
+  en: 6a55bd72a91664bf
+  zh: fc22345acfd9d850
+/singula-ai-alego-fs-observation-policy/understand-the-implementation/decision-flow:
+  en: 79ddd675e3c27d62
+  zh: b9b74b63aad5b42d
+/singula-ai-alego-fs-observation-policy/understand-the-implementation/single-slot-first-wins:
+  en: 226bb7885eb147b8
+  zh: 0b68d59ddc55fb07
+/singula-ai-alego-fs-observation-policy/understand-the-implementation/lifecycle:
+  en: 02a1e3e7707706fb
+  zh: eff587af0445d032
+/singula-ai-alego-fs-observation-policy/further-exploration:
+  en: 6ebb576e31b0564e
+  zh: 91eeebb9776ce6f1
+/singula-ai-alego-fs-observation-policy/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-fs-observation-policy/model-experience/filesystem-tool-outcome:
+  en: ee1f02dc1bb69955
+  zh: 9ba9205a9b15d132
+/singula-ai-alego-fs-observation-policy/model-experience/filesystem-tool-outcome/what-the-model-sees:
+  en: 4f7d2fb23d7405b9
+  zh: 6bdb378a76513b3d
+/singula-ai-alego-fs-observation-policy/model-experience/filesystem-tool-outcome/token-effect:
+  en: 425ccc7dafa6218d
+  zh: d2c1a29955a60e3d
+/singula-ai-alego-fs-observation-policy/model-experience/filesystem-tool-outcome/kv-cache-effect:
+  en: 2fbf2175168e8244
+  zh: 3d6bc05b9eadfbc2
+/singula-ai-alego-fs-observation-policy/known-limitations-and-deferred-work:
+  en: 4ab8601a138c3996
+  zh: e0bc774f5fae0178
+/singula-ai-alego-fs-observation-policy/known-limitations-and-deferred-work/dev-note:
+  en: 9979632783da7b78
+  zh: c42c1feec2905268

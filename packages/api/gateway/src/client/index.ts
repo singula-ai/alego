@@ -5,7 +5,7 @@
  */
 
 import { Service } from '@singula-ai/cordis'
-import { RemoteError, remoteErrorOf } from '@singula-ai/alego-typert-protocol'
+import { RemoteError, isRemoteUplinkItem, remoteErrorOf } from '@singula-ai/alego-typert-protocol'
 export type { TypertGatewayFaultDetails } from '../remote-error-codes.ts'
 import type { Context } from '@singula-ai/cordis'
 import type {
@@ -17,12 +17,14 @@ import type {
   TypertClientRemote,
   RemoteFailure,
   RemoteResult,
+  RemoteStreamHandle,
   TypertCodec,
   TypertDisposer,
   TypertRemoteContribution,
   TypertRemoteEvent,
 } from '@singula-ai/alego-typert-protocol'
 import {
+  ClientUplinkQueue,
   RemoteStreamCarrierError,
   RemoteStreamMuxClient,
 } from './stream-client.ts'
@@ -53,7 +55,6 @@ interface MountToken {
 interface ScopedProjection {
   readonly context: string
   readonly wire: string
-  readonly codec: TypertCodec
   readonly parameterIndex?: number
 }
 
@@ -220,13 +221,14 @@ class ClientRemoteService extends Service implements ClientRemote {
     endpoint: string,
     payload: unknown,
     signal: AbortSignal,
+    uplink?: AsyncIterable<unknown>,
     noConnection = `client api: ${endpoint} has no active Connection`,
   ): AsyncIterable<unknown> {
     const connection = this.ownerCtx.get('connection') as ConnectionHandle | undefined
     if (connection === undefined) throw new Error(noConnection)
-    const local = connection.rpc.open?.('/api', endpoint, payload, signal)
+    const local = connection.rpc.open?.('/api', endpoint, payload, signal, uplink)
     return local === undefined
-      ? this.streams.open(endpoint, payload, signal)
+      ? this.streams.open(endpoint, payload, signal, uplink)
       : normalizeConnectionStream(local)
   }
 
@@ -284,7 +286,7 @@ class ClientRemoteService extends Service implements ClientRemote {
       }
     }
     for (const descriptor of contribution.descriptors) {
-      requireStrictDescriptor(descriptor)
+      requireStrictInputs(descriptor)
       if (descriptor.invocation.kind === 'direct') add(direct, descriptor, 'direct')
       if (scopedProjection(descriptor) !== undefined) add(scoped, descriptor, 'scoped')
     }
@@ -388,7 +390,7 @@ class ClientRemoteService extends Service implements ClientRemote {
     scoped: ScopedMethod | undefined,
     callerCtx: Context,
     values: readonly unknown[],
-  ): Promise<RemoteResult<unknown>> | AsyncIterable<unknown> {
+  ): Promise<RemoteResult<unknown>> | RemoteStreamHandle<unknown, unknown> {
     if (scoped !== undefined) {
       const adapter = this.ownerCtx.typert.contexts.getClient(scoped.projection.context)
       const identity = adapter?.identity(callerCtx)
@@ -419,8 +421,8 @@ class ClientRemoteService extends Service implements ClientRemote {
     callerCtx: Context,
     values: readonly unknown[],
     boundIdentity?: BoundContextIdentity,
-  ): Promise<RemoteResult<unknown>> | AsyncIterable<unknown> {
-    if (descriptor.mode === 'stream') {
+  ): Promise<RemoteResult<unknown>> | RemoteStreamHandle<unknown, unknown> {
+    if (descriptor.mode !== undefined) {
       return this.invokeStream(descriptor, projection, token, callerCtx, values, boundIdentity)
     }
     return this.invoke(descriptor, projection, token, callerCtx, values, boundIdentity)
@@ -442,8 +444,12 @@ class ClientRemoteService extends Service implements ClientRemote {
     try {
       const result = await connection.rpc.call('/api', endpoint, { args: prepared.args }, prepared.signal)
       if (!mountActive(token)) return withdrawn(endpoint)
+      prepared.signal.throwIfAborted()
       if (!result.ok) return { ok: false, error: rebuiltFailure(result.error) }
-      return { ok: true, value: result.value }
+      const value = descriptor.result.mode === 'strict' && descriptor.result.decode !== undefined
+        ? descriptor.result.decode(result.value)
+        : result.value
+      return { ok: true, value }
     } catch (error) {
       // Carrier throws (offline or abort) are outcomes of the call, not assembly
       // faults, so they join the same error branch. A caller-aborted call is a
@@ -454,22 +460,27 @@ class ClientRemoteService extends Service implements ClientRemote {
     }
   }
 
-  private async *invokeStream(
+  /** Open the logical stream now and hand back its handle; `send()` before the first read queues behind the `open` frame. */
+  private invokeStream(
     descriptor: InvocationDescriptor,
     projection: ScopedProjection | undefined,
     token: MountToken,
     callerCtx: Context,
     values: readonly unknown[],
     boundIdentity?: BoundContextIdentity,
-  ): AsyncGenerator {
+  ): RemoteStreamHandle<unknown, unknown> {
     const endpoint = endpointOf(descriptor)
     if (!token.active) throw new Error(withdrawn(endpoint).error.message)
     const prepared = this.prepareInvocation(descriptor, projection, token, callerCtx, values, boundIdentity)
-    const stream = this.openRemoteStream(endpoint, { args: prepared.args }, prepared.signal)
-    for await (const value of stream) {
-      if (!mountActive(token)) throw new Error(withdrawn(endpoint).error.message)
-      yield value
-    }
+    const generation = new AbortController()
+    const uplink = new ClientUplinkQueue(endpoint)
+    const downlink = this.openRemoteStream(
+      endpoint,
+      { args: prepared.args },
+      AbortSignal.any([prepared.signal, generation.signal]),
+      uplink,
+    )
+    return new ClientStreamHandle(endpoint, downlink, uplink, generation, token)
   }
 
   private prepareInvocation(
@@ -505,12 +516,12 @@ class ClientRemoteService extends Service implements ClientRemote {
       if (identity === undefined) {
         throw new Error(`client api: ${endpoint} requires a ${JSON.stringify(projection.context)} Context`)
       }
-      args[projection.wire] = parseInput(projection.codec, identity, endpoint, projection.wire)
+      args[projection.wire] = identity
     }
     let valueIndex = 0
     descriptor.parameters.forEach((parameter, parameterIndex) => {
       if (parameterIndex === projection?.parameterIndex) return
-      const value = parseInput(parameter.codec, values[valueIndex], endpoint, parameter.wire)
+      const value = values[valueIndex]
       if (value !== undefined) args[parameter.wire] = value
       valueIndex += 1
     })
@@ -522,12 +533,94 @@ class ClientRemoteService extends Service implements ClientRemote {
   }
 }
 
+/**
+ * The handle a generated stream method returns: one generation of one logical
+ * stream. The downlink is iterated once; `send`/`end` feed the uplink queue the
+ * carrier pump drains; `dispose` aborts the generation and returns the carrier
+ * iterator, which sends `cancel` unless a terminal frame arrived, drops what was
+ * buffered, and ends the iteration quietly.
+ */
+class ClientStreamHandle implements RemoteStreamHandle<unknown, unknown> {
+  private readonly downlink: AsyncIterator<unknown>
+  private primed: Promise<IteratorResult<unknown>> | undefined
+  private consumed = false
+  private disposed = false
+
+  constructor(
+    private readonly endpoint: string,
+    downlink: AsyncIterable<unknown>,
+    private readonly uplink: ClientUplinkQueue,
+    private readonly generation: AbortController,
+    private readonly token: MountToken,
+  ) {
+    this.downlink = downlink[Symbol.asyncIterator]()
+    // The carrier opens the logical stream on the first pull; pulling now puts
+    // the `open` frame on the wire before any `send()`. The first read is kept
+    // for the consumer, and a failure waits for it instead of surfacing here;
+    // it also terminates the stream, so the queue closes and `send()` throws.
+    this.primed = this.downlink.next()
+    void this.primed.catch(() => { this.uplink.close() })
+  }
+
+  send(item: unknown): void {
+    if (!isRemoteUplinkItem(item)) throw new Error(`client api: ${this.endpoint} uplink item is not a lossless JSON value`)
+    this.uplink.push(item)
+  }
+
+  end(): void {
+    this.uplink.end()
+  }
+
+  dispose(): void {
+    if (this.disposed) return
+    this.disposed = true
+    this.uplink.close()
+    this.generation.abort(new Error(`client api: ${this.endpoint} stream disposed`))
+    // Returning the carrier iterator reaches its `finally` even while nobody
+    // reads the downlink, so `cancel` goes out now and the pump stops.
+    void Promise.resolve(this.downlink.return?.()).catch(() => undefined)
+  }
+
+  [Symbol.asyncIterator](): AsyncIterator<unknown> {
+    if (this.consumed) throw new Error(`client api: ${this.endpoint} stream has one consumer`)
+    this.consumed = true
+    const iteration = this.iterate()
+    return {
+      next: () => iteration.next(),
+      // A return before the first read ends a generator that never started, so its `finally` would not dispose.
+      return: (value?: unknown) => {
+        this.dispose()
+        return iteration.return(value)
+      },
+    }
+  }
+
+  private async *iterate(): AsyncGenerator {
+    try {
+      while (true) {
+        const next = await (this.primed ?? this.downlink.next())
+        this.primed = undefined
+        if (this.disposed || next.done === true) return
+        if (!mountActive(this.token)) throw new Error(withdrawn(this.endpoint).error.message)
+        yield next.value
+      }
+    } catch (error) {
+      if (this.disposed) return
+      throw error
+    } finally {
+      // Ending early is a dispose; a terminated stream accepts no more uplink.
+      this.dispose()
+      await this.downlink.return?.()
+    }
+  }
+}
+
 type InvokeRemote = (
   direct: DirectMethod | undefined,
   scoped: ScopedMethod | undefined,
   callerCtx: Context,
   args: readonly unknown[],
-) => Promise<RemoteResult<unknown>> | AsyncIterable<unknown>
+) => Promise<RemoteResult<unknown>> | RemoteStreamHandle<unknown, unknown>
 
 class RemoteNamespaceService extends Service {
   private readonly methods = new Map<string, RemoteMethodRecord>()
@@ -673,7 +766,6 @@ function scopedProjection(descriptor: InvocationDescriptor): ScopedProjection | 
     return {
       context: descriptor.invocation.context,
       wire: descriptor.invocation.wire,
-      codec: descriptor.invocation.codec,
     }
   }
   if (descriptor.scope === undefined) return undefined
@@ -691,16 +783,16 @@ function scopedProjection(descriptor: InvocationDescriptor): ScopedProjection | 
   return {
     context: descriptor.scope.context,
     wire: descriptor.scope.wire,
-    codec: selected.parameter.codec,
     parameterIndex: selected.index,
   }
 }
 
-function requireStrictDescriptor(descriptor: InvocationDescriptor): void {
+function requireStrictInputs(descriptor: InvocationDescriptor): void {
   const endpoint = endpointOf(descriptor)
   for (const parameter of descriptor.parameters) {
     requireStrictCodec(parameter.codec, endpoint, parameter.wire)
   }
+  if (descriptor.uplink !== undefined) requireStrictCodec(descriptor.uplink.codec, endpoint, 'uplink')
   if (descriptor.invocation.kind === 'context') {
     requireStrictCodec(descriptor.invocation.codec, endpoint, descriptor.invocation.wire)
   }
@@ -709,17 +801,6 @@ function requireStrictDescriptor(descriptor: InvocationDescriptor): void {
 function requireStrictCodec(codec: TypertCodec, endpoint: string, field: string): void {
   if (codec.mode !== 'strict') {
     throw new Error(`client api: generated Remote ${endpoint} field ${JSON.stringify(field)} has no strict codec`)
-  }
-}
-
-function parseInput(codec: TypertCodec, value: unknown, endpoint: string, field: string): unknown {
-  if (codec.mode !== 'strict') {
-    throw new Error(`client api: generated Remote ${endpoint} field ${JSON.stringify(field)} has no strict codec`)
-  }
-  try {
-    return codec.schema.parse(value)
-  } catch (cause) {
-    throw new Error(`client api: ${endpoint} rejected ${JSON.stringify(field)}`, { cause })
   }
 }
 

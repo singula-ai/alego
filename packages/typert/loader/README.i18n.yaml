@@ -1,6 +1,58 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/typert/loader/README.md
-README.md: b56a403e254b9bf86e3b710ce636b138686ebad9
-README.zh.md: 5153781fee4c70fd5efada4aa68a62c1e1072833
+/:
+  en: 3fa30a143acc79d7
+  zh: 0c6fe79fba20f26f
+/singula-ai-alego-typert-loader:
+  en: ca017bbc1acc184f
+  zh: adf83446723286f0
+/singula-ai-alego-typert-loader/summary:
+  en: 778ef859f294a25e
+  zh: 9132cd485ae2a7dd
+/singula-ai-alego-typert-loader/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-typert-loader/use-this-package:
+  en: d91589c470e7241c
+  zh: 728df2e63dbd2949
+/singula-ai-alego-typert-loader/use-this-package/minimal-configuration:
+  en: 1e8456f95ac11aeb
+  zh: d9d25012633a9a93
+/singula-ai-alego-typert-loader/use-this-package/what-gets-registered:
+  en: 01318fcba39e9b0f
+  zh: c5f6528a91b335ac
+/singula-ai-alego-typert-loader/use-this-package/observable-behavior-and-failures:
+  en: 01494e9fbd469ec8
+  zh: 3025d870c0f36e2b
+/singula-ai-alego-typert-loader/understand-the-implementation:
+  en: 519c0242ef4d9e21
+  zh: a72967feb0ea1b41
+/singula-ai-alego-typert-loader/understand-the-implementation/design-concept:
+  en: 03fc077e58271e18
+  zh: 20f8fc02008cee5e
+/singula-ai-alego-typert-loader/understand-the-implementation/manifest-validation:
+  en: eb246aef15ea0532
+  zh: 7a4a7bcc788b3ba3
+/singula-ai-alego-typert-loader/understand-the-implementation/caching-and-ownership:
+  en: 38e781e052fdf44e
+  zh: d8f6b4d119bf9856
+/singula-ai-alego-typert-loader/understand-the-implementation/source-map:
+  en: 40a8a6723d33b335
+  zh: 5b806e49b6279818
+/singula-ai-alego-typert-loader/further-exploration:
+  en: 5d42f64c72b02f9a
+  zh: 468de23c510e19eb
+/singula-ai-alego-typert-loader/model-experience:
+  en: d3555a846d0b19a6
+  zh: eb4815fbd81a3561
+/singula-ai-alego-typert-loader/model-experience/kv-cache-effect:
+  en: f8a0ad3d0fc0eb32
+  zh: 7649a694b279f5f3
+/singula-ai-alego-typert-loader/known-limitations-and-deferred-work:
+  en: a7e281826b58b218
+  zh: b4347c965151a1a9
+/singula-ai-alego-typert-loader/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

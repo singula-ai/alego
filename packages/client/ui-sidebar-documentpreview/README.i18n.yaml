@@ -1,6 +1,46 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-sidebar-documentpreview/README.md
-README.md: bcaa89b2ba88022dbac41eca9751e8a6bdc86b1c
-README.zh.md: e6e9e36b3dbdec5bd19c5fec5ef466380675ec07
+/:
+  en: ef50065f5ff17aa1
+  zh: ee5d2b7986739fca
+/singula-ai-alego-client-ui-sidebar-documentpreview:
+  en: 975661ce95aca8e4
+  zh: 44693cd3a5fbabb1
+/singula-ai-alego-client-ui-sidebar-documentpreview/summary:
+  en: a74c16667d0baada
+  zh: 4fd709ff9f98b84f
+/singula-ai-alego-client-ui-sidebar-documentpreview/table-of-contents:
+  en: 0dd8c3a22e28aacf
+  zh: c27c11bf4b5cceba
+/singula-ai-alego-client-ui-sidebar-documentpreview/what-it-registers:
+  en: 545a2fd46fa28ec3
+  zh: db47bdc3b0ec51d1
+/singula-ai-alego-client-ui-sidebar-documentpreview/addresses:
+  en: 3cc2674f01fba141
+  zh: 30579634863a2843
+/singula-ai-alego-client-ui-sidebar-documentpreview/how-it-reads:
+  en: 32c3b587b851bc11
+  zh: 79a3845f7b5007f5
+/singula-ai-alego-client-ui-sidebar-documentpreview/excel-preview:
+  en: 4ebede199c002248
+  zh: f0286b1979e0691a
+/singula-ai-alego-client-ui-sidebar-documentpreview/office-preview:
+  en: 73dbf8e5f93655f6
+  zh: 21492633c41efc70
+/singula-ai-alego-client-ui-sidebar-documentpreview/navigation:
+  en: 5cd81a7b3cdc83bd
+  zh: 4cdd1b7ede497925
+/singula-ai-alego-client-ui-sidebar-documentpreview/model-experience:
+  en: ca1deb99d0e44755
+  zh: f285fc56cee669ec
+/singula-ai-alego-client-ui-sidebar-documentpreview/model-experience/kv-cache-effect:
+  en: 7edb4c0bb5f13847
+  zh: ae5d0bbebe4aa563
+/singula-ai-alego-client-ui-sidebar-documentpreview/known-limitations-and-deferred-work:
+  en: 05c836a81af3db4a
+  zh: 698c40c1212c9d87
+/singula-ai-alego-client-ui-sidebar-documentpreview/known-limitations-and-deferred-work/dev-note:
+  en: 3d8904cb970145a3
+  zh: a0c0cddcfedf9e42

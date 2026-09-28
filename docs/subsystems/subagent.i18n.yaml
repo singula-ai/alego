@@ -1,6 +1,31 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for subagent.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/subsystems/subagent.md
-subagent.md: d64fcf1b3f1fe36aa2d75ed9469df378b3516188
-subagent.zh.md: ed732f4af114f58259f85b4c1f06359fff3d75cc
+/subagent:
+  en: 5efe4f7786a7e427
+  zh: 6b70398be4744f50
+/subagent/two-kinds-of-capability-discovered-two-ways:
+  en: 7be7cbc224948ed1
+  zh: 6da4f61394ed900e
+/subagent/the-one-shot-start-request:
+  en: 7cbd9f31aaa173be
+  zh: b83d2eb5cee1a4e5
+/subagent/continuable-children-and-activations:
+  en: cc4e924a1e1bcc6e
+  zh: 792cc1d38adfd324
+/subagent/durable-enumeration-listchildren-listdescendants-and-their-entries:
+  en: 9d93bee4bdfa7a10
+  zh: b39df8149418248d
+/subagent/the-terminal-result-subagentresult:
+  en: 41e191f30cad91b5
+  zh: 7a924f436ed8d9bb
+/subagent/a-one-shot-run-subagentrun:
+  en: 39df94dd1343ffde
+  zh: 047605d7f5ba91ae
+/subagent/the-provider-contract-subagentprovider:
+  en: cb05cffdb837b7bc
+  zh: a53133845d673f0a
+/subagent/in-process-backends-permission-depth-and-seed:
+  en: a098c9212aef8160
+  zh: 6642e635ba5af16b

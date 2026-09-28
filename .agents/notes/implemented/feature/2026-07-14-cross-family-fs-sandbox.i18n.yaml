@@ -1,6 +1,37 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-14-cross-family-fs-sandbox.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-14-cross-family-fs-sandbox.md
-2026-07-14-cross-family-fs-sandbox.md: 0c6d85c94393be3022843c0e441d336af197d072
-2026-07-14-cross-family-fs-sandbox.zh.md: 66e24be20103736e0018f6fcbfa75687eb6c980f
+/agent-note-cross-family-file-sandbox-one-policy-home-a-sandboxed-fs-provider-and-fs-escalation-parity:
+  en: c29bf15a24590dd3
+  zh: 873d9b7853fc8341
+/agent-note-cross-family-file-sandbox-one-policy-home-a-sandboxed-fs-provider-and-fs-escalation-parity/problem:
+  en: c9e788f13ee3bf0f
+  zh: b629ab47baef7d94
+/agent-note-cross-family-file-sandbox-one-policy-home-a-sandboxed-fs-provider-and-fs-escalation-parity/decision:
+  en: dd825d09d6d850ed
+  zh: 0c355b56ff17d099
+/agent-note-cross-family-file-sandbox-one-policy-home-a-sandboxed-fs-provider-and-fs-escalation-parity/decision/ctx-sandboxpolicy-one-home-for-mode-and-workspace-root:
+  en: 5da07f6ad75cdda7
+  zh: 9f58f1ebe1cf0801
+/agent-note-cross-family-file-sandbox-one-policy-home-a-sandboxed-fs-provider-and-fs-escalation-parity/decision/alego-fs-sandbox-enforcement-inside-the-provider:
+  en: 7af944e71a87f086
+  zh: 334aa45346ceacd8
+/agent-note-cross-family-file-sandbox-one-policy-home-a-sandboxed-fs-provider-and-fs-escalation-parity/decision/tool-parity-one-denial-marker-one-escalation-flow:
+  en: f0cb1e473efe9dee
+  zh: 569d63968eaa48ea
+/agent-note-cross-family-file-sandbox-one-policy-home-a-sandboxed-fs-provider-and-fs-escalation-parity/decision/the-enforcement-point-provider-not-intent-gate:
+  en: 357195905a54c527
+  zh: 835387b1421d3f3a
+/agent-note-cross-family-file-sandbox-one-policy-home-a-sandboxed-fs-provider-and-fs-escalation-parity/decision/out-of-scope:
+  en: 9157891a477f17bd
+  zh: 58d926d0b86bc4fd
+/agent-note-cross-family-file-sandbox-one-policy-home-a-sandboxed-fs-provider-and-fs-escalation-parity/alternatives-considered:
+  en: c6ae3f27807fd374
+  zh: 8e268d13d8463c29
+/agent-note-cross-family-file-sandbox-one-policy-home-a-sandboxed-fs-provider-and-fs-escalation-parity/consequences:
+  en: 24d39b2eed7f1eb5
+  zh: cf7a5ad8aa3aa0df
+/agent-note-cross-family-file-sandbox-one-policy-home-a-sandboxed-fs-provider-and-fs-escalation-parity/testing:
+  en: 5c72cd6a25ad0850
+  zh: d942397e075c93e9

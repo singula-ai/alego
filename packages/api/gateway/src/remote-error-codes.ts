@@ -27,9 +27,11 @@ declare module '@singula-ai/alego-typert-protocol' {
     'gateway/lookup-not-found': TypertGatewayFaultDetails
     'gateway/lookup-unavailable': TypertGatewayFaultDetails
     'gateway/method-unavailable': TypertGatewayFaultDetails
+    'gateway/protocol': TypertGatewayFaultDetails
     'gateway/provider-mismatch': TypertGatewayFaultDetails
     'gateway/result-invalid': TypertGatewayFaultDetails
     'gateway/service-unavailable': TypertGatewayFaultDetails
     'gateway/signature-invalid': TypertGatewayFaultDetails
+    'gateway/uplink-overflow': TypertGatewayFaultDetails
   }
 }

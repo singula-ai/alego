@@ -1,10 +1,17 @@
 import { describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import { createScope, scopeTarget } from '@singula-ai/alego-scope'
-import { createSystemMessage, createUserMessage, ToolCallId, createMessage, createToolResultMessage, freezeMessage } from '@singula-ai/alego-llm'
+import { createDeveloperMessage, createSystemMessage, createUserMessage, ToolCallId, createMessage, createToolResultMessage, freezeMessage } from '@singula-ai/alego-llm'
+import type { ContextFormed } from '@singula-ai/alego-llm'
 import SessionStore, { SessionId, SessionSeq, TOOL_NOT_STARTED } from '@singula-ai/alego-session'
 import * as SessionInvariant from '@singula-ai/alego-session/invariant'
 import InvariantRegistry, { InvariantError } from '@singula-ai/alego-invariants'
+
+declare module '@singula-ai/alego-llm' {
+  interface MessageSourceMap {
+    'test': { kind: 'test' } & ContextFormed
+  }
+}
 
 async function setup(): Promise<{ ctx: Context; fiber: Awaited<ReturnType<Context['plugin']>> }> {
   const ctx = new Context()
@@ -29,6 +36,27 @@ describe('session-log invariants', () => {
       session.append('turn/start', { turn: 1 })
       session.append('turn/end', { turn: 1, reason: { kind: 'completed' } })
     }).not.toThrow()
+  })
+
+  it('requires developer messages to belong to the open turn and step', async () => {
+    const { ctx } = await setup()
+    try {
+      const session = ctx.sessions.create()
+      const message = createDeveloperMessage({ content: [{ type: 'tool-removal', toolName: 'search' }], source: { kind: 'test' } })
+      const append = (turn: number, step: number) => session.append('developer/message', { turn, step, message }, { surfaceOp: 'append' })
+      expect(() => append(1, 1)).toThrow('developer/message names turn 1/step 1')
+      session.append('turn/start', { turn: 1 })
+      expect(() => append(1, 1)).toThrow('developer/message names turn 1/step 1')
+      session.append('step/start', { turn: 1, step: 1 })
+      expect(() => append(2, 1)).toThrow('developer/message names turn 2/step 1')
+      expect(() => append(1, 2)).toThrow('developer/message names turn 1/step 2')
+      expect(() => append(1, 1)).not.toThrow()
+      expect(session.deriveMessages()).toEqual([message])
+      session.append('step/end', { turn: 1, step: 1 })
+      expect(() => append(1, 1)).toThrow('developer/message names turn 1/step 1')
+    } finally {
+      await ctx.fiber.dispose()
+    }
   })
 
   it('accepts a well-formed turn, step, and tool sequence', async () => {
@@ -156,7 +184,7 @@ describe('session-log invariants', () => {
     const outside = (await setup()).ctx.sessions.create()
     expect(() => outside.append('user/message', createUserMessage({
       content: [{ type: 'text', text: 'idle context' }],
-      source: { kind: 'plugin', plugin: 'test' },
+      source: { kind: 'test' },
     }), { surfaceOp: 'append' })).not.toThrow()
     // Route capacity is core execution state like the header beside it.
     expect(() => outside.append('request/context', {
@@ -237,7 +265,7 @@ describe('session-log invariants', () => {
   it('requires a system/message to name the open step', async () => {
     const session = (await setup()).ctx.sessions.create()
     session.append('turn/start', { turn: 1 })
-    const message = createSystemMessage('You are terse.', '@singula-ai/alego-system-prompt')
+    const message = createSystemMessage('You are terse.')
     expect(() => session.append('system/message', { turn: 1, step: 1, message }, { surfaceOp: 'append' }))
       .toThrow(/open is turn 1\/step null/)
     session.append('step/start', { turn: 1, step: 1 })
@@ -288,10 +316,7 @@ describe('session-log invariants', () => {
       ...original.data,
       message: freezeMessage({
         ...original.data.message,
-        content: [{
-          ...original.data.message.content[0],
-          content: [{ type: 'text', text: 'pruned' }],
-        }] satisfies typeof original.data.message.content,
+        content: [{ type: 'text', text: 'pruned' }],
       }),
     }, {
       surfaceOp: { op: 'replace', startSeq: original.seq, endSeq: original.seq },
@@ -327,10 +352,7 @@ describe('session-log invariants', () => {
       ...original.data,
       message: freezeMessage({
         ...original.data.message,
-        content: [{
-          ...original.data.message.content[0],
-          content: [{ type: 'text', text: 'pruned' }],
-        }] satisfies typeof original.data.message.content,
+        content: [{ type: 'text', text: 'pruned' }],
       }),
     }, {
       surfaceOp: { op: 'replace', startSeq: original.seq, endSeq: original.seq },

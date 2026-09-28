@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-sdk-app",
   "description": "The alego SDK profile bundle: stdio JSON-RPC serving and process lifecycle over alego-base",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -34,16 +34,18 @@
     }
   },
   "dependencies": {
-    "@singula-ai/alego-cmdline": "workspace:^",
-    "@singula-ai/alego-sdk-jsonrpc-server": "workspace:^",
-    "@singula-ai/schemastery": "workspace:^",
-    "commander": "^15.0.0"
+    "@singula-ai/alego-cmdline": "workspace:*",
+    "@singula-ai/alego-sdk-jsonrpc-server": "workspace:*",
+    "@singula-ai/schemastery": "workspace:~",
+    "commander": "^15.0.0",
+    "@singula-ai/alego-skill-office": "workspace:*",
+    "@singula-ai/alego-tool-workspace-dependencies": "workspace:*"
   },
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis-plugin-include": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis-plugin-include": "workspace:~",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

@@ -101,10 +101,13 @@ await handle.agent.whenIdle()
 | [`src/consumed-work.ts`](src/consumed-work.ts) | `foldConsumedWork(events)`：日志消费掉的工作最终怎样了 |
 | [`src/model-selection.ts`](src/model-selection.ts) | `installModelSelection`：把一个选择耦合到组装与路由 |
 | [`src/invariant.ts`](src/invariant.ts) | 不变式配套：无操作的 `agent/status` 转换会失败 |
+| [`src/archive-admission.ts`](src/archive-admission.ts) | Workspace 注册表归档准入中的 `turn` 族：运行中的回合及其用户原因取消 |
 
 ### 注册表与生命周期
 
-`AgentRegistry` 为每个实时 agent 保留一个条目，含其载体与创建者关系。`register()` 记录一个已构造完成的 agent；异步工厂使用拆分的 `enter()`/`announce()` 对，使 setup 与发布始终处于回滚保护之下。创建分发期间请求的 detach 会等待该次分发退栈，且每次 detach 都绑定到确切条目，因此陈旧 disposer 无法移除之后出现的同 id 替代项。Teardown 顺序是停止并排空循环、撤销作用域、detach agent、detach 会话；私有清理完成后该 id 即可复用。
+`AgentRegistry` 为每个实时 agent 保留一个条目，含其载体与创建者关系。使用已构造的 agent 前，等待 `register()` 以 `startup` 来源完成串行创建监听器；异步工厂使用拆分的 `enter()`/`announce()` 对，使 setup 与初始化始终受回滚保护。创建期间请求的 detach 会等待所有已调用的异步监听器结算，且每次 detach 都绑定到确切条目，因此陈旧 disposer 无法移除之后出现的同 id 替代项。Teardown 停止并排空循环、撤销作用域、detach agent，再 detach 会话；私有清理完成后该 id 即可复用。
+
+注册表还为它发布的每个 Agent 回答 Workspace 注册表的归档准入（[接缝](../../workspace/workspace/README.zh.md)）：`workspace/session-activity` 在会话的 Agent 运行时报告 `turn` 族（等待审批或回答的回合也算），`workspace/session-stop` 以用户自己的停止方式取消该回合——`agent.cancel({ kind: 'user' })`，但不带停止按钮的 `keepInbox`，因此排队输入被丢弃并记录一次收件箱拼接，而不会在之后唤醒已归档会话。任何一步都不等待收敛；没有活 Agent 的会话没有可运行的回合。`turn` 键从 [`src/types.ts`](src/types.ts) 合并进 `SessionActivityKindMap`，渲染各族的 Client 为此导入 `@singula-ai/alego-agent/types`。
 
 ### 发起方作用域
 
@@ -171,7 +174,7 @@ await handle.agent.whenIdle()
 
 - **发起方作用域只存在于进程内**：worker、子进程、HTTP、持久队列和重启必须显式传递所需身份。
 - **环境身份可能比存活状态更久**：消费方在生命周期敏感工作前，仍要检查 `agent.status`、取消状态和所属能力约定。
-- **`agent/session-start` 不能为启动设置门禁**：它仍是同步且不可 veto 的通知；必须在发布前完成的异步组合属于工厂的 `setup(agentCtx, agent)` 事务。
+- **创建监听器共享初始化生命周期。** `agent/created` 监听器不得等待 `agent.whenIdle()` 或自身所有者的 dispose：这些操作要等待创建完成。所需的异步工具与提示词安装完成后，监听器才可返回。
 - **`cancel()` 默认清空收件箱**：它会中止正在处理的轮次以及排队和 steering 工作；`cancel(cause, { keepInbox: true })` 只中止轮次并保留待处理项，且不存在让轮次继续运行、只中止步骤的操作。
 - **每条附加 `UserMessage` 恰好携带一个 `MessageSource`**：多个插件合并到一条消息上的贡献会归入同一来源，因此该消息无法列出多个生产者。
 

@@ -2,7 +2,7 @@
 # script comes from the scenario's committed session JSONL.
 
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   disabled: true
 
 - id: plugin-package-inventory-deepseek

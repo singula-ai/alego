@@ -9,7 +9,7 @@ import type { ClientRemote } from '@singula-ai/alego-api-gateway/client'
 import type { CommandSubmitAttachment } from '@singula-ai/alego-commands/types'
 import type { SessionId } from '@singula-ai/alego-session/types'
 import type {
-  SubagentCatalog, SubagentInterruptReceipt, SubagentPromptReceipt, SubagentPromptRequest,
+  SubagentInterruptReceipt, SubagentPromptReceipt, SubagentPromptRequest,
 } from '@singula-ai/alego-subagent/client'
 import type { RemoteResult } from '@singula-ai/alego-typert-protocol'
 import type { SessionRemote } from '../transport.ts'
@@ -26,7 +26,6 @@ export interface SessionCommandsRemote {
 
 /** Narrow subagent namespace consumed by a Client Session and its manager. */
 export interface SessionSubagentsRemote {
-  list(parentSessionId: SessionId, signal?: AbortSignal): Promise<RemoteResult<SubagentCatalog>>
   prompt(
     request: SubagentPromptRequest,
     signal?: AbortSignal,

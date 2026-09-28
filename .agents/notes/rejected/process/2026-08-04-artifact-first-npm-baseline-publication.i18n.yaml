@@ -1,6 +1,37 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-04-artifact-first-npm-baseline-publication.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/rejected/process/2026-08-04-artifact-first-npm-baseline-publication.md
-2026-08-04-artifact-first-npm-baseline-publication.md: 917d1a68a91e4bb96016399c0d6a9d9aa9143876
-2026-08-04-artifact-first-npm-baseline-publication.zh.md: aeed29cb858345ad494ee6f3770cdec21786023d
+/agent-note-artifact-first-npm-baseline-publication:
+  en: 043cb13d6cfb7bbf
+  zh: c40f0b0106c9baf3
+/agent-note-artifact-first-npm-baseline-publication/problem:
+  en: b1037100ccb42de2
+  zh: 2b0043b8f07ac675
+/agent-note-artifact-first-npm-baseline-publication/proposal:
+  en: 8f477c1a38d167f9
+  zh: 8959070065e971dc
+/agent-note-artifact-first-npm-baseline-publication/current-implementation-boundary:
+  en: d936324ce4ed56db
+  zh: b1e112658a07f53f
+/agent-note-artifact-first-npm-baseline-publication/publication-payload-contract:
+  en: 6ad6a8829fe06538
+  zh: 70e1507b7c85cb8a
+/agent-note-artifact-first-npm-baseline-publication/artifact-plane-integration-test:
+  en: 65f26b50477a18eb
+  zh: 31ec7919c81bab60
+/agent-note-artifact-first-npm-baseline-publication/publication-and-recovery:
+  en: f45f84678f8184ae
+  zh: 5f87157df6e828b5
+/agent-note-artifact-first-npm-baseline-publication/github-actions-integration:
+  en: c376aca1e297c9d2
+  zh: 2902f72e6d16e9ae
+/agent-note-artifact-first-npm-baseline-publication/alternatives-considered:
+  en: a18e8bcad3a97903
+  zh: e73a94d0d5cfac8d
+/agent-note-artifact-first-npm-baseline-publication/acceptance-criteria:
+  en: 7fd7e880bc3ac6ca
+  zh: fbe8c014cea1e3e0
+/agent-note-artifact-first-npm-baseline-publication/risks:
+  en: b7b5877c64ca152b
+  zh: e1de8e2ff052a502
