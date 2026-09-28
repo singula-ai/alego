@@ -63,7 +63,9 @@ jobs:
       ${{ matrix.runner == 'bwrap' && vars.ALEGO_CI_FAILOVER_LINUX == 'blacksmith'
           && 'blacksmith-4vcpu-ubuntu-2404'
           || matrix.os }}
-    timeout-minutes: 20
+    # The Seatbelt leg also runs the darwin unit suite, which can exceed 20
+    # minutes on the hosted macOS runner.
+    timeout-minutes: ${{ matrix.runner == 'seatbelt' && 60 || 20 }}
     steps:
       - uses: actions/checkout@v6
 

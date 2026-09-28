@@ -38,7 +38,7 @@ scope 命名的是公司，但用户实际输入的一切都没有随之改变�
 
 侧栏和首屏使用相同的 Alego 积木标志。首屏将本地化的彩虹 ALEGO 标题与上游的预览徽章及遵循减少动画偏好的悬停动画组合。运行标签显示“Building…”与“构建中…”，而非上游借用 DeepSeek 中文公司名的文字；启动页显示 ALEGO，插件安装示例为 `alego-plugin-hello-world`。浏览器标题、npm 和 Python 包、桌面资源、插件 manifest 以及发布产物名称均使用 Alego 身份。
 
-GitHub 源码链接和 push 工作流指向 `singula-ai/alego` 的 `main`。必需 CI 使用可用的托管 runner。Cloudflare 预览要求启用 `ALEGO_CLOUDFLARE_PREVIEW_ENABLED`；自托管备用演练要求启用 `ALEGO_SELF_HOSTED_STANDBY_ENABLED`。Issue 和 Project 自动化仅在仓库启用 Issues 时申请 App token。托管 runner 的覆盖率检查使用两个分区，Linux 消费端任务每次运行一个门禁，同时保留各门禁内部的并行执行；自托管故障切换沿用上游的 worker 数量。
+GitHub 源码链接和 push 工作流指向 `singula-ai/alego` 的 `main`。必需 CI 使用可用的托管 runner。Cloudflare 预览要求启用 `ALEGO_CLOUDFLARE_PREVIEW_ENABLED`；自托管备用演练要求启用 `ALEGO_SELF_HOSTED_STANDBY_ENABLED`。Issue 和 Project 自动化仅在仓库启用 Issues 时申请 App token。托管 runner 的覆盖率检查使用两个分区，Linux 消费端任务每次运行一个门禁，同时保留各门禁内部的并行执行；自托管故障切换沿用上游的 worker 数量。macOS Sandbox 分支还会运行 darwin 单元测试套件，因此时限为 60 分钟而非 20 分钟。
 
 桌面打包和上传必须通过 `DOWNLOAD_TEST_ORIGIN` 或 `DOWNLOAD_PROD_ORIGIN` 提供所选环境的 HTTPS origin。更新清单与安装包分别位于 `alego-desk/feeds/<target>/` 与 `alego-desk/bin/<target>/`，测试发布会插入其发布 ID；Alego 构建不会默认连接 DeepSeek 的下载服务器。更新资格验证在分配批次时把 `DOWNLOAD_TEST_ORIGIN` 与 `DOWNLOAD_TEST_COS_BUCKET` 记录到批次清单；其构建器和 COS 传输拒绝指向其他 origin 或存储桶的配置。现有更新器、签名、公证、COS 上传和平台选择机制保持完整。桌面身份在示例中使用 `dev.alego.desktop` 应用 ID，使用 `alego://` URL scheme、开发包 `Alego Dev.app`，更新资格验证使用 `dev.alego.desktop.qualification.q<id>`。
 
