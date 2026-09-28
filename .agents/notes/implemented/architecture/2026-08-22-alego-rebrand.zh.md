@@ -32,7 +32,7 @@ scope 命名的是公司，但用户实际输入的一切都没有随之改变�
 
 ## Upstream synchronization
 
-源码基线为上游 `master` 在 2026-09-27 的状态，位于 [`dsh-v0.1.7-rc.2`](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.1.7-rc.2) 发布标签之后 155 个提交处，版本仍为 `0.1.7-rc.2`；导入提交的提交说明记录了确切的上游提交。导入包含上游的每个受跟踪源码路径，并移除过时源码路径。运行时行为、会话迁移、包布局和测试结构由上游定义；fork 负责产品命名、品牌图形、仓库目标及其源码安装脚本。
+源码基线为上游 `master` 在 2026-09-27 的状态，位于 [`dsh-v0.1.7-rc.2`](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.1.7-rc.2) 发布标签之后 155 个提交处，版本仍为 `0.1.7-rc.2`；导入提交的提交说明记录了确切的上游提交。导入包含上游的每个受跟踪源码路径，并移除过时源码路径。导入时用 `git add -f` 暂存上游受跟踪路径列表，因为夹具目录自带 `.gitignore` 文件；`snapshots/web/changed-files-turn/workspace.expected` 会忽略其预期的 `app.local`。运行时行为、会话迁移、包布局和测试结构由上游定义；fork 负责产品命名、品牌图形、仓库目标及其源码安装脚本。
 
 现有归档三件套保留逐字节内容及封存哈希。新导入的上游归档文件在首次 Alego 封存前应用品牌映射。二进制图片和不透明编码数据不参与文本替换。包含字面 NUL 测试输入的源文件仍须更新标识符。持久化哈希域（`dsh-persistence-schema-v*`、`dsh-persistence-finalization-record-v1`）保留上游写法，使上游的历史格式参考无需改动即可通过校验。Alego 会话将标题插件记录为 `alego-session-title-llm`，因此导入的 V4 确认记录、其 schema 快照以及已定稿的 V4 检查点均针对该字面值重新推导。
 
