@@ -539,6 +539,10 @@ describe.skipIf(!isWin32 || !pwshAvailable())('windows-acl runner', () => {
     mkdirSync(child)
     writeFileSync(join(granted, 'file.txt'), 'x')
     writeFileSync(join(child, 'deep.txt'), 'x')
+    // Hosted runners create directories with explicit SYSTEM, Administrators, and owner allow ACEs,
+    // which precede the grant's inherited deny; start from inherited-only DACLs so the probe measures the grant.
+    const reset = spawnSync('icacls', [granted, '/reset', '/t', '/q'], { encoding: 'utf8' })
+    expect(reset.status, reset.stderr).toBe(0)
     const grant = AclWriteGrant.create(workspaceWriteSid(granted))
     grant.add(granted, true)
     try {

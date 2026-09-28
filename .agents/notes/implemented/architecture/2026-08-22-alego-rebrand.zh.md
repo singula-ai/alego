@@ -42,7 +42,7 @@ GitHub 源码链接和 push 工作流指向 `singula-ai/alego` 的 `main`。必�
 
 桌面打包和上传必须通过 `DOWNLOAD_TEST_ORIGIN` 或 `DOWNLOAD_PROD_ORIGIN` 提供所选环境的 HTTPS origin。更新清单与安装包分别位于 `alego-desk/feeds/<target>/` 与 `alego-desk/bin/<target>/`，测试发布会插入其发布 ID；Alego 构建不会默认连接 DeepSeek 的下载服务器。现有更新器、签名、公证、COS 上传和平台选择机制保持完整。桌面身份在示例中使用 `dev.alego.desktop` 应用 ID，使用 `alego://` URL scheme、开发包 `Alego Dev.app`，更新资格验证使用 `dev.alego.desktop.qualification.q<id>`。
 
-此分支保留终端启动检查，在接受输入前等待受控的 PowerShell 提示符。测试夹具使用进程 CPU 时间衡量后代进程的 CPU 工作量，通过调用已获准执行和中止信号来同步 Python 绑定的延迟完成，并将浏览器临时根目录转换为规范路径，避免 macOS 路径别名改变 Vite 资源名称。
+此分支保留终端启动检查，在接受输入前等待受控的 PowerShell 提示符。测试夹具使用进程 CPU 时间衡量后代进程的 CPU 工作量，通过调用已获准执行和中止信号来同步 Python 绑定的延迟完成，并将浏览器临时根目录转换为规范路径，避免 macOS 路径别名改变 Vite 资源名称。Windows ACL 运行器测试会把夹具目录树重置为仅含继承 ACE 的 DACL，因为托管运行器为新目录添加的显式允许 ACE 排在授权继承的拒绝 ACE 之前。
 
 E2E 工作流的可选 `record_brand_demo` 输入从隔离状态捕获真实 Host、真实模型的首轮发送流程。普通运行保留完整 E2E 套件。UI 文案门禁允许各语言共用 Alego 字标，但拒绝包含它的未翻译短语。
 
