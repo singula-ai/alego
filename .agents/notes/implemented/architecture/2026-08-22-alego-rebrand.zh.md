@@ -40,7 +40,7 @@ scope 命名的是公司，但用户实际输入的一切都没有随之改变�
 
 GitHub 源码链接和 push 工作流指向 `singula-ai/alego` 的 `main`。必需 CI 使用可用的托管 runner。Cloudflare 预览要求启用 `ALEGO_CLOUDFLARE_PREVIEW_ENABLED`；自托管备用演练要求启用 `ALEGO_SELF_HOSTED_STANDBY_ENABLED`。Issue 和 Project 自动化仅在仓库启用 Issues 时申请 App token。托管 runner 的覆盖率检查使用两个分区，Linux 消费端任务每次运行一个门禁，同时保留各门禁内部的并行执行；自托管故障切换沿用上游的 worker 数量。
 
-桌面打包和上传必须通过 `DOWNLOAD_TEST_ORIGIN` 或 `DOWNLOAD_PROD_ORIGIN` 提供所选环境的 HTTPS origin。更新清单与安装包分别位于 `alego-desk/feeds/<target>/` 与 `alego-desk/bin/<target>/`，测试发布会插入其发布 ID；Alego 构建不会默认连接 DeepSeek 的下载服务器。现有更新器、签名、公证、COS 上传和平台选择机制保持完整。桌面身份在示例中使用 `dev.alego.desktop` 应用 ID，使用 `alego://` URL scheme、开发包 `Alego Dev.app`，更新资格验证使用 `dev.alego.desktop.qualification.q<id>`。
+桌面打包和上传必须通过 `DOWNLOAD_TEST_ORIGIN` 或 `DOWNLOAD_PROD_ORIGIN` 提供所选环境的 HTTPS origin。更新清单与安装包分别位于 `alego-desk/feeds/<target>/` 与 `alego-desk/bin/<target>/`，测试发布会插入其发布 ID；Alego 构建不会默认连接 DeepSeek 的下载服务器。更新资格验证在分配批次时把 `DOWNLOAD_TEST_ORIGIN` 与 `DOWNLOAD_TEST_COS_BUCKET` 记录到批次清单；其构建器和 COS 传输拒绝指向其他 origin 或存储桶的配置。现有更新器、签名、公证、COS 上传和平台选择机制保持完整。桌面身份在示例中使用 `dev.alego.desktop` 应用 ID，使用 `alego://` URL scheme、开发包 `Alego Dev.app`，更新资格验证使用 `dev.alego.desktop.qualification.q<id>`。
 
 此分支保留终端启动检查，在接受输入前等待受控的 PowerShell 提示符。测试夹具使用进程 CPU 时间衡量后代进程的 CPU 工作量，通过调用已获准执行和中止信号来同步 Python 绑定的延迟完成，并将浏览器临时根目录转换为规范路径，避免 macOS 路径别名改变 Vite 资源名称。Windows ACL 运行器测试会把夹具目录树重置为仅含继承 ACE 的 DACL，因为托管运行器为新目录添加的显式允许 ACE 排在授权继承的拒绝 ACE 之前。PTC 作业取消测试在托管运行器上最多等待五秒（而非一秒）让后台作业完成注册。持久化 epoch-header 测试与同样提取整个仓库 schema 的同级测试共用 90 秒时限，因为托管 Windows 覆盖率通道完成该提取需要超过 60 秒。
 

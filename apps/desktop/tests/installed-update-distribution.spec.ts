@@ -8,11 +8,12 @@ import { createInstalledUpdateRun } from '../scripts/installed-update-qualificat
 import { planInstalledUpdateDistribution } from '../scripts/installed-update-distribution.ts'
 
 const versions = ['0.1.6-nightly.20260914.1', '0.1.6-nightly.20260914.2'] as const
+const destination = { origin: 'https://alego-download-test.example.com', bucket: 'alego-download-test-1250000000' }
 
 async function fixture<T>(body: (manifest: string) => Promise<T>): Promise<T> {
   const directory = await mkdtemp(join(tmpdir(), 'alego-update-distribution-'))
   try {
-    const run = await createInstalledUpdateRun(directory, versions, { version: '0.1.5-rc.2', commit: 'a'.repeat(40), dirtyFiles: [] })
+    const run = await createInstalledUpdateRun(directory, versions, { version: '0.1.5-rc.2', commit: 'a'.repeat(40), dirtyFiles: [] }, destination)
     for (const version of versions) {
       const output = join(run.root, version, 'installer')
       await mkdir(output, { recursive: true })
@@ -40,7 +41,7 @@ describe('qualification distribution file planning', () => {
       expect(next!.publicationAuthorized).toBe(false)
       expect(next!.verified).toBe('file-integrity-only')
       expect(load(next!.feed.contents)).toMatchObject({ version: versions[1],
-        files: [{ url: `https://download-test.deepseek.com/${next!.binaries[0]!.key}` }] })
+        files: [{ url: `${destination.origin}/${next!.binaries[0]!.key}` }] })
     })
   })
 

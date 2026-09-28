@@ -18,10 +18,11 @@ vi.mock('../scripts/windows-sign.mjs', () => ({
 }))
 
 const versions = ['0.1.6-nightly.20260914.1', '0.1.6-nightly.20260914.2'] as const
-const environment = { ALEGO_DESKTOP_AUTO_UPDATE_ENV: 'test', DOWNLOAD_TEST_ORIGIN: 'https://download-test.deepseek.com', DOWNLOAD_TEST_RELEASE_ID: '0123456789abcdef0123456789abcdef',
+const destination = { origin: 'https://alego-download-test.example.com', bucket: 'alego-download-test-1250000000' }
+const environment = { ALEGO_DESKTOP_AUTO_UPDATE_ENV: 'test', DOWNLOAD_TEST_ORIGIN: destination.origin, DOWNLOAD_TEST_RELEASE_ID: '0123456789abcdef0123456789abcdef',
   ALEGO_DESKTOP_MANDATORY_UPDATE_TEST_ORIGIN: 'https://policy.example.com',
   ALEGO_DESKTOP_MANDATORY_UPDATE_CONFIG: JSON.stringify({ allowedAuthOrigins: ['https://login.example.com'] }),
-  DOWNLOAD_TEST_COS_BUCKET: 'bj-toc-download-test-1320056602' }
+  DOWNLOAD_TEST_COS_BUCKET: destination.bucket }
 const require = createRequire(import.meta.url)
 const { validateConfiguration } = require('app-builder-lib/out/util/config/config.js') as {
   validateConfiguration: (config: object, logger: { isEnabled: false }) => Promise<void>
@@ -30,7 +31,7 @@ const { validateConfiguration } = require('app-builder-lib/out/util/config/confi
 async function fixture<T>(body: (manifest: string, source: string) => Promise<T>): Promise<T> {
   const root = await mkdtemp(join(tmpdir(), 'alego-update-builder-'))
   try {
-    const run = await createInstalledUpdateRun(root, versions, { version: '0.1.5-rc.2', commit: 'a'.repeat(40), dirtyFiles: [] })
+    const run = await createInstalledUpdateRun(root, versions, { version: '0.1.5-rc.2', commit: 'a'.repeat(40), dirtyFiles: [] }, destination)
     const manifest = join(run.root, 'run.json')
     await prepareInstalledUpdateBootstrap(manifest)
     const source = join(root, 'app')
@@ -96,7 +97,7 @@ describe('installed-update application inputs and builder configuration', () => 
         expect(typeof config.beforeBuild).toBe('function')
         expect(config.nsis.include).toMatch(/scripts[\\/]installer\.nsh$/u)
         expect(config.publish[0]!.url)
-          .toMatch(/^https:\/\/download-test\.deepseek\.com\/alego-desk\/feeds\/qualification\/[a-f0-9]{24}\/win-x64\/$/u)
+          .toMatch(/^https:\/\/alego-download-test\.example\.com\/alego-desk\/feeds\/qualification\/[a-f0-9]{24}\/win-x64\/$/u)
       }
     })
   })
@@ -113,7 +114,8 @@ describe('installed-update application inputs and builder configuration', () => 
   it.each([
     { ALEGO_DESKTOP_AUTO_UPDATE_ENV: 'production' },
     { ALEGO_DESKTOP_UNSIGNED: '1' },
-    { DOWNLOAD_TEST_ORIGIN: 'https://download.deepseek.com' },
+    { DOWNLOAD_TEST_ORIGIN: 'https://alego-download.example.com' },
+    { DOWNLOAD_TEST_COS_BUCKET: 'alego-download-1250000000' },
   ])('rejects incompatible qualification settings %j', async (override) => {
     await fixture(async (manifest) => {
       await expect(createInstalledUpdateBuilderConfig(manifest, versions[0], { ...environment, ...override })).rejects.toThrow('test deployment')

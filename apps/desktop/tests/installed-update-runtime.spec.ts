@@ -9,6 +9,7 @@ import { runtimeFixture } from './runtime-fixture.ts'
 
 const versions = ['0.1.6-nightly.20260914.1', '0.1.6-nightly.20260914.2'] as const
 const source = { version: '0.1.5-rc.2', commit: 'a'.repeat(40), dirtyFiles: [] }
+const destination = { origin: 'https://alego-download-test.example.com', bucket: 'alego-download-test-1250000000' }
 
 async function fixture<T>(body: (directory: string) => Promise<T>): Promise<T> {
   const directory = await mkdtemp(join(tmpdir(), 'alego-update-materials-'))
@@ -22,7 +23,7 @@ describe('installed-update runtime preparation', () => {
       const original = join(directory, 'source')
       runtimeFixture(original, source.version)
       const before = await readFile(join(original, 'desktop-runtime.json'))
-      const run = await createInstalledUpdateRun(join(directory, 'runs'), versions, source)
+      const run = await createInstalledUpdateRun(join(directory, 'runs'), versions, source, destination)
       const result = await prepareInstalledUpdateRuntime(join(run.root, 'run.json'), original)
       expect(result).toMatchObject({ signed: false, bootTested: false })
       for (const version of versions) {
@@ -46,7 +47,7 @@ describe('installed-update runtime preparation', () => {
     await fixture(async (directory) => {
       const original = join(directory, 'source')
       runtimeFixture(original, source.version)
-      const run = await createInstalledUpdateRun(join(directory, 'runs'), versions, source)
+      const run = await createInstalledUpdateRun(join(directory, 'runs'), versions, source, destination)
       await mkdir(join(run.root, versions[1]))
       await writeFile(join(run.root, versions[1], 'owner.txt'), 'do not overwrite')
       await expect(prepareInstalledUpdateRuntime(join(run.root, 'run.json'), original)).rejects.toMatchObject({ code: 'EEXIST' })
@@ -63,7 +64,7 @@ describe('installed-update runtime preparation', () => {
       const original = join(directory, 'source')
       runtimeFixture(original, source.version)
       await writeFile(join(original, 'package.json'), '{}')
-      const run = await createInstalledUpdateRun(join(directory, 'runs'), versions, source)
+      const run = await createInstalledUpdateRun(join(directory, 'runs'), versions, source, destination)
       await expect(prepareInstalledUpdateRuntime(join(run.root, 'run.json'), original)).rejects.toThrow('integrity')
       expect((await readdir(run.root)).sort()).toEqual(['run.json', 'runtime-preparation'])
       expect(JSON.parse(await readFile(join(run.root, 'runtime-preparation/failed.json'), 'utf8')))

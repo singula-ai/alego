@@ -5,11 +5,14 @@ import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { promisify } from 'node:util'
 import { describe, expect, it } from 'vitest'
-import { collectInstalledUpdateJournals, createInstalledUpdateRun, inspectInstalledUpdateJournals } from '../scripts/installed-update-qualification.ts'
+import {
+  collectInstalledUpdateJournals, createInstalledUpdateRun, inspectInstalledUpdateJournals, resolveInstalledUpdateDestination,
+} from '../scripts/installed-update-qualification.ts'
 import { DesktopUpdateJournal } from '../src/update-journal.ts'
 
 const versions = ['0.1.6-alpha.1.20260916.1', '0.1.6-alpha.1.20260916.2'] as const
 const source = { version: '0.1.6-alpha.1', commit: 'a'.repeat(40), dirtyFiles: [' M apps/desktop/example.ts'] }
+const destination = { origin: 'https://alego-download-test.example.com', bucket: 'alego-download-test-1250000000' }
 interface CollectionReport {
   readonly evidence: unknown
   readonly files: readonly { path: string; sha256: string; bytes: number }[]
@@ -38,12 +41,12 @@ function completeRetry(journal: DesktopUpdateJournal): void {
 describe('installed-update qualification materials', () => {
   it('allocates independent test-only namespaces and does not produce packages or overwrite an earlier manifest', async () => {
     await fixture(async (directory) => {
-      const [first, next] = await Promise.all([createInstalledUpdateRun(directory, versions, source),
-        createInstalledUpdateRun(directory, versions, source)])
+      const [first, next] = await Promise.all([createInstalledUpdateRun(directory, versions, source, destination),
+        createInstalledUpdateRun(directory, versions, source, destination)])
       expect(first.root).not.toBe(next.root)
       expect(first.appId).not.toBe(next.appId)
       expect(first.feedKey).not.toBe(next.feedKey)
-      expect(first.origin).toBe('https://download-test.deepseek.com')
+      expect({ origin: first.origin, bucket: first.bucket }).toEqual(destination)
       expect(first.environment).toBe('test')
       expect(first.feedKey).toBe(`alego-desk/feeds/qualification/${first.id}/win-x64/nightly.yml`)
       expect(JSON.parse(await readFile(join(first.root, 'run.json'), 'utf8'))).toEqual(first)
@@ -55,7 +58,7 @@ describe('installed-update qualification materials', () => {
     ['garbage', versions[1]], ['0.1.6-nightly.abc', versions[1]], ['0.1.6-nightly.01', versions[1]]])(
     'rejects unusable version pair %s to %s before allocating material', async (old, next) => {
       await fixture(async (directory) => {
-        await expect(createInstalledUpdateRun(directory, [old, next], source)).rejects.toThrow('increasing')
+        await expect(createInstalledUpdateRun(directory, [old, next], source, destination)).rejects.toThrow('increasing')
         expect(await readdir(directory)).toEqual([])
       })
     },
@@ -64,16 +67,41 @@ describe('installed-update qualification materials', () => {
   it.each(['alpha.1', 'beta.2', 'rc.3', 'test'])('accepts dated %s versions', async (prefix) => {
     await fixture(async (directory) => {
       const pair = [`0.1.6-${prefix}.20260916.1`, `0.1.6-${prefix}.20260916.2`] as const
-      const run = await createInstalledUpdateRun(directory, pair, source)
+      const run = await createInstalledUpdateRun(directory, pair, source, destination)
       expect(run.versions).toEqual(pair)
     })
   })
 
   it('rejects an invalid source commit before allocating material', async () => {
     await fixture(async (directory) => {
-      await expect(createInstalledUpdateRun(directory, versions, { ...source, commit: 'unknown' })).rejects.toThrow('Git commit')
+      await expect(createInstalledUpdateRun(directory, versions, { ...source, commit: 'unknown' }, destination)).rejects.toThrow('Git commit')
       expect(await readdir(directory)).toEqual([])
     })
+  })
+
+  const unusableDestinations = [
+    { origin: 'http://alego-download-test.example.com' }, { origin: 'https://alego-download-test.example.com/' },
+    { origin: 'https://alego-download-test.example.com/feeds' }, { origin: 'https://operator@alego-download-test.example.com' },
+    { origin: 'https://Alego-Download-Test.example.com' }, { bucket: 'alego-download-test' },
+    { bucket: 'Alego-download-test-1250000000' }, { bucket: 'alego--download-test-1250000000' }, { bucket: '' },
+  ]
+
+  it.each(unusableDestinations)('rejects the unusable test destination %j before allocating material', async (override) => {
+    await fixture(async (directory) => {
+      await expect(createInstalledUpdateRun(directory, versions, source, { ...destination, ...override })).rejects.toThrow('test origin')
+      expect(await readdir(directory)).toEqual([])
+    })
+  })
+
+  it('reads the test destination from Windows packaging settings', () => {
+    const settings = { DOWNLOAD_TEST_ORIGIN: destination.origin, DOWNLOAD_TEST_COS_BUCKET: destination.bucket, DOWNLOAD_TEST_COS_SECRET_ID: 'id' }
+    expect(resolveInstalledUpdateDestination(settings)).toEqual(destination)
+    expect(() => resolveInstalledUpdateDestination({ DOWNLOAD_TEST_ORIGIN: destination.origin })).toThrow('DOWNLOAD_TEST_COS_BUCKET')
+    expect(() => resolveInstalledUpdateDestination({ DOWNLOAD_TEST_COS_BUCKET: destination.bucket })).toThrow('DOWNLOAD_TEST_ORIGIN')
+    for (const override of unusableDestinations) {
+      const { origin, bucket } = { ...destination, ...override }
+      expect(() => resolveInstalledUpdateDestination({ DOWNLOAD_TEST_ORIGIN: origin, DOWNLOAD_TEST_COS_BUCKET: bucket })).toThrow('exact HTTPS origin')
+    }
   })
 
   it('reads real journal output while keeping observed flow separate from installation and data acceptance', async () => {
@@ -177,7 +205,7 @@ describe('installed-update qualification materials', () => {
 
   it('collects exact validated journal bytes in independent snapshots without copying other files or declaring acceptance', async () => {
     await fixture(async (directory) => {
-      const run = await createInstalledUpdateRun(directory, versions, source)
+      const run = await createInstalledUpdateRun(directory, versions, source, destination)
       const journals = join(directory, 'alego-update-qualification', run.id, 'journals')
       const original = new DesktopUpdateJournal(journals, versions[0])
       failedDownload(original)
@@ -207,7 +235,7 @@ describe('installed-update qualification materials', () => {
 
   it('rejects invalid or wrong-run journals before allocating a collection', async () => {
     await fixture(async (directory) => {
-      const run = await createInstalledUpdateRun(directory, versions, source)
+      const run = await createInstalledUpdateRun(directory, versions, source, destination)
       const manifest = join(run.root, 'run.json')
       await expect(collectInstalledUpdateJournals(manifest, directory)).rejects.toThrow('matching installed-app')
       const journals = join(directory, 'alego-update-qualification', run.id, 'journals')
@@ -220,7 +248,7 @@ describe('installed-update qualification materials', () => {
 
   it.each(['file', 'snapshot'])('rejects an oversized %s before collecting bytes', async (variant) => {
     await fixture(async (directory) => {
-      const run = await createInstalledUpdateRun(directory, versions, source)
+      const run = await createInstalledUpdateRun(directory, versions, source, destination)
       const journals = join(directory, 'alego-update-qualification', run.id, 'journals')
       await mkdir(journals, { recursive: true })
       const record = JSON.stringify({ schemaVersion: 1, sequence: 0, pid: 1, time: '2026-09-14T00:00:00.000Z',
@@ -236,7 +264,7 @@ describe('installed-update qualification materials', () => {
 
   it('runs the documented source CLI and retains an incomplete report instead of claiming operator acceptance', async () => {
     await fixture(async (directory) => {
-      const run = await createInstalledUpdateRun(directory, versions, source)
+      const run = await createInstalledUpdateRun(directory, versions, source, destination)
       const journals = join(directory, 'alego-update-qualification', run.id, 'journals')
       new DesktopUpdateJournal(journals, versions[0]).action('workspace-ready')
       // This test owns the documented source-script entry, not a built application or Cordis profile.

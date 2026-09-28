@@ -23,7 +23,7 @@ description: "将测试二进制上传与人工授权的固定 feed 发布分离
 
 完成[演练指南](../README.zh.md)中的两个安装包验证。保留通过的 `verification/check-*/result.json` 回执及未修改物料。发布工具将回执与当前安装包、blockmap、feed 和清单字节重新核对。它绝不签名或安装任何文件。
 
-现有 `.env.windows` 加载器提供 `ALEGO_DESKTOP_AUTO_UPDATE_ENV=test`、`DOWNLOAD_TEST_ORIGIN=https://download-test.deepseek.com`、`DOWNLOAD_TEST_COS_BUCKET=bj-toc-download-test-1320056602` 及 `DOWNLOAD_TEST_COS_SECRET_ID` / `DOWNLOAD_TEST_COS_SECRET_KEY`。只有这两个上传秘密进入 COS 客户端；绝不放入命令或记录。传输实现将请求限制在 test 存储桶和独立的 Windows 验收路径内。
+现有 `.env.windows` 加载器提供 `ALEGO_DESKTOP_AUTO_UPDATE_ENV=test`、与批次清单所记录 origin 和存储桶一致的 `DOWNLOAD_TEST_ORIGIN` 与 `DOWNLOAD_TEST_COS_BUCKET`，以及 `DOWNLOAD_TEST_COS_SECRET_ID` / `DOWNLOAD_TEST_COS_SECRET_KEY`。只有这两个上传秘密进入 COS 客户端；绝不放入命令或记录。传输实现拒绝指向其他 origin 或存储桶的配置，并将请求限制在已记录的存储桶和独立的 Windows 验收路径内。
 
 二进制上传操作额外查询存储桶版本控制；查询成功且既非启用也非暂停状态之前，它拒绝写入。feed 发布复用成功的二进制上传回执，不重复查询桶配置或下载安装包。COS 文档说明 [`x-cos-forbid-overwrite`](https://cloud.tencent.cn/document/product/436/7749) 无法保护开启版本控制的存储桶中的对象。查询被拒绝仅意味着该配置未知，不能证明上传被拒绝。
 

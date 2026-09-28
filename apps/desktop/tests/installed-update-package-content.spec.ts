@@ -37,6 +37,7 @@ const { createPackageWithOptions, uncache } = builderRequire('@electron/asar') a
   uncache: (archive: string) => boolean
 }
 const versions = ['0.1.6-nightly.20260914.1', '0.1.6-nightly.20260914.2'] as const
+const destination = { origin: 'https://alego-download-test.example.com', bucket: 'alego-download-test-1250000000' }
 const publisher = 'CN=Fixture,O=Fixture,C=CN'
 
 async function fixture(body: (context: {
@@ -50,7 +51,7 @@ async function fixture(body: (context: {
   const root = await mkdtemp(join(tmpdir(), 'alego-package-content-'))
   const archive = join(root, 'payload/resources/app.asar')
   try {
-    const run = await createInstalledUpdateRun(root, versions, { version: '0.1.5-rc.2', commit: 'a'.repeat(40), dirtyFiles: [] })
+    const run = await createInstalledUpdateRun(root, versions, { version: '0.1.5-rc.2', commit: 'a'.repeat(40), dirtyFiles: [] }, destination)
     const manifest = join(run.root, 'run.json')
     await prepareInstalledUpdateBootstrap(manifest)
     const source = join(root, 'source')

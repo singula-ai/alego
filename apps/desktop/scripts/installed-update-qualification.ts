@@ -11,6 +11,12 @@ export interface InstalledUpdateSource {
   readonly dirtyFiles: readonly string[]
 }
 
+/** The test origin and COS bucket a run publishes to; allocation records them for every later step. */
+export interface InstalledUpdateDestination {
+  readonly origin: string
+  readonly bucket: string
+}
+
 /** A private test namespace; creating it performs no signing, installation, or remote operation. */
 export interface InstalledUpdateRun {
   readonly schemaVersion: 1
@@ -29,18 +35,44 @@ export interface InstalledUpdateRun {
 }
 
 /**
+ * Read the test destination from Windows packaging settings.
+ * @param environment Settings loaded from `.env.windows`; only `DOWNLOAD_TEST_ORIGIN` and `DOWNLOAD_TEST_COS_BUCKET` are read.
+ * @returns The destination a new run records.
+ * @throws When the origin is not an exact HTTPS origin or the bucket is not a COS `<name>-<APPID>` bucket name.
+ */
+export function resolveInstalledUpdateDestination(
+  environment: Readonly<Record<string, string | undefined>>,
+): InstalledUpdateDestination {
+  const destination = { origin: environment.DOWNLOAD_TEST_ORIGIN, bucket: environment.DOWNLOAD_TEST_COS_BUCKET }
+  if (!isTestDestination(destination)) {
+    throw new Error('installed update: DOWNLOAD_TEST_ORIGIN must be an exact HTTPS origin and DOWNLOAD_TEST_COS_BUCKET a COS bucket name')
+  }
+  return destination
+}
+
+function isTestDestination(value: { readonly origin: unknown; readonly bucket: unknown }): value is InstalledUpdateDestination {
+  if (typeof value.origin !== 'string' || typeof value.bucket !== 'string') return false
+  const url = URL.parse(value.origin)
+  return url?.protocol === 'https:' && url.origin === value.origin && /^[a-z0-9]+(?:-[a-z0-9]+)*-\d+$/u.test(value.bucket)
+}
+
+/**
  * Allocate a new local run and retain its manifest without reading release credentials.
  * @param parent Ignored material directory; each invocation acquires a separate child atomically.
  * @param versions Explicit original and successor test versions, in increasing order.
  * @param source Source version, Git commit, and dirty-file list captured before material preparation.
+ * @param destination Test origin and COS bucket; later steps require the Windows packaging settings to name the same pair.
  * @returns The retained run manifest; no package or publication is implied by its presence.
  */
 export async function createInstalledUpdateRun(
-  parent: string, versions: readonly [string, string], source: InstalledUpdateSource,
+  parent: string, versions: readonly [string, string], source: InstalledUpdateSource, destination: InstalledUpdateDestination,
 ): Promise<InstalledUpdateRun> {
   validateVersions(versions)
   if (valid(source.version) === null || !/^[a-f0-9]{40,64}$/u.test(source.commit)) {
     throw new Error('installed update: valid source version and Git commit are required')
+  }
+  if (!isTestDestination(destination)) {
+    throw new Error('installed update: an exact HTTPS test origin and a COS test bucket are required')
   }
   await mkdir(parent, { recursive: true })
   const root = await mkdtemp(join(resolve(parent), 'installed-update-'))
@@ -48,7 +80,7 @@ export async function createInstalledUpdateRun(
   const run: InstalledUpdateRun = {
     schemaVersion: 1, id, root, createdAt: new Date().toISOString(), source, versions,
     appId: `dev.alego.desktop.qualification.q${id}`, productName: `ALEGO Update Test ${id}`,
-    environment: 'test', origin: 'https://download-test.deepseek.com', bucket: 'bj-toc-download-test-1320056602',
+    environment: 'test', origin: destination.origin, bucket: destination.bucket,
     feedKey: `alego-desk/feeds/qualification/${id}/win-x64/nightly.yml`,
     binPrefix: `alego-desk/bin/qualification/${id}/win-x64`,
   }
@@ -65,7 +97,7 @@ function validateVersions(versions: readonly [string, string]): void {
 }
 
 /**
- * Load a retained manifest and reject altered destinations or application identities.
+ * Load a retained manifest and reject a malformed test destination or altered application identities.
  * @param path Local run.json produced by the allocator.
  * @returns Validated test-only run; the directory must still be the original manifest location.
  */
@@ -75,7 +107,7 @@ export async function readInstalledUpdateRun(path: string): Promise<InstalledUpd
   const row = value as Record<string, unknown>
   if (row.schemaVersion !== 1 || typeof row.id !== 'string' || !/^[a-f0-9]{24}$/u.test(row.id)
     || row.root !== resolve(dirname(path)) || row.environment !== 'test'
-    || row.origin !== 'https://download-test.deepseek.com' || row.bucket !== 'bj-toc-download-test-1320056602'
+    || !isTestDestination({ origin: row.origin, bucket: row.bucket })
     || row.appId !== `dev.alego.desktop.qualification.q${row.id}` || row.productName !== `ALEGO Update Test ${row.id}`
     || row.feedKey !== `alego-desk/feeds/qualification/${row.id}/win-x64/nightly.yml`
     || row.binPrefix !== `alego-desk/bin/qualification/${row.id}/win-x64`
