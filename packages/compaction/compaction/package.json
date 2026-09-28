@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-compaction",
   "description": "Abstract compaction service seam (ctx.compaction) for the Alego",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -41,19 +41,19 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-commands": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/alego-session": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-brand": "workspace:*",
+    "@singula-ai/alego-commands": "workspace:*",
+    "@singula-ai/alego-invariants": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-commands": "workspace:^",
-    "@singula-ai/alego-invariants": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/alego-session": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-brand": "workspace:*",
+    "@singula-ai/alego-commands": "workspace:*",
+    "@singula-ai/alego-invariants": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

@@ -1,6 +1,40 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-05-dynamic-workflows.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-05-dynamic-workflows.md
-2026-07-05-dynamic-workflows.md: 215fad930baa681220c570dbee8a6e7bdfd076a0
-2026-07-05-dynamic-workflows.zh.md: 2a382f4d93ac9b7a7c6b80322c8f7e2d247da0b8
+/agent-note-dynamic-workflows-a-script-driven-multi-agent-orchestration-seam:
+  en: 12bdd47333254a04
+  zh: 3516a96515834748
+/agent-note-dynamic-workflows-a-script-driven-multi-agent-orchestration-seam/problem:
+  en: 4372e0853a7cd7ca
+  zh: 1b4699820d1eac67
+/agent-note-dynamic-workflows-a-script-driven-multi-agent-orchestration-seam/decision:
+  en: 16af14c0c9fc54ee
+  zh: 463dd56b53d05ea7
+/agent-note-dynamic-workflows-a-script-driven-multi-agent-orchestration-seam/decision/the-script-contract-claude-code-compatible:
+  en: 889beb90c3650f25
+  zh: b1ba5dac3c77f8d2
+/agent-note-dynamic-workflows-a-script-driven-multi-agent-orchestration-seam/decision/the-seam-alego-workflow:
+  en: ba4ccd11c75affe6
+  zh: 1d2115882338a70b
+/agent-note-dynamic-workflows-a-script-driven-multi-agent-orchestration-seam/decision/the-engine-alego-workflow-ptc-shared-node-process-execution:
+  en: 25eab2c7858c3637
+  zh: 71666744958f5b92
+/agent-note-dynamic-workflows-a-script-driven-multi-agent-orchestration-seam/decision/the-consumer-alego-tool-workflow:
+  en: 53cab40a0fb552b3
+  zh: 509717b2a91ec841
+/agent-note-dynamic-workflows-a-script-driven-multi-agent-orchestration-seam/decision/the-foundation-structured-output-on-the-subagent-seam:
+  en: 76ff4776ad676451
+  zh: def028d41923cbd4
+/agent-note-dynamic-workflows-a-script-driven-multi-agent-orchestration-seam/testing:
+  en: a1607694b584dcbc
+  zh: 29c9c7560f0fcf56
+/agent-note-dynamic-workflows-a-script-driven-multi-agent-orchestration-seam/deferred-documented-non-goals:
+  en: 2bff807d808bfa13
+  zh: add602509c0a826c
+/agent-note-dynamic-workflows-a-script-driven-multi-agent-orchestration-seam/alternatives-considered:
+  en: 3a466b7200562a1a
+  zh: 34e6128502048931
+/agent-note-dynamic-workflows-a-script-driven-multi-agent-orchestration-seam/consequences:
+  en: bfd2d827ffb20587
+  zh: 310c4fe77f48aa4e

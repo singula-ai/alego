@@ -1,6 +1,70 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/llm/llm-retry/README.md
-README.md: e0550d40c23a81ebdf13b8f44ff922bc8880180c
-README.zh.md: faf0df87df4057fa867291a5cea2dfb70deddefc
+/:
+  en: 48b7b8ee60e92601
+  zh: 28dfac5ed11f58ce
+/singula-ai-alego-llm-retry:
+  en: d168589328f8da26
+  zh: 0ff5ab88117b78c4
+/singula-ai-alego-llm-retry/summary:
+  en: 4ce8d3cc5d059af5
+  zh: ca4629d153248e3f
+/singula-ai-alego-llm-retry/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-llm-retry/use-this-package:
+  en: ecee4f255eaa53bd
+  zh: 2e7983fd7668fa00
+/singula-ai-alego-llm-retry/use-this-package/when-to-choose-it:
+  en: c6a687cce69c26ff
+  zh: 786b89dd80a130e1
+/singula-ai-alego-llm-retry/use-this-package/minimal-configuration:
+  en: 95b1cf09ee2c77a9
+  zh: 4d45e437db4988c7
+/singula-ai-alego-llm-retry/use-this-package/what-you-can-observe:
+  en: 21267b22ad48e012
+  zh: 521bfad2c2d8e418
+/singula-ai-alego-llm-retry/use-this-package/failures-and-recovery:
+  en: 730567739a21a4d2
+  zh: 3ea222c68d960948
+/singula-ai-alego-llm-retry/understand-the-implementation:
+  en: cef3289094f94c25
+  zh: c7f40ff6e4e56de6
+/singula-ai-alego-llm-retry/understand-the-implementation/design-philosophy:
+  en: fc4f15a14435698c
+  zh: 3c6d83f5ba04ec0e
+/singula-ai-alego-llm-retry/understand-the-implementation/source-map:
+  en: f34b551859b68c88
+  zh: 813ffa32497b1d9a
+/singula-ai-alego-llm-retry/understand-the-implementation/recovery-flow:
+  en: 85bace285b029101
+  zh: 6e0237450ca6ccc0
+/singula-ai-alego-llm-retry/understand-the-implementation/waterfall-composition:
+  en: 388e8db333e03cb1
+  zh: 54b6446ac3584724
+/singula-ai-alego-llm-retry/further-exploration:
+  en: cee22316450b8501
+  zh: 26194c507ba91fff
+/singula-ai-alego-llm-retry/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-llm-retry/model-experience/model-request-recovery:
+  en: 8496b7aefbe6fa20
+  zh: ed7b60ef09380ec4
+/singula-ai-alego-llm-retry/model-experience/model-request-recovery/what-the-model-sees:
+  en: 9772b77e48e70dba
+  zh: df3d4105f7b8c256
+/singula-ai-alego-llm-retry/model-experience/model-request-recovery/token-effect:
+  en: f86254d7c2ed2444
+  zh: 7e0f7b9e026e0bf2
+/singula-ai-alego-llm-retry/model-experience/model-request-recovery/kv-cache-effect:
+  en: 82d6bdfc0ec747ea
+  zh: 14269c9dcd086611
+/singula-ai-alego-llm-retry/known-limitations-and-deferred-work:
+  en: bef1baa545592b9c
+  zh: 61984a1e10de8294
+/singula-ai-alego-llm-retry/known-limitations-and-deferred-work/dev-note:
+  en: ff38027230617ebb
+  zh: 4a7913e851407b0c

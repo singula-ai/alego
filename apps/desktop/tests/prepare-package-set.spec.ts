@@ -46,32 +46,45 @@ describe('desktop package-set selection', () => {
     ])
   })
 
-  it('rejects a required internal package absent from the packed release inputs', () => {
+  it.each([
+    '@singula-ai/alego-base', '@singula-ai/cordis', '@singula-ai/node-addon-system',
+  ])('rejects required prepared package %s absent from the packed release inputs', (dependency) => {
     const available = new Map<string, PackedDesktopPackage>([
       ['@singula-ai/alego', packed('@singula-ai/alego', {
-        dependencies: { '@singula-ai/alego-base': '^1.0.0' },
+        dependencies: { [dependency]: '^1.0.0' },
       })],
       ['@singula-ai/alego-desktop-host', packed('@singula-ai/alego-desktop-host', {
         dependencies: { '@singula-ai/alego': '^1.0.0' },
       })],
     ])
-    expect(() => selectDesktopPackageClosure(available)).toThrow(/unpacked internal package/u)
+    expect(() => selectDesktopPackageClosure(available)).toThrow(/unpacked package/u)
     expect(() => selectDesktopPackageClosure(new Map([
       ['@singula-ai/alego', packed('@singula-ai/alego')],
     ]))).toThrow(/omit @singula-ai\/alego-desktop-host/u)
   })
 
-  it('requires the Desktop Host entry and its packaged overlay', () => {
+  it('leaves independently published Office packages to npm resolution', () => {
+    const available = new Map<string, PackedDesktopPackage>([
+      ['@singula-ai/alego', packed('@singula-ai/alego', {
+        dependencies: {
+          '@deepseek-ai/libreoffice-kit': '0.0.1',
+          '@deepseek-ai/libreoffice-kit-wasm': '0.0.1',
+        },
+      })],
+      ['@singula-ai/alego-desktop-host', packed('@singula-ai/alego-desktop-host')],
+    ])
+    expect(selectDesktopPackageClosure(available).map(entry => entry.manifest.name)).toEqual([
+      '@singula-ai/alego', '@singula-ai/alego-desktop-host',
+    ])
+  })
+
+  it('requires the Desktop Host entry', () => {
     const files = [
       'package/lib/index.js',
-      'package/config/desktop.cordis.patch.yml',
     ]
     expect(() => {
       assertDesktopHostPackageFiles(files)
     }).not.toThrow()
-    expect(() => {
-      assertDesktopHostPackageFiles(files.slice(0, 1))
-    }).toThrow(/desktop\.cordis\.patch\.yml/u)
     expect(() => {
       assertDesktopHostPackageFiles(files.slice(1))
     }).toThrow(/lib\/index\.js/u)

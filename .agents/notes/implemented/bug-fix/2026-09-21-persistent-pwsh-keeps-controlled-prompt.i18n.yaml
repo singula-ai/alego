@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-21-persistent-pwsh-keeps-controlled-prompt.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-09-21-persistent-pwsh-keeps-controlled-prompt.md
+/agent-note-persistent-pwsh-keeps-the-backend-s-controlled-prompt:
+  en: d4e4542a7274e0d4
+  zh: 4601865db71de3f1
+/agent-note-persistent-pwsh-keeps-the-backend-s-controlled-prompt/problem:
+  en: c4ab0b938fe5484e
+  zh: 91f93e6fc977f376
+/agent-note-persistent-pwsh-keeps-the-backend-s-controlled-prompt/decision:
+  en: 0b49776bf4db8c92
+  zh: a87e778714a2bc58
+/agent-note-persistent-pwsh-keeps-the-backend-s-controlled-prompt/alternatives-considered:
+  en: 85cb1aaca5b7d3ec
+  zh: 4cb0c8076c5cfd4b
+/agent-note-persistent-pwsh-keeps-the-backend-s-controlled-prompt/consequences:
+  en: d99351c1f0ff2f90
+  zh: 583a533cc9d3d539

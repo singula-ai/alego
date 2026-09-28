@@ -1,0 +1,83 @@
+{
+  "name": "@singula-ai/alego-ssh",
+  "description": "Shared OpenSSH connection and versioned POSIX remote helper",
+  "version": "0.1.7-rc.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/ssh/ssh"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json",
+    "./helper": {
+      "types": "./lib/types/helper-entry.d.ts",
+      "default": "./lib/helper.js"
+    },
+    "./protocol": {
+      "types": "./lib/types/protocol.d.ts",
+      "default": "./lib/protocol.js"
+    },
+    "./schemas": {
+      "types": "./lib/types/schemas.d.ts",
+      "default": "./lib/schemas.js"
+    }
+  },
+  "files": [
+    "lib/index.js",
+    "lib/helper.js",
+    "lib/protocol.js",
+    "lib/schemas.js",
+    "lib/protocol-*.js",
+    "lib/schemas-*.js",
+    "lib/stream-security-*.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-fs": "workspace:*",
+    "@singula-ai/alego-fs-local": "workspace:*",
+    "@singula-ai/alego-fs-sandbox": "workspace:*",
+    "@singula-ai/alego-subprocess": "workspace:*",
+    "@singula-ai/alego-subprocess-local": "workspace:*",
+    "@singula-ai/alego-sandbox": "workspace:*",
+    "@singula-ai/alego-sandbox-local": "workspace:*",
+    "@singula-ai/alego-sandbox-policy": "workspace:*",
+    "@singula-ai/alego-session-projection": "workspace:*",
+    "@singula-ai/alego-brand": "workspace:*"
+  },
+  "dependencies": {
+    "@singula-ai/schemastery": "workspace:~",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-fs": "workspace:*",
+    "@singula-ai/alego-fs-local": "workspace:*",
+    "@singula-ai/alego-fs-sandbox": "workspace:*",
+    "@singula-ai/alego-subprocess": "workspace:*",
+    "@singula-ai/alego-subprocess-local": "workspace:*",
+    "@singula-ai/alego-sandbox": "workspace:*",
+    "@singula-ai/alego-sandbox-local": "workspace:*",
+    "@singula-ai/alego-sandbox-policy": "workspace:*",
+    "@singula-ai/alego-session-projection": "workspace:*",
+    "@singula-ai/alego-ptc-runtime-node": "workspace:*",
+    "@singula-ai/alego-fs-ssh": "workspace:*",
+    "@singula-ai/alego-subprocess-ssh": "workspace:*",
+    "@singula-ai/alego-sandbox-ssh": "workspace:*",
+    "@singula-ai/alego-lsp": "workspace:*",
+    "@singula-ai/alego-lsp-stdio": "workspace:*",
+    "@singula-ai/alego-brand": "workspace:*"
+  }
+}

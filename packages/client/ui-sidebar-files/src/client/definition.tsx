@@ -5,21 +5,17 @@
  * it as an entry box, and the tree opens files through `tabActions.openResource`
  * for the `alego-resource://file` viewers to claim.
  */
+import type { ShortcutCommandId } from '@singula-ai/alego-client-shortcuts/client'
 import type { SidebarRightTabDefinition } from '@singula-ai/alego-client-ui-sidebar-right/client'
 import type { TranslateNS } from '@singula-ai/alego-client-locale/client'
 import type {} from './locales.ts'
-import { FileTypeIcon, type IconProps } from '@singula-ai/alego-client-ui-primitives'
+import { GuideArtworkFiles } from '@singula-ai/alego-client-ui-primitives'
 
 /** The tab kind this package owns. */
 export const FILES_KIND = 'files'
 
 /** This implementation's identity in the tab system, and the key its body registers under. */
 export const FILES_ID = '@singula-ai/alego-client-ui-sidebar-files'
-
-/** The type's coloured folder sheet at the guide capsule's glyph size, as the chip title draws it. */
-function FolderSheetGlyph({ size, className }: IconProps) {
-  return <FileTypeIcon kind="folder" size={size} className={className} />
-}
 
 /**
  * The files type's registry definition.
@@ -33,10 +29,12 @@ export function filesDefinition(t: TranslateNS<'sidebarFiles'>): SidebarRightTab
     priority: 'builtin',
     title: () => t('type.label'),
     guide: [{
+      id: 'workspace',
+      commandId: 'workspace.files' as ShortcutCommandId,
       order: 10,
       title: () => t('guide.title'),
       description: () => t('guide.description'),
-      icon: FolderSheetGlyph,
+      icon: GuideArtworkFiles,
     }],
   }
 }

@@ -1,6 +1,22 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-08-shared-file-type-icons.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-09-08-shared-file-type-icons.md
-2026-09-08-shared-file-type-icons.md: e4cd52bd3515aae1483a75fba6d18cc4ddc4a7c3
-2026-09-08-shared-file-type-icons.zh.md: 23fb556ca415a3a55311aa3f5fe3bc94f8495379
+/agent-note-shared-file-type-icons:
+  en: 5d2b4a52abc5569f
+  zh: a61e8c2855f3d0e3
+/agent-note-shared-file-type-icons/problem:
+  en: 70ea70c54dfadb39
+  zh: 2abb798a774f2747
+/agent-note-shared-file-type-icons/decision:
+  en: 0c6d80f37b43f9bf
+  zh: 2e32f588b1946fd1
+/agent-note-shared-file-type-icons/alternatives-considered:
+  en: 67dc36a02b841541
+  zh: cf262c343957ff69
+/agent-note-shared-file-type-icons/testing:
+  en: 16768b2ea13d16ef
+  zh: e7455e31220bb2e6
+/agent-note-shared-file-type-icons/consequences:
+  en: 64ebf2650fe0d819
+  zh: 702bbd8eeb73c7fa

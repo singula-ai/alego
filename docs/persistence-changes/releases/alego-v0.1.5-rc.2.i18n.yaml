@@ -1,0 +1,31 @@
+# Bilingual-pair consistency record for alego-v0.1.5-rc.2.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write docs/persistence-changes/releases/alego-v0.1.5-rc.2.md
+/:
+  en: 60b42f8e61331956
+  zh: 3700fe8e8c090585
+/persistence-release-alego-v0-1-5-rc-2:
+  en: 575a417e6348cb5c
+  zh: 177876c04b6489fb
+/persistence-release-alego-v0-1-5-rc-2/summary:
+  en: 8c7f10046d56ed39
+  zh: 712a830b77905fc2
+/persistence-release-alego-v0-1-5-rc-2/table-of-contents:
+  en: 0ff4a6f3c6af323f
+  zh: f5c7bd70cc1585c7
+/persistence-release-alego-v0-1-5-rc-2/release-evidence:
+  en: 0444714a3079a4c3
+  zh: a37a73f6cdd757cc
+/persistence-release-alego-v0-1-5-rc-2/declaration:
+  en: af9cea43334ee692
+  zh: c6c8bd0d6a17718a
+/persistence-release-alego-v0-1-5-rc-2/structural-changes:
+  en: 54958f4b7cc8ef6f
+  zh: 4ff5ab79aacc9b37
+/persistence-release-alego-v0-1-5-rc-2/verification:
+  en: 8ccca317964523b1
+  zh: 2c8b3e70a3320778
+/persistence-release-alego-v0-1-5-rc-2/dev-note:
+  en: b75c8458928b72b9
+  zh: 003ba4e17b4b5269

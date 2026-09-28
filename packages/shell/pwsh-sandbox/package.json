@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-pwsh-sandbox",
   "description": "Sandbox-consuming implementation of the Alego PowerShell executor seam (confines every command via ctx.sandbox, reports denial/enforcement result facts)",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,20 +27,20 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-shell": "workspace:^",
-    "@singula-ai/alego-pwsh-local": "workspace:^",
-    "@singula-ai/alego-sandbox": "workspace:^",
-    "@singula-ai/alego-sandbox-policy": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-shell": "workspace:*",
+    "@singula-ai/alego-pwsh-local": "workspace:*",
+    "@singula-ai/alego-sandbox": "workspace:*",
+    "@singula-ai/alego-sandbox-policy": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-shell": "workspace:^",
-    "@singula-ai/alego-pwsh-local": "workspace:^",
-    "@singula-ai/alego-sandbox": "workspace:^",
-    "@singula-ai/alego-sandbox-local": "workspace:^",
-    "@singula-ai/alego-sandbox-policy": "workspace:^",
-    "@singula-ai/alego-session-projection": "workspace:^",
-    "@singula-ai/alego-subprocess-local": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-shell": "workspace:*",
+    "@singula-ai/alego-pwsh-local": "workspace:*",
+    "@singula-ai/alego-sandbox": "workspace:*",
+    "@singula-ai/alego-sandbox-local": "workspace:*",
+    "@singula-ai/alego-sandbox-policy": "workspace:*",
+    "@singula-ai/alego-session-projection": "workspace:*",
+    "@singula-ai/alego-subprocess-local": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

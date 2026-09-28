@@ -18,11 +18,13 @@ Status: implemented
 
 DeepSeek HTTP 扩展保留上游协议名称 `x-deepseek-harness-user-id`、`x-deepseek-harness-session-id`、`x-deepseek-harness-compact`、`dsh_plugin_packages` 和 `dsh_session_log`。它们标识提供方协议字段，而非 Alego 命令或配置。User-Agent 中的产品名和包身份仍使用 Alego。
 
+DeepSeek 自身的服务出于同样原因保留上游写法。账号平台的 `x-dsh-auth-token` 请求头、`/auth-api/v0/dsh/*`、`/dsh/authorize` 与 `/dsh/authorized` 路径、平台签发的 `dsh_mock_*` token、`dsh_login_bonus` 活动以及 collector 的 `dsh_otel_report` 通道都是协议值。DeepSeek 自有主机（`*.deepseek.com`、`*.deepseeksvc.com`）上的每个 URL 连同路径保持不变。对外发布的 `@deepseek-ai/libreoffice-kit` 包家族及其 `deepseek-harness/libreoffice-kit` 仓库保留原名，以便 npm 能够解析。
+
 **scope 命名公司，前缀命名产品**，与上游的做法完全一致。`@deepseek-ai/dsh-<name>` 变为 `@singula-ai/alego-<name>`，而 CLI 包——上游的裸 `@deepseek-ai/dsh`——变为裸 `@singula-ai/alego`，因此对外发布的入口是 `npx @singula-ai/alego web`。Singula AI 拥有不止一个产品，所以 scope 归公司所有，产品名落在包名里。
 
 **上游未加产品前缀的包，这里同样不加。** 重新 scope 的 Cordis vendor 树（`@singula-ai/cordis`、`@singula-ai/schemastery`、`@singula-ai/cosmokit`、`@singula-ai/cordis-plugin-*`）、Landlock addon 家族与 website 都不带 `alego-` 前缀，因为它们不是产品。正是这一点使得一次前缀判断就能把 MIT 产品与共享同一 scope 的其他东西区分开。
 
-**品牌图形是被替换，而不是被重命名。** DeepSeek 的鲸鱼与字标以字面 SVG 路径数据的形式存在于 `FishLogo.tsx`、`BrandWordmark.tsx`、两个 favicon、`wordmark.svg` 以及一个徽章 PNG 中。fork 不得以自己的名义分发这些素材，因此 `AlegoMark` 绘制了一枚原创的凸点积木标志，字标也改用实时文本渲染名称，而非烘焙的字形轮廓。
+**品牌图形是被替换，而不是被重命名。** DeepSeek 的鲸鱼与字标以字面 SVG 路径数据的形式存在于 `FishLogo.tsx`、`BrandWordmark.tsx`、两个 favicon、`wordmark.svg` 以及一个徽章 PNG 中。fork 不得以自己的名义分发这些素材，因此 `AlegoMark` 绘制了一枚原创的凸点积木标志，字标也改用实时文本渲染名称，而非烘焙的字形轮廓。桌面应用、托盘与安装程序图标、欢迎页与安装程序字标以及引导插图都使用同一枚积木标志；上游的鲸鱼摆尾运行指示改为凸点依次升起的积木。
 
 ## What the product name still owns
 
@@ -30,15 +32,15 @@ scope 命名的是公司，但用户实际输入的一切都没有随之改变�
 
 ## Upstream synchronization
 
-源码基线为 [deepseek-ai/deepseek-harness 的 `c291e7961a515f6d7af9304e7fd1d257929aef26`](https://github.com/deepseek-ai/deepseek-harness/commit/c291e7961a515f6d7af9304e7fd1d257929aef26)，版本为 `0.1.5-rc.2`。导入包含上游的每个受跟踪源码路径，并移除过时源码路径。运行时行为、会话迁移、包布局和测试结构由上游定义；fork 负责产品命名、品牌图形、仓库目标及其源码安装脚本。
+源码基线为上游 `master` 在 2026-09-27 的状态，位于 [`dsh-v0.1.7-rc.2`](https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.1.7-rc.2) 发布标签之后 155 个提交处，版本仍为 `0.1.7-rc.2`；导入提交的提交说明记录了确切的上游提交。导入包含上游的每个受跟踪源码路径，并移除过时源码路径。运行时行为、会话迁移、包布局和测试结构由上游定义；fork 负责产品命名、品牌图形、仓库目标及其源码安装脚本。
 
-现有归档三件套保留逐字节内容及封存哈希。新导入的上游归档文件在首次 Alego 封存前应用品牌映射。二进制图片和不透明编码数据不参与文本替换。包含字面 NUL 测试输入的源文件仍须更新标识符。
+现有归档三件套保留逐字节内容及封存哈希。新导入的上游归档文件在首次 Alego 封存前应用品牌映射。二进制图片和不透明编码数据不参与文本替换。包含字面 NUL 测试输入的源文件仍须更新标识符。持久化哈希域（`dsh-persistence-schema-v*`、`dsh-persistence-finalization-record-v1`）保留上游写法，使上游的历史格式参考无需改动即可通过校验。Alego 会话将标题插件记录为 `alego-session-title-llm`，因此导入的 V4 确认记录、其 schema 快照以及已定稿的 V4 检查点均针对该字面值重新推导。
 
-侧栏和首屏使用相同的 Alego 积木标志。首屏将本地化的彩虹 ALEGO 标题与上游的预览徽章及遵循减少动画偏好的悬停动画组合。浏览器标题、npm 和 Python 包、桌面资源、插件 manifest 以及发布产物名称均使用 Alego 身份。
+侧栏和首屏使用相同的 Alego 积木标志。首屏将本地化的彩虹 ALEGO 标题与上游的预览徽章及遵循减少动画偏好的悬停动画组合。运行标签显示“Building…”与“构建中…”，而非上游借用 DeepSeek 中文公司名的文字；启动页显示 ALEGO，插件安装示例为 `alego-plugin-hello-world`。浏览器标题、npm 和 Python 包、桌面资源、插件 manifest 以及发布产物名称均使用 Alego 身份。
 
-GitHub 源码链接和 push 工作流指向 `singula-ai/alego` 的 `main`。必需 CI 使用可用的托管 runner。Cloudflare 预览要求启用 `ALEGO_CLOUDFLARE_PREVIEW_ENABLED`；自托管备用演练要求启用 `ALEGO_SELF_HOSTED_STANDBY_ENABLED`。Issue 和 Project 自动化仅在仓库启用 Issues 时申请 App token。托管 runner 的覆盖率检查使用两个分区，Linux 消费端任务每次运行一个门禁，同时保留各门禁内部的并行执行。
+GitHub 源码链接和 push 工作流指向 `singula-ai/alego` 的 `main`。必需 CI 使用可用的托管 runner。Cloudflare 预览要求启用 `ALEGO_CLOUDFLARE_PREVIEW_ENABLED`；自托管备用演练要求启用 `ALEGO_SELF_HOSTED_STANDBY_ENABLED`。Issue 和 Project 自动化仅在仓库启用 Issues 时申请 App token。托管 runner 的覆盖率检查使用两个分区，Linux 消费端任务每次运行一个门禁，同时保留各门禁内部的并行执行；自托管故障切换沿用上游的 worker 数量。
 
-桌面打包和上传必须通过 `DOWNLOAD_TEST_ORIGIN` 或 `DOWNLOAD_PROD_ORIGIN` 提供所选环境的 HTTPS origin。两者均使用 `_/alego/desktop/stable/<target>/`；Alego 构建不会默认连接 DeepSeek 的下载服务器。现有更新器、签名、公证、COS 上传和平台选择机制保持完整。
+桌面打包和上传必须通过 `DOWNLOAD_TEST_ORIGIN` 或 `DOWNLOAD_PROD_ORIGIN` 提供所选环境的 HTTPS origin。更新清单与安装包分别位于 `alego-desk/feeds/<target>/` 与 `alego-desk/bin/<target>/`，测试发布会插入其发布 ID；Alego 构建不会默认连接 DeepSeek 的下载服务器。现有更新器、签名、公证、COS 上传和平台选择机制保持完整。桌面身份在示例中使用 `dev.alego.desktop` 应用 ID，使用 `alego://` URL scheme、开发包 `Alego Dev.app`，更新资格验证使用 `dev.alego.desktop.qualification.q<id>`。
 
 此分支保留终端启动检查，在接受输入前等待受控的 PowerShell 提示符。测试夹具使用进程 CPU 时间衡量后代进程的 CPU 工作量，通过调用已获准执行和中止信号来同步 Python 绑定的延迟完成，并将浏览器临时根目录转换为规范路径，避免 macOS 路径别名改变 Vite 资源名称。
 

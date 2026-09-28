@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-acp-app",
   "description": "The alego ACP profile bundle: automation-only JSON-RPC stdio and process lifecycle over alego-base",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -34,15 +34,15 @@
     }
   },
   "dependencies": {
-    "@singula-ai/alego-acp": "workspace:^",
-    "@singula-ai/alego-cmdline": "workspace:^",
+    "@singula-ai/alego-acp": "workspace:*",
+    "@singula-ai/alego-cmdline": "workspace:*",
     "commander": "^15.0.0"
   },
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis-plugin-include": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis-plugin-include": "workspace:~",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

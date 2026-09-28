@@ -253,6 +253,7 @@ while :; do sleep 60; done
         cwd: scratch,
         rows: 24,
         cols: 80,
+        terminalType: 'dumb',
         graceMs: 100,
       })
       const output = captureTerminalOutput(handle)

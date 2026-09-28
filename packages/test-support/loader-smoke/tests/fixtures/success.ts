@@ -7,6 +7,7 @@ process.stdin.on('end', () => {
   console.log(JSON.stringify({
     configPath: process.argv[2],
     args: process.argv.slice(2),
+    execArgv: process.execArgv,
     cwd: process.cwd(),
     alegoHome: process.env.ALEGO_HOME,
     agentsHome: process.env.ALEGO_AGENTS_HOME,

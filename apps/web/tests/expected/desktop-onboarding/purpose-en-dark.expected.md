@@ -1,0 +1,12 @@
+- region "What would you like Alego to help with?":
+  - heading "What would you like Alego to help with?" [level=1]:
+    - text: What would you like
+    - emphasis: Alego
+    - text: to help with?
+  - paragraph: We’ll tailor the interface and tools to fit the way you work.
+  - checkbox "Office & creative work"
+  - text: Office & creative work Edit documents, organize data, create presentations, and more
+  - checkbox "Coding & development"
+  - text: Coding & development Edit code, debug issues, run commands, manage project files, and more
+  - button "Back"
+  - button "Skip"

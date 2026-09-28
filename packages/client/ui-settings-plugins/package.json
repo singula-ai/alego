@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-settings-plugins",
-  "description": "Plugins settings section with feature-owned tabs and configurable host-plane plugin cards",
-  "version": "0.1.5-rc.2",
+  "description": "Built-in plugins settings section for the alego web client: the Settings navigation entry and the tab chrome feature-owned tabs register into",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -29,8 +29,7 @@
     "client": {
       "inject": [
         "@singula-ai/alego-client-locale",
-        "@singula-ai/alego-client-ui-settings",
-        "@singula-ai/alego-api-remotes"
+        "@singula-ai/alego-client-ui-settings"
       ],
       "platform": "web"
     }
@@ -41,21 +40,18 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-api-remotes": "workspace:^",
-    "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-store": "workspace:^",
-    "@singula-ai/alego-client-test-runtime": "workspace:^",
-    "@singula-ai/alego-client-ui-primitives": "workspace:^",
-    "@singula-ai/alego-client-ui-settings": "workspace:^",
-    "@singula-ai/alego-client-ui-slots": "workspace:^",
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-client-locale": "workspace:*",
+    "@singula-ai/alego-client-test-runtime": "workspace:*",
+    "@singula-ai/alego-client-ui-renderer": "workspace:*",
+    "@singula-ai/alego-client-ui-settings": "workspace:*",
+    "@singula-ai/alego-client-ui-slots": "workspace:*",
+    "@singula-ai/alego-util-values": "workspace:*",
     "@types/react": "~18.3.1",
-    "react": "^18.2.0",
-    "@singula-ai/alego-client-ui-renderer": "workspace:^",
-    "clsx": "^2.0.0"
+    "react": "^18.2.0"
   },
   "files": [
     "lib/index.js",

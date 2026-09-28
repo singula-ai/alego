@@ -41,6 +41,14 @@ When the outgoing change adds or changes a resource-owning or asynchronous test,
 
 Do not manually repeat a passing check merely because commit or push follows. In particular, do not run typecheck immediately before pushing solely to duplicate the pre-push hook.
 
+Pass Vitest file and name filters directly after the script name with `pnpm run`; do not insert a standalone `--`, which reaches Vitest and can disable `-t` filtering. For example, this command runs one headless snapshot scenario:
+
+```sh
+pnpm run test:snapshot snapshots/session/headless.snapshot.ts -t 'cordis-inspect-jsdoc'
+```
+
+This applies to these pnpm scripts; npm and other launchers retain their own argument-forwarding syntax. Check the reported selected test count before treating a filtered run as focused evidence.
+
 ### Focus unit coverage on the affected source
 
 Test selection and coverage selection are separate. A Vitest file filter chooses which tests run, while the repository configuration otherwise measures every `packages/*/*/src/**/*.ts` file. When unit coverage is relevant, name both the owning tests and the source files or package whose coverage those tests must prove:

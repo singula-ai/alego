@@ -2,7 +2,7 @@
 # local provider endpoint is supplied by the snapshot test; the real attachment
 # store and ACP bridge carry two uploaded images into one model request.
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   config:
     apiKeyEnv: ALEGO_SNAPSHOT_API_KEY
     baseURL: !!js process.env.ALEGO_SNAPSHOT_BASE_URL

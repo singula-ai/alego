@@ -14,7 +14,7 @@ describe('BootPage', () => {
   it('draws the loading skeleton before any plugin state arrives', () => {
     const { el } = mount()
     expect(el.firstElementChild?.getAttribute('data-alego-boot')).toBe('')
-    expect(el.textContent).toContain('HARNESS')
+    expect(el.textContent).toContain('ALEGO')
     expect(el.textContent).toContain('Loading plugins…')
   })
 

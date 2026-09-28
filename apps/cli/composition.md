@@ -8,9 +8,13 @@ The alego-base bundle patch shared by the web, headless, sdk, and acp profiles; 
 ```mermaid
 flowchart LR
   cfg["packages/bundle/base/cordis.patch.yml<br/>cordis.yml"]
+  plugin_alego_base_tool_plugin_manager["tool-plugin-manager<br/>@singula-ai/alego-plugin-manager/tools"]
+  cfg --> plugin_alego_base_tool_plugin_manager
+  plugin_alego_base_plugin_manager["plugin-manager<br/>@singula-ai/alego-plugin-manager"]
+  cfg --> plugin_alego_base_plugin_manager
   plugin_alego_base_timer["timer<br/>@singula-ai/cordis-plugin-timer"]
   cfg --> plugin_alego_base_timer
-  plugin_alego_base_hmr["hmr<br/>@singula-ai/cordis-plugin-hmr"]
+  plugin_alego_base_hmr["hmr<br/>@singula-ai/alego-hmr"]
   cfg --> plugin_alego_base_hmr
   plugin_alego_base_llm["llm<br/>@singula-ai/alego-llm"]
   cfg --> plugin_alego_base_llm
@@ -42,8 +46,14 @@ flowchart LR
   cfg --> plugin_alego_base_jobs
   plugin_alego_base_llm_retry["llm-retry<br/>@singula-ai/alego-llm-retry"]
   cfg --> plugin_alego_base_llm_retry
-  plugin_alego_base_settings["settings<br/>@singula-ai/alego-settings-file"]
+  plugin_alego_base_config_editor["config-editor<br/>@singula-ai/alego-config-editor"]
+  cfg --> plugin_alego_base_config_editor
+  plugin_alego_base_settings["settings<br/>@singula-ai/alego-settings"]
   cfg --> plugin_alego_base_settings
+  plugin_alego_base_authorization["authorization<br/>@singula-ai/alego-authorization"]
+  cfg --> plugin_alego_base_authorization
+  plugin_alego_base_deepseek_account["deepseek-account<br/>@singula-ai/alego-deepseek-account-platform"]
+  cfg --> plugin_alego_base_deepseek_account
   plugin_alego_base_credentials["credentials<br/>@singula-ai/alego-credentials-local"]
   cfg --> plugin_alego_base_credentials
   plugin_alego_base_llm_pi_ai["llm-pi-ai<br/>@singula-ai/alego-llm-pi-ai"]
@@ -64,6 +74,8 @@ flowchart LR
   cfg --> plugin_alego_base_storage_domain
   plugin_alego_base_session_projection_cache["session-projection-cache<br/>@singula-ai/alego-session-projection-cache"]
   cfg --> plugin_alego_base_session_projection_cache
+  plugin_alego_base_otel["otel<br/>@singula-ai/alego-otel"]
+  cfg --> plugin_alego_base_otel
   plugin_alego_base_session_telemetry_otel["session-telemetry-otel<br/>@singula-ai/alego-session-telemetry-otel"]
   cfg --> plugin_alego_base_session_telemetry_otel
   plugin_alego_base_subprocess["subprocess<br/>@singula-ai/alego-subprocess-local"]
@@ -136,8 +148,10 @@ flowchart LR
   cfg --> plugin_alego_base_tool_subagent
   plugin_alego_base_tool_subagent_fork["tool-subagent-fork<br/>@singula-ai/alego-tool-subagent"]
   cfg --> plugin_alego_base_tool_subagent_fork
-  plugin_alego_base_workflow_worker_thread["workflow-worker-thread<br/>@singula-ai/alego-workflow-worker-thread"]
-  cfg --> plugin_alego_base_workflow_worker_thread
+  plugin_alego_base_ptc_runtime["ptc-runtime<br/>@singula-ai/alego-ptc-runtime-node"]
+  cfg --> plugin_alego_base_ptc_runtime
+  plugin_alego_base_workflow_ptc["workflow-ptc<br/>@singula-ai/alego-workflow-ptc"]
+  cfg --> plugin_alego_base_workflow_ptc
   plugin_alego_base_tool_workflow["tool-workflow<br/>@singula-ai/alego-tool-workflow"]
   cfg --> plugin_alego_base_tool_workflow
   plugin_alego_base_timeout_policy["timeout-policy<br/>@singula-ai/alego-tool-call-timeout-policy"]
@@ -150,6 +164,8 @@ flowchart LR
   cfg --> plugin_alego_base_session_checkpoint_policy
   plugin_alego_base_tool_result_pruner["tool-result-pruner<br/>@singula-ai/alego-compaction-tool-result-pruner"]
   cfg --> plugin_alego_base_tool_result_pruner
+  plugin_alego_base_image_offload["image-offload<br/>@singula-ai/alego-compaction-image-offload"]
+  cfg --> plugin_alego_base_image_offload
   plugin_alego_base_tool_todo["tool-todo<br/>@singula-ai/alego-tool-todo"]
   cfg --> plugin_alego_base_tool_todo
   plugin_alego_base_tool_goal["tool-goal<br/>@singula-ai/alego-tool-goal"]
@@ -166,6 +182,8 @@ flowchart LR
   cfg --> plugin_alego_base_web_fetch_http
   plugin_alego_base_tool_web["tool-web<br/>@singula-ai/alego-tool-web"]
   cfg --> plugin_alego_base_tool_web
+  plugin_alego_base_mcp_resources["mcp-resources<br/>@singula-ai/alego-mcp-resources"]
+  cfg --> plugin_alego_base_mcp_resources
   plugin_alego_base_tools["tools<br/>@singula-ai/alego-tools"]
   cfg --> plugin_alego_base_tools
   plugin_alego_base_system_prompt["system-prompt<br/>@singula-ai/alego-system-prompt"]
@@ -174,14 +192,18 @@ flowchart LR
   cfg --> plugin_alego_base_agent_loop
   plugin_alego_base_fs_sandbox["fs-sandbox<br/>@singula-ai/alego-fs-sandbox"]
   cfg --> plugin_alego_base_fs_sandbox
-  plugin_alego_base_llm_deepseek["llm-deepseek<br/>@singula-ai/alego-llm-deepseek"]
+  plugin_alego_base_llm_deepseek["llm-deepseek<br/>@singula-ai/alego-llm-deepseek-api-key"]
   cfg --> plugin_alego_base_llm_deepseek
+  plugin_alego_base_llm_deepseek_account["llm-deepseek-account<br/>@singula-ai/alego-llm-deepseek-account"]
+  cfg --> plugin_alego_base_llm_deepseek_account
 ```
 
 | Plugin id | Package / module |
 | --- | --- |
+| `tool-plugin-manager` | `@singula-ai/alego-plugin-manager/tools` |
+| `plugin-manager` | `@singula-ai/alego-plugin-manager` |
 | `timer` | `@singula-ai/cordis-plugin-timer` |
-| `hmr` | `@singula-ai/cordis-plugin-hmr` |
+| `hmr` | `@singula-ai/alego-hmr` |
 | `llm` | `@singula-ai/alego-llm` |
 | `deepseek-llm-api-extensions` | `@singula-ai/alego-deepseek-llm-api-extensions` |
 | `session` | `@singula-ai/alego-session` |
@@ -197,7 +219,10 @@ flowchart LR
 | `agent-default-model` | `@singula-ai/alego-agent-default-model` |
 | `jobs` | `@singula-ai/alego-jobs-local` |
 | `llm-retry` | `@singula-ai/alego-llm-retry` |
-| `settings` | `@singula-ai/alego-settings-file` |
+| `config-editor` | `@singula-ai/alego-config-editor` |
+| `settings` | `@singula-ai/alego-settings` |
+| `authorization` | `@singula-ai/alego-authorization` |
+| `deepseek-account` | `@singula-ai/alego-deepseek-account-platform` |
 | `credentials` | `@singula-ai/alego-credentials-local` |
 | `llm-pi-ai` | `@singula-ai/alego-llm-pi-ai` |
 | `session-persistence-jsonl` | `@singula-ai/alego-session-persistence-jsonl` |
@@ -208,6 +233,7 @@ flowchart LR
 | `storage-json` | `@singula-ai/alego-storage-json` |
 | `storage-domain` | `@singula-ai/alego-storage-domain` |
 | `session-projection-cache` | `@singula-ai/alego-session-projection-cache` |
+| `otel` | `@singula-ai/alego-otel` |
 | `session-telemetry-otel` | `@singula-ai/alego-session-telemetry-otel` |
 | `subprocess` | `@singula-ai/alego-subprocess-local` |
 | `sandbox` | `@singula-ai/alego-sandbox-local` |
@@ -244,13 +270,15 @@ flowchart LR
 | `tool-subagent-list-agents` | `@singula-ai/alego-tool-subagent-control/list-agents` |
 | `tool-subagent` | `@singula-ai/alego-tool-subagent` |
 | `tool-subagent-fork` | `@singula-ai/alego-tool-subagent` |
-| `workflow-worker-thread` | `@singula-ai/alego-workflow-worker-thread` |
+| `ptc-runtime` | `@singula-ai/alego-ptc-runtime-node` |
+| `workflow-ptc` | `@singula-ai/alego-workflow-ptc` |
 | `tool-workflow` | `@singula-ai/alego-tool-workflow` |
 | `timeout-policy` | `@singula-ai/alego-tool-call-timeout-policy` |
 | `spill-local` | `@singula-ai/alego-spill-local` |
 | `spill-policy` | `@singula-ai/alego-spill-policy` |
 | `session-checkpoint-policy` | `@singula-ai/alego-session-checkpoint-policy` |
 | `tool-result-pruner` | `@singula-ai/alego-compaction-tool-result-pruner` |
+| `image-offload` | `@singula-ai/alego-compaction-image-offload` |
 | `tool-todo` | `@singula-ai/alego-tool-todo` |
 | `tool-goal` | `@singula-ai/alego-tool-goal` |
 | `tool-ralph` | `@singula-ai/alego-tool-ralph` |
@@ -259,11 +287,13 @@ flowchart LR
 | `web-search-deepseek` | `@singula-ai/alego-web-search-deepseek` |
 | `web-fetch-http` | `@singula-ai/alego-web-fetch-http` |
 | `tool-web` | `@singula-ai/alego-tool-web` |
+| `mcp-resources` | `@singula-ai/alego-mcp-resources` |
 | `tools` | `@singula-ai/alego-tools` |
 | `system-prompt` | `@singula-ai/alego-system-prompt` |
 | `agent-loop` | `@singula-ai/alego-agent-loop` |
 | `fs-sandbox` | `@singula-ai/alego-fs-sandbox` |
-| `llm-deepseek` | `@singula-ai/alego-llm-deepseek` |
+| `llm-deepseek` | `@singula-ai/alego-llm-deepseek-api-key` |
+| `llm-deepseek-account` | `@singula-ai/alego-llm-deepseek-account` |
 
 Source config: [`packages/bundle/base/cordis.patch.yml`](../../packages/bundle/base/cordis.patch.yml).
 

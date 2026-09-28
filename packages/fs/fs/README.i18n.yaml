@@ -1,6 +1,58 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/fs/fs/README.md
-README.md: bbfdede56e0e4ab21d0473f887857d10cd74f672
-README.zh.md: 3360764f16e227be8a81843b6437c53a63a973ee
+/:
+  en: a94eb1470c498a2c
+  zh: cdd5faa0a8fcb562
+/singula-ai-alego-fs:
+  en: f65c9ba8e87bbfc0
+  zh: 76b574f8e93819a3
+/singula-ai-alego-fs/summary:
+  en: e0823366abc2dcca
+  zh: 3c4b56c8adbf0a89
+/singula-ai-alego-fs/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-fs/use-this-package:
+  en: 9d30d3f7ce43bf27
+  zh: 00df76c6f6275ae3
+/singula-ai-alego-fs/use-this-package/choosing-and-mounting-a-backend:
+  en: 1652e70e4f9242f8
+  zh: dbf575f4edebcb47
+/singula-ai-alego-fs/use-this-package/what-the-service-lets-you-do:
+  en: 48aa680bb26e99c7
+  zh: 4f9b6e47292c233e
+/singula-ai-alego-fs/understand-the-implementation:
+  en: 7e13d669ecc96d59
+  zh: b5fe7ae65812d926
+/singula-ai-alego-fs/understand-the-implementation/design-philosophy:
+  en: 59cbac64e7ff9e22
+  zh: 126799e6b805647e
+/singula-ai-alego-fs/understand-the-implementation/source-map:
+  en: 9507d7d9259fc89e
+  zh: aa500435e02e6de3
+/singula-ai-alego-fs/understand-the-implementation/how-a-call-flows:
+  en: 6ce9e67b0f5653e5
+  zh: 6d974a760352417f
+/singula-ai-alego-fs/understand-the-implementation/the-fs-policy-events:
+  en: 68619e43d9b1959a
+  zh: 6bae001652fae17a
+/singula-ai-alego-fs/understand-the-implementation/invariants:
+  en: 15b98bc9800b6eae
+  zh: 434d9dd05fa1a332
+/singula-ai-alego-fs/further-exploration:
+  en: ac6c2959a5859d5b
+  zh: 3a8e7cbab9e23b79
+/singula-ai-alego-fs/model-experience:
+  en: b66fd1f07e8904da
+  zh: ccd6fc7f306866aa
+/singula-ai-alego-fs/model-experience/kv-cache-effect:
+  en: 40294c1c31b74824
+  zh: 0857e9b4dd363e0a
+/singula-ai-alego-fs/known-limitations-and-deferred-work:
+  en: daea56cc8614e8ee
+  zh: f08d71318887677c
+/singula-ai-alego-fs/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

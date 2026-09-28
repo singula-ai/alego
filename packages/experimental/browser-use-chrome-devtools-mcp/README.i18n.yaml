@@ -1,0 +1,46 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/experimental/browser-use-chrome-devtools-mcp/README.md
+/:
+  en: 49dd7963da817a62
+  zh: a1a62d762aacc55d
+/singula-ai-alego-experimental-browser-use-chrome-devtools-mcp:
+  en: 1c60284b30c03cae
+  zh: 1a983ce627980535
+/singula-ai-alego-experimental-browser-use-chrome-devtools-mcp/summary:
+  en: 2860fff1092fd887
+  zh: da67195905183d63
+/singula-ai-alego-experimental-browser-use-chrome-devtools-mcp/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: ea2227f28624a0e6
+/singula-ai-alego-experimental-browser-use-chrome-devtools-mcp/use-this-package:
+  en: 46d36b9b20f3b788
+  zh: 80eadbf17851db9d
+/singula-ai-alego-experimental-browser-use-chrome-devtools-mcp/understand-the-implementation:
+  en: 879d491d364df67a
+  zh: 6c87d8f60338b946
+/singula-ai-alego-experimental-browser-use-chrome-devtools-mcp/further-exploration:
+  en: 2c6f0b27c5cdd2f9
+  zh: a51400bffb79ea26
+/singula-ai-alego-experimental-browser-use-chrome-devtools-mcp/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-experimental-browser-use-chrome-devtools-mcp/model-experience/browser-tools-and-screenshots:
+  en: 1adc972910db543b
+  zh: 7a06e0d265f19499
+/singula-ai-alego-experimental-browser-use-chrome-devtools-mcp/model-experience/browser-tools-and-screenshots/what-the-model-sees:
+  en: 54df6ff19fe6f99b
+  zh: 8749f57c37836a69
+/singula-ai-alego-experimental-browser-use-chrome-devtools-mcp/model-experience/browser-tools-and-screenshots/token-effect:
+  en: bc6d5d5db77d5fc3
+  zh: bbbd79e4ae29675f
+/singula-ai-alego-experimental-browser-use-chrome-devtools-mcp/model-experience/browser-tools-and-screenshots/kv-cache-effect:
+  en: 86e83cc10f829b2b
+  zh: c2e61c09531a5de2
+/singula-ai-alego-experimental-browser-use-chrome-devtools-mcp/known-limitations-and-deferred-work:
+  en: abf73f5f5d1d4c88
+  zh: dde5c51fcd0df628
+/singula-ai-alego-experimental-browser-use-chrome-devtools-mcp/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 8ec3e73528ddb1a6

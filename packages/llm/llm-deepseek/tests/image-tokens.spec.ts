@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { deepSeekImageTokens } from '../src/image-tokens.ts'
+import { deepSeekImageTokens, deepSeekRequestImageDimensions } from '../src/image-tokens.ts'
 
 describe('DeepSeek image tokens', () => {
   // Reference values from the provider's published image token calculator
@@ -45,5 +45,35 @@ describe('DeepSeek image tokens', () => {
   it('converges through repeated projection passes when the first is not a fixpoint', () => {
     expect(deepSeekImageTokens(12, 1123)).toBe(380)
     expect(deepSeekImageTokens(89, 2076)).toBe(254)
+  })
+})
+
+describe('DeepSeek request image dimensions', () => {
+  it('can cross a token-cell boundary when preserving the source aspect ratio', () => {
+    const sent = deepSeekRequestImageDimensions(1224, 1429)
+    expect(sent).toEqual({ width: 1187, height: 1386 })
+    expect(deepSeekImageTokens(1224, 1429)).toBe(959)
+    expect(deepSeekImageTokens(sent.width, sent.height)).toBe(992)
+  })
+
+  it.each([
+    [800, 800, 800, 800],
+    [1302, 1302, 1302, 1302],
+    [8192, 78, 8192, 78],
+    [1, 9000, 1, 9000],
+  ])('sends %sx%s unchanged because its padded grid fits the cap', (width, height, expectedWidth, expectedHeight) => {
+    expect(deepSeekRequestImageDimensions(width, height)).toEqual({ width: expectedWidth, height: expectedHeight })
+  })
+
+  it.each([
+    [1303, 1303, 1302, 1302],
+    [2048, 2048, 1302, 1302],
+    [2048, 1024, 1848, 924],
+    [3840, 2160, 1708, 961],
+    [1080, 2400, 838, 1862],
+  ])('downscales %sx%s to %sx%s at the solved long edge', (width, height, expectedWidth, expectedHeight) => {
+    const sent = deepSeekRequestImageDimensions(width, height)
+    expect(sent).toEqual({ width: expectedWidth, height: expectedHeight })
+    expect(deepSeekImageTokens(sent.width, sent.height)).toBe(deepSeekImageTokens(width, height))
   })
 })

@@ -1,6 +1,58 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/lsp/lsp/README.md
-README.md: ffeb95cc36cd78d56dca3ab9c89e9b7615151664
-README.zh.md: fd7c15e2cf4fb4e6b0f12d621f019dc376051666
+/:
+  en: 1a8099ab9b557ff7
+  zh: 7054b2eab0e1fda8
+/singula-ai-alego-lsp:
+  en: ed7d6d98fd56c32e
+  zh: 5dbdc22fd922f691
+/singula-ai-alego-lsp/summary:
+  en: a30368a615f5b2e6
+  zh: 56ac565b8a388a13
+/singula-ai-alego-lsp/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-lsp/use-this-package:
+  en: 39ddcc57203b5a43
+  zh: ee46b6bb58434337
+/singula-ai-alego-lsp/use-this-package/when-to-choose-it:
+  en: 104953d3732e7d81
+  zh: 54acd5d4742bd728
+/singula-ai-alego-lsp/use-this-package/composing-a-navigation-stack:
+  en: d1b15e5336bc170a
+  zh: 512d7f19c5c21c77
+/singula-ai-alego-lsp/use-this-package/the-four-operations:
+  en: 201a9b2f8dfb13eb
+  zh: c9041adde15602c1
+/singula-ai-alego-lsp/use-this-package/failures-and-recovery:
+  en: eeeff6f68bba6807
+  zh: a83372441c505bb6
+/singula-ai-alego-lsp/understand-the-implementation:
+  en: 1e0acac55fc6c314
+  zh: fe4ebe8a86dc480f
+/singula-ai-alego-lsp/understand-the-implementation/design-philosophy:
+  en: 57d8982d338f34d7
+  zh: 4db0dff872f9383f
+/singula-ai-alego-lsp/understand-the-implementation/source-map:
+  en: 25af1e58f8ab8854
+  zh: 90aec5ee2441bd96
+/singula-ai-alego-lsp/understand-the-implementation/registration-and-selection-lifecycle:
+  en: 549e97f436b1570c
+  zh: df0436c58dd31175
+/singula-ai-alego-lsp/further-exploration:
+  en: a744c1c3d050c2f8
+  zh: e6faa210e2bfff34
+/singula-ai-alego-lsp/model-experience:
+  en: c3bb41486b55b629
+  zh: 949c6594cb975d8b
+/singula-ai-alego-lsp/model-experience/kv-cache-effect:
+  en: c3cee6112c615236
+  zh: d53b846564d3f58f
+/singula-ai-alego-lsp/known-limitations-and-deferred-work:
+  en: e7ba99257e4da9e6
+  zh: e384e82d4c707af1
+/singula-ai-alego-lsp/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

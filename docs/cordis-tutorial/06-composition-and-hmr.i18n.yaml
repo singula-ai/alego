@@ -1,6 +1,16 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 06-composition-and-hmr.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/cordis-tutorial/06-composition-and-hmr.md
-06-composition-and-hmr.md: 6781f76e8d61b69577a6900c30b4d43a2bbce23d
-06-composition-and-hmr.zh.md: 2dd3a05af39b5a8bc06981723aa5deab3fd42b9f
+/6-composition-and-hmr:
+  en: 1498439541d3bed7
+  zh: 228ea11a8445bad2
+/6-composition-and-hmr/entries-are-more-than-a-name:
+  en: cd01f322004fef8f
+  zh: b5cd0a7a00786565
+/6-composition-and-hmr/hot-module-replacement:
+  en: 43fd92a127ef940a
+  zh: 15d7cf6a08765ec8
+/6-composition-and-hmr/diagnosing-a-plugin-that-never-loads:
+  en: 2f48e86018fcb37f
+  zh: 1c01fa651416ca03

@@ -7,6 +7,8 @@ kind: "package-reference"
 
 English | [中文](README.zh.md)
 
+Desktop analytics follows the [product collection policy](../../client/product-analytics/README.md), including its live application setting. Web usage is excluded.
+
 ## Summary
 
 Two-sided BFF for Host Remote capabilities selected by this application. The Host entry owns the forwarded-event selection and registers its application event source with API Gateway; the Client entry imports generated `/remote` artifacts as runtime values, mounts each contribution through `ctx.remote.$mount()`, and re-exports their declaration merges. Client business packages depend on this facade rather than the Gateway implementation or individual Remote runtime entries.
@@ -27,7 +29,7 @@ Two-sided BFF for Host Remote capabilities selected by this application. The Hos
 
 [`@singula-ai/alego-api-session-controller`](../session-controller/README.md) owns Agent and Session identity policy, including the Typert lookup resolvers used by other namespaces. This package only selects and mounts that generated Session contribution; it does not duplicate activation policy.
 
-The Client assembly mounts Commands, credentials, settings, Goal, dynamic Cordis, file and Session references, read-only Host plugin inventory, message feedback, Session Controller, and Workspace Controller contributions. Cordis effect ownership withdraws every contribution when this assembly unloads, while `@singula-ai/alego-api-gateway/client` owns descriptor validation, traced namespace Services, direct and scoped methods, invocation, streams, and cancellation. The Client entry consumes the shared `TypertClientRemote` interface through Cordis and does not import the concrete Gateway. It re-exports the Gateway Client face's declaration merges type-only, so a consumer reaching the forwarded-event vocabulary through this facade gains no runtime edge to the Gateway implementation.
+The Client assembly mounts Office conversion, Commands, credentials, settings, Goal, Schedule, dynamic Cordis, file and Session references, read-only Host plugin inventory, plugin-installation registry response comparison, message feedback, permission presets, Session Controller, subagents, and Workspace Controller contributions. The `permissionPresets` namespace returns the complete process-level catalog used by current-session controls. Cordis effect ownership withdraws every contribution when this assembly unloads, while `@singula-ai/alego-api-gateway/client` owns descriptor validation, traced namespace Services, direct and scoped methods, invocation, streams, and cancellation. The Client entry consumes the shared `TypertClientRemote` interface through Cordis and does not import the concrete Gateway. It re-exports the Gateway Client face's declaration merges type-only, so a consumer reaching the forwarded-event vocabulary through this facade gains no runtime edge to the Gateway implementation.
 
 This facade is also the front door for the wire type vocabulary a Client package names. It re-exports, type-only, the Remote failure vocabulary (`RemoteResult`, `RemoteFailure`, `RemoteErrorCode`, `RemoteErrorDetailsMap`), the Host facts (`RemoteHostFacts`), and each selected domain's client-safe payload types, so a Client feature package imports one specifier instead of reaching into `alego-typert-protocol`, the Gateway, or an owner's Host entry. Two kinds of package deliberately skip this door: the API-layer packages this assembly itself selects — importing it back would close a dependency cycle — and their tests, which take the failure vocabulary from `alego-typert-protocol` directly. A UI package's tests instead take the `RemoteError` constructor from [`alego-client-test-runtime`](../../test-support/client-runtime/README.md).
 
@@ -43,6 +45,8 @@ This package owns no physical transport or Host service discovery. It projects t
 The listener signature is not restated here. Each allowlisted event's Cordis `Events` declaration lives in its owner package's client-safe `./types` export, and both faces of this package pull those declarations in. The Host face additionally asserts every entry against `TypertForwardableEventEntry`: an `emit` entry must be a declared one-way event, while a `waterfall` entry must be a declared Agent-scoped waterfall whose final parameter is its same-result `next()` callback.
 
 The Host entry registers an independent allowlist listener set and queue for each Client stream. It rejects non-JSON ordinary-event arguments before enqueueing. For a waterfall, it projects only the top-level Agent identity and JSON request fields; a Client result must also be lossless JSON, while `next()` delegates to the following Host listener. Each scoped waterfall request must carry its routed Agent directly as `request.agent`; the Host rejects a missing or mismatched identity before forwarding. The source attaches all listeners synchronously before `ctx.typertGateway.registerRemoteEvents()` exposes Gateway's internal `$events` logical stream, so its first `ready` item proves that incremental delivery is active and carries the Host home for Client path display. Withdrawing the registration aborts active streams.
+
+The payload-free `schedule/changed` event invalidates Schedule task queries; Clients re-read after a notification and reconnect. The payload-free `permission-presets/catalog-changed` event invalidates the process catalog. A Client subscribes before its first `permissionPresets.catalog()` read and re-reads the complete snapshot after a notification; the event carries no catalog state and changes no Session sequence.
 
 <a id="build-boundary"></a>
 ## Build boundary
@@ -84,3 +88,5 @@ None.
 </details>
 
 **Runtime invariant:** No companion is published. Typert and the Agent/Session registries own the observed relationships.
+
+The Client assembly includes the account namespace for login commands and reconnectable account snapshots.

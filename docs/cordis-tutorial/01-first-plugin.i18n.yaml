@@ -1,6 +1,22 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 01-first-plugin.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/cordis-tutorial/01-first-plugin.md
-01-first-plugin.md: 46067e3d25bd279854bbf9f39a8518a88d85d4ae
-01-first-plugin.zh.md: 6e2ea85631db83dfe230d10e674d8337d8f89399
+/1-your-first-plugin:
+  en: 3c739805972eb14e
+  zh: da503c6bd87c14c7
+/1-your-first-plugin/write-the-plugin:
+  en: b16549209ba6539e
+  zh: 8bb04de53fb06ea9
+/1-your-first-plugin/compose-the-app:
+  en: 7d95e763adeb33c4
+  zh: c40e0c0a168bf5e9
+/1-your-first-plugin/run-it:
+  en: f2750074e0501d1f
+  zh: c0f7b7659f1c2321
+/1-your-first-plugin/the-two-other-plugin-shapes:
+  en: f5696c7fb4cadab3
+  zh: 5957e92cb6bd357d
+/1-your-first-plugin/try-breaking-it:
+  en: ffd57bbdc03f2361
+  zh: 7190158111c1739a

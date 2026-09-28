@@ -1,0 +1,37 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/deliverables/workspace-changes/README.md
+/:
+  en: 961e566f4c0c9b31
+  zh: 368dabdd8c4d53ec
+/singula-ai-alego-workspace-changes:
+  en: 0429bae49d487166
+  zh: 51fb39ddad8cc5e8
+/singula-ai-alego-workspace-changes/summary:
+  en: 61639e7f0185b4d9
+  zh: 7c559b2863f073f9
+/singula-ai-alego-workspace-changes/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-workspace-changes/use-this-package:
+  en: d6364de942d83439
+  zh: b958129205655ba9
+/singula-ai-alego-workspace-changes/understand-the-implementation:
+  en: e5b20d508763a2cf
+  zh: 4e35b0c46ffd5fb0
+/singula-ai-alego-workspace-changes/further-exploration:
+  en: b37ed80285752a8d
+  zh: 9c8d988afcb4030a
+/singula-ai-alego-workspace-changes/model-experience:
+  en: aa413c0bfaa815a8
+  zh: eea730976cf916e6
+/singula-ai-alego-workspace-changes/model-experience/kv-cache-effect:
+  en: e7ba08477bf22c4e
+  zh: f365439c69beb722
+/singula-ai-alego-workspace-changes/known-limitations-and-deferred-work:
+  en: c7091685e5065a40
+  zh: 1e9b85962ea04187
+/singula-ai-alego-workspace-changes/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

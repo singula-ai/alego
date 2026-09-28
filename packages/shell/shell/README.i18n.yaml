@@ -1,6 +1,67 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/shell/shell/README.md
-README.md: a7a8fc0923ef051999077477e385c491357b937a
-README.zh.md: 5c28a133f85fc79bddaea5fc97cfb91448f366a9
+/:
+  en: 4a173bf52227a3b6
+  zh: 76bb85595252765c
+/singula-ai-alego-shell:
+  en: 9c5c4abf9ecf0781
+  zh: 19e4af4ae88ae1d1
+/singula-ai-alego-shell/summary:
+  en: bb40932744bc4b80
+  zh: 22e2af1327b2f835
+/singula-ai-alego-shell/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-shell/use-this-package:
+  en: b81fffe9eb713a49
+  zh: ac37478e7f1f7499
+/singula-ai-alego-shell/use-this-package/foreground-commands:
+  en: cf38f6bc0e150602
+  zh: 2ff6cfb0ce48a7b8
+/singula-ai-alego-shell/use-this-package/background-processes:
+  en: 277c543917453017
+  zh: d2c100e37944f151
+/singula-ai-alego-shell/use-this-package/deadlines-and-bounded-waits:
+  en: 719b0708bf3cf1cf
+  zh: 044f53d543960f42
+/singula-ai-alego-shell/use-this-package/requests-and-resolved-specs:
+  en: 46f6b71120d61343
+  zh: 2fa9ff7f0b71014f
+/singula-ai-alego-shell/use-this-package/choosing-and-composing-an-executor:
+  en: 8f450645539a450a
+  zh: 9aef985ce24dd39b
+/singula-ai-alego-shell/use-this-package/the-shared-exit-status-contract:
+  en: f4125282c1deab36
+  zh: 46b8ee789ae68a9a
+/singula-ai-alego-shell/understand-the-implementation:
+  en: d2192b68c2faf92b
+  zh: 7678a2fd356d8587
+/singula-ai-alego-shell/understand-the-implementation/design-philosophy:
+  en: 369b90b54b18b86d
+  zh: 3716a1b06c53a93f
+/singula-ai-alego-shell/understand-the-implementation/source-map:
+  en: 80d45b2de500588a
+  zh: 23da8d99b05f4db6
+/singula-ai-alego-shell/understand-the-implementation/settings-namespace:
+  en: a5b81ecee7fe9938
+  zh: 25fcf060b48e14cf
+/singula-ai-alego-shell/understand-the-implementation/background-lifecycle-and-ownership:
+  en: 63853c610719e1bb
+  zh: 09668e6fd34c9161
+/singula-ai-alego-shell/further-exploration:
+  en: d1bbaecc682d363e
+  zh: 3ec644e55e4071b6
+/singula-ai-alego-shell/model-experience:
+  en: d9cf93c6cb4b37ac
+  zh: b49c1c93a6ea8edc
+/singula-ai-alego-shell/model-experience/kv-cache-effect:
+  en: 40294c1c31b74824
+  zh: 788a4799b1d65a8b
+/singula-ai-alego-shell/known-limitations-and-deferred-work:
+  en: 168dde47619ca223
+  zh: 8452ec2668d3aff4
+/singula-ai-alego-shell/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3c8bbe93d71a3377

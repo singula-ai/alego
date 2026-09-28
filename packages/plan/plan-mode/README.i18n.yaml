@@ -1,6 +1,109 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/plan/plan-mode/README.md
-README.md: 9f57cb151cd1de57bdc29a0cc5194f6b61b77bfb
-README.zh.md: 51f50043629253563a4cc1c928f012692fd9afac
+/:
+  en: 2d2e1f1234a40dd8
+  zh: 137e06497bc0faa4
+/singula-ai-alego-plan-mode:
+  en: 111123d7e658d184
+  zh: 28606ed3e987f048
+/singula-ai-alego-plan-mode/summary:
+  en: def14e1297455361
+  zh: 3208d09bbb0edc3c
+/singula-ai-alego-plan-mode/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-plan-mode/use-this-package:
+  en: 97a276da34bf0e32
+  zh: 8d13a8c5ef1436d7
+/singula-ai-alego-plan-mode/use-this-package/when-to-choose-it:
+  en: a239fa47a3039164
+  zh: 1181872cdf846357
+/singula-ai-alego-plan-mode/use-this-package/minimal-configuration:
+  en: aa8cd77c2aeaae79
+  zh: 9fcdccc711363529
+/singula-ai-alego-plan-mode/use-this-package/entering-and-leaving-plan-mode:
+  en: 2d300cdb883352ec
+  zh: 5a81be005b3716d3
+/singula-ai-alego-plan-mode/use-this-package/the-reviewed-exit:
+  en: ffc56477380b9411
+  zh: 17cac060f2252d78
+/singula-ai-alego-plan-mode/use-this-package/observing-plan-state:
+  en: b44e92bc38406015
+  zh: ed56190bee5d71a4
+/singula-ai-alego-plan-mode/understand-the-implementation:
+  en: 16370ef642feec6a
+  zh: 72aab8cf7795472e
+/singula-ai-alego-plan-mode/understand-the-implementation/design-philosophy:
+  en: 0acc88b042a99380
+  zh: e4cf66b77f2fc7ae
+/singula-ai-alego-plan-mode/understand-the-implementation/durable-state-and-step-boundary-appends:
+  en: ff946ab59a7b4a0f
+  zh: b1c79937770f57ad
+/singula-ai-alego-plan-mode/understand-the-implementation/the-plan-command:
+  en: a7bf35c2a9da52bc
+  zh: dea9f4b3a41f1a6d
+/singula-ai-alego-plan-mode/understand-the-implementation/the-exit-tool:
+  en: 56798d0f45fb5775
+  zh: 282e4a522ce6dae0
+/singula-ai-alego-plan-mode/understand-the-implementation/session-projection-unit:
+  en: 74cd6bdf50af51f5
+  zh: 67609cf7202ececb
+/singula-ai-alego-plan-mode/understand-the-implementation/source-map:
+  en: 4ee4cfb5fceccdf1
+  zh: 12035b72e1996a55
+/singula-ai-alego-plan-mode/further-exploration:
+  en: 4e4eb3a2f298f98d
+  zh: e565d8a2e7c7be00
+/singula-ai-alego-plan-mode/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-plan-mode/model-experience/plan-policy-system-prompt:
+  en: 28219e680bcadc65
+  zh: 264cddf4c1f282ab
+/singula-ai-alego-plan-mode/model-experience/plan-policy-system-prompt/what-the-model-sees:
+  en: 3298c6752fd67bab
+  zh: d0132ee432a2a671
+/singula-ai-alego-plan-mode/model-experience/plan-policy-system-prompt/what-the-model-sees/configuration-example:
+  en: 85ceebb0d1aae24f
+  zh: 1954f2ad3d538621
+/singula-ai-alego-plan-mode/model-experience/plan-policy-system-prompt/token-effect:
+  en: 4e339015c4c0dff8
+  zh: a61e28944707f43d
+/singula-ai-alego-plan-mode/model-experience/plan-policy-system-prompt/kv-cache-effect:
+  en: 1331892c04e7a2f9
+  zh: f35152173255962f
+/singula-ai-alego-plan-mode/model-experience/human-command:
+  en: 4d1ec2182c2ac7ec
+  zh: 1c9c4a30d8a89075
+/singula-ai-alego-plan-mode/model-experience/human-command/what-the-model-sees:
+  en: 3aa6c3e57f8e6982
+  zh: f11d289a94976e49
+/singula-ai-alego-plan-mode/model-experience/human-command/token-effect:
+  en: fab2133874ee6b9a
+  zh: 835e97e46df66dc0
+/singula-ai-alego-plan-mode/model-experience/human-command/kv-cache-effect:
+  en: 3fea3b0fa514c75c
+  zh: cd479f56ac1eae9d
+/singula-ai-alego-plan-mode/model-experience/exit-tool-schema-and-review-exchange:
+  en: 9622e96bdc01276d
+  zh: 53801e68a49f3d1d
+/singula-ai-alego-plan-mode/model-experience/exit-tool-schema-and-review-exchange/what-the-model-sees:
+  en: 22023d8577a82869
+  zh: c24f9ee6009c7584
+/singula-ai-alego-plan-mode/model-experience/exit-tool-schema-and-review-exchange/token-effect:
+  en: d1b1418f20ee119d
+  zh: c2b89ea3cae57175
+/singula-ai-alego-plan-mode/model-experience/exit-tool-schema-and-review-exchange/kv-cache-effect:
+  en: 6b1404ea11f1e60d
+  zh: 348d0579de218652
+/singula-ai-alego-plan-mode/known-limitations-and-deferred-work:
+  en: a87aabfede0087fd
+  zh: 201e9b3766980005
+/singula-ai-alego-plan-mode/known-limitations-and-deferred-work/dev-note:
+  en: 7de02cd33a767bd6
+  zh: d9e54003f230f725
+/singula-ai-alego-plan-mode/known-limitations-and-deferred-work/dev-note/future-a-second-collaboration-mode:
+  en: 556b49684461978b
+  zh: 9ac9f09b0aedc589

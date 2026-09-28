@@ -1,6 +1,28 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-session/README.md
-README.md: fb898faa4500084c98abab1ac252bc899641efb8
-README.zh.md: 4c9848a2ca6d5123e45c10981d38e9dbcb9c668a
+/:
+  en: af287bddb3c67f95
+  zh: 162d447352ac8366
+/singula-ai-alego-client-ui-session:
+  en: 9f6448da34a1efc1
+  zh: 19459e3180ead9bc
+/singula-ai-alego-client-ui-session/summary:
+  en: 75428e0474a073a4
+  zh: 18f1db4b4c5302e5
+/singula-ai-alego-client-ui-session/table-of-contents:
+  en: b4683d2a53256fda
+  zh: 4e65ff63dc8c48fe
+/singula-ai-alego-client-ui-session/model-experience:
+  en: cb2d4451e8bf8520
+  zh: 6d3adbb930d90c59
+/singula-ai-alego-client-ui-session/model-experience/kv-cache-effect:
+  en: 209b4471032b0f9d
+  zh: 6c2e39ac1dedf71c
+/singula-ai-alego-client-ui-session/known-limitations-and-deferred-work:
+  en: 61ef65087e3d4ac8
+  zh: 01b38db2957f9096
+/singula-ai-alego-client-ui-session/known-limitations-and-deferred-work/dev-note:
+  en: 48d675ab370a4967
+  zh: 0e22dedcf99801ad

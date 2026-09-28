@@ -1,6 +1,22 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-10-child-agents-join-their-parent-preset.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-10-child-agents-join-their-parent-preset.md
-2026-08-10-child-agents-join-their-parent-preset.md: 5b7ad9eba41244ed4e04013c37ddb5f3f12a1b6a
-2026-08-10-child-agents-join-their-parent-preset.zh.md: 449b1cd72272b5aaf983617664c6171a21f7953b
+/agent-note-child-agents-join-their-parent-s-preset-composition:
+  en: c1e2c7cb9ff455c3
+  zh: 8e00af5afaa1b09e
+/agent-note-child-agents-join-their-parent-s-preset-composition/problem:
+  en: 02784bdb5471749d
+  zh: b6c5622cb4b99973
+/agent-note-child-agents-join-their-parent-s-preset-composition/decision:
+  en: 7959677ffed08aa6
+  zh: 2a17ade5faed07c3
+/agent-note-child-agents-join-their-parent-s-preset-composition/alternatives-considered:
+  en: 2703c76fda8d5e2f
+  zh: df1de69fa08acaca
+/agent-note-child-agents-join-their-parent-s-preset-composition/testing:
+  en: 458a2aa1ae046253
+  zh: 59fad52e881989ed
+/agent-note-child-agents-join-their-parent-s-preset-composition/consequences:
+  en: 09fd94b5ceaa95e6
+  zh: bf8e4e22f5b70b45

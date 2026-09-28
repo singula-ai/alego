@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-web-frontend",
   "description": "Web application entry: vite build over the @singula-ai/alego-client-web shell library; dist/ served by apps/cli's alego web",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -30,17 +30,21 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@singula-ai/cordis-plugin-group": "workspace:^",
-    "@singula-ai/alego-client-modules": "workspace:^",
-    "@singula-ai/alego-client-store": "workspace:^",
-    "@singula-ai/alego-client-ui-dockkit": "workspace:^",
-    "@singula-ai/alego-client-ui-primitives": "workspace:^",
-    "@singula-ai/alego-client-ui-slots": "workspace:^",
-    "@singula-ai/alego-client-web": "workspace:^",
-    "@singula-ai/alego-cmdline": "workspace:^",
-    "@singula-ai/alego-pwsh-local": "workspace:^",
-    "@singula-ai/alego-experimental-webworker-packer": "workspace:^",
-    "@singula-ai/alego-experimental-webworker-runtime": "workspace:^",
+    "@singula-ai/cordis-plugin-group": "workspace:~",
+    "@singula-ai/alego-client-modules": "workspace:*",
+    "@singula-ai/alego-client-store": "workspace:*",
+    "@singula-ai/alego-client-test-runtime": "workspace:*",
+    "@singula-ai/alego-client-ui-deliverables": "workspace:*",
+    "@singula-ai/alego-client-ui-dockkit": "workspace:*",
+    "@singula-ai/alego-client-ui-primitives": "workspace:*",
+    "@singula-ai/alego-client-ui-slots": "workspace:*",
+    "@singula-ai/alego-client-web": "workspace:*",
+    "@singula-ai/alego-cmdline": "workspace:*",
+    "@singula-ai/alego-pwsh-local": "workspace:*",
+    "@singula-ai/alego-experimental-agent-team": "workspace:*",
+    "@singula-ai/alego-experimental-webworker-packer": "workspace:*",
+    "@singula-ai/alego-experimental-webworker-runtime": "workspace:*",
+    "@singula-ai/alego-remote-mock": "workspace:*",
     "@types/node": "^22.0.0",
     "@types/react": "~18.3.1",
     "@types/react-dom": "~18.3.0",
@@ -55,6 +59,12 @@
     "vite": "^6.0.0",
     "vitest": "^4.1.8",
     "ws": "8.21.0",
-    "@singula-ai/alego-launch-environment": "workspace:^"
+    "@singula-ai/alego-client-ui-theme": "workspace:*",
+    "@singula-ai/alego-launch-environment": "workspace:*",
+    "@singula-ai/alego-workspace-changes": "workspace:*",
+    "@singula-ai/alego-subprocess-local": "workspace:*",
+    "@singula-ai/alego-experimental-auto-review": "workspace:*",
+    "@singula-ai/alego-experimental-speech-to-text": "workspace:*",
+    "@singula-ai/alego-experimental-voice-input-bundle": "workspace:*"
   }
 }

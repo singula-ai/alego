@@ -22,7 +22,13 @@ alego = "alego_runtime:main"
 
 # Include the injected alego executable and sidecars; exclude the dev-only node closure.
 [tool.hatch.build]
-artifacts = ["src/alego_runtime/runtime/alego-sdk-runtime-*"]
+artifacts = [
+  "src/alego_runtime/runtime/alego-sdk-runtime-*",
+  "src/alego_runtime/runtime/alego-sdk-runtime-*/**",
+  "src/alego_runtime/runtime/linux-*/**",
+  "src/alego_runtime/runtime/macos-*/**",
+  "src/alego_runtime/runtime/win-*/**",
+]
 exclude = ["src/alego_runtime/runtime/node"]
 
 [tool.hatch.build.targets.wheel]

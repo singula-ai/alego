@@ -6,10 +6,11 @@
  * registers the view tab into a real SlotRegistry ring. Skips when dist/ is
  * not built (`pnpm --filter @singula-ai/alego-client-ui-trajectory bundle`).
  */
+import { createSnapshotStore } from '@singula-ai/alego-client-store'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { Context } from '@singula-ai/cordis'
-import { stubSettingsScope } from '@singula-ai/alego-client-test-runtime'
+import { stubConfigForm } from '@singula-ai/alego-client-test-runtime'
 import { afterEach, describe, expect, it } from 'vitest'
 import { UiConversation } from '@singula-ai/alego-client-ui-conversation/client'
 import { SlotRegistry } from '@singula-ai/alego-client-ui-renderer/client'
@@ -89,7 +90,7 @@ describe('tsdown client artifact', () => {
     const { events, views } = uiConversation
     ctx.provide('connection', { api: { settings: {} }, isLoopback: false } as never)
     ctx.provide('remote', { $on: () => () => {} } as never)
-    ctx.provide('settingsScope', { bind: () => stubSettingsScope().scope } as never)
+    ctx.provide('configForms', { developerTools: { enabled: createSnapshotStore(true) }, get: () => stubConfigForm().scope } as never)
     const locale = await import('@singula-ai/alego-client-locale/client')
     ctx.plugin({ inject: [...locale.inject], apply: locale.apply })
     const fiber = ctx.plugin(exports as { apply: (ctx: Context) => void })

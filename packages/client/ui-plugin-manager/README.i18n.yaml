@@ -1,0 +1,61 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/client/ui-plugin-manager/README.md
+/:
+  en: 65c981be6a40344b
+  zh: 468873de4e2db85f
+/singula-ai-alego-client-ui-plugin-manager:
+  en: 1479051f60ed301e
+  zh: 9472afa1a9c49c07
+/singula-ai-alego-client-ui-plugin-manager/summary:
+  en: 0dc67850ca5358de
+  zh: 4ff1bb5bdc184e3e
+/singula-ai-alego-client-ui-plugin-manager/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-client-ui-plugin-manager/use-this-package:
+  en: 2d03ae72e901242e
+  zh: 4fe6d1cd8b474789
+/singula-ai-alego-client-ui-plugin-manager/use-this-package/installing-a-bundle:
+  en: 84e2659df096a5d1
+  zh: 5d34d1e97573183a
+/singula-ai-alego-client-ui-plugin-manager/use-this-package/switching-a-bundle:
+  en: abc90531efa889d5
+  zh: 0562570f85e69c35
+/singula-ai-alego-client-ui-plugin-manager/use-this-package/switching-one-row-of-a-bundle:
+  en: 620c6a3ee20848bd
+  zh: a9429f047a12bb4c
+/singula-ai-alego-client-ui-plugin-manager/use-this-package/configuration-pages:
+  en: f05a2b2cd46593e0
+  zh: e9b7dde95cc22bed
+/singula-ai-alego-client-ui-plugin-manager/use-this-package/detail-page-extension-points:
+  en: 87f6d96467dc2383
+  zh: e0fb91aa4c4d5a12
+/singula-ai-alego-client-ui-plugin-manager/understand-the-implementation:
+  en: 8ca48e1365f18adf
+  zh: 91eadd683d2d8b5b
+/singula-ai-alego-client-ui-plugin-manager/understand-the-implementation/registration:
+  en: c5a1f14d37433d07
+  zh: 75014f10a155fadb
+/singula-ai-alego-client-ui-plugin-manager/understand-the-implementation/the-store:
+  en: 21a0bbe8eb92229c
+  zh: 096ff63db61992bb
+/singula-ai-alego-client-ui-plugin-manager/understand-the-implementation/configuration-slots:
+  en: 7c82feeeeaa81c5c
+  zh: c23dc73095873f4a
+/singula-ai-alego-client-ui-plugin-manager/further-exploration:
+  en: aa729816f75d1176
+  zh: 672596e40cc1649d
+/singula-ai-alego-client-ui-plugin-manager/model-experience:
+  en: 8dcc6c6fbfb567d2
+  zh: 43690ae350f1d6a7
+/singula-ai-alego-client-ui-plugin-manager/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: 2064958b0754647e
+/singula-ai-alego-client-ui-plugin-manager/known-limitations-and-deferred-work:
+  en: b25bf9d5edc54801
+  zh: 5675cd6035014e4f
+/singula-ai-alego-client-ui-plugin-manager/known-limitations-and-deferred-work/dev-note:
+  en: 3856b8f32b9d2655
+  zh: 8eae0dd37f198555

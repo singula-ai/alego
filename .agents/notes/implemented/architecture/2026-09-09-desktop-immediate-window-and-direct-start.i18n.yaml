@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-09-desktop-immediate-window-and-direct-start.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-09-desktop-immediate-window-and-direct-start.md
-2026-09-09-desktop-immediate-window-and-direct-start.md: 1c2209c044495de1fb9d3410e5ac777759e8fa6b
-2026-09-09-desktop-immediate-window-and-direct-start.zh.md: 49b08e4eeea2703c9bcf868d7b290d56eba79542
+/agent-note-show-the-desktop-window-before-starting-the-host:
+  en: 8c766f4c3452269a
+  zh: 88886375e332e78f
+/agent-note-show-the-desktop-window-before-starting-the-host/problem:
+  en: bd8f14bc0beaac9e
+  zh: 20b0521f27ad231f
+/agent-note-show-the-desktop-window-before-starting-the-host/decision:
+  en: f53fe6bb99e137b0
+  zh: 87032ce228fd0168
+/agent-note-show-the-desktop-window-before-starting-the-host/alternatives-considered:
+  en: 4d476b25f3647e1b
+  zh: 4a1b0252005c8c22
+/agent-note-show-the-desktop-window-before-starting-the-host/consequences:
+  en: 98119090f2133d33
+  zh: 53ad4539d677ee4e

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
-import { stubSettingsScope, type StubSettingsScope } from '@singula-ai/alego-client-test-runtime'
+import { stubConfigForm, type StubConfigForm } from '@singula-ai/alego-client-test-runtime'
 import type {
   ThemeSettings,
   ThemeSnapshot,
@@ -9,11 +9,11 @@ import type {
 } from '@singula-ai/alego-client-ui-theme/client'
 import { ThemeRuntime } from '@singula-ai/alego-client-ui-theme/client'
 
-const make = (host = stubSettingsScope<ThemeSettings>()): {
+const make = (host = stubConfigForm<ThemeSettings>()): {
   ctx: Context
   theme: ThemeRuntime
   events: ThemeSnapshot[]
-  host: StubSettingsScope<ThemeSettings>
+  host: StubConfigForm<ThemeSettings>
 } => {
   const ctx = new Context()
   const events: ThemeSnapshot[] = []
@@ -101,7 +101,7 @@ describe('ThemeRuntime', () => {
   })
 
   it('adopts a section already standing at construction', () => {
-    const host = stubSettingsScope<ThemeSettings>()
+    const host = stubConfigForm<ThemeSettings>()
     host.publish({ status: 'ready', value: { preference: 'dark', fontSize: 14 }, revision: 1, writable: true })
     const { theme } = make(host)
     expect(theme.getTheme().preference).toBe('dark')

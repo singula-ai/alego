@@ -1,6 +1,46 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/extensions/tool-cordis/README.md
-README.md: 16a6d3a2d2ba96382e6b27a3de09a2d11e390ab2
-README.zh.md: b1b027462a2ac5b5ab126f27837cc22156aeefe5
+/:
+  en: 784a82be07311e99
+  zh: 85d917ecc6386ec9
+/singula-ai-alego-tool-cordis:
+  en: f1c3ac852f3d57d7
+  zh: eec9658f2edb22b6
+/singula-ai-alego-tool-cordis/summary:
+  en: 245a3cd287214bed
+  zh: 8687666c28a676cf
+/singula-ai-alego-tool-cordis/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 3a2f21ff0dc3420d
+/singula-ai-alego-tool-cordis/use-this-package:
+  en: 9469672e47585937
+  zh: e0fb7fb90c09b2b9
+/singula-ai-alego-tool-cordis/understand-the-implementation:
+  en: de18fe3471a4a341
+  zh: fda07860cfe1e325
+/singula-ai-alego-tool-cordis/further-exploration:
+  en: 9896cb9d316757b9
+  zh: 73beddba5a342658
+/singula-ai-alego-tool-cordis/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-tool-cordis/model-experience/runtime-inspection:
+  en: 72ffb7cae674c31a
+  zh: 85674f298a78592a
+/singula-ai-alego-tool-cordis/model-experience/runtime-inspection/what-the-model-sees:
+  en: 082b65b7d089b35c
+  zh: c727dfff866e02ef
+/singula-ai-alego-tool-cordis/model-experience/runtime-inspection/token-effect:
+  en: 5d9791798f8ce57f
+  zh: b47984cc13e12cfd
+/singula-ai-alego-tool-cordis/model-experience/runtime-inspection/kv-cache-effect:
+  en: f57a20cd4e76d13c
+  zh: 7b673116422bee87
+/singula-ai-alego-tool-cordis/known-limitations-and-deferred-work:
+  en: ffe15dd1fd333dbf
+  zh: b256afc74a1782cb
+/singula-ai-alego-tool-cordis/known-limitations-and-deferred-work/dev-note:
+  en: 0a1253c6f7b5e8b9
+  zh: 9f56528562c7c914

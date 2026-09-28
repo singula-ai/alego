@@ -12,7 +12,7 @@ import {
   $createLineBreakNode, $createParagraphNode, $createTextNode, $getRoot, $getSelection,
   $isTextNode, $setSelection,
 } from 'lexical'
-import type { ReferenceInsert } from '../src/client/contract/input.ts'
+import type { ReferenceInsert } from '../src/client/contract/draft-editor.ts'
 import {
   $createReferenceChipNode, $isReferenceChipNode, ReferenceChipNode,
 } from '../src/client/input/editor/chip-node.tsx'
@@ -426,10 +426,10 @@ describe('detect-span application', () => {
 })
 
 describe('claim precedence over text-ref entities', () => {
-  const TOKEN_STYLE = 'color: var(--dsw-alias-state-warn-label)'
+  const TOKEN_STYLE = 'color: var(--dsw-alias-state-business-primary)'
   const LEXICON: ReadonlyMap<'/' | '@', readonly string[]> = new Map([['/', ['plan']]])
 
-  it.each(['/plan', '/plan '])('keeps the lexicon-listed %j claim plain and warn-styled until release', (token) => {
+  it.each(['/plan', '/plan '])('keeps the lexicon-listed %j claim plain and accent-styled until release', (token) => {
     const editor = makeEditor()
     let claim: string | null = token
     registerClaimDecoration(editor, () => claim)

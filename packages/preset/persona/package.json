@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-persona",
   "description": "Composition-authored deployment persona section for the Alego",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,15 +27,15 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-system-prompt": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-system-prompt": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "dependencies": {
-    "@singula-ai/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-scope": "workspace:^",
-    "@singula-ai/alego-system-prompt": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-scope": "workspace:*",
+    "@singula-ai/alego-system-prompt": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

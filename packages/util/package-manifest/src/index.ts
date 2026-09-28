@@ -1,5 +1,5 @@
 /**
- * Public package manifest types, with no runtime exports.
+ * Public package manifest and plugin display types, with no runtime exports.
  * @module @singula-ai/alego-package-manifest
  */
 
@@ -10,5 +10,6 @@ export type {
   AlegoManifest,
   AlegoPackageManifest,
   AlegoProfileManifest,
-  ProfilePatchReload,
+  LocalizedText,
+  PluginLocalizedMeta,
 } from './types.ts'

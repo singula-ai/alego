@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-08-global-main-panels.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-08-global-main-panels.md
-2026-09-08-global-main-panels.md: 75be68ac1bf6dceb812a5aedbca74ce58df929b3
-2026-09-08-global-main-panels.zh.md: 343f183367a5cfbd13127e32542f689c50306c89
+/agent-note-global-main-panels-without-default-ui-additions:
+  en: afa85c5bf4814eb9
+  zh: e00f363b7c40ba9b
+/agent-note-global-main-panels-without-default-ui-additions/problem:
+  en: da6aa479acac3baf
+  zh: ed6316ea9953ff99
+/agent-note-global-main-panels-without-default-ui-additions/decision:
+  en: c381cc985dcaf0e3
+  zh: 4db44618f92df65d
+/agent-note-global-main-panels-without-default-ui-additions/alternatives-considered:
+  en: 18c8461d961490ee
+  zh: a26b37ff3aa15bbc
+/agent-note-global-main-panels-without-default-ui-additions/consequences:
+  en: eb09a0477bcab4e4
+  zh: 0da2666f0a422a79

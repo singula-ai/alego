@@ -1,6 +1,40 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-open-in-app/README.md
-README.md: f65a1ec972ae04a4b7a00389c89c486052cf13ca
-README.zh.md: 3d117155497ba2ac4ef3e1210e1a7c09c0609b65
+/:
+  en: be11314755d8f4f9
+  zh: dd75b03074eea543
+/singula-ai-alego-client-ui-open-in-app:
+  en: 9f6590d1ae81ba44
+  zh: 3fade7f51a376728
+/singula-ai-alego-client-ui-open-in-app/summary:
+  en: b4354b7d91c4ac5f
+  zh: 08e265fd3eb560c5
+/singula-ai-alego-client-ui-open-in-app/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 725b47765ee8f30b
+/singula-ai-alego-client-ui-open-in-app/use-this-package:
+  en: 7cc940b5125a1e15
+  zh: 0fe54002bcec8ef8
+/singula-ai-alego-client-ui-open-in-app/use-this-package/what-to-expect:
+  en: 48f2e4397c59e933
+  zh: 36e02d5e78244fd0
+/singula-ai-alego-client-ui-open-in-app/understand-the-implementation:
+  en: 891ba7757af98646
+  zh: d519afd22f11c752
+/singula-ai-alego-client-ui-open-in-app/further-exploration:
+  en: d7143521bd6fdb3b
+  zh: 303a9c1a6ba167f4
+/singula-ai-alego-client-ui-open-in-app/model-experience:
+  en: 5f9e6e0fb0438628
+  zh: fc9a81185ea6cb14
+/singula-ai-alego-client-ui-open-in-app/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: c2241315dc0c89c9
+/singula-ai-alego-client-ui-open-in-app/known-limitations-and-deferred-work:
+  en: 4d4faf88dcc32c99
+  zh: f33e6ecf835958e4
+/singula-ai-alego-client-ui-open-in-app/known-limitations-and-deferred-work/dev-note:
+  en: d6caaecdaf9d576c
+  zh: e32b5cc31023b970

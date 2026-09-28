@@ -1,7 +1,6 @@
 /* The framework-free boot page cannot depend on theme delivery succeeding. */
 
 .boot {
-  --alego-boot-bg: #fff;
   --alego-boot-label-primary: #0f1115;
   --alego-boot-label-secondary: #61666b;
   --alego-boot-label-tertiary: #81858c;
@@ -11,11 +10,10 @@
   height: 100%;
   display: grid;
   place-items: center;
-  background: var(--dsw-alias-bg-base, var(--alego-boot-bg));
+  background: var(--dsw-alias-bg-base, var(--alego-boot-bg, Canvas));
 }
 
 :global(body[data-ds-dark-theme]) .boot {
-  --alego-boot-bg: #151517;
   --alego-boot-label-primary: #f9fafb;
   --alego-boot-label-secondary: #cfd3d6;
   --alego-boot-label-tertiary: #adb2b8;

@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-package-manifest",
   "description": "Shared type declarations for package.json.alego configuration fields",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,9 +27,9 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   }
 }

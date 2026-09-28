@@ -1,6 +1,37 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for mcp-memory.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/user/guide/mcp-memory.md
-mcp-memory.md: 2b38dd51b51df5a63a80457157fe84b451216d60
-mcp-memory.zh.md: 99ff6972452bedd82a63b9339db0d87d5700ca77
+/connect-a-third-party-memory-mcp-server:
+  en: c5a657712ec06d18
+  zh: b9c550be46628473
+/connect-a-third-party-memory-mcp-server/what-alego-does:
+  en: acfde5520f51ad2b
+  zh: e03edb359b5bf6d2
+/connect-a-third-party-memory-mcp-server/choose-one:
+  en: 257a536ce62bc959
+  zh: 600ed7ccf29085e4
+/connect-a-third-party-memory-mcp-server/enable-one:
+  en: 773903115e3a7cb6
+  zh: e827315e2ce2c93a
+/connect-a-third-party-memory-mcp-server/provider-setup:
+  en: ea88b3912a142edc
+  zh: aaccbb2fb9a851a4
+/connect-a-third-party-memory-mcp-server/provider-setup/memorix:
+  en: 275791dc0ba2abc8
+  zh: b6816f98d7107e28
+/connect-a-third-party-memory-mcp-server/provider-setup/mcp-reference-memory:
+  en: b869e2fdcd98a7b9
+  zh: 98b1637950b0c832
+/connect-a-third-party-memory-mcp-server/provider-setup/engram:
+  en: 42109329e8542f96
+  zh: 9a7cf991daaa4584
+/connect-a-third-party-memory-mcp-server/optional-shared-model-instruction:
+  en: 68788cc503467f91
+  zh: ef01592f31b8c032
+/connect-a-third-party-memory-mcp-server/verify-write-fresh-session-recall-and-use:
+  en: c79c6ca65142eacf
+  zh: 2f5ac21a7542803d
+/connect-a-third-party-memory-mcp-server/bring-another-mcp-server:
+  en: a64eb09726e63a83
+  zh: 83838d5f27f51d22

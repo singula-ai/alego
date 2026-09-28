@@ -1,6 +1,40 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/api/session-controller/README.md
-README.md: 20f7ae83c5cbaba6ddf6afdd27eb503943672a19
-README.zh.md: b14cb114ba672b34463b0380a8d257b3d536083b
+/:
+  en: 82789442228fc62a
+  zh: f1d511ad838187de
+/session-controller:
+  en: 25b710e763ec164f
+  zh: ac1f7ecdc113523c
+/session-controller/summary:
+  en: dfd759af01629eae
+  zh: 21cc6cc404cef2a0
+/session-controller/table-of-contents:
+  en: 1fdf707322fb6996
+  zh: 0204f7e9d4aa3cce
+/session-controller/use-this-package:
+  en: c73d9629cb58e532
+  zh: cd60840950d331f4
+/session-controller/client-references:
+  en: 0fb4a6a030eddfdc
+  zh: 8ea3b718ba1f1022
+/session-controller/session-media-references:
+  en: 266ab2b1e2fec542
+  zh: b3450ae28a1e0baf
+/session-controller/configuration:
+  en: 36150720e64aaf26
+  zh: fac5b4e2581250fb
+/session-controller/model-experience:
+  en: 30b917bf822bb4df
+  zh: b0b023b5b526c317
+/session-controller/model-experience/kv-cache-effect:
+  en: 22fc0c9dbedd3bb6
+  zh: fad040ca55fd0e0a
+/session-controller/known-limitations-and-deferred-work:
+  en: e896bfcaf38b4f6c
+  zh: 55a4eba838f166de
+/session-controller/known-limitations-and-deferred-work/dev-note:
+  en: 68e0dfe4588c5b88
+  zh: db51b435611bded1

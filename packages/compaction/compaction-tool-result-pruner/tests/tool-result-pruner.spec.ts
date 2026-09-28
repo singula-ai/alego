@@ -1,3 +1,4 @@
+import { imageOffloadProjection } from '@singula-ai/alego-compaction-image-offload/projection'
 import { describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import { ToolCallId , createMessage, createToolResultMessage } from '@singula-ai/alego-llm'
@@ -5,6 +6,7 @@ import type { ContentBlock } from '@singula-ai/alego-llm'
 import SessionStore, {
   Session,
   SessionId,
+  SessionSeq,
 } from '@singula-ai/alego-session'
 import type { SurfaceEvent } from '@singula-ai/alego-session'
 import * as SessionInvariant from '@singula-ai/alego-session/invariant'
@@ -78,6 +80,24 @@ function appendToolStep(
 }
 
 describe('tool-result pruning configuration', () => {
+  it('preserves a logged image offload when pruning the same result later', () => {
+    const session = Session.create(SessionId('prune-offloaded'), undefined, undefined, undefined, [imageOffloadProjection])
+    const seq = appendToolStep(session, 1, 'shot', [
+      { type: 'text', text: 'x'.repeat(200) },
+      { type: 'image', attachment: {
+        attachmentId: `sha256:${'a'.repeat(64)}` as never, mediaType: 'image/png', bytes: 1, width: 1, height: 1,
+      } },
+    ])
+    session.append('image/offload', { targets: [{ seq: SessionSeq(seq), imageIndexes: [0] }] })
+    const pruned = service().pruneSession(session)
+    expect(pruned.pruned).toHaveLength(1)
+    const replacement = session.snapshotEvents().at(-1)!
+    expect(replacement.type).toBe('tool/result')
+    expect(JSON.stringify(session.deriveEventMessage(replacement))).toContain('"offloaded":true')
+    expect(JSON.stringify(Session.create(SessionId('restored-offloaded'), session.snapshotEvents(), undefined, undefined, [imageOffloadProjection]).deriveMessages())).toContain('"offloaded":true')
+    expect(JSON.stringify(session.eventAt(SessionSeq(seq)))).not.toContain('offloaded')
+  })
+
   it('resolves detached immutable defaults and partial overrides', () => {
     const raw = { thresholdChars: 100, headChars: 20, tailChars: 10 }
     const resolved = resolveConfig(raw)
@@ -192,10 +212,7 @@ describe('ToolResultPruner session transaction', () => {
       type: 'tool/result',
       data: {
         message: {
-          content: [{
-            type: 'tool-result',
-            content: [{ type: 'text', text: 'x'.repeat(100) }],
-          }],
+          content: [{ type: 'text', text: 'x'.repeat(100) }],
         },
       },
     })
@@ -207,7 +224,9 @@ describe('ToolResultPruner session transaction', () => {
         isError: true,
         message: {
           source: { kind: 'tool', callId: ToolCallId('one') },
-          content: [{ type: 'tool-result', isError: true }],
+          role: 'tool',
+          toolCallId: ToolCallId('one'),
+          isError: true,
         },
         error: { name: 'ExitError', code: 'EXIT_1' },
         meta: { diff: ['a', 'b'] },

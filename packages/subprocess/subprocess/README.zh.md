@@ -60,6 +60,11 @@ const output = handle.collected.stdout?.readFrom(0)
 
 读取基于偏移量且从不消费：后台读取与最终批量读取可以共享同一条流，而不会抢走彼此的字节。
 
+<a id="using-a-control-pipe"></a>
+### 使用控制管道
+
+设置 `stdio.control: 'pipe'` 后，`handle.control` 会返回独立的原始 `Duplex`。Node 子进程通过 `@singula-ai/alego-subprocess/control` 的 `openInheritedControlChannel()` 打开 fd 7；该辅助函数会消费提供方拥有的 `ALEGO_SUBPROCESS_CONTROL=pipe` 标记。调用方不能通过 `env` 提供该标记。控制字节不会进入 stdout/stderr 收集器。消费方负责分帧、校验、背压和关闭自身端点；提供方销毁时会在进程拆卸后销毁仍存在的端点。省略请求则返回 `control: undefined`。该通道仅适用于普通进程，不授予绕过工具审批的权限。
+
 ### 管理进程生命周期
 
 终止与等待使用同一个由提供方管理的范围。`terminate()` 会启动提供方记录的流程，具有幂等性，并在该范围为空后成为空操作；请求的中止信号会启动同一流程。`waitForExit()` 观察同一范围，只在提供方证明它完全停稳后 resolve，因此直接命令结束不会掩盖仍存活的后代。所选 owner 无法再证明完全停稳时，它会 reject。提供方记录其 native owner 与较弱 fallback；时限、拆卸阶梯与原因分类归调用方所有。
@@ -67,6 +72,8 @@ const output = handle.collected.stdout?.readFrom(0)
 ### 运行终端会话
 
 对于交互式程序，`spawnTerminal` 分配真实 PTY：写入文本、读取 UTF-8 输出、检查当前前台进程组并向其发送信号，以及等待一次 `terminate()`，让提供方仍可观察到的每个会话成员完全停稳。就绪状态、scrollback 与提示符策略仍归 PTY 消费方所有。
+
+终端请求可显式启用 `shellActivity`。`inspectActivity()` 结合支持的 shell 生命周期信号与自有任务观察，返回 `idle`、`busy` 或 `unknown`，以及句柄内的 revision。不支持或不完整的观察不能推出空闲；输入会使已有提示符证据失效。启用后，根 shell 退出时继续持有剩余工作，不把该退出视为终止后代进程的许可。保活和清理期限由消费者决定。
 
 ### 每个子进程起步时的环境
 
@@ -117,11 +124,12 @@ spawn 会立即返回活动句柄，而不公开目标身份。`done` 独立报�
 
 - [子进程子系统](../../../docs/subsystems/subprocess.zh.md)——spawn spec、输出读取器、结果与完整的 `ALEGO_*` 环境。
 - [alego-subprocess-local](../subprocess-local/README.zh.md)——实现本约定的本地宿主提供方。
-- [alego-subprocess-e2b](../../e2b/subprocess-e2b/README.zh.md)——同一 seam 的远程 E2B 提供方。
 - [alego-bash-local](../../shell/bash-local/README.zh.md)——最大的消费方：经由本服务运行 bash 命令。
 - [subprocess seam Agent Note](../../../.agents/notes/archived/architecture/2026-07-26-subprocess-seam.md)——进程部分为何成为独立的 seam，以及随之迁移的内容。
 
 -----
+
+终端消费者通过 `terminalEnvironment()` 读取 provider 平台和首选 shell，通过 `resolveExecutable()` 验证候选。确定未找到可执行文件时抛出 `SubprocessExecutableNotFoundError`，传输故障仍单独报告。`spawnTerminal` 要求 `terminalType` 和初始尺寸，返回的 handle 通过 `resize(cols, rows)` 调整尺寸，不重新分配进程。
 
 <a id="model-experience"></a>
 ## 模型体验

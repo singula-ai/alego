@@ -5,7 +5,7 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { bindSnapshotSelector, makeTranslate } from '@singula-ai/alego-client-test-runtime'
 import type { SessionListState } from '@singula-ai/alego-api-session-controller/client'
 import type { WorkspaceSnapshot } from '@singula-ai/alego-api-workspace-controller/client'
-import type { SessionPendingInteractionSnapshot } from '@singula-ai/alego-client-ui-session/client'
+import type { SessionStatusSnapshot } from '@singula-ai/alego-client-ui-session/client'
 import { createSnapshotStore } from '@singula-ai/alego-client-store'
 import { EnterBehaviorRow } from '../src/client/settings/EnterBehaviorRow.tsx'
 import type { EnterBehaviorRowProps } from '../src/client/settings/EnterBehaviorRow.tsx'
@@ -22,18 +22,18 @@ afterEach(() => {
 
 function emptySessions() {
   return bindSnapshotSelector(createSnapshotStore<SessionListState>({
-    ids: [], byId: {}, current: undefined, phase: 'ready', subagentsByParent: {}, jobsBySession: {}, currentAddress: undefined,
+    ids: [], byId: {}, phase: 'ready', projectionsBySession: {},
   }))
 }
 
 function emptyWorkspaces() {
   return bindSnapshotSelector(createSnapshotStore<WorkspaceSnapshot>({
-    items: [], archivedSessionIds: [], state: 'idle', phase: 'ready', error: null,
+    items: [], archivedSessionIds: [], pinnedSessionIds: [], state: 'idle', phase: 'ready', error: null,
   }))
 }
 
 function noPendingInteraction() {
-  return bindSnapshotSelector(createSnapshotStore<SessionPendingInteractionSnapshot>(new Map()))
+  return bindSnapshotSelector(createSnapshotStore<SessionStatusSnapshot>(new Map()))
 }
 
 function mount() {
@@ -42,7 +42,8 @@ function mount() {
   const props: EnterBehaviorRowProps = {
     usePanelInfo: selector => selector({ activePanelId: null }),
     useSessions: emptySessions(),
-    useSessionPendingInteraction: noPendingInteraction(),
+    useSessionStatus: noPendingInteraction(),
+    useSessionRetainInfo: () => undefined,
     useResource,
     useWorkspaces: emptyWorkspaces(),
     useBusyEnter: bindSnapshotSelector(policy.busyEnter),

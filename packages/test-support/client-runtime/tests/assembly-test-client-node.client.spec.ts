@@ -19,7 +19,7 @@ describe('TestClient (node environment)', () => {
     await client.flush()
   }, 60_000)
 
-  it('releases the shared globals even when the plugin tree fails to dispose, and still rethrows', async () => {
+  it('closes the client even when the plugin tree fails to dispose, and still rethrows', async () => {
     const mock = RemoteMock.create().load(remoteDefaultResponses)
     const client = await TestClient.start({ roster: API_ROSTER }, mock)
     const dispose = client.ctx.fiber.dispose.bind(client.ctx.fiber)
@@ -38,11 +38,10 @@ describe('TestClient (node environment)', () => {
     await client.dispose() // idempotent after a failed teardown
   })
 
-  it('rethrows a row that fails to apply, releases the globals, and lets the next boot take its turn', async () => {
+  it('rethrows a row that fails to apply and lets the next client boot', async () => {
     const failing = { apply(): void { throw new Error('apply boom') } }
     await expect(TestClient.start({ roster: TYPERT_ONLY, provide: { '@singula-ai/alego-typert-registry': failing } }, RemoteMock.create()))
       .rejects.toThrow(/apply boom|typert-registry/)
-    expect(globals.__ALEGO_TRANSPORT__).toBeUndefined()
     const mock = RemoteMock.create().load(remoteDefaultResponses)
     const client = await TestClient.start({ roster: API_ROSTER }, mock)
     onTestFinished(() => client.dispose())
@@ -53,7 +52,6 @@ describe('TestClient (node environment)', () => {
     const roster = webApp.closure(['@singula-ai/alego-api-remotes'])
     await expect(TestClient.start({ roster, provide: { '@singula-ai/alego-api-remotes': { apply() {} } } }, RemoteMock.create()))
       .rejects.toThrow('@singula-ai/alego-api-remotes cannot be provided; its remote.<ns> services are the tier\'s proxies')
-    expect(globals.__ALEGO_TRANSPORT__).toBeUndefined()
   })
 
   it('reports unmatched requests alongside a failed teardown instead of hiding them', async () => {
@@ -84,24 +82,22 @@ describe('TestClient (node environment)', () => {
     await first
   })
 
-  it('refuses to mount without a DOM before installing the transport', async () => {
+  it('refuses to mount without a DOM', async () => {
     await expect(TestClient.start({ roster: API_ROSTER }, RemoteMock.create(), { mount: true }))
       .rejects.toThrow('mount requires a DOM')
-    expect(globals.__ALEGO_TRANSPORT__).toBeUndefined()
   })
 
-  it('fails loud, then restores the transport, when the roster cannot provide a connection', async () => {
+  it('fails loud when the roster cannot provide a connection', async () => {
     await expect(TestClient.start({ roster: TYPERT_ONLY }, RemoteMock.create()))
       .rejects.toThrow('provides no `connection` service')
-    expect(globals.__ALEGO_TRANSPORT__).toBeUndefined()
   })
 
-  it('skips readiness on request and restores a pre-existing transport on dispose', async () => {
+  it('skips readiness on request and leaves a pre-existing page transport untouched', async () => {
     const previous: ClientTransportHooks = { fetch: () => Promise.reject(new Error('unused')) }
     globals.__ALEGO_TRANSPORT__ = previous
     onTestFinished(() => { delete globals.__ALEGO_TRANSPORT__ })
     const client = await TestClient.start({ roster: TYPERT_ONLY }, RemoteMock.create(), { awaitConnected: false })
-    expect(globals.__ALEGO_TRANSPORT__).not.toBe(previous)
+    expect(globals.__ALEGO_TRANSPORT__).toBe(previous)
     expect(client.ctx.get('typert')).toBeDefined()
     expect(() => client.connection).toThrow('provides no `connection` service')
     await client.dispose()

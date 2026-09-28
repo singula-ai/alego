@@ -57,7 +57,7 @@ async function harness(): Promise<Harness> {
   await ctx.plugin(SessionStore)
   const plugin = await ctx.plugin(commandFeedback)
   const { agent, session } = stubAgent(ctx, `command-feedback-${Math.random()}`)
-  ctx.agents.register(agent)
+  await ctx.agents.register(agent)
   return { ctx, agent, session, plugin }
 }
 

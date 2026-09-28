@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-22-workspace-release-ranges.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-09-22-workspace-release-ranges.md
+/agent-note-workspace-dependency-release-ranges:
+  en: 9a027875dfead06f
+  zh: 412a899e9ade20f9
+/agent-note-workspace-dependency-release-ranges/problem:
+  en: 618bcfbb6672aefd
+  zh: 96524660da494d3a
+/agent-note-workspace-dependency-release-ranges/decision:
+  en: e817a4d1732e95ca
+  zh: ee13110dc66d58dd
+/agent-note-workspace-dependency-release-ranges/alternatives-considered:
+  en: b6aa87296ee61fcf
+  zh: f516320e589ce7a3
+/agent-note-workspace-dependency-release-ranges/consequences:
+  en: 5fec384d02783b47
+  zh: 0164b9254a9394eb

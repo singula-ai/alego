@@ -1,0 +1,66 @@
+{
+  "name": "@singula-ai/alego-client-ui-settings-subagent",
+  "description": "Settings page of Subagent delegation on the alego web client's Plugins page: recursion depth, parallel capacity, and the models agents may choose for subagents",
+  "version": "0.1.7-rc.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/client/ui-settings-subagent"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "alego": {
+    "client": {
+      "inject": [
+        "@singula-ai/alego-client-locale",
+        "@singula-ai/alego-client-ui-settings",
+        "@singula-ai/alego-client-ui-plugin-manager",
+        "@singula-ai/alego-api-remotes"
+      ],
+      "platform": "web"
+    }
+  },
+  "scripts": {
+    "bundle": "tsdown",
+    "watch": "tsdown --watch"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "@singula-ai/cordis": "workspace:~"
+  },
+  "devDependencies": {
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-api-remotes": "workspace:*",
+    "@singula-ai/alego-client-locale": "workspace:*",
+    "@singula-ai/alego-client-store": "workspace:*",
+    "@singula-ai/alego-client-test-runtime": "workspace:*",
+    "@singula-ai/alego-client-ui-plugin-manager": "workspace:*",
+    "@singula-ai/alego-client-ui-primitives": "workspace:*",
+    "@singula-ai/alego-client-ui-renderer": "workspace:*",
+    "@singula-ai/alego-client-ui-settings": "workspace:*",
+    "@singula-ai/alego-client-ui-slots": "workspace:*",
+    "@types/react": "~18.3.1",
+    "react": "^18.2.0"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/client.js",
+    "lib/types/**/*.d.ts"
+  ]
+}

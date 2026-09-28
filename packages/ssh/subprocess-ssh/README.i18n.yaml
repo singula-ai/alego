@@ -1,0 +1,37 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/ssh/subprocess-ssh/README.md
+/:
+  en: 3e3b8e1b999fccbb
+  zh: 996257b8c3c219a8
+/singula-ai-alego-subprocess-ssh:
+  en: 066a791e4cc83d24
+  zh: 48da526e02b4ea78
+/singula-ai-alego-subprocess-ssh/summary:
+  en: ccacaf8d1d29d847
+  zh: 14dac4be4e5705fc
+/singula-ai-alego-subprocess-ssh/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 725b47765ee8f30b
+/singula-ai-alego-subprocess-ssh/use-this-package:
+  en: a5b5f558ecc53510
+  zh: 19c36cbec0448734
+/singula-ai-alego-subprocess-ssh/understand-the-implementation:
+  en: 55feaae80352929c
+  zh: 6a7385c229eb5588
+/singula-ai-alego-subprocess-ssh/further-exploration:
+  en: 7222035c902b3ee7
+  zh: d3934399a290bcda
+/singula-ai-alego-subprocess-ssh/model-experience:
+  en: 02267d26e71b847c
+  zh: 749305233e7f63e4
+/singula-ai-alego-subprocess-ssh/model-experience/kv-cache-effect:
+  en: 21f304c66e5ba98b
+  zh: 18185d5b164f8216
+/singula-ai-alego-subprocess-ssh/known-limitations-and-deferred-work:
+  en: 0aa40f28ee1eb6e1
+  zh: da785a9b66cdbed9
+/singula-ai-alego-subprocess-ssh/known-limitations-and-deferred-work/dev-note:
+  en: 6ca4f1d4b4810fff
+  zh: e42f580ca971972b

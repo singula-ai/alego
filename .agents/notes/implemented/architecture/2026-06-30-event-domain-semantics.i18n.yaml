@@ -1,6 +1,16 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-06-30-event-domain-semantics.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-06-30-event-domain-semantics.md
-2026-06-30-event-domain-semantics.md: 7e0aee220a62777ebe1d8f6a5018aba0f5fa20ee
-2026-06-30-event-domain-semantics.zh.md: 14568c7a4660c42cecc47f094373d299380fa563
+/agent-note-event-domain-semantics-session-is-the-fact-log-agent-is-the-live-event-channel:
+  en: 864b740f81687e1e
+  zh: c6a81c1acf6c6907
+/agent-note-event-domain-semantics-session-is-the-fact-log-agent-is-the-live-event-channel/problem:
+  en: 812847106c5110b7
+  zh: c8ac60d2d3d3c1f1
+/agent-note-event-domain-semantics-session-is-the-fact-log-agent-is-the-live-event-channel/decision:
+  en: ccc0fed9b7388112
+  zh: 3cc527b11affd941
+/agent-note-event-domain-semantics-session-is-the-fact-log-agent-is-the-live-event-channel/consequences:
+  en: e0c5aa60322e67a1
+  zh: 7495550f0c863eda

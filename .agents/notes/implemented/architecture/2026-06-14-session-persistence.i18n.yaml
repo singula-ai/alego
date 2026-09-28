@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-06-14-session-persistence.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-06-14-session-persistence.md
-2026-06-14-session-persistence.md: 4ba11d96bee1639a62d0a51d6517277d14014237
-2026-06-14-session-persistence.zh.md: ad9f09d2ebc5d0e64660eff462831931c2adae82
+/agent-note-session-persistence-as-an-abstract-service-over-the-existing-sessionevent:
+  en: 1ab649c724d1eaa3
+  zh: d80184ec293d59bd
+/agent-note-session-persistence-as-an-abstract-service-over-the-existing-sessionevent/problem:
+  en: 999b9f8b39320abd
+  zh: da47117815d2f6da
+/agent-note-session-persistence-as-an-abstract-service-over-the-existing-sessionevent/decision:
+  en: 56b2b3a76d77de6e
+  zh: df0c47f4624368a8
+/agent-note-session-persistence-as-an-abstract-service-over-the-existing-sessionevent/alternatives-considered:
+  en: 85c5c2f8496a7537
+  zh: 97932220f6f3adf0
+/agent-note-session-persistence-as-an-abstract-service-over-the-existing-sessionevent/consequences:
+  en: 7a8cfec9527677fe
+  zh: 8cafb8641f80fbec

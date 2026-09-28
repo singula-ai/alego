@@ -33,7 +33,7 @@
       "path": "../../credentials/credentials"
     },
     {
-      "path": "../../settings/settings"
+      "path": "../../credentials/deepseek-account"
     },
     {
       "path": "../../util/http-proxy"

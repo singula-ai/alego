@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-21-desktop-build-version-as-input.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-09-21-desktop-build-version-as-input.md
+/agent-note-pass-the-desktop-build-version-as-an-argument-instead-of-rewriting-manifests:
+  en: 873941b03509b846
+  zh: bc85544a159e328c
+/agent-note-pass-the-desktop-build-version-as-an-argument-instead-of-rewriting-manifests/problem:
+  en: 703f08ec68f1a95c
+  zh: a37d0e791114e5fe
+/agent-note-pass-the-desktop-build-version-as-an-argument-instead-of-rewriting-manifests/decision:
+  en: b3a9809466c204aa
+  zh: c1457f8982628637
+/agent-note-pass-the-desktop-build-version-as-an-argument-instead-of-rewriting-manifests/alternatives-considered:
+  en: 8bda713a65f1d532
+  zh: 45f40208a90304ee
+/agent-note-pass-the-desktop-build-version-as-an-argument-instead-of-rewriting-manifests/consequences:
+  en: 686a5979332c0964
+  zh: 89cff9e1e04e0325

@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-08-26-shell-execute-projection-and-jobs-at-start.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-26-shell-execute-projection-and-jobs-at-start.md
+/agent-note-one-shell-execute-foreground-as-a-projection-timeout-as-a-bounded-wait-on-the-job:
+  en: cf9ecea533a9fd82
+  zh: 808e704d686e2d4a
+/agent-note-one-shell-execute-foreground-as-a-projection-timeout-as-a-bounded-wait-on-the-job/problem:
+  en: e0e1292e5a785322
+  zh: 34ec6572ed6cf406
+/agent-note-one-shell-execute-foreground-as-a-projection-timeout-as-a-bounded-wait-on-the-job/decision:
+  en: b41c96a22e0fef2b
+  zh: 7716b28cfffd1df5
+/agent-note-one-shell-execute-foreground-as-a-projection-timeout-as-a-bounded-wait-on-the-job/alternatives-considered:
+  en: d888a561fafa5bb3
+  zh: 719d687f2b3e4c10
+/agent-note-one-shell-execute-foreground-as-a-projection-timeout-as-a-bounded-wait-on-the-job/testing:
+  en: 65f59286de9fa00a
+  zh: 664d7f82a1479153
+/agent-note-one-shell-execute-foreground-as-a-projection-timeout-as-a-bounded-wait-on-the-job/consequences:
+  en: 17138bb80b6a7972
+  zh: be6d8a74c5b2eeb4

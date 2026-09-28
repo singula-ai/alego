@@ -33,9 +33,9 @@ afterEach(async () => {
 
 /** Detached durable Team read through the same projection definition as the service. */
 function durable(agent: Agent): {
-  members: TeamMemberSnapshot[]
-  tasks: TeamTaskSnapshot[]
-  pendingMessages: TeamMessageSnapshot[]
+  members: readonly TeamMemberSnapshot[]
+  tasks: readonly TeamTaskSnapshot[]
+  pendingMessages: readonly TeamMessageSnapshot[]
 } {
   let projected = teamProjectionDefinition.init(agent.session.header)
   for (const event of agent.session.snapshotEvents()) projected = teamProjectionDefinition.apply(projected, event)
@@ -183,7 +183,7 @@ describe('Team identity and provisioning', () => {
 
     expect(service.listMembers(lead)).toEqual([expect.objectContaining({
       name: 'lead',
-      status: 'idle',
+      status: 'inactive',
       diagnostics: [],
     })])
     const provisioning = {
@@ -225,7 +225,7 @@ describe('Team identity and provisioning', () => {
     expect((await ctx.sessionPersistence.stat(forked.member.id))?.header.isSeeded).toBe(true)
     expect((await ctx.sessionPersistence.stat(fresh.member.id))?.header.isSeeded).toBe(false)
     expect(ctx.agentTeams.listMembers(lead).map(row => [row.name, row.context, row.status])).toEqual([
-      ['lead', undefined, 'idle'],
+      ['lead', undefined, 'inactive'],
       ['fork-worker', 'fork', 'inactive'],
       ['fresh-worker', 'fresh', 'inactive'],
     ])
@@ -875,67 +875,6 @@ describe('Team shared task DAG', () => {
 
     ctx.agentTeams.interrupt(lead, 'editor')
     await waitNoAgent(ctx, editor.id)
-  })
-})
-
-describe('Team Remote API', () => {
-  it('exports Team views and task mutations from the owning service', async () => {
-    const { ctx, lead } = await setup([])
-    expect(ctx.agentTeams.typertRemote).toMatchObject({ serviceKey: 'agentTeams', namespace: 'agentTeams' })
-    expect(ctx.agentTeams.remoteView(lead)).toEqual({
-      members: [expect.objectContaining({ name: 'lead', role: 'lead', status: 'idle' })],
-      tasks: [],
-    })
-
-    const createdResult = await ctx.agentTeams.remoteCreateTask(lead, {
-      subject: 'Remote task',
-      description: 'Created through the generated API',
-      blockedBy: [],
-      writeScopes: ['packages/experimental/agent-team'],
-    })
-    expect(createdResult).toMatchObject({ ok: true, value: { revision: 1 } })
-    if (!createdResult.ok) throw new Error('Remote task creation did not succeed')
-    const created = createdResult.value
-    await expect(ctx.agentTeams.remoteUpdateTask(lead, {
-      taskId: created.id,
-      expectedRevision: created.revision,
-      action: 'claim',
-    })).resolves.toMatchObject({
-      ok: true,
-      value: { id: created.id, revision: 2, ownerName: 'lead' },
-    })
-    expect(ctx.agentTeams.remoteView(lead).tasks).toHaveLength(1)
-  })
-
-  it('preserves Team task rejections and propagates unexpected failures', async () => {
-    const { ctx, lead } = await setup([])
-    const createRequest = {
-      subject: 'Remote task', description: 'Rejected task', blockedBy: [], writeScopes: [],
-    }
-    const request = { taskId: TeamTaskId('task-1'), expectedRevision: 1, action: 'delete' as const }
-    vi.spyOn(ctx.agentTeams, 'createTask')
-      .mockRejectedValueOnce(new TeamError('invalid task', 'TEAM_TASK_INVALID'))
-      .mockRejectedValueOnce(new Error('unexpected creation failure'))
-    vi.spyOn(ctx.agentTeams, 'updateTask')
-      .mockRejectedValueOnce(new TeamError('stale', 'TEAM_TASK_STALE_REVISION'))
-      .mockRejectedValueOnce(new TeamError('denied', 'TEAM_TASK_FORBIDDEN'))
-      .mockRejectedValueOnce(new Error('unexpected mutation failure'))
-
-    await expect(ctx.agentTeams.remoteCreateTask(lead, createRequest)).resolves.toEqual({
-      ok: false,
-      error: { code: 'team-rejected', message: 'invalid task' },
-    })
-    await expect(ctx.agentTeams.remoteCreateTask(lead, createRequest))
-      .rejects.toThrow('unexpected creation failure')
-    await expect(ctx.agentTeams.remoteUpdateTask(lead, request)).resolves.toEqual({
-      ok: false,
-      error: { code: 'team-task-conflict', message: 'stale' },
-    })
-    await expect(ctx.agentTeams.remoteUpdateTask(lead, request)).resolves.toEqual({
-      ok: false,
-      error: { code: 'team-rejected', message: 'denied' },
-    })
-    await expect(ctx.agentTeams.remoteUpdateTask(lead, request)).rejects.toThrow('unexpected mutation failure')
   })
 })
 

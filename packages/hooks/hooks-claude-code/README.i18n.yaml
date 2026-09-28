@@ -1,6 +1,88 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/hooks/hooks-claude-code/README.md
-README.md: 376c6909e11595a55f40194bc7d123f37796fc14
-README.zh.md: 677379cba7c603641ff0853cee7f6ad0aef4db74
+/:
+  en: 3570440302708236
+  zh: 6e4217f2856879a1
+/singula-ai-alego-hooks-claude-code:
+  en: 4d29b79158a77aca
+  zh: 7726dada98f873de
+/singula-ai-alego-hooks-claude-code/summary:
+  en: 043748d15269e332
+  zh: a0d7e2eb8f5fc82f
+/singula-ai-alego-hooks-claude-code/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-hooks-claude-code/use-this-package:
+  en: af7c3b8bcce24e7f
+  zh: 6b5225e34cbd1c85
+/singula-ai-alego-hooks-claude-code/use-this-package/when-to-choose-it:
+  en: 5fdf4ff17e6d9a2e
+  zh: 82979c137758005d
+/singula-ai-alego-hooks-claude-code/use-this-package/smallest-working-setup:
+  en: a783f256bea9474a
+  zh: bef80fbf70950456
+/singula-ai-alego-hooks-claude-code/use-this-package/what-your-hooks-can-do:
+  en: 6c3b126e6607c311
+  zh: 33199f443edb2824
+/singula-ai-alego-hooks-claude-code/use-this-package/how-hooks-run-and-fail:
+  en: 98d13f2e7207e3f3
+  zh: 4e0336b32c2775e9
+/singula-ai-alego-hooks-claude-code/understand-the-implementation:
+  en: d33ddd080880b3f5
+  zh: 64328f5239c26752
+/singula-ai-alego-hooks-claude-code/understand-the-implementation/hook-point-mapping:
+  en: d315f54ec60f8860
+  zh: 53b7a6531d9f4bbb
+/singula-ai-alego-hooks-claude-code/understand-the-implementation/payloads-and-environment:
+  en: 0389b516653c7f45
+  zh: 15ec2182113a9aa4
+/singula-ai-alego-hooks-claude-code/understand-the-implementation/matcher-subjects-and-serial-execution:
+  en: 0f30690502687688
+  zh: 19d4ec653c19f00e
+/singula-ai-alego-hooks-claude-code/understand-the-implementation/detached-runs-and-disposal:
+  en: 9b3f0084e9ce5d46
+  zh: e950ed97fb2d3517
+/singula-ai-alego-hooks-claude-code/understand-the-implementation/design-philosophy:
+  en: e9dc2e482e9a7b50
+  zh: 5fa4e92b75884f93
+/singula-ai-alego-hooks-claude-code/understand-the-implementation/source-map:
+  en: e09d368cbacd0d37
+  zh: 1c5d9060facbe340
+/singula-ai-alego-hooks-claude-code/further-exploration:
+  en: 4e1f72cc468e84e1
+  zh: 893d8dc596acd5b0
+/singula-ai-alego-hooks-claude-code/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-hooks-claude-code/model-experience/hook-provided-context:
+  en: 7b2f5028dacd7146
+  zh: e4d226735f7abfc2
+/singula-ai-alego-hooks-claude-code/model-experience/hook-provided-context/what-the-model-sees:
+  en: 7b6edde085633c5f
+  zh: caadcfe8b9364c6d
+/singula-ai-alego-hooks-claude-code/model-experience/hook-provided-context/token-effect:
+  en: b70e3524b160cd63
+  zh: e1011ee18d1bf12b
+/singula-ai-alego-hooks-claude-code/model-experience/hook-provided-context/kv-cache-effect:
+  en: f5d5f97a153f7c70
+  zh: f681f89596f500f5
+/singula-ai-alego-hooks-claude-code/model-experience/blocked-prompt-or-tool-outcome:
+  en: 82be8d95921ef639
+  zh: 11c185068ec18932
+/singula-ai-alego-hooks-claude-code/model-experience/blocked-prompt-or-tool-outcome/what-the-model-sees:
+  en: 1313b662532a2bda
+  zh: 4002d38540286a94
+/singula-ai-alego-hooks-claude-code/model-experience/blocked-prompt-or-tool-outcome/token-effect:
+  en: 7c13e10d2a0e3151
+  zh: 54ffd88bca4fce3a
+/singula-ai-alego-hooks-claude-code/model-experience/blocked-prompt-or-tool-outcome/kv-cache-effect:
+  en: f84fa6c0511cd113
+  zh: f6ce9cdd47a72684
+/singula-ai-alego-hooks-claude-code/known-limitations-and-deferred-work:
+  en: 83a1ac77e7140816
+  zh: 47de82c27f0c4b4d
+/singula-ai-alego-hooks-claude-code/known-limitations-and-deferred-work/dev-note:
+  en: b1e9a373ae8b7bb0
+  zh: 30446fe59d5ec8be

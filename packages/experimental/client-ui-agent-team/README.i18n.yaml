@@ -1,6 +1,43 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/experimental/client-ui-agent-team/README.md
-README.md: 0158b30ac22f58c1093972da6e96c6a493199b87
-README.zh.md: 54117ac8103a0635ab5604cbbb0fd9b4dbb8caf7
+/:
+  en: 6deb254c416ff51b
+  zh: e0913c7be837da78
+/singula-ai-alego-experimental-client-ui-agent-team:
+  en: 07d6ae301bd325dc
+  zh: 2d40d68be530e3b9
+/singula-ai-alego-experimental-client-ui-agent-team/summary:
+  en: a30d7bbb951ed3ec
+  zh: 8b12eca1138820f0
+/singula-ai-alego-experimental-client-ui-agent-team/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-experimental-client-ui-agent-team/use-this-package:
+  en: 74d3dc51652b17fe
+  zh: d71c8dc9cce41e97
+/singula-ai-alego-experimental-client-ui-agent-team/use-this-package/inspect-and-navigate-the-roster:
+  en: 62778e911a4ee9e9
+  zh: dff1dbbc3d5e4af6
+/singula-ai-alego-experimental-client-ui-agent-team/use-this-package/inspect-the-task-board:
+  en: cf09faa436dad9fd
+  zh: e7423f4111eb88f9
+/singula-ai-alego-experimental-client-ui-agent-team/understand-the-implementation:
+  en: 3ea723e7ea467be7
+  zh: dba02b20bef0fd7f
+/singula-ai-alego-experimental-client-ui-agent-team/further-exploration:
+  en: fed5f120c3c7299b
+  zh: cef4d73e2715e6a6
+/singula-ai-alego-experimental-client-ui-agent-team/model-experience:
+  en: 47ebeba07d72759d
+  zh: 8fe8133f6dd845a9
+/singula-ai-alego-experimental-client-ui-agent-team/model-experience/kv-cache-effect:
+  en: b51b320f5e4dacfc
+  zh: 6695947c3f9fed28
+/singula-ai-alego-experimental-client-ui-agent-team/known-limitations-and-deferred-work:
+  en: 254e4aa2f81037d2
+  zh: 3cdf19dffafb51df
+/singula-ai-alego-experimental-client-ui-agent-team/known-limitations-and-deferred-work/dev-note:
+  en: 317e07f2fd605e55
+  zh: 66836ceef6216892

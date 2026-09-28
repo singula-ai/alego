@@ -1,6 +1,58 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-deliverables/README.md
-README.md: 6b56adcbaa14c1c4342e52c057180e55ef5e3565
-README.zh.md: 07f5f4f00cf70c7cdad3045fa3da626d321724e2
+/:
+  en: 91a4da87e2e078ed
+  zh: 8d489c6cdf208c4d
+/singula-ai-alego-client-ui-deliverables:
+  en: b05fd8eec6b17bbc
+  zh: 320bd76ef6acd9f1
+/singula-ai-alego-client-ui-deliverables/summary:
+  en: a17b97d16803f911
+  zh: ad80cf4bcb5a8018
+/singula-ai-alego-client-ui-deliverables/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-client-ui-deliverables/use-this-package:
+  en: 4036759be577b851
+  zh: 8a3b1b7b3fa829b9
+/singula-ai-alego-client-ui-deliverables/use-this-package/explicit-deliveries:
+  en: 1fc87f1cb82d63b6
+  zh: 92bcffb396091214
+/singula-ai-alego-client-ui-deliverables/use-this-package/the-changed-files-card:
+  en: 4b279e2bddddc083
+  zh: a3135393299c935b
+/singula-ai-alego-client-ui-deliverables/use-this-package/the-review-tab:
+  en: 7e10676cac8b19eb
+  zh: dafbc465a98714bc
+/singula-ai-alego-client-ui-deliverables/use-this-package/inline-code-links:
+  en: e36ccef8bf908ea4
+  zh: 30e11327a55e5dfa
+/singula-ai-alego-client-ui-deliverables/understand-the-implementation:
+  en: 71d8928762d4c494
+  zh: c7021980d3f04cf9
+/singula-ai-alego-client-ui-deliverables/further-exploration:
+  en: b25a24b2f6eea334
+  zh: 587554f14e9678d0
+/singula-ai-alego-client-ui-deliverables/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-client-ui-deliverables/model-experience/clickable-file-reference-guidance:
+  en: eb244aa21a4e5210
+  zh: e3450addfa19cea5
+/singula-ai-alego-client-ui-deliverables/model-experience/clickable-file-reference-guidance/what-the-model-sees:
+  en: 78339e353ae47a53
+  zh: 582efa623a5dfd72
+/singula-ai-alego-client-ui-deliverables/model-experience/clickable-file-reference-guidance/token-effect:
+  en: e007f5d0f8ee9ae1
+  zh: 1af5fb5c2f379185
+/singula-ai-alego-client-ui-deliverables/model-experience/clickable-file-reference-guidance/kv-cache-effect:
+  en: 52626a05acc8b320
+  zh: 6a8e62b0d47d5297
+/singula-ai-alego-client-ui-deliverables/known-limitations-and-deferred-work:
+  en: 17cf269366b35c5e
+  zh: 7cbbd8e92abc2d41
+/singula-ai-alego-client-ui-deliverables/known-limitations-and-deferred-work/dev-note:
+  en: a55f817f597aa646
+  zh: aba9a91ecde566ab

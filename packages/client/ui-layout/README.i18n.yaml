@@ -1,6 +1,43 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-layout/README.md
-README.md: efd713865647602b1c260b6b1e3a05150cd77590
-README.zh.md: 9707313bdbc8caf28ffbebeb96b6f4fed10aff02
+/:
+  en: d96ec500357f8268
+  zh: 57610f377112cbde
+/singula-ai-alego-client-ui-layout:
+  en: f41527b55d4cf33f
+  zh: 9ab480488be2e2bb
+/singula-ai-alego-client-ui-layout/summary:
+  en: 0315d385c20948ac
+  zh: b4d31027504adc25
+/singula-ai-alego-client-ui-layout/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-client-ui-layout/use-this-package:
+  en: 7d135dd3dbd7ff96
+  zh: 43ac4d9c5a12f741
+/singula-ai-alego-client-ui-layout/use-this-package/window-chrome-seat:
+  en: 0b3de85185d78b5d
+  zh: 2494a3633cd61eb9
+/singula-ai-alego-client-ui-layout/use-this-package/theme-presentation:
+  en: 8416888b9cdfda02
+  zh: d4043459440a392d
+/singula-ai-alego-client-ui-layout/understand-the-implementation:
+  en: 8af800fa55786c71
+  zh: 7421c12eb3585c21
+/singula-ai-alego-client-ui-layout/further-exploration:
+  en: 283c73ea51e5d0a4
+  zh: 1af7428547c1eddf
+/singula-ai-alego-client-ui-layout/model-experience:
+  en: 9a94a7197da60052
+  zh: 369a59ab63d050f1
+/singula-ai-alego-client-ui-layout/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: de54f3467ef3b9be
+/singula-ai-alego-client-ui-layout/known-limitations-and-deferred-work:
+  en: da92b97ac60d989f
+  zh: 5816b861728f1a04
+/singula-ai-alego-client-ui-layout/known-limitations-and-deferred-work/dev-note:
+  en: 4671d1561021e834
+  zh: cf6dba523a442cb5

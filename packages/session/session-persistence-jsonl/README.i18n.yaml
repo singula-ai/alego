@@ -1,6 +1,70 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/session/session-persistence-jsonl/README.md
-README.md: d6f46e6120bd5fc6c9b2fc1d208f599dbeb0174e
-README.zh.md: d731739649da3346c409569b79775f581b14c76b
+/:
+  en: cc97ed79d262bf09
+  zh: 90a141669dc844f3
+/singula-ai-alego-session-persistence-jsonl:
+  en: a09bb2a698828dc5
+  zh: 80f587175f5e877e
+/singula-ai-alego-session-persistence-jsonl/summary:
+  en: 850b517051e63b4e
+  zh: c286ea9cdbe71fb0
+/singula-ai-alego-session-persistence-jsonl/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-session-persistence-jsonl/use-this-package:
+  en: d6112142a705ec43
+  zh: f0914d9e37216f97
+/singula-ai-alego-session-persistence-jsonl/use-this-package/when-to-choose-it:
+  en: 37c10302bbbde268
+  zh: 3d5c027bac868efd
+/singula-ai-alego-session-persistence-jsonl/use-this-package/minimal-configuration:
+  en: d63cf7a13b3a3685
+  zh: c48d696d4a162212
+/singula-ai-alego-session-persistence-jsonl/use-this-package/on-disk-layout:
+  en: e20cf32540d7c785
+  zh: 67e182529e9211ca
+/singula-ai-alego-session-persistence-jsonl/use-this-package/durability-and-crash-semantics:
+  en: 1eaa87736cac029b
+  zh: 26224e8889786d69
+/singula-ai-alego-session-persistence-jsonl/use-this-package/reading-the-logs:
+  en: d3bea0973a5d8214
+  zh: 7b360adf7c0ea3d5
+/singula-ai-alego-session-persistence-jsonl/understand-the-implementation:
+  en: a35407bb25671e7e
+  zh: 6a00f9510c85adcb
+/singula-ai-alego-session-persistence-jsonl/understand-the-implementation/design-concept:
+  en: b69d4565a11b6f02
+  zh: c8309690fc931f8d
+/singula-ai-alego-session-persistence-jsonl/understand-the-implementation/physical-encoding:
+  en: 8c1c26ff50625245
+  zh: b5886ea83644723c
+/singula-ai-alego-session-persistence-jsonl/understand-the-implementation/source-map:
+  en: 3bdb0f1dd4d69fba
+  zh: 8198d655d73d42e3
+/singula-ai-alego-session-persistence-jsonl/further-exploration:
+  en: 2dbe0dd9ce015d30
+  zh: 3f3df5a9b5b54a8e
+/singula-ai-alego-session-persistence-jsonl/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-session-persistence-jsonl/model-experience/resumed-conversation-history:
+  en: 062875aab7f3f138
+  zh: c7285918227e6f5c
+/singula-ai-alego-session-persistence-jsonl/model-experience/resumed-conversation-history/what-the-model-sees:
+  en: 2a3b5c6e3860eef6
+  zh: 82afe0f0359581b6
+/singula-ai-alego-session-persistence-jsonl/model-experience/resumed-conversation-history/token-effect:
+  en: 8fb2f7cdba1ff320
+  zh: e130ec2a92a53a5c
+/singula-ai-alego-session-persistence-jsonl/model-experience/resumed-conversation-history/kv-cache-effect:
+  en: 53ce4da7ce68d21c
+  zh: 10f40bc354100f77
+/singula-ai-alego-session-persistence-jsonl/known-limitations-and-deferred-work:
+  en: 01abfe005cd1f81e
+  zh: d566259e94d3341f
+/singula-ai-alego-session-persistence-jsonl/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

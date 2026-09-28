@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-agent-default-model",
   "description": "Default model selection shared by Agent entry points",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,18 +27,18 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@singula-ai/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:~",
+    "@singula-ai/alego-config-editor": "workspace:*"
   },
   "peerDependencies": {
-    "@singula-ai/alego-agent": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/alego-settings": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-agent": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/alego-settings": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-settings": "workspace:*"
   }
 }

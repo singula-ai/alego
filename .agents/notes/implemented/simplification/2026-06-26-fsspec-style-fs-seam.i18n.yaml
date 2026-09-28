@@ -1,6 +1,40 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-06-26-fsspec-style-fs-seam.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-06-26-fsspec-style-fs-seam.md
-2026-06-26-fsspec-style-fs-seam.md: e0c4f406a2eca013ed15c9a590e9cddc7d885efd
-2026-06-26-fsspec-style-fs-seam.zh.md: 8f85ef14cc0080057745aaf07798cb7234e56191
+/agent-note-split-the-filesystem-seam-provider-text-mutations-plus-the-alego-fs-observation-policy-plugin:
+  en: 9061e81e1585abe4
+  zh: b05fdc485a1c723c
+/agent-note-split-the-filesystem-seam-provider-text-mutations-plus-the-alego-fs-observation-policy-plugin/problem:
+  en: 1e823a6c8fc2b0d4
+  zh: 360b800072a03c20
+/agent-note-split-the-filesystem-seam-provider-text-mutations-plus-the-alego-fs-observation-policy-plugin/decision:
+  en: 927ea6b7ce2681e9
+  zh: f87ba228a778de50
+/agent-note-split-the-filesystem-seam-provider-text-mutations-plus-the-alego-fs-observation-policy-plugin/provider-contract:
+  en: 313e5f0d33d6b80e
+  zh: a6ff2b13f32a1342
+/agent-note-split-the-filesystem-seam-provider-text-mutations-plus-the-alego-fs-observation-policy-plugin/policy-contract:
+  en: 32efd9ef3d261249
+  zh: 7b5fe22706a26eed
+/agent-note-split-the-filesystem-seam-provider-text-mutations-plus-the-alego-fs-observation-policy-plugin/tool-contract:
+  en: 628aaaae22a72860
+  zh: 73a4b6a903799bf2
+/agent-note-split-the-filesystem-seam-provider-text-mutations-plus-the-alego-fs-observation-policy-plugin/concurrency-boundary:
+  en: 6a459d121a49988c
+  zh: 048de517a0f952b6
+/agent-note-split-the-filesystem-seam-provider-text-mutations-plus-the-alego-fs-observation-policy-plugin/supersedes:
+  en: 61830753cbc9fdba
+  zh: ad754ee31a762164
+/agent-note-split-the-filesystem-seam-provider-text-mutations-plus-the-alego-fs-observation-policy-plugin/verification:
+  en: a5533b621c9b3501
+  zh: 97ef95a81b0bc109
+/agent-note-split-the-filesystem-seam-provider-text-mutations-plus-the-alego-fs-observation-policy-plugin/later-extension:
+  en: b56210bf2c8f8dec
+  zh: 27decb39624c0ef7
+/agent-note-split-the-filesystem-seam-provider-text-mutations-plus-the-alego-fs-observation-policy-plugin/alternatives-considered:
+  en: 2f1bb917bb2721ba
+  zh: ae235b3e88661c97
+/agent-note-split-the-filesystem-seam-provider-text-mutations-plus-the-alego-fs-observation-policy-plugin/consequences:
+  en: 1989d6089de5401e
+  zh: b8114ebfa48cc3dd

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { SessionFormatEventCollector } from '@singula-ai/alego-session-format'
 import type { SessionFormatEvent, SessionFormatJsonObject, SessionFormatJsonValue } from '@singula-ai/alego-session-format'
-import { sessionFormatCatalog } from '@singula-ai/alego-session-format-catalog'
+import { v3Catalog as sessionFormatCatalog } from './catalog.ts'
 import { restoreReleasedV3Artifact, sessionFormatV2ToV3 } from '../src/index.ts'
 
 const header = { version: 2, id: 'content-admission', createdAt: 1, isSeeded: false, delegationDepth: 0 }

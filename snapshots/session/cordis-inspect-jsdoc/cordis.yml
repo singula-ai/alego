@@ -33,5 +33,7 @@
 - insert:
     - id: cordis-host-runner
       name: '@singula-ai/alego-cordis-host-runner'
+    - id: cordis-inspect-providers
+      name: '@singula-ai/alego-tool-cordis/host'
     - id: tool-cordis
       name: '@singula-ai/alego-tool-cordis'

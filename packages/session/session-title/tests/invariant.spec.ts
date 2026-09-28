@@ -6,6 +6,13 @@ import * as SessionTitleInvariantCompanion from '@singula-ai/alego-session-title
 import InvariantRegistry, { InvariantError } from '@singula-ai/alego-invariants'
 import SessionStore, { SessionId, SessionSeq } from '@singula-ai/alego-session'
 import { createUserMessage } from '@singula-ai/alego-llm'
+import type { ContextFormed } from '@singula-ai/alego-llm'
+
+declare module '@singula-ai/alego-llm' {
+  interface MessageSourceMap {
+    'test': { kind: 'test' } & ContextFormed
+  }
+}
 
 async function setup(): Promise<Context> {
   const ctx = new Context()
@@ -64,7 +71,7 @@ describe('session-title source invariant', () => {
     })).toThrow(/invalid message seq/)
     const pluginMessage = session.append('user/message', createUserMessage({
       content: [{ type: 'text', text: 'plugin context' }],
-      source: { kind: 'plugin', plugin: 'test' },
+      source: { kind: 'test' },
     }), { surfaceOp: 'append' })
     expect(() => session.append('session/title', {
       title: 'plugin source', messageSeqs: [pluginMessage.seq], source: { kind: 'fallback' },

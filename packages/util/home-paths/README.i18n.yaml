@@ -1,6 +1,52 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/util/home-paths/README.md
-README.md: fbdfdd6b8b697f09f6308eb653487ec5e9d95ea7
-README.zh.md: 18134399eaefb47b4210133cf19d21b237568e30
+/:
+  en: 27634c3cb744301d
+  zh: 7aebf6af2a7ef1a0
+/singula-ai-alego-home-paths:
+  en: 400af4cccfb3bf78
+  zh: db9efcdcc8c4b203
+/singula-ai-alego-home-paths/summary:
+  en: fa45e1a8344de8cc
+  zh: 44c6fd5d8411163c
+/singula-ai-alego-home-paths/table-of-contents:
+  en: 80b31a934611cb4a
+  zh: 05f3f7f9cb2fd881
+/singula-ai-alego-home-paths/use-this-package:
+  en: 5322022224da2f27
+  zh: d5cba67f4ea3e429
+/singula-ai-alego-home-paths/use-this-package/resolving-the-home:
+  en: 31df1a018073bf73
+  zh: 8a8ed09d2643d732
+/singula-ai-alego-home-paths/use-this-package/displaying-a-home:
+  en: 9621707305256d78
+  zh: fc198f1a1249036e
+/singula-ai-alego-home-paths/use-this-package/expanding-user-paths:
+  en: 80bf5dead177c1d8
+  zh: 6faf257afbb9c246
+/singula-ai-alego-home-paths/use-this-package/canonicalizing-watch-paths:
+  en: 55c5d8179de704c5
+  zh: b86395e9605807cd
+/singula-ai-alego-home-paths/understand-the-implementation:
+  en: a3896db883f77b47
+  zh: 45c71eccc31682b5
+/singula-ai-alego-home-paths/understand-the-implementation/source-map:
+  en: ab001f10961a5a98
+  zh: 2209a79d2d5d9b68
+/singula-ai-alego-home-paths/understand-the-implementation/resolution-rules:
+  en: f11da8235c301857
+  zh: 190084e009c4ca53
+/singula-ai-alego-home-paths/understand-the-implementation/canonicalization-mechanics:
+  en: a79aecd162317dc2
+  zh: 342f9bae0231c3de
+/singula-ai-alego-home-paths/further-exploration:
+  en: 41ebdcc9e81dafe0
+  zh: 67ccc7d91e424dd4
+/singula-ai-alego-home-paths/known-limitations-and-deferred-work:
+  en: aa4aecf31a596da0
+  zh: 22dea997610fae2d
+/singula-ai-alego-home-paths/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

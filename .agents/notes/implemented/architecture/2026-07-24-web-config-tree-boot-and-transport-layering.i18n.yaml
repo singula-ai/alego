@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-24-web-config-tree-boot-and-transport-layering.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-24-web-config-tree-boot-and-transport-layering.md
-2026-07-24-web-config-tree-boot-and-transport-layering.md: 6a71d9b8bdfaf29c75a09da9d563e54bcd9f5dad
-2026-07-24-web-config-tree-boot-and-transport-layering.zh.md: 045e7c37e62f4aa8487945fbca3f4f3f67f9c240
+/agent-note-alego-web-config-tree-boot-and-the-web-transport-layering:
+  en: afb5419c3fb8cc56
+  zh: 3fa0de541cca9823
+/agent-note-alego-web-config-tree-boot-and-the-web-transport-layering/problem:
+  en: b307e61da48c5042
+  zh: 968a89eefb28a216
+/agent-note-alego-web-config-tree-boot-and-the-web-transport-layering/decision:
+  en: 65ddb4184a95fa40
+  zh: a02458956a914eaf
+/agent-note-alego-web-config-tree-boot-and-the-web-transport-layering/consequences:
+  en: 47f8a6beba1f320b
+  zh: 5f444699dc52cabf
+/agent-note-alego-web-config-tree-boot-and-the-web-transport-layering/alternatives-considered:
+  en: 1d62ab9924fb6d23
+  zh: a9ccdad529737e71

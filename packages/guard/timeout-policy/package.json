@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-tool-call-timeout-policy",
   "description": "Tool-call timeout policy: a tools/execute wrapper that arms a per-tool deadline on exec.signal and returns TOOL_TIMEOUT when it wins",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,15 +27,15 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/alego-timeout": "workspace:^",
-    "@singula-ai/alego-tools": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-timeout": "workspace:*",
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/alego-timeout": "workspace:^",
-    "@singula-ai/alego-tools": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-timeout": "workspace:*",
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

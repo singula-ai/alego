@@ -1,0 +1,44 @@
+{
+  "name": "@singula-ai/alego-experimental-ptc-runtime-python",
+  "description": "CPython subprocess implementation of the Alego PTC execution seam",
+  "version": "0.1.7-rc.2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/experimental/ptc-runtime-python"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "py/**/*.py",
+    "lib/types/**/*.d.ts"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@singula-ai/alego-ptc-runtime": "workspace:*",
+    "@singula-ai/alego-timeout": "workspace:*",
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-util-values": "workspace:*"
+  },
+  "devDependencies": {
+    "@singula-ai/alego-ptc-runtime": "workspace:*",
+    "@singula-ai/alego-timeout": "workspace:*",
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-util-values": "workspace:*"
+  },
+  "dependencies": {
+    "@singula-ai/schemastery": "workspace:~"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

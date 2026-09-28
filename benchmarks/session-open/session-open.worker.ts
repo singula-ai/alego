@@ -5,7 +5,7 @@ import { scheduler } from 'node:timers/promises'
 import { Context } from '@singula-ai/cordis'
 import AgentLoop, { turnBoundaryProjectionDefinition } from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
-import { agentPresetProjectionDefinition } from '@singula-ai/alego-agent-presets'
+import { agentPresetProjectionDefinition } from '@singula-ai/alego-agent-preset-registry'
 import SessionStore, {
   interruptedTurnClosers,
   SessionId,

@@ -1,6 +1,46 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-model-selection/README.md
-README.md: de02bc9b09e88f48213df47461c3799759dd15f8
-README.zh.md: 8d082545bbc6898f86268195c21d10f8638a6706
+/:
+  en: f39813648aeef5a0
+  zh: eea25094e8bfc031
+/singula-ai-alego-client-ui-model-selection:
+  en: 9f349a38ef09c8bb
+  zh: ae4e16a516ad02df
+/singula-ai-alego-client-ui-model-selection/summary:
+  en: 2fb361ef704528fb
+  zh: 2537d2afb4d2cb45
+/singula-ai-alego-client-ui-model-selection/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-client-ui-model-selection/use-this-package:
+  en: e5a1df3a4dfe5041
+  zh: 6269e73026b32a33
+/singula-ai-alego-client-ui-model-selection/use-this-package/model-and-effort:
+  en: e38d0195677a7b69
+  zh: 4eea8a9b1664afd9
+/singula-ai-alego-client-ui-model-selection/use-this-package/unroutable-sessions:
+  en: 7f20428c747ff052
+  zh: 975e6de728e02fa0
+/singula-ai-alego-client-ui-model-selection/use-this-package/selection-failures:
+  en: d0a750f1b4062123
+  zh: 2d45244cd5f12348
+/singula-ai-alego-client-ui-model-selection/understand-the-implementation:
+  en: f5cca00bdcdb07a9
+  zh: 784bb647f42d67fd
+/singula-ai-alego-client-ui-model-selection/further-exploration:
+  en: 649aeac237a8d0d1
+  zh: 58f308377b760a5b
+/singula-ai-alego-client-ui-model-selection/model-experience:
+  en: 782f79ed910f426a
+  zh: 54a2e3e32a747544
+/singula-ai-alego-client-ui-model-selection/model-experience/kv-cache-effect:
+  en: 68e54c00412a40d1
+  zh: 0ac96f57fd194d96
+/singula-ai-alego-client-ui-model-selection/known-limitations-and-deferred-work:
+  en: 75b37954ceacd92a
+  zh: a49d0361486e35c4
+/singula-ai-alego-client-ui-model-selection/known-limitations-and-deferred-work/dev-note:
+  en: 83bfc3dae3365b49
+  zh: f7dc4d0654ec83e1

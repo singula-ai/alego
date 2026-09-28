@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-typert-generator",
   "description": "TypeScript project analyzer and model-driven Typert artifact generator",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -36,12 +36,12 @@
     "typescript": "^6.0.3"
   },
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-tool-cordis": "workspace:^",
-    "@singula-ai/alego-typert-registry": "workspace:^",
-    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/alego-tool-cordis": "workspace:*",
+    "@singula-ai/alego-typert-registry": "workspace:*",
+    "@singula-ai/cordis": "workspace:~",
     "zod": "^4.4.3"
   }
 }

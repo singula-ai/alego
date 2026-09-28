@@ -1,6 +1,61 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/typert/generator/README.md
-README.md: 2be1665f2aa715469a06ac0811882db63cb34112
-README.zh.md: 65b1a8a1e32afc9b8121b1b6b693d6d282a94070
+/:
+  en: 3fe330c4d51197ec
+  zh: 5874f3bcd419dbbc
+/singula-ai-alego-typert-generator:
+  en: 2f2677410bb01c61
+  zh: 9f64e22025d54844
+/singula-ai-alego-typert-generator/summary:
+  en: 10103a0f42703408
+  zh: 0b92233d64e0fa62
+/singula-ai-alego-typert-generator/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-typert-generator/use-this-package:
+  en: 949dec3bb987644a
+  zh: 0ed333a6067465dc
+/singula-ai-alego-typert-generator/use-this-package/publishing-typert-artifacts-from-a-package:
+  en: e4ad83b9240fc132
+  zh: a704d5bc1c7d114d
+/singula-ai-alego-typert-generator/use-this-package/analyzing-a-workspace-statically:
+  en: 88f4e7fc9d4c7701
+  zh: cecd35ff4f35bfd2
+/singula-ai-alego-typert-generator/use-this-package/running-generation-inside-a-tsdown-build:
+  en: cc3f7d23739380f6
+  zh: 864d15088f581271
+/singula-ai-alego-typert-generator/understand-the-implementation:
+  en: b90762df7a978580
+  zh: 123ab225a2b5df2a
+/singula-ai-alego-typert-generator/understand-the-implementation/design-concept:
+  en: 0a515742229bf442
+  zh: dfd2c5eddd943af9
+/singula-ai-alego-typert-generator/understand-the-implementation/source-map:
+  en: 783dec50106bcabb
+  zh: 2627f55ce69a1a2c
+/singula-ai-alego-typert-generator/understand-the-implementation/analysis-and-faces:
+  en: 26ecaeea15ca814c
+  zh: 3a891635b9e2e07f
+/singula-ai-alego-typert-generator/understand-the-implementation/emission-and-publication-contract:
+  en: 23d82cb673867788
+  zh: 500bfbb264481e0a
+/singula-ai-alego-typert-generator/understand-the-implementation/catalog-projection:
+  en: e85b521a1e01ab2c
+  zh: 4416dca569de0f61
+/singula-ai-alego-typert-generator/further-exploration:
+  en: 4064098702f0b62e
+  zh: 039d1524d8d0fffd
+/singula-ai-alego-typert-generator/model-experience:
+  en: e6641e8b5e5f42ca
+  zh: 2fdc0d3fde7e9216
+/singula-ai-alego-typert-generator/model-experience/kv-cache-effect:
+  en: 09310605f7d136d4
+  zh: 3535ec7eba83b90f
+/singula-ai-alego-typert-generator/known-limitations-and-deferred-work:
+  en: f3b1002133fe8736
+  zh: e8d5fecd10db5e3a
+/singula-ai-alego-typert-generator/known-limitations-and-deferred-work/dev-note:
+  en: cc7e47f271475e4c
+  zh: 8426eb322816bd28

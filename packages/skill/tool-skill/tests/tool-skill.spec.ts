@@ -4,6 +4,7 @@ import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { Context } from '@singula-ai/cordis'
 import { createUserMessage, ToolCallId, type Message } from '@singula-ai/alego-llm'
+import type { ContextFormed, MessageSource } from '@singula-ai/alego-llm'
 import { createScope, type Scope } from '@singula-ai/alego-scope'
 import {
   SESSION_FORMAT_VERSION, Session, SessionId, type SessionEvent, type UserMessage,
@@ -15,6 +16,20 @@ import SkillRegistry from '@singula-ai/alego-skill'
 import * as SkillFileSystem from '@singula-ai/alego-skill-filesystem'
 import * as toolSkill from '@singula-ai/alego-tool-skill'
 import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
+
+declare module '@singula-ai/alego-llm' {
+  interface MessageSourceMap {
+    'alego-tool-skill': { kind: 'alego-tool-skill' } & ContextFormed
+    'later-contribution': { kind: 'later-contribution' } & ContextFormed
+  }
+}
+
+type CheckpointSource = Extract<MessageSource, { readonly kind: 'compact-checkpoint' }>
+
+/** Build a typed checkpoint source for a skill projection fixture. */
+function checkpointSource(compactionId: string): CheckpointSource {
+  return { kind: 'compact-checkpoint', compactionId: compactionId as CheckpointSource['compactionId'] }
+}
 
 const testToolSignal = new AbortController().signal
 
@@ -261,7 +276,7 @@ describe('alego-tool-skill', () => {
           ...decision.messages,
           createUserMessage({
             content: [{ type: 'text', text: 'later contribution' }],
-            source: { kind: 'plugin', plugin: 'later-contribution' },
+            source: { kind: 'later-contribution' },
           }),
         ],
       }
@@ -274,7 +289,7 @@ describe('alego-tool-skill', () => {
         id: expect.any(String) as unknown,
         role: 'user',
         content: [{ type: 'text', text: 'later contribution' }],
-        source: { kind: 'plugin', plugin: 'later-contribution' },
+        source: { kind: 'later-contribution' },
       },
       {
         id: expect.any(String) as unknown,
@@ -534,7 +549,7 @@ describe('alego-tool-skill', () => {
     }), { surfaceOp: 'append' })
     session.append('user/message', createUserMessage({
       content: catalogContent(['- `resumed-skill`: Resumed skill']),
-      source: { kind: 'plugin', plugin: 'alego-tool-skill' },
+      source: { kind: 'alego-tool-skill' },
     }), { surfaceOp: 'append' })
 
     await fireStep(ctx, agent, 1, 1)
@@ -628,7 +643,7 @@ describe('alego-tool-skill', () => {
     if (initial === undefined) throw new Error('expected initial catalog')
     session.append('user/message', createUserMessage({
       content: [{ type: 'text', text: 'compacted history' }],
-      source: { kind: 'plugin', plugin: 'compact' },
+      source: checkpointSource('skill-compaction'),
     }), {
       surfaceOp: { op: 'replace', startSeq: initial.seq, endSeq: initial.seq },
       sourceEventSeqs: [initial.seq],

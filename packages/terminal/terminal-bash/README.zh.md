@@ -44,7 +44,7 @@ kind: "package-reference"
 - name: '@singula-ai/alego-tool-terminal'
 ```
 
-`danger-full-access` 直接启动 shell。受限模式要求同一执行世界中存在 `ctx.sandbox` 提供方：缺少时，spawn 会在 shell 启动前失败。
+`danger-full-access` 直接启动 shell。受限模式要求同一执行世界中存在 `ctx.sandbox` 提供方：缺少时，spawn 会在 shell 启动前失败。限制准备过程接收打开操作的取消信号；即使提供方稍后返回，取消仍会阻止终端分配。
 
 ### 配置
 
@@ -57,11 +57,11 @@ kind: "package-reference"
 | `timeoutMs` | `30000` | 一次发送等待的绝对上限 |
 | `disposeGraceMs` | `3000` | 清理升级到 `SIGKILL` 前的宽限时间 |
 
-生成的[配置目录](../../../docs/config-catalog.zh.md#singula-aialego-terminal-bash)是每个字段的穷尽式真源，包括就绪计时（`pollIntervalMs`、`exactProbeAfterMs`、`idleSilenceMs`、`handoffGraceMs`）、终端尺寸（`rows`、`cols`）与 scrollback 上限（`scrollbackLines`、`scrollbackMaxBytes`）。
+生成的[配置目录](../../../docs/config-catalog.zh.md#singula-aialego-terminal-bash)是每个字段的穷尽式真源，包括就绪计时（`pollIntervalMs`、`exactProbeAfterMs`、`idleSilenceMs`、`handoffGraceMs`、`promptTailGraceMs`）、终端尺寸（`rows`、`cols`）与 scrollback 上限（`scrollbackLines`、`scrollbackMaxBytes`）。
 
 ### shell 方言与就绪
 
-两种方言暴露相同的就绪约定，因此消费方与方言无关。当 shell 再次就绪时发送即结算：受控提示符被验证之后、前台进程组被证明在等待 stdin（Linux）之后、输出静默（`inferred_idle`）之后，或到达绝对 `timeoutMs`。`inferred_idle` 或 `timeout` 结果并不证明前台命令已退出。
+两种方言暴露相同的就绪约定，因此消费方与方言无关。当 shell 再次就绪时发送即结算：受控提示符被验证之后、前台进程组被证明在等待 stdin（Linux）之后、输出静默（`inferred_idle`）之后，或到达绝对 `timeoutMs`。若提示符标记已到达而其可打印尾部尚未到达，send 会在 `idleSilenceMs + handoffGraceMs` 之外继续等待 `promptTailGraceMs`，因为标记与尾部由同一次提示符渲染写出。`inferred_idle` 或 `timeout` 结果并不证明前台命令已退出。
 
 ### 沙箱与安全运行
 
@@ -84,6 +84,8 @@ shell 在整个生命周期内运行在有效的沙箱边界之下。当所有�
 ### 设计理念
 
 一个后端服务两种方言：bash 与 pwsh 共享同一套会话机制——清理器、有界缓冲区、就绪轮询、取消与关闭——只在 argv、环境与提示符安装方式上不同。bash 通过 `PS1` 加 `PROMPT_COMMAND` 接收私有标记。pwsh 会写入提示符函数、固定 UTF-8 控制台编码，并只在后端报告 `stdin_read` 后发布启动；回显的设置文本不能发布 shell。一个不保留 scrollback 的 `@xterm/headless` 实例会消费原始 PTY 数据，并通过同一句柄返回终端协议响应；逐行 sanitizer 仍是唯一输出投影。
+
+Scrollback 和尚未读取的发送输出保留独立拥有的字符串，并增量维护字节数与换行符数，因此清理后的切片不会保留已丢弃的控制序列。追加与淘汰文本的摊还耗时与输入文本量成正比；读取时才拼接保留的分片。保留策略维持码点边界，并将末尾换行符之后的空行计入行数。[保留策略决策](../../../.agents/notes/implemented/bug-fix/2026-09-11-incremental-terminal-retention.zh.md)记录复杂度与测量依据。
 
 ### 源码地图
 

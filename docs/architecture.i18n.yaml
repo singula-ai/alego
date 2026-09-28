@@ -1,6 +1,37 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for architecture.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/architecture.md
-architecture.md: 2407e3fe0ed4a51e7da2f461f5b2bd5ca72df08b
-architecture.zh.md: 79b8654dfb96144d60f7057e435b68c80292a96f
+/alego-architecture:
+  en: 6c0d47eb46ea8ccb
+  zh: 187afdfe2958436b
+/alego-architecture/cordis:
+  en: 464effec9e9636a4
+  zh: 3132b56723977204
+/alego-architecture/profiles-and-bundles:
+  en: cff6b3ae77617558
+  zh: 9419187e38896e0c
+/alego-architecture/application-launch:
+  en: 3ff78d48803f0ca2
+  zh: e81b335dba758532
+/alego-architecture/desktop-application:
+  en: 3133f078f0d547de
+  zh: 66d95e474f4b78f7
+/alego-architecture/core-packages:
+  en: df683c34fe978ab9
+  zh: 09754d937f5dd98e
+/alego-architecture/events:
+  en: a83c9c57027e9f28
+  zh: 7895d1330b1e9320
+/alego-architecture/turn-flow:
+  en: 2b2e8ff16d6f4c4e
+  zh: 4051729ba101309f
+/alego-architecture/session-log:
+  en: ef3938dc66b7ff2c
+  zh: 2c29f4d690507402
+/alego-architecture/capability-seams:
+  en: 79da56de722e25d0
+  zh: 2188a16883ab9630
+/alego-architecture/where-new-behavior-goes:
+  en: 818cfba8dcc49747
+  zh: 0bd3e7fe7f60e759

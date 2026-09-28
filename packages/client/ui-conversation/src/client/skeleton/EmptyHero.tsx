@@ -3,14 +3,14 @@
 
 import type { ReactNode, RefObject } from 'react'
 import {
-  AlegoMark, IconChevronDownOutline14, IconFolderClose16, IconFolderOpen16,
+  AlegoMark, IconChevronDownOutlineRegular, IconFolderCloseRegular, IconFolderOpenRegular,
 } from '@singula-ai/alego-client-ui-primitives'
 import { workspaceTitleOf } from '@singula-ai/alego-util-workspace-path'
-import type { ConversationSlotProps } from '../contract/slots.ts'
+import type { ConversationContentProps } from '../contract/slots.ts'
 import css from './HeroShell.module.css'
 
 /** The owner's locale seat type, passed to hero chrome as a plain prop. */
-type HeroTranslate = ConversationSlotProps['t']
+type HeroTranslate = ConversationContentProps['t']
 
 /**
  * Basename label for the workspace chip (the shared derivation);
@@ -52,10 +52,10 @@ export function WorkspaceChip({ buttonRef, label, menuOpen = false, onClick, t }
       onClick={onClick}
     >
       {label === undefined
-        ? <IconFolderClose16 className={css.folder} size={16} />
-        : <IconFolderOpen16 className={css.folder} size={16} />}
+        ? <IconFolderCloseRegular className={css.folder} size={16} />
+        : <IconFolderOpenRegular className={css.folder} size={16} />}
       <span className={css.workspaceLabel}>{label ?? t('hero.chooseWorkspace')}</span>
-      <IconChevronDownOutline14 className={css.chevron} size={12} />
+      <IconChevronDownOutlineRegular className={css.chevron} size={12} />
     </button>
   )
 }
@@ -65,7 +65,7 @@ export interface HeroShellProps {
   /** The owner's locale seat, passed down as a plain prop. */
   t: HeroTranslate
   /** Authorized renderer for the hero brand-mark slot. */
-  renderSlot: ConversationSlotProps['renderSlot']
+  renderSlot: ConversationContentProps['renderSlot']
   /** Overlay content after the stack (modals). */
   children?: ReactNode
 }

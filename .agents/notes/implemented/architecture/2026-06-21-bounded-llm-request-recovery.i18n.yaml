@@ -1,6 +1,43 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-06-21-bounded-llm-request-recovery.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-06-21-bounded-llm-request-recovery.md
-2026-06-21-bounded-llm-request-recovery.md: d61cdbaf8e3e2a826e4bca84df209791639111c1
-2026-06-21-bounded-llm-request-recovery.zh.md: c6266bfc404e66fb2cca04b5a09b1ca3c18ef292
+/agent-note-bounded-recovery-for-transient-llm-request-failures:
+  en: 299402d50cab8e28
+  zh: 38a043e3a5f82f01
+/agent-note-bounded-recovery-for-transient-llm-request-failures/problem:
+  en: 8c14cf5811f9a1ad
+  zh: 2e3133cdc2513133
+/agent-note-bounded-recovery-for-transient-llm-request-failures/decision:
+  en: a15c7c13f167e5ac
+  zh: 63bcc2ef60c2f344
+/agent-note-bounded-recovery-for-transient-llm-request-failures/decision/preserve-failure-facts-without-embedding-policy:
+  en: 9756569eb92a9fe7
+  zh: b211d1a9df179e8e
+/agent-note-bounded-recovery-for-transient-llm-request-failures/decision/put-retry-policy-on-the-existing-failed-step-extension-point:
+  en: 10caf71f3d12035c
+  zh: ec5ae531655e02de
+/agent-note-bounded-recovery-for-transient-llm-request-failures/decision/make-one-layer-own-visible-attempts:
+  en: 57dbdd385f48bb3e
+  zh: 5e15463fae4be582
+/agent-note-bounded-recovery-for-transient-llm-request-failures/decision/bound-stalled-streams-where-they-can-be-stopped:
+  en: 946a026b40ecafe0
+  zh: 9a24b2b7e1ba245e
+/agent-note-bounded-recovery-for-transient-llm-request-failures/decision/keep-attempts-separate-in-the-existing-log:
+  en: 8f57db4bfd6e1c22
+  zh: 67ac62217bb68570
+/agent-note-bounded-recovery-for-transient-llm-request-failures/out-of-scope:
+  en: 985720529b56cda2
+  zh: 8a649bfa9cd8d93f
+/agent-note-bounded-recovery-for-transient-llm-request-failures/alternatives-considered:
+  en: 44f6ed0df822a99e
+  zh: 9adb745305c55676
+/agent-note-bounded-recovery-for-transient-llm-request-failures/verification:
+  en: 4b816dabae8f8a8a
+  zh: 48ea74bf85d13cb3
+/agent-note-bounded-recovery-for-transient-llm-request-failures/consequences:
+  en: 08659e8606455ada
+  zh: 862080f8df5f28ec
+/agent-note-bounded-recovery-for-transient-llm-request-failures/related:
+  en: ae62eba47b473242
+  zh: 8fea3ae0d128c258

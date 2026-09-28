@@ -1,6 +1,64 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/typert/protocol/README.md
-README.md: 708d0a19d6f25480d4e78a382a952778aff84c9a
-README.zh.md: 8af550d1d5713d29791a286f9732b78438cf9bf8
+/:
+  en: f05430dc6311d1e1
+  zh: ad9779e051bc21f8
+/singula-ai-alego-typert-protocol:
+  en: 2c9ca2ce4a629abc
+  zh: d5eb02ca4dbf4436
+/singula-ai-alego-typert-protocol/summary:
+  en: 43c73a00782a2456
+  zh: 8fede7e00ffa6eed
+/singula-ai-alego-typert-protocol/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-typert-protocol/use-this-package:
+  en: c479b5b665822198
+  zh: 1ffb789c18043baf
+/singula-ai-alego-typert-protocol/use-this-package/exposing-a-host-method:
+  en: f2de50d39e5d1483
+  zh: 2e8644dd1d7c91cf
+/singula-ai-alego-typert-protocol/use-this-package/associating-host-objects-and-contexts-with-wire-identities:
+  en: 3db384ae6f215632
+  zh: 56207184b09d4018
+/singula-ai-alego-typert-protocol/use-this-package/reporting-and-reading-a-remote-failure:
+  en: 4ba5266ddb014029
+  zh: e31ae6438b9b4aa5
+/singula-ai-alego-typert-protocol/use-this-package/receiving-forwarded-host-events-on-the-client:
+  en: 1101bd1d1419618c
+  zh: 6ff036538d237e0a
+/singula-ai-alego-typert-protocol/understand-the-implementation:
+  en: f1a51c9826244574
+  zh: bd3ebd8831c6bf84
+/singula-ai-alego-typert-protocol/understand-the-implementation/design-concept:
+  en: 4f45bb46a1920984
+  zh: 70408d3b59d2735a
+/singula-ai-alego-typert-protocol/understand-the-implementation/remote-markers:
+  en: 93b83a9441a5a3c2
+  zh: c4eb143ddd167a27
+/singula-ai-alego-typert-protocol/understand-the-implementation/protocol-maps-and-descriptors:
+  en: 164b30b3fa543936
+  zh: 0831edd3e04a3d3a
+/singula-ai-alego-typert-protocol/understand-the-implementation/wire-identity-grammar:
+  en: aac79a7b4682371e
+  zh: bc9cc513c1ced3e6
+/singula-ai-alego-typert-protocol/understand-the-implementation/source-map:
+  en: c8834e55e3e3db73
+  zh: d820bc330814b240
+/singula-ai-alego-typert-protocol/further-exploration:
+  en: 88d62ebe3f15d6a3
+  zh: b3237941a4c894e3
+/singula-ai-alego-typert-protocol/model-experience:
+  en: dc0c83c97e195e97
+  zh: 1f11dd080898d6c0
+/singula-ai-alego-typert-protocol/model-experience/kv-cache-effect:
+  en: b1c49d5e440d9d41
+  zh: 87ead78472415189
+/singula-ai-alego-typert-protocol/known-limitations-and-deferred-work:
+  en: 0be59e6d97923487
+  zh: 70523fb0dc567ed6
+/singula-ai-alego-typert-protocol/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

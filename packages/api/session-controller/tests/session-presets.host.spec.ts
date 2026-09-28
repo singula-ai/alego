@@ -6,7 +6,7 @@ import { join } from 'node:path'
 import { Context } from '@singula-ai/cordis'
 import AgentRegistry from '@singula-ai/alego-agent'
 import type { Agent, AgentFactory } from '@singula-ai/alego-agent'
-import { agentPresetProjectionDefinition } from '@singula-ai/alego-agent-presets'
+import { agentPresetProjectionDefinition } from '@singula-ai/alego-agent-preset-registry'
 import SessionStore, { SessionId } from '@singula-ai/alego-session'
 import type { Session } from '@singula-ai/alego-session'
 import { RemoteError } from '@singula-ai/alego-typert-protocol'
@@ -29,7 +29,6 @@ function roster(ids: readonly string[]): unknown {
   const presetOf = (id: string): object => ({
     id,
     trust: 'system',
-    path: `/presets/${id}/agent.cordis.yml`,
   })
   return {
     defaultId: ids[0],
@@ -68,8 +67,8 @@ async function harness(presets?: readonly string[]) {
       const agent = stubAgent(session)
       ;(agent as { ctx?: Context }).ctx = ctx
       await options.setup?.(ctx, agent)
-      const unregister = ctx.agents.register(agent)
-      return { agent, dispose: () => { unregister(); return Promise.resolve() } }
+      const unregister = await ctx.agents.register(agent)
+      return { agent, dispose: async () => { await unregister() } }
     },
     async resume() {
       throw new Error('test harness has no persisted sessions')

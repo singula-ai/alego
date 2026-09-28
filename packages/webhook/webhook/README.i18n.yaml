@@ -1,6 +1,46 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/webhook/webhook/README.md
-README.md: 62fe02bc131b3542862b5d032ac4cd0d99909304
-README.zh.md: 51c8370aceba8142f521173c3ca3900e4b86165b
+/:
+  en: e4ac1bc2fef159c0
+  zh: a2d724d2cffb6608
+/singula-ai-alego-webhook:
+  en: 538a2f2922ec1cd2
+  zh: eafe12594a4edc38
+/singula-ai-alego-webhook/summary:
+  en: ff848264153a10a5
+  zh: e398a9645481c157
+/singula-ai-alego-webhook/table-of-contents:
+  en: 2c6f2175556251ee
+  zh: 753d216d980e1735
+/singula-ai-alego-webhook/rule-interface:
+  en: d9674188535399ab
+  zh: c52fe9b7ebe8fe79
+/singula-ai-alego-webhook/session-request:
+  en: e4d096efc8633575
+  zh: b1bf7d45fe76c380
+/singula-ai-alego-webhook/composition:
+  en: dfe57f2286e18c35
+  zh: 32cb32f0714b8d9c
+/singula-ai-alego-webhook/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-webhook/model-experience/rule-authored-initial-prompt:
+  en: d9d6f7525ae75c28
+  zh: 981d9ea68b9e884b
+/singula-ai-alego-webhook/model-experience/rule-authored-initial-prompt/what-the-model-sees:
+  en: 44859d5d877a1484
+  zh: 0f6c96ff6435167b
+/singula-ai-alego-webhook/model-experience/rule-authored-initial-prompt/token-effect:
+  en: 13937f95014a6bea
+  zh: c61031459298c4ab
+/singula-ai-alego-webhook/model-experience/rule-authored-initial-prompt/kv-cache-effect:
+  en: 88b78de3ce71698f
+  zh: d13964bad7485d4e
+/singula-ai-alego-webhook/known-limitations-and-deferred-work:
+  en: 49d9bd7c7c327cc0
+  zh: ab94de11bbda1936
+/singula-ai-alego-webhook/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: e88aeb617ffb74ea

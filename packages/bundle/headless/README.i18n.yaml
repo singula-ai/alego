@@ -1,6 +1,67 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/bundle/headless/README.md
-README.md: 3cf24d3624315954c3d93cad037f4ee5d91eae0f
-README.zh.md: 1beca9199497106685d26dbd3f82961df89b9d97
+/:
+  en: bb6fd22fc076cce9
+  zh: 855aa767b7cc8150
+/singula-ai-alego-headless:
+  en: 8fe08dc4ab7fd7f0
+  zh: 105083d9a6e16247
+/singula-ai-alego-headless/summary:
+  en: 27f43a67712612c8
+  zh: 37caa8022b4ded33
+/singula-ai-alego-headless/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-headless/use-this-package:
+  en: 4447012f4c84100d
+  zh: faf579ae9f04c096
+/singula-ai-alego-headless/use-this-package/running-a-one-shot-task:
+  en: 50f5c6fc01e300db
+  zh: fc553f1bedbba730
+/singula-ai-alego-headless/use-this-package/choosing-the-session-identity:
+  en: dbaa2fac63910a4c
+  zh: 4fd5c17815ca444b
+/singula-ai-alego-headless/use-this-package/machine-readable-output:
+  en: 5460fbc5e73e3ac1
+  zh: 74ac306b318f8e5f
+/singula-ai-alego-headless/use-this-package/when-to-use-it:
+  en: 3ebe2c51d966c430
+  zh: 1ed59414d6ae7b96
+/singula-ai-alego-headless/use-this-package/help-and-task-errors:
+  en: 1b37ffe3fa2e142a
+  zh: 6c0f172943f8e90c
+/singula-ai-alego-headless/understand-the-implementation:
+  en: be1b73a6d0ee3902
+  zh: bdba099685d68b27
+/singula-ai-alego-headless/understand-the-implementation/run-flow:
+  en: d92fc1be75cab367
+  zh: 247784b06ec530b4
+/singula-ai-alego-headless/understand-the-implementation/patch-surface-over-base:
+  en: a23157b7b6556d41
+  zh: 69a9d7ddabe1c44e
+/singula-ai-alego-headless/understand-the-implementation/exit-mapping:
+  en: d5bcd77efa375c44
+  zh: 92b88f184d776907
+/singula-ai-alego-headless/understand-the-implementation/source-map:
+  en: f240d0da8d98f73f
+  zh: 590daa55db8b237f
+/singula-ai-alego-headless/understand-the-implementation/invariant-ownership:
+  en: 329f170dec4b2279
+  zh: bb40f8beda5b3a1c
+/singula-ai-alego-headless/further-exploration:
+  en: 079d9ed583630c0e
+  zh: f893c5dd1d1205b4
+/singula-ai-alego-headless/model-experience:
+  en: c5a0991833f64dd7
+  zh: 46f9feb255778f11
+/singula-ai-alego-headless/model-experience/kv-cache-effect:
+  en: 0b0f74b412c7c6d8
+  zh: 6e8f918d0c4bf342
+/singula-ai-alego-headless/known-limitations-and-deferred-work:
+  en: 5052564f52637f0b
+  zh: c53a95dc9a2cf25c
+/singula-ai-alego-headless/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

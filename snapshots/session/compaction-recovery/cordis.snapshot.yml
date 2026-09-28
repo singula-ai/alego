@@ -1,7 +1,7 @@
 # Keyless context-overflow replay composition.
 
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   disabled: true
 
 - id: session-persistence-jsonl

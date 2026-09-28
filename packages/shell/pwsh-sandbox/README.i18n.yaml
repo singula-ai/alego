@@ -1,6 +1,73 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/shell/pwsh-sandbox/README.md
-README.md: 14d3cd514e47e4232084ae2f9b3d95bfbd786b25
-README.zh.md: d57da16d00830c7b94614e769c3344a876f72529
+/:
+  en: d42333572a114759
+  zh: 7de2bc8a30baf573
+/singula-ai-alego-pwsh-sandbox:
+  en: 9737922661e4b598
+  zh: 64c60072246963c5
+/singula-ai-alego-pwsh-sandbox/summary:
+  en: 3469be634ead0bd8
+  zh: dead8c8e8d171387
+/singula-ai-alego-pwsh-sandbox/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-pwsh-sandbox/use-this-package:
+  en: 099da9fde9a1048b
+  zh: c03b5b20476ea7a0
+/singula-ai-alego-pwsh-sandbox/use-this-package/when-to-choose-it:
+  en: 8a43fa466bcf6fc7
+  zh: 28d2381299d1e592
+/singula-ai-alego-pwsh-sandbox/use-this-package/modes-and-file-effects:
+  en: a097100674539423
+  zh: 6c25043f90650113
+/singula-ai-alego-pwsh-sandbox/use-this-package/minimal-configuration:
+  en: 0bfb2090631f0dd8
+  zh: e7fa798ad3fd8550
+/singula-ai-alego-pwsh-sandbox/use-this-package/denials-and-escalation:
+  en: b3deb62991a7388a
+  zh: 2b500e1912f95f28
+/singula-ai-alego-pwsh-sandbox/use-this-package/failures-and-recovery:
+  en: 0d5b6818c3dad919
+  zh: e1d21581d66efb78
+/singula-ai-alego-pwsh-sandbox/understand-the-implementation:
+  en: 05e2abe4a25886fd
+  zh: 3f7f1326dc3c1d3f
+/singula-ai-alego-pwsh-sandbox/understand-the-implementation/design-concept:
+  en: 649d6421cbe88c98
+  zh: 9a59e55d6a3f4d22
+/singula-ai-alego-pwsh-sandbox/understand-the-implementation/source-map:
+  en: 71709a90dada216b
+  zh: 3679af6c61d08487
+/singula-ai-alego-pwsh-sandbox/understand-the-implementation/main-flow:
+  en: 93f0842800cb0e52
+  zh: cfde2946230560ee
+/singula-ai-alego-pwsh-sandbox/understand-the-implementation/invariants:
+  en: 56b6b8d45b5fc463
+  zh: fe1a53e4ad514bc6
+/singula-ai-alego-pwsh-sandbox/further-exploration:
+  en: eacf6856ba7916fd
+  zh: 2adb0a68bc23bffc
+/singula-ai-alego-pwsh-sandbox/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-pwsh-sandbox/model-experience/confinement-works-denial-surfaces-as-command-failure:
+  en: 2348d676f74cc6fc
+  zh: 845691fedce1e35c
+/singula-ai-alego-pwsh-sandbox/model-experience/confinement-works-denial-surfaces-as-command-failure/what-the-model-sees:
+  en: 0faadadd5c52f3d2
+  zh: 28eec841864921d2
+/singula-ai-alego-pwsh-sandbox/model-experience/confinement-works-denial-surfaces-as-command-failure/token-effect:
+  en: 7a9e4f861d7ede15
+  zh: da79315a26df214b
+/singula-ai-alego-pwsh-sandbox/model-experience/confinement-works-denial-surfaces-as-command-failure/kv-cache-effect:
+  en: 796af37d6f6add68
+  zh: 7975ff2a21c1b4f3
+/singula-ai-alego-pwsh-sandbox/known-limitations-and-deferred-work:
+  en: b2010a0333f5a206
+  zh: daa9ec6bcff967b8
+/singula-ai-alego-pwsh-sandbox/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

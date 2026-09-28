@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-23-session-telemetry-otel-revival.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-23-session-telemetry-otel-revival.md
-2026-07-23-session-telemetry-otel-revival.md: 66f8f45912cbd0ede8db8181bf89aff1a0b165d8
-2026-07-23-session-telemetry-otel-revival.zh.md: 799c99209250f5af73b525f27c4c62f2d8d0c651
+/agent-note-session-telemetry-seam-with-mandatory-redaction-and-the-otel-backend:
+  en: da990a6bab373eae
+  zh: 25472dcce425254e
+/agent-note-session-telemetry-seam-with-mandatory-redaction-and-the-otel-backend/problem:
+  en: d3383b495424d118
+  zh: 4e6ffc8ebfa7f741
+/agent-note-session-telemetry-seam-with-mandatory-redaction-and-the-otel-backend/decision:
+  en: bd585893efddd4b4
+  zh: 24e5c7dbb321a3eb
+/agent-note-session-telemetry-seam-with-mandatory-redaction-and-the-otel-backend/alternatives-considered:
+  en: 01838eefca2bc117
+  zh: fc71f5449d095b27
+/agent-note-session-telemetry-seam-with-mandatory-redaction-and-the-otel-backend/consequences:
+  en: 65c2fb593bbdc0b0
+  zh: e06102a368d617b0

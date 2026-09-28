@@ -1,9 +1,16 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { PROTOCOL_VERSION } from '@agentclientprotocol/sdk'
 import { createUserMessage, ToolCallId, type StreamChunk  } from '@singula-ai/alego-llm'
+import type { ContextFormed } from '@singula-ai/alego-llm'
 import { SessionId } from '@singula-ai/alego-session'
 import { defineContentToolFixture } from '@singula-ai/alego-tools'
 import { makeBridgeHarness, textResponse, type BridgeHarness } from './harness.ts'
+
+declare module '@singula-ai/alego-llm' {
+  interface MessageSourceMap {
+    'test': { kind: 'test' } & ContextFormed
+  }
+}
 
 function toolCallResponse(): StreamChunk[] {
   return [
@@ -98,7 +105,7 @@ describe('ACP automation output boundary', () => {
     const { sessionId } = await harness.client.newSession({ cwd: process.cwd(), mcpServers: [] })
     const agent = harness.ctx.agents.get(SessionId(sessionId))!
 
-    agent.followup(createUserMessage({ content: [{ type: 'text', text: 'go' }], source: { kind: 'plugin', plugin: 'test' } }))
+    agent.followup(createUserMessage({ content: [{ type: 'text', text: 'go' }], source: { kind: 'test' } }))
     await agent.whenIdle()
     await vi.waitFor(() => { expect(harness!.updates.at(-1)?.sessionUpdate).toBe('usage_update') })
 
@@ -133,7 +140,7 @@ describe('ACP automation output boundary', () => {
     const { sessionId } = await harness.client.newSession({ cwd: process.cwd(), mcpServers: [] })
     const agent = harness.ctx.agents.get(SessionId(sessionId))!
 
-    agent.followup(createUserMessage({ content: [{ type: 'text', text: 'go' }], source: { kind: 'plugin', plugin: 'test' } }))
+    agent.followup(createUserMessage({ content: [{ type: 'text', text: 'go' }], source: { kind: 'test' } }))
     await agent.whenIdle()
     await vi.waitFor(() => { expect(warn).toHaveBeenCalledWith(expect.stringContaining('output conversion failed')) })
     expect(harness.updates).toEqual([])

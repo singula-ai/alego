@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-reference",
   "description": "Unified Web @file and @session reference source",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -44,23 +44,23 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-api-remotes": "workspace:^",
-    "@singula-ai/alego-api-session-controller": "workspace:^",
-    "@singula-ai/alego-client-connection": "workspace:^",
-    "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-test-runtime": "workspace:^",
-    "@singula-ai/alego-client-ui-input-trigger": "workspace:^",
-    "@singula-ai/alego-client-ui-primitives": "workspace:^",
-    "@singula-ai/alego-client-ui-slots": "workspace:^",
-    "@singula-ai/alego-file-reference": "workspace:^",
-    "@singula-ai/alego-session-reference": "workspace:^",
-    "@singula-ai/alego-typert-protocol": "workspace:^",
-    "@singula-ai/alego-util-workspace-path": "workspace:^",
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-client-ui-sidebar-right": "workspace:^"
+    "@singula-ai/alego-api-remotes": "workspace:*",
+    "@singula-ai/alego-api-session-controller": "workspace:*",
+    "@singula-ai/alego-client-connection": "workspace:*",
+    "@singula-ai/alego-client-locale": "workspace:*",
+    "@singula-ai/alego-client-test-runtime": "workspace:*",
+    "@singula-ai/alego-client-ui-input-trigger": "workspace:*",
+    "@singula-ai/alego-client-ui-primitives": "workspace:*",
+    "@singula-ai/alego-client-ui-slots": "workspace:*",
+    "@singula-ai/alego-file-reference": "workspace:*",
+    "@singula-ai/alego-session-reference": "workspace:*",
+    "@singula-ai/alego-typert-protocol": "workspace:*",
+    "@singula-ai/alego-util-workspace-path": "workspace:*",
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-client-ui-sidebar-right": "workspace:*"
   },
   "files": [
     "lib/index.js",

@@ -1,6 +1,55 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/skill/skill-badge/README.md
-README.md: 758d1e710bbf21d65e693a6cbb6e63065256ec6c
-README.zh.md: 40ed6ad363252fabec00e491efc53a6a45da6431
+/:
+  en: 6ff709df1716f3cd
+  zh: 1b5c00139c67a4c1
+/singula-ai-alego-skill-badge:
+  en: aaa78e7da3acf6d8
+  zh: 19cd4cba8e504b5f
+/singula-ai-alego-skill-badge/summary:
+  en: 73e94e4a52566b6e
+  zh: eacb347e66375f12
+/singula-ai-alego-skill-badge/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-skill-badge/use-this-package:
+  en: 5aca8c297acaeea8
+  zh: 6e4ecfdc910ee1cc
+/singula-ai-alego-skill-badge/use-this-package/when-to-choose-it:
+  en: 44c881b7fd588300
+  zh: 564ed605f1a92ce1
+/singula-ai-alego-skill-badge/use-this-package/enable-the-plugin:
+  en: 37af565c3b59cc16
+  zh: 6137cf0ea31b8159
+/singula-ai-alego-skill-badge/use-this-package/what-the-badge-skill-provides:
+  en: 78742a177b68c828
+  zh: c6887ba07f333a72
+/singula-ai-alego-skill-badge/use-this-package/observable-success-and-failures:
+  en: 1a6a95b6ec19102f
+  zh: 6f677ec5a0b8961f
+/singula-ai-alego-skill-badge/understand-the-implementation:
+  en: 63465b0133f30e85
+  zh: 84bebb7c1fe0ceba
+/singula-ai-alego-skill-badge/understand-the-implementation/design-concept:
+  en: 68ac9a157228b26d
+  zh: c7ae73804891c918
+/singula-ai-alego-skill-badge/understand-the-implementation/source-map:
+  en: 8ea4c6cbafedbebd
+  zh: 496ad4725a786b0a
+/singula-ai-alego-skill-badge/further-exploration:
+  en: 665e6ac851ade78c
+  zh: 547a0658b5d2cf9f
+/singula-ai-alego-skill-badge/model-experience:
+  en: 68f34123eaa6addf
+  zh: 36f8f3799eb76a80
+/singula-ai-alego-skill-badge/model-experience/kv-cache-effect:
+  en: 6a8366520852a607
+  zh: 453ec29827b82bbc
+/singula-ai-alego-skill-badge/known-limitations-and-deferred-work:
+  en: 5b26bd9df813b852
+  zh: aebbbb1466f5b670
+/singula-ai-alego-skill-badge/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

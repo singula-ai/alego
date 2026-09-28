@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-11-node-office-kit.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-11-node-office-kit.md
+/agent-note-node-office-conversion-with-independently-packaged-engines:
+  en: d881de79a215862f
+  zh: 3883120784edf31e
+/agent-note-node-office-conversion-with-independently-packaged-engines/problem:
+  en: ac8ace90fa115f0d
+  zh: 18b9977031cbadeb
+/agent-note-node-office-conversion-with-independently-packaged-engines/decision:
+  en: e99fb97ba72b93a1
+  zh: 5869adf5588f604c
+/agent-note-node-office-conversion-with-independently-packaged-engines/alternatives-considered:
+  en: 70315a46124cbde7
+  zh: ee258ed0ef7effb0
+/agent-note-node-office-conversion-with-independently-packaged-engines/consequences:
+  en: bd2724e6d45727ed
+  zh: 22c8d10c84bd227f

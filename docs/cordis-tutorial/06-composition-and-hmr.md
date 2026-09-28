@@ -22,7 +22,7 @@ Groups nest a sub-list of entries that load and unload as one unit, and `isolate
 
 ## Hot module replacement
 
-Because unloading releases effects ([chapter 2](02-lifecycle-and-effects.md)) and loading follows dependencies ([chapter 3](03-services.md)), HMR can replace a running plugin by unloading and loading it. The `@singula-ai/cordis-plugin-hmr` plugin watches your files and does exactly that on save.
+Because unloading releases effects ([chapter 2](02-lifecycle-and-effects.md)) and loading follows dependencies ([chapter 3](03-services.md)), HMR can replace a running plugin by unloading and loading it. The `@singula-ai/alego-hmr` plugin watches your files and does exactly that on save.
 
 In `tmp/cordis-tutorial`, write `cordis.yml`:
 
@@ -32,7 +32,7 @@ In `tmp/cordis-tutorial`, write `cordis.yml`:
 - id: timer
   name: '@singula-ai/cordis-plugin-timer'
 - id: hmr
-  name: '@singula-ai/cordis-plugin-hmr'
+  name: '@singula-ai/alego-hmr'
   config:
     root: ['.']
 - id: hello

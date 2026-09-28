@@ -45,7 +45,7 @@ kind: "package-reference"
 | 字段 | 默认值 | 含义 |
 |---|---|---|
 | `mode` | `read-only` | 会话起始的部署默认模式，加载时验证 |
-| `workspaceRoot` | `process.cwd()` | 无 agent 调用或没有 cwd 的会话在 `workspace-write` 下可写入的回退根目录；普通 agent 调用改用会话的不可变 cwd |
+| `workspaceRoot` | `process.cwd()` | 无 agent 调用或没有 cwd 的会话所用的绝对回退根目录；相对值在加载时拒绝。普通 agent 调用使用会话的不可变 cwd |
 
 生成的[配置目录](../../../docs/config-catalog.zh.md#singula-aialego-sandbox-policy)是每个受支持字段及其 JSDoc 的穷尽式真源。
 
@@ -69,7 +69,7 @@ kind: "package-reference"
 
 ### 解析优先级
 
-`resolve({ session, mode })` 返回一份完整的逐调用策略：已批准的显式模式优先于会话最后一条 `sandbox/mode` 事件，后者又优先于部署默认值。会话的不可变 `cwd` 先按文件系统语义规范化，再成为工作区根目录，因此 `symlink/..` 与进程工作目录解析一致；否则使用配置的回退值。
+`resolve({ session, mode })` 返回一份完整的逐调用策略：已批准的显式模式优先于会话最后一条 `sandbox/mode` 事件，后者又优先于部署默认值。会话的不可变 `cwd` 提供工作区根目录；否则使用配置的回退值。执行环境中的绝对路径写法保持不变。执行限制的提供方在自己的文件系统上规范化根目录，因此远端 `symlink/..` 路径绝不会在 Harness 主机上解析。
 
 ### 逐会话存储
 
@@ -77,7 +77,7 @@ kind: "package-reference"
 
 ### 模型可见文本
 
-`sandbox:policy` 贡献说明该模式与具体能力无关的文件操作约定，以及 `workspace-write` 下规范化的会话工作区。它不枚举已挂载能力；工具插件保留特定于操作的拒绝与升权引导，批准策略单独贡献给同一份快照，计划引导仍由 `alego-plan-mode` 的系统段落管理。可选的 `./invariant` 配套组件会拒绝值超出封闭模式词汇的伪造持久 `sandbox/mode` 事件。
+`sandbox:policy` 贡献说明该模式与具体能力无关的文件操作约定，以及 `workspace-write` 下已记录的会话工作区。它不枚举已挂载能力；工具插件保留特定于操作的拒绝与升权引导，批准策略单独贡献给同一份快照，计划引导仍由 `alego-plan-mode` 的系统段落管理。可选的 `./invariant` 配套组件会拒绝值超出封闭模式词汇的伪造持久 `sandbox/mode` 事件。
 
 ### 源码地图
 
@@ -131,7 +131,7 @@ Current ALEGO file policy: danger-full-access. The ALEGO file sandbox does not r
 
 #### Token 影响
 
-首次请求和有效策略每次变化时增加一条简洁的持久上下文消息；未变化的请求不增加内容。`workspace-write` 只携带规范化的会话工作区路径；平台特定的临时路径会以摘要表述，不会加入依赖主机的字节。
+首次请求和有效策略每次变化时增加一条简洁的持久上下文消息；未变化的请求不增加内容。`workspace-write` 只携带已记录的会话工作区路径；平台特定的临时路径会以摘要表述，不会加入依赖主机的字节。
 
 #### KV Cache 影响
 

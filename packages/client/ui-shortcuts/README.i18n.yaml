@@ -1,0 +1,37 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/client/ui-shortcuts/README.md
+/:
+  en: 425afaf83c04db08
+  zh: d9e6db1541ba0911
+/singula-ai-alego-client-ui-shortcuts:
+  en: 0a2406ddc7034ba6
+  zh: 890fc845b3a0c2bb
+/singula-ai-alego-client-ui-shortcuts/summary:
+  en: 17b5fa1a23fa2756
+  zh: ec6223b8d2a090f0
+/singula-ai-alego-client-ui-shortcuts/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 0cd57b7b8d8c9b59
+/singula-ai-alego-client-ui-shortcuts/use-this-package:
+  en: 0ffacea0265f49f6
+  zh: f5a9729f543425ee
+/singula-ai-alego-client-ui-shortcuts/understand-the-implementation:
+  en: f56f2610e7258825
+  zh: 249d7cdd55c57166
+/singula-ai-alego-client-ui-shortcuts/further-exploration:
+  en: ccb7a94d5272d2d1
+  zh: c280f770e1da0c73
+/singula-ai-alego-client-ui-shortcuts/model-experience:
+  en: 3120df665299c634
+  zh: e2dc75ed76d271bc
+/singula-ai-alego-client-ui-shortcuts/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: a0e9f8d52b4b62ee
+/singula-ai-alego-client-ui-shortcuts/known-limitations-and-deferred-work:
+  en: b33bc7b11a6965bc
+  zh: eb0ae6067711dd62
+/singula-ai-alego-client-ui-shortcuts/known-limitations-and-deferred-work/dev-note:
+  en: 47c5f082ab7e39eb
+  zh: 7405a26672e600e3

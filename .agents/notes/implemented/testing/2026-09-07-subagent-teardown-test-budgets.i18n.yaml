@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-07-subagent-teardown-test-budgets.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/testing/2026-09-07-subagent-teardown-test-budgets.md
-2026-09-07-subagent-teardown-test-budgets.md: a3f85025c663df0ca0b33e5207fa59a672d57ec3
-2026-09-07-subagent-teardown-test-budgets.zh.md: 06549014cf2886a6b9497d1d8335d445b615cf3b
+/agent-note-subagent-teardown-tests-inherit-their-execution-lane-budgets:
+  en: f7a5be4d342646fe
+  zh: ecb9cd0fbf4126f9
+/agent-note-subagent-teardown-tests-inherit-their-execution-lane-budgets/problem:
+  en: 5853599207f6b3bb
+  zh: d58b5e8e19d93a4f
+/agent-note-subagent-teardown-tests-inherit-their-execution-lane-budgets/decision:
+  en: f6371704fcdf3369
+  zh: 7c1e802fb6b990b8
+/agent-note-subagent-teardown-tests-inherit-their-execution-lane-budgets/alternatives-considered:
+  en: 3ad30b2574818a61
+  zh: d323adddd5065ae4
+/agent-note-subagent-teardown-tests-inherit-their-execution-lane-budgets/consequences:
+  en: 20d060fe30ada016
+  zh: c73937bffbb251c0

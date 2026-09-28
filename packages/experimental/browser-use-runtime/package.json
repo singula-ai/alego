@@ -1,0 +1,66 @@
+{
+  "name": "@singula-ai/alego-experimental-browser-use-runtime",
+  "description": "Session-owned browser resource lifecycles and MCP integration for experimental providers",
+  "version": "0.1.7-rc.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/experimental/browser-use-runtime"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json",
+    "./mcp": {
+      "types": "./lib/types/mcp.d.ts",
+      "default": "./lib/types/mcp.js"
+    }
+  },
+  "files": [
+    "lib/index.js",
+    "lib/types/**/*.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-browser-use": "workspace:*",
+    "@singula-ai/alego-mcp-client": "workspace:*",
+    "@singula-ai/alego-scope": "workspace:*",
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/alego-system-prompt": "workspace:*"
+  },
+  "dependencies": {
+    "@singula-ai/schemastery": "workspace:~"
+  },
+  "devDependencies": {
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-browser-use": "workspace:*",
+    "@singula-ai/alego-mcp-client": "workspace:*",
+    "@singula-ai/alego-scope": "workspace:*",
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/alego-agent-loop-testkit": "workspace:*",
+    "@singula-ai/alego-agent-loop": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*",
+    "@singula-ai/alego-session-projection": "workspace:*",
+    "@singula-ai/alego-system-prompt": "workspace:*",
+    "@singula-ai/alego-mcp-resources": "workspace:*",
+    "@singula-ai/alego-ptc-runtime": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/cordis-plugin-include": "workspace:~",
+    "@singula-ai/alego-attachment-local": "workspace:*",
+    "@singula-ai/alego-session-persistence-jsonl": "workspace:*"
+  }
+}

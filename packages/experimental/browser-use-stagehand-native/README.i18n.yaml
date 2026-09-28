@@ -1,0 +1,67 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/experimental/browser-use-stagehand-native/README.md
+/:
+  en: 3f9127c3981e9453
+  zh: b4fcc1468319b9b2
+/singula-ai-alego-experimental-browser-use-stagehand-native:
+  en: 8923697a3ed06f46
+  zh: 663eeed0fe73595f
+/singula-ai-alego-experimental-browser-use-stagehand-native/summary:
+  en: 05c2fd0d2d2856a0
+  zh: fd90ef7fce885498
+/singula-ai-alego-experimental-browser-use-stagehand-native/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: a949126695843224
+/singula-ai-alego-experimental-browser-use-stagehand-native/use-this-package:
+  en: de47f71ab56fd0ed
+  zh: fdc58f273a7dba3d
+/singula-ai-alego-experimental-browser-use-stagehand-native/use-this-package/minimal-configuration:
+  en: 1554d55fd5be9735
+  zh: d39e7dd0b8ff1b7d
+/singula-ai-alego-experimental-browser-use-stagehand-native/use-this-package/verification:
+  en: 7da546dae85dda82
+  zh: ff553e8b2a048e5c
+/singula-ai-alego-experimental-browser-use-stagehand-native/understand-the-implementation:
+  en: ca1d4ca107672d19
+  zh: 506940954ce0b269
+/singula-ai-alego-experimental-browser-use-stagehand-native/further-exploration:
+  en: 3fef249da432e4fb
+  zh: c725e836bffe16f5
+/singula-ai-alego-experimental-browser-use-stagehand-native/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-experimental-browser-use-stagehand-native/model-experience/browser-guidance:
+  en: db27706a7478c425
+  zh: d36d746cf60e56c4
+/singula-ai-alego-experimental-browser-use-stagehand-native/model-experience/browser-guidance/what-the-model-sees:
+  en: c76eeb849a7dcc9d
+  zh: 466f6573ee758f66
+/singula-ai-alego-experimental-browser-use-stagehand-native/model-experience/browser-guidance/what-the-model-sees/browser-guidance-text:
+  en: d618f1a8fcd2f9b4
+  zh: a2c8620646573b9f
+/singula-ai-alego-experimental-browser-use-stagehand-native/model-experience/browser-guidance/token-effect:
+  en: 54fb52d906a0ed1d
+  zh: 0c92cb1daf790ce9
+/singula-ai-alego-experimental-browser-use-stagehand-native/model-experience/browser-guidance/kv-cache-effect:
+  en: 8b85590b83e40fc0
+  zh: 9061599a76700e66
+/singula-ai-alego-experimental-browser-use-stagehand-native/model-experience/native-browser-tools-and-results:
+  en: 0295a32030d24cd0
+  zh: 65ef3d8920d811c2
+/singula-ai-alego-experimental-browser-use-stagehand-native/model-experience/native-browser-tools-and-results/what-the-model-sees:
+  en: e780a128d4a265f7
+  zh: 7c1e475846cfc718
+/singula-ai-alego-experimental-browser-use-stagehand-native/model-experience/native-browser-tools-and-results/token-effect:
+  en: 180b8ee5159a492b
+  zh: 10b061c5423e24aa
+/singula-ai-alego-experimental-browser-use-stagehand-native/model-experience/native-browser-tools-and-results/kv-cache-effect:
+  en: 2bd36c8da753a1e5
+  zh: 172e2151f7c7b0cd
+/singula-ai-alego-experimental-browser-use-stagehand-native/known-limitations-and-deferred-work:
+  en: 6bb77e1e2197bc54
+  zh: 5fd5ec0b3d464ebf
+/singula-ai-alego-experimental-browser-use-stagehand-native/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: e88aeb617ffb74ea

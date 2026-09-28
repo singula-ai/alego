@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write python/sdk-runtime/README.md
-README.md: edaf6d2354e5f1ee3b9d9907367714019cd0f73c
-README.zh.md: f6de7751b6749595a95f45dab9919d1c63bc5547
+/alego-runtime-bin:
+  en: 20216df2b15873e0
+  zh: 185da50ef49abcce
+/alego-runtime-bin/installed-commands-and-artifacts:
+  en: 0d1406ead6161214
+  zh: 937283a4ac374823
+/alego-runtime-bin/python-module-api:
+  en: 13458b22c9d7dd77
+  zh: 82bc585218acfd3d
+/alego-runtime-bin/packaged-profile-resolution:
+  en: 06415c094c88a8c3
+  zh: 972b482fe752c06b
+/alego-runtime-bin/build-and-distribution:
+  en: f67c8beb778ccf3d
+  zh: 9441a071668f14f0

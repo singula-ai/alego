@@ -1,6 +1,22 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-06-node-compatibility-selfhosted.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-09-06-node-compatibility-selfhosted.md
-2026-09-06-node-compatibility-selfhosted.md: 14544c593e760854d5045c4600c6deca704bf99d
-2026-09-06-node-compatibility-selfhosted.zh.md: e183dd8959f1e456f7a7c09c6a9cd5e4ac8ab711
+/agent-note-isolated-node-compatibility-jobs-on-self-hosted-linux:
+  en: 8f1b819a5dbfec23
+  zh: ef751bade89d2288
+/agent-note-isolated-node-compatibility-jobs-on-self-hosted-linux/problem:
+  en: 6bcedb8e3f0dce21
+  zh: 83e88ed593259292
+/agent-note-isolated-node-compatibility-jobs-on-self-hosted-linux/decision:
+  en: c7478bd42965f533
+  zh: 92f5c2ac16dbb48a
+/agent-note-isolated-node-compatibility-jobs-on-self-hosted-linux/alternatives-considered:
+  en: 93217ca46c2cefb8
+  zh: 77a167c69f59111c
+/agent-note-isolated-node-compatibility-jobs-on-self-hosted-linux/consequences:
+  en: 116d255b8d1b846c
+  zh: 931754a68e4f75c6
+/agent-note-isolated-node-compatibility-jobs-on-self-hosted-linux/verification:
+  en: d0b1f1431fae737b
+  zh: 6cf4f4d654a9525d

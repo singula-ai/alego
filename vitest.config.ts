@@ -31,8 +31,10 @@ const windowsUnsupportedPackages = process.platform === 'win32'
       'packages/shell/tool-bash',
       'packages/hooks/*',
       'packages/terminal/terminal-bash',
-      'packages/experimental/code-runtime-python',
+      'packages/experimental/ptc-runtime-python',
       'packages/sandbox/sandbox-local',
+      // OpenSSH multiplexing and Unix-socket helper streams require POSIX endpoints.
+      'packages/ssh/*',
     ]
   : []
 
@@ -120,8 +122,9 @@ const pwshCoverageExclusions = spawnSync(resolvePwshPath(), ['-NoLogo', '-NoProf
 
 const testIncludes = [
   'packages/*/*/tests/**/*.spec.{ts,tsx}',
-  'apps/*/tests/**/*.spec.ts',
+  'apps/*/tests/**/*.spec.{ts,tsx}',
   'scripts/**/*.spec.ts',
+  'website/tests/**/*.spec.ts',
 ]
 
 // The instrumented coverage gate sets this env; the exempt heavy suites then
@@ -152,13 +155,13 @@ const processBoundTests = [
   'packages/context/time-context/tests/time-context.spec.ts',
   'packages/llm/llm-pi-ai/tests/adapter.spec.ts',
   'packages/boot/app-boot/tests/app-boot.spec.ts',
-  'packages/workflow/workflow-worker-thread/tests/session.spec.ts',
+  'packages/workflow/workflow-ptc/tests/workflow-ptc.spec.ts',
 ]
 
 export default defineConfig({
   plugins: [pathsPlugin(), standardDecoratorPlugin()],
   test: {
-    setupFiles: ['./scripts/test-proxy-environment.ts', './scripts/test-invariants.ts'],
+    setupFiles: ['./scripts/test-proxy-environment.ts', './scripts/test-invariants.ts', './scripts/test-dom-environment.ts'],
     // .tsx: client component specs (jsdom via per-file @vitest-environment pragma).
     include: testIncludes,
     exclude: platformUnsupportedTests,
@@ -174,7 +177,7 @@ export default defineConfig({
           // MaybeLocal in cjs_lexer::Parse) from worker threads on macOS,
           // Linux, and Windows. Forked workers avoid that shared thread path.
           pool: 'forks',
-          setupFiles: ['./scripts/test-proxy-environment.ts', './scripts/test-invariants.ts'],
+          setupFiles: ['./scripts/test-proxy-environment.ts', './scripts/test-invariants.ts', './scripts/test-dom-environment.ts'],
           include: testIncludes,
           exclude: [
             ...platformUnsupportedTests,
@@ -189,7 +192,7 @@ export default defineConfig({
           name: 'process-bound',
           execArgv: vitestExecArgv,
           pool: 'forks',
-          setupFiles: ['./scripts/test-proxy-environment.ts', './scripts/test-invariants.ts'],
+          setupFiles: ['./scripts/test-proxy-environment.ts', './scripts/test-invariants.ts', './scripts/test-dom-environment.ts'],
           include: processBoundTests,
           exclude: [
             ...platformUnsupportedTests,
@@ -210,6 +213,8 @@ export default defineConfig({
         'packages/*/*/src/types.ts',
         'packages/*/*/src/bin.ts',
         'packages/*/*/src/worker.ts',
+        // The built Node entry invokes the independently covered process bootstrap through fd 7.
+        'packages/ptc-runtime/ptc-runtime-node/src/process-entry.ts',
         // Dynamic Host/Client composition is covered by its focused lifecycle
         // tests and assembled application checks rather than per-file coverage.
         'packages/self-modification/*/src/**/*.{ts,tsx}',
@@ -219,6 +224,9 @@ export default defineConfig({
         // harness the jsdom lane doesn't cover yet. TODO(gui): cover and
         // remove as the client test lane matures.
         'packages/client/ui-trajectory/src/*',
+        // Electron guest integration retains its unit specs; per-file coverage
+        // is deferred until a native Electron harness covers guest behavior.
+        'packages/client/ui-sidebar-browser/src/client/electron/**',
         // Trajectory's compact Markdown projection retains deferred branch coverage.
         'packages/client/ui-primitives/src/markdown/plain-text.ts',
         'packages/client/ui-user-questions/src/client/QuestionComposer.tsx',
@@ -243,7 +251,6 @@ export default defineConfig({
         'packages/client/ui-chat/src/client/conversation-nodes/*',
         'packages/client/ui-chat/src/client/details/*',
         'packages/client/ui-chat/src/client/model/*',
-        'packages/client/ui-chat/src/client/contract/context-provenance.ts',
         'packages/client/ui-chat/src/client/contract/snapshot.ts',
         'packages/client/ui-chat/src/client/historical-images.ts',
         'packages/client/ui-primitives/src/DisclosureRow.tsx',
@@ -280,8 +287,6 @@ export default defineConfig({
         'packages/experimental/inspector/src/shared/bridge/messages/runtime/{command-codec,console-frames,frames,value-codec}.ts',
         'packages/experimental/inspector/src/shared/bridge/messages/sources/{codec,frames}.ts',
         'packages/experimental/inspector/src/worker/inspection/{cordis-store,query-router,realm-store}.ts',
-        'packages/client/modules/src/client/system.ts',
-        'packages/client/hmr/src/client/index.ts',
         // Web config-tree boot round: the new host-side web-transport halves
         // whose remaining branches need real-composition/process harnesses.
         // TODO(gui): cover and remove with the client test lane above.
@@ -300,9 +305,11 @@ export default defineConfig({
         // The Team browser entry binds its source-covered mount lifecycle to
         // the generated Team Remote contribution, which likewise exists only in lib.
         'packages/experimental/client-ui-agent-team/src/client/index.ts',
+        // The speech entry also imports generated Remote definitions; voice-input.e2e.ts
+        // exercises the built entry, while source tests cover mountVoiceInput.
+        'packages/experimental/client-ui-voice-input/src/client/index.ts',
         // Slash/command/input round: per-file gaps deferred with the same
         // client-lane debt. TODO(gui): cover and remove with the lane above.
-        'packages/client/connection/src/client/fixture.ts',
         'packages/client/ui-commands/src/index.ts',
         'packages/client/ui-skill/src/index.ts',
         'packages/client/ui-input-trigger/src/index.ts',

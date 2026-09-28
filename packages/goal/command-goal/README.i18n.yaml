@@ -1,6 +1,64 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/goal/command-goal/README.md
-README.md: 448ca7e781810c69a597764e3a21fbb5e0033a52
-README.zh.md: b66046e6a1dc9de44586047668e862782218551c
+/:
+  en: 47b9efbd26fb01af
+  zh: a9d083654a3e2cab
+/singula-ai-alego-command-goal:
+  en: 52d596d4accd99a8
+  zh: 25795d0189ece9b0
+/singula-ai-alego-command-goal/summary:
+  en: ac7cfc9316b21b04
+  zh: 924586149147d66b
+/singula-ai-alego-command-goal/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-command-goal/use-this-package:
+  en: 8a8bf42be1a6503c
+  zh: 870acc63f1b7f6cc
+/singula-ai-alego-command-goal/use-this-package/command-reference:
+  en: 98ca4ad981960f99
+  zh: 22d6ecbadbb3a7e1
+/singula-ai-alego-command-goal/use-this-package/input-grammar:
+  en: 38a273cb14017e13
+  zh: d4b7b501bcd9589b
+/singula-ai-alego-command-goal/use-this-package/attachments:
+  en: e61cd7437ed4aa73
+  zh: 552c36c3b8d16007
+/singula-ai-alego-command-goal/use-this-package/compose-it:
+  en: a32a68102e05d1dd
+  zh: ad6638cf6650846f
+/singula-ai-alego-command-goal/understand-the-implementation:
+  en: 7fba8a13f8452dc1
+  zh: bbaba056cda78ec9
+/singula-ai-alego-command-goal/understand-the-implementation/design:
+  en: ab637815b21bf065
+  zh: 56eb4ae2ad368994
+/singula-ai-alego-command-goal/understand-the-implementation/source-map:
+  en: 08050fc601600dc9
+  zh: 1a42ebf4f32334b6
+/singula-ai-alego-command-goal/further-exploration:
+  en: e4e362cb9e44d521
+  zh: b5e4f6eb4142e473
+/singula-ai-alego-command-goal/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-command-goal/model-experience/human-goal-control:
+  en: b542d90272a9b64e
+  zh: 9f8bfb4ca7784428
+/singula-ai-alego-command-goal/model-experience/human-goal-control/what-the-model-sees:
+  en: a4c7a3d502c58794
+  zh: a47ab70d7aa4f0a4
+/singula-ai-alego-command-goal/model-experience/human-goal-control/token-effect:
+  en: 1c48e9c98cee51b0
+  zh: 63b2f981bdaf6ca4
+/singula-ai-alego-command-goal/model-experience/human-goal-control/kv-cache-effect:
+  en: 15426cc075dc65d7
+  zh: 496e488693a2bacb
+/singula-ai-alego-command-goal/known-limitations-and-deferred-work:
+  en: df596a8934dba006
+  zh: 45b8a32fc0433fe0
+/singula-ai-alego-command-goal/known-limitations-and-deferred-work/dev-note:
+  en: c7a829d5a6e780fd
+  zh: 041dc046a223a711

@@ -1,261 +1,240 @@
-import { mkdirSync, mkdtempSync, realpathSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, realpathSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { DesktopHostProcess } from '../src/host-process.ts'
+import { DesktopHostFatalError, DesktopHostProcess, DesktopHostUncleanExitError, QUIT_INSPECTION_DEADLINE_MS } from '../src/host-process.ts'
 
 const roots: string[] = []
+const hosts: DesktopHostProcess[] = []
 
-const HOST_WIRE = `
-import { closeSync, createReadStream, createWriteStream } from 'node:fs'
-const requestPipe = createReadStream('', { fd: 3, autoClose: false })
-const responsePipe = createWriteStream('', { fd: 4, autoClose: false })
-const MAGIC = 0x44534833
-const HEADER = 13
-function responseFrame(type, streamId, payload = Buffer.alloc(0)) {
-  const frame = Buffer.allocUnsafe(HEADER + payload.length)
-  frame.writeUInt32BE(MAGIC, 0)
-  frame.writeUInt8(type, 4)
-  frame.writeUInt32BE(streamId, 5)
-  frame.writeUInt32BE(payload.length, 9)
-  payload.copy(frame, HEADER)
-  return frame
-}
-function responseStart(streamId, options = {}) {
-  const value = { status: options.status ?? 200, headers: options.headers ?? [], hasBody: options.hasBody ?? true }
-  responsePipe.write(responseFrame(1, streamId, Buffer.from(JSON.stringify(value))))
-}
-function responseData(streamId, data) {
-  responsePipe.write(responseFrame(2, streamId, Buffer.from(data)))
-}
-function responseEnd(streamId) { responsePipe.write(responseFrame(3, streamId)) }
-function responseError(streamId, message) {
-  responsePipe.write(responseFrame(4, streamId, Buffer.from(JSON.stringify({ message }))))
-}
-let requestBuffer = Buffer.alloc(0)
-requestPipe.on('data', chunk => {
-  requestBuffer = requestBuffer.length === 0 ? chunk : Buffer.concat([requestBuffer, chunk])
-  while (requestBuffer.length >= HEADER) {
-    if (requestBuffer.readUInt32BE(0) !== MAGIC) throw new Error('invalid request marker')
-    const type = requestBuffer.readUInt8(4)
-    const streamId = requestBuffer.readUInt32BE(5)
-    const length = requestBuffer.readUInt32BE(9)
-    if (requestBuffer.length < HEADER + length) return
-    const payload = requestBuffer.subarray(HEADER, HEADER + length)
-    requestBuffer = requestBuffer.subarray(HEADER + length)
-    onRequestFrame({ type, streamId, payload })
+const HTTP_HOST = `
+import { createServer } from 'node:http'
+import { writeFileSync } from 'node:fs'
+import { join } from 'node:path'
+const server = createServer((request, response) => {
+  if (request.url === '/fatal') {
+    process.send({ type: 'fatal', message: 'plugin unavailable' })
+    response.end('reported')
+    return
   }
+  if (request.url === '/crash') {
+    response.end('exiting', () => {
+      process.stderr.write('plugin crashed', () => process.exit(7))
+    })
+    return
+  }
+  response.setHeader('content-type', 'application/json')
+  response.end(JSON.stringify({runtime: process.argv[2], profile: process.argv[3], cwd: process.cwd(), nodePath: process.env.NODE_PATH, registry: process.env.NPM_CONFIG_REGISTRY, nodeOptions: process.env.NODE_OPTIONS, runAsNode: process.env.ELECTRON_RUN_AS_NODE, internals: process.execArgv.includes('--expose-internals')}))
+})
+server.listen(0, '127.0.0.1', () => {
+  process.send({ type: 'ready', url: 'http://127.0.0.1:' + server.address().port + '/?token=fixture' })
 })
 process.on('message', message => {
-  if (message.type === 'shutdown') {
-    requestPipe.destroy()
-    closeSync(3)
-    responsePipe.end(() => {
-      responsePipe.destroy()
-      closeSync(4)
-      process.disconnect()
-      process.exitCode = 0
-    })
+  if (message.type === 'update-tasks') {
+    process.send({ type: 'update-tasks', requestId: message.requestId, active: message.action === 'lock' })
+    return
   }
+  if (message.type === 'quit-inspection') {
+    // Ids divisible by three never answer; the others report scheduled work for odd ids.
+    if (message.requestId % 3 === 0) return
+    process.send({ type: 'quit-inspection', requestId: message.requestId, activeTasks: false, scheduledTasks: message.requestId % 2 === 1 })
+    return
+  }
+  if (message.type !== 'shutdown') return
+  server.close(() => {
+    writeFileSync(join(process.argv[3], 'stopped'), '')
+    process.send({ type: 'shutdown-complete' }, () => process.disconnect())
+  })
+  server.closeAllConnections()
 })
 `
 
-function projectWithHost(source: string): string {
+function projectWithHost(source = HTTP_HOST): string {
   const project = mkdtempSync(join(tmpdir(), 'alego-desktop-host-test-'))
   roots.push(project)
   const packageRoot = join(project, 'node_modules', '@singula-ai', 'alego-desktop-host')
   mkdirSync(join(packageRoot, 'lib'), { recursive: true })
   writeFileSync(join(packageRoot, 'package.json'), '{"name":"@singula-ai/alego-desktop-host","type":"module"}\n')
-  writeFileSync(join(packageRoot, 'lib', 'index.js'), `${HOST_WIRE}\n${source}`)
+  writeFileSync(join(packageRoot, 'lib', 'index.js'), source)
   return project
 }
 
-afterEach(() => {
+function hostProcess(
+  runtime: string, profile = runtime, onFailure?: (error: Error) => void, environment = process.env,
+): DesktopHostProcess {
+  const host = new DesktopHostProcess(process.execPath, runtime, profile, undefined, environment, onFailure)
+  hosts.push(host)
+  return host
+}
+
+afterEach(async () => {
+  await Promise.all(hosts.splice(0).map(host => host.stop()))
   for (const root of roots.splice(0)) rmSync(root, { recursive: true, force: true })
 })
 
 describe('desktop host process', () => {
-  it('reports a fatal event after readiness once and stops the child', async () => {
-    const runtime = projectWithHost(`
-process.send({ type: 'ready', protocolVersion: 3, alegoVersion: '1.0.0' })
-function onRequestFrame(frame) {
-  if (frame.type === 1) process.send({ type: 'fatal', message: 'plugin unavailable' })
-}
-`)
+  it('correlates task inspections and admission changes over private IPC', async () => {
+    const host = hostProcess(projectWithHost())
+    await expect(host.updateTasks('inspect')).rejects.toThrow('Host is unavailable')
+    await host.start()
+    expect(await Promise.all([host.updateTasks('inspect'), host.updateTasks('lock'), host.updateTasks('unlock')]))
+      .toEqual([false, true, false])
+    await host.stop(true)
+    await expect(host.updateTasks('inspect')).rejects.toThrow('Host is unavailable')
+  })
+
+  it('correlates quit inspections with task requests and fails an unanswered one at its own deadline', async () => {
+    const host = hostProcess(projectWithHost())
+    await expect(host.inspectQuit()).rejects.toThrow('desktop quit: Host is unavailable')
+    await host.start()
+    // Request ids 1 and 2: the fixture answers by id parity, so both control kinds share one id space.
+    expect(await Promise.all([host.inspectQuit(), host.updateTasks('inspect')]))
+      .toEqual([{ activeTasks: false, scheduledTasks: true }, false])
+    const started = Date.now()
+    await expect(host.inspectQuit()).rejects.toThrow('desktop quit: inspection timed out')
+    expect(Date.now() - started).toBeGreaterThanOrEqual(QUIT_INSPECTION_DEADLINE_MS - 50)
+    expect(await host.inspectQuit()).toEqual({ activeTasks: false, scheduledTasks: false })
+  }, 15_000)
+
+  it.each([
+    'process.exit(17)',
+    'process.exit(0)',
+  ])('refuses installation when exit lacks successful teardown acknowledgement: %s', async (exit) => {
+    const host = hostProcess(projectWithHost(`
+      process.send({ type: 'ready', url: 'http://127.0.0.1:3080/' })
+      process.on('message', message => {
+        if (message.type === 'shutdown') process.stderr.write('token=fixture-secret', () => { ${exit} })
+      })
+    `))
+    await host.start()
+    const error = await host.stop(true).then(() => undefined, (error: unknown) => error)
+    expect(error).toBeInstanceOf(DesktopHostUncleanExitError)
+    expect(String(error)).toContain('shutdown acknowledged false')
+    expect(String(error)).toContain('graceful deadline exceeded false')
+    expect(String(error)).not.toContain('fixture-secret')
+    await expect(host.stop()).resolves.toBeUndefined()
+  })
+
+  it('returns the Web authentication URL and waits for graceful shutdown', async () => {
+    const runtime = projectWithHost()
     const failure = vi.fn()
-    const host = new DesktopHostProcess(process.execPath, runtime, runtime, undefined, process.env, failure)
-    try {
-      await host.start()
-      await expect(host.fetch(new Request('alego-app://app/'))).rejects.toThrow('plugin unavailable')
-      await host.stop()
-      expect(failure).toHaveBeenCalledTimes(1)
-      expect(failure).toHaveBeenCalledWith(new Error('plugin unavailable'))
-    } finally { await host.stop() }
+    const host = hostProcess(runtime, runtime, failure)
+    const ready = await host.start()
+    expect(new URL(ready.url).searchParams.get('token')).toBe('fixture')
+    expect(await host.start()).toEqual(ready)
+    expect((await fetch(ready.url)).status).toBe(200)
+    await host.stop()
+    expect(existsSync(join(runtime, 'stopped'))).toBe(true)
+    await expect(fetch(ready.url)).rejects.toThrow()
+    expect(failure).not.toHaveBeenCalled()
+  })
+
+  it('passes external dependencies and package-manager paths to the Host', async () => {
+    const runtime = projectWithHost(HTTP_HOST.replace('runtime: process.argv[2]',
+      'pnpm: process.argv[5], nodeBin: process.argv[6], primaryRuntime: process.argv[4], runtime: process.argv[2]'))
+    const primaryRuntime = join(runtime, 'external-primary-runtime')
+    const host = new DesktopHostProcess(process.execPath, runtime, runtime, undefined, process.env,
+      undefined, primaryRuntime, { pnpm: join(runtime, 'pnpm.mjs'), nodeBin: join(runtime, 'bin') })
+    hosts.push(host)
+    const { url } = await host.start()
+    expect(await (await fetch(url)).json()).toMatchObject({ primaryRuntime, pnpm: join(runtime, 'pnpm.mjs'), nodeBin: join(runtime, 'bin') })
+  })
+
+  it('reports a fatal event after readiness once', async () => {
+    const runtime = projectWithHost()
+    const failure = vi.fn()
+    const host = hostProcess(runtime, runtime, failure)
+    const { url } = await host.start()
+    await fetch(new URL('/fatal', url))
+    await expect.poll(() => failure.mock.calls.length).toBe(1)
+    await host.stop()
+    expect(failure).toHaveBeenCalledTimes(1)
+    expect(failure).toHaveBeenCalledWith(new Error('plugin unavailable'))
+  })
+
+  it('reports a child crash after readiness with its stderr diagnostic', async () => {
+    const runtime = projectWithHost()
+    const failure = vi.fn()
+    const host = hostProcess(runtime, runtime, failure)
+    const { url } = await host.start()
+    await fetch(new URL('/crash', url))
+    await expect.poll(() => failure.mock.calls.length).toBe(1)
+    expect(failure).toHaveBeenCalledWith(new Error('alego desktop host exited with 7: plugin crashed'))
+  })
+
+  it('retains only recent diagnostics from a noisy child', async () => {
+    const runtime = projectWithHost('process.stderr.write(\'discarded-prefix\' + \'x\'.repeat(70_000) + \'recent-failure\', () => { process.exitCode = 7; process.disconnect() })')
+    const failure = await hostProcess(runtime).start().catch((error: unknown) => error)
+    expect(failure).toBeInstanceOf(Error)
+    const message = (failure as Error).message
+    expect(message).not.toContain('discarded-prefix')
+    expect(message.endsWith('recent-failure')).toBe(true)
+    expect(message.length).toBeLessThan(66_000)
   })
 
   it('settles teardown when the executable cannot be spawned', async () => {
-    const runtime = projectWithHost('function onRequestFrame() {}')
+    const runtime = projectWithHost()
     const host = new DesktopHostProcess(join(runtime, 'missing-node'), runtime, runtime)
-    try { await expect(host.start()).rejects.toThrow() } finally { await host.stop() }
+    hosts.push(host)
+    await expect(host.start()).rejects.toThrow()
+    await host.stop()
   })
 
-  it('loads the resource entry with a separate profile and scrubs Node resolution overrides', async () => {
-    const runtime = projectWithHost(`
-process.send({ type: 'ready', protocolVersion: 3, alegoVersion: 'split-runtime' })
-function onRequestFrame(frame) {
-  if (frame.type !== 1) return
-  responseStart(frame.streamId)
-  responseData(frame.streamId, JSON.stringify({runtime: process.argv[2], profile: process.argv[3], cwd: process.cwd(), nodePath: process.env.NODE_PATH}))
-  responseEnd(frame.streamId)
-}
-`)
+  it('loads the resource entry with a separate profile and inherits runtime and package-manager configuration', async () => {
+    const runtime = projectWithHost()
     const profile = mkdtempSync(join(tmpdir(), 'desktop-external-profile-'))
     roots.push(profile)
-    const host = new DesktopHostProcess(process.execPath, runtime, profile, undefined, {
-      ...process.env, NODE_OPTIONS: '--invalid-desktop-test-option', NODE_PATH: '/unowned',
+    const host = hostProcess(runtime, profile, undefined, {
+      ...process.env, NODE_OPTIONS: '--no-warnings', NODE_PATH: '/custom', NPM_CONFIG_REGISTRY: 'https://registry.example.test/',
     })
-    try {
-      const response = await host.fetch(new Request('alego-app://app/environment'))
-      expect(await response.json()).toEqual({ runtime, profile, cwd: realpathSync(profile) })
-    } finally { await host.stop() }
+    const { url } = await host.start()
+    const response = await fetch(url)
+    expect(await response.json()).toEqual({ runtime, profile, cwd: realpathSync(profile), nodePath: '/custom', registry: 'https://registry.example.test/', nodeOptions: '--no-warnings', runAsNode: '1', internals: true })
   })
 
-  it('carries raw request and response bytes and shuts the child down cleanly', async () => {
-    const project = projectWithHost(`
-const bodies = new Map()
-process.send({ type: 'ready', protocolVersion: 3, alegoVersion: process.env.NODE_OPTIONS ?? 'clean' })
-function onRequestFrame(frame) {
-  if (frame.type === 1) {
-    const request = JSON.parse(frame.payload)
-    bodies.set(frame.streamId, Buffer.alloc(0))
-    if (!request.hasBody) answer(frame.streamId)
-  } else if (frame.type === 2) {
-    bodies.set(frame.streamId, Buffer.concat([bodies.get(frame.streamId), frame.payload]))
-  } else if (frame.type === 3) {
-    answer(frame.streamId)
-  }
-}
-function answer(streamId) {
-  responseStart(streamId, { headers: [['content-type', 'text/plain']] })
-  responseData(streamId, Buffer.concat([Buffer.from('desktop:'), bodies.get(streamId)]))
-  responseEnd(streamId)
-}
-`)
-    const previous = process.env.NODE_OPTIONS
-    process.env.NODE_OPTIONS = '--require /path/that-must-not-reach-the-child'
-    const host = new DesktopHostProcess(process.execPath, project, project)
-    try {
-      await expect(host.start()).resolves.toMatchObject({ alegoVersion: 'clean' })
-      const response = await host.fetch(new Request('alego-app://app/example', { method: 'POST', body: 'request' }))
-      expect(response.status).toBe(200)
-      await expect(response.text()).resolves.toBe('desktop:request')
-      await expect(host.stop()).resolves.toBeUndefined()
-    } finally {
-      if (previous === undefined) delete process.env.NODE_OPTIONS
-      else process.env.NODE_OPTIONS = previous
-      await host.stop().catch(() => undefined)
-    }
+  it.each([
+    ["process.send({ type: 'fatal', message: 'startup failed' }); process.disconnect()", 'startup failed'],
+    ["process.send({ type: 'ready', url: 4 })", 'invalid IPC event'],
+    ["process.send({ type: 'fatal', message: 'startup failed', diagnostic: 42 })", 'invalid IPC event'],
+    ['process.exit(0)', 'host stopped'],
+  ])('rejects startup when the child fails before readiness: %s', async (source, message) => {
+    const host = hostProcess(projectWithHost(source))
+    await expect(host.start()).rejects.toThrow(message)
   })
 
-  it('streams a large binary response in bounded raw frames', async () => {
-    const size = 2 * 1024 * 1024
-    const project = projectWithHost(`
-process.send({ type: 'ready', protocolVersion: 3, alegoVersion: 'large-response' })
-function onRequestFrame(frame) {
-  if (frame.type !== 1) return
-  responseStart(frame.streamId)
-  const bytes = Buffer.alloc(${String(64 * 1024)}, 97)
-  for (let offset = 0; offset < ${String(size)}; offset += bytes.length) responseData(frame.streamId, bytes)
-  responseEnd(frame.streamId)
-}
-`)
-    const host = new DesktopHostProcess(process.execPath, project, project)
-    try {
-      const response = await host.fetch(new Request('alego-app://app/large'))
-      const body = new Uint8Array(await response.arrayBuffer())
-      expect(body).toHaveLength(size)
-      expect(body[0]).toBe(97)
-      expect(body.at(-1)).toBe(97)
-    } finally {
-      await host.stop().catch(() => undefined)
-    }
+  it('keeps the Host\'s inspected error separate from the message it reports', async () => {
+    const diagnostic = "Error: startup failed\\n    at boot (lib/index.js:3:9) {\\n  code: 'ENOENT',\\n  path: '/profile/cordis.yml'\\n}"
+    const failures: Error[] = []
+    const host = hostProcess(projectWithHost(
+      `process.send({ type: 'fatal', message: 'startup failed', diagnostic: ${JSON.stringify(diagnostic)} }); process.disconnect()`,
+    ), undefined, (error) => { failures.push(error) })
+    await expect(host.start()).rejects.toThrow('startup failed')
+    const [failure] = failures
+    expect(failure).toBeInstanceOf(DesktopHostFatalError)
+    expect((failure as DesktopHostFatalError).diagnostic).toBe(diagnostic)
+    expect(Object.keys(failure!)).not.toContain('diagnostic')
   })
+})
 
-  it('stops an unfinished upload when the Host completes its response early', async () => {
-    const project = projectWithHost(`
-process.send({ type: 'ready', protocolVersion: 3, alegoVersion: 'early-response' })
-function onRequestFrame(frame) {
-  if (frame.type !== 2) return
-  responseStart(frame.streamId)
-  responseData(frame.streamId, 'accepted')
-  responseEnd(frame.streamId)
-}
-`)
-    let canceled = false
-    const body = new ReadableStream<Uint8Array>({
-      start(controller) { controller.enqueue(Buffer.from('first')) },
-      cancel() { canceled = true },
-    })
-    const host = new DesktopHostProcess(process.execPath, project, project)
-    try {
-      const request = new Request('alego-app://app/early', {
-        method: 'POST',
-        body,
-        duplex: 'half',
-      } as RequestInit & { duplex: 'half' })
-      const response = await host.fetch(request)
-      await expect(response.text()).resolves.toBe('accepted')
-      await expect.poll(() => canceled).toBe(true)
-    } finally {
-      await host.stop().catch(() => undefined)
-    }
-  })
+it.each([null, 'stable-account'])('carries Platform identity %s over private IPC and clears credentials on shutdown', async (userId) => {
+  const runtime = projectWithHost(HTTP_HOST.replace("process.send({ type: 'ready'", "process.send({ type: 'platform-session', session: { origin: 'https://platform.deepseek.com', userId: " + JSON.stringify(userId) + ", token: 'fixture-secret', embeddedPageDist: 'feat/test' } }); process.send({ type: 'ready'"))
+  const changed = vi.fn()
+  const host = new DesktopHostProcess(process.execPath, runtime, runtime, undefined, process.env, undefined, undefined, undefined, changed)
+  hosts.push(host)
+  await host.start()
+  expect(changed).toHaveBeenCalledWith({ origin: 'https://platform.deepseek.com', userId, token: 'fixture-secret', embeddedPageDist: 'feat/test' })
+  await host.stop()
+  expect(changed).toHaveBeenLastCalledWith(null)
+})
 
-  it('ignores a response end that arrives after the renderer cancels its stream', async () => {
-    const project = projectWithHost(`
-process.send({ type: 'ready', protocolVersion: 3, alegoVersion: 'cancel-race' })
-const urls = new Map()
-function onRequestFrame(frame) {
-  if (frame.type === 1) {
-    const request = JSON.parse(frame.payload)
-    urls.set(frame.streamId, request.url)
-    responseStart(frame.streamId)
-    if (request.url.endsWith('/after')) {
-      responseData(frame.streamId, 'alive')
-      responseEnd(frame.streamId)
-    }
-  } else if (frame.type === 4 && urls.get(frame.streamId).endsWith('/cancel')) {
-    responseEnd(frame.streamId)
-  }
-}
-`)
-    const host = new DesktopHostProcess(process.execPath, project, project)
-    try {
-      const canceled = await host.fetch(new Request('alego-app://app/cancel'))
-      await canceled.body?.cancel()
-      await new Promise(resolve => setTimeout(resolve, 25))
-      const after = await host.fetch(new Request('alego-app://app/after'))
-      await expect(after.text()).resolves.toBe('alive')
-    } finally {
-      await host.stop().catch(() => undefined)
-    }
-  })
-
-  it('rejects invalid response framing and a clean exit before readiness', async () => {
-    const invalid = new DesktopHostProcess(process.execPath, projectWithHost(`
-process.send({ type: 'ready', protocolVersion: 3, alegoVersion: 'invalid-frame' })
-function onRequestFrame(frame) {
-  if (frame.type === 1) responsePipe.write(Buffer.alloc(13))
-}
-`), projectWithHost(''))
-    await invalid.start()
-    await expect(invalid.fetch(new Request('alego-app://app/invalid'))).rejects.toThrow(/invalid Host response frame marker/u)
-    await invalid.stop().catch(() => undefined)
-
-    const earlyExit = new DesktopHostProcess(process.execPath, projectWithHost(`
-function onRequestFrame() {}
-process.exit(0)
-`), projectWithHost(''))
-    await expect(earlyExit.start()).rejects.toThrow(/response pipe ended/u)
-  })
+it.each([undefined, '', 7])('rejects malformed Platform account identity %s on private IPC', async (userId) => {
+  const session = { origin: 'https://platform.deepseek.com', token: 'fixture-secret', userId }
+  const runtime = projectWithHost(HTTP_HOST.replace("process.send({ type: 'ready'",
+    `process.send({ type: 'platform-session', session: ${JSON.stringify(session)} }); process.send({ type: 'ready'`))
+  const changed = vi.fn()
+  const host = new DesktopHostProcess(process.execPath, runtime, runtime, undefined, process.env, undefined, undefined, undefined, changed)
+  hosts.push(host)
+  await expect(host.start()).rejects.toThrow('invalid IPC event')
+  expect(changed.mock.calls).toEqual([[null]])
+  await host.stop()
 })

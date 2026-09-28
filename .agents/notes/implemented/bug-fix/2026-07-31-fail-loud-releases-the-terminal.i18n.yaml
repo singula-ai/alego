@@ -1,6 +1,22 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-31-fail-loud-releases-the-terminal.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-07-31-fail-loud-releases-the-terminal.md
-2026-07-31-fail-loud-releases-the-terminal.md: 5e99c24b2ba082c4a3e5e1d1efbe4182c26f90b3
-2026-07-31-fail-loud-releases-the-terminal.zh.md: 3338df7aafb6b87d90a0cacaee9c7ad075b07681
+/agent-note-fail-loud-releases-the-terminal-before-exiting:
+  en: 8aa7e1e10e1b6837
+  zh: f5a2bce5bac256b9
+/agent-note-fail-loud-releases-the-terminal-before-exiting/problem:
+  en: 2486cc1a38105aa2
+  zh: 0c56e1e6323eb701
+/agent-note-fail-loud-releases-the-terminal-before-exiting/decision:
+  en: a022b1672b027934
+  zh: 69ad1b4fb066d996
+/agent-note-fail-loud-releases-the-terminal-before-exiting/alternatives-considered:
+  en: 5ee239978e8f1ece
+  zh: 55267740c7726c25
+/agent-note-fail-loud-releases-the-terminal-before-exiting/consequences:
+  en: 4f7dcb4369eaff03
+  zh: 9c1bca7dbbbfbc9a
+/agent-note-fail-loud-releases-the-terminal-before-exiting/testing:
+  en: d15740b1c3a2d0ff
+  zh: 4a3ff4c49d464f19

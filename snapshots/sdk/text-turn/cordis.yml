@@ -8,7 +8,7 @@
     includeDefaultRoots: false
 
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   config:
     thinking: enabled
     reasoningEffort: max
@@ -27,11 +27,6 @@
     backgroundMode: one-shot
     enableRunInBackground: false
     maxDepth: 1
-
-- id: session-log-deepseek
-  name: '@singula-ai/alego-session-log-deepseek'
-  config:
-    enabled: true
 
 - insert:
     - id: snapshot-message-feedback

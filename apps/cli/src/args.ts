@@ -10,12 +10,12 @@
  * `alego --profile tui --resume abc` boots the tui profile with `--resume abc`,
  * and `alego --profile web -h` prints the web app's help, not this one's.
  *
- * `web` is a hardcoded alias for `--profile web`; `plugin` manages a profile's
+ * `alego <name>` abbreviates `alego --profile <name>`; `plugin` manages a profile's
  * plugin dependencies by forwarding to pnpm.
  * @module @singula-ai/alego/args
  */
 
-import { Command, CommanderError } from 'commander'
+import { Command, CommanderError, InvalidArgumentError } from 'commander'
 
 /** Boot a named profile and hand it the invocation's inner arguments. */
 interface ProfileInvocation {
@@ -40,6 +40,15 @@ interface DumpConfigInvocation {
   patches: string[]
 }
 
+/** Print declared plugin schemas without mounting the profile. */
+interface DumpConfigSchemaInvocation {
+  mode: 'dump-config-schema'
+  profile: string
+  /** Shipped template used once to initialize a missing profile. */
+  fromDefaultProfile?: string | undefined
+  patches: string[]
+}
+
 /** Manage a profile's plugins: forward `args` to pnpm inside the profile directory. */
 interface PluginInvocation {
   mode: 'plugin'
@@ -49,13 +58,14 @@ interface PluginInvocation {
 }
 
 /** The resolved `alego` invocation. Help, version, and errors exit inside {@link parseAlegoArgs}. */
-export type AlegoInvocation = ProfileInvocation | DumpConfigInvocation | PluginInvocation
+export type AlegoInvocation = ProfileInvocation | DumpConfigInvocation | DumpConfigSchemaInvocation | PluginInvocation
 
-/** Launcher flags shared by the default command and the `web` alias. */
+/** Launcher flags for profile boot and configuration dumps. */
 interface BootOptions {
   patch?: string[]
   dumpConfig?: boolean
   dumpDefaultConfig?: boolean
+  dumpConfigSchema?: boolean
   fromDefaultProfile?: string
 }
 
@@ -64,6 +74,11 @@ interface BootOptions {
  * variadic — a variadic `--patch` would swallow the inner arguments.
  */
 const collect = (value: string, previous: string[] = []): string[] => [...previous, value]
+
+function selectProfile(value: string, previous?: string): string {
+  if (previous !== undefined) throw new InvalidArgumentError('select a profile only once')
+  return value
+}
 
 function rejectElectronProfile(program: Command, profile: string): void {
   if (profile.toLowerCase() === 'desktop') {
@@ -74,20 +89,20 @@ function rejectElectronProfile(program: Command, profile: string): void {
 /** The launcher's own help text; each app prints its own. */
 const HELP_EXAMPLES = `
 Examples:
-  alego --profile web                          boot the web profile (same as: alego web)
-  alego --profile rescue --from-default-profile web
-                                             create rescue from the shipped web template, then boot it
-  alego --profile headless "run the tests"     answer one task, print the result, and exit
-  alego --profile tui --patch ./extra.yml      boot a custom profile with one extra overlay
-  alego --profile tui --resume <session>       arguments after the launcher flags reach the app
-  alego --profile web --help                   the web app's own flags and help
-  alego plugin --profile tui add <package>     install a plugin into the tui profile
+  alego web                                   boot the web profile (same as: alego --profile web)
+  alego rescue --from-default-profile web
+                                            create rescue from the shipped web template, then boot it
+  alego headless "run the tests"              answer one task, print the result, and exit
+  alego tui --patch ./extra.yml               boot a custom profile with one extra overlay
+  alego tui --resume <session>                arguments after the launcher flags reach the app
+  alego web --help                            the web app's own flags and help
+  alego plugin --profile tui add <package>    install a plugin into the tui profile
 `
 
 /**
  * Resolve a boot or dump invocation from the launcher flags and the leftover
  * inner arguments.
- * @param program - the command whose options were parsed (the root, or the `web` alias).
+ * @param program - the command whose options were parsed.
  * @param profile - the profile these flags boot.
  * @param options - the launcher flags commander collected.
  * @param args - the leftover arguments, in argv order.
@@ -97,17 +112,21 @@ function resolveBoot(program: Command, profile: string, options: BootOptions, ar
   const patches = options.patch ?? []
   if (patches.includes('')) program.error('error: --patch needs a path')
   if (options.fromDefaultProfile === '') program.error('error: --from-default-profile needs a name')
-  if (options.dumpConfig !== true && options.dumpDefaultConfig !== true) {
+  const dumps = [options.dumpConfig, options.dumpDefaultConfig, options.dumpConfigSchema].filter(Boolean)
+  if (dumps.length === 0) {
     return { mode: 'profile', profile, fromDefaultProfile: options.fromDefaultProfile, patches, args }
   }
-  if (options.dumpConfig === true && options.dumpDefaultConfig === true) {
-    program.error('error: --dump-config and --dump-default-config are mutually exclusive')
+  if (dumps.length > 1) {
+    program.error('error: --dump-config, --dump-default-config, and --dump-config-schema are mutually exclusive')
   }
   // The dump is boot-free: it never runs app command-line providers, so it
   // cannot show what those flags would decide, and printing a tree that differs
   // from the same invocation's boot would mislead.
   if (args.length > 0) {
     program.error(`error: config dumps take no app arguments, got ${args.map(argument => JSON.stringify(argument)).join(' ')}`)
+  }
+  if (options.dumpConfigSchema === true) {
+    return { mode: 'dump-config-schema', profile, fromDefaultProfile: options.fromDefaultProfile, patches }
   }
   const defaultOnly = options.dumpDefaultConfig === true
   if (defaultOnly && patches.length > 0) {
@@ -124,6 +143,7 @@ function resolveBoot(program: Command, profile: string, options: BootOptions, ar
  * @returns the resolved invocation.
  */
 export function parseAlegoArgs(argv: readonly string[], version: string): AlegoInvocation {
+  const first = argv[0]
   let resolved: AlegoInvocation | undefined
   // Annotated, not inferred: the actions below call back into `program`, and an
   // inferred type would be circular through its own chain.
@@ -131,6 +151,7 @@ export function parseAlegoArgs(argv: readonly string[], version: string): AlegoI
   program
     .name('alego')
     .version(version, '-V, --version', 'output the version number')
+    .usage('[--profile] <name> [options] [app-args...]\n       alego plugin --profile <name> <pnpm-args...>')
     .description('alego: boot an Alego profile — an ordered stack of plugin-bundle patch layers under your own overrides.')
     .addHelpText('after', HELP_EXAMPLES)
     .exitOverride()
@@ -138,14 +159,16 @@ export function parseAlegoArgs(argv: readonly string[], version: string): AlegoI
     // know; everything from there on belongs to the booted app, including
     // its -h. `alego -h` with no profile still prints this help, below.
     .helpOption(false)
+    .helpCommand(false)
     .allowUnknownOption()
     .passThroughOptions()
     .enablePositionalOptions()
     .argument('[args...]', 'arguments for the booted profile\'s app (see: alego --profile <name> --help)')
-    .option('--profile <name>', 'the profile under $ALEGO_HOME/profiles to boot')
+    .option('--profile <name>', 'the profile under $ALEGO_HOME/profiles to boot', selectProfile)
     .option('--from-default-profile <name>', 'initialize a new custom profile from a shipped profile template')
     .option('--patch <path>', 'extra patch-list overlay applied after the profile layer (repeatable)', collect)
     .option('--dump-config', 'print the composed profile tree and exit')
+    .option('--dump-config-schema', 'print JSON Schema for profile entries and patches without mounting')
     .option('--dump-default-config', 'print the profile tree without its user layer or --patch overlays and exit')
     .action((args: string[], options: BootOptions & { profile?: string }) => {
       // With the app owning -h, the launcher's own help is what a bare
@@ -160,48 +183,25 @@ export function parseAlegoArgs(argv: readonly string[], version: string): AlegoI
       resolved = resolveBoot(program, profile, options, args)
     })
 
-  /** Reject parent options supplied before a subcommand. */
-  const rejectParentOptions = (command: string): void => {
-    const parent = program.opts<BootOptions & { profile?: string }>()
-    if (parent.profile !== undefined || parent.patch !== undefined
-      || parent.dumpConfig !== undefined || parent.dumpDefaultConfig !== undefined
-      || parent.fromDefaultProfile !== undefined) {
-      program.error(
-        `error: ${command} takes none of parent --profile, --from-default-profile, --patch, --dump-config, or --dump-default-config`,
-      )
-    }
+  if (first === 'plugin') {
+    const plugin = program.command('plugin').description('manage a profile\'s plugins by forwarding the remaining arguments to pnpm in the profile directory')
+    plugin
+      .requiredOption('--profile <name>', 'the profile whose plugins to manage (initialized on first use)', selectProfile)
+      .allowUnknownOption()
+      .argument('[args...]', 'pnpm arguments, forwarded verbatim (add <pkg>, remove <pkg>, why <pkg>, ...)')
+      .action((args: string[], options: { profile: string }) => {
+        if (options.profile === '') program.error('error: --profile needs a name')
+        rejectElectronProfile(plugin, options.profile)
+        if (args.length === 0) program.error('error: plugin needs pnpm arguments to forward (e.g. add <package>)')
+        resolved = { mode: 'plugin', profile: options.profile, args }
+      })
   }
 
-  const web = program.command('web').description('boot the web profile (alias of --profile web); the web app\'s own flags follow')
-  web
-    .helpOption(false)
-    .allowUnknownOption()
-    .passThroughOptions()
-    .enablePositionalOptions()
-    .argument('[args...]', 'arguments for the web app (see: alego web --help)')
-    .option('--patch <path>', 'extra patch-list overlay applied after the profile layer (repeatable)', collect)
-    .option('--dump-config', 'print the composed web-profile tree (with the user layer and any --patch) and exit')
-    .option('--dump-default-config', 'print the web profile\'s bundle layers (no user layer) and exit')
-    .action((args: string[], options: BootOptions) => {
-      rejectParentOptions('web')
-      resolved = resolveBoot(web, 'web', options, args)
-    })
-
-  const plugin = program.command('plugin').description('manage a profile\'s plugins by forwarding the remaining arguments to pnpm in the profile directory')
-  plugin
-    .requiredOption('--profile <name>', 'the profile whose plugins to manage (initialized on first use)')
-    .allowUnknownOption()
-    .argument('[args...]', 'pnpm arguments, forwarded verbatim (add <pkg>, remove <pkg>, why <pkg>, ...)')
-    .action((args: string[], options: { profile: string }) => {
-      rejectParentOptions('plugin')
-      if (options.profile === '') program.error('error: --profile needs a name')
-      rejectElectronProfile(plugin, options.profile)
-      if (args.length === 0) program.error('error: plugin needs pnpm arguments to forward (e.g. add <package>)')
-      resolved = { mode: 'plugin', profile: options.profile, args }
-    })
-
   try {
-    program.parse(argv, { from: 'user' })
+    const expanded = first !== undefined && !first.startsWith('-') && first !== 'plugin'
+      ? ['--profile', ...argv]
+      : argv
+    program.parse(expanded, { from: 'user' })
   } catch (error) {
     return process.exit(error instanceof CommanderError ? error.exitCode : 1)
   }

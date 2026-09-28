@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { InjectFace, PropsLocale, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
-import { IconCloseFill14 } from '@singula-ai/alego-client-ui-primitives'
+import { IconCloseCircleFillRegular, IconPlanOutlineRegular } from '@singula-ai/alego-client-ui-primitives'
 // Type-only: pulls the ui-conversation SlotMap merge (the input.plan seat and
 // its {locked} owner share).
 import type {} from '@singula-ai/alego-client-ui-conversation/client'
@@ -58,10 +58,11 @@ export function PlanChip({ useProjection, locked, exitPlanMode, t }: PlanChipPro
         disabled={locked || leaving}
         onClick={off}
       >
-        {t('chip.label')}
-        <span className={css.close} aria-hidden>
-          <IconCloseFill14 size={12} />
+        <span className={css.glyph} aria-hidden>
+          <IconPlanOutlineRegular className={css.restGlyph} size={14} />
+          <IconCloseCircleFillRegular className={css.hoverGlyph} size={14} />
         </span>
+        {t('chip.label')}
       </button>
       {error !== null && <span className={css.error} role="status" title={error}>{t('chip.exitFailed')}</span>}
     </span>

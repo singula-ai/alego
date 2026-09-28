@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-storage-domain",
   "description": "Domain data form (ctx.storage.domain): schema-validated, event-emitting KV domains over storage backends for the Alego",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -32,17 +32,17 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-invariants": "workspace:^",
-    "@singula-ai/alego-storage": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-invariants": "workspace:*",
+    "@singula-ai/alego-storage": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "dependencies": {
-    "@singula-ai/schemastery": "workspace:^",
+    "@singula-ai/schemastery": "workspace:~",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@singula-ai/alego-invariants": "workspace:^",
-    "@singula-ai/alego-storage": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-invariants": "workspace:*",
+    "@singula-ai/alego-storage": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

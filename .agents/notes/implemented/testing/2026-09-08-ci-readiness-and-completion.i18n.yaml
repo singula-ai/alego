@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-08-ci-readiness-and-completion.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/testing/2026-09-08-ci-readiness-and-completion.md
-2026-09-08-ci-readiness-and-completion.md: d939a192d2636b66cb255dbe45ee91024c644724
-2026-09-08-ci-readiness-and-completion.zh.md: 578a378e001ac5672554d994fe71607354597d63
+/agent-note-ci-assertions-wait-for-owned-completion:
+  en: 54d4f4d314550a04
+  zh: 42416f4ca1f892ab
+/agent-note-ci-assertions-wait-for-owned-completion/problem:
+  en: a7fe3958c0c18911
+  zh: cce83727500187bc
+/agent-note-ci-assertions-wait-for-owned-completion/decision:
+  en: 72bdecb08de4cde9
+  zh: 6916a27cf4fab819
+/agent-note-ci-assertions-wait-for-owned-completion/alternatives-considered:
+  en: 07ee7017cc6f6e74
+  zh: b42f742932edd3f8
+/agent-note-ci-assertions-wait-for-owned-completion/consequences:
+  en: 70258f58a1e781bb
+  zh: fabc014ced9872f5

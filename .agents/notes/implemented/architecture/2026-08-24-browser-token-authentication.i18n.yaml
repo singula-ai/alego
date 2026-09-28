@@ -1,6 +1,22 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-24-browser-token-authentication.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-24-browser-token-authentication.md
-2026-08-24-browser-token-authentication.md: d0417aa1fe400f6193c29b47a1b561e850fe701b
-2026-08-24-browser-token-authentication.zh.md: 2429df6072db2baf564a7864d918e3d106ddfc82
+/agent-note-browser-launch-token-authentication:
+  en: ea6e0edc728be3db
+  zh: 697560248ed5ef22
+/agent-note-browser-launch-token-authentication/problem:
+  en: 01293500639c9d79
+  zh: 6d19e4843955c811
+/agent-note-browser-launch-token-authentication/decision:
+  en: b6e0b8a21b4ac5a2
+  zh: 5cbbce17e141f24b
+/agent-note-browser-launch-token-authentication/verification:
+  en: 08494112c75dce6e
+  zh: f4c5787800e215dd
+/agent-note-browser-launch-token-authentication/alternatives-considered:
+  en: 299afa47691984e3
+  zh: 1fe12215ea962377
+/agent-note-browser-launch-token-authentication/consequences:
+  en: 37da51cd73ae1a04
+  zh: e1b8b2c879d421b8

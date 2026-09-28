@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
+import { isRemoteJsonValue } from '@singula-ai/alego-typert-protocol'
 import {
-  isRemoteJsonValue,
   parseRemoteEventResult,
   parseRemoteStreamClientMessage,
   projectRemoteEventRequest,

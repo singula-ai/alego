@@ -1,0 +1,37 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/preset/agent-preset/README.md
+/:
+  en: a3eb6ca39858c3d0
+  zh: 6fc16750d5f06034
+/singula-ai-alego-agent-preset:
+  en: 9ed9392f30c659f0
+  zh: a2c5395ae66c90af
+/singula-ai-alego-agent-preset/summary:
+  en: af8933f035049563
+  zh: ab7a5f3dc562e84d
+/singula-ai-alego-agent-preset/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: b3ad7867f23dad1c
+/singula-ai-alego-agent-preset/use-this-package:
+  en: a403abbf4d126f04
+  zh: d8d1d643e789cd1f
+/singula-ai-alego-agent-preset/understand-the-implementation:
+  en: 28b58d748f9702ca
+  zh: bb42243c3cf7247c
+/singula-ai-alego-agent-preset/further-exploration:
+  en: 97c71d50c6c84490
+  zh: 0b0aa9490c256f34
+/singula-ai-alego-agent-preset/model-experience:
+  en: e982cd210104c513
+  zh: cbde971d870c7ca5
+/singula-ai-alego-agent-preset/model-experience/kv-cache-effect:
+  en: 4644bd5f0c865667
+  zh: 9aedc8ac43fb8b61
+/singula-ai-alego-agent-preset/known-limitations-and-deferred-work:
+  en: d4dbce86236e8e91
+  zh: 11766aef5d0ff536
+/singula-ai-alego-agent-preset/known-limitations-and-deferred-work/dev-note:
+  en: af1f8da6d3acb3e2
+  zh: e0c4f6afeefd5214

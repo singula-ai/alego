@@ -1,6 +1,25 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/spill/README.md
-README.md: 223c036f5cf63333c1f3d2cab93bd8054b84b8dc
-README.zh.md: ee0ac34e3d6782b327d77f21a378b69dac7e8d2c
+/:
+  en: a626d8ec938bc3c3
+  zh: 2bbf8c20e53a3ea1
+/spill-text-spill-capability-family:
+  en: ce4c02f8d8f8fde2
+  zh: 647241406a031146
+/spill-text-spill-capability-family/summary:
+  en: 36ee19f87952f3f0
+  zh: 7916808937ae8ef2
+/spill-text-spill-capability-family/table-of-contents:
+  en: 1eb35b015a6c423f
+  zh: a8a3dceee2c9e943
+/spill-text-spill-capability-family/packages:
+  en: d139a07448336aa6
+  zh: 379e8f243f8e3166
+/spill-text-spill-capability-family/related-documentation:
+  en: 7c686d7758d35fe6
+  zh: 59540de130d8cdb3
+/spill-text-spill-capability-family/dev-note:
+  en: 5de1d6304e00c58f
+  zh: 8d8225361cfa29e5

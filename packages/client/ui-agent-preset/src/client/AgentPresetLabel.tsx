@@ -11,10 +11,10 @@
 import { useEffect } from 'react'
 import type { SnapshotStore } from '@singula-ai/alego-client-store'
 import type { InjectFace, PropsLocale, PropsRuntime } from '@singula-ai/alego-client-ui-slots'
-import { IconAgentPresetOutline16 } from '@singula-ai/alego-client-ui-primitives'
+import { IconAgentPresetOutlineRegular } from '@singula-ai/alego-client-ui-primitives'
 // Type-only: pulls the ui-conversation SlotMap merge (the header actions).
 import type {} from '@singula-ai/alego-client-ui-conversation/client'
-import type {} from '@singula-ai/alego-agent-presets/types'
+import type {} from '@singula-ai/alego-agent-preset-registry/types'
 import type { AgentPresetSettingsState } from './settings-store.ts'
 import { presetDisplayText } from './locales.ts'
 import css from './AgentPresetLabel.module.css'
@@ -61,7 +61,7 @@ export function AgentPresetLabel({
   const text = option === undefined ? undefined : presetDisplayText(option, t)
   return (
     <span className={css.label} title={text?.description ?? t('headerHint')}>
-      <IconAgentPresetOutline16 size={14} className={css.icon} />
+      <IconAgentPresetOutlineRegular size={14} className={css.icon} />
       {text?.name ?? preset}
     </span>
   )

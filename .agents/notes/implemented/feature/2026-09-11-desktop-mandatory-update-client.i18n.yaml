@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-11-desktop-mandatory-update-client.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-09-11-desktop-mandatory-update-client.md
+/agent-note-desktop-mandatory-update-client-and-blocking-window:
+  en: 7cb4e18cc4619d16
+  zh: e71d80ac93187a76
+/agent-note-desktop-mandatory-update-client-and-blocking-window/problem:
+  en: f1aeaa7df97a744f
+  zh: 039b2cccd9a45198
+/agent-note-desktop-mandatory-update-client-and-blocking-window/decision:
+  en: d439ded6df1bb047
+  zh: d79d0b3688e781e8
+/agent-note-desktop-mandatory-update-client-and-blocking-window/alternatives-considered:
+  en: 136afb04a37db4a1
+  zh: 2b049e0d9fd8aa27
+/agent-note-desktop-mandatory-update-client-and-blocking-window/consequences:
+  en: 6d1e6283327148e1
+  zh: 47a453a8789ec283

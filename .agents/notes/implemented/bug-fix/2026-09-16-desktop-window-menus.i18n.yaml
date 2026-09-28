@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-09-16-desktop-window-menus.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-09-16-desktop-window-menus.md
+/agent-note-desktop-standard-macos-window-menus:
+  en: d1134cab62c35b26
+  zh: d03412be2d4ff963
+/agent-note-desktop-standard-macos-window-menus/problem:
+  en: 75c201a0a687b59d
+  zh: 34593038f673d06f
+/agent-note-desktop-standard-macos-window-menus/decision:
+  en: 4ab2bee81d03649b
+  zh: 2475cef1d17562f1
+/agent-note-desktop-standard-macos-window-menus/alternatives-considered:
+  en: 957382dbfb6cac48
+  zh: 2db98b7dbf3e01c0
+/agent-note-desktop-standard-macos-window-menus/consequences:
+  en: 1fa44c82ca450bcd
+  zh: b618f5ec0a90ed13
+/agent-note-desktop-standard-macos-window-menus/testing:
+  en: 0c05c0044532f891
+  zh: cff254b44b3c7a2d

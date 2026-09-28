@@ -44,7 +44,7 @@ After enabling, `alego-badge` appears in the available skills of the session cat
 ### What the badge skill provides
 
 - **Markdown snippets.** Instructions for embedding the official badge markup in documents, PRs, and merge requests.
-- **Packaged PNG asset.** A `alego-badge.png` resource (726×120 source, rendered at 121×20) that works where remote images cannot be imported.
+- **Packaged PNG asset.** An `alego-badge.png` resource (726×120 source, rendered at 121×20) that works where remote images cannot be imported.
 
 ### Observable success and failures
 

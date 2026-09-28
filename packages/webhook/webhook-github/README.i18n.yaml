@@ -1,6 +1,37 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/webhook/webhook-github/README.md
-README.md: 48ee31249374f12452e1e79477d3bff157aea0dd
-README.zh.md: 986857b588ef4ec72251dba19494d1eda6eb6106
+/:
+  en: 60db7ae899ed9fd9
+  zh: 4fe10fa8823aa6d1
+/singula-ai-alego-webhook-github:
+  en: e650d1adb1c5873a
+  zh: 5198bb1d8b2d0be9
+/singula-ai-alego-webhook-github/summary:
+  en: 64b63cc3aaf83d8c
+  zh: cb68eb26fc5ce894
+/singula-ai-alego-webhook-github/table-of-contents:
+  en: b946752a1c17cd00
+  zh: cdaaea55e4da6831
+/singula-ai-alego-webhook-github/configuration:
+  en: a32a5195a6ae6a61
+  zh: a135089e86948290
+/singula-ai-alego-webhook-github/http-contract:
+  en: 2d8b5cb8d44bef8e
+  zh: a98ec470d9d6bc2d
+/singula-ai-alego-webhook-github/dedicated-listener-composition:
+  en: 2e7b64c3a9cf4238
+  zh: 6182f9c9d506f3e7
+/singula-ai-alego-webhook-github/model-experience:
+  en: 15bd365bead5c1bc
+  zh: 37d46b1e83134d49
+/singula-ai-alego-webhook-github/model-experience/kv-cache-effect:
+  en: a7c54f451f61179e
+  zh: aaf25d0781ad4d6b
+/singula-ai-alego-webhook-github/known-limitations-and-deferred-work:
+  en: 0c3192c3e300bb46
+  zh: 7c84d20e6a8a768e
+/singula-ai-alego-webhook-github/known-limitations-and-deferred-work/dev-note:
+  en: 989a9ceaf5485784
+  zh: 08a60a094318255a

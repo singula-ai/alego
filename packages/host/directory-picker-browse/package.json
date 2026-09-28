@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-host-directory-picker-browse",
   "description": "In-app browsing backend of the directory-picker seam (listing/creation primitives over the host filesystem)",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,13 +27,13 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@singula-ai/alego-host-directory-picker": "workspace:^",
-    "@singula-ai/schemastery": "workspace:^"
+    "@singula-ai/alego-host-directory-picker": "workspace:*",
+    "@singula-ai/schemastery": "workspace:~"
   },
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   }
 }

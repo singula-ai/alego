@@ -1,6 +1,94 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/llm/llm-pi-ai/README.md
-README.md: f161a51ec212880751475602a88513bfb635fe04
-README.zh.md: 3cee68d0629464637ad88eb2422ffbc9ad60a62d
+/:
+  en: 8a6ec0a589e6fd18
+  zh: e85fc352c9cba373
+/singula-ai-alego-llm-pi-ai:
+  en: 4c3e4b6b767c3a52
+  zh: cf2aa92b19591b59
+/singula-ai-alego-llm-pi-ai/summary:
+  en: a44b3b4f3ff1d108
+  zh: cc0198bcd18d2bdf
+/singula-ai-alego-llm-pi-ai/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-llm-pi-ai/use-this-package:
+  en: 82239e2a05fb078a
+  zh: 0ba9f95f1b37575c
+/singula-ai-alego-llm-pi-ai/use-this-package/when-to-choose-it:
+  en: 6db210ca46843c49
+  zh: cda5bc31002363ef
+/singula-ai-alego-llm-pi-ai/use-this-package/configure-provider-routes:
+  en: c7bfcf4d560a8c02
+  zh: 5b9f8d8216fe0f53
+/singula-ai-alego-llm-pi-ai/use-this-package/sign-in-to-a-provider:
+  en: c36f66438638ae08
+  zh: 066a2fc4cb97c86f
+/singula-ai-alego-llm-pi-ai/use-this-package/resolve-the-model-catalog:
+  en: 376f83206858b601
+  zh: 38bb6993609c96a6
+/singula-ai-alego-llm-pi-ai/use-this-package/run-with-reasoning-and-wire-compatibility:
+  en: 86b456496b54854e
+  zh: ff77ca11d39ba8d2
+/singula-ai-alego-llm-pi-ai/use-this-package/change-configuration-at-runtime:
+  en: 92f554e1718614ca
+  zh: f17ed3ad3e5d28e2
+/singula-ai-alego-llm-pi-ai/use-this-package/discover-models-from-endpoints:
+  en: 6619e8cfe7555c73
+  zh: b2f80c25acb81cf8
+/singula-ai-alego-llm-pi-ai/use-this-package/failures-and-recovery:
+  en: 65bcc3b0db3f98e5
+  zh: 3c994e74894bea52
+/singula-ai-alego-llm-pi-ai/understand-the-implementation:
+  en: 1598ac8a8bb9b6bf
+  zh: fdd089c5ae7722cd
+/singula-ai-alego-llm-pi-ai/understand-the-implementation/design-philosophy:
+  en: 280416de410744bb
+  zh: 64cbfc0902e3f436
+/singula-ai-alego-llm-pi-ai/understand-the-implementation/source-map:
+  en: 20afee7bbfb332ca
+  zh: b080cf4e97094366
+/singula-ai-alego-llm-pi-ai/understand-the-implementation/registration-and-directory:
+  en: 4da379c9be65c18a
+  zh: fd305d4bd3dfa452
+/singula-ai-alego-llm-pi-ai/understand-the-implementation/replay-and-vocabulary:
+  en: ad7f22c0eba06eb0
+  zh: 451ec5836425d7a1
+/singula-ai-alego-llm-pi-ai/further-exploration:
+  en: c0f8ff72f2a9a9c9
+  zh: d80f11b47589ce39
+/singula-ai-alego-llm-pi-ai/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-llm-pi-ai/model-experience/provider-request-through-pi-ai:
+  en: e7348db3f7115960
+  zh: 5fd5fb09d7d09982
+/singula-ai-alego-llm-pi-ai/model-experience/provider-request-through-pi-ai/what-the-model-sees:
+  en: c3f6eb4a31b8ca0e
+  zh: 20021e815a9a5677
+/singula-ai-alego-llm-pi-ai/model-experience/provider-request-through-pi-ai/token-effect:
+  en: 820221e8ae37aa61
+  zh: 7e6ff4db10067fc0
+/singula-ai-alego-llm-pi-ai/model-experience/provider-request-through-pi-ai/kv-cache-effect:
+  en: 8c1f842a95ab46fb
+  zh: d6dd124c82f1d96b
+/singula-ai-alego-llm-pi-ai/model-experience/provider-response:
+  en: 802d7ff60a1d03ff
+  zh: c41c56e28f3e8680
+/singula-ai-alego-llm-pi-ai/model-experience/provider-response/what-the-model-sees:
+  en: 9b7d6b95ec2c4351
+  zh: 356ac01aef9e8bed
+/singula-ai-alego-llm-pi-ai/model-experience/provider-response/token-effect:
+  en: f002b21d0f4c3df0
+  zh: 388c8ed4676ed1af
+/singula-ai-alego-llm-pi-ai/model-experience/provider-response/kv-cache-effect:
+  en: b6bd570c0159ba08
+  zh: 7d2d91eea6a8d830
+/singula-ai-alego-llm-pi-ai/known-limitations-and-deferred-work:
+  en: b72e581a744cf2ab
+  zh: d3b0bc7c8ec716fe
+/singula-ai-alego-llm-pi-ai/known-limitations-and-deferred-work/dev-note:
+  en: be67a4547256efbf
+  zh: 8c32799683ba292c

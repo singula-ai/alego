@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-attachment-local",
   "description": "Private content-addressed ALEGO_HOME attachment storage",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -21,17 +21,18 @@
   "files": ["lib/index.js", "lib/types/**/*.d.ts"],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-attachment": "workspace:^",
-    "@singula-ai/alego-home-paths": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-attachment": "workspace:*",
+    "@singula-ai/alego-home-paths": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "dependencies": {
-    "@singula-ai/schemastery": "workspace:^",
+    "@singula-ai/alego-lazy-require": "workspace:*",
+    "@singula-ai/schemastery": "workspace:~",
     "sharp": "^0.35.3"
   },
   "devDependencies": {
-    "@singula-ai/alego-attachment": "workspace:^",
-    "@singula-ai/alego-home-paths": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-attachment": "workspace:*",
+    "@singula-ai/alego-home-paths": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

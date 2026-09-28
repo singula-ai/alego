@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-06-node-engine-floor.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-06-node-engine-floor.md
-2026-07-06-node-engine-floor.md: 8a5cebd0d47c8910703e28e487d8bb1ceafa01ef
-2026-07-06-node-engine-floor.zh.md: 3e1351e46488e31b4f474f2e573cf06768551caa
+/agent-note-raise-the-node-lts-engine-floor-to-22-19:
+  en: c3fd782fca9d31f6
+  zh: f16f00859d209f33
+/agent-note-raise-the-node-lts-engine-floor-to-22-19/problem:
+  en: d7bf1b1699ce0dc8
+  zh: f10dfd0e4787bb44
+/agent-note-raise-the-node-lts-engine-floor-to-22-19/decision:
+  en: 8b2f77fac7e790bd
+  zh: 0d5dd3ed32c37c84
+/agent-note-raise-the-node-lts-engine-floor-to-22-19/consequences:
+  en: 0b9fbe932d9a8b1f
+  zh: 642e19d06caecef2
+/agent-note-raise-the-node-lts-engine-floor-to-22-19/alternatives-considered:
+  en: c433389b2064eaf9
+  zh: 57de2af812def1c4

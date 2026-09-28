@@ -12,10 +12,12 @@
  * strings, and it models global+shadow named registries — this is a
  * per-session singleton with no global layer to merge.
  */
+import type {} from '@singula-ai/alego-client-product-analytics/client'
 import { Service } from '@singula-ai/cordis'
 import type { Context } from '@singula-ai/cordis'
-import type {} from '@singula-ai/alego-api-session-controller/client'
+import type { SessionBinding } from '@singula-ai/alego-api-session-controller/client'
 import type { SessionId } from '@singula-ai/alego-session/types'
+import { WeakMapWithValues } from '@singula-ai/alego-util-values'
 import { ModelCatalogDirectory } from './catalog.ts'
 import { ModelDirectory } from './directory.ts'
 
@@ -27,35 +29,31 @@ declare module '@singula-ai/cordis' {
 
 /** Live mutable state in one holder (service methods run behind the caller-ctx tracker). */
 interface LiveState {
-  /** Per-session directories; entries are deleted by their scope disposer. */
-  readonly directories: Map<SessionId, ModelDirectory>
+  /** Directories keyed by Client binding, removed by their scope disposer. */
+  readonly directories: WeakMapWithValues<SessionBinding, ModelDirectory>
 }
 
 /** The `ctx.modelDirectories` session model-selection service. */
 export class ModelDirectoryResolver extends Service {
   static inject = ['sessions', 'remote', 'remote.session']
 
-  private readonly live: LiveState = { directories: new Map() }
+  private readonly live: LiveState = { directories: new WeakMapWithValues() }
   private readonly catalog: ModelCatalogDirectory
-
-  /** Localized composer-block copy; this plugin owns the string it raises. */
-  private readonly blockReason: () => string
 
   /**
    * @param ctx - owning root context (the service registers itself as `models`).
-   * @param config - the bound translator for this plugin's own dictionary.
    */
-  constructor(ctx: Context, config: { blockReason: () => string }) {
+  constructor(ctx: Context) {
     super(ctx, 'modelDirectories')
-    this.blockReason = config.blockReason
     this.catalog = new ModelCatalogDirectory(ctx)
     void this.catalog.load().catch(() => { /* selectors expose the shared error */ })
     ctx.on('connection/reset', () => {
       this.catalog.resetGeneration()
-      for (const directory of this.live.directories.values()) directory.resetConnected()
+      for (const directory of this.live.directories.values) directory.resetConnected()
     })
     ctx.remote.$on('llm/adapters-updated', () => { this.catalog.refresh() })
     ctx.remote.$on('settings/document-updated', () => { this.catalog.refresh() })
+    ctx.remote.$on('credentials/record-updated', () => { this.catalog.refresh() })
     ctx.remote.$on('credentials/reference-updated', () => { this.catalog.refresh() })
   }
 
@@ -67,45 +65,26 @@ export class ModelDirectoryResolver extends Service {
    */
   directoryFor(sessionId: SessionId): ModelDirectory {
     const { live } = this
-    const existing = live.directories.get(sessionId)
-    if (existing !== undefined) return existing
     const sessions = this.ctx.sessions
     const actx = sessions.scope(sessionId)
     if (actx === undefined) throw new Error(`ui-model-selection: session "${String(sessionId)}" resolved no scope`)
     const binding = sessions.binding(sessionId)
     if (binding === undefined) throw new Error(`ui-model-selection: session "${String(sessionId)}" resolved no binding`)
+    const existing = live.directories.get(binding)
+    if (existing !== undefined) return existing
     const directory = new ModelDirectory(
       this.ctx.remote.session,
       sessionId,
       () => sessions.subagentAddress(sessionId) === undefined,
       this.catalog,
       binding.session.projections.faceOf('modelSelection'),
+      () => binding.session.getSnapshot().blank,
+      (name, attributes) => this.ctx.get('productAnalytics')?.track(name, attributes),
     )
-    live.directories.set(sessionId, directory)
-    // The composer cannot read this plugin (the dependency runs one way), so
-    // the block is pushed: the Host says whether an adapter serves the
-    // session's route, and only a definite `false` makes the input inert.
-    // `null` — before the first load, or after one failed — must not, or a
-    // slow or unreachable Host would lock a working composer.
-    const conversation = this.ctx.get('conversation')
-    if (conversation !== undefined) {
-      const publish = (): void => {
-        conversation.blocks.set(sessionId, directory.store.getSnapshot().routable === false
-          ? { reason: this.blockReason() }
-          : undefined)
-      }
-      publish()
-      actx.effect(() => {
-        const stop = directory.store.subscribe(publish)
-        return () => {
-          stop()
-          conversation.blocks.set(sessionId, undefined)
-        }
-      }, 'ui-model-selection: composer block')
-    }
+    live.directories.set(binding, directory)
     actx.effect(() => () => {
       directory.dispose()
-      live.directories.delete(sessionId)
+      live.directories.delete(binding)
     }, 'ui-model-selection: session directory')
     return directory
   }

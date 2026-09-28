@@ -1,6 +1,43 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-09-04-right-sidebar-docking-infrastructure.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-09-04-right-sidebar-docking-infrastructure.md
-2026-09-04-right-sidebar-docking-infrastructure.md: 250500b865aa0aaf03bcd0077f32d4bf6e26690b
-2026-09-04-right-sidebar-docking-infrastructure.zh.md: 0f950199d672572418eeb07c73b3f123372ef7f4
+/agent-note-right-sidebar-docking-infrastructure:
+  en: 59b8183f3485be16
+  zh: d2246bc6ae2471b0
+/agent-note-right-sidebar-docking-infrastructure/problem:
+  en: dae256ae605900f2
+  zh: 11e9c51126ad836c
+/agent-note-right-sidebar-docking-infrastructure/decision:
+  en: ed5a77a135c2f0b4
+  zh: 353f4abf2f6253c6
+/agent-note-right-sidebar-docking-infrastructure/decision/package-topology:
+  en: f0dcf719ba038e97
+  zh: a3de6650970a9110
+/agent-note-right-sidebar-docking-infrastructure/decision/layout-engine:
+  en: af79bc03cd8e8f72
+  zh: 88145221570301bf
+/agent-note-right-sidebar-docking-infrastructure/decision/the-frame-s-right-column:
+  en: 3554954f432bf2c4
+  zh: 8d3d620b5ec078c0
+/agent-note-right-sidebar-docking-infrastructure/decision/state:
+  en: c0200a8ba4e9f998
+  zh: 883cd4bcd7e7ffa7
+/agent-note-right-sidebar-docking-infrastructure/decision/beyond-the-surface:
+  en: c6f0b1003f6a11a1
+  zh: bcd8d798d47391f5
+/agent-note-right-sidebar-docking-infrastructure/decision/entry-points-and-removals:
+  en: 9e116577aad8eb0b
+  zh: 1b06f6e1c265f784
+/agent-note-right-sidebar-docking-infrastructure/alternatives-considered:
+  en: 6569babd25fc0599
+  zh: f9d93c937b2cad60
+/agent-note-right-sidebar-docking-infrastructure/consequences:
+  en: deb3f1a934c49958
+  zh: 040de05a3c602858
+/agent-note-right-sidebar-docking-infrastructure/testing:
+  en: c7ca930dede9f819
+  zh: 44c76a4faefe7268
+/agent-note-right-sidebar-docking-infrastructure/deferred:
+  en: 6c2cd149c6ecf2b0
+  zh: b2673dee64de6bd6

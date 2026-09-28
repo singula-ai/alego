@@ -1,6 +1,58 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/host/directory-picker/README.md
-README.md: 8f20629e1d9e2521eea4783b65b019b3a505453a
-README.zh.md: a7fab5525a78e1b68a440dcaa853169ad10ccc3b
+/:
+  en: 12d81f579b3578c5
+  zh: 31ceb9bec2a62864
+/singula-ai-alego-host-directory-picker:
+  en: dcf3fff2be134ff6
+  zh: eca18c2f459e9288
+/singula-ai-alego-host-directory-picker/summary:
+  en: eccb4c3b89bf1072
+  zh: 97f245651d77ec7c
+/singula-ai-alego-host-directory-picker/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-host-directory-picker/use-this-package:
+  en: 05f272a3dc5484cb
+  zh: 0cc21b2d26fc0ff0
+/singula-ai-alego-host-directory-picker/use-this-package/choosing-a-backend:
+  en: 25e9922691c2d0a3
+  zh: f7d5ebfbd7a4cdd4
+/singula-ai-alego-host-directory-picker/use-this-package/the-capability-contract:
+  en: cb6a87e5fa0dcda6
+  zh: 721c2c9271f633df
+/singula-ai-alego-host-directory-picker/use-this-package/what-rows-carry:
+  en: 9842d42847a8240f
+  zh: e3bba4ee8075e6bc
+/singula-ai-alego-host-directory-picker/understand-the-implementation:
+  en: 42b15ac6321706aa
+  zh: 4ed0861911abaf5d
+/singula-ai-alego-host-directory-picker/understand-the-implementation/design-concept:
+  en: 83c5f6025b89178a
+  zh: 8e7c011376abef02
+/singula-ai-alego-host-directory-picker/understand-the-implementation/the-merge-extensible-vocabulary:
+  en: 3a5018ce8b2b8a6f
+  zh: 6d27549330773627
+/singula-ai-alego-host-directory-picker/understand-the-implementation/source-map:
+  en: 742ee37fe9c70d93
+  zh: 93f0371cc6ec6dae
+/singula-ai-alego-host-directory-picker/understand-the-implementation/failure-vocabulary:
+  en: 410862f3762b441a
+  zh: f15318e549388618
+/singula-ai-alego-host-directory-picker/further-exploration:
+  en: 01b17a77f013861c
+  zh: 572e935d708cd344
+/singula-ai-alego-host-directory-picker/model-experience:
+  en: 90a8149ae911c396
+  zh: 887d434607099162
+/singula-ai-alego-host-directory-picker/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: de54f3467ef3b9be
+/singula-ai-alego-host-directory-picker/known-limitations-and-deferred-work:
+  en: 8c2c5c2dcb2bd5ec
+  zh: 17005c66ae6029ad
+/singula-ai-alego-host-directory-picker/known-limitations-and-deferred-work/dev-note:
+  en: 9a5e8587ac555934
+  zh: b5bb3a7d1702b055

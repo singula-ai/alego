@@ -1,7 +1,7 @@
 /** V2 content admission refuses entire generations without publishing a valid prefix. */
 
 import { Context } from '@singula-ai/cordis'
-import { SessionId } from '@singula-ai/alego-session'
+import { SESSION_FORMAT_VERSION, SessionId } from '@singula-ai/alego-session'
 import type { SessionFormatJsonObject } from '@singula-ai/alego-session-format'
 import { SessionFormatUnsupportedError } from '@singula-ai/alego-session-persistence'
 import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
@@ -198,7 +198,7 @@ describe.each(['none', 'zstd'] as const)('V2 admitted content publication (%s)',
     const reader = await ctx.sessionPersistence.open(id, 'read')
     const restored = await (async () => {
       try {
-        expect(reader.header.version).toBe(3)
+        expect(reader.header.version).toBe(SESSION_FORMAT_VERSION)
         return await reader.read()
       } finally { await reader.close() }
     })()
@@ -219,7 +219,7 @@ describe.each(['none', 'zstd'] as const)('V2 admitted content publication (%s)',
       expect((await writer.read()).events).toEqual(restored.events)
       await writer.flush()
     } finally { await writer.close() }
-    const successor = generationLogPath(root!, undefined, id, 3, compression)
+    const successor = generationLogPath(root!, undefined, id, SESSION_FORMAT_VERSION, compression)
     const published = await readFile(successor)
     let decoded = published
     if (compression === 'zstd') {
@@ -237,7 +237,7 @@ describe.each(['none', 'zstd'] as const)('V2 admitted content publication (%s)',
     const fresh = await mount(compression)
     const reopened = await fresh.sessionPersistence.open(id, 'read')
     try {
-      expect(reopened.header.version).toBe(3)
+      expect(reopened.header.version).toBe(SESSION_FORMAT_VERSION)
       expect((await reopened.read()).events).toEqual(restored.events)
     } finally { await reopened.close() }
     expect(await observe(path)).toEqual(original)

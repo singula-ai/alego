@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-16-desktop-release-version-derivation.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-09-16-desktop-release-version-derivation.md
+/agent-note-derive-desktop-test-versions-from-the-complete-alego-version:
+  en: 1cf4abae6eaaa40a
+  zh: eb07feae379cfaac
+/agent-note-derive-desktop-test-versions-from-the-complete-alego-version/problem:
+  en: 37c241695923c60f
+  zh: 7a54653bad18ee07
+/agent-note-derive-desktop-test-versions-from-the-complete-alego-version/decision:
+  en: 8af29ff585bbe73f
+  zh: c02e36b319569373
+/agent-note-derive-desktop-test-versions-from-the-complete-alego-version/alternatives-considered:
+  en: cf86267e11a4e534
+  zh: daa4fb017b2725a5
+/agent-note-derive-desktop-test-versions-from-the-complete-alego-version/consequences:
+  en: ce62d7f641c0cd45
+  zh: 08b05c154f38d816

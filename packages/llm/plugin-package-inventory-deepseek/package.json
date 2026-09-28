@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-plugin-package-inventory-deepseek",
   "description": "Active Loader-backed plugin package inventory for official DeepSeek LLM API requests",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -32,31 +32,32 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/schemastery": "workspace:^"
+    "@singula-ai/alego-brand": "workspace:*",
+    "@singula-ai/schemastery": "workspace:~"
   },
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/cordis-plugin-loader": "workspace:^",
-    "@singula-ai/alego-agent": "workspace:^",
-    "@singula-ai/alego-agent-presets": "workspace:^",
-    "@singula-ai/alego-deepseek-llm-api-extensions": "workspace:^",
-    "@singula-ai/alego-session": "workspace:^"
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-agent-preset-registry": "workspace:*",
+    "@singula-ai/alego-deepseek-llm-api-extensions": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@singula-ai/alego-agent-presets": {
+    "@singula-ai/alego-agent-preset-registry": {
       "optional": true
     }
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/cordis-plugin-include": "workspace:^",
-    "@singula-ai/cordis-plugin-loader": "workspace:^",
-    "@singula-ai/alego-agent": "workspace:^",
-    "@singula-ai/alego-agent-presets": "workspace:^",
-    "@singula-ai/alego-deepseek-llm-api-extensions": "workspace:^",
-    "@singula-ai/alego-scope": "workspace:^",
-    "@singula-ai/alego-session": "workspace:^",
-    "@singula-ai/alego-session-projection": "workspace:^"
+    "@singula-ai/alego-app-boot": "workspace:*",
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/cordis-plugin-include": "workspace:~",
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-agent-preset-registry": "workspace:*",
+    "@singula-ai/alego-deepseek-llm-api-extensions": "workspace:*",
+    "@singula-ai/alego-scope": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*",
+    "@singula-ai/alego-session-projection": "workspace:*"
   }
 }

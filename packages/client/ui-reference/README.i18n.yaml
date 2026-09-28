@@ -1,6 +1,49 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-reference/README.md
-README.md: 86fceb10b8c017f913c4f3586cd0c2e3f74480fa
-README.zh.md: c073cb32fcff1cd94e14c2b86c8f926f9f0b4667
+/:
+  en: 891fa9f998222b74
+  zh: 5eed64a6df09c534
+/singula-ai-alego-client-ui-reference:
+  en: 953164c4a2510431
+  zh: 29b428d1f7eaf249
+/singula-ai-alego-client-ui-reference/summary:
+  en: 2313e0bf2d421504
+  zh: 855a58986059f8c2
+/singula-ai-alego-client-ui-reference/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-client-ui-reference/use-this-package:
+  en: 779a9a534eaad38b
+  zh: 3dd159a2c35702d6
+/singula-ai-alego-client-ui-reference/use-this-package/what-a-pick-inserts:
+  en: 94d3288c664cc62e
+  zh: 3089c130dd93d9c4
+/singula-ai-alego-client-ui-reference/use-this-package/failure-behavior:
+  en: 228ee6f4b81d96a7
+  zh: e1c960c3f5b25317
+/singula-ai-alego-client-ui-reference/understand-the-implementation:
+  en: dbfe93987c800112
+  zh: 200d477cc8cd8a1a
+/singula-ai-alego-client-ui-reference/understand-the-implementation/candidate-flow:
+  en: 6c77da1e946f72e1
+  zh: b7b8e1e1d4f5a102
+/singula-ai-alego-client-ui-reference/understand-the-implementation/serialization:
+  en: 01bbc021d62c0aca
+  zh: e58c5d2ec385d211
+/singula-ai-alego-client-ui-reference/further-exploration:
+  en: 110ce245f3f935d5
+  zh: d2b32ef600995fc5
+/singula-ai-alego-client-ui-reference/model-experience:
+  en: f7fa58a80d82d63a
+  zh: 8235157cbbbd18cf
+/singula-ai-alego-client-ui-reference/model-experience/kv-cache-effect:
+  en: ff23f8026f7c6050
+  zh: 6b0841800076bcd2
+/singula-ai-alego-client-ui-reference/known-limitations-and-deferred-work:
+  en: e79991a25b11e342
+  zh: 15064e8374c8e63d
+/singula-ai-alego-client-ui-reference/known-limitations-and-deferred-work/dev-note:
+  en: 80768071dca1786f
+  zh: a82f1ec9dcb368bd

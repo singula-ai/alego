@@ -1,5 +1,5 @@
 ---
-description: "Opt-in per-step clock context with the current time, browser zone, and elapsed time, for users and maintainers enabling or tuning the plugin."
+description: "Per-step clock context with the current time, browser zone, and elapsed time, for users and maintainers tuning the plugin."
 kind: "package-reference"
 ---
 
@@ -9,7 +9,7 @@ English | [中文](README.zh.md)
 
 ## Summary
 
-`alego-time-context` gives the model a clock: on eligible steps it appends a durable, source-attributed reading with the current time, the browser zone attached to the open request, and the elapsed time since the preceding model-visible message. It helps the model interpret otherwise-unqualified dates and times in the user's browser zone, and tells it to ask when zone provenance is mixed or missing. The plugin is opt-in: default compositions leave it disabled, and the Schedule Web overlay mounts it. A positive `refreshIntervalMs` reduces how often readings accumulate; omission or `0` injects at every eligible step.
+`alego-time-context` gives the model a clock: on eligible steps it appends a durable, source-attributed reading with the current time, the browser zone attached to the open request, and the elapsed time since the preceding model-visible message. It helps the model interpret otherwise-unqualified dates and times in the user's browser zone, and tells it to ask when current-turn browser zones are mixed or missing. The shipped Web composition carries no row for it; the optional `@singula-ai/alego-experimental-schedule-bundle` inserts and mounts it with Schedule from the Plugins page. Readings default to a 10-minute minimum interval; `refreshIntervalMs: 0` injects at every eligible step.
 
 ## Table of Contents
 
@@ -33,7 +33,7 @@ Each injected reading has three lines: an ISO-shaped timestamp with numeric offs
 
 ### Configuration
 
-The minimal mount needs no configuration. A positive `refreshIntervalMs` suppresses injections that fall within that many milliseconds of the latest one; omission or `0` injects at every eligible entering pre-step whose signal is not already aborted.
+The minimal mount needs no configuration. A positive `refreshIntervalMs` suppresses injections that fall within that many milliseconds of the latest one; omission uses 600000 ms (10 minutes), while `0` injects at every eligible entering pre-step whose signal is not already aborted.
 
 ```yaml
 - name: '@singula-ai/alego-time-context'
@@ -44,13 +44,13 @@ The minimal mount needs no configuration. A positive `refreshIntervalMs` suppres
 | Field | Default | Meaning |
 |---|---|---|
 | `timeZone` | process zone | Fallback display zone when the open turn has no unique browser zone |
-| `refreshIntervalMs` | `0` (every eligible step) | Minimum milliseconds between durable injections in one session |
+| `refreshIntervalMs` | `600000` (10 minutes) | Minimum milliseconds between durable injections in one session |
 
 The generated [configuration catalog](../../../docs/config-catalog.md#singula-aialego-time-context) is the exhaustive source for every accepted field and its JSDoc.
 
 ### Choosing the zone
 
-When the open turn contains exactly one Host-validated browser zone, the timestamp is formatted in that request-local zone. With missing or mixed browser provenance, the configured `timeZone` formats the display; omitting it resolves the Node process zone once at plugin load, and every explicit fallback is validated through `Intl.DateTimeFormat`. The resolved instruction tells the model to interpret unqualified dates and times in the chosen zone, and to ask the user to clarify when provenance is mixed or unavailable.
+When the open turn contains exactly one Host-validated browser zone, the timestamp is formatted in that request-local zone. With missing or mixed browser-zone records, the configured `timeZone` formats the display; omitting it resolves the Node process zone once at plugin load, and every explicit fallback is validated through `Intl.DateTimeFormat`. The resolved instruction tells the model to interpret unqualified dates and times in the chosen zone, and to ask the user to clarify when those records are mixed or unavailable.
 
 -----
 
@@ -121,7 +121,7 @@ Elapsed since the preceding step context: <duration-or-unavailable>.
 
 #### Token effect
 
-Each reading accumulates until compaction shadows it. A positive interval reduces additions; omission or `0` adds one at every eligible preparation attempt.
+Each reading accumulates until compaction shadows it. A positive interval reduces additions; `0` adds one at every eligible preparation attempt.
 
 #### KV Cache effect
 
@@ -134,11 +134,11 @@ Append-only; newly visible content follows the reusable request prefix and does 
 
 These limits define when clock context is a poor fit. They are current package constraints.
 
-- **Prompt provenance only** — browser-zone context guides natural-language interpretation but does not silently supply another tool's required zone field.
+- **Prompt guidance only** — browser-zone context guides natural-language interpretation but does not silently supply another tool's required zone field.
 - **Mixed turns ask** — if one open turn contains prompts from different browser zones, the model is told to clarify rather than guess which one owns an unqualified time.
-- **Fallback is not user authority** — the configured or process zone formats the clock when browser provenance is missing or mixed, but the model-facing policy still says to clarify.
+- **Fallback is not user authority** — the configured or process zone formats the clock when current-turn browser zones are missing or mixed, but the model-facing policy still says to clarify.
 - **Whole-second display** — timestamps and durations omit sub-second precision even though durable event times retain milliseconds.
-- **History cost between compactions** — omission or `0` retains one reading for every eligible attempt; a positive interval reduces but does not eliminate this cost and may leave a later request without fresh browser-zone guidance.
+- **History cost between compactions** — `0` retains one reading for every eligible attempt; a positive interval reduces but does not eliminate this cost and may leave a later request without fresh browser-zone guidance.
 
 <a id="dev-note"></a>
 ### Dev Note

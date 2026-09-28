@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-12-mcp-sdk-protocol-negotiation.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-09-12-mcp-sdk-protocol-negotiation.md
+/agent-note-mcp-sdk-protocol-negotiation:
+  en: 57a8570711316a14
+  zh: 49dd5ee48ef4b5b9
+/agent-note-mcp-sdk-protocol-negotiation/problem:
+  en: bd614e17c62d137e
+  zh: ee71fdcd310a9592
+/agent-note-mcp-sdk-protocol-negotiation/decision:
+  en: bcb319964a303e8f
+  zh: 1a613a3b7f2ade1a
+/agent-note-mcp-sdk-protocol-negotiation/alternatives-considered:
+  en: 1fba2ebdcc100c37
+  zh: 45c384641d3b0300
+/agent-note-mcp-sdk-protocol-negotiation/consequences:
+  en: 1a50179c0254517c
+  zh: 046e4f72bfc2ea89

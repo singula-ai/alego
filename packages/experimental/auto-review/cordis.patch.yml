@@ -1,0 +1,3 @@
+- insert:
+    - id: auto-review
+      name: '@singula-ai/alego-experimental-auto-review'

@@ -3,7 +3,7 @@
 # deterministic test composition and raw persistence needed for recording.
 
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   config:
     thinking: enabled
     reasoningEffort: max
@@ -78,3 +78,7 @@
       name: '@singula-ai/alego-hooks-codex'
       config:
         configPath: ./codex-hooks.json
+
+- id: session-log-deepseek
+  config:
+    enabled: false

@@ -4,7 +4,7 @@ import {
   createClientModuleSystem, parseBootManifest,
   type ClientBundleRegistration, type ClientModuleLoader, type ClientModuleLoaderTarget, type WebBootEntry, type WebBootGraph,
 } from '@singula-ai/alego-client-modules/client'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, onTestFinished, vi } from 'vitest'
 import { assertEntriesActive, bootClient, type EntryStateLabel } from '../src/boot-client.ts'
 import { FIBER_STATE } from '../src/loader-status.ts'
 
@@ -77,17 +77,21 @@ describe('bootClient', () => {
     await ctx.fiber.dispose()
   })
 
-  it('surfaces the Loader import error for a row that is neither seeded nor a graph row', async () => {
+  it('reports and logs an import failure for a row that is neither seeded nor a graph row', async () => {
     const { modules } = modulesOf(graphOf(['seeded']), { seeded: { apply: () => {} } })
     const manifest = parseBootManifest(graphOf(['ghost']))
     const ctx = new Context()
+    onTestFinished(() => ctx.fiber.dispose())
+    const error = vi.spyOn(ctx.logger, 'error').mockImplementation(() => {})
+    onTestFinished(() => { error.mockRestore() })
     const sink = stateSink()
 
     await expect(bootClient({ ctx, modules, manifest, onEntryState: sink.onEntryState })).rejects.toThrow(
-      /failed to import loader entry \S+ \(ghost\): client-modules: cannot resolve/,
+      'web boot: 1 entry did not activate\nghost: import failed (see console for the import error)',
     )
-    expect(sink.states.get('ghost')).toEqual(['loading'])
-    await ctx.fiber.dispose()
+    expect(sink.states.get('ghost')).toEqual(['loading', 'failed'])
+    expect(error).toHaveBeenCalledOnce()
+    expect(error.mock.calls[0]?.[0]).toHaveProperty('message', expect.stringContaining('client-modules: cannot resolve'))
   })
 })
 
@@ -106,8 +110,10 @@ describe('assertEntriesActive', () => {
     } as unknown as Context
   }
 
+  const silent = { importError: () => undefined }
+
   it('passes when every entry is active', () => {
-    expect(() => { assertEntriesActive(auditCtx([{ name: 'a', fiber: { state: FIBER_STATE.ACTIVE, inject: {} } }])) }).not.toThrow()
+    expect(() => { assertEntriesActive(auditCtx([{ name: 'a', fiber: { state: FIBER_STATE.ACTIVE, inject: {} } }]), silent) }).not.toThrow()
   })
 
   it('names import failures, missing services, and other non-active states', () => {
@@ -118,7 +124,7 @@ describe('assertEntriesActive', () => {
       { name: 'broken', fiber: { state: FIBER_STATE.FAILED, inject: {} } },
     ], { present: {} })
 
-    expect(() => { assertEntriesActive(ctx) }).toThrow([
+    expect(() => { assertEntriesActive(ctx, silent) }).toThrow([
       'web boot: 4 entries did not activate',
       'lost: import failed (see console for the import error)',
       'waiting: pending (waiting for services: a, b)',
@@ -128,6 +134,16 @@ describe('assertEntriesActive', () => {
   })
 
   it('uses the singular form for one failing entry', () => {
-    expect(() => { assertEntriesActive(auditCtx([{ name: 'lost' }])) }).toThrow('web boot: 1 entry did not activate\n')
+    expect(() => { assertEntriesActive(auditCtx([{ name: 'lost' }]), silent) }).toThrow('web boot: 1 entry did not activate\n')
+  })
+
+  it('names the recorded import error of a fiberless entry when the module system is supplied', () => {
+    const recorded = new Map([['lost', new Error('client-modules: could not load "lost": plugins/??lost/client.js&rev=0: bundle script failed to load')]])
+    const modules = { importError: (id: string) => recorded.get(id) }
+    expect(() => { assertEntriesActive(auditCtx([{ name: 'lost' }, { name: 'quiet' }]), modules) }).toThrow([
+      'web boot: 2 entries did not activate',
+      'lost: import failed: client-modules: could not load "lost": plugins/??lost/client.js&rev=0: bundle script failed to load',
+      'quiet: import failed (see console for the import error)',
+    ].join('\n'))
   })
 })

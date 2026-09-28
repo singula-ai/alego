@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-05-windows-jsonl-durable-publish.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-05-windows-jsonl-durable-publish.md
-2026-07-05-windows-jsonl-durable-publish.md: 5e2de23b010f4fba4ca1c3b73279fee1fa30ce3f
-2026-07-05-windows-jsonl-durable-publish.zh.md: 292d70429a91b38213dadce96a4463244aa14f70
+/agent-note-windows-native-durable-jsonl-publication:
+  en: 7a9e9b5492cee8e3
+  zh: a77224ddb002b2d8
+/agent-note-windows-native-durable-jsonl-publication/problem:
+  en: 74463867a94deed4
+  zh: 45e557f4587c3067
+/agent-note-windows-native-durable-jsonl-publication/decision:
+  en: 022817bd0aa0b803
+  zh: 4b9660307e6161b6
+/agent-note-windows-native-durable-jsonl-publication/alternatives-considered:
+  en: 83d5bf5781f89e29
+  zh: 068835993789e09d
+/agent-note-windows-native-durable-jsonl-publication/consequences:
+  en: 7f3391b0bdb0592e
+  zh: fa162d7463f44bd0

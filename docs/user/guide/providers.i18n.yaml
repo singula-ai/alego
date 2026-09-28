@@ -1,6 +1,37 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for providers.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/user/guide/providers.md
-providers.md: 6cbaec0de4788f4950d452ace05370d6a12b12d4
-providers.zh.md: bd5c8d1baf74071fc0a9b3ac00cb2eaffa243649
+/configure-models:
+  en: 1fb15fd0b5b0a341
+  zh: 67b93ebfff1ff177
+/configure-models/configure-deepseek:
+  en: 850de50f2f9b9dcc
+  zh: fb1e7621353a8b81
+/configure-models/add-a-third-party-provider:
+  en: 896c69d896192c70
+  zh: cf94d0f5eb278a7c
+/configure-models/add-a-custom-model-api:
+  en: 17867305a3e1b52a
+  zh: 876fedf1f6f563e4
+/configure-models/add-a-custom-model-api/discover-models:
+  en: 97318c5a115199ff
+  zh: 0c455e4232cf0265
+/configure-models/select-a-model:
+  en: 6a94264c99535caf
+  zh: f97bb0dc6a40c0d3
+/configure-models/advanced-configuration:
+  en: aebaabd02d729b77
+  zh: b6a549b18991d1cc
+/configure-models/advanced-configuration/image-input:
+  en: 94d72f6b32142e44
+  zh: bc666c9e4b24c10e
+/configure-models/advanced-configuration/reasoning-effort:
+  en: 57804be36313183a
+  zh: 065658b0d6ec8f7a
+/configure-models/advanced-configuration/request-compatibility:
+  en: 5606dd451db85859
+  zh: bfe8b3a2f4dc5896
+/configure-models/troubleshooting:
+  en: 0477cd6fa2772d6b
+  zh: 780619fe998bdef7

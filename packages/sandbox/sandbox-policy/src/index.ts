@@ -20,21 +20,22 @@
  * @module @singula-ai/alego-sandbox-policy
  */
 
-import { resolve as resolvePath } from 'node:path'
+import { isAbsolute } from 'node:path'
 import { Context, Service } from '@singula-ai/cordis'
 import { z as zod } from 'zod'
 import z from '@singula-ai/schemastery'
 import type {} from '@singula-ai/alego-agent'
-import { canonicalPath, type SandboxExecutionPolicy, type SandboxMode } from '@singula-ai/alego-sandbox'
+import type { SandboxExecutionPolicy, SandboxMode } from '@singula-ai/alego-sandbox'
 import type { Session } from '@singula-ai/alego-session'
 import type {} from '@singula-ai/alego-session-projection'
 import type {} from '@singula-ai/alego-system-prompt'
 
 export { SANDBOX_MODES, setSandboxMode } from './session-mode.ts'
 
-/** Resolve filesystem identity before lexical normalization can erase symlink-sensitive components. */
+/** Preserve execution-world spelling; enforcing providers resolve filesystem identity on their host. */
 function resolveWorkspaceRoot(path: string): string {
-  return resolvePath(canonicalPath(path))
+  if (!isAbsolute(path)) throw new Error('sandbox-policy: workspace root must be an absolute execution-world path')
+  return path
 }
 
 /** Render the policy without claiming which capabilities are mounted. */
@@ -71,7 +72,7 @@ export interface Config {
   /** File-sandbox mode a session starts from (default: `read-only`). */
   mode?: SandboxMode
   /**
-   * Fallback root for agentless calls and sessions without a cwd (default:
+   * Absolute fallback root for agentless calls and sessions without a cwd (default:
    * `process.cwd()`). Normal agent calls use their session cwd instead.
    */
   workspaceRoot?: string

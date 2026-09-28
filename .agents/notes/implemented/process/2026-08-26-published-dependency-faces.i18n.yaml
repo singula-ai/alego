@@ -1,6 +1,31 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-26-published-dependency-faces.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-08-26-published-dependency-faces.md
-2026-08-26-published-dependency-faces.md: 5c824fc41f7e6935b60f58dab67b9baf7d05937d
-2026-08-26-published-dependency-faces.zh.md: 2c1e9467528be54c88b4ee35a4fce057837ba194
+/agent-note-published-dependency-faces-and-bounded-peer-relays:
+  en: b7cbdd854c382c46
+  zh: 546f7c9935683f68
+/agent-note-published-dependency-faces-and-bounded-peer-relays/problem:
+  en: a8357e7e0735ad71
+  zh: 5217d99a4ef921c7
+/agent-note-published-dependency-faces-and-bounded-peer-relays/decision:
+  en: a15c7c13f167e5ac
+  zh: 63bcc2ef60c2f344
+/agent-note-published-dependency-faces-and-bounded-peer-relays/decision/package-selection:
+  en: 518e66bddaa8a19f
+  zh: a67d278796824e3b
+/agent-note-published-dependency-faces-and-bounded-peer-relays/decision/dependency-sections:
+  en: 839bae1884dbea60
+  zh: 2a642c26977d025b
+/agent-note-published-dependency-faces-and-bounded-peer-relays/decision/maintainer-workflow:
+  en: 6ad78190d2ce12f6
+  zh: 5da0a518d4c4b035
+/agent-note-published-dependency-faces-and-bounded-peer-relays/decision/performance-verification:
+  en: 925c7fb4d1f4a2f1
+  zh: 457818859ad65726
+/agent-note-published-dependency-faces-and-bounded-peer-relays/alternatives-considered:
+  en: ee87edc6ba0a6102
+  zh: 4736882c022ab622
+/agent-note-published-dependency-faces-and-bounded-peer-relays/consequences:
+  en: 70e475315e0898e2
+  zh: bcb54a35da49fc99

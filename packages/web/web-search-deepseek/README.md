@@ -9,7 +9,7 @@ English | [中文](README.zh.md)
 
 ## Summary
 
-With `alego-web-search-deepseek`, the harness searches the web through DeepSeek's native search using an existing `DEEPSEEK_API_KEY`. Choose it when a deployment wants DeepSeek native search and accepts that one search costs a full model turn in latency and tokens, because DeepSeek exposes no dedicated search endpoint. Results come from the structured search blocks DeepSeek returns, never from scraping text out of a reply. A missing credential fails the call with a structured error; a response without a search-result block fails loudly rather than degrading. The model-facing `web_search` tool lives in `alego-tool-web`.
+With `alego-web-search-deepseek`, the harness searches the web through DeepSeek's native search using the DeepSeek account sign-in or an existing `DEEPSEEK_API_KEY`. Choose it when a deployment wants DeepSeek native search and accepts that one search costs a full model turn in latency and tokens, because DeepSeek exposes no dedicated search endpoint. Results come from the structured search blocks DeepSeek returns, never from scraping text out of a reply. A missing credential fails the call with a structured error; a response without a search-result block fails loudly rather than degrading. The model-facing `web_search` tool lives in `alego-tool-web`.
 
 ## Table of Contents
 
@@ -29,11 +29,11 @@ Mount the provider in a composition that already loads the web service; it regis
 
 ### When to choose it
 
-Choose this backend when a deployment wants DeepSeek's native server-side web search and already holds a `DEEPSEEK_API_KEY` — the provider reuses that credential reference. One search is heavier than a dedicated retrieval endpoint: DeepSeek runs the search inside a full model turn, so expect one Messages call's latency and generated tokens per search, with up to `maxUses` server-side searches per request. Avoid it when per-search cost or latency dominates.
+Choose this backend when a deployment wants DeepSeek's native server-side web search and its users either sign in to a DeepSeek account or hold a `DEEPSEEK_API_KEY` — the provider reuses those credentials as [Authentication](#authentication) describes. One search is heavier than a dedicated retrieval endpoint: DeepSeek runs the search inside a full model turn, so expect one Messages call's latency and generated tokens per search, with up to `maxUses` server-side searches per request. Avoid it when per-search cost or latency dominates.
 
 ### Minimal configuration
 
-Load the web service and the provider; the key resolves from `ctx.credentials` when that service is mounted, otherwise from the process environment. The search endpoint uses the Anthropic-compatible base (`https://api.deepseek.com/anthropic/v1`), distinct from the chat-completions base the LLM adapter uses — never reuse `$DEEPSEEK_BASE_URL`.
+Load the web service and the provider; the key resolves from `ctx.credentials` when that service is mounted, otherwise from the process environment. The auxiliary search call has its own endpoint setting and uses the Anthropic-compatible base `https://api.deepseek.com/anthropic/v1`, with `/messages` appended. It reads `$DEEPSEEK_SEARCH_BASE_URL`, independently of the conversation adapter’s `$DEEPSEEK_BASE_URL`.
 
 ```yaml
 - name: '@singula-ai/alego-web'
@@ -45,15 +45,20 @@ Load the web service and the provider; the key resolves from `ctx.credentials` w
 
 | Field | Default | Meaning |
 |---|---|---|
-| `apiKey` | omitted | Literal DeepSeek API key; prefer `apiKeyEnv` so no secret enters configuration. A non-empty literal wins |
-| `apiKeyEnv` | `DEEPSEEK_API_KEY` | Credential reference resolved for each search through `ctx.credentials`, or from the process environment when that service is absent. A missing value fails the call as `WEB_PROVIDER_CREDENTIAL_MISSING` |
+| `apiKey` | omitted | Literal DeepSeek API key; prefer `apiKeyEnv` so no secret enters configuration. A non-empty literal wins over `apiKeyEnv`; an account token wins over both |
+| `apiKeyEnv` | `DEEPSEEK_API_KEY` | Credential reference resolved for each search through `ctx.credentials`, or from the process environment when that service is absent. A search that needs an API key and finds none fails as `WEB_PROVIDER_CREDENTIAL_MISSING` |
 | `baseURL` | `https://api.deepseek.com/anthropic/v1` | Anthropic-compatible endpoint base; `/messages` is appended. Falls back to `$DEEPSEEK_SEARCH_BASE_URL`; an unparseable value makes the provider unavailable |
 | `model` | `deepseek-v4-flash` | Anthropic-format model name |
 | `apiVersion` | `2023-06-01` | `anthropic-version` header value |
 | `maxTokens` | `4096` | Positive-integer upper bound on generated tokens for the Messages request |
 | `maxUses` | `5` | Positive-integer maximum `web_search` server-tool uses per request |
 
-The generated [configuration catalog](../../../docs/config-catalog.md#singula-aialego-web-search-deepseek) is the exhaustive source for every accepted field and its JSDoc. The entry above is the base layer of the provider's Settings section; a user layer over it reaches the next search, because the provider projects the section per call rather than capturing it at registration.
+The generated [configuration catalog](../../../docs/config-catalog.md#singula-aialego-web-search-deepseek) lists every accepted field. Each search captures options from the live Config references.
+
+<a id="authentication"></a>
+### Authentication
+
+A search authenticates with the DeepSeek account when the latest `request/context` event of the initiating Session names the `deepseek-account` provider route and `ctx.deepseekAccount` resolves a token for the search endpoint. The account service resolves one only while signed in and only for its deployment-configured inference origin, `https://api.deepseek.com` by default. That search sends only `x-dsh-auth-token`, even when an API key is configured. Every other search, including a call without an initiating Session and a search whose endpoint has another origin, sends the API key as both `x-api-key` and `Authorization: Bearer`. An HTTP 401 response to an account-authenticated search fails as `WEB_PROVIDER_ERROR` with sign-in guidance instead of endpoint guidance, and leaves the account signed in.
 
 ### What a search returns
 
@@ -82,20 +87,20 @@ This section explains the design decisions behind the provider; the observable b
 The provider is built on two commitments:
 
 - **Structured blocks only.** DeepSeek runs the search server-side and returns structured `web_search_tool_result` blocks; the provider parses those blocks and never scrapes URLs out of model prose. In strict mode, a response with no such block throws `WEB_PROVIDER_ERROR` instead of degrading.
-- **One credential, resolved per search.** The provider reuses the `DEEPSEEK_API_KEY` reference (no new secret) but not `$DEEPSEEK_BASE_URL`, because search speaks the Anthropic-compatible Messages API. A mounted credentials service is authoritative; without one the provider falls back to the launching process environment. Resolving per call means a key stored or rotated in the Web Models page reaches the next search without a restart.
+- **Conversation credentials, resolved per search.** The provider adds no secret: a search from a Session on the account route uses that account's token, and every other search reuses the `DEEPSEEK_API_KEY` reference. The auxiliary request endpoint stays independent through `$DEEPSEEK_SEARCH_BASE_URL`. A mounted credentials service is authoritative; without one the provider falls back to the launching process environment. Resolving per call means a key stored or rotated in the Web Models page, or an account sign-in, reaches the next search without a restart.
 
 ### Source map
 
 | File | Role |
 |---|---|
-| [`src/index.ts`](src/index.ts) | Plugin entry: config schema, Settings section installation, per-search option projection |
+| [`src/index.ts`](src/index.ts) | Config schema and per-search option capture |
 | [`src/provider.ts`](src/provider.ts) | The `DeepSeekSearchProvider`: Messages request dispatch, block parsing, citation joining, credential resolution |
 | [`src/types.ts`](src/types.ts) | Anthropic wire types for the search response |
 | — | No runtime invariant companion is published; the package emits a pre-dispatch log event but owns no later authoritative dispatch event to relate it to. Exact envelope equality is pinned at the provider boundary instead. |
 
 ### Request flow
 
-Each search projects the current Settings section into provider options — endpoint, model, key reference, limits — then resolves the credential reference through `ctx.credentials` (or the environment), appends the log-only session event, and dispatches the Messages request with the native `web_search` server tool. The response's `web_search_tool_result` blocks become `sources[]`; `cited_text` entries from text blocks are joined to their URLs as snippets; results are deduplicated by URL; and the service enforces the requested source bound on the way back.
+Each search captures the current Config values into provider options — endpoint, model, key reference, limits — then asks `ctx.deepseekAccount` for a token when the initiating Session uses the account route, otherwise resolves the credential reference through `ctx.credentials` (or the environment), appends the log-only session event, and dispatches the Messages request with the native `web_search` server tool. The response's `web_search_tool_result` blocks become `sources[]`; `cited_text` entries from text blocks are joined to their URLs as snippets; results are deduplicated by URL; and the service enforces the requested source bound on the way back.
 
 </details>
 
@@ -136,7 +141,7 @@ Independent of the conversation request cache. The auxiliary instruction and nat
 
 #### What the model sees
 
-Through `alego-tool-web`, the conversation model sees deduplicated URLs, titles, dates, and citation snippets from structured search blocks; provider prose is not trusted as an answer. This provider's exact failures include the actionable missing-credential message, `DeepSeek search credential resolution failed: <error>`, and `DeepSeek search aborted`. Request, HTTP, native-search, and response-body failures append the resolved endpoint and the conditional configuration instruction described above. The consumer owns the error wrapper.
+Through `alego-tool-web`, the conversation model sees deduplicated URLs, titles, dates, and citation snippets from structured search blocks; provider prose is not trusted as an answer. This provider's exact failures include the actionable missing-credential message, which also names DeepSeek Account sign-in, `DeepSeek search credential resolution failed: <error>`, and `DeepSeek search aborted`. An HTTP 401 to an account-authenticated search appends an instruction to guide the user to sign in to DeepSeek again. Other request, HTTP, native-search, and response-body failures append the resolved endpoint and the conditional configuration instruction described above. The consumer owns the error wrapper.
 
 #### Token effect
 

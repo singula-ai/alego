@@ -1,6 +1,25 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/webhook/README.md
-README.md: e5f83aa7bc0a9781637b9e88490e07e10483c5c9
-README.zh.md: 634e6fd6dadd52fa732ff932667bcbe79e78ba57
+/:
+  en: e7b3118cbb4829c5
+  zh: 070341804eeb5513
+/webhook-verified-external-events-to-alego-sessions:
+  en: fe1898a6da1bb865
+  zh: be01d0377c781bbd
+/webhook-verified-external-events-to-alego-sessions/summary:
+  en: 297975121095f74a
+  zh: 9530dbf3c90d1ae0
+/webhook-verified-external-events-to-alego-sessions/table-of-contents:
+  en: 1eb35b015a6c423f
+  zh: a8a3dceee2c9e943
+/webhook-verified-external-events-to-alego-sessions/packages:
+  en: ce1646bce5170440
+  zh: 95f5553c5159414c
+/webhook-verified-external-events-to-alego-sessions/related-documentation:
+  en: b5049d22b43878e0
+  zh: 4d3917e0efc8d3d1
+/webhook-verified-external-events-to-alego-sessions/dev-note:
+  en: b75c8458928b72b9
+  zh: 003ba4e17b4b5269

@@ -1,7 +1,7 @@
 # Keyless both mode combines the runtime/registry changes with the
 # DeepSeek-to-replay swap in one profile patch.
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   disabled: true
 
 - id: agent-default-model

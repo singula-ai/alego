@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-09-27-pwsh-prompt-tail-grace.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-09-27-pwsh-prompt-tail-grace.md
+/agent-note-a-seen-prompt-marker-keeps-its-own-tail-grace:
+  en: 8256fe8de45d88ba
+  zh: 18d17bd14ac136aa
+/agent-note-a-seen-prompt-marker-keeps-its-own-tail-grace/problem:
+  en: d8ed64620d28ccc7
+  zh: f1f12b9935c2a877
+/agent-note-a-seen-prompt-marker-keeps-its-own-tail-grace/decision:
+  en: f61aa66a0c54a895
+  zh: 6c684b4babcfa922
+/agent-note-a-seen-prompt-marker-keeps-its-own-tail-grace/alternatives-considered:
+  en: 21a9a19b76f42758
+  zh: 30a8f5425b59900d
+/agent-note-a-seen-prompt-marker-keeps-its-own-tail-grace/consequences:
+  en: b58904921286a1db
+  zh: a696c2954d86c04f
+/agent-note-a-seen-prompt-marker-keeps-its-own-tail-grace/testing:
+  en: 78253191eea198fa
+  zh: 32bdd6807ddc13a0

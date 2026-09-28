@@ -1,6 +1,6 @@
 # Keyless replay keeps the LSP composition intact and replaces only the model adapter.
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   disabled: true
 
 - insert:
@@ -31,3 +31,6 @@
 
 - id: timeout-policy
   name: '@singula-ai/alego-tool-call-timeout-policy'
+
+- id: plugin-package-inventory-deepseek
+  disabled: true

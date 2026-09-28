@@ -1,6 +1,79 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/fs/tool-str-replace-editor/README.md
-README.md: 03b7e145f4d88ebc48cdde6ba527c3ec2a106c71
-README.zh.md: 9e834f868e4e0a6e1dde56bdfc8ae8e22cf7e64b
+/:
+  en: 1d308889b00602e0
+  zh: 8858e4768891e79d
+/singula-ai-alego-tool-str-replace-editor:
+  en: 389528c18392c326
+  zh: d89735992f676abb
+/singula-ai-alego-tool-str-replace-editor/summary:
+  en: 6b16ff90868cf000
+  zh: c5fe66641bff1cee
+/singula-ai-alego-tool-str-replace-editor/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-tool-str-replace-editor/use-this-package:
+  en: 00b16ec00064922b
+  zh: 5e0f3e78f1bb4a29
+/singula-ai-alego-tool-str-replace-editor/use-this-package/minimal-composition:
+  en: db6e7d91ff7e0439
+  zh: 2ed4096f6c856e17
+/singula-ai-alego-tool-str-replace-editor/use-this-package/configuration:
+  en: e6860f1861cc0df8
+  zh: cd00d3c1a660b7c7
+/singula-ai-alego-tool-str-replace-editor/use-this-package/the-commands:
+  en: 554e8446946fbd96
+  zh: 3af12627c19a0111
+/singula-ai-alego-tool-str-replace-editor/use-this-package/failures-and-recovery:
+  en: 2b249fcb0b5621aa
+  zh: d172b3de43c337c4
+/singula-ai-alego-tool-str-replace-editor/understand-the-implementation:
+  en: b0b36a22cd4421eb
+  zh: db47ef5b71dd51df
+/singula-ai-alego-tool-str-replace-editor/understand-the-implementation/design-concept:
+  en: cce2bf460652cba4
+  zh: 1f4f1c1563c4c55c
+/singula-ai-alego-tool-str-replace-editor/understand-the-implementation/source-map:
+  en: 3f906cb8a23140e5
+  zh: 5d72b0f3244c29bc
+/singula-ai-alego-tool-str-replace-editor/understand-the-implementation/how-each-command-runs:
+  en: a866aa948afff207
+  zh: 65b0417597efc19c
+/singula-ai-alego-tool-str-replace-editor/further-exploration:
+  en: 6b90b9122060787c
+  zh: 03ac5927485c59b4
+/singula-ai-alego-tool-str-replace-editor/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-tool-str-replace-editor/model-experience/tool-schema:
+  en: e4c7376d4f29dbd5
+  zh: 6b7a9eaf69c9ea53
+/singula-ai-alego-tool-str-replace-editor/model-experience/tool-schema/what-the-model-sees:
+  en: f584560dd9c107b1
+  zh: 3c626022a1971a89
+/singula-ai-alego-tool-str-replace-editor/model-experience/tool-schema/token-effect:
+  en: b4009b2b48c27168
+  zh: f8692c0c87c7ce69
+/singula-ai-alego-tool-str-replace-editor/model-experience/tool-schema/kv-cache-effect:
+  en: 7d9323583a83cb95
+  zh: 726ba31a296c1b5e
+/singula-ai-alego-tool-str-replace-editor/model-experience/tool-results:
+  en: beaabb79f229692a
+  zh: 8573891441963be4
+/singula-ai-alego-tool-str-replace-editor/model-experience/tool-results/what-the-model-sees:
+  en: 2ce8dee1a9711311
+  zh: aed7d8e758710c1e
+/singula-ai-alego-tool-str-replace-editor/model-experience/tool-results/token-effect:
+  en: b60b4bccff75a5e3
+  zh: 100e97b019030507
+/singula-ai-alego-tool-str-replace-editor/model-experience/tool-results/kv-cache-effect:
+  en: ba6a48888c3361e5
+  zh: 30244b70b2122bd6
+/singula-ai-alego-tool-str-replace-editor/known-limitations-and-deferred-work:
+  en: bce77fc35b8a0140
+  zh: 48f227222bf5f3dc
+/singula-ai-alego-tool-str-replace-editor/known-limitations-and-deferred-work/dev-note:
+  en: 493672b381457d04
+  zh: d3e08ed16765a468

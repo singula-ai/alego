@@ -31,6 +31,7 @@
 
 import type {} from '@singula-ai/cordis'
 import type { AlegoClientManifest } from '@singula-ai/alego-package-manifest'
+import type { ClientEntries } from './entries.ts'
 import type { ClientModuleSystem } from './system.ts'
 
 declare module '@singula-ai/cordis' {
@@ -51,7 +52,10 @@ declare module '@singula-ai/cordis' {
 export interface WebBootEntry {
   /** Entry name == package name. */
   id: string
-  /** Revisioned single-resource combo endpoint used by HMR. */
+  /**
+   * Revisioned single-resource combo reference used by HMR. It is relative to
+   * the document, so the browser resolves it under whatever mount served the page.
+   */
   url: string
   /** Opaque plugin-artifact revision used for HMR cache busting. */
   rev: string
@@ -63,16 +67,16 @@ export interface WebBootEntry {
   external?: string[]
 }
 
-/** Initial scheduling phase for one content-addressed combo script. */
+/** Initial scheduling phase for one revisioned combo script. */
 export type WebBootBatchPhase = 'bootstrap' | 'application'
 
 /** One initial combo script; a scheduling phase may span several descriptors. */
 export interface WebBootBatch {
   /** Parser-blocking bootstrap or preloaded application scheduling. */
   phase: WebBootBatchPhase
-  /** Content-addressed combo script endpoint. */
+  /** Content-addressed combo script reference, document-relative like {@link WebBootEntry.url}. */
   url: string
-  /** Revision over the combined plugin script bytes and indexed source map. */
+  /** Revision derived from the ordered entry revisions. */
   rev: string
   /** Graph entry ids whose factories the script registers, in execution order. */
   entries: string[]
@@ -80,7 +84,7 @@ export interface WebBootBatch {
 
 /** The composed client entry graph the host injects as `window.__ALEGO_BOOT__`. */
 export interface WebBootGraph {
-  /** Consistency anchor over the whole graph (content + bundle hashes). */
+  /** Consistency anchor over the current entry and batch descriptors. */
   rev: string
   /**
    * Composed entries in module-graph order — a dynamic package row precedes
@@ -96,9 +100,9 @@ export interface WebBootGraph {
 export interface BootModuleRow {
   /** Entry name == package name (module-table key). */
   id: string
-  /** Revisioned single-resource combo endpoint used after HMR invalidation. */
+  /** Revisioned single-resource combo reference: the fallback when the row's batch fails and the reload target after HMR invalidation. */
   url: string
-  /** Content-addressed combo endpoint used before the first HMR invalidation. */
+  /** Content-addressed combo reference used before the first HMR invalidation. */
   initialUrl: string
   /** Opaque plugin-artifact revision used after HMR invalidation. */
   rev: string
@@ -301,16 +305,26 @@ export function parseBootManifest(wire: unknown): BootManifest {
   return { rev: graph.rev, modules, plugins }
 }
 
+/** Module resolver passed into a registered Client bundle factory. */
+export interface ClientBundleRequire {
+  /** Resolve a module-table dependency synchronously. */
+  (specifier: string): unknown
+  /** Load and resolve a package-local dynamic chunk asynchronously. */
+  async(specifier: string): Promise<unknown>
+}
+
 /** One client bundle's factory registration submitted through `window.__ModuleLoader__.load`. */
 export interface ClientBundleRegistration {
   /** Plugin id (package name) — the registration key; must match the graph row being executed. */
   id: string
+  /** Package-local chunk filename; absent for the package's `client.js` entry. */
+  chunk?: string
   /**
-   * Closure factory holding the whole bundle body: receives the synchronous
-   * require bound to the module table and returns the bundle's exports. Runs
-   * once, at materialization.
+   * Closure factory holding the whole bundle body: receives the module-table
+   * require whose `async` operation loads generated chunks, and returns the
+   * bundle's exports. The factory runs once, at materialization.
    */
-  factory: (require: (spec: string) => unknown) => Record<string, unknown>
+  factory: (require: ClientBundleRequire) => Record<string, unknown>
 }
 
 /** Inputs passed by the web entry when it creates the client module system. */
@@ -371,9 +385,11 @@ export interface ClientModuleRecord {
 export interface ClientModuleLoader {
   /** Discriminant against Node's internal loader shapes ('v1'/'v2'). */
   version: 'client'
-  /** Parsed Host boot graph shared with the web entry after module-system creation. */
+  /** Latest parsed Host graph, updated by live entry reconciliation. */
   manifest: BootManifest
-  /** Materialized-module registry: id → record. The governance-side read API for entry exports. */
+  /** Page-owned entry reconciliation, shared by boot, graph updates and HMR. */
+  entries: ClientEntries
+  /** Materialized-module registry: entry or package-local chunk id → record. */
   loadCache: Map<string, ClientModuleRecord>
   /**
    * Internal contract consumed by the vendored Loader's `tree.import`. Resolves
@@ -397,8 +413,17 @@ export interface ClientModuleLoader {
    */
   prefetch(id: string): Promise<void>
   /**
-   * Full reset of one non-bootstrap module: drop its registered factory and
-   * materialized record so the next prefetch/import loads its one-resource
+   * The last failure of {@link import} or {@link prefetch} for one graph row:
+   * transport, registration, dependency cascade, or factory execution. Cleared
+   * by a later success and by {@link invalidate}. The boot audit reads it to
+   * report why a Loader entry has no fiber.
+   * @param id - graph entry name.
+   * @returns the recorded failure, or `undefined` when the row never failed or succeeded since.
+   */
+  importError(id: string): Error | undefined
+  /**
+   * Full reset of one non-bootstrap package: drop its entry and chunk factories
+   * and materialized records so the next prefetch/import loads its one-resource
    * combo script rather than the initial multi-resource request. The bootstrap
    * module remains materialized.
    * @param id - entry name to invalidate.
@@ -410,7 +435,7 @@ export interface ClientModuleLoader {
 
 /** Internal construction inputs assembled by the modules bundle's bootstrap export. */
 export interface ClientModuleSystemOptions {
-  /** Parsed boot graph owned by the resulting module system. */
+  /** Boot graph validated by {@link parseBootManifest}, owned by the resulting module system. */
   manifest: BootManifest
   /** Module-table seed: platform-singleton specifier → shell instance. */
   staticModules: Record<string, unknown>

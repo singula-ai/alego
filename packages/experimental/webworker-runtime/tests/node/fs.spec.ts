@@ -12,6 +12,7 @@ import { MemoryVfs } from '@singula-ai/alego-experimental-webworker-runtime/src/
 import { setActiveVfs } from '@singula-ai/alego-experimental-webworker-runtime/src/storage/active.ts'
 import * as fs from '@singula-ai/alego-experimental-webworker-runtime/src/node/builtin_modules/implemented/fs.ts'
 import * as fsp from '@singula-ai/alego-experimental-webworker-runtime/src/node/builtin_modules/implemented/fs/promises.ts'
+import { promisify } from '@singula-ai/alego-experimental-webworker-runtime/src/node/builtin_modules/implemented/util.ts'
 import type { VfsBigIntStats, VfsMutationSink, VfsStats } from '@singula-ai/alego-experimental-webworker-runtime/src/storage/types.ts'
 
 let flushes = 0
@@ -62,6 +63,22 @@ check('statSync isFile', fs.statSync('/alego/config/cordis.yml').isFile(), true)
 check('statSync size', fs.statSync('/alego/config/cordis.yml').size, 12)
 check('statSync dir', fs.statSync('/alego/config').isDirectory(), true)
 check('realpathSync', fs.realpathSync('/alego/config/../config/cordis.yml'), '/alego/config/cordis.yml')
+
+test('native realpath supports the filesystem provider promise wrapper', async () => {
+  expect(fs.default.realpath).toBe(fs.realpath)
+  const resolveNative = promisify(fs.realpath.native)
+  expect(await resolveNative('/alego/config/../config/cordis.yml')).toBe('/alego/config/cordis.yml')
+  await expect(resolveNative('/alego/missing-realpath')).rejects.toMatchObject({ code: 'ENOENT' })
+})
+
+test('callback realpath settles after the current call returns', async () => {
+  let returned = false
+  const completion = new Promise<unknown>((resolve) => {
+    fs.realpath('/alego/config/cordis.yml', (error, path) => { resolve({ error, path, returned }) })
+  })
+  returned = true
+  expect(await completion).toEqual({ error: null, path: '/alego/config/cordis.yml', returned: true })
+})
 
 fs.appendFileSync('/alego/config/cordis.yml', '- id: llm\n')
 check('appendFileSync', fs.readFileSync('/alego/config/cordis.yml', 'utf8'), '- id: timer\n- id: llm\n')

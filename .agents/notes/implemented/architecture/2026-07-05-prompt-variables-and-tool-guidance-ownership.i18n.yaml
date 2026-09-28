@@ -1,6 +1,40 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-05-prompt-variables-and-tool-guidance-ownership.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-05-prompt-variables-and-tool-guidance-ownership.md
-2026-07-05-prompt-variables-and-tool-guidance-ownership.md: 1f4134710d2a930139cfd86942f278e3ee3c3ca1
-2026-07-05-prompt-variables-and-tool-guidance-ownership.zh.md: 19415747c79328c6878dd1686856e26725fcd173
+/agent-note-prompt-variables-and-tool-guidance-ownership:
+  en: ace4f021b5a26dc6
+  zh: f2e22d8289e30ca6
+/agent-note-prompt-variables-and-tool-guidance-ownership/problem:
+  en: cd6ae6099e6b4443
+  zh: 9463f34878a89da1
+/agent-note-prompt-variables-and-tool-guidance-ownership/decision:
+  en: c551d888282d9c73
+  zh: 889b5ca3cdf25aff
+/agent-note-prompt-variables-and-tool-guidance-ownership/decision/assemble-context:
+  en: fe606e1ed9634413
+  zh: ffb1d6e399821ac5
+/agent-note-prompt-variables-and-tool-guidance-ownership/decision/prompt-variables:
+  en: 0281400f17c38d93
+  zh: 499bcbd03288b03f
+/agent-note-prompt-variables-and-tool-guidance-ownership/decision/persona-as-the-order-0-section:
+  en: 99ae5fd1578381d4
+  zh: 88ee20de36e81e35
+/agent-note-prompt-variables-and-tool-guidance-ownership/decision/tool-guidance-ownership:
+  en: 308c0d2ef4e41f56
+  zh: d38f84a517da20df
+/agent-note-prompt-variables-and-tool-guidance-ownership/decision/the-subagent-conversation-history-descriptor:
+  en: c4bd310e4933f33a
+  zh: d660d96b853792bd
+/agent-note-prompt-variables-and-tool-guidance-ownership/alternatives-considered:
+  en: 17024356050ebf99
+  zh: c9f6ea1485f4a14e
+/agent-note-prompt-variables-and-tool-guidance-ownership/out-of-scope:
+  en: bbfecc70d0b457fe
+  zh: 7f207a37a86484f4
+/agent-note-prompt-variables-and-tool-guidance-ownership/shipped-invariants:
+  en: 31ba63101fca5790
+  zh: af4ceefab2033142
+/agent-note-prompt-variables-and-tool-guidance-ownership/consequences:
+  en: 993f17bf35f6a2e0
+  zh: acb429176f0eebcc

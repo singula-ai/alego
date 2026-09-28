@@ -1,0 +1,37 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/experimental/api-speech-to-text/README.md
+/:
+  en: 492c18403fe67bc0
+  zh: 547cb261324c7691
+/singula-ai-alego-experimental-api-speech-to-text:
+  en: 36ef9eb7a8010dcb
+  zh: a71b14f0278c1085
+/singula-ai-alego-experimental-api-speech-to-text/summary:
+  en: 81978b4b6c035754
+  zh: f1a08200eb31c020
+/singula-ai-alego-experimental-api-speech-to-text/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 364c80ee00a374ff
+/singula-ai-alego-experimental-api-speech-to-text/use-this-package:
+  en: 23efd2789fe70cd9
+  zh: 3edd559ee5975742
+/singula-ai-alego-experimental-api-speech-to-text/understand-the-implementation:
+  en: 83c580c412f4026a
+  zh: cd6742fef27de9e5
+/singula-ai-alego-experimental-api-speech-to-text/further-exploration:
+  en: bd4efc815d0c3354
+  zh: 974bd3519b70319e
+/singula-ai-alego-experimental-api-speech-to-text/model-experience:
+  en: 3c5a85f8b7129ce8
+  zh: d5f491ca88d9a810
+/singula-ai-alego-experimental-api-speech-to-text/model-experience/kv-cache-effect:
+  en: b5ec79db2e1d0dbc
+  zh: e5aff567ae5ee6fc
+/singula-ai-alego-experimental-api-speech-to-text/known-limitations-and-deferred-work:
+  en: 067a5c6a1772f2eb
+  zh: 6973c5a4a950c5cf
+/singula-ai-alego-experimental-api-speech-to-text/known-limitations-and-deferred-work/dev-note:
+  en: 0225ba087c5266f3
+  zh: 4e706f1b2b984e63

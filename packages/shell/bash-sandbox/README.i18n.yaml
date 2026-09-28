@@ -1,6 +1,97 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/shell/bash-sandbox/README.md
-README.md: 8324aef0296a91a2b4078b80cf66f67925c860f7
-README.zh.md: 3214ba767c5e0c30b7fb15c054e7c38fc1d9de7d
+/:
+  en: 2d1caa2e6179218a
+  zh: 0b51a5dbda727ffa
+/singula-ai-alego-bash-sandbox:
+  en: 84b259248b319f5c
+  zh: 18a82241e94efca8
+/singula-ai-alego-bash-sandbox/summary:
+  en: b0aed4031d85acc4
+  zh: cd21f02ec9424717
+/singula-ai-alego-bash-sandbox/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-bash-sandbox/use-this-package:
+  en: 37dd93c1e179270f
+  zh: a7eadcb9c2ff04ea
+/singula-ai-alego-bash-sandbox/use-this-package/when-to-choose-it:
+  en: d9a7367cf10a2ad8
+  zh: a3206c796e262974
+/singula-ai-alego-bash-sandbox/use-this-package/modes-and-file-effects:
+  en: bc096fe6f8eb54cd
+  zh: 1a3e3122ca40b0e5
+/singula-ai-alego-bash-sandbox/use-this-package/minimal-configuration:
+  en: 45a39643f7e95902
+  zh: 4c9e7dce226e7754
+/singula-ai-alego-bash-sandbox/use-this-package/denials-are-result-facts:
+  en: a10127c3fb2869ef
+  zh: 17908b572ddb5507
+/singula-ai-alego-bash-sandbox/use-this-package/failures-and-recovery:
+  en: 0d5b6818c3dad919
+  zh: cd0357477c0726c3
+/singula-ai-alego-bash-sandbox/understand-the-implementation:
+  en: 05e2abe4a25886fd
+  zh: 9240b331c45ac81e
+/singula-ai-alego-bash-sandbox/understand-the-implementation/design-concept:
+  en: 22771ee7fffa341e
+  zh: 0122ce9f5a516749
+/singula-ai-alego-bash-sandbox/understand-the-implementation/source-map:
+  en: 418d9c2a61061adb
+  zh: ffbc0d7723b45017
+/singula-ai-alego-bash-sandbox/understand-the-implementation/main-flow:
+  en: 731878f592fa79c6
+  zh: 3187f4c6907a13c2
+/singula-ai-alego-bash-sandbox/understand-the-implementation/invariants:
+  en: 0b6c6d7e216e1d23
+  zh: 15f94cfccf4fa242
+/singula-ai-alego-bash-sandbox/further-exploration:
+  en: 86d906594da224b2
+  zh: 427dfb6cfc49063d
+/singula-ai-alego-bash-sandbox/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-bash-sandbox/model-experience/bash-tool-schema-indirectly:
+  en: 8e3df84fdcaeee60
+  zh: 25ad519340c6c232
+/singula-ai-alego-bash-sandbox/model-experience/bash-tool-schema-indirectly/what-the-model-sees:
+  en: bb9deea69c5ae571
+  zh: 30c7f05b038d8a5a
+/singula-ai-alego-bash-sandbox/model-experience/bash-tool-schema-indirectly/token-effect:
+  en: ab082f50d1dd9835
+  zh: 274d2e7605f8c61e
+/singula-ai-alego-bash-sandbox/model-experience/bash-tool-schema-indirectly/kv-cache-effect:
+  en: d25d46a61dc2b0c1
+  zh: e1deea6d70be4691
+/singula-ai-alego-bash-sandbox/model-experience/bash-tool-result-indirectly:
+  en: ba37fed04252f1eb
+  zh: 0e91d66334ec17c3
+/singula-ai-alego-bash-sandbox/model-experience/bash-tool-result-indirectly/what-the-model-sees:
+  en: 6b86ae2b3b41e8b2
+  zh: 825a446625a1d594
+/singula-ai-alego-bash-sandbox/model-experience/bash-tool-result-indirectly/token-effect:
+  en: b06db71c69ceaf8c
+  zh: e0b8230b993c93cc
+/singula-ai-alego-bash-sandbox/model-experience/bash-tool-result-indirectly/kv-cache-effect:
+  en: f5d5f97a153f7c70
+  zh: f681f89596f500f5
+/singula-ai-alego-bash-sandbox/model-experience/bash-tool-error-indirectly:
+  en: 8e6caeadd596ea8f
+  zh: fe525ddc52b2d711
+/singula-ai-alego-bash-sandbox/model-experience/bash-tool-error-indirectly/what-the-model-sees:
+  en: 74fcc73436adbb3b
+  zh: ae1387cf44c6ecb8
+/singula-ai-alego-bash-sandbox/model-experience/bash-tool-error-indirectly/token-effect:
+  en: 8f514efe94edfa8a
+  zh: 8a7ae8a2bdb4c01a
+/singula-ai-alego-bash-sandbox/model-experience/bash-tool-error-indirectly/kv-cache-effect:
+  en: f5d5f97a153f7c70
+  zh: f681f89596f500f5
+/singula-ai-alego-bash-sandbox/known-limitations-and-deferred-work:
+  en: 056f7e09b6ad03f9
+  zh: 2996d78fbe0c70e1
+/singula-ai-alego-bash-sandbox/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

@@ -1,6 +1,94 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/subagent/subagent/README.md
-README.md: 6530835c5fa138c9a545bbe4aca3416b50afc3fd
-README.zh.md: e9fe78702f16f480826c155299cbad4cc0b4171a
+/:
+  en: 384d01a27a111f49
+  zh: fbadc6917c3099c9
+/singula-ai-alego-subagent:
+  en: 804db672c2c4def5
+  zh: 76a2e3d22d0489b9
+/singula-ai-alego-subagent/summary:
+  en: e5442935e35debcc
+  zh: e3df8e45c771d680
+/singula-ai-alego-subagent/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-subagent/use-this-package:
+  en: 4651aec03a1d2e21
+  zh: 7b6d1d604bdb1bf1
+/singula-ai-alego-subagent/use-this-package/enabling-delegation:
+  en: f66e74a5fa4e49b6
+  zh: 8c3a793cc29fcc1b
+/singula-ai-alego-subagent/use-this-package/delegation-settings:
+  en: 86c982223fab1a3a
+  zh: 3d220d8ed84eab9a
+/singula-ai-alego-subagent/use-this-package/continuable-capacity:
+  en: 2f1ac9927484db75
+  zh: 116fba18969dd3c2
+/singula-ai-alego-subagent/use-this-package/one-shot-and-continuable-children:
+  en: 10d0a7e0513bf04b
+  zh: 0cf2c2d81e85d7a9
+/singula-ai-alego-subagent/use-this-package/messaging-interrupting-and-discovering:
+  en: ff41ac0e770ed865
+  zh: 27dcf055badf217d
+/singula-ai-alego-subagent/use-this-package/failure-and-recovery:
+  en: 782aaaf8639c211c
+  zh: e2a873eece366e74
+/singula-ai-alego-subagent/understand-the-implementation:
+  en: 74d91b364b23f88d
+  zh: 19cc558105efe8df
+/singula-ai-alego-subagent/understand-the-implementation/design-concept:
+  en: 26c4eb7592b77d14
+  zh: c166fb6ee1a1c7d8
+/singula-ai-alego-subagent/understand-the-implementation/source-map:
+  en: d9afc0d9548afe58
+  zh: 0e11526b6c001dc6
+/singula-ai-alego-subagent/understand-the-implementation/one-shot-flow:
+  en: c0aadbefbddf2762
+  zh: e4f330ede933bcca
+/singula-ai-alego-subagent/understand-the-implementation/continuable-flow:
+  en: a416ce713c5c3c26
+  zh: bae34ddf0c764a10
+/singula-ai-alego-subagent/understand-the-implementation/ownership-and-invariants:
+  en: f3ef89b6a7d8de24
+  zh: 93dcf664bc221318
+/singula-ai-alego-subagent/further-exploration:
+  en: 14117d382b88948c
+  zh: f3564e3b8adee0bd
+/singula-ai-alego-subagent/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-subagent/model-experience/settlement-notice:
+  en: f7cec22ba9d3fb4f
+  zh: 67b1d40f9b136f71
+/singula-ai-alego-subagent/model-experience/settlement-notice/what-the-model-sees:
+  en: 44ba290ef9896de9
+  zh: 21d207c31228c0ce
+/singula-ai-alego-subagent/model-experience/settlement-notice/token-effect:
+  en: 45dc428c61f606f5
+  zh: 7e9a2587e98c8ca6
+/singula-ai-alego-subagent/model-experience/settlement-notice/kv-cache-effect:
+  en: d6b1d618083da79b
+  zh: 9a28942b7d53c382
+/singula-ai-alego-subagent/model-experience/child-delegation-scope-statement:
+  en: dc8544657916e194
+  zh: b0feff0764b5d903
+/singula-ai-alego-subagent/model-experience/child-delegation-scope-statement/what-the-model-sees:
+  en: 61906b6a7b656eeb
+  zh: 2fa94349714efc9f
+/singula-ai-alego-subagent/model-experience/child-delegation-scope-statement/what-the-model-sees/the-delegation-scope-statement:
+  en: 960e4abc8393bcd1
+  zh: e125aa2bab1570d0
+/singula-ai-alego-subagent/model-experience/child-delegation-scope-statement/token-effect:
+  en: 4e0b922b186dc2a9
+  zh: 7453563417c5b9a2
+/singula-ai-alego-subagent/model-experience/child-delegation-scope-statement/kv-cache-effect:
+  en: 59e848fca82a46fb
+  zh: fcd6a8a2bb58609f
+/singula-ai-alego-subagent/known-limitations-and-deferred-work:
+  en: b2182809471f0780
+  zh: cfab217025442ae8
+/singula-ai-alego-subagent/known-limitations-and-deferred-work/dev-note:
+  en: 25cc0909348666bb
+  zh: 95517f12de100049

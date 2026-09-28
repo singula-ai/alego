@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-27-curl-source-install.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-08-27-curl-source-install.md
-2026-08-27-curl-source-install.md: f188c243f5db13b5ebec97457f48da6446f27caa
-2026-08-27-curl-source-install.zh.md: 51261739f0fef15d92b93d03def22cbb37cde572
+/agent-note-one-command-source-install-through-a-path-launcher:
+  en: 3218e83af73fb61c
+  zh: 0dcc2c6a917d32fb
+/agent-note-one-command-source-install-through-a-path-launcher/problem:
+  en: 5873569ec40cfd86
+  zh: aa1acad003c33284
+/agent-note-one-command-source-install-through-a-path-launcher/decision:
+  en: 8453aef89a494c60
+  zh: 912755d4ae4bf654
+/agent-note-one-command-source-install-through-a-path-launcher/alternatives-considered:
+  en: 0b3c1f3d735efd3c
+  zh: 9581bbbf97b90641
+/agent-note-one-command-source-install-through-a-path-launcher/consequences:
+  en: 225d93cfd949b645
+  zh: 44569098a5835750

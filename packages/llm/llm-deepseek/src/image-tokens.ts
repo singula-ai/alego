@@ -11,6 +11,8 @@
  * @module alego-llm-deepseek/image-tokens
  */
 
+import { longEdgeDimensions } from '@singula-ai/alego-attachment'
+import type { ProjectedDimensions } from '@singula-ai/alego-attachment'
 /** Vision patch edge in pixels. */
 const PATCH_SIZE = 14
 /** Per-axis patch-to-token downsampling ratio. */
@@ -114,6 +116,25 @@ function sameResize(a: GridResize, b: GridResize): boolean {
     && a.bestHeight === b.bestHeight
     && a.bestWidth === b.bestWidth
     && a.numTokens === b.numTokens
+}
+
+/**
+ * Dimensions the harness sends so the provider keeps the whole image: the
+ * source itself when its patch-padded grid fits the token cap, otherwise the
+ * source aspect ratio at the solved grid's long edge. The provider pads the
+ * short edge to whole patches on its side. Rounding the aspect-preserving
+ * short edge can change the token count from the source's solved grid;
+ * request pricing uses the sent dimensions. Small images are never enlarged.
+ * @param width - positive integer source width in pixels.
+ * @param height - positive integer source height in pixels.
+ * @returns the request dimensions to encode.
+ */
+export function deepSeekRequestImageDimensions(width: number, height: number): ProjectedDimensions {
+  const paddedWidth = ceilDiv(width, PATCH_SIZE) * PATCH_SIZE
+  const paddedHeight = ceilDiv(height, PATCH_SIZE) * PATCH_SIZE
+  if (gridTokens(gridCells(paddedHeight), gridCells(paddedWidth)) <= MAX_IMAGE_TOKENS) return { width, height }
+  const solved = solveResizeRatio(height, width, MAX_IMAGE_TOKENS)
+  return longEdgeDimensions(width, height, width >= height ? solved.bestWidth : solved.bestHeight)
 }
 
 /**

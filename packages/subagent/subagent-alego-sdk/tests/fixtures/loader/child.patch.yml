@@ -1,7 +1,7 @@
 # SDK-profile patch for the child runtime in the cwd-inheritance proof.
 
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   disabled: true
 
 - id: system-prompt

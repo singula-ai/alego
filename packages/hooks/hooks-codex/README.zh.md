@@ -80,7 +80,7 @@ kind: "package-reference"
 
 ### Hook 点映射
 
-每个受支持事件都面向一个 harness 扩展点：`SessionStart` 向新会话发射上下文（`agent/session-start`），`UserPromptSubmit` 与 `PreToolUse` 是能拒绝传入动作的 waterfall（瀑布式事件）（`agent/pre-step`、`tools/pre-execute`），`PostToolUse` 是能带反馈阻塞或向下游决策添加上下文的 waterfall（`tools/post-execute`），`Stop` 是串行监听器，其阻塞结果通过 `steer()` 强制再执行一步（`agent/turn-stopping`）。仅提供上下文的 hook 总是先通过 `next()` 委托，再把带来源的消息折叠进下游决策，因此后续监听器仍可拒绝或改写；阻塞决策映射为 `deny`（`PreToolUse` 没有 `allow` 或 `ask`）。逐事件接线位于 [`src/index.ts`](src/index.ts)。
+每个受支持事件都面向一个 harness 扩展点：`SessionStart` 在首个轮次前通过需等待的 `agent/created` 初始化加入上下文，`UserPromptSubmit` 与 `PreToolUse` 是能拒绝传入动作的 waterfall（瀑布式事件）（`agent/pre-step`、`tools/pre-execute`），`PostToolUse` 是能带反馈阻塞或向下游决策添加上下文的 waterfall（`tools/post-execute`），`Stop` 是串行监听器，其阻塞结果通过 `steer()` 强制再执行一步（`agent/turn-stopping`）。仅提供上下文的 hook 总是先通过 `next()` 委托，再把带来源的消息折叠进下游决策，因此后续监听器仍可拒绝或改写；阻塞决策映射为 `deny`（`PreToolUse` 没有 `allow` 或 `ask`）。逐事件接线位于 [`src/index.ts`](src/index.ts)。
 
 ### 载荷与环境
 

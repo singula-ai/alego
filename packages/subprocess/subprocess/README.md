@@ -60,6 +60,11 @@ const output = handle.collected.stdout?.readFrom(0)
 
 Reads are offset-based and non-consuming: a background reader and a final batch read can share one stream without stealing each other's bytes.
 
+<a id="using-a-control-pipe"></a>
+### Using a control pipe
+
+Set `stdio.control: 'pipe'` to receive a separate raw `Duplex` in `handle.control`. The Node child opens fd 7 with `openInheritedControlChannel()` from `@singula-ai/alego-subprocess/control`; this helper consumes the provider-owned `ALEGO_SUBPROCESS_CONTROL=pipe` marker. Callers cannot supply that marker through `env`. Control bytes never enter stdout/stderr collectors. The consumer owns framing, validation, backpressure, and closing its endpoint; provider disposal destroys any endpoint remaining after process teardown. Omitting the request returns `control: undefined`. This channel is available only for ordinary processes, and carries no authority to bypass tool approval.
+
 ### Managing process lifetime
 
 Termination and waiting use one provider-managed range. `terminate()` starts the provider's documented procedure, is idempotent, and becomes a no-op after that range is empty; the request's abort signal starts the same procedure. `waitForExit()` observes the same range and resolves only after the provider proves it quiescent, so direct command completion does not hide a surviving descendant. It rejects when the selected owner can no longer prove quiescence. Providers document their native owners and weaker fallbacks; callers own deadlines, teardown ladders, and cause classification.
@@ -67,6 +72,8 @@ Termination and waiting use one provider-managed range. `terminate()` starts the
 ### Running a terminal session
 
 For interactive programs, `spawnTerminal` allocates a real PTY: write text, read UTF-8 output, inspect and signal the current foreground process group, and await one `terminate()` that settles every session member the provider can still observe. Readiness, scrollback, and prompt policy stay with the PTY consumer.
+
+A terminal request can opt into `shellActivity`. `inspectActivity()` combines supported shell lifecycle evidence with owned-job observations and returns `idle`, `busy` or `unknown`, plus a handle-scoped revision. Unsupported or incomplete observations never imply idle; input invalidates existing prompt evidence. Opted-in terminals keep remaining work owned after the root shell exits instead of using that exit as permission to terminate descendants. Consumers own retention and cleanup deadlines.
 
 ### Environment every child starts from
 
@@ -117,11 +124,12 @@ Read these pages when the package-level contract is not enough. They move from t
 
 - [Subprocess subsystem](../../../docs/subsystems/subprocess.md) — spawn specs, output readers, outcomes, and the `ALEGO_*` environment in full.
 - [alego-subprocess-local](../subprocess-local/README.md) — the local host provider that implements this contract.
-- [alego-subprocess-e2b](../../e2b/subprocess-e2b/README.md) — the remote E2B provider for the same seam.
 - [alego-bash-local](../../shell/bash-local/README.md) — the largest consumer: bash commands over this service.
 - [Subprocess seam Agent Note](../../../.agents/notes/archived/architecture/2026-07-26-subprocess-seam.md) — why the process half became its own seam and what moved with it.
 
 -----
+
+Terminal consumers use `terminalEnvironment()` to read the provider platform and preferred shell, and `resolveExecutable()` to verify candidates. A completed lookup miss throws `SubprocessExecutableNotFoundError`; transport failures remain distinct. `spawnTerminal` requires `terminalType` and initial dimensions, and its handle supports `resize(cols, rows)` without reallocating the process.
 
 <a id="model-experience"></a>
 ## Model Experience

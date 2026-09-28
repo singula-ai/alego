@@ -1,6 +1,49 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for llm-streaming.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/subsystems/llm-streaming.md
-llm-streaming.md: 58695e8d81fd2945d2abd3474086c15a5be32534
-llm-streaming.zh.md: 88b762969200a535b61d1ca65fe965b4aa5309f1
+/llm-streaming:
+  en: 09d77377d1518366
+  zh: 1fbf4bca22fec17a
+/llm-streaming/content-blocks-and-messages:
+  en: b1b3ef75692c80af
+  zh: 225eac488c2ba37a
+/llm-streaming/streamchunk-the-raw-protocol:
+  en: a18fe401763efde4
+  zh: ef59a76d9c694654
+/llm-streaming/compact-assistant-streams:
+  en: e9de49f44a7dc437
+  zh: 470f4f70baafeec6
+/llm-streaming/llmfailure:
+  en: 13415501869b4ca9
+  zh: 723c7533cce3d1d6
+/llm-streaming/request-image-pricing:
+  en: 10598e1a98262415
+  zh: 7fb85b22174a1497
+/llm-streaming/the-adapter-contract:
+  en: 90c4098008c6cf26
+  zh: 744ea24e5d70da93
+/llm-streaming/resolvedretrypolicy:
+  en: c543c564ec685ed6
+  zh: a63b3d6847e4e0c0
+/llm-streaming/appidentity-app-attribution:
+  en: fd261801b0627521
+  zh: d59990d12ba7cf77
+/llm-streaming/tokenusage:
+  en: 33830f78fdb845fa
+  zh: f43a4502c4c3bfff
+/llm-streaming/blockassembler:
+  en: 58dec2259b0b1c6f
+  zh: fc99fe965acaabf3
+/llm-streaming/the-model-request:
+  en: aa06660325e37852
+  zh: 74892a88ee0b416f
+/llm-streaming/the-model-request/the-request-envelope-llmcallconfig-and-the-logged-header:
+  en: afcd2f55f3e8a71c
+  zh: a25d0d076cf9bb41
+/llm-streaming/official-deepseek-request-extensions:
+  en: e99911efd0392e58
+  zh: 5bec8826c17afeb4
+/llm-streaming/service-and-provider-contracts:
+  en: acaa10d8e57385f2
+  zh: 5fc024484fc4cc83

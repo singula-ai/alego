@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-11-desktop-electron-node-runtime.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-11-desktop-electron-node-runtime.md
+/agent-note-use-electron-as-the-desktop-node-runtime:
+  en: c2ed7f955a80ca7d
+  zh: 0dbe100a9a89eaa7
+/agent-note-use-electron-as-the-desktop-node-runtime/problem:
+  en: 67e580ac6d9298d9
+  zh: bb2bd7486090bde4
+/agent-note-use-electron-as-the-desktop-node-runtime/decision:
+  en: 2d5d364bdce3ab92
+  zh: da4fed131ad0f6cd
+/agent-note-use-electron-as-the-desktop-node-runtime/consequences:
+  en: 38cd3aeccb6ab62b
+  zh: d7c526d1db6059de
+/agent-note-use-electron-as-the-desktop-node-runtime/alternatives-considered:
+  en: 880e255d56b45345
+  zh: 5952d9685c564284

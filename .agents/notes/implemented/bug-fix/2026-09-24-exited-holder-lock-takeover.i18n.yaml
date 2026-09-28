@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-09-24-exited-holder-lock-takeover.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-09-24-exited-holder-lock-takeover.md
+/agent-note-taking-over-a-writer-lock-whose-holder-exited:
+  en: cadbec9630234d7d
+  zh: 233a5d5dd7052006
+/agent-note-taking-over-a-writer-lock-whose-holder-exited/problem:
+  en: 513745fc3dbb8260
+  zh: 8a67095057334f85
+/agent-note-taking-over-a-writer-lock-whose-holder-exited/decision:
+  en: 153b15af49ebb683
+  zh: d09595c3e708e565
+/agent-note-taking-over-a-writer-lock-whose-holder-exited/alternatives-considered:
+  en: 9245869f38ed8d53
+  zh: 7a8d345cc3c5ebf1
+/agent-note-taking-over-a-writer-lock-whose-holder-exited/testing:
+  en: 7eb7c5818049415a
+  zh: f84c39c55bb3bc5a
+/agent-note-taking-over-a-writer-lock-whose-holder-exited/consequences:
+  en: 03f4cda9290188e5
+  zh: 07f800776c061218

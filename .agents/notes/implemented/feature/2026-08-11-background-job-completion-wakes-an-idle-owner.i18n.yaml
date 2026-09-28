@@ -1,6 +1,34 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-11-background-job-completion-wakes-an-idle-owner.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-11-background-job-completion-wakes-an-idle-owner.md
-2026-08-11-background-job-completion-wakes-an-idle-owner.md: 58c90b36f48938f849a5f5059852891e8dfd4f31
-2026-08-11-background-job-completion-wakes-an-idle-owner.zh.md: 401fe5b72e0ea2e08e661f5e945951229ab847e1
+/agent-note-background-job-completion-wakes-an-idle-owner:
+  en: f5368b88b33824b5
+  zh: bf84fb3a931cdff2
+/agent-note-background-job-completion-wakes-an-idle-owner/problem:
+  en: f0758156edfc74de
+  zh: 71a6234247cf6e0e
+/agent-note-background-job-completion-wakes-an-idle-owner/decision:
+  en: e8ec07e384baba76
+  zh: 9b03d228a92b2abb
+/agent-note-background-job-completion-wakes-an-idle-owner/decision/the-busy-owner-keeps-injection:
+  en: 841588bc73fc4613
+  zh: 7fb4095bd55ee241
+/agent-note-background-job-completion-wakes-an-idle-owner/decision/the-cap-on-consecutive-wakes-is-opt-in-and-it-is-not-time:
+  en: 2c41e493a701c72c
+  zh: 69aac96cf01a8dd9
+/agent-note-background-job-completion-wakes-an-idle-owner/decision/teardown-claims-the-report:
+  en: f79257596c755a32
+  zh: 856bf42492425f9c
+/agent-note-background-job-completion-wakes-an-idle-owner/decision/completion-is-announced-last:
+  en: 9cab013b3513f1e0
+  zh: 78ea1b05df94d8a8
+/agent-note-background-job-completion-wakes-an-idle-owner/alternatives-considered:
+  en: 7f2a93b70ba14bdc
+  zh: 94748230e6074cee
+/agent-note-background-job-completion-wakes-an-idle-owner/consequences:
+  en: 5bea9c9c6412ecc5
+  zh: f964525a0e9ef9d1
+/agent-note-background-job-completion-wakes-an-idle-owner/consequences/accepted-risks:
+  en: 5422a005bf7fd286
+  zh: 1c831caa8dd402c6

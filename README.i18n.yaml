@@ -1,6 +1,34 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write README.md
-README.md: 8c1d2b48890fe035990d05a89d5357c2171d9187
-README.zh.md: 7b791ec6345e848d46d1ac6781a60044e9883d45
+/alego:
+  en: bba008654439ff27
+  zh: 2f18c317e11f6487
+/alego/developer-preview:
+  en: 0eb833cbcf3691a0
+  zh: bb56f711a7d09ca4
+/alego/run:
+  en: 4e0248e4c6474fc6
+  zh: eb2fb8d78c7d6bc0
+/alego/run/run-from-npm:
+  en: f1711a9f322be935
+  zh: 1e431ae5f50b5278
+/alego/run/run-from-source:
+  en: 56be3dd7e0578042
+  zh: e886e8ea6ca7fbd1
+/alego/community-and-support:
+  en: f6e1d9d06d2b1219
+  zh: 989f363800704fb3
+/alego/contributing:
+  en: b1a51bfa3716ec86
+  zh: 169a3700002a4e8b
+/alego/development:
+  en: b696610bdcc82a83
+  zh: 87246daed62a7e0c
+/alego/citation:
+  en: 6704e9e5a8d49a91
+  zh: 85c9cdd8d56f8e9d
+/alego/license:
+  en: 926995344fc1c72b
+  zh: c92fab5abf85932f

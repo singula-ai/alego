@@ -1,6 +1,61 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/shell/bash-local/README.md
-README.md: d1a73395cad173c4697f45bf8456bd16a5529356
-README.zh.md: 4dcca3c46f598ca356c29d27460b0febae727963
+/:
+  en: f70a1e0bb1e0d56d
+  zh: 927e75bc75573410
+/singula-ai-alego-bash-local:
+  en: 05371f63b0e73e4f
+  zh: a03e226419ced5e6
+/singula-ai-alego-bash-local/summary:
+  en: c5a636de35e122ac
+  zh: 728f92785c515dda
+/singula-ai-alego-bash-local/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-bash-local/use-this-package:
+  en: 95ae7843275778ca
+  zh: 43b5069075a99625
+/singula-ai-alego-bash-local/use-this-package/minimal-configuration:
+  en: e70f144eadf450c5
+  zh: 2b05be23f2dcabbf
+/singula-ai-alego-bash-local/use-this-package/running-commands:
+  en: a27f24e1c9908612
+  zh: 4183e0c89aebb96c
+/singula-ai-alego-bash-local/use-this-package/background-processes:
+  en: 3c580842cc8452af
+  zh: 5a156670a7cacc2a
+/singula-ai-alego-bash-local/use-this-package/adjusting-budgets-at-runtime:
+  en: 1098db4c932a48f8
+  zh: 33f78ab65dbfeb1d
+/singula-ai-alego-bash-local/understand-the-implementation:
+  en: 05e2abe4a25886fd
+  zh: 3f7f1326dc3c1d3f
+/singula-ai-alego-bash-local/understand-the-implementation/design-concept:
+  en: ec84e5746de85fe0
+  zh: 1c353325eeae87c6
+/singula-ai-alego-bash-local/understand-the-implementation/source-map:
+  en: 254759ab26151a72
+  zh: e94679a11b67dc10
+/singula-ai-alego-bash-local/understand-the-implementation/main-flow:
+  en: 723bbaedc34e58f3
+  zh: d0239dcfdd8a53c6
+/singula-ai-alego-bash-local/understand-the-implementation/invariants-and-ownership:
+  en: e78d4372496c4b21
+  zh: a72dcd67957f7fe4
+/singula-ai-alego-bash-local/further-exploration:
+  en: 5db98c516faccdd3
+  zh: f887e87f013ba6a8
+/singula-ai-alego-bash-local/model-experience:
+  en: e8a35ab62f64b8c5
+  zh: e518776bbdd47a80
+/singula-ai-alego-bash-local/model-experience/kv-cache-effect:
+  en: 40294c1c31b74824
+  zh: 788a4799b1d65a8b
+/singula-ai-alego-bash-local/known-limitations-and-deferred-work:
+  en: 45f29dcdd3dce407
+  zh: e264014286942aa7
+/singula-ai-alego-bash-local/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

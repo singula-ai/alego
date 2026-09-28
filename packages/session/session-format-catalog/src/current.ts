@@ -8,6 +8,7 @@ import {
 } from '@singula-ai/alego-session'
 import type { SessionEvent, SessionHeader } from '@singula-ai/alego-session'
 import type { SessionFormatArtifact, SessionFormatHeader } from '@singula-ai/alego-session-format'
+import { currentSessionMessageProjections } from './message-projections.ts'
 
 /**
  * Validate current logical metadata through the installed Session package.
@@ -46,5 +47,6 @@ export function validateInstalledCurrentSessionArtifact(artifact: SessionFormatA
     artifact.header as unknown as SessionHeader,
     SessionLogOffset(artifact.inheritedEventCount),
     'detached',
+    currentSessionMessageProjections,
   )
 }

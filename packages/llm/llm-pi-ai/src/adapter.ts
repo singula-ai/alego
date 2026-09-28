@@ -26,7 +26,6 @@
  * @module alego-llm-pi-ai/adapter
  */
 
-import { createModels, getSupportedThinkingLevels } from '@earendil-works/pi-ai'
 import type {
   Api,
   AuthContext,
@@ -60,6 +59,7 @@ import type { AttachmentStore, ImageAttachmentRef } from '@singula-ai/alego-atta
 import { idleWatchdog, timeoutOf } from '@singula-ai/alego-timeout'
 import type { ResolvedPiAiProviderProfile } from './config.ts'
 import { toPiContext } from './context.ts'
+import { createModels, getSupportedThinkingLevels } from './models.ts'
 import { toStreamChunks } from './stream.ts'
 
 /** One resolution's frozen view: the profiles and the collection built from them. */

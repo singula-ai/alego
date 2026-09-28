@@ -1,0 +1,83 @@
+{
+  "name": "@singula-ai/alego-client-ui-settings-account",
+  "description": "Manage DeepSeek login and open Platform billing pages",
+  "version": "0.1.7-rc.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/client/ui-settings-account"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "alego": {
+    "client": {
+      "inject": [
+        "@singula-ai/alego-api-remotes",
+        "@singula-ai/alego-client-locale",
+        "@singula-ai/alego-client-ui-chat",
+        "@singula-ai/alego-client-ui-layout",
+        "@singula-ai/alego-client-ui-settings",
+        "@singula-ai/alego-client-ui-theme"
+      ],
+      "platform": "web"
+    }
+  },
+  "scripts": {
+    "bundle": "tsdown",
+    "watch": "tsdown --watch"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "@singula-ai/cordis": "workspace:~"
+  },
+  "devDependencies": {
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-api-remotes": "workspace:*",
+    "@singula-ai/alego-client-locale": "workspace:*",
+    "@singula-ai/alego-client-store": "workspace:*",
+    "@singula-ai/alego-client-test-runtime": "workspace:*",
+    "@singula-ai/alego-client-ui-chat": "workspace:*",
+    "@singula-ai/alego-client-ui-layout": "workspace:*",
+    "@singula-ai/alego-client-ui-primitives": "workspace:*",
+    "@singula-ai/alego-client-ui-renderer": "workspace:*",
+    "@singula-ai/alego-client-ui-settings": "workspace:*",
+    "@singula-ai/alego-client-ui-slots": "workspace:*",
+    "@singula-ai/alego-client-ui-theme": "workspace:*",
+    "@singula-ai/alego-deepseek-account": "workspace:*",
+    "@singula-ai/alego-settings": "workspace:*",
+    "@testing-library/react": "^16.1.0",
+    "@types/big.js": "^6.2.2",
+    "@types/react": "~18.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@singula-ai/alego-client-ui-settings-models": "workspace:*",
+    "@types/react-dom": "~18.3.0",
+    "@singula-ai/alego-host-webserver": "workspace:*",
+    "big.js": "^7.0.1",
+    "@singula-ai/alego-client-product-analytics": "workspace:*"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/client.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "dependencies": {
+    "@singula-ai/schemastery": "workspace:~"
+  }
+}

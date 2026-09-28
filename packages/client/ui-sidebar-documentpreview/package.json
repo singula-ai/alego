@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-sidebar-documentpreview",
-  "description": "Extensible document previews for Sidebar files: Markdown, highlighted code, images, PDF, HTML, and plain text",
-  "version": "0.1.5-rc.2",
+  "description": "Extensible Sidebar previews for Office documents, spreadsheets, Markdown, code, images, PDF, HTML, and plain text",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -30,9 +30,12 @@
       "inject": [
         "@singula-ai/alego-api-gateway",
         "@singula-ai/alego-api-workspace-files",
+        "@singula-ai/alego-client-resources",
         "@singula-ai/alego-client-ui-sidebar-right",
         "@singula-ai/alego-client-ui-session",
-        "@singula-ai/alego-api-remotes"
+        "@singula-ai/alego-api-remotes",
+        "@singula-ai/alego-client-locale",
+        "@singula-ai/alego-client-ui-settings"
       ],
       "platform": "web"
     }
@@ -43,36 +46,54 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-api-gateway": "workspace:^",
-    "@singula-ai/alego-api-remotes": "workspace:^",
-    "@singula-ai/alego-api-workspace-files": "workspace:^",
-    "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-resources": "workspace:^",
-    "@singula-ai/alego-client-store": "workspace:^",
-    "@singula-ai/alego-client-test-runtime": "workspace:^",
-    "@singula-ai/alego-client-ui-dockkit": "workspace:^",
-    "@singula-ai/alego-client-ui-primitives": "workspace:^",
-    "@singula-ai/alego-client-ui-renderer": "workspace:^",
-    "@singula-ai/alego-client-ui-session": "workspace:^",
-    "@singula-ai/alego-client-ui-sidebar-right": "workspace:^",
-    "@singula-ai/alego-client-ui-slots": "workspace:^",
-    "@singula-ai/alego-session": "workspace:^",
-    "@singula-ai/alego-util-workspace-path": "workspace:^",
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-api-gateway": "workspace:*",
+    "@singula-ai/alego-api-remotes": "workspace:*",
+    "@singula-ai/alego-api-workspace-files": "workspace:*",
+    "@singula-ai/alego-client-connection": "workspace:*",
+    "@singula-ai/alego-client-locale": "workspace:*",
+    "@singula-ai/alego-client-resources": "workspace:*",
+    "@singula-ai/alego-client-store": "workspace:*",
+    "@singula-ai/alego-client-test-runtime": "workspace:*",
+    "@singula-ai/alego-client-ui-dockkit": "workspace:*",
+    "@singula-ai/alego-client-ui-primitives": "workspace:*",
+    "@singula-ai/alego-client-ui-renderer": "workspace:*",
+    "@singula-ai/alego-client-ui-session": "workspace:*",
+    "@singula-ai/alego-client-ui-settings": "workspace:*",
+    "@singula-ai/alego-client-ui-sidebar-right": "workspace:*",
+    "@singula-ai/alego-client-ui-slots": "workspace:*",
+    "@singula-ai/alego-office-to-pdf": "workspace:*",
+    "@singula-ai/alego-host-webserver": "workspace:*",
+    "@singula-ai/alego-office-to-pdf": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*",
+    "@singula-ai/alego-util-workspace-path": "workspace:*",
+    "@fortune-sheet/core": "1.0.4",
+    "@fortune-sheet/react": "1.0.4",
     "@testing-library/react": "^16.1.0",
+    "@types/papaparse": "^5.3.16",
     "@types/react": "~18.3.1",
     "@types/react-dom": "~18.3.0",
     "clsx": "^2.0.0",
+    "dompurify": "^3.4.11",
+    "exceljs": "4.4.0",
+    "fast-xml-parser": "5.11.1",
+    "fflate": "^0.8.3",
+    "papaparse": "5.5.3",
     "pdfjs-dist": "6.3.289",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "files": [
     "lib/index.js",
     "lib/client.js",
+    "lib/client.*.js",
     "lib/types/**/*.d.ts"
-  ]
+  ],
+  "dependencies": {
+    "@singula-ai/schemastery": "workspace:~"
+  }
 }

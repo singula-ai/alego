@@ -4,6 +4,7 @@
  * @module @singula-ai/alego-session-query
  */
 
+import { currentSessionMessageProjections } from '@singula-ai/alego-session-format-catalog/message-projections'
 import { Context, Service } from '@singula-ai/cordis'
 import {
   Session,
@@ -187,6 +188,7 @@ export abstract class SessionQueryEngine extends Service {
       loaded.events,
       loaded.header,
       loaded.inheritedEventCount,
+      currentSessionMessageProjections,
     )
     return {
       session: structuredClone(loaded.header),

@@ -42,19 +42,34 @@ afterEach(() => {
 })
 
 describe('release families', () => {
-  it('publishes Agent Teams while excluding private experimental packages', () => {
+  it('publishes all current experimental packages', () => {
     const members = releaseFamily('alego').members(resolve(import.meta.dirname, '../..'))
 
     expect(members
       .filter(member => member.directory.startsWith('packages/experimental/'))
       .map(member => member.name)).toEqual([
       '@singula-ai/alego-experimental-agent-team-profile',
-      '@singula-ai/alego-experimental-agent-team-web-profile',
       '@singula-ai/alego-experimental-agent-team',
+      '@singula-ai/alego-experimental-api-speech-to-text',
+      '@singula-ai/alego-experimental-auto-review',
+      '@singula-ai/alego-experimental-browser-use-chrome-devtools-mcp',
+      '@singula-ai/alego-experimental-browser-use-playwright-mcp',
+      '@singula-ai/alego-experimental-browser-use-runtime',
+      '@singula-ai/alego-experimental-browser-use-stagehand-native',
       '@singula-ai/alego-experimental-client-ui-agent-team',
+      '@singula-ai/alego-experimental-client-ui-voice-input',
+      '@singula-ai/alego-experimental-computer-use-cua-driver-mcp',
+      '@singula-ai/alego-experimental-computer-use-cua-driver-native',
+      '@singula-ai/alego-experimental-inspector',
+      '@singula-ai/alego-experimental-ptc-runtime-python',
+      '@singula-ai/alego-experimental-schedule-bundle',
+      '@singula-ai/alego-experimental-speech-to-text-sensevoice',
+      '@singula-ai/alego-experimental-speech-to-text',
       '@singula-ai/alego-experimental-tool-agent-team',
+      '@singula-ai/alego-experimental-voice-input-bundle',
+      '@singula-ai/alego-experimental-webworker-packer',
+      '@singula-ai/alego-experimental-webworker-runtime',
     ])
-    expect(members.map(member => member.name)).not.toContain('@singula-ai/alego-experimental-inspector')
   })
 
   it('excludes private applications from the publish set', () => {
@@ -64,6 +79,25 @@ describe('release families', () => {
     write(join(root, 'apps/private/package.json'), '{"name":"@singula-ai/alego-private","version":"0.0.1","private":true}\n')
 
     expect(releaseFamily('alego').members(root).map(entry => entry.name)).toEqual(['@singula-ai/alego-public'])
+  })
+
+  it('publishes unlisted experimental packages while retaining private exclusions', () => {
+    const root = mkdtempSync(join(tmpdir(), 'alego-release-experimental-'))
+    roots.push(root)
+    write(join(root, 'packages/experimental/prototype/package.json'), JSON.stringify({
+      name: '@singula-ai/alego-experimental-prototype',
+      version: '0.0.1',
+      publishConfig: { access: 'public' },
+    }))
+    write(join(root, 'packages/experimental/inspector/package.json'), JSON.stringify({
+      name: '@singula-ai/alego-experimental-inspector',
+      version: '0.0.1',
+      private: true,
+    }))
+
+    expect(releaseFamily('alego').members(root).map(entry => entry.name)).toEqual([
+      '@singula-ai/alego-experimental-prototype',
+    ])
   })
 
   it('bumps private alego workspaces without adding release tags', () => {

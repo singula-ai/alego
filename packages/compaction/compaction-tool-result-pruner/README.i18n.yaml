@@ -1,6 +1,67 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/compaction/compaction-tool-result-pruner/README.md
-README.md: 7e68f60a69c805c5c69e7a879f57e5398ebd5a3e
-README.zh.md: 503c1b60fb565d28313cd6207587680327a2c621
+/:
+  en: 9ed7a84c51988fdb
+  zh: 4df60a349c2be7dc
+/singula-ai-alego-compaction-tool-result-pruner:
+  en: 510abd423c446f7f
+  zh: a47d8711ee836b45
+/singula-ai-alego-compaction-tool-result-pruner/summary:
+  en: 9df461f522743e2e
+  zh: e672bbcfec744946
+/singula-ai-alego-compaction-tool-result-pruner/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-compaction-tool-result-pruner/use-this-package:
+  en: 1c0fcbc618da0e6a
+  zh: d39f0b3c7e1b821c
+/singula-ai-alego-compaction-tool-result-pruner/use-this-package/smallest-working-composition:
+  en: 55eadf840a54d2f8
+  zh: cc6bf82f58058c7b
+/singula-ai-alego-compaction-tool-result-pruner/use-this-package/what-gets-trimmed:
+  en: a5cb5c94edcd91e3
+  zh: ed95adc91d11bbda
+/singula-ai-alego-compaction-tool-result-pruner/use-this-package/setting-the-size-limits:
+  en: 2f4754165a960a3c
+  zh: 1f4343dfffa926d3
+/singula-ai-alego-compaction-tool-result-pruner/use-this-package/when-trimming-runs:
+  en: 04ef29475cfea371
+  zh: b03a7d56c732466e
+/singula-ai-alego-compaction-tool-result-pruner/understand-the-implementation:
+  en: 57aaa53880042873
+  zh: 667f54624411c37d
+/singula-ai-alego-compaction-tool-result-pruner/understand-the-implementation/design-philosophy:
+  en: 5adff8207c6294e0
+  zh: ccba42d804989abb
+/singula-ai-alego-compaction-tool-result-pruner/understand-the-implementation/pruning-mechanics:
+  en: 9813749e4f016897
+  zh: f2b2b5d6e5e8977a
+/singula-ai-alego-compaction-tool-result-pruner/understand-the-implementation/source-map:
+  en: 9c10b4382c2347b5
+  zh: b713a6dcf7589aee
+/singula-ai-alego-compaction-tool-result-pruner/further-exploration:
+  en: 43b076513fa5c9b5
+  zh: 4ce80a15f995d85a
+/singula-ai-alego-compaction-tool-result-pruner/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-compaction-tool-result-pruner/model-experience/pruned-tool-result:
+  en: 0b0dfb7ec1bf906f
+  zh: 68f70bde796751cd
+/singula-ai-alego-compaction-tool-result-pruner/model-experience/pruned-tool-result/what-the-model-sees:
+  en: 8514b5a6586bd65d
+  zh: 2a0648bea6cb81b6
+/singula-ai-alego-compaction-tool-result-pruner/model-experience/pruned-tool-result/token-effect:
+  en: 1b11d405468e8d5d
+  zh: 06dc9aef281c776d
+/singula-ai-alego-compaction-tool-result-pruner/model-experience/pruned-tool-result/kv-cache-effect:
+  en: aac7de507412ba39
+  zh: bdd8f391ad9c9a81
+/singula-ai-alego-compaction-tool-result-pruner/known-limitations-and-deferred-work:
+  en: 2a7be98dc032e9bc
+  zh: d6710b1130722d12
+/singula-ai-alego-compaction-tool-result-pruner/known-limitations-and-deferred-work/dev-note:
+  en: 19120c19286532da
+  zh: 49187f1e83b31007

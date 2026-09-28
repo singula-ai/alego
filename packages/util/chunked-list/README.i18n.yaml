@@ -1,6 +1,37 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/util/chunked-list/README.md
-README.md: 251b0600fc486484e1944568390a6213694a6bd1
-README.zh.md: 9671b32927cbdbb722c0374f812f7f9de393248b
+/:
+  en: e29affc07acbcf4f
+  zh: 10e2da625e145a68
+/singula-ai-alego-chunked-list:
+  en: 82fbdd8ff88b6776
+  zh: dae4da1bd0843025
+/singula-ai-alego-chunked-list/summary:
+  en: 9e857fdb0d669797
+  zh: 7de55a56b77ed060
+/singula-ai-alego-chunked-list/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 75f067b4c4218355
+/singula-ai-alego-chunked-list/use-this-package:
+  en: 6808bfba89c5ffbf
+  zh: f80761fdcd3db317
+/singula-ai-alego-chunked-list/understand-the-implementation:
+  en: c1d571642af3feeb
+  zh: c942c041a396ea94
+/singula-ai-alego-chunked-list/further-exploration:
+  en: f1f19a4167a05d4a
+  zh: 08857aab24d0e4ae
+/singula-ai-alego-chunked-list/model-experience:
+  en: bc7e4d8a0c8b8ebb
+  zh: e11fe3bd45d4354a
+/singula-ai-alego-chunked-list/model-experience/kv-cache-effect:
+  en: e7ba08477bf22c4e
+  zh: c38c528fe563bb51
+/singula-ai-alego-chunked-list/known-limitations-and-deferred-work:
+  en: fdc87d52574748eb
+  zh: e1e7cbd86cd2bde0
+/singula-ai-alego-chunked-list/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

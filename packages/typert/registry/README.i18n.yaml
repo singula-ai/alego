@@ -1,6 +1,61 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/typert/registry/README.md
-README.md: ae121c5c923f452bc06df3f72e48553a1261df4a
-README.zh.md: 61e16b67be57dad488597a60dacdd60d5229d9ff
+/:
+  en: c7c547de25c95016
+  zh: 983f6b8444a4bd1a
+/singula-ai-alego-typert-registry:
+  en: df53ea76ffc9c6f8
+  zh: 1268f5223d15aad9
+/singula-ai-alego-typert-registry/summary:
+  en: 69594302c807c30f
+  zh: d1b8d4199740fab9
+/singula-ai-alego-typert-registry/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-typert-registry/use-this-package:
+  en: d885ccd8f13315f1
+  zh: cea7c258f5f57e2d
+/singula-ai-alego-typert-registry/use-this-package/minimal-setup:
+  en: 1ec4b304a024bb3c
+  zh: f17e796c26faabab
+/singula-ai-alego-typert-registry/use-this-package/querying-schemas-and-reflection:
+  en: bc75ee0cfdd77fee
+  zh: f0fc5bfffe0cc063
+/singula-ai-alego-typert-registry/use-this-package/registering-a-contribution:
+  en: cf5dcce9c3efdef0
+  zh: 6580a477171c0261
+/singula-ai-alego-typert-registry/use-this-package/lookup-and-context-providers:
+  en: bc9ea8f035ec1199
+  zh: d25f1dc16cfc8654
+/singula-ai-alego-typert-registry/understand-the-implementation:
+  en: 1a78dfbae50a8b0d
+  zh: dc10b4b3f3d832ed
+/singula-ai-alego-typert-registry/understand-the-implementation/design-concept:
+  en: 4d50f3efeb45eaa4
+  zh: ec3575d29d5a040b
+/singula-ai-alego-typert-registry/understand-the-implementation/sub-registries:
+  en: cc0deb5e1ae93fd6
+  zh: 4bb6c88213262afe
+/singula-ai-alego-typert-registry/understand-the-implementation/identity-and-validation:
+  en: 4764fc33a7e16e60
+  zh: 1ddf03cbe16197da
+/singula-ai-alego-typert-registry/understand-the-implementation/source-map:
+  en: ec30fd742ee246b1
+  zh: 7fff86709e5ea4a1
+/singula-ai-alego-typert-registry/further-exploration:
+  en: d875f4334c0e86a5
+  zh: 84a39885192ec21f
+/singula-ai-alego-typert-registry/model-experience:
+  en: c2fafdfead674c9d
+  zh: d6c506ac82390512
+/singula-ai-alego-typert-registry/model-experience/kv-cache-effect:
+  en: b3c95d3ac849684a
+  zh: 6eb941bb28aa6aea
+/singula-ai-alego-typert-registry/known-limitations-and-deferred-work:
+  en: f3e6c1b0ee101919
+  zh: 3fb5366a014aade7
+/singula-ai-alego-typert-registry/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

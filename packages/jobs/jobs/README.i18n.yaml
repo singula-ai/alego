@@ -1,6 +1,61 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/jobs/jobs/README.md
-README.md: 67cbe0cc2136029b337cf71dd962b34a56904611
-README.zh.md: 8d7a5ad732de1000c9ce3da6ba098f0efb444c05
+/:
+  en: 4055a3bc920e4ac2
+  zh: 3bc99f3b5bc2fd71
+/singula-ai-alego-jobs:
+  en: 22a92abc22e29af9
+  zh: 9d6000ff75a00a1c
+/singula-ai-alego-jobs/summary:
+  en: 4a4685b944d0624d
+  zh: 11fd6cc78880040b
+/singula-ai-alego-jobs/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-jobs/use-this-package:
+  en: 12d02053f5631b42
+  zh: 8854c6bb3a16c1e1
+/singula-ai-alego-jobs/use-this-package/what-a-background-job-gives-you:
+  en: d7909d85a1437ddc
+  zh: be3dcdab835206dc
+/singula-ai-alego-jobs/use-this-package/the-ownership-boundary:
+  en: 873494750b38dae5
+  zh: 2e6142ab889f7a8b
+/singula-ai-alego-jobs/use-this-package/starting-background-work-needs-a-controller:
+  en: 0840386e6b4f737a
+  zh: c5a1f65136764fc0
+/singula-ai-alego-jobs/use-this-package/smallest-working-composition:
+  en: 71f336b526b98976
+  zh: 729aa05a3df4627d
+/singula-ai-alego-jobs/use-this-package/what-can-go-wrong:
+  en: fcfee3f72ea703ac
+  zh: 80299901bd44783b
+/singula-ai-alego-jobs/understand-the-implementation:
+  en: 7e13d669ecc96d59
+  zh: b5fe7ae65812d926
+/singula-ai-alego-jobs/understand-the-implementation/design-philosophy:
+  en: e690879c2be3d88d
+  zh: a78cee63e6be8216
+/singula-ai-alego-jobs/understand-the-implementation/source-map:
+  en: 2416d5be526d4dba
+  zh: 1090a9373258d7bb
+/singula-ai-alego-jobs/understand-the-implementation/service-operations:
+  en: 8adaaa5069c5564f
+  zh: d330860cdc44f206
+/singula-ai-alego-jobs/further-exploration:
+  en: cc7921b744e819f3
+  zh: e966aee4aa0959ca
+/singula-ai-alego-jobs/model-experience:
+  en: efb58cac0fc08163
+  zh: 838791f77fd79917
+/singula-ai-alego-jobs/model-experience/kv-cache-effect:
+  en: e290ccc9b3c92c08
+  zh: d75d48f485447a74
+/singula-ai-alego-jobs/known-limitations-and-deferred-work:
+  en: bf4e5e0bd25d579e
+  zh: ed995c02012f0c72
+/singula-ai-alego-jobs/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

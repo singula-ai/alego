@@ -1,6 +1,67 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/fs/fs-sandbox/README.md
-README.md: 0278b34ed70e4604ecd311953ce7da8b2aa04664
-README.zh.md: 0f04e04e070d0b4ba0a7624912582c33dba99b6d
+/:
+  en: 4061a46ba3cf0fbd
+  zh: c374141974bfe4bb
+/singula-ai-alego-fs-sandbox:
+  en: c4bd939174cdd90b
+  zh: cb081a1811e922f9
+/singula-ai-alego-fs-sandbox/summary:
+  en: c9b62dddbc5b695d
+  zh: 9914d294f79c072a
+/singula-ai-alego-fs-sandbox/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-fs-sandbox/use-this-package:
+  en: c6fe0aa054b2a402
+  zh: 78a779a1b91ac808
+/singula-ai-alego-fs-sandbox/use-this-package/minimal-composition:
+  en: 6379a5dff0c8d94d
+  zh: dcee84b9d11039e8
+/singula-ai-alego-fs-sandbox/use-this-package/how-the-fence-behaves:
+  en: 1a6f19bb21aff7b1
+  zh: ace300527edd0c1f
+/singula-ai-alego-fs-sandbox/use-this-package/observable-success-and-failures:
+  en: 722f744eb7b3b040
+  zh: b95db78f9968f9c5
+/singula-ai-alego-fs-sandbox/understand-the-implementation:
+  en: 1c359075f33df1ed
+  zh: 1306d6c28b5dd1f5
+/singula-ai-alego-fs-sandbox/understand-the-implementation/design-concept:
+  en: ef26d25e866ae9c0
+  zh: 8206760b2e2c5feb
+/singula-ai-alego-fs-sandbox/understand-the-implementation/source-map:
+  en: 5422d25675578549
+  zh: 9bb87cede194cd99
+/singula-ai-alego-fs-sandbox/understand-the-implementation/how-a-mutation-is-fenced:
+  en: d30a62f5f7e9aee7
+  zh: 837e33fb5eea2f64
+/singula-ai-alego-fs-sandbox/understand-the-implementation/threat-model:
+  en: 051808b6e28313a5
+  zh: a06a46f26c552678
+/singula-ai-alego-fs-sandbox/further-exploration:
+  en: 873ac6f61fdab399
+  zh: 6a7ba14bd5f88f56
+/singula-ai-alego-fs-sandbox/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-fs-sandbox/model-experience/filesystem-policy-and-refusals:
+  en: 36178638b7ce9cf8
+  zh: 929c8292023f3541
+/singula-ai-alego-fs-sandbox/model-experience/filesystem-policy-and-refusals/what-the-model-sees:
+  en: e93f3122ac5da01f
+  zh: 8a10e61aeb776ff1
+/singula-ai-alego-fs-sandbox/model-experience/filesystem-policy-and-refusals/token-effect:
+  en: fd86bc3fc7106117
+  zh: 1b9eb71e5aba714b
+/singula-ai-alego-fs-sandbox/model-experience/filesystem-policy-and-refusals/kv-cache-effect:
+  en: a4ca227f2f83edec
+  zh: 5bb3c452b412566d
+/singula-ai-alego-fs-sandbox/known-limitations-and-deferred-work:
+  en: c0ba1642a5e62459
+  zh: 10a27abcd6f27888
+/singula-ai-alego-fs-sandbox/known-limitations-and-deferred-work/dev-note:
+  en: e83aa1d2ff6b4366
+  zh: f0feffa169cb8bd3

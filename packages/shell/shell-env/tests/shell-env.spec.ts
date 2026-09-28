@@ -55,6 +55,21 @@ describe('ShellEnvRegistry', () => {
     })
   })
 
+  it('collects the launcher-provided profile name and directory when a profile context exists', () => {
+    const ctx = new Context()
+    ctx.provide('profileContext', {
+      name: 'web', dir: '/profiles/web', patchPath: '/profiles/web/cordis.patch.yml', installAnchor: '/alego/package.json',
+      cwd: '/work', home: '/home', startedBundles: [], overlays: [], telemetryDisabledEnv: undefined,
+    })
+    const registry = new ShellEnvRegistry(ctx, { alegoHome: './test-alego-home' })
+    expect(registry.collect(execution())).toMatchObject({ ALEGO_PROFILE: 'web', ALEGO_PROFILE_DIR: '/profiles/web' })
+    expect(() => registry.register({
+      name: 'profile-claimer',
+      variables: { ALEGO_PROFILE: { description: 'Reserved key.' } },
+      resolve: () => ({}),
+    })).toThrow(/reserved key "ALEGO_PROFILE"/)
+  })
+
   it('resolves ALEGO_HOME from the ambient override or the user-home default', () => {
     vi.stubEnv('ALEGO_HOME', './ambient-alego-home')
     const fromEnvironment = new ShellEnvRegistry(new Context())

@@ -1,6 +1,25 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/attachment/README.md
-README.md: 16349f7cab4207cb1d7c1bb47abf24a93657b96d
-README.zh.md: 7b8f526f048ba414bae4890f325433ae41b7fa24
+/:
+  en: 45edc3b0f7e4c61f
+  zh: 34032617b731defb
+/attachment-durable-attachment-capability-family:
+  en: 388178f6a57340d0
+  zh: 5fdfe8446bb7ee7b
+/attachment-durable-attachment-capability-family/summary:
+  en: 51138210b91ebacd
+  zh: b5f22ece9ab54c93
+/attachment-durable-attachment-capability-family/table-of-contents:
+  en: 1eb35b015a6c423f
+  zh: a8a3dceee2c9e943
+/attachment-durable-attachment-capability-family/packages:
+  en: dcc4f3282cdea71b
+  zh: e07cb35a0b0c5545
+/attachment-durable-attachment-capability-family/related-documentation:
+  en: e3d33a9c6c5daeff
+  zh: 4ebf9d7f85bcfe1d
+/attachment-durable-attachment-capability-family/dev-note:
+  en: 5de1d6304e00c58f
+  zh: 8d8225361cfa29e5

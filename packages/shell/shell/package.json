@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-shell",
   "description": "Abstract bash executor seam (ctx.shell) for the Alego",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,15 +27,13 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-subprocess": "workspace:^",
-    "@singula-ai/alego-sandbox": "workspace:^",
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-settings": "workspace:^"
+    "@singula-ai/alego-subprocess": "workspace:*",
+    "@singula-ai/alego-sandbox": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-subprocess": "workspace:^",
-    "@singula-ai/alego-sandbox": "workspace:^",
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-settings": "workspace:^"
+    "@singula-ai/alego-subprocess": "workspace:*",
+    "@singula-ai/alego-sandbox": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

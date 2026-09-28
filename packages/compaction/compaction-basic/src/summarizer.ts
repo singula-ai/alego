@@ -5,9 +5,10 @@
  */
 
 import type { Context } from '@singula-ai/cordis'
-import { contentHasImage, createUserMessage, BlockAssembler, LlmError } from '@singula-ai/alego-llm'
+import { contentHasImage, BlockAssembler, LlmError } from '@singula-ai/alego-llm'
+import { deepFreeze } from '@singula-ai/alego-util-values'
 import type {
-  ContentBlock, FinishReason, GenerateOptions, Message, TokenUsage, ToolSchema,
+  ContentBlock, FinishReason, GenerateOptions, Message, RequestMessage, TokenUsage, ToolSchema,
 } from '@singula-ai/alego-llm'
 import type { Agent } from '@singula-ai/alego-agent'
 
@@ -141,17 +142,18 @@ export async function summarizeWithLlm(
   }
 
   const assembler = new BlockAssembler()
-  const messages: Message[] = [
+  const messages: RequestMessage[] = [
     ...input.messages,
-    createUserMessage({
+    deepFreeze({
+      role: 'user',
       content: [{ type: 'text', text: COMPACTION_INSTRUCTION }],
-      source: { kind: 'plugin', plugin: 'alego-compaction-basic' },
     }),
   ]
   const options: GenerateOptions = {
     provider: target.provider,
     model: target.model,
     messages,
+    toolHistory: agent.session.toolHistory(),
     ...input.tools === undefined ? {} : { tools: [...input.tools] },
     maxTokens: config.maxTokens,
     sessionId: agent.session.id,
@@ -196,9 +198,7 @@ function finishError(finish: FinishReason): Error | undefined {
   switch (finish.kind) {
     case 'error':
     case 'aborted': {
-      const error = new Error(finish.failure.message) as Error & { code?: string }
-      error.code = finish.failure.code
-      return error
+      return new LlmError(finish.failure.message, finish.failure.code, finish.failure)
     }
     case 'max-tokens': {
       const error = new Error('summarization truncated at the token cap (incomplete checkpoint)') as Error & { code?: string }

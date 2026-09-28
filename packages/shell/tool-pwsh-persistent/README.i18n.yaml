@@ -1,6 +1,79 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/shell/tool-pwsh-persistent/README.md
-README.md: a3d6cfb53420da671239b92eaf0f6bc036ef0df0
-README.zh.md: a8da57e9ccd9ba100f6140ac4f61a25feb525f71
+/:
+  en: 07c1a52a0f913391
+  zh: a0c8579b535a1782
+/singula-ai-alego-tool-pwsh-persistent:
+  en: 68e946562a23b9bf
+  zh: 765a11722ce10a3a
+/singula-ai-alego-tool-pwsh-persistent/summary:
+  en: 2ae3969fc8671e45
+  zh: 83fd2d64d6451003
+/singula-ai-alego-tool-pwsh-persistent/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-tool-pwsh-persistent/use-this-package:
+  en: 4dd44d6a10f2b6af
+  zh: d8dc4c11eac6f78a
+/singula-ai-alego-tool-pwsh-persistent/use-this-package/when-to-choose-it:
+  en: 8428acae80bc8991
+  zh: 6a0590ff4dfc2bfc
+/singula-ai-alego-tool-pwsh-persistent/use-this-package/minimal-configuration:
+  en: 11058344768046ae
+  zh: 66df610bbebacce2
+/singula-ai-alego-tool-pwsh-persistent/use-this-package/what-the-agent-can-rely-on:
+  en: 9f4c22b06f940caf
+  zh: 61f755cec7ff5b76
+/singula-ai-alego-tool-pwsh-persistent/use-this-package/what-can-go-wrong:
+  en: 70bf2e1e8d8ccbf6
+  zh: 6c78d8c85113adf7
+/singula-ai-alego-tool-pwsh-persistent/understand-the-implementation:
+  en: 8d94a7381bca3fa9
+  zh: f4bd2866fff6fa8d
+/singula-ai-alego-tool-pwsh-persistent/understand-the-implementation/design-philosophy:
+  en: 6cfdece43ca13fd5
+  zh: 83d8bd563fcdbeea
+/singula-ai-alego-tool-pwsh-persistent/understand-the-implementation/source-map:
+  en: bb2d17f1385fb11d
+  zh: 8e103837238ccda2
+/singula-ai-alego-tool-pwsh-persistent/understand-the-implementation/command-flow:
+  en: 52f69b3256d2d2c2
+  zh: 34ce45e101760793
+/singula-ai-alego-tool-pwsh-persistent/further-exploration:
+  en: 7d3d27edb390e2a4
+  zh: 7926ebdfd1b2c1ae
+/singula-ai-alego-tool-pwsh-persistent/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-tool-pwsh-persistent/model-experience/tool-schema:
+  en: e4c7376d4f29dbd5
+  zh: 6b7a9eaf69c9ea53
+/singula-ai-alego-tool-pwsh-persistent/model-experience/tool-schema/what-the-model-sees:
+  en: 8855cc9661af7ff6
+  zh: 555e3f0c65ea68d4
+/singula-ai-alego-tool-pwsh-persistent/model-experience/tool-schema/token-effect:
+  en: 120147c962cbb894
+  zh: 8952abc085cf3812
+/singula-ai-alego-tool-pwsh-persistent/model-experience/tool-schema/kv-cache-effect:
+  en: 7d9323583a83cb95
+  zh: cc5daa6bce8450f8
+/singula-ai-alego-tool-pwsh-persistent/model-experience/tool-results:
+  en: beaabb79f229692a
+  zh: 8573891441963be4
+/singula-ai-alego-tool-pwsh-persistent/model-experience/tool-results/what-the-model-sees:
+  en: bc99957e721951de
+  zh: e384874a0f2f63e8
+/singula-ai-alego-tool-pwsh-persistent/model-experience/tool-results/token-effect:
+  en: 5dea04ce6a30ad48
+  zh: c2434253dc517d3d
+/singula-ai-alego-tool-pwsh-persistent/model-experience/tool-results/kv-cache-effect:
+  en: ba6a48888c3361e5
+  zh: 3a8f648053555dc9
+/singula-ai-alego-tool-pwsh-persistent/known-limitations-and-deferred-work:
+  en: e2f1a18c599a82ba
+  zh: 1f00c387a4bb85a8
+/singula-ai-alego-tool-pwsh-persistent/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

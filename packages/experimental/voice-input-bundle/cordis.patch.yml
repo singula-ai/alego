@@ -1,0 +1,13 @@
+- insert:
+    - id: speech-to-text
+      name: '@singula-ai/alego-experimental-speech-to-text'
+      config:
+        defaultProvider: sensevoice-local
+    - id: speech-to-text-sensevoice
+      name: '@singula-ai/alego-experimental-speech-to-text-sensevoice'
+      config:
+        dataRoot: !!js alegoHomePath('speech-to-text', 'sensevoice')
+    - id: api-speech-to-text
+      name: '@singula-ai/alego-experimental-api-speech-to-text'
+    - id: ui-voice-input
+      name: '@singula-ai/alego-experimental-client-ui-voice-input'

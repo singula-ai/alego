@@ -1,6 +1,64 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/locale/README.md
-README.md: bc1f15c246b0e70037ed72fecc61c2c82253787e
-README.zh.md: 3de35a7239fbf0798f276663c53081248c8a2059
+/:
+  en: d2aaa955e01c2679
+  zh: 9d264cf8be1536cf
+/singula-ai-alego-client-locale:
+  en: cbe329e28cf6fb56
+  zh: f94b9991855c1152
+/singula-ai-alego-client-locale/summary:
+  en: 3aea42e58cb38da9
+  zh: 45244cc37e3416a9
+/singula-ai-alego-client-locale/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: bda879a892f240f0
+/singula-ai-alego-client-locale/use-this-package:
+  en: 7fedfbcbc3ad8cea
+  zh: e29ba5230e0b9ecb
+/singula-ai-alego-client-locale/use-this-package/choosing-a-language:
+  en: 9f83e33acdd1b65b
+  zh: b0520a0669ebe262
+/singula-ai-alego-client-locale/use-this-package/registering-a-dictionary:
+  en: 9b2fcfa8cae8dc4b
+  zh: 293012a4d364ef59
+/singula-ai-alego-client-locale/use-this-package/resolving-package-text:
+  en: ea2c31b7b417515d
+  zh: 6a2e6c0f5ac6d198
+/singula-ai-alego-client-locale/use-this-package/registering-a-language-pack:
+  en: aa4e9c70523339cc
+  zh: 3359eddc4e9ef15e
+/singula-ai-alego-client-locale/use-this-package/what-the-host-half-does:
+  en: 8fa91333f7fc3387
+  zh: 789a9cbb3eace3b0
+/singula-ai-alego-client-locale/understand-the-implementation:
+  en: 288d8db39f9acfc5
+  zh: d65cf2ffae8ad35c
+/singula-ai-alego-client-locale/understand-the-implementation/design-concept:
+  en: c0ae710baad76d7c
+  zh: 5b3c23cb16c6d2fd
+/singula-ai-alego-client-locale/understand-the-implementation/preference-resolution:
+  en: 4bc9dffa4629f537
+  zh: f51633c658b8d25b
+/singula-ai-alego-client-locale/understand-the-implementation/dictionary-lookup:
+  en: f8dcc4035830e738
+  zh: 8452ac63ee148c61
+/singula-ai-alego-client-locale/understand-the-implementation/source-map:
+  en: a382e032c06ced3f
+  zh: 419cb5f60b075388
+/singula-ai-alego-client-locale/further-exploration:
+  en: 98e35ecbb29884c1
+  zh: 18249b793ff65fd9
+/singula-ai-alego-client-locale/model-experience:
+  en: 209321ba2d2e6710
+  zh: 21deb6c973f69b66
+/singula-ai-alego-client-locale/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: de54f3467ef3b9be
+/singula-ai-alego-client-locale/known-limitations-and-deferred-work:
+  en: 500ede048ef44c6a
+  zh: f741fae55b29a627
+/singula-ai-alego-client-locale/known-limitations-and-deferred-work/dev-note:
+  en: 82fb34d8a128a0ac
+  zh: fa3f40c900032aae

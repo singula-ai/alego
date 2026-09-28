@@ -1,6 +1,34 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-19-persisted-same-session-goal-domain.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-19-persisted-same-session-goal-domain.md
-2026-07-19-persisted-same-session-goal-domain.md: 2d21523e7ca4a5165d6e34b62af89360a531a312
-2026-07-19-persisted-same-session-goal-domain.zh.md: 270896566e0d67f906315291a1b98b61652c2796
+/agent-note-persisted-same-session-goal-domain:
+  en: fd48bf551d98d15e
+  zh: ac417cf6701e58e0
+/agent-note-persisted-same-session-goal-domain/problem:
+  en: 45e351264fabe761
+  zh: 6513999a7d83a528
+/agent-note-persisted-same-session-goal-domain/decision:
+  en: d5ec740f3083a38a
+  zh: 15b7de48de584eea
+/agent-note-persisted-same-session-goal-domain/decision/durable-record-and-replay:
+  en: 08029b6979150108
+  zh: 88e538d52927280a
+/agent-note-persisted-same-session-goal-domain/decision/lifecycle-and-live-activation:
+  en: d68c058ff7a49fee
+  zh: cbcdbce1aade7758
+/agent-note-persisted-same-session-goal-domain/decision/service-boundary:
+  en: 3e17abc1f97a85f1
+  zh: 1f4a25037eaa6d6d
+/agent-note-persisted-same-session-goal-domain/testing:
+  en: 9fb97674d1dd45ac
+  zh: c56df41a9aa6767a
+/agent-note-persisted-same-session-goal-domain/alternatives-considered:
+  en: 58f9d376a2bbab3d
+  zh: ccb61b4203e87435
+/agent-note-persisted-same-session-goal-domain/consequences:
+  en: fa46d172b9d01b52
+  zh: 54c40631d1719624
+/agent-note-persisted-same-session-goal-domain/known-limitations-and-deferred-work:
+  en: 21f5c50b4eafa028
+  zh: 4cad975fb10501bd

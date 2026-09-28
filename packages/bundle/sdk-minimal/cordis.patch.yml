@@ -24,7 +24,7 @@
       name: '@singula-ai/alego-plugin-package-inventory-deepseek'
 
     - id: llm-deepseek
-      name: '@singula-ai/alego-llm-deepseek'
+      name: '@singula-ai/alego-llm-deepseek-api-key'
       config:
         apiKeyEnv: DEEPSEEK_API_KEY
         defaultContextWindow: !!js Number(process.env.ALEGO_CONTEXT_WINDOW ?? 1000000)
@@ -90,6 +90,9 @@
 
     - id: tools
       name: '@singula-ai/alego-tools'
+
+    - id: mcp-resources
+      name: '@singula-ai/alego-mcp-resources'
 
     - id: agent
       name: '@singula-ai/alego-agent'

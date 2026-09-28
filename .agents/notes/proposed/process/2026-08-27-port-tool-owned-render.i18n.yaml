@@ -1,6 +1,22 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-27-port-tool-owned-render.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/proposed/process/2026-08-27-port-tool-owned-render.md
-2026-08-27-port-tool-owned-render.md: 35be4e6a2178229563823cc89bac8ffb70c08da4
-2026-08-27-port-tool-owned-render.zh.md: c5aee75cfd36e60128b33fadfeb439fbdaa9748a
+/agent-note-port-tool-owned-render-into-current-alego-apis:
+  en: eb3b40e2bebedcf4
+  zh: 6274d3b5ea005654
+/agent-note-port-tool-owned-render-into-current-alego-apis/problem:
+  en: 3945df989fd33aaf
+  zh: c218feb730f68f39
+/agent-note-port-tool-owned-render-into-current-alego-apis/proposal:
+  en: 2fdfed0509f9525d
+  zh: 358d10b1a2414e25
+/agent-note-port-tool-owned-render-into-current-alego-apis/alternatives-considered:
+  en: a2364e3fca0a06e5
+  zh: a76370082e218154
+/agent-note-port-tool-owned-render-into-current-alego-apis/acceptance-criteria:
+  en: ff0e3e5b256186b8
+  zh: 306ef6d63259f449
+/agent-note-port-tool-owned-render-into-current-alego-apis/risks:
+  en: 4fa51a62af0a3fc5
+  zh: d6f555a8a5d9120c

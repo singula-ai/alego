@@ -14,8 +14,8 @@ import { resolveConfig, resolveDiscoveryConfig, type ResolvedConfig } from './co
 import { trimmedInstructionDigest } from './digest.ts'
 import {
   decodeScopeKey,
-  renderWorkspaceInstructionSet,
-  type RenderedWorkspaceContext,
+  renderAgentInstructionSet,
+  type RenderedAgentInstructions,
   USER_GLOBAL_DIRECTORY,
   USER_GLOBAL_FILE,
 } from './render.ts'
@@ -64,7 +64,7 @@ interface LoadOptions extends DiscoverOptions {
 
 /** Rendered baseline plus the successfully read and byte-budget-retained files. */
 export interface RenderedInstructionSet {
-  rendered: RenderedWorkspaceContext
+  rendered: RenderedAgentInstructions
   /** Successfully read candidates before content deduplication and byte budgeting. */
   observed: LoadedInstructionFile[]
   /** Candidates retained by content deduplication and byte budgeting. */
@@ -401,7 +401,7 @@ export function dedupInstructionFilesByDirectory(files: LoadedInstructionFile[])
 export async function loadBaselineInstructions(
   options: LoadOptions,
   fileSystem?: FileSystem,
-): Promise<RenderedWorkspaceContext | undefined> {
+): Promise<RenderedAgentInstructions | undefined> {
   return (await loadBaselineInstructionSet(options, fileSystem))?.rendered
 }
 
@@ -434,7 +434,7 @@ export async function loadBaselineInstructionSet(
   const deduped = dedupInstructionFilesByDirectory(loaded)
   if (deduped.length === 0) {
     if (options.replacePreviousBaseline !== true) return undefined
-    const { rendered, included } = renderWorkspaceInstructionSet([], {
+    const { rendered, included } = renderAgentInstructionSet([], {
       maxBytes: config.maxBytes,
       replacePreviousBaseline: true,
     })
@@ -444,7 +444,7 @@ export async function loadBaselineInstructionSet(
       included,
     }
   }
-  const { rendered, included } = renderWorkspaceInstructionSet(deduped, {
+  const { rendered, included } = renderAgentInstructionSet(deduped, {
     maxBytes: config.maxBytes,
     ...options.replacePreviousBaseline === undefined
       ? {}

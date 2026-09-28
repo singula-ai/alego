@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-jobs",
-  "description": "Session-header background-job list: live registry state mirrored from session/jobs frames",
-  "version": "0.1.5-rc.2",
+  "description": "Session-header background-job list with on-demand streaming record panels",
+  "version": "0.1.7-rc.2",
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/types/index.d.ts",
@@ -17,16 +17,6 @@
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
-  "alego": {
-    "client": {
-      "inject": [
-        "@singula-ai/alego-client-locale",
-        "@singula-ai/alego-client-ui-conversation",
-        "@singula-ai/alego-client-ui-primitives"
-      ],
-      "platform": "web"
-    }
-  },
   "scripts": {
     "bundle": "tsdown",
     "watch": "tsdown --watch"
@@ -41,24 +31,37 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-client-locale": "workspace:^",
-    "@singula-ai/alego-client-test-runtime": "workspace:^",
-    "@singula-ai/alego-client-ui-conversation": "workspace:^",
-    "@singula-ai/alego-client-ui-primitives": "workspace:^",
-    "@singula-ai/alego-client-ui-slots": "workspace:^",
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-api-job-controller": "workspace:*",
+    "@singula-ai/alego-client-locale": "workspace:*",
+    "@singula-ai/alego-client-test-runtime": "workspace:*",
+    "@singula-ai/alego-client-ui-conversation": "workspace:*",
+    "@singula-ai/alego-client-ui-primitives": "workspace:*",
+    "@singula-ai/alego-client-ui-renderer": "workspace:*",
+    "@singula-ai/alego-client-ui-session": "workspace:*",
+    "@singula-ai/alego-client-ui-slots": "workspace:*",
+    "@singula-ai/alego-jobs": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*",
     "@types/react": "~18.3.1",
-    "@singula-ai/cordis": "workspace:^",
-    "react": "^18.2.0",
-    "@singula-ai/alego-api-session-controller": "workspace:^",
-    "@singula-ai/alego-client-ui-renderer": "workspace:^",
-    "@singula-ai/alego-client-ui-session": "workspace:^"
+    "react": "^18.2.0"
   },
   "files": [
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"
-  ]
+  ],
+  "alego": {
+    "client": {
+      "inject": [
+        "@singula-ai/alego-api-job-controller",
+        "@singula-ai/alego-client-locale",
+        "@singula-ai/alego-client-ui-conversation",
+        "@singula-ai/alego-client-ui-primitives"
+      ],
+      "platform": "web"
+    }
+  }
 }

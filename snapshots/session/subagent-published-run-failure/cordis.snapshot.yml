@@ -1,7 +1,7 @@
 # Keyless counterpart to subagent-durability-failure.cordis.yml: replace the
 # live adapter with replay and fail the provider-owned final child checkpoint.
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   disabled: true
 
 - id: agent-default-model

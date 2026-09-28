@@ -8,8 +8,8 @@ import { SessionId } from '@singula-ai/alego-session'
 import type { Agent } from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
-import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek'
-import * as WorkspaceContext from '@singula-ai/alego-agent-instructions'
+import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek-api-key'
+import * as AgentInstructions from '@singula-ai/alego-agent-instructions'
 import { candidateScopeKey } from '../src/render.ts'
 import LocalFileSystem from '@singula-ai/alego-fs-local'
 import * as ToolFs from '@singula-ai/alego-tool-fs'
@@ -39,7 +39,7 @@ async function harness(): Promise<{ ctx: Context; agent: Agent }> {
   })
   await ctx.plugin(LocalFileSystem, { cwd: '/' })
   await ctx.plugin(ToolFs)
-  await ctx.plugin(WorkspaceContext, { maxBytes: 65536 })
+  await ctx.plugin(AgentInstructions, { maxBytes: 65536 })
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(LlmDeepSeek, { models: [{ id: 'deepseek-v4-flash' }] })
   const handle = await ctx.agents.create({

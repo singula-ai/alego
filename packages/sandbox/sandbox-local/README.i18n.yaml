@@ -1,6 +1,64 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/sandbox/sandbox-local/README.md
-README.md: d46f187aed3933ae97cca0c31a5299ea3a10fee9
-README.zh.md: 5d37ba231f86055bc564119233b969e7ae4e3927
+/:
+  en: f172767891b86bf4
+  zh: e66e1cc8c96cc259
+/singula-ai-alego-sandbox-local:
+  en: 654dfc8aee00dcc7
+  zh: b065c8d13d078d5c
+/singula-ai-alego-sandbox-local/summary:
+  en: 372982f5cfb05113
+  zh: e5f139ba199124ea
+/singula-ai-alego-sandbox-local/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-sandbox-local/use-this-package:
+  en: 3759ad594d0a27fb
+  zh: 722010d952b9f87f
+/singula-ai-alego-sandbox-local/use-this-package/when-to-choose-it:
+  en: 722ad601000b13c7
+  zh: d2723f3743fe160b
+/singula-ai-alego-sandbox-local/use-this-package/minimal-configuration:
+  en: ae0cec53806c2422
+  zh: 1d7d88c293b67e17
+/singula-ai-alego-sandbox-local/use-this-package/confined-execution-and-enforcement:
+  en: 7282c9ec77fd6f01
+  zh: 10e385a9489105e3
+/singula-ai-alego-sandbox-local/use-this-package/failures-and-recovery:
+  en: 3808edb37dde5761
+  zh: a8fef8a4fd33e364
+/singula-ai-alego-sandbox-local/understand-the-implementation:
+  en: 15db6ec303151ccc
+  zh: 91f62c1f64192f92
+/singula-ai-alego-sandbox-local/understand-the-implementation/runner-selection:
+  en: f0c44248c2ca6acc
+  zh: 554e9f706671d222
+/singula-ai-alego-sandbox-local/understand-the-implementation/platform-profiles:
+  en: 89bd10ed47b9ec53
+  zh: 5bad6303c10ea0c2
+/singula-ai-alego-sandbox-local/understand-the-implementation/denial-and-runner-failure-dialects:
+  en: 62adfc9229c656cc
+  zh: 11b1534b6d61e5de
+/singula-ai-alego-sandbox-local/understand-the-implementation/source-map:
+  en: 8ab5bcc8dd97df3c
+  zh: ee7a6a237a142cbd
+/singula-ai-alego-sandbox-local/further-exploration:
+  en: 3e816b399b013808
+  zh: 6732d0acaa0da480
+/singula-ai-alego-sandbox-local/model-experience:
+  en: 405053e7c98de068
+  zh: f1ea58c4357a3989
+/singula-ai-alego-sandbox-local/model-experience/kv-cache-effect:
+  en: e290ccc9b3c92c08
+  zh: 469589ac12cdadab
+/singula-ai-alego-sandbox-local/known-limitations-and-deferred-work:
+  en: b2a6a72e340bc620
+  zh: 9d9b2894850a131d
+/singula-ai-alego-sandbox-local/known-limitations-and-deferred-work/dev-note:
+  en: cc273320f6a1beaf
+  zh: 5c57a312ddc50651
+/singula-ai-alego-sandbox-local/known-limitations-and-deferred-work/dev-note/future-environment-coherent-groups:
+  en: 1138dbe0b1b4db52
+  zh: a277c1f017748f14

@@ -1,12 +1,18 @@
 // @vitest-environment jsdom
+import { createSnapshotStore } from '@singula-ai/alego-client-store'
+import type { ClientEntryState } from '@singula-ai/alego-client-modules/client'
+import type { PluginEntryId } from '@singula-ai/alego-api-remotes/client'
+import { Context } from '@singula-ai/cordis'
+import { LocaleRuntime } from '@singula-ai/alego-client-locale/client'
+import { bindSnapshotSelector } from '@singula-ai/alego-client-test-runtime'
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, onTestFinished, vi } from 'vitest'
 import { PluginInventorySettingsTab } from '../src/client/PluginInventorySettingsTab.tsx'
 import type {
   PluginInventorySettingsTabInjected,
   PluginInventorySettingsTabProps,
 } from '../src/client/PluginInventorySettingsTab.tsx'
-import { en, type PluginInventoryLocaleKey } from '../src/client/locales.ts'
+import { en, zh, type PluginInventoryLocaleKey } from '../src/client/locales.ts'
 
 afterEach(cleanup)
 
@@ -20,12 +26,30 @@ const t = ((key: PluginInventoryLocaleKey, params?: Record<string, string>): str
 function props(
   list: PluginInventorySettingsTabInjected['list'],
   presetName: PluginInventorySettingsTabInjected['presetName'] = preset => preset.name ?? preset.id,
+  resolveText: PluginInventorySettingsTabInjected['resolveText'] = text => typeof text === 'string' ? text : text.en,
 ): PluginInventorySettingsTabProps {
   return {
     t,
     list,
     presetName,
+    resolveText,
+    useClientSync: bindSnapshotSelector(createSnapshotStore<ClientEntryState>({ syncing: false, failures: [] })),
+    retryClient: vi.fn(),
   } as PluginInventorySettingsTabProps
+}
+
+function localizedProps(list: PluginInventorySettingsTabInjected['list']) {
+  const ctx = new Context()
+  onTestFinished(async () => { await ctx.fiber.dispose() })
+  const locale = new LocaleRuntime(ctx)
+  ctx.effect(() => locale.register('settings.pluginInventory', 'en', en), 'test: English inventory dictionary')
+  ctx.effect(() => locale.register('settings.pluginInventory', 'zh', zh), 'test: Chinese inventory dictionary')
+  locale.setLocale('en')
+  const pageProps: PluginInventorySettingsTabProps = {
+    ...props(list, preset => preset.name ?? preset.id, text => locale.resolveText(text)),
+    t: locale.bind('settings.pluginInventory'),
+  }
+  return { locale, pageProps }
 }
 
 /** A deployment with a roster: one failed global row, two preset-provided rows. */
@@ -42,7 +66,6 @@ const SNAPSHOT = {
   agentPresets: [
     {
       id: 'standard',
-      trust: 'system',
       name: '标准模式',
       isDefault: true,
       rows: [
@@ -62,7 +85,6 @@ const SNAPSHOT = {
     },
     {
       id: 'ptc',
-      trust: 'system',
       isDefault: false,
       rows: [
         { entryId: 'bash', moduleName: '@singula-ai/alego-tool-bash', enabled: true, fiberPhase: null },
@@ -70,7 +92,7 @@ const SNAPSHOT = {
         { entryId: 'fs', moduleName: '@singula-ai/alego-tool-fs', enabled: 'conditional', fiberPhase: null },
       ],
     },
-    { id: 'shattered', trust: 'user', name: '坏预设', isDefault: false, broken: 'the composition file is missing', rows: [] },
+    { id: 'shattered', name: '坏预设', isDefault: false, broken: 'the composition file is missing', rows: [] },
   ],
 } as unknown as Snapshot
 
@@ -82,9 +104,211 @@ async function renderReady(snapshot: Snapshot = SNAPSHOT): Promise<ReturnType<ty
 
 const globalToggle = (): HTMLElement =>
   screen.getByRole('button', { name: (name: string) => name.startsWith(en.globalTitle) })
+const presetToggle = (): HTMLElement => screen.getByRole('button', { name: en.presetTitle })
 
 describe('PluginInventorySettingsTab', () => {
-  it('shows the default preset first and keeps the global plane collapsed', async () => {
+  it.each(['global', 'preset'])('shortens package and module name fallbacks in the %s inventory', async (scope) => {
+    const names = [
+      ['@singula-ai/alego-tool-subagent', 'tool-subagent'],
+      ['@singula-ai/alego-host-web', 'web'],
+      ['@singula-ai/alego-client-tabs', 'tabs'],
+      ['@singula-ai/cordis-plugin-hmr', 'hmr'],
+      ['cordis:timer', 'timer'],
+      ['@acme/alego-sidebar/navigation', 'sidebar/navigation'],
+      ['plain-plugin', 'plain-plugin'],
+    ] as const
+    const rows = names.flatMap(([moduleName], index) => [false, true].map(fromManifest => ({
+      entryId: `include:short-${String(index)}-${String(fromManifest)}` as PluginEntryId,
+      moduleName,
+      enabled: true,
+      fiberPhase: null,
+      ...fromManifest ? { meta: { title: moduleName, description: 'Package description.' } } : {},
+    })))
+    const snapshot: Snapshot = scope === 'global'
+      ? { entries: rows }
+      : { entries: [], agentPresets: [{ id: 'custom', isDefault: true, rows }] }
+    const view = await renderReady(snapshot)
+    if (scope === 'global') fireEvent.click(globalToggle())
+    for (const [index, [moduleName, title]] of names.entries()) {
+      for (const fromManifest of [false, true]) {
+        const entryId = `include:short-${String(index)}-${String(fromManifest)}`
+        const card = screen.getByRole('button', { name: `${title}, ${entryId}, Enabled` })
+        if (fromManifest) {
+          expect(document.getElementById(card.getAttribute('aria-describedby')!)?.textContent).toBe('Package description.')
+        }
+        fireEvent.click(card)
+        expect(screen.getByText(en.moduleLabel).nextElementSibling?.textContent).toBe(moduleName)
+        expect(view.container.querySelector('[data-loader-entry]')?.textContent).toBe(entryId)
+        fireEvent.click(card)
+      }
+    }
+    fireEvent.change(screen.getByRole('searchbox', { name: en.search }), {
+      target: { value: '@singula-ai/alego-tool-subagent' },
+    })
+    expect(screen.getAllByRole('listitem')).toHaveLength(2)
+    expect(screen.getAllByRole('button', { name: /^tool-subagent, include:short-0-/ })).toHaveLength(2)
+  })
+
+  it('keeps authored locale titles verbatim when they resemble module names', async () => {
+    const { locale, pageProps } = localizedProps(async () => ({
+      entries: [{
+        entryId: 'include:navigation' as PluginEntryId, moduleName: '@acme/alego-navigation', enabled: true, fiberPhase: null,
+        meta: { title: { en: 'alego-Navigation', zh: 'alego-导航' } },
+      }],
+    }))
+    const view = render(<PluginInventorySettingsTab {...pageProps} />)
+    await screen.findByRole('searchbox', { name: en.search })
+    fireEvent.click(globalToggle())
+    expect(screen.getByRole('button', { name: 'alego-Navigation, include:navigation, Enabled' })).toBeTruthy()
+    locale.setLocale('zh')
+    view.rerender(<PluginInventorySettingsTab {...pageProps} />)
+    expect(screen.getByRole('button', { name: 'alego-导航, include:navigation, 已启用' })).toBeTruthy()
+  })
+
+  it('localizes global and preset metadata at render time while preserving identities and query state', async () => {
+    const globalError = 'locale/zh.json: invalid title'
+    const presetError = 'locale/fr.json: invalid description'
+    const snapshot: Snapshot = {
+      entries: [{
+        entryId: 'include:global-navigation' as PluginEntryId, moduleName: '@acme/navigation', enabled: true, fiberPhase: 'active',
+        meta: {
+          title: { en: 'Navigation', zh: '导航' },
+          description: { en: 'Global navigation controls', zh: '全局导航控件' },
+          error: globalError,
+        },
+      }],
+      agentPresets: [{
+        id: 'custom', name: 'My preset', isDefault: true,
+        rows: [{
+          entryId: 'include:preset-runner', moduleName: '@acme/runner', enabled: true, fiberPhase: null,
+          meta: {
+            title: { en: 'Session runner', zh: '会话执行器' },
+            description: { en: 'Run per session', zh: '运行会话命令' },
+            error: presetError,
+          },
+        }],
+      }],
+    }
+    const list = vi.fn(async () => snapshot)
+    const { locale, pageProps } = localizedProps(list)
+    const view = render(<PluginInventorySettingsTab {...pageProps} />)
+    await screen.findByRole('searchbox', { name: en.search })
+    fireEvent.click(globalToggle())
+    const global = screen.getByRole('button', { name: 'Navigation, include:global-navigation, Enabled' })
+    const preset = screen.getByRole('button', { name: 'Session runner, include:preset-runner, Enabled' })
+    expect(document.getElementById(global.getAttribute('aria-describedby')!)?.textContent).toBe('Global navigation controls')
+    expect(document.getElementById(preset.getAttribute('aria-describedby')!)?.textContent).toBe('Run per session')
+    expect(screen.getByText(en.metadataError.replace('{error}', globalError))).toBeTruthy()
+    expect(screen.getByText(en.metadataError.replace('{error}', presetError))).toBeTruthy()
+    expect(global.closest('li')?.getAttribute('data-failed')).toBeNull()
+    fireEvent.click(global)
+    expect(screen.getByText(en.moduleLabel).nextElementSibling?.textContent).toBe('@acme/navigation')
+    fireEvent.click(preset)
+    expect(screen.getByText(en.moduleLabel).nextElementSibling?.textContent).toBe('@acme/runner')
+    expect(view.container.querySelector('[data-loader-entry]')?.textContent).toBe('include:preset-runner')
+
+    locale.setLocale('zh')
+    view.rerender(<PluginInventorySettingsTab {...pageProps} />)
+    expect(screen.getByRole('button', { name: '导航, include:global-navigation, 已启用' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: '会话执行器, include:preset-runner, 已启用' })).toBeTruthy()
+    expect(screen.getByText('全局导航控件')).toBeTruthy()
+    expect(screen.getByText('运行会话命令')).toBeTruthy()
+    expect(screen.getByText(zh.metadataError.replace('{error}', presetError))).toBeTruthy()
+    expect(view.container.querySelector('[data-loader-entry]')?.textContent).toBe('include:preset-runner')
+    const search = screen.getByRole('searchbox', { name: zh.search })
+    for (const query of ['导航', '全局导航控件', '@acme/navigation', 'include:global-navigation']) {
+      fireEvent.change(search, { target: { value: query } })
+      expect(screen.getAllByRole('listitem')).toHaveLength(1)
+      expect(screen.getByRole('button', { name: '导航, include:global-navigation, 已启用' })).toBeTruthy()
+    }
+    fireEvent.change(search, { target: { value: '运行会话命令' } })
+    expect(screen.getAllByRole('listitem')).toHaveLength(1)
+    expect(screen.getByRole('button', { name: '会话执行器, include:preset-runner, 已启用' })).toBeTruthy()
+    fireEvent.change(search, { target: { value: 'Run per session' } })
+    expect(screen.getByText(zh.emptySearch)).toBeTruthy()
+    locale.setLocale('en')
+    view.rerender(<PluginInventorySettingsTab {...pageProps} />)
+    expect(screen.getByRole('button', { name: 'Session runner, include:preset-runner, Enabled' })).toBeTruthy()
+    expect(screen.getByRole('searchbox', { name: en.search })).toHaveProperty('value', 'Run per session')
+    expect(list).toHaveBeenCalledOnce()
+  })
+
+  it.each(['global', 'preset'])('resolves each %s row field independently and hides empty English descriptions', async (scope) => {
+    const rows: Snapshot['entries'] = [
+      {
+        entryId: 'include:navigation' as PluginEntryId, moduleName: '@acme/alego-sidebar/navigation', enabled: true, fiberPhase: null,
+        meta: { description: { en: 'Navigation description.' } },
+      },
+      {
+        entryId: 'include:commands' as PluginEntryId, moduleName: '@acme/alego-sidebar/commands', enabled: true, fiberPhase: null,
+        meta: { title: { en: 'English title' }, description: { en: 'Package description.', zh: '中文命令说明。' } },
+      },
+      {
+        entryId: 'include:theme' as PluginEntryId, moduleName: '@acme/alego-theme/client', enabled: true, fiberPhase: null,
+        meta: { title: { en: '@acme/alego-theme', zh: '主题插件' }, description: { en: '', zh: '中文主题说明。' } },
+      },
+    ]
+    const snapshot: Snapshot = scope === 'global'
+      ? { entries: rows }
+      : { entries: [], agentPresets: [{ id: 'custom', isDefault: true, rows }] }
+    const list = vi.fn(async () => snapshot)
+    const { locale, pageProps } = localizedProps(list)
+    const view = render(<PluginInventorySettingsTab {...pageProps} />)
+    await screen.findByRole('searchbox', { name: en.search })
+    if (scope === 'global') fireEvent.click(globalToggle())
+    expect(screen.getByRole('button', { name: 'sidebar/navigation, include:navigation, Enabled' })).toBeTruthy()
+    expect(screen.getByText('Navigation description.')).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'English title, include:commands, Enabled' })).toBeTruthy()
+    expect(screen.getByText('Package description.')).toBeTruthy()
+    const theme = screen.getByRole('button', { name: '@acme/alego-theme, include:theme, Enabled' })
+    expect(theme.getAttribute('aria-describedby')).toBeNull()
+    expect(screen.queryByText('中文主题说明。')).toBeNull()
+
+    locale.setLocale('zh')
+    view.rerender(<PluginInventorySettingsTab {...pageProps} />)
+    for (const [name, description] of [
+      ['sidebar/navigation, include:navigation, 已启用', 'Navigation description.'],
+      ['English title, include:commands, 已启用', '中文命令说明。'],
+      ['主题插件, include:theme, 已启用', '中文主题说明。'],
+    ] as const) {
+      const card = screen.getByRole('button', { name })
+      expect(screen.getByText(description)).toBeTruthy()
+      expect(document.getElementById(card.getAttribute('aria-describedby')!)?.textContent).toBe(description)
+    }
+    expect(screen.queryByText('Package description.')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: '主题插件, include:theme, 已启用' }))
+    expect(view.container.querySelector('[data-loader-entry]')?.textContent).toBe('include:theme')
+    expect(screen.getByText(zh.moduleLabel).nextElementSibling?.textContent).toBe('@acme/alego-theme/client')
+
+    fireEvent.change(screen.getByRole('searchbox', { name: zh.search }), { target: { value: '中文主题说明。' } })
+    expect(screen.getAllByRole('listitem')).toHaveLength(1)
+    locale.setLocale('en')
+    view.rerender(<PluginInventorySettingsTab {...pageProps} />)
+    expect(screen.getByText(en.emptySearch)).toBeTruthy()
+    fireEvent.change(screen.getByRole('searchbox', { name: en.search }), { target: { value: '@acme/alego-theme/client' } })
+    expect(screen.getAllByRole('listitem')).toHaveLength(1)
+    expect(screen.getByRole('button', { name: '@acme/alego-theme, include:theme, Enabled' }).getAttribute('aria-describedby')).toBeNull()
+    expect(list).toHaveBeenCalledOnce()
+  })
+
+  it('keeps metadata-error-only rows inspectable by their full module specifier', async () => {
+    const error = 'locale/zh.json: invalid title'
+    await renderReady({
+      entries: [{
+        entryId: 'include:legacy' as PluginEntryId, moduleName: '@acme/alego-legacy', enabled: false, fiberPhase: null,
+        meta: { error },
+      }],
+    })
+    fireEvent.click(globalToggle())
+    expect(screen.getByText(en.metadataError.replace('{error}', error))).toBeTruthy()
+    const card = screen.getByRole('button', { name: 'legacy, Disabled' })
+    expect(card).toHaveProperty('disabled', false)
+    expect(card.closest('li')?.getAttribute('data-failed')).toBeNull()
+    fireEvent.click(card)
+    expect(screen.getByText(en.moduleLabel).nextElementSibling?.textContent).toBe('@acme/alego-legacy')
+  })
+
+  it('shows the default preset first with its group open and the global plane folded', async () => {
     const view = await renderReady()
 
     const switcher = screen.getByRole('button', { name: en.switcherLabel })
@@ -100,31 +324,34 @@ describe('PluginInventorySettingsTab', () => {
     expect(screen.getByText(en.presetSubtitle)).toBeTruthy()
     expect(view.container.querySelector('[data-preset-plugin-count]')?.getAttribute('data-preset-plugin-count')).toBe('6')
 
-    // Only the preset group lists rows while the global plane stays collapsed.
+    // The preset group starts open with its rows while the larger global plane stays folded.
+    expect(presetToggle().getAttribute('aria-expanded')).toBe('true')
     expect(screen.getAllByRole('listitem')).toHaveLength(6)
-    expect(screen.getAllByText(en.enabledTag)).toHaveLength(3)
+    // Only the states that depart from plainly enabled carry a tag.
+    expect(screen.queryByText(en.enabledTag)).toBeNull()
     expect(screen.getByText(en.conditionalTag)).toBeTruthy()
     expect(screen.getByText(en.disabledTag)).toBeTruthy()
     expect(screen.getByText(en.failedTag)).toBeTruthy()
-    expect(screen.getByRole('img', { name: 'Running' })).toBeTruthy()
-    // No live fiber, no dot: file-state rows carry only their enablement tag.
-    expect(screen.queryByRole('img', { name: 'Not running' })).toBeNull()
+    // A settled row carries no phase dot: an active fiber and a row with no live
+    // fiber both render without one.
+    expect(screen.queryByRole('img', { name: en.active })).toBeNull()
+    expect(screen.queryByRole('img', { name: en.unobserved })).toBeNull()
 
     expect(globalToggle().getAttribute('aria-expanded')).toBe('false')
     expect(view.container.querySelector('[data-plugin-count]')?.getAttribute('data-plugin-count')).toBe('7')
     expect(screen.getByText(`1 ${en.failedCountLabel}`)).toBeTruthy()
 
-    // A preset row expands into its provenance facts.
-    fireEvent.click(screen.getByRole('button', { name: 'pwsh, pwsh, Conditional' }))
+    // A preset row expands into its source facts.
+    fireEvent.click(screen.getByRole('button', { name: 'pwsh, Conditional' }))
     expect(screen.getByText(en.fromPreset)).toBeTruthy()
     expect(screen.getByText('标准模式')).toBeTruthy()
     expect(screen.getByText(en.condition)).toBeTruthy()
     expect(screen.getByText('process.platform === \'win32\'')).toBeTruthy()
-    fireEvent.click(screen.getByRole('button', { name: 'pwsh, pwsh, Conditional' }))
+    fireEvent.click(screen.getByRole('button', { name: 'pwsh, Conditional' }))
     expect(screen.queryByText(en.condition)).toBeNull()
 
     // A failed preset row names its runtime state instead of a condition.
-    fireEvent.click(screen.getByRole('button', { name: 'crashy, crashy, Failed' }))
+    fireEvent.click(screen.getByRole('button', { name: 'crashy, Failed' }))
     expect(screen.getByText(en.runtime)).toBeTruthy()
     expect(screen.getByText('Failed to start')).toBeTruthy()
 
@@ -134,6 +361,34 @@ describe('PluginInventorySettingsTab', () => {
     expect(screen.getByText(en.moduleLabel).nextElementSibling?.textContent).toBe('@fixture/anonymous')
   })
 
+  it('marks a live phase with a dot on an untagged enabled row', async () => {
+    await renderReady({
+      entries: [
+        { entryId: 'booting', moduleName: '@fixture/booting', enabled: true, fiberPhase: 'loading' },
+        { entryId: 'waiting', moduleName: '@fixture/waiting', enabled: true, fiberPhase: 'pending' },
+        { entryId: 'running', moduleName: '@fixture/running', enabled: true, fiberPhase: 'active' },
+        { entryId: 'unobserved', moduleName: '@fixture/unobserved', enabled: true, fiberPhase: null },
+      ],
+      agentPresets: [{
+        id: 'standard',
+        isDefault: true,
+        rows: [
+          { entryId: 'stopping', moduleName: '@fixture/stopping', enabled: true, fiberPhase: 'unloading' },
+          { entryId: 'preset-running', moduleName: '@fixture/preset-running', enabled: true, fiberPhase: 'active' },
+        ],
+      }],
+    } as unknown as Snapshot)
+
+    fireEvent.click(globalToggle())
+    expect(screen.getAllByRole('listitem')).toHaveLength(6)
+    expect(screen.queryByText(en.enabledTag)).toBeNull()
+    expect(screen.getByRole('img', { name: en.loadingPhase })).toBeTruthy()
+    expect(screen.getByRole('img', { name: en.pending })).toBeTruthy()
+    expect(screen.getByRole('img', { name: en.unloading })).toBeTruthy()
+    expect(screen.queryByRole('img', { name: en.active })).toBeNull()
+    expect(screen.queryByRole('img', { name: en.unobserved })).toBeNull()
+  })
+
   it('distinguishes collapsed same-module rows by stable entry id', async () => {
     const longId = 'include:agent-presets:tool-subagent-secondary-with-a-complete-stable-identity'
     const subtitle = 'agent-presets:tool-subagent-secondary-with-a-complete-stable-identity'
@@ -141,7 +396,6 @@ describe('PluginInventorySettingsTab', () => {
       entries: [],
       agentPresets: [{
         id: 'same-module',
-        trust: 'user',
         isDefault: true,
         rows: [
           { entryId: 'tool-subagent-primary', moduleName: '@singula-ai/alego-tool-subagent', enabled: true, fiberPhase: null },
@@ -167,6 +421,25 @@ describe('PluginInventorySettingsTab', () => {
     expect(filteredSecondary.getAttribute('aria-expanded')).toBe('true')
   })
 
+  it('shows the entry id only where it adds to the title', async () => {
+    await renderReady({
+      entries: [
+        { entryId: 'timer' as PluginEntryId, moduleName: 'cordis:timer', enabled: true, fiberPhase: 'active' },
+        { entryId: 'include:hmr' as PluginEntryId, moduleName: '@singula-ai/cordis-plugin-hmr', enabled: true, fiberPhase: 'active' },
+        { entryId: 'typert' as PluginEntryId, moduleName: '@fixture/typert-registry', enabled: true, fiberPhase: null },
+      ],
+    })
+    fireEvent.click(globalToggle())
+
+    // An id equal to the title leaves both the card and its accessible name.
+    expect(screen.getByRole('button', { name: 'timer, Enabled' }).querySelector('code')).toBeNull()
+    // A composition id that matches the title once its include: marker drops is left out the same way.
+    expect(screen.getByRole('button', { name: 'hmr, Enabled' }).querySelector('code')).toBeNull()
+    const typert = screen.getByRole('button', { name: 'typert-registry, typert, Enabled' }).querySelector('code')
+    expect(typert?.textContent).toBe('typert')
+    expect(typert?.getAttribute('title')).toBe('typert')
+  })
+
   it('expands the global plane with failures first and preset-provided rows inline', async () => {
     const view = await renderReady()
 
@@ -181,13 +454,13 @@ describe('PluginInventorySettingsTab', () => {
     // Rows the presets took over sit inline, marked instead of plainly disabled.
     expect(screen.getAllByText(en.presetEnabledTag)).toHaveLength(2)
 
-    fireEvent.click(screen.getByRole('button', { name: 'tool-bash, bash-host, Enabled via presets' }))
+    fireEvent.click(screen.getByRole('button', { name: 'tool-bash, bash-host, Via presets' }))
     expect(screen.getByText(en.presetProvidedDetail)).toBeTruthy()
     expect(screen.getByText(en.enabledIn)).toBeTruthy()
     expect(screen.getByText('标准模式 · ptc')).toBeTruthy()
 
     // The failed global card reports its runtime state.
-    fireEvent.click(screen.getByRole('button', { name: 'telemetry, telemetry, Failed' }))
+    fireEvent.click(screen.getByRole('button', { name: 'telemetry, Failed' }))
     expect(screen.getByText('Failed to start')).toBeTruthy()
 
     // An enabled entry with no live fiber says so in its details, dot-free.
@@ -195,7 +468,7 @@ describe('PluginInventorySettingsTab', () => {
     expect(screen.getByText('Not running')).toBeTruthy()
 
     // A disabled row outside every preset stays plainly disabled.
-    fireEvent.click(screen.getByRole('button', { name: 'dormant, dormant, Disabled' }))
+    fireEvent.click(screen.getByRole('button', { name: 'dormant, Disabled' }))
     expect(screen.queryByText(en.presetProvidedDetail)).toBeNull()
 
     fireEvent.click(globalToggle())
@@ -213,7 +486,7 @@ describe('PluginInventorySettingsTab', () => {
     pickPreset('ptc')
     expect(view.container.querySelector('[data-preset-plugin-count]')?.getAttribute('data-preset-plugin-count')).toBe('3')
     fireEvent.click(screen.getByRole('button', { name: 'tool-bash, bash, Enabled' }))
-    // An unnamed preset labels provenance by its id.
+    // An unnamed preset labels its source by id.
     expect(screen.getByText(en.fromPreset).nextElementSibling?.textContent).toBe('ptc')
 
     pickPreset('坏预设 (failed to load)')
@@ -221,14 +494,15 @@ describe('PluginInventorySettingsTab', () => {
     expect(view.container.querySelector('[data-preset-plugin-count]')?.getAttribute('data-preset-plugin-count')).toBe('0')
   })
 
-  it('collapses the preset group until a search forces it open', async () => {
+  it('folds the preset group on demand and reopens it for a search', async () => {
     const view = await renderReady()
-    const toggle = screen.getByRole('button', { name: en.presetTitle })
+    const toggle = presetToggle()
 
     expect(toggle.getAttribute('aria-expanded')).toBe('true')
+    expect(view.container.querySelectorAll('[data-plugin-scope="preset"] li')).toHaveLength(6)
+    // The header keeps its count while the rows are folded away.
     fireEvent.click(toggle)
     expect(toggle.getAttribute('aria-expanded')).toBe('false')
-    // The header keeps its count while the rows are folded away.
     expect(view.container.querySelector('[data-preset-plugin-count]')?.getAttribute('data-preset-plugin-count')).toBe('6')
     expect(view.container.querySelectorAll('[data-plugin-scope="preset"] li')).toHaveLength(0)
 
@@ -246,7 +520,7 @@ describe('PluginInventorySettingsTab', () => {
     // The resolver stands in for presetDisplayText: shipped presets localize,
     // user-authored ones keep their own metadata.
     const localized: PluginInventorySettingsTabInjected['presetName'] = preset =>
-      preset.trust === 'system' ? `Localized ${preset.id}` : preset.name ?? preset.id
+      ['standard', 'ptc'].includes(preset.id) ? `Localized ${preset.id}` : preset.name ?? preset.id
     render(<PluginInventorySettingsTab {...props(async () => SNAPSHOT, localized)} />)
     await screen.findByRole('searchbox', { name: en.search })
 
@@ -260,11 +534,11 @@ describe('PluginInventorySettingsTab', () => {
     ])
     fireEvent.keyDown(document, { key: 'Escape' })
 
-    fireEvent.click(screen.getByRole('button', { name: 'pwsh, pwsh, Conditional' }))
+    fireEvent.click(screen.getByRole('button', { name: 'pwsh, Conditional' }))
     expect(screen.getByText(en.fromPreset).nextElementSibling?.textContent).toBe('Localized standard')
 
     fireEvent.click(globalToggle())
-    fireEvent.click(screen.getByRole('button', { name: 'tool-bash, bash-host, Enabled via presets' }))
+    fireEvent.click(screen.getByRole('button', { name: 'tool-bash, bash-host, Via presets' }))
     expect(screen.getByText('Localized standard · Localized ptc')).toBeTruthy()
   })
 
@@ -274,7 +548,7 @@ describe('PluginInventorySettingsTab', () => {
     fireEvent.click(screen.getByRole('menuitem', { name: 'ptc' }))
 
     fireEvent.click(globalToggle())
-    fireEvent.click(screen.getByRole('button', { name: 'tool-bash, bash-host, Enabled via presets' }))
+    fireEvent.click(screen.getByRole('button', { name: 'tool-bash, bash-host, Via presets' }))
     fireEvent.click(screen.getByRole('button', { name: en.viewInPreset }))
     expect(screen.getByRole('button', { name: en.switcherLabel }).textContent)
       .toBe('标准模式 (default)')
@@ -311,7 +585,7 @@ describe('PluginInventorySettingsTab', () => {
     expect(screen.queryAllByRole('listitem')).toHaveLength(0)
   })
 
-  it('renders a rosterless deployment as one expanded global list', async () => {
+  it('renders a rosterless deployment as one global list, folded until opened', async () => {
     const view = await renderReady({
       entries: [
         { entryId: 'hmr', moduleName: '@singula-ai/cordis-plugin-hmr', enabled: true, fiberPhase: 'active' },
@@ -320,13 +594,16 @@ describe('PluginInventorySettingsTab', () => {
     } as unknown as Snapshot)
 
     expect(screen.queryByRole('button', { name: en.switcherLabel })).toBeNull()
+    expect(globalToggle().getAttribute('aria-expanded')).toBe('false')
+    expect(screen.queryAllByRole('listitem')).toHaveLength(0)
+    fireEvent.click(globalToggle())
     expect(globalToggle().getAttribute('aria-expanded')).toBe('true')
     expect(screen.getAllByRole('listitem')).toHaveLength(2)
 
-    fireEvent.click(screen.getByRole('button', { name: 'hmr, hmr, Enabled' }))
+    fireEvent.click(screen.getByRole('button', { name: 'hmr, Enabled' }))
     expect(screen.getByText(en.runtime)).toBeTruthy()
     expect(view.container.querySelector('[data-loader-entry]')?.textContent).toBe('hmr')
-    fireEvent.click(screen.getByRole('button', { name: 'off, off, Disabled' }))
+    fireEvent.click(screen.getByRole('button', { name: 'off, Disabled' }))
     expect(screen.getAllByText(en.moduleLabel).length).toBeGreaterThan(0)
     expect(screen.queryByText(en.runtime)).toBeNull()
   })
@@ -336,7 +613,6 @@ describe('PluginInventorySettingsTab', () => {
       entries: [],
       agentPresets: [{
         id: 'solo',
-        trust: 'user',
         isDefault: false,
         rows: [{ entryId: 'one', moduleName: '@fixture/one', enabled: true, fiberPhase: null }],
       }],
@@ -353,7 +629,7 @@ describe('PluginInventorySettingsTab', () => {
       .mockResolvedValueOnce({ entries: [] })
     render(<PluginInventorySettingsTab {...props(list)} />)
 
-    expect((await screen.findByRole('alert')).textContent).toBe(en.error)
+    expect((await screen.findByRole('alert')).querySelector('[data-state="error"]')).not.toBeNull()
     expect(screen.queryByText('private transport detail')).toBeNull()
     fireEvent.click(screen.getByRole('button', { name: en.retry }))
     await waitFor(() => { expect(list).toHaveBeenCalledTimes(2) })
@@ -368,7 +644,8 @@ describe('PluginInventorySettingsTab', () => {
 
     const deferred = Promise.withResolvers<Snapshot>()
     const pending = render(<PluginInventorySettingsTab {...props(() => deferred.promise)} />)
-    expect(screen.getByText(en.loading)).toBeTruthy()
+    // Loading shows skeleton cards; the status region announces the label as visually hidden text.
+    expect(screen.getByRole('status').textContent).toBe(en.loading)
     pending.unmount()
     await act(async () => { deferred.resolve(SNAPSHOT) })
 
@@ -377,4 +654,21 @@ describe('PluginInventorySettingsTab', () => {
     pendingFailure.unmount()
     await act(async () => { deferredFailure.reject(new Error('late failure')) })
   })
+})
+
+it('shows current-page sync errors and retries without re-reading Host inventory', async () => {
+  const list = vi.fn(async () => ({ entries: [] }))
+  const sync = createSnapshotStore<ClientEntryState>({ syncing: true, failures: [] })
+  const retryClient = vi.fn()
+  render(<PluginInventorySettingsTab {...props(list)} useClientSync={bindSnapshotSelector(sync)} retryClient={retryClient} />)
+  expect(screen.getByText(en.clientSyncing).closest('[role="status"]')?.querySelector('[data-state="ongoing"]')).not.toBeNull()
+  await waitFor(() => { expect(list).toHaveBeenCalledOnce() })
+  act(() => { sync.set({ syncing: false, failures: [{ id: 'client-addon', message: 'download failed' }] }) })
+  expect(screen.getByRole('alert').querySelector('[data-state="error"]')).not.toBeNull()
+  expect(screen.getByText('client-addon: download failed')).toBeTruthy()
+  fireEvent.click(screen.getByRole('button', { name: 'Retry this page' }))
+  expect(retryClient).toHaveBeenCalledOnce()
+  expect(list).toHaveBeenCalledOnce()
+  act(() => { sync.set({ syncing: false, failures: [] }) })
+  expect(screen.queryByRole('alert')).toBeNull()
 })

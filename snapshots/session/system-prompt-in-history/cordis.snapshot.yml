@@ -1,7 +1,7 @@
 # Keyless replay counterpart of system-prompt-in-history/cordis.yml: the
 # replay route declares the same in-history capability.
 - id: llm-deepseek
-  name: '@singula-ai/alego-llm-deepseek'
+  name: '@singula-ai/alego-llm-deepseek-api-key'
   disabled: true
 
 - id: agent-default-model

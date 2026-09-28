@@ -1,6 +1,34 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/api/gateway/README.md
-README.md: e7f77896336ff72640ac0e658d63c1d2f50d745f
-README.zh.md: 42239824f2508e9a04f271480ca602ee3f8489e3
+/:
+  en: 6ffef394821a2841
+  zh: 1410a5b46b97d9c7
+/singula-ai-alego-api-gateway:
+  en: a15b8fe09b8a4cf1
+  zh: fc1fad902ebe5cac
+/singula-ai-alego-api-gateway/summary:
+  en: b8beb97d41750fa4
+  zh: 722232d3772b46e3
+/singula-ai-alego-api-gateway/table-of-contents:
+  en: d9859219cdb0f367
+  zh: 2a3cfa8cb786e327
+/singula-ai-alego-api-gateway/host-service-typertgatewayservice-ctx-key-typertgateway:
+  en: 0c8520e1570988d1
+  zh: 0da93cea306f4e3d
+/singula-ai-alego-api-gateway/client-service-clientremote-ctx-key-remote:
+  en: 26bf304e3e6cbb9e
+  zh: 8ff56df868a8d485
+/singula-ai-alego-api-gateway/model-experience:
+  en: 6cb309d3378f035d
+  zh: 998042a02ee32850
+/singula-ai-alego-api-gateway/model-experience/kv-cache-effect:
+  en: af5abeee32f2d93b
+  zh: b320bb727a223a13
+/singula-ai-alego-api-gateway/known-limitations-and-deferred-work:
+  en: 3ade2903f40a0a98
+  zh: 9af1d557fefdbd89
+/singula-ai-alego-api-gateway/known-limitations-and-deferred-work/dev-note:
+  en: 365f5c32056ff39a
+  zh: 9556fd36702f5ecd

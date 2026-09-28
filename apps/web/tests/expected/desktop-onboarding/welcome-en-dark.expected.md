@@ -1,0 +1,6 @@
+- region "Welcome to Alego":
+  - heading "Welcome to Alego" [level=1]:
+    - text: Welcome to
+    - emphasis: Alego
+  - paragraph: Alego works in a local folder and uses tools to read and write files on your computer. It can help you research and organize information, create documents and spreadsheets, write code, troubleshoot issues, and more.
+  - button "Get started"

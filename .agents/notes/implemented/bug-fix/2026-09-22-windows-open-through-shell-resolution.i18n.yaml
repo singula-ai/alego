@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-09-22-windows-open-through-shell-resolution.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-09-22-windows-open-through-shell-resolution.md
+/agent-note-windows-opens-go-through-explorer-exe:
+  en: 05624ae045b2b08a
+  zh: af1ba2161a1e4581
+/agent-note-windows-opens-go-through-explorer-exe/problem:
+  en: bc2c92e4247ea71e
+  zh: ca20fdeccc58e883
+/agent-note-windows-opens-go-through-explorer-exe/decision:
+  en: 4cf76bcb52a7beef
+  zh: a55a5bd9a4b85063
+/agent-note-windows-opens-go-through-explorer-exe/alternatives-considered:
+  en: 64712f720fca44a1
+  zh: aad98e46f0c7a6bb
+/agent-note-windows-opens-go-through-explorer-exe/consequences:
+  en: 0645226c2c8ce07a
+  zh: f52b0820e07220c8
+/agent-note-windows-opens-go-through-explorer-exe/verification:
+  en: c7ff7cb42072737c
+  zh: 9bbf5ff6596938a0

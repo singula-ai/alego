@@ -1,6 +1,25 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-07-20-gui-testing-system.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-20-gui-testing-system.md
-2026-07-20-gui-testing-system.md: 448dce2339ad002c2943ac9a1f4441e3475204d6
-2026-07-20-gui-testing-system.zh.md: f880a1d73764f1639002cf51a2bd2b7f2544ff79
+/agent-note-gui-testing-system-the-three-tier-structure:
+  en: ef4fa9cbd3f87dd5
+  zh: 6eab14c53e7b74e3
+/agent-note-gui-testing-system-the-three-tier-structure/problem:
+  en: 1c54e58ea993ef6a
+  zh: 73108687fa58a6f2
+/agent-note-gui-testing-system-the-three-tier-structure/decision:
+  en: ccf9fb195b2eabf3
+  zh: 596f2d38bc41e893
+/agent-note-gui-testing-system-the-three-tier-structure/lane-map:
+  en: c4275fc39b6f784b
+  zh: 7ca97030dbae8ea5
+/agent-note-gui-testing-system-the-three-tier-structure/anti-regression-discipline:
+  en: 80fe1589a6236740
+  zh: 30e1911d37865c49
+/agent-note-gui-testing-system-the-three-tier-structure/consequences:
+  en: 22f2475a438c639c
+  zh: aafab5ff60b7c644
+/agent-note-gui-testing-system-the-three-tier-structure/alternatives-considered:
+  en: 407a9b2f9e544249
+  zh: 069a0bddc85d001f

@@ -1,7 +1,8 @@
 {
   "name": "@singula-ai/alego-experimental-agent-team-profile",
-  "description": "Experimental profile bundle enabling Agent Teams over alego-base",
-  "version": "0.1.5-rc.2",
+  "description": "Agent Teams collaboration, tools, and Web UI in one experimental bundle",
+  "version": "0.1.7-rc.2",
+  "icon": "./icon.svg",
   "publishConfig": {
     "access": "public"
   },
@@ -19,10 +20,13 @@
       "default": "./lib/index.js"
     },
     "./cordis.patch.yml": "./cordis.patch.yml",
+    "./locale/*.json": "./locale/*.json",
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
   "files": [
+    "icon.svg",
+    "locale/*.json",
     "lib/index.js",
     "cordis.patch.yml",
     "lib/types/**/*.d.ts"
@@ -34,15 +38,16 @@
     }
   },
   "dependencies": {
-    "@singula-ai/alego-experimental-agent-team": "workspace:^",
-    "@singula-ai/alego-experimental-tool-agent-team": "workspace:^"
+    "@singula-ai/alego-experimental-agent-team": "workspace:*",
+    "@singula-ai/alego-experimental-client-ui-agent-team": "workspace:*",
+    "@singula-ai/alego-experimental-tool-agent-team": "workspace:*"
   },
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis-plugin-include": "workspace:^",
-    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/cordis-plugin-include": "workspace:~",
+    "@singula-ai/cordis": "workspace:~",
     "js-yaml": "^4.2.0"
   }
 }

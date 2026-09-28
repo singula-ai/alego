@@ -1,0 +1,91 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/session/session-format-v3-to-v4/README.md
+/:
+  en: a24b02a97921b07a
+  zh: 92428dfee88d27fd
+/singula-ai-alego-session-format-v3-to-v4:
+  en: 293f7c6314b025dd
+  zh: dd829cbc654436c7
+/singula-ai-alego-session-format-v3-to-v4/summary:
+  en: 0162a0e7e6493e0a
+  zh: 4107af760c449097
+/singula-ai-alego-session-format-v3-to-v4/table-of-contents:
+  en: b501b06f4b21cc31
+  zh: bd67928bedf6c786
+/singula-ai-alego-session-format-v3-to-v4/use-this-package:
+  en: b07a4881a4d205fe
+  zh: f9f49ceb6640d965
+/singula-ai-alego-session-format-v3-to-v4/v3-to-v4-specification:
+  en: d3463f5e222c44a2
+  zh: ec932eb4acac30f4
+/singula-ai-alego-session-format-v3-to-v4/v3-to-v4-specification/header-and-physical-framing:
+  en: 69f24696bd941ceb
+  zh: bc51ca330a4aa361
+/singula-ai-alego-session-format-v3-to-v4/v3-to-v4-specification/tool-result-representation:
+  en: 32b845f1e1867195
+  zh: 3e4e046dbc36478e
+/singula-ai-alego-session-format-v3-to-v4/v3-to-v4-specification/extension-data:
+  en: 3e7af0248b029e9a
+  zh: b73ddd133db65d05
+/singula-ai-alego-session-format-v3-to-v4/v3-to-v4-specification/message-source-conversion:
+  en: 7389f0c5174a5e54
+  zh: 7a6ff0a308861dba
+/singula-ai-alego-session-format-v3-to-v4/v3-to-v4-specification/parent-catalog-prerequisites:
+  en: dbafc645f70927ca
+  zh: 551cb4eeeaea5f2e
+/singula-ai-alego-session-format-v3-to-v4/v3-to-v4-specification/sequence-references-and-inheritance:
+  en: 8543a15b3c24cd43
+  zh: 5eacb6ffd009d1bc
+/singula-ai-alego-session-format-v3-to-v4/v3-to-v4-specification/delivery-generations:
+  en: 1af75967fd8296c7
+  zh: 4efd2a3a3a288610
+/singula-ai-alego-session-format-v3-to-v4/v3-to-v4-specification/source-audit-and-refusal:
+  en: bfc56afb05348d19
+  zh: 21afbb4ced91e87f
+/singula-ai-alego-session-format-v3-to-v4/native-v4-admission:
+  en: 7c2a1375c98e9b9f
+  zh: 39a57a82df56a2d4
+/singula-ai-alego-session-format-v3-to-v4/native-v4-admission/header-messages-and-surface-metadata:
+  en: 610f35b8c44538a2
+  zh: 17e5c07f09783106
+/singula-ai-alego-session-format-v3-to-v4/native-v4-admission/lifecycle-and-reference-relationships:
+  en: 9a6331e4f3336c32
+  zh: ade06d6b502c4ea4
+/singula-ai-alego-session-format-v3-to-v4/native-v4-admission/developer-changes-and-deferred-schemas:
+  en: 95f65e2b99343023
+  zh: 7e4728304b16fb30
+/singula-ai-alego-session-format-v3-to-v4/native-v4-admission/fork-generated-results:
+  en: db82b002989ac151
+  zh: da80b797bf321c3f
+/singula-ai-alego-session-format-v3-to-v4/native-v4-admission/validation-entry-points-and-recovery:
+  en: 1d6db95cf7a82846
+  zh: 837c690fe87f47db
+/singula-ai-alego-session-format-v3-to-v4/understand-the-implementation:
+  en: d27e081c4e2ecd86
+  zh: 0dd639484f67dba9
+/singula-ai-alego-session-format-v3-to-v4/further-exploration:
+  en: 626073231638400a
+  zh: 01de3ffcb89510f7
+/singula-ai-alego-session-format-v3-to-v4/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-session-format-v3-to-v4/model-experience/historical-restoration:
+  en: e63dd8ef6de7cf7c
+  zh: f1e356f01b601079
+/singula-ai-alego-session-format-v3-to-v4/model-experience/historical-restoration/what-the-model-sees:
+  en: 8885a0ae5f305b88
+  zh: 2064d2d02dd1b303
+/singula-ai-alego-session-format-v3-to-v4/model-experience/historical-restoration/token-effect:
+  en: adb2bef43125d1df
+  zh: 02f8d1d6a25d57ab
+/singula-ai-alego-session-format-v3-to-v4/model-experience/historical-restoration/kv-cache-effect:
+  en: 143ddba012e03d0c
+  zh: 93dfdb806bf9a697
+/singula-ai-alego-session-format-v3-to-v4/known-limitations-and-deferred-work:
+  en: c906fac610190680
+  zh: ce629e04f56be949
+/singula-ai-alego-session-format-v3-to-v4/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 8ec3e73528ddb1a6

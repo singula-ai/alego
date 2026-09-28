@@ -1,6 +1,19 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-24-alpha-routed-image-quality-ladders.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-24-alpha-routed-image-quality-ladders.md
-2026-08-24-alpha-routed-image-quality-ladders.md: 2a867a0604c0cbbfa3e7cb6ba671cbbd409c0620
-2026-08-24-alpha-routed-image-quality-ladders.zh.md: e01c17f7f1ec92ab25ea1a003be4ff8bafba9438
+/agent-note-alpha-routed-image-quality-ladders-replace-colour-count-codec-routing:
+  en: a33922ebbcaedbd9
+  zh: 58d694f60b4212e2
+/agent-note-alpha-routed-image-quality-ladders-replace-colour-count-codec-routing/problem:
+  en: 30d2723cf4a5a0b2
+  zh: 982a1c1dc74ef085
+/agent-note-alpha-routed-image-quality-ladders-replace-colour-count-codec-routing/decision:
+  en: 68fa8155b4a43374
+  zh: 3cb5e51d3cd60787
+/agent-note-alpha-routed-image-quality-ladders-replace-colour-count-codec-routing/alternatives-considered:
+  en: 95a42e3e2313790b
+  zh: 116043c295d7aa12
+/agent-note-alpha-routed-image-quality-ladders-replace-colour-count-codec-routing/consequences:
+  en: 3ce6acd960671b52
+  zh: 1ec81d76130d338d

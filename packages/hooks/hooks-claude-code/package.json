@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-hooks-claude-code",
   "description": "Bridge plugin: run a Claude Code hooks.json / settings hook config on the Alego interception seams",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,32 +27,32 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@singula-ai/schemastery": "workspace:^"
+    "@singula-ai/schemastery": "workspace:~"
   },
   "peerDependencies": {
-    "@singula-ai/alego-agent": "workspace:^",
-    "@singula-ai/alego-hook-protocol": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/alego-session": "workspace:^",
-    "@singula-ai/alego-subagent": "workspace:^",
-    "@singula-ai/alego-tools": "workspace:^",
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-session-projection": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-hook-protocol": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*",
+    "@singula-ai/alego-subagent": "workspace:*",
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-session-projection": "workspace:*"
   },
   "devDependencies": {
-    "@singula-ai/alego-agent": "workspace:^",
-    "@singula-ai/alego-agent-loop": "workspace:^",
-    "@singula-ai/alego-agent-loop-testkit": "workspace:^",
-    "@singula-ai/alego-shell": "workspace:^",
-    "@singula-ai/alego-bash-local": "workspace:^",
-    "@singula-ai/alego-subprocess-local": "workspace:^",
-    "@singula-ai/alego-hook-protocol": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/alego-session": "workspace:^",
-    "@singula-ai/alego-session-persistence-jsonl": "workspace:^",
-    "@singula-ai/alego-subagent": "workspace:^",
-    "@singula-ai/alego-tools": "workspace:^",
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-session-projection": "workspace:^"
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-agent-loop": "workspace:*",
+    "@singula-ai/alego-agent-loop-testkit": "workspace:*",
+    "@singula-ai/alego-shell": "workspace:*",
+    "@singula-ai/alego-bash-local": "workspace:*",
+    "@singula-ai/alego-subprocess-local": "workspace:*",
+    "@singula-ai/alego-hook-protocol": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*",
+    "@singula-ai/alego-session-persistence-jsonl": "workspace:*",
+    "@singula-ai/alego-subagent": "workspace:*",
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-session-projection": "workspace:*"
   }
 }

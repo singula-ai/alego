@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-anonymous-user-id",
   "description": "Shared anonymous user identity for Alego telemetry and feedback correlation",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,13 +27,13 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-home-paths": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-brand": "workspace:*",
+    "@singula-ai/alego-home-paths": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-brand": "workspace:^",
-    "@singula-ai/alego-home-paths": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-brand": "workspace:*",
+    "@singula-ai/alego-home-paths": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

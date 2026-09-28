@@ -1,0 +1,31 @@
+# The summary output cap inherits the 1,800-token headroom. A 1,000-token
+# request output reservation lowers the proactive trigger to 5,582 tokens.
+
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek-api-key'
+  disabled: true
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: none
+
+- id: compaction-basic
+  name: '@singula-ai/alego-compaction-basic'
+  config:
+    thresholdRatio: 0.8
+    headroomTokens: 1800
+    retainTokens: 20
+
+- insert:
+    - id: llm-replay
+      name: '@singula-ai/alego-llm-replay'
+      config:
+        providers:
+          - id: deepseek-official
+            name: DeepSeek
+            models:
+              - id: deepseek-v4-flash
+                contextWindow: 8382
+                defaultMaxTokens: 1000

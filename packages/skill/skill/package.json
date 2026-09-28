@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-skill",
   "description": "Agent skill provider registry for the Alego",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,17 +27,17 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/alego-scope": "workspace:^"
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-scope": "workspace:*"
   },
   "dependencies": {
-    "@singula-ai/alego-util-values": "workspace:^",
-    "@singula-ai/schemastery": "workspace:^"
+    "@singula-ai/alego-util-values": "workspace:*",
+    "@singula-ai/schemastery": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/alego-scope": "workspace:^"
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-scope": "workspace:*"
   }
 }

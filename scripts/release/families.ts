@@ -15,7 +15,6 @@ import {
   officialClientBuildEnvironment,
   readClientBuildRecord,
 } from '../client-build-environment.ts'
-import { PUBLIC_EXPERIMENTAL_PACKAGE_DIRECTORIES } from '../experimental-package-policy.ts'
 import { validateTarballPayload } from '../publication-payload.ts'
 
 /**
@@ -323,9 +322,8 @@ export abstract class ReleaseFamily {
 class AlegoFamily extends ReleaseFamily {
   readonly id = 'alego'
   readonly patterns = [
-    'packages/!(experimental)/*/package.json',
+    'packages/*/*/package.json',
     'apps/*/package.json',
-    ...PUBLIC_EXPERIMENTAL_PACKAGE_DIRECTORIES.map(directory => `${directory}/package.json`),
   ] as const
   readonly tagPrefix = 'alego-v'
 

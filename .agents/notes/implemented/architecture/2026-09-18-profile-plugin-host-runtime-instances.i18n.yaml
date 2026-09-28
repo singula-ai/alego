@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-18-profile-plugin-host-runtime-instances.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-18-profile-plugin-host-runtime-instances.md
+/agent-note-profile-plugins-share-the-installation-s-host-runtime-instances:
+  en: f630ab289572495d
+  zh: 516478e5a2b3e20c
+/agent-note-profile-plugins-share-the-installation-s-host-runtime-instances/problem:
+  en: 8acdb3168960a673
+  zh: dc6e4a9f585d4255
+/agent-note-profile-plugins-share-the-installation-s-host-runtime-instances/decision:
+  en: e29ccb2cf0794bc6
+  zh: d9d3c1bdba22bd7a
+/agent-note-profile-plugins-share-the-installation-s-host-runtime-instances/alternatives-considered:
+  en: 863cf5143142a5ec
+  zh: 8b128c8893b20e49
+/agent-note-profile-plugins-share-the-installation-s-host-runtime-instances/consequences:
+  en: 4c4b24063a98ac85
+  zh: 86d3b36bb9bd7dfb

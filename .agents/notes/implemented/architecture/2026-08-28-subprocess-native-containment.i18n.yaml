@@ -1,6 +1,37 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-28-subprocess-native-containment.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-28-subprocess-native-containment.md
-2026-08-28-subprocess-native-containment.md: 21838970c9a3325e04d9029a6822ab6132678281
-2026-08-28-subprocess-native-containment.zh.md: 220a50f662f7317006c06d0f39b7df89ce90c0ab
+/agent-note-native-owners-contain-escaped-subprocess-descendants:
+  en: 3d5b025ff22ddb78
+  zh: 321734726e0c2b09
+/agent-note-native-owners-contain-escaped-subprocess-descendants/problem:
+  en: a88b160c6c1f57e5
+  zh: 0b1a7cb68e9aaabd
+/agent-note-native-owners-contain-escaped-subprocess-descendants/decision:
+  en: 0469a956a95bccdf
+  zh: 2c5ea38a2841e1ae
+/agent-note-native-owners-contain-escaped-subprocess-descendants/decision/linux-scope-and-one-shot-bootstrap:
+  en: fa3f1ae8e0e4022f
+  zh: 5e7a54be7af8ee50
+/agent-note-native-owners-contain-escaped-subprocess-descendants/decision/windows-runner-and-job:
+  en: a6401ee73bb173b7
+  zh: 45b9cc7fea6f7921
+/agent-note-native-owners-contain-escaped-subprocess-descendants/decision/private-dispatch-and-protocol:
+  en: 773bc5b96cd110fd
+  zh: 69dcbe17c53bae17
+/agent-note-native-owners-contain-escaped-subprocess-descendants/decision/fallback-and-cleanup:
+  en: 19da14bf2234744f
+  zh: 8f723b1c9c8a3a58
+/agent-note-native-owners-contain-escaped-subprocess-descendants/existing-decisions-and-supersession:
+  en: ca9e758bcbac4999
+  zh: 38e004c67106e945
+/agent-note-native-owners-contain-escaped-subprocess-descendants/verification:
+  en: 900e10a3f9cd3b67
+  zh: efc5d9f09a0e8e5a
+/agent-note-native-owners-contain-escaped-subprocess-descendants/alternatives-considered:
+  en: 12bbc028fbb14667
+  zh: 9fea4359308337bd
+/agent-note-native-owners-contain-escaped-subprocess-descendants/consequences:
+  en: 0151145ee6281267
+  zh: 5bd2e53ad58107e9

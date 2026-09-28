@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-store",
   "description": "React-free observable and snapshot-store contracts with the shared Zustand/Immer engine",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,10 +23,10 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/cordis": "workspace:~",
     "zustand": "~4.4.7",
     "immer": "^10.1.1"
   },

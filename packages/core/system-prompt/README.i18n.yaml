@@ -1,6 +1,88 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/core/system-prompt/README.md
-README.md: ffd509cceb2fc89ac4859116a61e87575601002b
-README.zh.md: 9d3fe3812c2888d5974584d68bd3d8fb59a19a9f
+/:
+  en: 51d99b2500db958f
+  zh: 91f2b113ba7989fd
+/singula-ai-alego-system-prompt:
+  en: 763107932e58cfc4
+  zh: b4c69aed4b7de522
+/singula-ai-alego-system-prompt/summary:
+  en: 9e1cd0ae02ccccd4
+  zh: 137e1742825be489
+/singula-ai-alego-system-prompt/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-system-prompt/use-this-package:
+  en: 81a1b5a76e4b834c
+  zh: 26fc6037aa6f945b
+/singula-ai-alego-system-prompt/use-this-package/configure-the-prompt:
+  en: 845df3d0d3742e08
+  zh: 5f44153270d21b4f
+/singula-ai-alego-system-prompt/use-this-package/contribute-a-prompt-section:
+  en: 15d70e3b8eddd636
+  zh: a3a67cab60eee86f
+/singula-ai-alego-system-prompt/use-this-package/contribute-a-prompt-variable:
+  en: 39050b92755ceb21
+  zh: 9ddc7d24914b8f2e
+/singula-ai-alego-system-prompt/use-this-package/contribute-tool-schemas:
+  en: 009ef267dac2f270
+  zh: e79c24bff5cd836f
+/singula-ai-alego-system-prompt/use-this-package/suppress-runtime-context:
+  en: 61e2c1a3f18b48dd
+  zh: 29ecab2639f60103
+/singula-ai-alego-system-prompt/understand-the-implementation:
+  en: ce7e776e9d516bdb
+  zh: 59d2751743db7795
+/singula-ai-alego-system-prompt/understand-the-implementation/design-concept:
+  en: c91963b89a866fed
+  zh: ef9ef4940145778f
+/singula-ai-alego-system-prompt/understand-the-implementation/source-map:
+  en: a93197314e803d86
+  zh: 8cc650f60e868631
+/singula-ai-alego-system-prompt/understand-the-implementation/assembly-and-rendering:
+  en: 54977e6c431f851e
+  zh: ef60007054b97ff0
+/singula-ai-alego-system-prompt/understand-the-implementation/scoping:
+  en: 1100ab1dfe961631
+  zh: c510275c893951b4
+/singula-ai-alego-system-prompt/further-exploration:
+  en: 1e244e5ce00d529d
+  zh: 0747b1819fb4059c
+/singula-ai-alego-system-prompt/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-system-prompt/model-experience/system-prompt:
+  en: cf78b9dd5596495f
+  zh: bd44560f8c2435e8
+/singula-ai-alego-system-prompt/model-experience/system-prompt/what-the-model-sees:
+  en: 9927fdee4f8aa8ec
+  zh: 3687314c357fa7f4
+/singula-ai-alego-system-prompt/model-experience/system-prompt/what-the-model-sees/harness-identity:
+  en: 40effd71cb503319
+  zh: 9969356237a4f398
+/singula-ai-alego-system-prompt/model-experience/system-prompt/token-effect:
+  en: 29722e212137deaa
+  zh: 92cd0f1a16b10315
+/singula-ai-alego-system-prompt/model-experience/system-prompt/kv-cache-effect:
+  en: b75eb1bc45bb6e59
+  zh: 2b5861a9ec889059
+/singula-ai-alego-system-prompt/model-experience/tool-schemas:
+  en: 3039bc5e7a796b21
+  zh: 6b7a9eaf69c9ea53
+/singula-ai-alego-system-prompt/model-experience/tool-schemas/what-the-model-sees:
+  en: 5b8bb962a60d3fe6
+  zh: f80b13f1e6b1f2b6
+/singula-ai-alego-system-prompt/model-experience/tool-schemas/token-effect:
+  en: f3a7d374c55e1720
+  zh: 0ee48af678cb875f
+/singula-ai-alego-system-prompt/model-experience/tool-schemas/kv-cache-effect:
+  en: ebd329e360f0d143
+  zh: 9d67fe503a6a095a
+/singula-ai-alego-system-prompt/known-limitations-and-deferred-work:
+  en: 23bb9f59ceb1620c
+  zh: be34f1770fa2e027
+/singula-ai-alego-system-prompt/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

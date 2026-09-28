@@ -1,6 +1,79 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/terminal/terminal/README.md
-README.md: 89b96b01122490b1bdfd8d1de83a258332dd6562
-README.zh.md: da522f1d9d053c5b3ce91be4af994fcdf4a06c3c
+/:
+  en: 3d90ab1819787962
+  zh: d5279e899341168a
+/singula-ai-alego-terminal:
+  en: ca99755cab5fc30f
+  zh: 300e287a579218b8
+/singula-ai-alego-terminal/summary:
+  en: fa4dae799b748b24
+  zh: 24bec923467cc6ba
+/singula-ai-alego-terminal/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-terminal/use-this-package:
+  en: 82c0aac4ac731bfc
+  zh: 38804896f4044f60
+/singula-ai-alego-terminal/use-this-package/when-to-choose-it:
+  en: c4244a1757ca3584
+  zh: b6fb10e30146b347
+/singula-ai-alego-terminal/use-this-package/composition:
+  en: d439ec539fe21fbf
+  zh: a612a0dc8066c9ef
+/singula-ai-alego-terminal/use-this-package/what-sessions-give-you:
+  en: 6527302f4ad84cbb
+  zh: 8edc988f1d0a3cee
+/singula-ai-alego-terminal/use-this-package/ownership-and-isolation:
+  en: 47820d85ea37cb36
+  zh: 857686d08af67fcb
+/singula-ai-alego-terminal/use-this-package/observable-outcomes-and-failures:
+  en: 4fcedb18b5e8d5f2
+  zh: d72bb1a45e45cfff
+/singula-ai-alego-terminal/understand-the-implementation:
+  en: 0d0669b98b14a3dd
+  zh: 57416c205270e4e1
+/singula-ai-alego-terminal/understand-the-implementation/design-concept:
+  en: 6bae42fb7275816f
+  zh: 5f75e1b26074108c
+/singula-ai-alego-terminal/understand-the-implementation/source-map:
+  en: a958f52bab5cf58d
+  zh: 5ae1e96dc2a5a09c
+/singula-ai-alego-terminal/understand-the-implementation/data-model-and-lifecycle:
+  en: a2adfa2708882e19
+  zh: 002f257fd8c4addb
+/singula-ai-alego-terminal/understand-the-implementation/ownership-and-cleanup-rules:
+  en: 7af36e58919e41d5
+  zh: 4fe7b4db1099bcbf
+/singula-ai-alego-terminal/understand-the-implementation/send-reservation:
+  en: 5815723cd0c6089c
+  zh: 0c612ffa4b8c466c
+/singula-ai-alego-terminal/further-exploration:
+  en: e4179f8e791cd86b
+  zh: a394220e817c47c5
+/singula-ai-alego-terminal/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-terminal/model-experience/indirect-consumer:
+  en: a601a3c4f5b848cd
+  zh: ec617f79f706aaa1
+/singula-ai-alego-terminal/model-experience/indirect-consumer/what-the-model-sees:
+  en: c84645b1e49f592a
+  zh: 7f037a472a3e8fbb
+/singula-ai-alego-terminal/model-experience/indirect-consumer/token-effect:
+  en: 477da21b0a5be3a6
+  zh: 3ae1d37fe671ef96
+/singula-ai-alego-terminal/model-experience/indirect-consumer/kv-cache-effect:
+  en: 62f721d12d3b2e48
+  zh: c9d0e231b74bb191
+/singula-ai-alego-terminal/known-limitations-and-deferred-work:
+  en: a133ebc47a4df34f
+  zh: 9bb949487ee566d5
+/singula-ai-alego-terminal/known-limitations-and-deferred-work/dev-note:
+  en: 112f870e68bd1ff3
+  zh: 693f37bbd32497a0
+/singula-ai-alego-terminal/known-limitations-and-deferred-work/dev-note/undecided-directions:
+  en: 3c5203a9c40a38ef
+  zh: a7660ca08bd0d279

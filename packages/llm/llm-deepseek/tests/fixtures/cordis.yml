@@ -1,0 +1,24 @@
+- name: '@singula-ai/alego-llm'
+- name: '@singula-ai/alego-session'
+- name: '@singula-ai/alego-session-projection'
+- name: '@singula-ai/alego-system-prompt'
+- name: '@singula-ai/alego-tools'
+- name: '@singula-ai/alego-agent'
+- name: '@singula-ai/alego-agent-loop'
+  config:
+    agents: []
+- name: '@singula-ai/alego-credentials-local'
+  config:
+    path: {{credentials}}
+    watch: false
+- name: '@singula-ai/alego-llm-deepseek-api-key'
+  config:
+    apiKeyEnv: DEEPSEEK_API_KEY
+    baseURL: {{endpoint}}
+    thinking: enabled
+    reasoningEffort: high
+    maxTokens: 256000
+    streamIdleTimeoutMs: 300000
+- name: '@singula-ai/alego-llm-deepseek-account'
+  config:
+    baseURL: {{endpoint}}

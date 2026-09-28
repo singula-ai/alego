@@ -1,6 +1,10 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for BRAND_GUIDELINES.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write BRAND_GUIDELINES.md
-BRAND_GUIDELINES.md: c20b0f7add7c32d745a2f2468b73fc4c4d0e24db
-BRAND_GUIDELINES.zh.md: 5931e190a6a58213d924de5e28c40c6e5bbc8086
+/alego-brand-asset-usage-guidelines:
+  en: 74f2effe85530789
+  zh: da6ecfeed1b81d5d
+/alego-brand-asset-usage-guidelines/upstream-marks:
+  en: 2e50cc35670d15b9
+  zh: aa25bf574ddfca01

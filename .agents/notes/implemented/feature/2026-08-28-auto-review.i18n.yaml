@@ -1,0 +1,31 @@
+# Bilingual-pair consistency record for 2026-08-28-auto-review.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-28-auto-review.md
+/agent-note-experimental-auto-review-before-each-tool-call:
+  en: 5274a1edc9407754
+  zh: cca14151deb0d179
+/agent-note-experimental-auto-review-before-each-tool-call/problem:
+  en: 492ba2355360d81a
+  zh: 825c0e7ab1cf4beb
+/agent-note-experimental-auto-review-before-each-tool-call/decision:
+  en: 6b4c5eb25457a27e
+  zh: 25de078602952f7a
+/agent-note-experimental-auto-review-before-each-tool-call/decision/effects-and-authority:
+  en: 55a79d8572fb4332
+  zh: f63d03d0f3bb5811
+/agent-note-experimental-auto-review-before-each-tool-call/decision/one-complete-reviewer-request:
+  en: d93bd9b8af6b0bfc
+  zh: 9514c2e5554a721e
+/agent-note-experimental-auto-review-before-each-tool-call/decision/result-and-cancellation:
+  en: a128e2b3fd65f2b9
+  zh: 333d1a446a64f559
+/agent-note-experimental-auto-review-before-each-tool-call/decision/process-catalog-and-children:
+  en: f42fce98b12f2331
+  zh: f72f2aa48dc8b32e
+/agent-note-experimental-auto-review-before-each-tool-call/alternatives-considered:
+  en: fe97128ed05b9e43
+  zh: 4aaa344933fa89b4
+/agent-note-experimental-auto-review-before-each-tool-call/consequences:
+  en: 1aca35a6d0784f67
+  zh: 51cfa397db101600

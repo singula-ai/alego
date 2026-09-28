@@ -1,6 +1,40 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for schedule.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/subsystems/schedule.md
-schedule.md: 17a3cacbbc36f557880f14288e58848e6c22c2c6
-schedule.zh.md: 1c12816d1c43030fb1605065b95c0f0eb8280c2b
+/host-wide-schedule:
+  en: 0bc0a95ab1afa56b
+  zh: 475866302bffc426
+/host-wide-schedule/durable-records:
+  en: 255778375380e498
+  zh: 7bca4f1cbcc17d50
+/host-wide-schedule/absolute-time-input:
+  en: 101ab3056c391416
+  zh: f2c22dc44fb0254b
+/host-wide-schedule/daily-wall-clock-input:
+  en: 2d249edc3dfccb8a
+  zh: 33fecda132b03b84
+/host-wide-schedule/fixed-rate-input-and-catch-up:
+  en: d2b5997cce3806dc
+  zh: 2483ba9e38ad3cf3
+/host-wide-schedule/cron-wall-clock-input:
+  en: 1ba9ae84f05d8919
+  zh: 5b4abfdcddbbcae0
+/host-wide-schedule/historical-session-changes:
+  en: 73fbe1c03897e8d3
+  zh: 63f6eb66ca347371
+/host-wide-schedule/active-views-and-management:
+  en: 2f1d34f70eae28ca
+  zh: 2544fb2681a00b27
+/host-wide-schedule/web-catalog:
+  en: b966c6728c82f109
+  zh: d8cf076b5ffa5a2b
+/host-wide-schedule/timing-edits:
+  en: ce5d2095a3ad2e82
+  zh: 167b3715f8eaffc1
+/host-wide-schedule/saved-delivery-records:
+  en: 077aa6573d9ede1a
+  zh: 0acea592a6e3630a
+/host-wide-schedule/host-delivery:
+  en: b6d522d24b9b97ba
+  zh: 84df8ea09bedf51c

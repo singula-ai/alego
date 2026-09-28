@@ -3,6 +3,7 @@
 import { spawn, spawnSync } from 'node:child_process'
 import { resolve } from 'node:path'
 import { resolveMacOSSigningEnvironment } from './desktop-release-environment.mjs'
+import { loadDesktopPackageEnvironment } from './desktop-package-environment.mjs'
 
 /**
  * Reject signature metadata that does not name the company release authority and team.
@@ -106,19 +107,24 @@ function runCodeSign(args) {
 }
 
 /**
- * Sign one Mach-O file embedded in the runtime tree.
+ * Sign one Mach-O file using the packaging-owned CSC_KEYCHAIN; missing setup rejects before signing.
  * @param {string} path - Writable standalone Mach-O file.
  * @param {string} identifier - Stable code-signing identifier derived from the release app ID and CAS digest.
  * @param {{ signingIdentity: string, teamId: string }} expected - Public release identity.
+ * @param {string | undefined} entitlements - Optional entitlement plist for this executable.
  * @returns {Promise<void>} Resolves after codesign exits successfully.
  */
-export async function signMacOSRuntimeCode(path, identifier, expected) {
+export async function signMacOSRuntimeCode(path, identifier, expected, entitlements) {
+  const keychain = process.env.CSC_KEYCHAIN
+  if (!keychain) throw new Error('desktop macOS signing: run through the package command to prepare the signing keychain')
   await runAppleCommandAsync('/usr/bin/codesign', [
     '--force',
     '--sign', expected.signingIdentity,
+    '--keychain', keychain,
     '--identifier', identifier,
     '--timestamp',
     '--options', 'runtime',
+    ...(entitlements === undefined ? [] : ['--entitlements', entitlements]),
     path,
   ], 'codesign')
 }
@@ -192,7 +198,7 @@ if (process.argv[1] !== undefined && import.meta.filename === resolve(process.ar
   if (appPath === undefined || cliArgs.length !== 1) {
     throw new Error('usage: node scripts/verify-macos-signature.mjs <path-to-app>')
   }
-  const expected = resolveMacOSSigningEnvironment(process.env)
+  const expected = resolveMacOSSigningEnvironment(loadDesktopPackageEnvironment('darwin'))
   verifyMacOSSignature(resolve(appPath), expected)
   process.stdout.write(`desktop macOS signing: verified Developer ID Application: ${expected.signingIdentity} (${expected.teamId})\n`)
 }

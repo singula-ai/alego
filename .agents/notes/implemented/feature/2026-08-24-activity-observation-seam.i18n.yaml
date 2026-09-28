@@ -1,0 +1,28 @@
+# Bilingual-pair consistency record for 2026-08-24-activity-observation-seam.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-24-activity-observation-seam.md
+/agent-note-the-activity-observation-seam-ctx-activities-and-live-output-streaming-to-the-web-client:
+  en: c5cf02a4904fa553
+  zh: eab866b9bafa2fa6
+/agent-note-the-activity-observation-seam-ctx-activities-and-live-output-streaming-to-the-web-client/problem:
+  en: 43ad3ef5d02f83bc
+  zh: 7170d7e7518f9b62
+/agent-note-the-activity-observation-seam-ctx-activities-and-live-output-streaming-to-the-web-client/decision:
+  en: d9dd7605c3f928d4
+  zh: db2c5c3cf154224f
+/agent-note-the-activity-observation-seam-ctx-activities-and-live-output-streaming-to-the-web-client/decision/why-not-durable-session-events-the-control-stream-or-the-jobs-seam:
+  en: 58d884216caa6d85
+  zh: aa47eb76bdb1ece0
+/agent-note-the-activity-observation-seam-ctx-activities-and-live-output-streaming-to-the-web-client/decision/two-cursor-regimes-kept-separate:
+  en: 7ab433f08fa6140a
+  zh: d001a90815b0156b
+/agent-note-the-activity-observation-seam-ctx-activities-and-live-output-streaming-to-the-web-client/alternatives-considered:
+  en: 4462632fd94010c1
+  zh: 01d1285f2ac6e42c
+/agent-note-the-activity-observation-seam-ctx-activities-and-live-output-streaming-to-the-web-client/testing:
+  en: 26687866bbf7be90
+  zh: 32dea8052bd5465b
+/agent-note-the-activity-observation-seam-ctx-activities-and-live-output-streaming-to-the-web-client/consequences:
+  en: e975f4f2410e8619
+  zh: 42f16406950a4d6f

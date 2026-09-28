@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-09-17-web-feature-routes-and-route-gate.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-17-web-feature-routes-and-route-gate.md
+/agent-note-feature-routes-follow-the-document-base-and-a-gate-keeps-them-there:
+  en: 1134d20230b1a5cc
+  zh: b301e23e15dccb86
+/agent-note-feature-routes-follow-the-document-base-and-a-gate-keeps-them-there/problem:
+  en: 23ffd93ad45bbad0
+  zh: 8444de32d9eea16d
+/agent-note-feature-routes-follow-the-document-base-and-a-gate-keeps-them-there/decision:
+  en: 5b89e02010c2da46
+  zh: d11e67d86ef27908
+/agent-note-feature-routes-follow-the-document-base-and-a-gate-keeps-them-there/alternatives-considered:
+  en: d90dbd0c95914085
+  zh: 6256f4fd76a7cb55
+/agent-note-feature-routes-follow-the-document-base-and-a-gate-keeps-them-there/consequences:
+  en: b09422cf77655593
+  zh: 1294d86eed17e32c
+/agent-note-feature-routes-follow-the-document-base-and-a-gate-keeps-them-there/testing:
+  en: 95c952092857cb53
+  zh: 232cd731afcd3288

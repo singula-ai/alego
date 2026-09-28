@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-host-directory-picker-native",
   "description": "Native-OS-chooser backend of the directory-picker seam for the Alego web GUI host",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -32,15 +32,15 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@singula-ai/alego-host-directory-picker": "workspace:^",
-    "@singula-ai/alego-native-command": "workspace:^",
+    "@singula-ai/alego-host-directory-picker": "workspace:*",
+    "@singula-ai/alego-native-command": "workspace:*",
     "koffi": "^3.1.0"
   },
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/cordis": "workspace:~",
     "tsx": "^4.19.2"
   }
 }

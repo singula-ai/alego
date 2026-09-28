@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-17-shared-office-runtime.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-17-shared-office-runtime.md
+/agent-note-shared-office-runtime-for-desktop-and-sdk:
+  en: 754b17fb6e703b59
+  zh: 5a3f89dcaac10707
+/agent-note-shared-office-runtime-for-desktop-and-sdk/problem:
+  en: 4d08aed08c8aff27
+  zh: d618b4ac68832867
+/agent-note-shared-office-runtime-for-desktop-and-sdk/decision:
+  en: f2883fb298017ad6
+  zh: 95b98278134bd46a
+/agent-note-shared-office-runtime-for-desktop-and-sdk/alternatives-considered:
+  en: d85334a384a32a7d
+  zh: 61c370390d9fdcf9
+/agent-note-shared-office-runtime-for-desktop-and-sdk/consequences:
+  en: f236fec61d99ba16
+  zh: 859ee94e05a95aa4

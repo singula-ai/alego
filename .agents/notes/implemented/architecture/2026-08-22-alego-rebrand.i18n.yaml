@@ -1,6 +1,25 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for 2026-08-22-alego-rebrand.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-22-alego-rebrand.md
-2026-08-22-alego-rebrand.md: 706c0f7999aee89a6fe802ae6728dc6821031fc5
-2026-08-22-alego-rebrand.zh.md: fcc7fb4dd147f7859a79d74c7b900dbe136cca84
+/agent-note-rebranding-the-harness-to-alego:
+  en: 5e66d3d41e9fbba3
+  zh: 9d01a91f4aa4fcfd
+/agent-note-rebranding-the-harness-to-alego/problem:
+  en: ad990c864bd53589
+  zh: a542768a5cf4e1a6
+/agent-note-rebranding-the-harness-to-alego/decision:
+  en: f244bf82ef852ef9
+  zh: abe9f9d4d9978b52
+/agent-note-rebranding-the-harness-to-alego/what-the-product-name-still-owns:
+  en: 9d5e2e5b1a5069f6
+  zh: 0baec273a15836f5
+/agent-note-rebranding-the-harness-to-alego/upstream-synchronization:
+  en: e057bde31d7ee99c
+  zh: 0ac077341c58a304
+/agent-note-rebranding-the-harness-to-alego/alternatives-considered:
+  en: a12baee04545bf57
+  zh: 455f1abca19a98c5
+/agent-note-rebranding-the-harness-to-alego/consequences:
+  en: 4386e513c47858c2
+  zh: a447922a5791cc2f

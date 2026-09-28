@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-11-subprocess-control-pipe.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-11-subprocess-control-pipe.md
+/agent-note-subprocess-control-pipe:
+  en: 06236f099feaf2ee
+  zh: 1c247c20b0a2e15e
+/agent-note-subprocess-control-pipe/problem:
+  en: 64028c0449b6699c
+  zh: 6ad143bac0ce23bf
+/agent-note-subprocess-control-pipe/decision:
+  en: abba7d5768a4d66c
+  zh: 8aa5c9d79e286511
+/agent-note-subprocess-control-pipe/alternatives-considered:
+  en: 8c677c2cf3cb15bd
+  zh: 4fccc1d9da7f041a
+/agent-note-subprocess-control-pipe/consequences:
+  en: b5dd21f7c58f50a5
+  zh: 24abcc7136d35211

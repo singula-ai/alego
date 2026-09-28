@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-fs-observation-policy",
   "description": "File-context policy plugin for the Alego — observed-state, read-before-edit, and version-guarded write/edit added over the ctx.fs provider seam through the fs/* event gate (no service API)",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,12 +27,12 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@singula-ai/alego-fs": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-fs": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
-    "@singula-ai/alego-fs": "workspace:^",
-    "@singula-ai/alego-llm": "workspace:^",
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/alego-fs": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/cordis": "workspace:~"
   }
 }

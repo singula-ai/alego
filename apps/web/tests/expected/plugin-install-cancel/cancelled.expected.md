@@ -1,0 +1,10 @@
+- dialog "添加插件":
+  - heading "添加插件" [level=2]
+  - button "关闭"
+  - paragraph: 输入插件的包名、GitHub 仓库地址或本地目录路径。
+  - textbox "包名或地址":
+    - /placeholder: 例如 alego-plugin-hello-world
+    - text: slow-package
+  - button "插件安装引导和示例"
+  - button "安装源 默认安装源"
+  - button "安装"

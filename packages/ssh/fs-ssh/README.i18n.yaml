@@ -1,0 +1,37 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/ssh/fs-ssh/README.md
+/:
+  en: 7ee4b79f88be1b77
+  zh: 915152892d037c3c
+/singula-ai-alego-fs-ssh:
+  en: 0f759d119df9a668
+  zh: 4844c2c2f649327a
+/singula-ai-alego-fs-ssh/summary:
+  en: 4399acc3beb32c3b
+  zh: 3acabf8a5bdebc19
+/singula-ai-alego-fs-ssh/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 725b47765ee8f30b
+/singula-ai-alego-fs-ssh/use-this-package:
+  en: df7888a213b98512
+  zh: e7378dbc132727ee
+/singula-ai-alego-fs-ssh/understand-the-implementation:
+  en: f1d636e0535f4b87
+  zh: fb945a6fa66e2571
+/singula-ai-alego-fs-ssh/further-exploration:
+  en: 9f1d315344390714
+  zh: 6b2505d73b468841
+/singula-ai-alego-fs-ssh/model-experience:
+  en: f8b078c320d36749
+  zh: 5a0f4d1b72574d72
+/singula-ai-alego-fs-ssh/model-experience/kv-cache-effect:
+  en: 21f304c66e5ba98b
+  zh: 18185d5b164f8216
+/singula-ai-alego-fs-ssh/known-limitations-and-deferred-work:
+  en: 2e75cffd2ab863d6
+  zh: f8fdbabe27082f08
+/singula-ai-alego-fs-ssh/known-limitations-and-deferred-work/dev-note:
+  en: 6ca4f1d4b4810fff
+  zh: e42f580ca971972b

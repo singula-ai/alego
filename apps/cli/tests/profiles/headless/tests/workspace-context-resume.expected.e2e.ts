@@ -25,7 +25,7 @@ import {
 } from '@singula-ai/alego-session'
 import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import { logPath } from '../../../../../../packages/session/session-persistence-jsonl/src/format.ts'
-import { renderWorkspaceContext } from '@singula-ai/alego-agent-instructions'
+import { renderAgentInstructions } from '@singula-ai/alego-agent-instructions'
 import { resolveConfig, workspaceBaselineIdentity } from '@singula-ai/alego-agent-instructions/src/config.ts'
 import { describe, expect, it } from 'vitest'
 
@@ -73,7 +73,7 @@ async function seedVisibleBaseline(
     delegationDepth: 0,
   }
   const files = options.files ?? [{ name: 'AGENTS.md', content: oldInstruction }]
-  const baseline = renderWorkspaceContext(files.map(file => ({
+  const baseline = renderAgentInstructions(files.map(file => ({
     absolutePath: join(cwd, file.name),
     displayPath: file.name,
     content: file.content,
@@ -90,7 +90,7 @@ async function seedVisibleBaseline(
     { type: 'step/start', seq: SessionSeq(1), time: 11, data: { turn: 1, step: 1 } },
     {
       type: 'system/message', seq: SessionSeq(2), time: 12,
-      data: { turn: 1, step: 1, message: createMessage({ role: 'system', content: [], source: { kind: 'plugin', plugin: '@singula-ai/alego-system-prompt' } }) },
+      data: { turn: 1, step: 1, message: createMessage({ role: 'system', content: [], source: { kind: 'system-prompt' } }) },
       surfaceOp: 'append',
     },
     {

@@ -26,7 +26,7 @@ English | [中文](README.zh.md)
 
 ### When to use it
 
-Use it when a spec boots real client plugins that talk to `ctx.remote` and wants to script the Host side by endpoint name: whole-client jsdom specs through `__ALEGO_TRANSPORT__`, and unit specs that call `dispatch` / `open` directly. Endpoints are the Gateway's wire names (`session/page`, `settings/describe`); `args` is the caller's positional argument list with a trailing `AbortSignal` removed; a value is whatever the test registers and is answered unchanged. The only declaration is whether an endpoint is unary (`unary`) or a stream (`stream`).
+Use it when a spec boots real client plugins that talk to `ctx.remote` and wants to script the Host side by endpoint name: whole-client specs bind `mock.rpc` to their Connection instance, while unit specs may call `mock.remote`, `dispatch`, or `open` directly. Endpoints are the Gateway's wire names (`session/page`, `settings/describe`); `args` is the caller's positional argument list with a trailing `AbortSignal` removed; a value is whatever the test registers and is answered unchanged. The only declaration is whether an endpoint is unary (`unary`) or a stream (`stream`).
 
 <a id="remote-proxy"></a>
 ### Use the Remote proxy
@@ -73,11 +73,13 @@ mock.streams.fail('session/follow', new Error('gone'))
 await mock.streams.drained('session/follow')
 ```
 
-A failed stream rejects the consumer's next read with the given `Error`. Consumer cancellation (the opening signal or an early iterator `return()`) aborts `StreamHandle.signal`, ends the iteration without throwing, and logs the stream as `cancelled`.
+A failed stream rejects the consumer's next read with the given `Error`. Consumer cancellation (the opening signal or an early iterator `return()`) aborts `StreamHandle.signal`, ends the iteration without throwing, and logs the stream as `cancelled`. `StreamHandle.uplink` is what the script reads as the Client's uplink: through `rpc.open` it is the carrier's iterable; for a direct `mock.remote.<namespace>.<method>(...)` call it is fed by the returned handle, which is the `RemoteStreamHandle` a generated method returns (iterate it for the downlink, `send()` and `end()` feed the uplink, `dispose()` cancels the stream); `send()` rejects a non-lossless JSON item as the real handle does, and the uplink it owns closes once the stream settles, is cancelled, or the consumer leaves, so a later `send()` throws. The mock function is called with the method's own arguments only, so the uplink never appears in call assertions or logged args.
+
+A fake that stands in for a generated stream method returns the `RemoteStreamHandle` the generated method does. `streamHandle(source)` types an `AsyncIterable` as that handle with inert `send`, `end`, and `dispose`; `streamMethod<M>(generator)` lifts an async generator function written for the method's arguments into the method's own signature, for `vi.fn<M>()` and `mockImplementation`.
 
 ### Connect a client
 
-`mock.rpc` is the `ClientConnectionRpc` face: install it as `globalThis.__ALEGO_TRANSPORT__ = { rpc: mock.rpc }` and the production `connection` plugin uses it in place of the HTTP caller, so every Remote call reaches `dispatch` and every stream `open` with no envelopes in between. Payloads carry `{ args }` as the whole-client proxies send them (an array) or as the Gateway's own endpoints send them (one object, delivered as one positional arg); a call whose signal aborts rejects with the abort reason. `RemoteMock.create()` registers one stream, `$events`, that answers the Gateway client's opening with `{ type: 'ready', clientId, host: { home } }` (host from `RemoteMockOptions.host`, default `/home/mock`) and stays open, which is what lets the assembled client reach `connected`; a spec overrides or fails it like any other stream.
+`mock.rpc` is the `ClientConnectionRpc` face. Pass it as `{ transport: { rpc: mock.rpc } }` to the Connection installer, or let `TestClient` bind it to its instance, so every Remote call reaches `dispatch` and every stream reaches `open` with no envelopes in between. Payloads carry `{ args }` as the whole-client proxies send them (an array) or as the Gateway's own endpoints send them (one object, delivered as one positional arg); a call whose signal aborts rejects with the abort reason. `RemoteMock.create()` registers one stream, `$events`, that answers the Gateway client's opening with `{ type: 'ready', clientId, host: { home } }` (host from `RemoteMockOptions.host`, default `/home/mock`) and stays open, which is what lets the assembled client reach `connected`; a spec overrides or fails it like any other stream.
 
 ### Observe and assert
 
@@ -108,7 +110,7 @@ A failed stream rejects the consumer's next read with the given `Error`. Consume
 | [`src/index.ts`](src/index.ts) | Public face re-exports |
 | [`src/remote-mock.ts`](src/remote-mock.ts) | `RemoteMock`: default responses, native mocks, Connection dispatch, controlled streams and missing-response checks; `ok` |
 | [`src/remote-proxy.ts`](src/remote-proxy.ts) | Namespace/method lookup and generated-map mock types |
-| [`src/streams.ts`](src/streams.ts) | `frames` / `openStream` scripts and `MockStream` (handle + `AsyncIterable`) |
+| [`src/streams.ts`](src/streams.ts) | `frames` / `openStream` scripts, `streamHandle` / `streamMethod` fake typing, and `MockStream` (handle + `AsyncIterable`) |
 | [`src/log.ts`](src/log.ts) | Log store with the shared `seq` counter |
 | — | No runtime invariant companion is published; this test-support library owns no production event stream or mutable process state, and its behavior is exercised by its package tests. |
 
@@ -129,8 +131,8 @@ None; this package neither assembles nor sends a provider request.
 
 <a id="known-limitations-and-deferred-work"></a>
 
-- **In-process carrier only** — `rpc` serves a client in the same realm through `__ALEGO_TRANSPORT__.rpc`; no HTTP or WebSocket carrier for browser-lane specs is provided.
-- **Values cross by reference** — answers and stream items reach the client unserialized, so a non-JSON value that the real wire would reject passes through unchanged.
+- **In-process carrier only** — `rpc` serves a Connection instance in the same realm; no HTTP or WebSocket carrier for browser-lane specs is provided.
+- **Values cross by reference** — answers and downlink items reach the client unserialized, so a non-JSON downlink value that the real wire would reject passes through unchanged; only the handle's `send()` applies the real uplink check.
 - **Values are not checked** — a unary answer must be the result the caller reads (`{ ok, value }` or `{ ok: false, error }`); the mock passes it through unchanged and does not check those fields.
 - **No payload matching** — rules match on endpoint only; discriminate on business arguments inside a handler.
 - **Native stream overrides own their iterable** — an override returning its own iterable bypasses scripted-stream logs, `requests`, `opened`, `drained`, and `push` / `end` / `fail`; the caller also owns cancellation. Native call assertions still work. Use a registered stream script when a scenario needs those controls.

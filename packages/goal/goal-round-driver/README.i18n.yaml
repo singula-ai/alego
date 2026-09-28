@@ -1,6 +1,67 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/goal/goal-round-driver/README.md
-README.md: f1f0b62266d7ec7433acbeb2df60c4c495090f14
-README.zh.md: d736ac22e08d605667efcc9fe5368830cc402242
+/:
+  en: ac0eab4e811114ab
+  zh: 5ded4a1b84f8afe1
+/singula-ai-alego-goal-round-driver:
+  en: 63cb501c668e4067
+  zh: ade73fde2fc9f091
+/singula-ai-alego-goal-round-driver/summary:
+  en: 23ec56a83978169d
+  zh: 3d7b4f8d27b5eff2
+/singula-ai-alego-goal-round-driver/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-goal-round-driver/use-this-package:
+  en: 39e1ee5b4a6bbbbf
+  zh: 6529906b8274550d
+/singula-ai-alego-goal-round-driver/use-this-package/compose-it:
+  en: bb09c7896f260def
+  zh: b675400ea8919807
+/singula-ai-alego-goal-round-driver/use-this-package/what-each-round-does:
+  en: b521edd263b08dee
+  zh: 422df35794e8313d
+/singula-ai-alego-goal-round-driver/use-this-package/when-continuation-stops:
+  en: fc22b566b233d3a1
+  zh: 276ee5f35d4524f5
+/singula-ai-alego-goal-round-driver/use-this-package/after-resume-fork-or-unload:
+  en: 85d5470b1b330330
+  zh: e761f9046ba7af8a
+/singula-ai-alego-goal-round-driver/understand-the-implementation:
+  en: 907f73e7cee7269d
+  zh: 1230e8e9b15655df
+/singula-ai-alego-goal-round-driver/understand-the-implementation/design:
+  en: 58a2316725fe1f38
+  zh: d42d60cf02ad518e
+/singula-ai-alego-goal-round-driver/understand-the-implementation/source-map:
+  en: 2636a395ea78f621
+  zh: f169bc50b4c79ffb
+/singula-ai-alego-goal-round-driver/understand-the-implementation/the-round-prompt:
+  en: 88c61c1dcb13352b
+  zh: 8dd618c327469bbf
+/singula-ai-alego-goal-round-driver/further-exploration:
+  en: b1c5e2ff1226a1d1
+  zh: f037ad70e5bfbbbc
+/singula-ai-alego-goal-round-driver/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-goal-round-driver/model-experience/goal-round-prompt:
+  en: 4d07e0f4df39dd39
+  zh: b4b4b1a1ac49133d
+/singula-ai-alego-goal-round-driver/model-experience/goal-round-prompt/what-the-model-sees:
+  en: 627dbb55e83ea545
+  zh: f7961cb0d8cee632
+/singula-ai-alego-goal-round-driver/model-experience/goal-round-prompt/token-effect:
+  en: d754ed8cc26fc2a5
+  zh: 75aad6a5759b1fec
+/singula-ai-alego-goal-round-driver/model-experience/goal-round-prompt/kv-cache-effect:
+  en: 261db0e11125cb5c
+  zh: fcceb0bb63f4e07a
+/singula-ai-alego-goal-round-driver/known-limitations-and-deferred-work:
+  en: 9a392b465bd1b96d
+  zh: f24e557f8b67020c
+/singula-ai-alego-goal-round-driver/known-limitations-and-deferred-work/dev-note:
+  en: 19c6db37afd5cff4
+  zh: 86e849e83cdc1d94

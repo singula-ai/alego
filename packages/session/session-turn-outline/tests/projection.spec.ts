@@ -12,12 +12,19 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import { createAssistantMessage, createUserMessage } from '@singula-ai/alego-llm'
+import type { ContextFormed } from '@singula-ai/alego-llm'
 import SessionStore, { SessionId, SessionLogOffset, SessionSeq } from '@singula-ai/alego-session'
 import type { Session, SessionEvent } from '@singula-ai/alego-session'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import * as SessionTurnOutlinePlugin from '@singula-ai/alego-session-turn-outline'
 import { turnOutlineProjectionDefinition } from '@singula-ai/alego-session-turn-outline/src/projection.ts'
 import type { TurnOutlineEntry, TurnOutlineState } from '@singula-ai/alego-session-turn-outline/types'
+
+declare module '@singula-ai/alego-llm' {
+  interface MessageSourceMap {
+    'test-injector': { kind: 'test-injector' } & ContextFormed
+  }
+}
 
 async function harness(withOutlinePlugin: boolean): Promise<{ ctx: Context; session: Session }> {
   const ctx = new Context()
@@ -136,7 +143,7 @@ describe('turn outline projection unit', () => {
     session.append('turn/start', { turn: 1 })
     session.append('user/message', createUserMessage({
       content: [{ type: 'text', text: 'injected context' }],
-      source: { kind: 'plugin', plugin: 'test-injector', form: 'relay' },
+      source: { kind: 'test-injector', form: 'relay' },
     }), { surfaceOp: 'append' })
     expect(outlineOf(ctx, session)).toEqual([
       { turn: 1, seq: 1, prompt: '', response: '' },

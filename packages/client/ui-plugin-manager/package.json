@@ -1,0 +1,93 @@
+{
+  "name": "@singula-ai/alego-client-ui-plugin-manager",
+  "description": "Plugin management for the alego web client: the sidebar Plugins panel installs, enables, disables, retries, and composes installed plugin packages",
+  "version": "0.1.7-rc.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/client/ui-plugin-manager"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json",
+    "./typert": {
+      "types": "./lib/typert.host.d.ts",
+      "default": "./lib/typert.host.js"
+    },
+    "./remote": {
+      "types": "./lib/typert.remote-client.d.ts",
+      "default": "./lib/typert.remote-client.js"
+    }
+  },
+  "alego": {
+    "client": {
+      "inject": [
+        "@singula-ai/alego-api-remotes",
+        "@singula-ai/alego-client-locale",
+        "@singula-ai/alego-client-ui-layout",
+        "@singula-ai/alego-client-ui-sidebar"
+      ],
+      "platform": "web"
+    }
+  },
+  "scripts": {
+    "bundle": "tsdown",
+    "watch": "tsdown --watch"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "@singula-ai/cordis": "workspace:~"
+  },
+  "devDependencies": {
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-api-remotes": "workspace:*",
+    "@singula-ai/alego-client-locale": "workspace:*",
+    "@singula-ai/alego-client-store": "workspace:*",
+    "@singula-ai/alego-client-test-runtime": "workspace:*",
+    "@singula-ai/alego-client-ui-layout": "workspace:*",
+    "@singula-ai/alego-client-ui-primitives": "workspace:*",
+    "@singula-ai/alego-client-ui-renderer": "workspace:*",
+    "@singula-ai/alego-client-ui-sidebar": "workspace:*",
+    "@singula-ai/alego-client-ui-slots": "workspace:*",
+    "@singula-ai/alego-package-manifest": "workspace:*",
+    "@testing-library/react": "^16.1.0",
+    "@types/react": "~18.3.1",
+    "@types/react-dom": "~18.3.0",
+    "clsx": "^2.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@singula-ai/alego-util-crypto": "workspace:*",
+    "@singula-ai/alego-client-ui-settings": "workspace:*",
+    "@singula-ai/alego-plugin-manager": "workspace:*",
+    "@singula-ai/alego-client-product-analytics": "workspace:*"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/client.js",
+    "lib/types/**/*.d.ts",
+    "lib/typert.host.js",
+    "lib/typert.host.d.ts",
+    "lib/typert.remote-client.js",
+    "lib/typert.remote-client.d.ts"
+  ],
+  "dependencies": {
+    "@singula-ai/alego-timeout": "workspace:*",
+    "@singula-ai/schemastery": "workspace:~",
+    "zod": "^4.4.3",
+    "@singula-ai/alego-typert-protocol": "workspace:*"
+  }
+}

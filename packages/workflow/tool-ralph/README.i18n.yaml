@@ -1,6 +1,100 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/workflow/tool-ralph/README.md
-README.md: 603bff5c8fdac0fc875221a4c31cb82402941746
-README.zh.md: 59cd0f18a3c86931c8603732d7ad2cbdc697e152
+/:
+  en: e2a31cca62823561
+  zh: c06ff93cf98b67e4
+/singula-ai-alego-tool-ralph:
+  en: 833c27be407741cd
+  zh: 40b629a8c3c87791
+/singula-ai-alego-tool-ralph/summary:
+  en: 9821960147153443
+  zh: 0b24aab94a5dc12b
+/singula-ai-alego-tool-ralph/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-tool-ralph/use-this-package:
+  en: 13380e1170c6a3b5
+  zh: 2f2665f2ee5ff6f7
+/singula-ai-alego-tool-ralph/use-this-package/calling-the-tool:
+  en: f43e8fbcf272ac45
+  zh: 46719b415d9ad4bf
+/singula-ai-alego-tool-ralph/use-this-package/what-each-round-sees:
+  en: 2d8b861c4bcb9424
+  zh: 63c7b2d00c324727
+/singula-ai-alego-tool-ralph/use-this-package/config:
+  en: b108d9a6c19ab645
+  zh: 122438ca67dd7762
+/singula-ai-alego-tool-ralph/understand-the-implementation:
+  en: 0999ea3a4c9da48c
+  zh: 83013ee36a8689af
+/singula-ai-alego-tool-ralph/understand-the-implementation/design-concept:
+  en: 6f7bcf5f5eecb82b
+  zh: 81efb264b66f66f1
+/singula-ai-alego-tool-ralph/understand-the-implementation/fixed-script-and-routing:
+  en: fa2cfda2d9d121e6
+  zh: 75720bd6244a2c96
+/singula-ai-alego-tool-ralph/understand-the-implementation/report-validation:
+  en: 65f90bce7ef1fe5b
+  zh: 04c8d5ad08a9007c
+/singula-ai-alego-tool-ralph/understand-the-implementation/lifecycle-and-cancellation:
+  en: fdd98f9e2d2ec378
+  zh: 72e3da1f3c717aa6
+/singula-ai-alego-tool-ralph/understand-the-implementation/render-intent:
+  en: 07e071bd44b1df65
+  zh: 26f1cb2eab8c25b0
+/singula-ai-alego-tool-ralph/understand-the-implementation/source-map:
+  en: b0cf0927913968fb
+  zh: 6170b4c8d2529a41
+/singula-ai-alego-tool-ralph/further-exploration:
+  en: cd0fc5377188dc8f
+  zh: f715e64e38fc53f5
+/singula-ai-alego-tool-ralph/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-tool-ralph/model-experience/system-prompt:
+  en: cf78b9dd5596495f
+  zh: bd44560f8c2435e8
+/singula-ai-alego-tool-ralph/model-experience/system-prompt/what-the-model-sees:
+  en: bcfb20c5be49c2c4
+  zh: c666f686a648fc0f
+/singula-ai-alego-tool-ralph/model-experience/system-prompt/what-the-model-sees/ralph-guidance:
+  en: 4ee32d69a7ae2aba
+  zh: bdf2035f010ab56a
+/singula-ai-alego-tool-ralph/model-experience/system-prompt/token-effect:
+  en: dab67480bfde6224
+  zh: 85bbf18da3767aa7
+/singula-ai-alego-tool-ralph/model-experience/system-prompt/kv-cache-effect:
+  en: 13e7c6007bf6b5dc
+  zh: 2b0da8b6dc00aa5e
+/singula-ai-alego-tool-ralph/model-experience/tool-schema:
+  en: e4c7376d4f29dbd5
+  zh: 6b7a9eaf69c9ea53
+/singula-ai-alego-tool-ralph/model-experience/tool-schema/what-the-model-sees:
+  en: f7f122b6276d3e78
+  zh: 0eeef09fa2d87c44
+/singula-ai-alego-tool-ralph/model-experience/tool-schema/token-effect:
+  en: 0af719618f9f99d2
+  zh: a719a4e5df1406a4
+/singula-ai-alego-tool-ralph/model-experience/tool-schema/kv-cache-effect:
+  en: 79a20d1db0f4a32e
+  zh: c72a19d9a6c0bff3
+/singula-ai-alego-tool-ralph/model-experience/child-requests-and-parent-result:
+  en: 55181fb745ab8135
+  zh: ebeea6a8748986d2
+/singula-ai-alego-tool-ralph/model-experience/child-requests-and-parent-result/what-the-model-sees:
+  en: 788029304e88ea74
+  zh: 0e0281c7cc393dff
+/singula-ai-alego-tool-ralph/model-experience/child-requests-and-parent-result/token-effect:
+  en: ab2d30ed91979cbc
+  zh: bb074b02c4b05e4f
+/singula-ai-alego-tool-ralph/model-experience/child-requests-and-parent-result/kv-cache-effect:
+  en: 8f28959dc87d1f2f
+  zh: c034c5c0bdaf9bba
+/singula-ai-alego-tool-ralph/known-limitations-and-deferred-work:
+  en: 922fd33532125ebb
+  zh: 27d508697ebc7668
+/singula-ai-alego-tool-ralph/known-limitations-and-deferred-work/dev-note:
+  en: 8f24c317039e1974
+  zh: c6209969ad21f16c

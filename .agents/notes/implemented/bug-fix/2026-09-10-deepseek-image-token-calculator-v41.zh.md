@@ -12,7 +12,7 @@ Status: implemented
 
 `image-tokens.ts` 重写为 `v41` 配置的逐句移植。常量为 14px patch、每轴 3:1 降采样、544×544 总像素下限、1024 token 上限。网格公式为 `rows × (cols + 1) + 2`，没有奇数行额外行、没有奇偶校正、求解器也不再把行数截成偶数。没有对齐 pad，所以估算值是精确值而非最坏情况上界；没有宽高比钳制，所以极端长宽比会经求解器的单行和单列分支到达上限。超预算路径是一次闭式求解加上公开的断言；逐步递减的重试循环只服务于奇数行布局。提供方对投影尺寸的定点迭代保持不变。
 
-测试向量按公开计算器重新固定。request-pricing 测试、包 README 和本 note 使用新数字；harness 在定价前应用的像素预算（`DEFAULT_REQUEST_IMAGE_PIXEL_BUDGET`，640,000 总像素）和 catalog 模型 id 不变。
+测试向量按公开计算器重新固定。request-pricing 测试、包 README 和本 note 使用新数字。本次改动保留了 harness 在定价前应用的 640,000 总像素投影和 catalog 模型 id；[后续决策](2026-09-10-deepseek-v41-request-image-projection.zh.md)把该投影换成了同一套网格，现在省略 `imagePixelBudget` 走 token 网格，正整数或 `low` 仍走总像素预算。
 
 ## 备选方案
 
@@ -24,4 +24,4 @@ Status: implemented
 
 ## 后果
 
-800×800 请求图片的计价从 349 变为 422 token，640×480 图片从 209 变为 206，低预算下的 512×512 图片从 201 变为 184。压缩压力随保留图片的尺寸变化。640,000 像素预算不意味着 422 token 上限：8192×1 图片在该像素预算内，仍计 1024 token。估算值不再带 3 token 的保守余量；请求完成后，提供方 usage 仍是权威锚点。经 `llm-replay` 回放的会话使用各自 fixture 的 `imageRequestTokens`，不受影响。
+800×800 请求图片的计价从 349 变为 422 token，640×480 图片从 209 变为 206，低预算下的 512×512 图片从 201 变为 184。压缩压力随保留图片的尺寸变化。请求投影后来改为同一套网格（[后续决策](2026-09-10-deepseek-v41-request-image-projection.zh.md)），让正方形请求图片计 422 token 的 640,000 像素预算已不再适用。估算值不再带 3 token 的保守余量；请求完成后，提供方 usage 仍是权威锚点。经 `llm-replay` 回放的会话使用各自 fixture 的 `imageRequestTokens`，不受影响。

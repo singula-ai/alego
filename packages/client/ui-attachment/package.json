@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-attachment",
   "description": "Dynamic attachment presentation plugin for conversation input, message-image, and trajectory image slots",
-  "version": "0.1.5-rc.2",
+  "version": "0.1.7-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -43,19 +43,19 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:^",
+    "@singula-ai/cordis": "workspace:~",
     "@types/react": "~18.3.1",
     "@types/react-dom": "~18.3.0",
-    "@singula-ai/alego-client-ui-chat": "workspace:^",
-    "@singula-ai/alego-client-ui-conversation": "workspace:^",
-    "@singula-ai/alego-client-ui-trajectory": "workspace:^",
-    "@singula-ai/alego-client-ui-renderer": "workspace:^",
-    "@singula-ai/alego-client-ui-primitives": "workspace:^",
-    "@singula-ai/alego-client-ui-slots": "workspace:^",
+    "@singula-ai/alego-client-ui-chat": "workspace:*",
+    "@singula-ai/alego-client-ui-conversation": "workspace:*",
+    "@singula-ai/alego-client-ui-trajectory": "workspace:*",
+    "@singula-ai/alego-client-ui-renderer": "workspace:*",
+    "@singula-ai/alego-client-ui-primitives": "workspace:*",
+    "@singula-ai/alego-client-ui-slots": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@singula-ai/alego-attachment": "workspace:^",
-    "@singula-ai/alego-client-ui-tool": "workspace:^",
+    "@singula-ai/alego-attachment": "workspace:*",
+    "@singula-ai/alego-client-ui-tool": "workspace:*",
     "clsx": "^2.0.0"
   },
   "files": [
@@ -64,6 +64,6 @@
     "lib/types/**/*.d.ts"
   ],
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:^"
+    "@singula-ai/cordis": "workspace:~"
   }
 }
