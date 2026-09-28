@@ -245,8 +245,9 @@ describe('PTC mode typed values: keyless real-process contracts', () => {
       await new Promise(() => {});
     `, afterPublication.signal)
     // A loaded runner can take over a second to start the program and publish its background job.
-    await expect.poll(() => ctx.jobs.list().length, { timeout: 5_000, interval: 10 }).toBeGreaterThan(0)
-    const job = ctx.jobs.list()[0]
+    const jobs = ctx.jobs
+    await expect.poll(() => jobs.list().length, { timeout: 5_000, interval: 10 }).toBeGreaterThan(0)
+    const job = jobs.list()[0]
     expect(job).toMatchObject({ id: 'bash-1', status: 'running' })
     afterPublication.abort('outer-call-cancelled')
     expect((await running).isError).toBe(true)
