@@ -21,7 +21,7 @@ Prepare a private test application and fresh test distribution namespace, then l
 
 ## Prepare materials
 
-From the repository root with dependencies installed, allocate a run with two increasing derived test versions. This writes only an ignored local manifest; it does not build, sign, upload, install, or read credentials.
+From the repository root with dependencies installed, allocate a run with two increasing derived test versions. This records the test origin and bucket from `.env.windows` in an ignored local manifest; it does not build, sign, upload, install, or use credentials.
 
 The examples use base version `0.1.6-alpha.1`. Before creating new material, substitute the actual base, Asia/Shanghai date, and unused index according to the [release version rules](../../README.md#release-versions).
 

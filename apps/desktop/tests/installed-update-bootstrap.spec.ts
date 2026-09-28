@@ -10,6 +10,7 @@ import { configureInstalledUpdateIdentity } from '../scripts/installed-update-id
 
 const versions = ['0.1.6-nightly.20260914.1', '0.1.6-nightly.20260914.2'] as const
 const source = { version: '0.1.5-rc.2', commit: 'a'.repeat(40), dirtyFiles: [] }
+const destination = { origin: 'https://alego-download-test.example.com', bucket: 'alego-download-test-1250000000' }
 
 async function fixture<T>(body: (directory: string) => Promise<T>): Promise<T> {
   const directory = await mkdtemp(join(tmpdir(), 'alego-update-bootstrap-'))
@@ -20,7 +21,7 @@ async function fixture<T>(body: (directory: string) => Promise<T>): Promise<T> {
 describe('installed-update bootstrap', () => {
   it('executes the generated entry for both versions with isolated persistent paths before main imports', async () => {
     await fixture(async (directory) => {
-      const run = await createInstalledUpdateRun(directory, versions, source)
+      const run = await createInstalledUpdateRun(directory, versions, source, destination)
       const bootstrap = await prepareInstalledUpdateBootstrap(join(run.root, 'run.json'))
       await mkdir(join(bootstrap, 'node_modules/electron'), { recursive: true })
       await mkdir(join(bootstrap, 'lib'))
@@ -66,10 +67,22 @@ console.log(JSON.stringify({ paths: app.paths, home: process.env.ALEGO_HOME, jou
     })
   })
 
-  it.each(['origin', 'bucket', 'appId', 'root', 'feedKey', 'binPrefix', 'versions', 'source'])(
+  it.each([['origin', 'http://alego-download-test.example.com'], ['origin', `${destination.origin}/feeds`],
+    ['bucket', 'alego-download-test'], ['bucket', 'Alego-download-test-1250000000']])(
+    'rejects a malformed %s %s in a retained manifest', async (field, value) => {
+      await fixture(async (directory) => {
+        const run = await createInstalledUpdateRun(directory, versions, source, destination)
+        const path = join(run.root, 'run.json')
+        await writeFile(path, JSON.stringify({ ...run, [field]: value }))
+        await expect(readInstalledUpdateRun(path)).rejects.toThrow('test destination')
+      })
+    },
+  )
+
+  it.each(['appId', 'root', 'feedKey', 'binPrefix', 'versions', 'source'])(
     'rejects altered %s in a retained manifest', async (field) => {
       await fixture(async (directory) => {
-        const run = await createInstalledUpdateRun(directory, versions, source)
+        const run = await createInstalledUpdateRun(directory, versions, source, destination)
         const path = join(run.root, 'run.json')
         const changed = { ...run, [field]: field === 'versions' ? [...versions].reverse() : 'unexpected' }
         await writeFile(path, JSON.stringify(changed))
@@ -81,7 +94,7 @@ console.log(JSON.stringify({ paths: app.paths, home: process.env.ALEGO_HOME, jou
 
   it('loads the original manifest without adding credential fields to bootstrap output', async () => {
     await fixture(async (directory) => {
-      const run = await createInstalledUpdateRun(directory, versions, source)
+      const run = await createInstalledUpdateRun(directory, versions, source, destination)
       expect(await readInstalledUpdateRun(join(run.root, 'run.json'))).toEqual(run)
       const bootstrap = await prepareInstalledUpdateBootstrap(join(run.root, 'run.json'))
       const entry = await readFile(join(bootstrap, 'qualification-bootstrap.mjs'), 'utf8')

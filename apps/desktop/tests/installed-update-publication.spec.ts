@@ -9,6 +9,8 @@ import { installedUpdateFileHash } from '../scripts/installed-update-signature.m
 import { executeInstalledUpdatePublication, verifiedInstalledUpdateDistribution,
   type InstalledUpdatePublicationStore } from '../scripts/installed-update-publication.ts'
 
+const destination = { origin: 'https://alego-download-test.example.com', bucket: 'alego-download-test-1250000000' }
+
 const digest = (bytes: Buffer) => ({ sha512: createHash('sha512').update(bytes).digest('base64'), size: bytes.length })
 afterEach(() => { vi.restoreAllMocks() })
 
@@ -46,7 +48,7 @@ async function fixture(body: (context: {
   try {
     vi.spyOn(console, 'log').mockImplementation(() => undefined)
     const run = await createInstalledUpdateRun(parent, ['0.1.6-nightly.20260914.1', '0.1.6-nightly.20260914.2'],
-      { version: '0.1.5-rc.2', commit: 'a'.repeat(40), dirtyFiles: [] })
+      { version: '0.1.5-rc.2', commit: 'a'.repeat(40), dirtyFiles: [] }, destination)
     const manifest = join(run.root, 'run.json')
     const receipts: string[] = []
     for (const version of run.versions) {

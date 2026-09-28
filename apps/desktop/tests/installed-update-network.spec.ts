@@ -8,11 +8,13 @@ import { createInstalledUpdateRun } from '../scripts/installed-update-qualificat
 import { prepareInstalledUpdateNetwork } from '../scripts/prepare-installed-update-network.ts'
 import { installedUpdateFileHash } from '../scripts/installed-update-signature.mjs'
 
+const destination = { origin: 'https://alego-download-test.example.com', bucket: 'alego-download-test-1250000000' }
+
 async function fixture(body: (manifest: string, executable: string, receipt: string) => Promise<void>): Promise<void> {
   const root = await mkdtemp(join(tmpdir(), 'alego-network-plan-试验-'))
   try {
     const run = await createInstalledUpdateRun(root, ['0.1.6-nightly.20260914.1', '0.1.6-nightly.20260914.2'],
-      { version: '0.1.5-rc.2', commit: 'a'.repeat(40), dirtyFiles: [] })
+      { version: '0.1.5-rc.2', commit: 'a'.repeat(40), dirtyFiles: [] }, destination)
     const executable = join(root, `${run.productName}.exe`)
     await writeFile(executable, 'inert app fixture, never executed')
     const directory = join(run.root, run.versions[0], 'verification/check-fixture')

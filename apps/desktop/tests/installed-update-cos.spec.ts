@@ -7,14 +7,15 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createInstalledUpdateCos } from '../scripts/installed-update-cos.ts'
 import { answer, cosError, startCosLoopback, type CosLoopback, type CosLoopbackResponder } from './cos-loopback.ts'
 
+const destination = vi.hoisted(() => ({ origin: 'https://alego-download-test.example.com', bucket: 'alego-download-test-1250000000' }))
 const state = vi.hoisted(() => ({
   settings: 'test',
   redirect: undefined as ((cos: COS) => void) | undefined,
 }))
 
 vi.mock('../scripts/desktop-package-environment.mjs', () => ({ loadDesktopPackageEnvironment: () => ({
-  ALEGO_DESKTOP_AUTO_UPDATE_ENV: state.settings, DOWNLOAD_TEST_ORIGIN: 'https://download-test.deepseek.com',
-  DOWNLOAD_TEST_COS_BUCKET: 'bj-toc-download-test-1320056602', DOWNLOAD_TEST_COS_SECRET_ID: 'fixture-id',
+  ALEGO_DESKTOP_AUTO_UPDATE_ENV: state.settings, DOWNLOAD_TEST_ORIGIN: destination.origin,
+  DOWNLOAD_TEST_COS_BUCKET: destination.bucket, DOWNLOAD_TEST_COS_SECRET_ID: 'fixture-id',
   DOWNLOAD_TEST_COS_SECRET_KEY: 'fixture-key', ALEGO_DESKTOP_WINDOWS_TOKEN_PIN: 'fixture-pin-not-for-sdk',
 }) }))
 
@@ -42,7 +43,6 @@ afterEach(async () => {
   finally { await Promise.all(paths.map(path => rm(path, { recursive: true, force: true }))) }
 })
 
-const BUCKET = 'bj-toc-download-test-1320056602'
 const key = `alego-desk/bin/qualification/${'a'.repeat(24)}/win-x64/package.exe`
 
 /** Store whose SDK client sends every request to a fresh loopback origin. */
@@ -50,11 +50,11 @@ async function store(responder: CosLoopbackResponder) {
   const loopback = await startCosLoopback(responder)
   loopbacks.push(loopback)
   state.redirect = (cos) => { loopback.redirect(cos) }
-  return { store: createInstalledUpdateCos(), loopback }
+  return { store: createInstalledUpdateCos(destination), loopback }
 }
 
 function expectedHost(): string {
-  return `${BUCKET}.cos.ap-beijing.myqcloud.com`
+  return `${destination.bucket}.cos.ap-beijing.myqcloud.com`
 }
 
 describe('qualification COS transport with real SDK serialization over a loopback origin', () => {
@@ -177,7 +177,7 @@ describe('qualification COS transport with real SDK serialization over a loopbac
     const fetch = vi.fn(async () => new Response('public bytes'))
     vi.stubGlobal('fetch', fetch)
     const { store: cos } = await store((_request, response) => { answer(response) })
-    const url = `https://download-test.deepseek.com/${key}`
+    const url = `${destination.origin}/${key}`
     expect(await cos.publicRead(url)).toEqual({ size: 12, sha512: createHash('sha512').update('public bytes').digest('base64') })
     expect(fetch).toHaveBeenCalledWith(url, expect.objectContaining({ redirect: 'error', cache: 'no-store' }))
     await expect(cos.publicRead(`${url}?fresh=1`)).rejects.toThrow('exact test public URL')
@@ -190,7 +190,18 @@ describe('qualification COS transport with real SDK serialization over a loopbac
     const loopback = await startCosLoopback((_request, response) => { answer(response) })
     loopbacks.push(loopback)
     state.redirect = (cos) => { loopback.redirect(cos) }
-    expect(() => createInstalledUpdateCos()).toThrow('test upload settings')
+    expect(() => createInstalledUpdateCos(destination)).toThrow('test upload settings')
+    expect(loopback.requests).toHaveLength(0)
+  })
+
+  it.each([
+    { origin: 'https://alego-download.example.com' },
+    { bucket: 'alego-download-1250000000' },
+  ])('refuses settings that name a destination other than the run %j', async (override) => {
+    const loopback = await startCosLoopback((_request, response) => { answer(response) })
+    loopbacks.push(loopback)
+    state.redirect = (cos) => { loopback.redirect(cos) }
+    expect(() => createInstalledUpdateCos({ ...destination, ...override })).toThrow('test upload settings')
     expect(loopback.requests).toHaveLength(0)
   })
 

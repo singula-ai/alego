@@ -38,6 +38,7 @@ vi.mock('../scripts/packaging-run.mjs', async (original) => {
 })
 
 const versions = ['0.1.6-nightly.20260914.1', '0.1.6-nightly.20260914.2'] as const
+const destination = { origin: 'https://alego-download-test.example.com', bucket: 'alego-download-test-1250000000' }
 
 async function fixture(body: (manifest: string, root: string) => Promise<void>): Promise<void> {
   const root = await mkdtemp(join(tmpdir(), 'alego-packaging-entry-'))
@@ -45,7 +46,7 @@ async function fixture(body: (manifest: string, root: string) => Promise<void>):
   try {
     state.home = root
     state.loads = 0
-    const run = await createInstalledUpdateRun(root, versions, { version: '0.1.5-rc.2', commit: 'a'.repeat(40), dirtyFiles: [] })
+    const run = await createInstalledUpdateRun(root, versions, { version: '0.1.5-rc.2', commit: 'a'.repeat(40), dirtyFiles: [] }, destination)
     const certificate = join(root, 'certificate.cer')
     const tool = join(root, 'signtool.exe')
     await writeFile(certificate, 'inert public certificate fixture')

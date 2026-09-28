@@ -2,7 +2,10 @@
 import { execFileSync } from 'node:child_process'
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
-import { collectInstalledUpdateJournals, createInstalledUpdateRun, inspectInstalledUpdateJournals } from './installed-update-qualification.ts'
+import { loadDesktopPackageEnvironment } from './desktop-package-environment.mjs'
+import {
+  collectInstalledUpdateJournals, createInstalledUpdateRun, inspectInstalledUpdateJournals, resolveInstalledUpdateDestination,
+} from './installed-update-qualification.ts'
 import { prepareInstalledUpdateBootstrap } from './prepare-installed-update-bootstrap.ts'
 import { prepareInstalledUpdateRuntime } from './prepare-installed-update-runtime.ts'
 import { planInstalledUpdateDistribution } from './installed-update-distribution.ts'
@@ -48,13 +51,13 @@ async function main(): Promise<void> {
   const run = await createInstalledUpdateRun(resolve(repository, 'apps/desktop/.desktop-build/qualification'), [original, successor], {
     version: metadata.version, commit: git(['rev-parse', 'HEAD']),
     dirtyFiles: git(['status', '--porcelain=v1', '--untracked-files=normal']).split('\n').filter(Boolean),
-  })
+  }, resolveInstalledUpdateDestination(loadDesktopPackageEnvironment('win32')))
   console.log(JSON.stringify({ manifest: resolve(run.root, 'run.json'), appId: run.appId,
     versions: run.versions, feedUrl: `${run.origin}/${run.feedKey}`, artifactsPrepared: false, published: false }, null, 2))
 }
 
 main().catch(() => {
   // Inputs may be logs or local configuration; do not echo arbitrary exception details.
-  console.error('installed update preparation failed; verify arguments, Git checkout, versions, and local evidence files. No remote operation was attempted.')
+  console.error('installed update preparation failed; verify arguments, Git checkout, versions, .env.windows test destination, and local evidence files. No remote operation was attempted.')
   process.exitCode = 1
 })
