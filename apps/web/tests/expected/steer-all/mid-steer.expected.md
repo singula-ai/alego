@@ -13,7 +13,7 @@
 - button "Copy"
 - text: "Interjection: include the word ORANGE in your final reply."
 - button "Copy"
-- status: Deep diving
+- status: Building
 - text: Building for {{duration}} ···
 - textbox "Message or run a task, / commands, @ files or sessions"
 - button "Add files or run commands"

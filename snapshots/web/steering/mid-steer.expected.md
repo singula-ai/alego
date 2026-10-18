@@ -12,7 +12,7 @@
 - button "Ask question waiting"
 - text: "Interjection: include the word BANANA in your final reply."
 - button "Copy"
-- status: Deep diving
+- status: Building
 - text: Building for {{duration}} ···
 - region "Ready to continue?":
   - text: Checkpoint

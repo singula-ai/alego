@@ -12,7 +12,7 @@
   - text: Continuing goal
   - time: {{clock}}
 - paragraph: partial
-- status: Deep diving
+- status: Building
 - text: Building for {{duration}} ···
 - region "To-dos":
   - button "To-dos 1 completed · 1 in progress"

@@ -13,7 +13,7 @@
 - paragraph: Reading the workspace now.
 - button "Bash Print alpha to stdout"
 - paragraph: partial
-- status: Deep diving
+- status: Building
 - text: Building for {{duration}} ···
 - textbox "Message or run a task, / commands, @ files or sessions"
 - button "Add files or run commands"

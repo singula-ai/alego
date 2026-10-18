@@ -12,7 +12,7 @@
 - button "Wrap lines" [pressed]
 - button "Copy"
 - code: "const first: number = 1 const second = \"two\" let tail"
-- status: Deep diving
+- status: Building
 - text: Building for {{duration}} ···
 - textbox "Message or run a task, / commands, @ files or sessions"
 - button "Add files or run commands"
