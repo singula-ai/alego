@@ -22,7 +22,9 @@ describe('Python runtime executable assets', () => {
 
     expect(result.status).toBe(0)
     expect(result.stdout).toContain('node_modules/@singula-ai/alego-web-frontend/dist/**/*')
-    expect(result.stdout).toContain('node_modules/@singula-ai/alego-skill-badge/assets/**/*')
+    expect(result.stdout).toContain('node_modules/@singula-ai/alego-*/**/*.{svg,png,jpg,jpeg,webp}')
+    expect(result.stdout).not.toContain('skill-badge/assets/**/*')
+    expect(result.stdout).toContain('node_modules/@singula-ai/alego-sandbox-windows-acl/assets/**/*')
     expect(result.stdout).not.toContain('node_modules/**/*.py')
   })
 })

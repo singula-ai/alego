@@ -22,7 +22,7 @@ import type {
   SessionPersistenceListOptions,
   SessionPersistenceSnapshot,
 } from '@singula-ai/alego-session-persistence'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import SqliteSessionQueryEngine, {
   SESSION_QUERY_SQLITE_SCHEMA_VERSION,
 } from '@singula-ai/alego-session-query-sqlite'

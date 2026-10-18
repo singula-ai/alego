@@ -14,7 +14,7 @@ export const en = {
   failureTitle: 'Could not sign in',
   platformFailed: 'Could not complete the operation. Try again.', platformRetry: 'Retry',
   loading: 'Loading…', backToHarness: 'Back to Alego',
-  settings: 'Settings', contactUs: 'Feedback', contactUsSignedOut: 'Contact us', menu: 'Account menu',
+  settings: 'Settings', contactUs: 'Feedback', menu: 'Account menu',
   nav: 'Account', signedIn: 'Signed in to DeepSeek', signedOut: 'Not signed in',
   signIn: 'Sign in', signOut: 'Sign out',
   signOutUnknownDescription: 'Could not check running tasks. Signing out may interrupt tasks using this account. Sign out now?',
@@ -23,6 +23,7 @@ export const en = {
   initializing: 'Starting sign in…', waiting: 'Continue in your browser',
   completing: 'Completing sign in…', expired: 'Sign in expired. Try again.',
   failed: 'Could not complete the operation. Try again.',
+  noResponse: 'Something went wrong. Please check your network connection and try again.',
   settingsSignedOutTitle: 'You are not signed in to Alego',
   settingsSignedOutDescription: 'Sign in to Alego to get your dedicated API Key',
   signInDescription: 'Use your DeepSeek account to get started.',
@@ -33,7 +34,6 @@ export const en = {
   quotaDescription: 'Alego cannot start a new task with this account when no balance is available. Would you like to top up? You can also top up later in Settings → Account.',
   quotaTopUp: 'Top up',
   bonusNoticeTitle: 'Bonus credited',
-  bonusEmpty: 'No bonus available',
 } as const
 /** Account locale keys. */
 export type AccountKey = keyof typeof en
@@ -50,7 +50,7 @@ export const zh: Record<AccountKey, string> = {
   failureTitle: '登录失败',
   platformFailed: '操作未完成，请重试', platformRetry: '重试',
   loading: '加载中…', backToHarness: '返回 Alego',
-  settings: '设置', contactUs: '意见反馈', contactUsSignedOut: '联系我们', menu: '账号菜单',
+  settings: '设置', contactUs: '意见反馈', menu: '账号菜单',
   nav: '账号与余额', signedIn: '已登录 DeepSeek', signedOut: '尚未登录',
   signIn: '登录', signOut: '退出登录',
   signOutUnknownDescription: '暂时无法确认任务状态。退出登录可能会中断使用此账号的任务，是否继续？',
@@ -59,6 +59,7 @@ export const zh: Record<AccountKey, string> = {
   initializing: '正在发起登录…', waiting: '请在浏览器中继续',
   completing: '正在完成登录…', expired: '登录已过期，请重试。',
   failed: '操作未完成，请重试。',
+  noResponse: '操作未完成，可能是网络异常，请检查你的网络状况后重试',
   settingsSignedOutTitle: '当前未登录 Alego 账号',
   settingsSignedOutDescription: '登录 Alego 账号获取专属 API Key',
   signInDescription: '登录 DeepSeek 账号以开始使用',
@@ -69,5 +70,4 @@ export const zh: Record<AccountKey, string> = {
   quotaDescription: '没有可用额度时，Alego 无法开始新的任务，是否前往充值？或者可以稍后前往 设置 → 账号与余额 进行充值。',
   quotaTopUp: '去充值',
   bonusNoticeTitle: '赠金已到账',
-  bonusEmpty: '暂无可用赠金',
 }

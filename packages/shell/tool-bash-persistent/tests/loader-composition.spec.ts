@@ -1,4 +1,5 @@
 import { mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { provideWorkingDirectoryFixture, unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
@@ -20,7 +21,6 @@ import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime from '@singula-ai/alego-tools'
 import * as ToolBashPersistent from '@singula-ai/alego-tool-bash-persistent'
-import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 let root: string | undefined
 let context: Context | undefined
@@ -104,6 +104,8 @@ suite('persistent Bash through a real cordis.yml Loader composition', () => {
     ].join('\n'))
 
     context = new Context()
+
+    provideWorkingDirectoryFixture(context)
     context.baseUrl = pathToFileURL(root).href + '/'
     await context.plugin(Loader)
     context.loader.builtins.include = Include

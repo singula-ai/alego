@@ -5,7 +5,7 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import type { SessionListState } from '@singula-ai/alego-api-session-controller/client'
 import type { WorkspaceSnapshot } from '@singula-ai/alego-api-workspace-controller/client'
 import { createSnapshotStore } from '@singula-ai/alego-client-store'
-import { bindSnapshotSelector } from '@singula-ai/alego-client-test-runtime'
+import { allowAllAccess, bindSnapshotSelector } from '@singula-ai/alego-client-test-runtime'
 import { LanguageRow } from '../src/client/LanguageRow.tsx'
 import type { LanguageRowComponentProps } from '../src/client/LanguageRow.tsx'
 import { createLanguageRowStore } from '../src/client/settings-store.ts'
@@ -44,6 +44,7 @@ function mount(active = 'en') {
     useSessionStatus,
     usePanelInfo, useSessionRetainInfo: () => undefined, useResource,
     useWorkspaces: emptyWorkspaces(),
+    ...allowAllAccess,
     useStore: bindSnapshotSelector(store),
     actions: store.actions,
     t: (key: string) => key === 'language.title' ? 'Language' : key,

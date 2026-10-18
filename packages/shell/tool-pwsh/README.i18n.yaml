@@ -15,8 +15,8 @@
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
 /singula-ai-alego-tool-pwsh/use-this-package:
-  en: 42d2edb52aba90ad
-  zh: 3271a95095fc01e6
+  en: 9fa42171c0159052
+  zh: dc8e2fd487841fa3
 /singula-ai-alego-tool-pwsh/use-this-package/when-to-choose-it:
   en: 509c4b3dd274b297
   zh: 46d4717fc182b668
@@ -24,8 +24,8 @@
   en: ef2c3541b33b829c
   zh: fd7f8191046a9068
 /singula-ai-alego-tool-pwsh/use-this-package/running-a-command:
-  en: bbf57da8802bde18
-  zh: 6b961df5568cf11d
+  en: 5b14e8b5eaa30821
+  zh: 8379e9e178849614
 /singula-ai-alego-tool-pwsh/use-this-package/foreground-commands-as-jobs:
   en: 4a487e48ef146846
   zh: 0a34dc49bffb03af
@@ -36,20 +36,20 @@
   en: ceff62f604d060ee
   zh: 940c64d6c77f9e42
 /singula-ai-alego-tool-pwsh/understand-the-implementation:
-  en: 8d94a7381bca3fa9
-  zh: f4bd2866fff6fa8d
+  en: 165313776a851b51
+  zh: 828f48807036aff0
 /singula-ai-alego-tool-pwsh/understand-the-implementation/design-philosophy:
-  en: 208b36d2a807e882
-  zh: 3828d7151cf32d59
+  en: c56f2b51856fca76
+  zh: 99a3bacbce1dea89
 /singula-ai-alego-tool-pwsh/understand-the-implementation/source-map:
-  en: 09557aa79cbe3a7d
-  zh: e5f36b411d01f844
+  en: aa2adb29a0f27fcd
+  zh: 612829167064acd1
 /singula-ai-alego-tool-pwsh/understand-the-implementation/rendering-and-exit-markers:
   en: 4031c4f6aec73129
   zh: 0eb87887b94b8ecd
 /singula-ai-alego-tool-pwsh/further-exploration:
-  en: ec31b78d94e151f0
-  zh: abae1531e039ab68
+  en: 133366c58dc42d25
+  zh: ea2a37281e636b72
 /singula-ai-alego-tool-pwsh/model-experience:
   en: 215e7ba838619b7b
   zh: a311da3843709f90
@@ -117,8 +117,8 @@
   en: f5d5f97a153f7c70
   zh: 31911b4f3506d6c8
 /singula-ai-alego-tool-pwsh/known-limitations-and-deferred-work:
-  en: 7039d1abecae9cc2
-  zh: b68fc2542df0ded1
+  en: 0f66f64987bc64db
+  zh: b41e02c5f4423e34
 /singula-ai-alego-tool-pwsh/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 3bb0c20c93f16f98

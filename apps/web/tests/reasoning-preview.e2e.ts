@@ -65,44 +65,63 @@ it('shows completed paragraph first lines across blank lines with a right-edge f
       const reasoning = page.locator('[data-variant="think"][data-state="running"]')
       await expandOwningTurnProcess(page, reasoning)
       await reasoning.waitFor()
-      const block = page.locator('[data-chat-running] svg')
-      const animatedBlock = block.locator('path:has(animate)')
-      const restingBlock = block.locator('path:not(:has(animate))')
-      await animatedBlock.locator('animate').waitFor({ state: 'attached' })
-      const positions = await animatedBlock.evaluate(async (element) => {
-        const path = element as SVGPathElement
-        const svg = path.ownerSVGElement!
-        const time = svg.getCurrentTime()
-        svg.pauseAnimations()
-        try {
-          const positions: number[][] = []
-          for (const at of [0.3, 0.9, 3.3]) {
-            svg.setCurrentTime(at)
-            await new Promise<void>(resolve => requestAnimationFrame(() => { resolve() }))
-            const point = path.getPointAtLength(path.getTotalLength() * 0.4)
-            positions.push([point.x, point.y])
-          }
-          return positions
-        } finally {
-          svg.setCurrentTime(time)
-          svg.unpauseAnimations()
-        }
-      })
-      expect(positions[1]).not.toEqual(positions[0])
-      expect(positions[2]).toEqual(positions[0])
-      expect(await animatedBlock.evaluate(element => getComputedStyle(element).display)).not.toBe('none')
-      expect(await restingBlock.evaluate(element => getComputedStyle(element).display)).toBe('none')
-      await page.emulateMedia({ reducedMotion: 'reduce' })
-      await expect.poll(() => animatedBlock.evaluate(element => getComputedStyle(element).display)).toBe('none')
-      await expect.poll(() => restingBlock.evaluate(element => getComputedStyle(element).display)).not.toBe('none')
-      await page.emulateMedia({ reducedMotion: 'no-preference' })
-      await expect.poll(() => animatedBlock.evaluate(element => getComputedStyle(element).display)).not.toBe('none')
-      await expect.poll(() => restingBlock.evaluate(element => getComputedStyle(element).display)).toBe('none')
+      const block = page.locator('[data-chat-running] span[aria-hidden="true"]:has(> svg)')
+      const animatedBlock = block.locator(':scope > span')
+      const restingBlock = block.locator(':scope > svg')
+      await block.waitFor()
+      expect(await block.locator('animate').count()).toBe(0)
+      const expectStaticBlock = async () => {
+        await expect.poll(() => animatedBlock.isVisible()).toBe(false)
+        await expect.poll(() => restingBlock.isVisible()).toBe(true)
+        expect(await animatedBlock.evaluate(element => getComputedStyle(element).maskImage)).toBe('none')
+        const colors = await restingBlock.locator('path').evaluate((path) => {
+          const probe = document.createElement('span')
+          probe.style.cssText = 'color: Canvas; forced-color-adjust: none'
+          document.body.append(probe)
+          try {
+            const style = getComputedStyle(path)
+            return {
+              stroke: style.stroke.toLowerCase() === 'currentcolor' ? style.color : style.stroke,
+              canvas: getComputedStyle(probe).color,
+              length: (path as SVGPathElement).getTotalLength(),
+            }
+          } finally { probe.remove() }
+        })
+        expect(colors.stroke).not.toBe('none')
+        expect(colors.stroke).not.toBe('transparent')
+        expect(colors.stroke).not.toBe(colors.canvas)
+        expect(colors.length).toBeGreaterThan(0)
+      }
+      try {
+        await page.emulateMedia({ reducedMotion: 'no-preference', forcedColors: 'none' })
+        await expect.poll(() => animatedBlock.isVisible()).toBe(true)
+        expect(await animatedBlock.evaluate(element => getComputedStyle(element).maskMode)).toBe('alpha')
+        const imageSize = await animatedBlock.evaluate(async (element) => {
+          const source = getComputedStyle(element).maskImage.match(/^url\("?(data:image\/png;base64,[A-Za-z0-9+/=]+)"?\)$/)?.[1]
+          if (source === undefined) throw new Error('Running block mask must use the bundled PNG data URL')
+          const image = new Image()
+          image.src = source
+          await image.decode()
+          return [image.naturalWidth, image.naturalHeight]
+        })
+        expect(imageSize).toEqual([28, 28])
+        expect(await restingBlock.isVisible()).toBe(false)
+        const firstBlockFrame = await block.screenshot({ animations: 'allow' })
+        await expect.poll(async () => !(await block.screenshot({ animations: 'allow' })).equals(firstBlockFrame), {
+          timeout: 5000,
+        }).toBe(true)
+        await page.emulateMedia({ reducedMotion: 'reduce' })
+        await expectStaticBlock()
+        await page.emulateMedia({ reducedMotion: 'no-preference', forcedColors: 'active' })
+        await expectStaticBlock()
+      } finally {
+        await page.emulateMedia({ reducedMotion: null, forcedColors: null })
+      }
       expect(await reasoning.getAttribute('data-preview')).toBeNull()
 
       first.proceed.resolve(undefined)
       await second.arrived.promise
-      const preview = reasoning.locator('[data-streaming]')
+      const preview = reasoning.locator('[data-streaming]:not([inert] *)')
       await expect.poll(() => preview.textContent()).toBe('First paragraph')
       expect(await preview.isVisible()).toBe(true)
       await preview.evaluate((element) => { element.setAttribute('data-retained-preview', 'true') })
@@ -120,6 +139,7 @@ it('shows completed paragraph first lines across blank lines with a right-edge f
       third.proceed.resolve(undefined)
       await settled
       await page.getByText('Done', { exact: true }).waitFor()
+      await block.waitFor({ state: 'detached' })
       expect(console.pageErrors).toEqual([])
       expect(console.warnings).toEqual([])
     } finally {

@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-deliverables",
   "description": "Changed-files card with per-file comparison tabs, delivery cards, and clickable final-response file references for Web",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,7 +23,8 @@
       "default": "./lib/client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
@@ -61,7 +62,6 @@
     "@singula-ai/alego-client-ui-renderer": "workspace:*",
     "@singula-ai/alego-client-ui-sidebar-right": "workspace:*",
     "@singula-ai/alego-client-ui-slots": "workspace:*",
-    "@types/react": "~18.3.1",
     "@singula-ai/cordis": "workspace:~",
     "react": "^18.2.0",
     "@singula-ai/alego-client-ui-primitives": "workspace:*",
@@ -73,6 +73,7 @@
     "@singula-ai/alego-tool-present": "workspace:*",
     "@singula-ai/alego-workspace-changes": "workspace:*",
     "@singula-ai/alego-api-session-controller": "workspace:*",
+    "@singula-ai/alego-util-values": "workspace:*",
     "@singula-ai/alego-util-workspace-path": "workspace:*",
     "@singula-ai/alego-api-workspace-files": "workspace:*",
     "@singula-ai/alego-fs": "workspace:*",
@@ -82,6 +83,7 @@
     "@singula-ai/alego-client-ui-settings": "workspace:*"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"

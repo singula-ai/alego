@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-experimental-webworker-packer",
   "description": "Build-time packer for the browser runtime's base VFS image and ordered data-overlay archives",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -34,18 +34,18 @@
   "license": "MIT",
   "dependencies": {
     "@singula-ai/cordis-plugin-include": "workspace:~",
+    "@singula-ai/alego-app-boot": "workspace:*",
     "@singula-ai/alego-experimental-webworker-runtime": "workspace:*",
-    "@singula-ai/alego-home-paths": "workspace:*",
     "@singula-ai/alego-session-format": "workspace:*",
     "@singula-ai/alego-session-format-catalog": "workspace:*",
     "@singula-ai/alego-session-format-v3-to-v4": "workspace:*",
-    "js-yaml": "^4.2.0",
-    "picomatch": "^4.0.4"
+    "js-yaml": "^4.3.2",
+    "picomatch": "^4.0.7"
   },
   "devDependencies": {
     "@singula-ai/cordis": "workspace:~",
     "@types/js-yaml": "^4.0.9",
-    "@types/picomatch": "^3.0.2"
+    "@types/picomatch": "^4.0.3"
   },
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:~"

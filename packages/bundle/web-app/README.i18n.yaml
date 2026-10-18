@@ -6,11 +6,11 @@
   en: 162953fe8dcf023b
   zh: be62b229786c92f6
 /singula-ai-alego-web-app:
-  en: dc440fc3289204e9
-  zh: 187f23c1dd8a0fc7
+  en: 44119d0d0d01db98
+  zh: 8e73d4d07d8f49d6
 /singula-ai-alego-web-app/summary:
-  en: a3235b76752425a7
-  zh: af59de9d689f717a
+  en: 374cee60f9e52bf2
+  zh: 83ca827a3383ab5c
 /singula-ai-alego-web-app/table-of-contents:
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
@@ -18,59 +18,56 @@
   en: 3bd37b85139d2fa7
   zh: ba86c807eb83866e
 /singula-ai-alego-web-app/use-this-package/starting-the-web-gui:
-  en: b6ff1b74f9c0bf71
-  zh: b97cb36135516aaf
+  en: 14534270c36179fe
+  zh: 8f3c695f5e33e0dd
 /singula-ai-alego-web-app/use-this-package/configuration:
-  en: a4614b0c712a4541
-  zh: 85c565cdd3cde24b
-/singula-ai-alego-web-app/use-this-package/lan-access-and-trusted-hosts:
-  en: 2522c806db384ddc
-  zh: 7e96f11194af9f9f
+  en: 734c123fce200ad5
+  zh: 9af6ca384b258743
+/singula-ai-alego-web-app/use-this-package/listening-trust-and-public-deployments:
+  en: f52b7827167045cc
+  zh: c117240d0cf1a6a5
 /singula-ai-alego-web-app/use-this-package/running-over-ssh:
-  en: 0370e5f3ed99ed91
-  zh: 5cf6683f8adfb4ad
+  en: 4269a4c59567b23c
+  zh: 1708a0e324a65d47
 /singula-ai-alego-web-app/use-this-package/per-session-agent-setup:
   en: 6986f178f765ffa2
   zh: ae7fb1fbe7a6bab4
 /singula-ai-alego-web-app/understand-the-implementation:
-  en: 8baf97586c9d23b3
-  zh: 862c59df11afdcf3
+  en: 7a4580b05f82bd92
+  zh: 601b094ffda7a0ed
 /singula-ai-alego-web-app/understand-the-implementation/patch-semantics:
-  en: e6a1ee6fc1c58d12
-  zh: 20200522cb0c649f
+  en: f725aa113e9525cf
+  zh: 0701425120878514
+/singula-ai-alego-web-app/understand-the-implementation/advertised-application-url:
+  en: 28472474d630ef68
+  zh: 06eb82319d866831
 /singula-ai-alego-web-app/understand-the-implementation/readiness:
   en: 973128fd346869df
   zh: 54e6792f9f82a192
-/singula-ai-alego-web-app/understand-the-implementation/lan-trust-sampling:
-  en: b5ed8ff0056ca9da
-  zh: fdc1fa4f14cb00b3
 /singula-ai-alego-web-app/understand-the-implementation/source-map:
-  en: 2ad5e1b0db88338e
-  zh: c0c1296e5755ea00
-/singula-ai-alego-web-app/understand-the-implementation/invariant-ownership:
-  en: 34767bb4c0471622
-  zh: e6d76e7c7a0b9ce8
+  en: 091b1a6269bcc0d6
+  zh: eb02323214bd7736
 /singula-ai-alego-web-app/further-exploration:
   en: 053440094c8709ff
   zh: 91c9736ca1078dfe
 /singula-ai-alego-web-app/model-experience:
   en: 215e7ba838619b7b
   zh: a311da3843709f90
-/singula-ai-alego-web-app/model-experience/harness-source-and-web-surface-context:
-  en: e6febc53efe0f51d
-  zh: 9177816a8678d65d
-/singula-ai-alego-web-app/model-experience/harness-source-and-web-surface-context/what-the-model-sees:
-  en: 272d0c25e57251ae
-  zh: 18b074b7fba452a0
-/singula-ai-alego-web-app/model-experience/harness-source-and-web-surface-context/token-effect:
-  en: 908fc84d6849a830
-  zh: 56fe5e418bab60ba
-/singula-ai-alego-web-app/model-experience/harness-source-and-web-surface-context/kv-cache-effect:
-  en: da0f568d6d661c5e
-  zh: 606919b7d37c95bf
+/singula-ai-alego-web-app/model-experience/web-runtime-variable:
+  en: 623bf8a0bf05599d
+  zh: 398ded2e7b20c1ea
+/singula-ai-alego-web-app/model-experience/web-runtime-variable/what-the-model-sees:
+  en: 41459eb781aea3a7
+  zh: 523d9711304b72f7
+/singula-ai-alego-web-app/model-experience/web-runtime-variable/token-effect:
+  en: 449fbfa3986f98f0
+  zh: a7d66333594ab2dd
+/singula-ai-alego-web-app/model-experience/web-runtime-variable/kv-cache-effect:
+  en: 37542a8b81a744f5
+  zh: c0048aaadecae296
 /singula-ai-alego-web-app/known-limitations-and-deferred-work:
-  en: fead2f7bcd17e1ab
-  zh: 80949c203c0a0732
+  en: 07e8dc33dcecd004
+  zh: 9b7551866e81fc21
 /singula-ai-alego-web-app/known-limitations-and-deferred-work/dev-note:
   en: 3f81b4f3beb74a0d
   zh: 2e377ca40822d093

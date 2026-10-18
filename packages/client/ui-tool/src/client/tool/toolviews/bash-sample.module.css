@@ -16,6 +16,7 @@
   --dsl-terminal-font: var(--dsw-font-markdown-code-block-small);
   --dsl-terminal-line-height: 18px;
   --dsl-terminal-output-max-height: 224px;
+  --dsl-terminal-command-whitespace: pre-wrap;
   margin: 4px 0 4px 4px;
   border: 0.5px solid var(--dsw-alias-border-l1);
 }
@@ -77,6 +78,11 @@
   color: var(--dsw-alias-state-error-primary);
 }
 
+.commandInput {
+  --dsl-command-whitespace: pre-wrap;
+  color: var(--dsw-alias-label-secondary);
+}
+
 /* ToolRow's unified expand interaction, replicated per the registrant
    posture: pointer on the expandable row (the icon→chevron hover preview is
    the affordance, no row fill). */
@@ -89,6 +95,18 @@
   align-items: center;
   height: calc(24px + var(--alego-content-font-delta, 0px));
   min-width: 0;
+  color: var(--dsw-alias-label-tertiary);
+  transition: color 100ms ease;
+}
+
+.root:hover {
+  color: var(--dsw-alias-label-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    transition: none;
+  }
 }
 
 .leading {
@@ -100,7 +118,7 @@
   align-items: center;
   justify-content: center;
   margin-right: 6px;
-  color: var(--dsw-alias-label-tertiary);
+  color: inherit;
 }
 
 /* Same glyph-scaling rule as DisclosureRow's leading: the CSS edge overrides
@@ -115,7 +133,7 @@
 }
 
 .chevron {
-  color: var(--dsw-alias-label-secondary);
+  color: inherit;
 }
 
 /* Hover preview on the expandable row: the idle icon crossfades (100ms) into
@@ -146,8 +164,6 @@
   flex: none;
   font-size: var(--alego-content-font-size-secondary, 13px);
   line-height: calc(24px + var(--alego-content-font-delta, 0px));
-  color: var(--dsw-alias-label-secondary);
-  transition: color 100ms ease;
 }
 
 .sep {
@@ -167,13 +183,6 @@
   white-space: nowrap;
   font-size: var(--alego-content-font-size-secondary, 13px);
   line-height: calc(24px + var(--alego-content-font-delta, 0px));
-  color: var(--dsw-alias-label-tertiary);
-  transition: color 100ms ease;
-}
-
-.root:hover .title,
-.root:hover .summary:not(.errorSummary):not(.stoppedSummary) {
-  color: var(--dsw-alias-label-primary);
 }
 
 /* Error row's collapsed summary: the failure's first line in the error color. */

@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-sandbox-windows-acl",
   "description": "Windows ACL write-restriction sandbox backend (restricted-token spawn with capability-SID write allowlist) for the Alego sandbox seam",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -29,22 +29,28 @@
     "lib/index.js",
     "lib/runner.js",
     "lib/types-*.js",
+    "assets",
     "lib/types/**/*.d.ts"
   ],
   "license": "MIT",
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-skill": "workspace:*",
     "@singula-ai/alego-subprocess": "workspace:*"
   },
   "dependencies": {
     "@singula-ai/alego-lazy-require": "workspace:*",
     "@singula-ai/alego-win32-process": "workspace:*",
-    "koffi": "^3.1.0"
+    "koffi": "3.1.1",
+    "yaml": "^2.4.2"
   },
   "devDependencies": {
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/cordis-plugin-include": "workspace:~",
     "@singula-ai/alego-pwsh-local": "workspace:*",
     "@singula-ai/alego-sandbox-local": "workspace:*",
     "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-skill": "workspace:*",
     "@singula-ai/alego-subprocess": "workspace:*",
     "@singula-ai/alego-subprocess-local": "workspace:*"
   }

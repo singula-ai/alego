@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-experimental-voice-input-bundle",
   "description": "Experimental voice input with local SenseVoice; downloads its runtime on first use",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "icon": "./icon.svg",
   "publishConfig": {
     "access": "public"
@@ -44,7 +44,7 @@
   "devDependencies": {
     "@singula-ai/cordis": "workspace:~",
     "@singula-ai/cordis-plugin-include": "workspace:~",
-    "js-yaml": "^4.2.0"
+    "js-yaml": "^4.3.2"
   },
   "alego": {
     "bundle": {

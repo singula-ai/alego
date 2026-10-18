@@ -83,7 +83,6 @@ The executor is the pwsh twin of `alego-bash-sandbox`: it inherits `alego-pwsh-l
 |---|---|
 | [`src/index.ts`](src/index.ts) | Plugin entry: `SandboxPwshExecutor`, per-process fact retention, execution preparation |
 | [`src/helpers.ts`](src/helpers.ts) | Denial, runner-failure, and runner-spawn-failure classification |
-| — | No runtime invariant companion is published; this package exposes no independent event sequence or mutable data relation beyond contracts enforced at its owning seams. Classification is observable in results. |
 | `tests/` | Exercised behavior across the ACL and platform runners |
 
 ### Main flow

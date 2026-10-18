@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-27-progressive-office-skills.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-27-progressive-office-skills.md
+/agent-note-progressive-office-skills-with-ordinary-shell-execution:
+  en: ddd357b303f86437
+  zh: eab17cc82de0175d
+/agent-note-progressive-office-skills-with-ordinary-shell-execution/problem:
+  en: a9984a594cdac98d
+  zh: 38768e7699bc8d39
+/agent-note-progressive-office-skills-with-ordinary-shell-execution/decision:
+  en: 6dc5f35d5897eb57
+  zh: a4e9e937371c9875
+/agent-note-progressive-office-skills-with-ordinary-shell-execution/alternatives-considered:
+  en: 8bca955255e6d982
+  zh: bc313a4bcab3f6f9
+/agent-note-progressive-office-skills-with-ordinary-shell-execution/consequences:
+  en: cd4ff2423b2f5f9e
+  zh: 63135aeae9c46415

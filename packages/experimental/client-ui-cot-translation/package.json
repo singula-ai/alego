@@ -1,0 +1,101 @@
+{
+  "name": "@singula-ai/alego-experimental-client-ui-cot-translation",
+  "description": "Optional machine translation of expanded reasoning, preserving original Session text",
+  "version": "0.2.1-rc.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/experimental/client-ui-cot-translation"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
+    "./remote": {
+      "types": "./lib/typert.remote-client.d.ts",
+      "default": "./lib/typert.remote-client.js"
+    },
+    "./typert": {
+      "types": "./lib/typert.host.d.ts",
+      "default": "./lib/typert.host.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json",
+    "./types": {
+      "types": "./lib/types/types.d.ts"
+    }
+  },
+  "alego": {
+    "client": {
+      "inject": [
+        "@singula-ai/alego-api-remotes",
+        "@singula-ai/alego-client-locale",
+        "@singula-ai/alego-client-ui-chat",
+        "@singula-ai/alego-client-ui-plugin-manager",
+        "@singula-ai/alego-client-ui-settings"
+      ],
+      "platform": "web"
+    }
+  },
+  "scripts": {
+    "bundle": "tsdown",
+    "watch": "tsdown --watch"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-experimental-translator": "workspace:*"
+  },
+  "dependencies": {
+    "@singula-ai/schemastery": "workspace:~",
+    "zod": "^4.4.3",
+    "@singula-ai/alego-typert-protocol": "workspace:*"
+  },
+  "devDependencies": {
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-settings": "workspace:*",
+    "@singula-ai/alego-experimental-translator": "workspace:*",
+    "@singula-ai/alego-api-remotes": "workspace:*",
+    "@singula-ai/alego-client-locale": "workspace:*",
+    "@singula-ai/alego-client-store": "workspace:*",
+    "@singula-ai/alego-client-test-runtime": "workspace:*",
+    "@singula-ai/alego-client-ui-chat": "workspace:*",
+    "@singula-ai/alego-client-ui-plugin-manager": "workspace:*",
+    "@singula-ai/alego-client-ui-primitives": "workspace:*",
+    "@singula-ai/alego-client-ui-renderer": "workspace:*",
+    "@singula-ai/alego-client-ui-settings": "workspace:*",
+    "@singula-ai/alego-client-ui-slots": "workspace:*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@testing-library/react": "^16.3.3",
+    "@singula-ai/alego-session": "workspace:*",
+    "@singula-ai/alego-api-remote-access": "workspace:*",
+    "@singula-ai/alego-api-session-controller": "workspace:*",
+    "@singula-ai/alego-agent-loop-testkit": "workspace:*",
+    "@singula-ai/alego-session-persistence-jsonl": "workspace:*",
+    "@singula-ai/alego-session-query": "workspace:*",
+    "@singula-ai/alego-typert-registry": "workspace:*"
+  },
+  "files": [
+    "locale/*.json",
+    "lib/index.js",
+    "lib/client.js",
+    "lib/types/**/*.d.ts",
+    "lib/typert.host.js",
+    "lib/typert.host.d.ts",
+    "lib/typert.remote-client.js",
+    "lib/typert.remote-client.d.ts"
+  ]
+}

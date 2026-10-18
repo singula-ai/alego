@@ -3,26 +3,26 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/bundle/sdk-minimal/README.md
 /:
-  en: ae5bdac5add26503
-  zh: 93cd37d41c05fc9c
+  en: b2fce08b0fa865da
+  zh: 97e214d87ded4b54
 /singula-ai-alego-sdk-minimal:
   en: 7048d2e9b5b571f5
   zh: b87e225822afe91c
 /singula-ai-alego-sdk-minimal/summary:
-  en: d553075143b4502f
-  zh: 49d8be326f286437
+  en: 32570b2ce16ab7be
+  zh: 4b1dd8afdf271828
 /singula-ai-alego-sdk-minimal/table-of-contents:
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
 /singula-ai-alego-sdk-minimal/use-this-package:
-  en: 62ad857660d50808
-  zh: a1648cadd278b4e5
+  en: a38ed780748fa04f
+  zh: 9448b06e8fa61bd8
 /singula-ai-alego-sdk-minimal/understand-the-implementation:
-  en: cbad58223b722987
-  zh: 69b8cd41b1e11020
+  en: 8b816b8b44663f58
+  zh: 508fc796175bed93
 /singula-ai-alego-sdk-minimal/understand-the-implementation/source-map:
-  en: d992e946f4928fa3
-  zh: 46d6b3d1aabdc3f4
+  en: 3784c554e96ab004
+  zh: 0a05d4fe1e26b3b1
 /singula-ai-alego-sdk-minimal/further-exploration:
   en: 19d68a22f174209e
   zh: 64df783fbe6645e1
@@ -33,17 +33,17 @@
   en: bd87e16b0c6e0506
   zh: c8ee5e3b4578754e
 /singula-ai-alego-sdk-minimal/model-experience/minimal-coding-agent-composition/what-the-model-sees:
-  en: b5ddf1bfd7ff9f0e
-  zh: 4ee85deb97368dfe
+  en: 47e989fccbeb8cc7
+  zh: 6041f8733d27914b
 /singula-ai-alego-sdk-minimal/model-experience/minimal-coding-agent-composition/token-effect:
-  en: 65613fb41fcc3151
-  zh: fc20a732aca8282c
+  en: a59b1b3e05b78bed
+  zh: 0b477e6c1c57fb7f
 /singula-ai-alego-sdk-minimal/model-experience/minimal-coding-agent-composition/kv-cache-effect:
-  en: 904ae09b5fdb87c1
-  zh: de6fcaaa12bd9733
+  en: dd887b6519f40ab3
+  zh: a98e56411fdc79df
 /singula-ai-alego-sdk-minimal/known-limitations-and-deferred-work:
-  en: 4c2bb6f80be6288c
-  zh: 02eaba1d401d3058
+  en: c1e8c2d393d03b56
+  zh: 2c7307a2b85f8e23
 /singula-ai-alego-sdk-minimal/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: e88aeb617ffb74ea

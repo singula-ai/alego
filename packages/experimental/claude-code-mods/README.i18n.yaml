@@ -1,0 +1,85 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/experimental/claude-code-mods/README.md
+/:
+  en: 1658647ca10320ec
+  zh: 2b9fe8113745229a
+/singula-ai-alego-experimental-claude-code-mods:
+  en: a09bddecf51db4a0
+  zh: 9e102f26f6f17e79
+/singula-ai-alego-experimental-claude-code-mods/summary:
+  en: 6e93f151816c3bdb
+  zh: b5ed9072a5ea30a5
+/singula-ai-alego-experimental-claude-code-mods/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-experimental-claude-code-mods/use-this-package:
+  en: aa5845abbb32c885
+  zh: afa3a68cf9799c66
+/singula-ai-alego-experimental-claude-code-mods/use-this-package/which-events-your-mod-receives:
+  en: d2d735b07524c08a
+  zh: 6b90dc578d61ab22
+/singula-ai-alego-experimental-claude-code-mods/use-this-package/the-band-above-the-prompt:
+  en: 2b04be6b58e61a74
+  zh: f4854198d8999d11
+/singula-ai-alego-experimental-claude-code-mods/use-this-package/which-members-your-mod-can-call:
+  en: bf4f9f971aeb1d17
+  zh: 83804163ca9039d5
+/singula-ai-alego-experimental-claude-code-mods/use-this-package/test-a-mod:
+  en: 40a3a946e8107a71
+  zh: 328d8a16b20ac0bc
+/singula-ai-alego-experimental-claude-code-mods/understand-the-implementation:
+  en: 42b15ac6321706aa
+  zh: cfcb757213648bd9
+/singula-ai-alego-experimental-claude-code-mods/understand-the-implementation/loading:
+  en: 7b48e62da7d73a85
+  zh: a7f8e46cecb726cf
+/singula-ai-alego-experimental-claude-code-mods/understand-the-implementation/the-chain:
+  en: 5330d8f5a6c9b992
+  zh: 8f6d167642a1c263
+/singula-ai-alego-experimental-claude-code-mods/understand-the-implementation/mapping-onto-the-harness:
+  en: 955ed36f58b0a5c4
+  zh: 65b2f0ddc1154be4
+/singula-ai-alego-experimental-claude-code-mods/understand-the-implementation/source-map:
+  en: a141066b146cef7c
+  zh: fe91851f05c008c4
+/singula-ai-alego-experimental-claude-code-mods/further-exploration:
+  en: d46018d5d88daf3d
+  zh: ff86e416efe913af
+/singula-ai-alego-experimental-claude-code-mods/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-experimental-claude-code-mods/model-experience/prompt-context-and-submitted-prompts:
+  en: 2e9d6b50a26a5e10
+  zh: d884e62e639cad69
+/singula-ai-alego-experimental-claude-code-mods/model-experience/prompt-context-and-submitted-prompts/what-the-model-sees:
+  en: 6a1d174d923e84f2
+  zh: a27f777d11741880
+/singula-ai-alego-experimental-claude-code-mods/model-experience/prompt-context-and-submitted-prompts/what-the-model-sees/framing-of-a-prompt-a-mod-submits:
+  en: f521d5aba5ab7027
+  zh: 5aa721441103f9a7
+/singula-ai-alego-experimental-claude-code-mods/model-experience/prompt-context-and-submitted-prompts/token-effect:
+  en: 04a7869d92d45eb8
+  zh: 8ddbd20f844dba65
+/singula-ai-alego-experimental-claude-code-mods/model-experience/prompt-context-and-submitted-prompts/kv-cache-effect:
+  en: 75b19101cbd036ff
+  zh: 193106a75b280c73
+/singula-ai-alego-experimental-claude-code-mods/model-experience/tool-outcomes-a-mod-decides:
+  en: fe8166c6d3eb962a
+  zh: 5f8fe74778a78166
+/singula-ai-alego-experimental-claude-code-mods/model-experience/tool-outcomes-a-mod-decides/what-the-model-sees:
+  en: 5b4aa2a1ec36106b
+  zh: c28c286f2a04d716
+/singula-ai-alego-experimental-claude-code-mods/model-experience/tool-outcomes-a-mod-decides/token-effect:
+  en: cbf27f737c6254e6
+  zh: 333cbb22f97f8955
+/singula-ai-alego-experimental-claude-code-mods/model-experience/tool-outcomes-a-mod-decides/kv-cache-effect:
+  en: ca31263f47f654d9
+  zh: 17d55e6641705627
+/singula-ai-alego-experimental-claude-code-mods/known-limitations-and-deferred-work:
+  en: 569627d76bbd2471
+  zh: 1cc007b9724d628d
+/singula-ai-alego-experimental-claude-code-mods/known-limitations-and-deferred-work/dev-note:
+  en: 4d1e26f4cc9c3c1c
+  zh: d80209b56c56b11c

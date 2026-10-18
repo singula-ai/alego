@@ -5,6 +5,7 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { Context } from '@singula-ai/cordis'
 import type { SubprocessHandle } from '@singula-ai/alego-subprocess'
+import type { SpeechPreparationOptions } from '@singula-ai/alego-experimental-speech-to-text/types'
 import LocalSubprocess from '@singula-ai/alego-subprocess-local'
 import { afterEach, expect, it, vi } from 'vitest'
 import { Config } from '../src/config.ts'
@@ -31,14 +32,14 @@ async function fixture(overrides: Partial<Config> = {}) {
   return { root, worker, spawn, ctx }
 }
 
-async function prepare(worker: SenseVoiceWorker): Promise<void> {
+async function prepare(worker: SenseVoiceWorker, options?: SpeechPreparationOptions): Promise<void> {
   const ready = Promise.withResolvers<undefined>()
   const unsubscribe = worker.subscribe(() => {
     const state = worker.snapshot()
     if (state.phase === 'ready') ready.resolve(undefined)
     if (state.phase === 'failed') ready.reject(new Error(state.message))
   })
-  try { worker.prepare(); await ready.promise } finally { unsubscribe() }
+  try { worker.prepare(options); await ready.promise } finally { unsubscribe() }
 }
 
 const audio = new Uint8Array([1, 2])
@@ -66,8 +67,7 @@ it('keeps one worker warm across recordings and joins its exit on disposal', asy
 it('pins a manual source to one preparation without changing deployment defaults', async () => {
   const { worker } = await fixture()
   expect(worker.downloadSources).toEqual(['https://huggingface.co', 'https://hf-mirror.com'])
-  worker.prepare({ downloadSource: 'https://hf-mirror.com' })
-  await vi.waitFor(() => { expect(worker.snapshot().phase).toBe('ready') })
+  await prepare(worker, { downloadSource: 'https://hf-mirror.com' })
   expect(prepareRuntime).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ modelOrigin: 'https://hf-mirror.com' }),
     expect.any(AbortSignal), expect.any(Function))
 })

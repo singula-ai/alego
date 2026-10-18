@@ -43,6 +43,7 @@ packages/**/__pycache__/
 apps/web/dist/
 .artifacts/
 .alego-build/
+.alego-report/
 .playwright-mcp/
 .orig
 .worktrees/

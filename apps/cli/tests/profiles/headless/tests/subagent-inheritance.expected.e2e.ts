@@ -3,7 +3,7 @@
  * its child log and confines a real write under a wider deployment default.
  */
 
-import { readFile, readdir, writeFile } from 'node:fs/promises'
+import { readFile, readdir, realpath, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { Context } from '@singula-ai/cordis'
@@ -16,7 +16,7 @@ import {
 import { LOADER_SMOKE_TEST_TIMEOUT_MS, runLoaderSmoke } from '@singula-ai/alego-loader-smoke'
 import { createMessage, createUserMessage, ReasoningEffortId } from '@singula-ai/alego-llm'
 import { SessionSeq, SESSION_FORMAT_VERSION, SessionId, type SessionEvent, type SessionHeader } from '@singula-ai/alego-session'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import { describe, expect, it } from 'vitest'
 
 const fixtureDir = fileURLToPath(new URL('./expected/subagent-inheritance', import.meta.url))
@@ -111,8 +111,8 @@ describe('parent-only override inheritance snapshot', () => {
         ALEGO_SNAPSHOT_CHILD_FILES: childReplay,
       },
       prepare: async (runCwd) => {
-        cwd = runCwd
-        await seedReadOnlyParent(join(runCwd, '.sessions'), runCwd)
+        cwd = await realpath(runCwd)
+        await seedReadOnlyParent(join(cwd, '.sessions'), cwd)
       },
       inspect: async (runCwd) => {
         // THE physical fact: the child's write never reached the disk. Under
@@ -132,11 +132,12 @@ describe('parent-only override inheritance snapshot', () => {
         const childRecords = child.trimEnd().split('\n').map(
           line => JSON.parse(line) as Record<string, unknown>,
         )
-        expect(childRecords[1]).toMatchObject({
+        expect(childRecords.find(record => record.type === 'sandbox/mode')).toMatchObject({
           type: 'sandbox/mode',
-          seq: SessionSeq(0),
           data: { mode: 'read-only', source: 'delegation' },
         })
+        expect(childRecords.findIndex(record => record.type === 'sandbox/mode'))
+          .toBeLessThan(childRecords.findIndex(record => record.type === 'turn/start'))
 
         const runtimeContexts = (content: string): string[] => content.trimEnd().split('\n').flatMap((line) => {
           const record = JSON.parse(line) as {

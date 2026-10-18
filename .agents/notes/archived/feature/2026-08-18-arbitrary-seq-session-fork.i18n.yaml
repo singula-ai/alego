@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/feature/2026-08-18-arbitrary-seq-session-fork.md
+2026-08-18-arbitrary-seq-session-fork.md: 5d5adfe578cd17fe9cd021200a587d2073db7294
+2026-08-18-arbitrary-seq-session-fork.zh.md: 82b51274d2e30ac5614265d795ba4d1738cdc9a6

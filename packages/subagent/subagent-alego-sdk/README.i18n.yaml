@@ -18,17 +18,17 @@
   en: dfeed23ad4b9ebc4
   zh: 1de4dd2b4d988a66
 /singula-ai-alego-subagent-alego-sdk/use-this-package/when-to-choose-it:
-  en: 6d125a8247bca6f3
-  zh: 6e196e4c813f3ec8
+  en: 12bcb280ca70bb7e
+  zh: a52eedfd548bb236
 /singula-ai-alego-subagent-alego-sdk/use-this-package/configuration:
-  en: 0c74b6eef2398d25
-  zh: 7951bb8b66bf5e63
+  en: 61e5560143bfa423
+  zh: f909cc0ddb8b8a31
 /singula-ai-alego-subagent-alego-sdk/use-this-package/what-you-get:
   en: b9ccfa85b40b07eb
   zh: 4f84e7327b4ff188
 /singula-ai-alego-subagent-alego-sdk/use-this-package/failure-and-recovery:
-  en: 21eb548e92fe20ce
-  zh: d865a29acf60018e
+  en: 867d0a444b41accd
+  zh: c630f7e35a274c29
 /singula-ai-alego-subagent-alego-sdk/understand-the-implementation:
   en: 00d076edd7fee716
   zh: 7aea818c13fe3cc1
@@ -39,8 +39,8 @@
   en: 1bed6c1577997df6
   zh: 8c99f132377f6ca2
 /singula-ai-alego-subagent-alego-sdk/understand-the-implementation/run-flow:
-  en: f268db0520abf6f7
-  zh: 4517fc7ea6bd099c
+  en: 6c50e4e8dc5e0698
+  zh: 9d0011e28341bbde
 /singula-ai-alego-subagent-alego-sdk/understand-the-implementation/stop-reason-mapping:
   en: e040a57202916f91
   zh: 196bf38f0f0db310
@@ -57,8 +57,8 @@
   en: 05e6180f1498fdf9
   zh: 2b05d2b97bfa67da
 /singula-ai-alego-subagent-alego-sdk/model-experience/child-agent-request/what-the-model-sees:
-  en: df7729fa4e60d6f6
-  zh: 458094fbb7a7ea07
+  en: b8e656d956ac5bd2
+  zh: 26fa79357d1ce452
 /singula-ai-alego-subagent-alego-sdk/model-experience/child-agent-request/token-effect:
   en: c0b78d334d5d0a9c
   zh: 71d1a375a6ab4109
@@ -69,17 +69,17 @@
   en: 75d061c2151624a7
   zh: 71e58e020b60ff90
 /singula-ai-alego-subagent-alego-sdk/model-experience/parent-tool-result-indirectly/what-the-model-sees:
-  en: 464bc4ff272b6bd2
-  zh: 7e82d3ac90501010
+  en: 4a78f9e66ef24649
+  zh: 2be24bad3bc8787d
 /singula-ai-alego-subagent-alego-sdk/model-experience/parent-tool-result-indirectly/token-effect:
-  en: 600ac97cdd163650
-  zh: d08f0a72321a9548
+  en: 4fae54e2ff0c4874
+  zh: 1574bfe874f66a1f
 /singula-ai-alego-subagent-alego-sdk/model-experience/parent-tool-result-indirectly/kv-cache-effect:
   en: f5d5f97a153f7c70
   zh: 3d6bc05b9eadfbc2
 /singula-ai-alego-subagent-alego-sdk/known-limitations-and-deferred-work:
-  en: 01cbee2a855b1d6a
-  zh: 701e7afc9a7fc862
+  en: 8f43f79098cfeb37
+  zh: a5ded4086e3d8773
 /singula-ai-alego-subagent-alego-sdk/known-limitations-and-deferred-work/dev-note:
-  en: 854b5d4640bb8c07
-  zh: acd7a2aa4a4f457c
+  en: 04a404ccea615ef3
+  zh: df2d9d901d75f024

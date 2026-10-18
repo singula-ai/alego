@@ -1,0 +1,31 @@
+# Bilingual-pair consistency record for conversation-and-session.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write docs/defensive-patterns/conversation-and-session.md
+/conversation-and-session-rules:
+  en: e63586ea90f44f86
+  zh: 084fc1f626f38e16
+/conversation-and-session-rules/projection-is-the-only-read-and-compute-path:
+  en: 08698bb1383f4815
+  zh: 017f798accf67614
+/conversation-and-session-rules/cold-reads-are-the-last-resort:
+  en: 32991da738e47f7f
+  zh: b138910f8c16d103
+/conversation-and-session-rules/retention-follows-one-lifecycle-rule:
+  en: 85b5ebee862cf3b8
+  zh: f18d37cf6a3ec5a8
+/conversation-and-session-rules/node-computation-is-incremental-and-streaming-publication-is-batched:
+  en: 172774ce1ab4129b
+  zh: 715a51d47858b66e
+/conversation-and-session-rules/the-node-build-and-grouping-engine-carries-no-business-rule:
+  en: bff2e071c2eb67af
+  zh: ae445e97ead45322
+/conversation-and-session-rules/the-node-list-and-seat-components-carry-no-business-branch:
+  en: 9ecf54d3500c54dd
+  zh: 362cddd567b6470b
+/conversation-and-session-rules/the-markdown-pipeline-carries-no-business-branch:
+  en: cf54c045992b942c
+  zh: 3ab13a8244974385
+/conversation-and-session-rules/the-user-message-model-and-rendering-carry-no-business-field:
+  en: 9cc90817d217511f
+  zh: e3e9f79c80ecad17

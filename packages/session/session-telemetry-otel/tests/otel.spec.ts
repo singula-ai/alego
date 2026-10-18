@@ -20,7 +20,7 @@ import { recordFeedback } from '@singula-ai/alego-command-feedback'
 import { createAssistantMessage } from '@singula-ai/alego-llm'
 import SessionStore, { SESSION_FORMAT_VERSION, Session, SessionId, SessionLogOffset, SessionSeq } from '@singula-ai/alego-session'
 import MessageFeedbackService from '@singula-ai/alego-message-feedback'
-import JsonlPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import OpenTelemetrySessionBackend, { Config, DEFAULT_TELEMETRY_MODE, SessionTelemetryMode } from '../src/index.ts'
 
 interface Capture {

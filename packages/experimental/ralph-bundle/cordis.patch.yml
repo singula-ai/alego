@@ -1,0 +1,16 @@
+- insert:
+    - id: optional-ralph
+      name: cordis:group
+      group: true
+      isolate:
+        workflowEngine: true
+      config:
+        - id: optional-ralph-workflow
+          name: '@singula-ai/alego-workflow-ptc'
+          config:
+            provider: spawn
+        - id: tool-ralph
+          name: '@singula-ai/alego-tool-ralph'
+          config:
+            subagentProvider: spawn
+            maxRounds: 64

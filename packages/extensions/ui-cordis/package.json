@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-cordis",
   "description": "Cordis dynamic-plugin definition card: the keyed cordis_define tool row with its run/stop switch",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,7 +23,8 @@
       "default": "./lib/client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
@@ -60,11 +61,12 @@
     "@singula-ai/alego-client-ui-session": "workspace:*",
     "@singula-ai/alego-client-ui-slots": "workspace:*",
     "@singula-ai/alego-client-ui-tool": "workspace:*",
-    "@types/react": "~18.3.1",
+    "@singula-ai/alego-util-values": "workspace:*",
     "@singula-ai/cordis": "workspace:~",
     "react": "^18.2.0"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"

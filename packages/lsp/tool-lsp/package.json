@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-tool-lsp",
-  "description": "Model-facing lsp tool over the Alego LSP capability seam (ctx.lsp) — one read-only tool with goToDefinition/findReferences/goToImplementation/hover operations, one-based UTF-16 cursor coordinates, bounded location rendering, and hover normalization",
-  "version": "0.1.7-rc.2",
+  "description": "Model-facing lsp tool over the Alego LSP capability seam (ctx.lsp) \u2014 one read-only tool with goToDefinition/findReferences/goToImplementation/hover operations, one-based UTF-16 cursor coordinates, bounded location rendering, and hover normalization",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -32,7 +32,8 @@
     "@singula-ai/alego-lsp": "workspace:*",
     "@singula-ai/alego-system-prompt": "workspace:*",
     "@singula-ai/alego-timeout": "workspace:*",
-    "@singula-ai/alego-tools": "workspace:*"
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/alego-working-directory": "workspace:*"
   },
   "dependencies": {
     "@singula-ai/alego-util-values": "workspace:*",
@@ -50,6 +51,8 @@
     "@singula-ai/alego-system-prompt": "workspace:*",
     "@singula-ai/alego-timeout": "workspace:*",
     "@singula-ai/alego-tool-call-timeout-policy": "workspace:*",
-    "@singula-ai/alego-tools": "workspace:*"
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/alego-working-directory": "workspace:*",
+    "@singula-ai/alego-agent-loop-testkit": "workspace:*"
   }
 }

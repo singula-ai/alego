@@ -2,7 +2,7 @@
 import { Context } from '@singula-ai/cordis'
 import { SESSION_FORMAT_VERSION, SessionId } from '@singula-ai/alego-session'
 import { SessionPersistenceCorruptionError } from '@singula-ai/alego-session-persistence'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'

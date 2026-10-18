@@ -62,12 +62,25 @@
   flex-direction: column;
 }
 
-/* `hidden="until-found"` retains a zero-height box so browser find can reveal
-   its subtree. Direct Chat Node Seats and auxiliary rows share one flow;
-   hidden and empty Seats do not contribute spacing. */
-.column > :not([hidden]):not(.flowItem:empty)
-  ~ :not([hidden]):not(.flowItem:empty) {
-  margin-top: var(--alego-chat-flow-gap, 16px);
+/* The flow slot's display:contents anchor preserves layout but not selector ancestry.
+   `hidden="until-found"` retains a searchable zero-height box; hidden and empty
+   Seats do not contribute spacing. */
+:is(.column, :global([data-slot="conversation.chat.flow"])) > :not([hidden]):not(.flowItem:is(:empty, :has(> [data-slot="conversation.chat.node"]:empty)))
+  ~ :not([hidden]):not(.flowItem:is(:empty, :has(> [data-slot="conversation.chat.node"]:empty))),
+.column:has(> .older) > :global([data-slot="conversation.chat.flow"])
+  > :not([hidden]):not(.flowItem:is(:empty, :has(> [data-slot="conversation.chat.node"]:empty))) {
+  margin-top: var(--alego-chat-flow-gap, 6px);
+}
+
+/* Process rows sit 6px apart; an Assistant response is separated from its
+   neighbours by 12px. */
+.flowItem[data-chat-group-part="response"] {
+  --alego-chat-flow-gap: 12px;
+}
+
+:is(.column, :global([data-slot="conversation.chat.flow"])) > [data-chat-group-part="response"]:not([hidden]):not(:empty)
+  + :not([hidden]):not(.flowItem:is(:empty, :has(> [data-slot="conversation.chat.node"]:empty))):not(.running) {
+  --alego-chat-flow-gap: 12px;
 }
 
 /* Settled-flow identity boundary. It is neutral until it becomes the natural
@@ -76,15 +89,40 @@
   min-width: 0;
 }
 
-/* A closed process reads as one summary immediately followed by its answer.
-   Expanded process rows return to the ordinary 16px rhythm. */
-.flowItem[data-turn-process-answer] {
-  --alego-chat-flow-gap: 8px;
+/* Bottom room: sized by the viewport owner while rows above the reader close,
+   given back only as later content grows into it. */
+.turnSpacer {
+  height: 0;
 }
 
-/* Empty Seats retain ordered layout positions for Turn lookup without
-   contributing height or the sibling gap. */
-.flowItem:empty {
+/* While a Turn folds, spacing changes share the closing rows' timing. */
+.column[data-chat-motion] > :not([data-chat-motion]),
+.column[data-chat-motion] > :global([data-slot="conversation.chat.flow"]) > :not([data-chat-motion]) {
+  transition: margin-top 160ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.column[data-input-fold] > :not([data-chat-motion]),
+.column[data-input-fold] > :global([data-slot="conversation.chat.flow"]) > :not([data-chat-motion]) {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .column[data-chat-motion] > :not([data-chat-motion]),
+  .column[data-chat-motion] > :global([data-slot="conversation.chat.flow"]) > :not([data-chat-motion]) {
+    transition: none;
+  }
+}
+
+/* The Turn header has 16px clearance from its input and following content. */
+.flowItem[data-chat-flow-kind="turn-process"],
+.flowItem[data-turn-process-answer],
+:is(.column, :global([data-slot="conversation.chat.flow"])) > [data-chat-flow-kind="turn-process"] + :not([hidden]):not(.flowItem:is(:empty, :has(> [data-slot="conversation.chat.node"]:empty))):not(.running) {
+  --alego-chat-flow-gap: 16px;
+}
+
+/* Empty Seats, including retained empty slot anchors, preserve Turn lookup
+   without contributing height or the sibling gap. */
+.flowItem:is(:empty, :has(> [data-slot="conversation.chat.node"]:empty)) {
   height: 0;
 }
 
@@ -106,6 +144,7 @@
   flex-direction: column;
   align-items: flex-start;
   --alego-chat-flow-gap: 12px;
+  --dsw-alias-label-shimmer: var(--dsw-alias-label-deep-diving-shimmer);
   color: var(--dsw-alias-label-deep-diving);
   font-size: calc(var(--alego-content-font-size, 14px) - 2px);
   line-height: calc(22px + var(--alego-content-font-delta, 0px));
@@ -113,7 +152,7 @@
 
 /* The last visible row before the status must contain output, not an input.
    Hidden and empty seats do not separate a user message from the status. */
-.column > :nth-last-child(2 of :not([hidden]):not(.flowItem:is(:empty, :has(> [data-slot="conversation.chat.node"]:empty)))):is(
+:is(.column, :global([data-slot="conversation.chat.flow"])) > :nth-last-child(2 of :not([hidden]):not(.flowItem:is(:empty, :has(> [data-slot="conversation.chat.node"]:empty)))):is(
   .flowItem:not([data-chat-flow-kind="user"]):not([data-chat-flow-kind="steering"]):not([data-chat-flow-kind="turn-trigger"]),
   [data-chat-group-key]
 ) ~ .running > .runningDivider {
@@ -142,23 +181,40 @@
 }
 
 .runningIcon {
+  position: relative;
   display: inline-flex;
   flex: none;
   width: calc(14px + var(--alego-content-font-delta, 0px));
   height: calc(14px + var(--alego-content-font-delta, 0px));
+  /* The fixed footprint contains the animation's layout and paint. */
+  contain: strict;
+  overflow: hidden;
+}
+
+.runningBlockAnimated {
+  display: none;
+  position: absolute;
+  inset: 0;
 }
 
 .runningBlockStill {
-  display: none;
+  display: initial;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .runningBlockAnimated {
-    display: none;
-  }
+@supports (mask-mode: alpha) and (mask-image: url('')) {
+  @media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
+    .runningBlockAnimated {
+      display: block;
+      background: currentColor;
+      mask: url('./running-block@2x.png') center / 100% 100% no-repeat;
+      mask-mode: alpha;
+      /* Keep animated-mask repaints on an icon-sized composited layer. */
+      will-change: transform;
+    }
 
-  .runningBlockStill {
-    display: initial;
+    .runningBlockStill {
+      display: none;
+    }
   }
 }
 

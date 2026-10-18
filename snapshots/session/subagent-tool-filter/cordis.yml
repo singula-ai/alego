@@ -1,10 +1,44 @@
-# Restrict inherited capabilities before the child assembles its first request.
+# The parent owns its file and web tools; the child selects a separate preset.
+- id: tool-fs
+  disabled: true
+
+- id: tool-fs-search
+  disabled: true
+
+- id: tool-web
+  disabled: true
+
+- insert:
+    - id: agent-preset-registry
+      name: '@singula-ai/alego-agent-preset-registry'
+      config:
+        default: parent
+    - id: preset-parent
+      name: '@singula-ai/alego-agent-preset'
+      config:
+        id: parent
+        plugins:
+          - name: '@singula-ai/alego-tool-fs'
+          - name: '@singula-ai/alego-tool-fs-search'
+            config:
+              sampleOverCapGlobResults: false
+          - name: '@singula-ai/alego-tool-web'
+            config:
+              fetch: true
+              searchTimeoutMs: 60000
+    - id: preset-child
+      name: '@singula-ai/alego-agent-preset'
+      config:
+        id: child
+        plugins: []
+    - id: parent-agent-preset
+      name: '../../../packages/test-support/session-snapshot/tests/fixtures/parent-agent-preset.ts'
+
 - id: tool-subagent
   name: '@singula-ai/alego-tool-subagent'
+  inject: [agentPresets]
   config:
     provider: spawn
     toolName: subagent
-    backgroundMode: continuable
     maxDepth: 1
-    toolFilter:
-      deny: [write, edit, glob, grep, web_search, web_fetch]
+    agentPreset: child

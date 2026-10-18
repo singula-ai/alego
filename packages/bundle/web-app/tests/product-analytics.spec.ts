@@ -47,7 +47,9 @@ it.each(['desktop', 'web'])('limits collection and its shutdown to the Desktop l
     expect(ctx.get('productAnalytics')).toBeUndefined()
     return
   }
-  expect(rows[0]!.config).toMatchObject({ timeoutMillis: 1000, exportTimeoutMillis: 1500, shutdownTimeoutMillis: 2000 })
+  expect(rows[0]!.config).toMatchObject({
+    scheduledDelayMillis: 30000, timeoutMillis: 15000, exportTimeoutMillis: 20000, shutdownTimeoutMillis: 2000,
+  })
   const analytics = ctx.productAnalytics
   const analyticsFiber = ctx.loader.resolve('product-analytics').fiber
   const telemetryFiber = entry.fiber
@@ -70,7 +72,11 @@ it.each(['desktop', 'web'])('limits collection and its shutdown to the Desktop l
   }
   const emit = vi.spyOn(ctx.productTelemetry, 'emit')
   await analytics.report({ eventName: 'desktop_app_launch', timestamp: 1, attributes: {} })
-  expect(emit).toHaveBeenCalledWith(expect.objectContaining({ attributes: { app_version: 'test-version' } }))
+  expect(emit).toHaveBeenCalledOnce()
+  const attributes = emit.mock.calls[0]?.[0].attributes
+  expect(attributes?.app_version).toBe('test-version')
+  expect(typeof attributes?.os_name).toBe('string')
+  expect(typeof attributes?.memory_total_bytes).toBe('number')
   lifetime.abort()
   await policy.return?.()
   ctx.productTelemetry.emit({ eventName: 'desktop_upgrade_install_restart_click', body: 'upgrade', timestamp: Date.now() })

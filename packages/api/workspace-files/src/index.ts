@@ -203,6 +203,7 @@ export class WorkspaceFiles extends TypertRemoteService {
       scope.typert.lookups.register('workspaceFileScope', {
         parameter: 'workspaceFileScope',
         wire: 'workspaceFileScopeId',
+        resource: 'session',
         hostTypeSymbol: '@singula-ai/alego-api-workspace-files#WorkspaceFileScope',
         wireTypeSymbol: '@singula-ai/alego-session/types#SessionId',
         resolve: async (sessionId) => {

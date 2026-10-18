@@ -1,0 +1,8 @@
+- insert:
+    - id: translator
+      name: '@singula-ai/alego-experimental-translator'
+    - id: cot-translation
+      name: '@singula-ai/alego-experimental-client-ui-cot-translation'
+      config:
+        provider: bing
+        targetLanguage: auto

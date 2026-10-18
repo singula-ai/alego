@@ -15,14 +15,14 @@
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
 /singula-ai-alego-agent-instructions/use-this-package:
-  en: 185d605a252d50e2
-  zh: 7a38bdec913aace8
+  en: b59bf983b569ea36
+  zh: 1cb44bc96869fe52
 /singula-ai-alego-agent-instructions/use-this-package/what-the-agent-gets:
-  en: 785ae00182e83e99
-  zh: 9b95c1f07c845e10
+  en: 49d2d7f6a3701210
+  zh: 52ee9c6bbe1587b0
 /singula-ai-alego-agent-instructions/use-this-package/configuration:
-  en: 1a2e1fe29ca7e0f3
-  zh: 6f2a81139bc8f6c9
+  en: ba44477e1f912b1f
+  zh: 99a945e75bcfc72f
 /singula-ai-alego-agent-instructions/use-this-package/observing-the-budget:
   en: 9797082b1e69b72c
   zh: d26c00b1b90fe4ea
@@ -33,8 +33,8 @@
   en: 4708b51bf8fe86f7
   zh: 869fc4b1f78383ee
 /singula-ai-alego-agent-instructions/understand-the-implementation/source-map:
-  en: 737fdf08415bc08d
-  zh: 625d53b1418ab6bb
+  en: cb4c1f929ef5a835
+  zh: 3f0fcb7f568a0a5c
 /singula-ai-alego-agent-instructions/understand-the-implementation/main-flow:
   en: d881b9055f823929
   zh: 87b25f0bf8e204e9
@@ -66,8 +66,8 @@
   en: bbf8f11dbb279b78
   zh: eb537ade3fa1e573
 /singula-ai-alego-agent-instructions/model-experience/newly-discovered-scope-context/what-the-model-sees:
-  en: 99226255009f8432
-  zh: 3b1661ca1a98ae4a
+  en: d806c4e1f67d7e94
+  zh: 46f1d1d149197f70
 /singula-ai-alego-agent-instructions/model-experience/newly-discovered-scope-context/what-the-model-sees/additional-instruction-template:
   en: 50655306b787c8c6
   zh: bcdc631a35f9de91
@@ -93,8 +93,8 @@
   en: 2fbf2175168e8244
   zh: f681f89596f500f5
 /singula-ai-alego-agent-instructions/known-limitations-and-deferred-work:
-  en: c9c8ef768610e949
-  zh: 99581e83d5932f0d
+  en: 9b50e4414fac4a79
+  zh: 5957bfd23f79b336
 /singula-ai-alego-agent-instructions/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 3bb0c20c93f16f98

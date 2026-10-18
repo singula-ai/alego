@@ -1,0 +1,68 @@
+{
+  "name": "@singula-ai/alego-experimental-translator",
+  "description": "Machine translation with reusable Session results",
+  "version": "0.2.1-rc.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/experimental/translator"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./src/*": "./src/*",
+    "./types": {
+      "types": "./lib/types/types.d.ts",
+      "default": "./lib/types/types.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/types/**/*.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@singula-ai/schemastery": "workspace:~"
+  },
+  "peerDependencies": {
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-timeout": "workspace:*",
+    "@singula-ai/alego-util-values": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*",
+    "@singula-ai/alego-session-persistence": "workspace:*",
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-credentials": "workspace:*",
+    "@singula-ai/alego-launch-environment": "workspace:*"
+  },
+  "devDependencies": {
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-app-boot": "workspace:*",
+    "@singula-ai/alego-timeout": "workspace:*",
+    "@singula-ai/alego-util-values": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*",
+    "@singula-ai/alego-session-persistence": "workspace:*",
+    "@singula-ai/alego-session-persistence-jsonl": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/alego-credentials": "workspace:*",
+    "@singula-ai/alego-launch-environment": "workspace:*",
+    "@singula-ai/alego-llm-deepseek": "workspace:*",
+    "@singula-ai/alego-llm-deepseek-api-key": "workspace:*",
+    "@singula-ai/alego-llm-deepseek-account": "workspace:*",
+    "@singula-ai/alego-deepseek-account": "workspace:*",
+    "@singula-ai/alego-deepseek-llm-api-extensions": "workspace:*",
+    "@singula-ai/alego-session-log-deepseek": "workspace:*",
+    "@singula-ai/alego-session-query-sqlite": "workspace:*"
+  }
+}

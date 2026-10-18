@@ -1,0 +1,64 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/experimental/session-title-all-prompts-llm/README.md
+/:
+  en: 0718b02e4cdd4cc6
+  zh: 2b5b4a729ce4d97e
+/singula-ai-alego-session-title-all-prompts-llm:
+  en: c5f1bb11deb9dfbb
+  zh: 90472ae98f04744d
+/singula-ai-alego-session-title-all-prompts-llm/summary:
+  en: cb4cea7d70e423a9
+  zh: a66abad8fe806511
+/singula-ai-alego-session-title-all-prompts-llm/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-session-title-all-prompts-llm/use-this-package:
+  en: b384aa244d230aaa
+  zh: d0a55150bfde947d
+/singula-ai-alego-session-title-all-prompts-llm/use-this-package/when-titles-are-generated:
+  en: 5750c08ae93b2c07
+  zh: 130724e56a833217
+/singula-ai-alego-session-title-all-prompts-llm/use-this-package/configuration:
+  en: 44ca6b43f690c6aa
+  zh: a907f8960ce277db
+/singula-ai-alego-session-title-all-prompts-llm/use-this-package/failures-and-recovery:
+  en: 6077a4665a4edb87
+  zh: 539c4e5969f9bb9b
+/singula-ai-alego-session-title-all-prompts-llm/understand-the-implementation:
+  en: 506933ffa7745b7d
+  zh: a9bb6f06a32b7c18
+/singula-ai-alego-session-title-all-prompts-llm/understand-the-implementation/design-concept:
+  en: 9a9f178569a13e9f
+  zh: ab06273fd04c3a5f
+/singula-ai-alego-session-title-all-prompts-llm/understand-the-implementation/source-map:
+  en: 18bfd548b52deec1
+  zh: 85115c952ee14dec
+/singula-ai-alego-session-title-all-prompts-llm/understand-the-implementation/scheduling:
+  en: ca23821924af2b14
+  zh: a384479d5e69b0f8
+/singula-ai-alego-session-title-all-prompts-llm/further-exploration:
+  en: 2820a6800d507022
+  zh: cd0e536966691caa
+/singula-ai-alego-session-title-all-prompts-llm/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-session-title-all-prompts-llm/model-experience/all-messages-title-request:
+  en: 42380e2d029288cf
+  zh: e9c9f21ac00e3c9d
+/singula-ai-alego-session-title-all-prompts-llm/model-experience/all-messages-title-request/what-the-model-sees:
+  en: 3c03a04339ff4f72
+  zh: 8dea27ff49d6a9a7
+/singula-ai-alego-session-title-all-prompts-llm/model-experience/all-messages-title-request/token-effect:
+  en: 4f043655b7b2c8fc
+  zh: e4914d15ef9ff8b1
+/singula-ai-alego-session-title-all-prompts-llm/model-experience/all-messages-title-request/kv-cache-effect:
+  en: 6a70f43f38b8c075
+  zh: 2b823aff93344134
+/singula-ai-alego-session-title-all-prompts-llm/known-limitations-and-deferred-work:
+  en: 48baddec2b04e7d2
+  zh: 46e85efbead4a309
+/singula-ai-alego-session-title-all-prompts-llm/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

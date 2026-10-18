@@ -10,6 +10,7 @@ import * as vm from 'node:vm'
 import type { Context } from '@singula-ai/cordis'
 import type {} from '@singula-ai/alego-ptc-runtime'
 import type {} from '@singula-ai/alego-sandbox-policy'
+import type {} from '@singula-ai/alego-working-directory'
 import z from '@singula-ai/schemastery'
 import WorkflowEngine, { WorkflowError, WorkflowRunId } from '@singula-ai/alego-workflow'
 import type { WorkflowRun, WorkflowRunInfo, WorkflowStartRequest } from '@singula-ai/alego-workflow'
@@ -100,7 +101,7 @@ function resolveMaxTotalAgents(requested: number | undefined, ceiling: number): 
  * the seam contract.
  */
 class PtcWorkflowEngine extends WorkflowEngine {
-  static inject = ['subagents', 'ptcRuntime', 'sandboxPolicy']
+  static inject = ['subagents', 'ptcRuntime', 'sandboxPolicy', 'workingDirectory']
 
   static Config: z<Config> = z.object({
     provider: z.string().default('spawn'),

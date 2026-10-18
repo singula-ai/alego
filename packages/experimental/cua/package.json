@@ -1,0 +1,99 @@
+{
+  "name": "@singula-ai/alego-cua",
+  "description": "Shared Computer Use application objects, authorization, and logged tool execution",
+  "version": "0.2.1-rc.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singula-ai/alego.git",
+    "directory": "packages/experimental/cua"
+  },
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json",
+    "./api": {
+      "types": "./lib/types/api.d.ts",
+      "default": "./lib/api.js"
+    },
+    "./bridge": {
+      "types": "./lib/types/bridge.d.ts",
+      "default": "./lib/bridge.js"
+    },
+    "./native-client": {
+      "types": "./lib/types/native-client.d.ts",
+      "default": "./lib/native-client.js"
+    },
+    "./protocol": {
+      "types": "./lib/types/protocol.d.ts",
+      "default": "./lib/protocol.js"
+    }
+  },
+  "files": [
+    "lib/index.js",
+    "lib/api.js",
+    "lib/bridge.js",
+    "lib/native-client.js",
+    "lib/protocol.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-computer-use": "workspace:*",
+    "@singula-ai/alego-system-prompt": "workspace:*",
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-subprocess": "workspace:*",
+    "@singula-ai/alego-user-questions": "workspace:*",
+    "@singula-ai/alego-attachment": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*"
+  },
+  "dependencies": {
+    "@singula-ai/alego-util-values": "workspace:*",
+    "@singula-ai/schemastery": "workspace:~",
+    "zod": "^4.4.3",
+    "@singula-ai/alego-brand": "workspace:*",
+    "@singula-ai/alego-atomic-write": "workspace:*"
+  },
+  "devDependencies": {
+    "@singula-ai/alego-working-directory": "workspace:*",
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/cordis-plugin-include": "workspace:~",
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-agent-loop": "workspace:*",
+    "@singula-ai/alego-agent-loop-testkit": "workspace:*",
+    "@singula-ai/alego-attachment": "workspace:*",
+    "@singula-ai/alego-attachment-local": "workspace:*",
+    "@singula-ai/alego-computer-use": "workspace:*",
+    "@singula-ai/alego-llm": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*",
+    "@singula-ai/alego-session-projection": "workspace:*",
+    "@singula-ai/alego-system-prompt": "workspace:*",
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/alego-subprocess": "workspace:*",
+    "@singula-ai/alego-subprocess-local": "workspace:*",
+    "@singula-ai/alego-fs-local": "workspace:*",
+    "@singula-ai/alego-llm-deepseek": "workspace:*",
+    "@singula-ai/alego-ptc-runtime-node": "workspace:*",
+    "@singula-ai/alego-sandbox-local": "workspace:*",
+    "@singula-ai/alego-sandbox-policy": "workspace:*",
+    "sharp": "^0.35.3",
+    "@singula-ai/alego-ptc-runtime": "workspace:*",
+    "@singula-ai/alego-user-questions": "workspace:*",
+    "@singula-ai/alego-settings": "workspace:*",
+    "@singula-ai/alego-app-boot": "workspace:*",
+    "@singula-ai/alego-config-editor": "workspace:*",
+    "@singula-ai/alego-hmr": "workspace:*",
+    "@singula-ai/cordis-plugin-timer": "workspace:~"
+  }
+}

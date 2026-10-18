@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-api-session-controller",
   "description": "Session Remote commands, cold reads, and live control transport",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -39,7 +39,8 @@
       "default": "./lib/typert.remote-client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
@@ -58,6 +59,7 @@
     "watch": "tsdown --watch"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.js",
@@ -73,7 +75,7 @@
     "@singula-ai/alego-deque": "workspace:*",
     "@singula-ai/schemastery": "workspace:~",
     "mime-types": "^3.0.2",
-    "zod": "^4.4.3"
+    "zod": "4.4.3"
   },
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:~",
@@ -105,7 +107,8 @@
     "@singula-ai/alego-util-time": "workspace:*",
     "@singula-ai/alego-util-values": "workspace:*",
     "@singula-ai/alego-util-workspace-path": "workspace:*",
-    "@singula-ai/alego-workspace": "workspace:*"
+    "@singula-ai/alego-workspace": "workspace:*",
+    "@singula-ai/alego-working-directory": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@singula-ai/alego-session-persistence": {
@@ -119,6 +122,7 @@
     }
   },
   "devDependencies": {
+    "@singula-ai/alego-api-remote-access": "workspace:*",
     "@singula-ai/cordis": "workspace:~",
     "@singula-ai/alego-agent": "workspace:*",
     "@singula-ai/alego-agent-default-model": "workspace:*",
@@ -143,6 +147,7 @@
     "@singula-ai/alego-scope": "workspace:*",
     "@singula-ai/alego-session": "workspace:*",
     "@singula-ai/alego-session-persistence": "workspace:*",
+    "@singula-ai/alego-session-persistence-jsonl": "workspace:*",
     "@singula-ai/alego-session-projection": "workspace:*",
     "@singula-ai/alego-session-projection-cache": "workspace:*",
     "@singula-ai/alego-session-query": "workspace:*",
@@ -160,6 +165,7 @@
     "@singula-ai/alego-util-values": "workspace:*",
     "@singula-ai/alego-util-workspace-path": "workspace:*",
     "@singula-ai/alego-workspace": "workspace:*",
-    "@types/mime-types": "^3.0.1"
+    "@types/mime-types": "^3.0.1",
+    "@singula-ai/alego-working-directory": "workspace:*"
   }
 }

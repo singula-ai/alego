@@ -1,6 +1,6 @@
 import { clientLibrary } from '../../client/tsdown.client.ts'
 
 export default clientLibrary(
-  '@singula-ai/alego-remote-mock',
+  import.meta.dirname,
   ['lib/types/index.js'],
 )

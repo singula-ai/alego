@@ -9,8 +9,8 @@
   en: 9f0cb44bd31a8a89
   zh: a60f14e1ad712e38
 /singula-ai-alego-web-search-deepseek/summary:
-  en: cd14ffd767690c31
-  zh: a4ed17db003bbeac
+  en: 85f389fdb0f029e3
+  zh: 35a085c449d99414
 /singula-ai-alego-web-search-deepseek/table-of-contents:
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
@@ -33,8 +33,8 @@
   en: 467b8238cf7e140c
   zh: 85a519c8811557aa
 /singula-ai-alego-web-search-deepseek/use-this-package/failures-and-recovery:
-  en: 8b9211a88d2927dd
-  zh: a2b6bbaa8c4e1996
+  en: e8b3d05fa39ccf47
+  zh: 2faa8b06ce0c4ad4
 /singula-ai-alego-web-search-deepseek/understand-the-implementation:
   en: 9842c69ad3636bb3
   zh: 3cdc3f816cbdd0cb
@@ -42,14 +42,14 @@
   en: 1b1760efbf4568c1
   zh: fca06c959e51ce16
 /singula-ai-alego-web-search-deepseek/understand-the-implementation/source-map:
-  en: d354ae3f0f21f7c6
-  zh: 95eb16d30d9c7a9c
+  en: 680941350c454325
+  zh: 939225eb3a483bb8
 /singula-ai-alego-web-search-deepseek/understand-the-implementation/request-flow:
   en: d6469ab9ac915762
   zh: 07ddf7b12c748eaf
 /singula-ai-alego-web-search-deepseek/further-exploration:
-  en: 76e35d92b22dde46
-  zh: 80b6c1505f5c0096
+  en: 82603a732b1cf910
+  zh: f51ebd5ccd2d2015
 /singula-ai-alego-web-search-deepseek/model-experience:
   en: 215e7ba838619b7b
   zh: a311da3843709f90
@@ -57,11 +57,11 @@
   en: 722e4bf02953e236
   zh: b3432958beb7b60f
 /singula-ai-alego-web-search-deepseek/model-experience/auxiliary-deepseek-search-request/what-the-model-sees:
-  en: cac44ad2353afadd
-  zh: 23b27f833e47bf7e
+  en: 6b2b2909347efee8
+  zh: 664c3e210ec75cfd
 /singula-ai-alego-web-search-deepseek/model-experience/auxiliary-deepseek-search-request/token-effect:
-  en: f244b4dd6c9e6ad4
-  zh: 50f2434d5119296b
+  en: 9b079b978c305dd8
+  zh: af2c3f39976b34de
 /singula-ai-alego-web-search-deepseek/model-experience/auxiliary-deepseek-search-request/kv-cache-effect:
   en: 2bac9662f1792a79
   zh: 556d9baabd79f9cb
@@ -78,11 +78,11 @@
   en: f5d5f97a153f7c70
   zh: f681f89596f500f5
 /singula-ai-alego-web-search-deepseek/known-limitations-and-deferred-work:
-  en: c9fa522bcfa7bfef
-  zh: f95aeb879603bb62
+  en: 43a5eca7bcc82922
+  zh: 1bb5c8d5646ee875
 /singula-ai-alego-web-search-deepseek/known-limitations-and-deferred-work/dev-note:
   en: 7f775cc79dbce94b
   zh: 12b8f68f9e7c48ca
-/singula-ai-alego-web-search-deepseek/known-limitations-and-deferred-work/dev-note/future-dedicated-retrieval-endpoint:
-  en: 5cfe3e3773c0abe7
-  zh: a97e11f22b7a0434
+/singula-ai-alego-web-search-deepseek/known-limitations-and-deferred-work/dev-note/dedicated-retrieval-endpoint:
+  en: 41a9456f6d13efca
+  zh: 2f89bf7994385550

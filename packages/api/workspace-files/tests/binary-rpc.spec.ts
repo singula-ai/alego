@@ -5,6 +5,7 @@ import { beforeEach, afterEach, expect, it, vi } from 'vitest'
 import SessionStore from '@singula-ai/alego-session'
 import TypertRegistry from '@singula-ai/alego-typert-registry'
 import TypertGateway from '@singula-ai/alego-api-gateway'
+import RemoteAccessService from '@singula-ai/alego-api-remote-access'
 import { HostConnectionService } from '@singula-ai/alego-client-connection/src/rpc-host.ts'
 import type { BrowserAuth } from '@singula-ai/alego-client-connection/src/browser-auth.ts'
 import { createWebConnectionRpc } from '@singula-ai/alego-client-connection/src/client/rpc.ts'
@@ -19,12 +20,14 @@ beforeEach(async () => {
   const ctx = harness.ctx
   await ctx.plugin(SessionStore)
   await ctx.plugin(TypertRegistry)
+  await ctx.plugin(RemoteAccessService)
   await ctx.plugin(TypertGateway)
   await ctx.plugin((scope) => { new HostConnectionService(scope, [], {} as BrowserAuth) })
   await ctx.plugin(WorkspaceFiles, { maxBytes: 8, maxFileBytes: 4, maxLines: 100, maxEntries: 100 })
   ctx.sessions.create(harness.scope.sessionId, { meta: { cwd: harness.workspace, origin: 'subagent' } })
-  const handler = (ctx.get('connection') as HostConnectionService).createSharedFetchHandler('/api')
-  rpc = createWebConnectionRpc(async (path, init) => handler.fetch(new Request(new URL(path, 'http://host'), init)))
+  const connection = ctx.get('connection') as HostConnectionService
+  const handler = connection.createSharedFetchHandler('/api')
+  rpc = createWebConnectionRpc(async (path, init) => handler.fetch(new Request(new URL(path, 'http://host'), init), connection.browserPeer))
 })
 
 afterEach(async () => {

@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/architecture/2026-09-05-package-manifest-types.md
+2026-09-05-package-manifest-types.md: 0cd802ae0e23662dc7f2d58756ad6c8df68cb386
+2026-09-05-package-manifest-types.zh.md: d7e093966e71ce6653abf40b06a5bc14b475dd2d

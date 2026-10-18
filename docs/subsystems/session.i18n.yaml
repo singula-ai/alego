@@ -12,8 +12,8 @@
   en: 38cc3f15b51baab9
   zh: c163f36a8a54c761
 /sessions/sessioneventmap-the-event-vocabulary/the-route-capacity-event-request-context:
-  en: 50fe68f5a7b68a5d
-  zh: e99a9a47ea38d47c
+  en: c03125893996197f
+  zh: 80999bd22d8d4b20
 /sessions/sessionevent-t-one-log-entry:
   en: 622d333d9d903795
   zh: fdc9ee663330f01e
@@ -42,23 +42,26 @@
   en: 04e9982948d9560d
   zh: 221961cadebc6fb1
 /sessions/derived-history-derivemessages-and-deriveeventmessage:
-  en: 6e48ebd63b85f473
-  zh: c8ab986e975bbce2
+  en: 45d1a9ee6d610ac5
+  zh: 79c061252fde4ceb
 /sessions/live-session-fork-api:
-  en: 0f8acc512b0584dc
-  zh: 3f077d05438174f9
+  en: f2697a2f7fff6405
+  zh: db5648b5e8b8d6d2
 /sessions/why-a-turn-ended-turnendreasonmap:
   en: d9021657b22803eb
   zh: bbb16893c3bf0599
 /sessions/execution-enclosure-and-standalone-events:
-  en: e5470485519fde2a
-  zh: fe46140b8c6d2bcf
+  en: deb26c55ca5be829
+  zh: 84b1edff127da489
 /sessions/the-end-seed-boundary-session-end-seed:
   en: 63b4059793255ca3
   zh: 6bc7891c320249f4
 /sessions/plugin-contributed-log-only-events:
-  en: 321673154e4724ad
-  zh: ca760ae82059a6b8
+  en: ed969eb8a3eda23b
+  zh: 492bafb29b9367fc
+/sessions/plugin-contributed-log-only-events/plugin-records:
+  en: 06507b9549dbd715
+  zh: 0b049146898b9af4
 /sessions/durability-contract:
   en: c90683cfbcefb77d
   zh: c510af3a3cbc30ab

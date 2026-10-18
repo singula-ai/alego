@@ -15,23 +15,23 @@
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
 /singula-ai-alego-client-ui-primitives/use-this-package:
-  en: ddec1f6f9b018747
-  zh: 9555f132daf8901c
+  en: 7bae72c97d0449f5
+  zh: 4589ecc2b216edc5
 /singula-ai-alego-client-ui-primitives/use-this-package/component-catalog:
-  en: f5861003942fce1f
-  zh: 88cefef8b2f19bfc
+  en: 17a8aaa9c6cdc0eb
+  zh: 96948c17852ad557
 /singula-ai-alego-client-ui-primitives/use-this-package/controls-and-icons:
-  en: e46440a31c338843
-  zh: e957e1e7a7cb9db5
+  en: 6cf7be449b5a69a3
+  zh: 2c5c5c804efe1f48
 /singula-ai-alego-client-ui-primitives/use-this-package/rendering-agent-output:
-  en: 9b952bfd12d004e9
-  zh: eadd01fd375b7ac3
+  en: cb3953047de2ed63
+  zh: 831b14594455caf2
 /singula-ai-alego-client-ui-primitives/use-this-package/localizing-copy:
   en: 4aef65dea11de083
   zh: abc22cd7c65cdf38
 /singula-ai-alego-client-ui-primitives/understand-the-implementation:
-  en: 7ab2a4d5ca8c304c
-  zh: 0d9b612d2a2d164b
+  en: 8551a63f2b82c730
+  zh: 64aa40b6faa67a62
 /singula-ai-alego-client-ui-primitives/understand-the-implementation/source-map:
   en: 44eb32370cbeafe8
   zh: 728009c66375c6bb
@@ -42,8 +42,8 @@
   en: 8bbfa14c27f3bfd7
   zh: 88f7548ac3a114e1
 /singula-ai-alego-client-ui-primitives/understand-the-implementation/geometry-and-overflow:
-  en: 49f6341d81ded00e
-  zh: cab87dc54a42ba69
+  en: 45f4cd1ef96bb6d2
+  zh: f264d25b780ad1dc
 /singula-ai-alego-client-ui-primitives/further-exploration:
   en: c8042729802f5e7e
   zh: b489521026871fee
@@ -54,8 +54,8 @@
   en: ca75c51c89c2c9b0
   zh: de54f3467ef3b9be
 /singula-ai-alego-client-ui-primitives/known-limitations-and-deferred-work:
-  en: dd6017748ed0190f
-  zh: 866429588aca5edb
+  en: b4f7b12460abd1a6
+  zh: b326c6a573d1c7bb
 /singula-ai-alego-client-ui-primitives/known-limitations-and-deferred-work/dev-note:
-  en: ae1d5d1bcc80c932
-  zh: 15709ccdbfcdf26c
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

@@ -102,7 +102,7 @@ export interface Profile {
   skippedBundles: SkippedBundle[]
 }
 
-/** A selected bundle the profile could not load, or whose own ALEGO peers the profile does not exempt. */
+/** A selected bundle the profile could not load, or whose own ALEGO requirements the profile does not exempt. */
 export interface SkippedBundle {
   /** The bundle's package name from `alego.profile.bundles`. */
   packageName: string
@@ -199,6 +199,16 @@ const INSTALLATION_OWNED_PROFILE_TUPLES: Record<string, readonly string[]> = {
   headless: ['@singula-ai/alego-base', '@singula-ai/alego-web-app', '@singula-ai/alego-headless'],
 }
 
+/**
+ * Bundles an earlier release shipped and the installation no longer carries;
+ * {@link loadProfileDirectory} removes them from the profile's bundle list.
+ */
+const RETIRED_BUNDLES: ReadonlySet<string> = new Set([
+  // The Web composition mounts Schedule itself
+  // ([upgrade guide](../../../../docs/upgrade-guide/v0.2.0-rc.2/schedule-bundle-retired/guide.md)).
+  '@singula-ai/alego-experimental-schedule-bundle',
+])
+
 /** The bundle list an `alego plugin` init uses for a name with no shipped template. */
 export const DEFAULT_PROFILE_BUNDLES: readonly string[] = ['@singula-ai/alego-base']
 
@@ -211,10 +221,18 @@ export const DEFAULT_PROFILE_BUNDLES: readonly string[] = ['@singula-ai/alego-ba
  * [admission](../../../../.agents/notes/implemented/architecture/2026-09-21-experimental-capabilities-as-optional-bundles.md)).
  */
 export const OPTIONAL_BUNDLES: readonly string[] = [
+  '@singula-ai/alego-experimental-session-search',
+  '@singula-ai/alego-experimental-ralph-bundle',
+  '@singula-ai/alego-experimental-terminal-bundle',
+  '@singula-ai/alego-experimental-badge-skill-bundle',
+  '@singula-ai/alego-experimental-session-titles-bundle',
   '@singula-ai/alego-experimental-agent-team-profile',
   '@singula-ai/alego-experimental-voice-input-bundle',
+  '@singula-ai/alego-experimental-cot-translation-bundle',
   '@singula-ai/alego-experimental-auto-review',
-  '@singula-ai/alego-experimental-schedule-bundle',
+  '@singula-ai/alego-experimental-inspector-profile',
+  '@singula-ai/alego-experimental-plugin-market-bundle',
+  '@singula-ai/alego-experimental-tool-worktree',
 ]
 
 const PROFILE_PATCH_TEMPLATE = `# Your patch layer for this alego profile, applied after every bundle layer:
@@ -430,7 +448,7 @@ export interface RuntimeResolutionOptions {
  */
 export async function createRuntimeResolution(
   options: RuntimeResolutionOptions,
-): Promise<RuntimeResolution> {
+): Promise<ProfileRuntimeResolution> {
   const { installAnchor, profile, home = resolveAlegoHome() } = options
   const profilesDir = join(home, PROFILES_DIR)
   const manifest = readOptionalProfileManifest(profile)
@@ -445,7 +463,7 @@ export async function createRuntimeResolution(
     : collectProfileScopePackages(profile, packageNames, profileDeclarers, profileVersions)
   const linkedRoots = profile === undefined ? [] : linkedProfileRoots(profile, profilesDir)
   // The Promise return type is the pre-stable API; construction has no asynchronous step.
-  return await Promise.resolve(Object.freeze({
+  return await Promise.resolve(new ProfileRuntimeResolution({ installAnchor, profileDir: profile?.dir, home }, {
     profilesDir,
     profileDir: profile?.dir,
     localPackageNames: Object.freeze(localPackageNames),
@@ -461,6 +479,54 @@ export async function createRuntimeResolution(
       })),
     ]),
   }))
+}
+
+/** Inputs a {@link ProfileRuntimeResolution} reuses to compute its successor. */
+interface ResolutionSource {
+  installAnchor: string
+  home: string
+  profileDir: string | undefined
+}
+
+/**
+ * A runtime resolution that remembers the inputs it was computed from. Worker environment data carries only its
+ * fields; the inputs stay private to the thread that computed it.
+ */
+export class ProfileRuntimeResolution implements RuntimeResolution {
+  readonly profilesDir: string
+  readonly profileDir: string | undefined
+  readonly localPackageNames: readonly string[]
+  readonly entries: readonly RuntimeResolutionEntry[]
+  readonly linkedRoots: readonly LinkedRoot[]
+  readonly #source: ResolutionSource
+
+  /**
+   * @param source - inputs of {@link createRuntimeResolution}, reused by {@link computeLatestResolution}.
+   * @param table - the computed package table.
+   */
+  constructor(source: ResolutionSource, table: RuntimeResolution) {
+    this.#source = source
+    this.profilesDir = table.profilesDir
+    this.profileDir = table.profileDir
+    this.localPackageNames = table.localPackageNames
+    this.entries = table.entries
+    this.linkedRoots = table.linkedRoots
+    Object.freeze(this)
+  }
+
+  /**
+   * Compute the latest generation from the same installation, profile directory, and Harness home, rereading the
+   * profile's manifest, bundle selection, and installed packages from disk, without retaining synthetic layers.
+   * With no profile directory, only installation packages are recomputed. This instance is unchanged.
+   * @returns a new resolution for the latest generation.
+   */
+  computeLatestResolution(): Promise<ProfileRuntimeResolution> {
+    const { installAnchor, home, profileDir } = this.#source
+    return createRuntimeResolution({
+      installAnchor, home,
+      ...profileDir === undefined ? {} : { profile: loadProfileDirectory('alego', profileDir, installAnchor) },
+    })
+  }
 }
 
 /** Synthetic profiles used by direct callers may have no on-disk manifest. */
@@ -572,6 +638,20 @@ function sameBundles(left: readonly string[], right: readonly string[]): boolean
   return left.length === right.length && left.every((value, index) => value === right[index])
 }
 
+/** Return `manifest` with `alego.profile.bundles` replaced, preserving all other fields. */
+function withBundles(manifest: ProfileManifest, bundles: readonly string[]): ProfileManifest {
+  return {
+    ...manifest,
+    alego: {
+      ...manifest.alego,
+      profile: {
+        ...manifest.alego?.profile,
+        bundles: [...bundles],
+      },
+    },
+  }
+}
+
 /**
  * Normalize an exact installation-owned bundle tuple to its shipped template,
  * preserving all other manifest fields. Other bundle lists remain untouched.
@@ -583,16 +663,20 @@ function normalizeShippedProfile(name: string, dir: string, manifest: ProfileMan
   if (template === undefined || bundles === undefined) return manifest
   const isRetiredTuple = installationOwned !== undefined && sameBundles(bundles, installationOwned)
   if (!isRetiredTuple) return manifest
-  const normalized: ProfileManifest = {
-    ...manifest,
-    alego: {
-      ...manifest.alego,
-      profile: {
-        ...manifest.alego?.profile,
-        bundles: [...template.bundles],
-      },
-    },
-  }
+  const normalized = withBundles(manifest, template.bundles)
+  writeProfileManifest(dir, normalized)
+  return normalized
+}
+
+/**
+ * Remove {@link RETIRED_BUNDLES} from a profile's bundle list, writing the
+ * manifest back only when it listed one.
+ */
+function dropRetiredBundles(dir: string, manifest: ProfileManifest): ProfileManifest {
+  const bundles = manifest.alego?.profile?.bundles ?? []
+  const kept = bundles.filter(bundle => !RETIRED_BUNDLES.has(bundle))
+  if (kept.length === bundles.length) return manifest
+  const normalized = withBundles(manifest, kept)
   writeProfileManifest(dir, normalized)
   return normalized
 }
@@ -644,7 +728,8 @@ export function resolveBundleDir(
  * Load an already initialized profile directory without resolving it through
  * the shared Harness home. This is used by application-owned profiles whose
  * package project and lifecycle belong to that application.
- * Unreadable bundles, and bundles whose own alego peers the profile does not exempt, are skipped
+ * Retired bundles are removed from the stored bundle list first, rewriting the
+ * manifest when it listed one. Unreadable bundles, and bundles whose own alego requirements the profile does not exempt, are skipped
  * without changing the manifest and listed in `skippedBundles`; nothing is printed.
  * @param binName - the diagnostic prefix on thrown errors.
  * @param dir - absolute profile package directory.
@@ -658,7 +743,7 @@ export function loadProfileDirectory(
   installAnchor: string,
   options: { userLayer?: boolean } = {},
 ): Profile {
-  const manifest = readProfileManifest(binName, dir)
+  const manifest = dropRetiredBundles(dir, readProfileManifest(binName, dir))
   const bundles = manifest.alego?.profile?.bundles ?? []
   const layers: ProfileLayer[] = []
   const skippedBundles: SkippedBundle[] = []
@@ -671,7 +756,7 @@ export function loadProfileDirectory(
       if (bundle === undefined) {
         throw new Error(`${binName}: profile bundle ${JSON.stringify(packageName)} declares no alego.bundle in its package.json`)
       }
-      // A bundle is not a plugin row, so row admission never reads its own peers.
+      // A bundle is not a plugin row, so row admission never reads its own alego requirements.
       const issue = evaluatePluginCompatibility(bundleManifest, exemptions)
       if (issue !== undefined && !issue.exempted) throw new Error(pluginCompatibilityWarning(issue))
       const patchPaths = bundlePatchPaths(packageDir, bundle)

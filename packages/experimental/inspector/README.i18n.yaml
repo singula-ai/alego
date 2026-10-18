@@ -3,35 +3,38 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/experimental/inspector/README.md
 /:
-  en: ff4e1ec5ccd5d0b3
-  zh: d29383843e3decc8
+  en: b5b7ccdfa1cc2907
+  zh: d575593a7efa37fd
 /singula-ai-alego-experimental-inspector:
   en: b88e144bd0826476
   zh: 3210165f364985d9
 /singula-ai-alego-experimental-inspector/summary:
-  en: c86edeb2a6810b5b
-  zh: 7902b9c218c9b261
+  en: 67dad5a2dea85fbf
+  zh: 75e6441a2a92f478
 /singula-ai-alego-experimental-inspector/table-of-contents:
-  en: 2650c2b268bf6dff
-  zh: 43a08863d2c75ad1
+  en: 331f844c32631a82
+  zh: a9bc365f7d61d9ed
+/singula-ai-alego-experimental-inspector/use-this-package:
+  en: 6d290aabc543f878
+  zh: 7ad283b159ae2c29
 /singula-ai-alego-experimental-inspector/runtime-layout:
-  en: 6354957e21825a74
-  zh: ef4923a1ba245c4a
+  en: 13f495af2fec307d
+  zh: ec4bebf24a87ec54
 /singula-ai-alego-experimental-inspector/configuration:
-  en: 5d82040110992647
-  zh: 378817b3fffcfe6a
+  en: ae7e70acbe353bff
+  zh: 19e85fa4deab56bc
 /singula-ai-alego-experimental-inspector/observation-api:
   en: d32f994e6c9d0c4a
   zh: ac2f35f5799aeae0
 /singula-ai-alego-experimental-inspector/cordis-tree-inspection:
-  en: 860553f1d39124af
-  zh: a3249c5168ab479e
+  en: c672f8bd93b3adc9
+  zh: fb80c9c59823a29d
 /singula-ai-alego-experimental-inspector/host-fetch-capture:
   en: 187859f65acc45d7
   zh: 606e93905c8275e6
 /singula-ai-alego-experimental-inspector/security:
-  en: 2372c96aba1ce7e6
-  zh: 823ceaa99cfb1f6a
+  en: dc390db1bce00de1
+  zh: c4257690ffcabebc
 /singula-ai-alego-experimental-inspector/model-experience:
   en: 6ac8fb2f45b3a97c
   zh: 9162ffb1a133e11b
@@ -39,8 +42,8 @@
   en: ca75c51c89c2c9b0
   zh: 64715dc7e6d02f71
 /singula-ai-alego-experimental-inspector/known-limitations-and-deferred-work:
-  en: a35e1559aff5e7aa
-  zh: fbe20422dbe4a0f6
+  en: 74e9eb329f240bb7
+  zh: 25612a9b993582c0
 /singula-ai-alego-experimental-inspector/known-limitations-and-deferred-work/dev-note:
-  en: 59a59a4788c80163
-  zh: db23a6b9dc0880ba
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

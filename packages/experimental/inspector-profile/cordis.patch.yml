@@ -1,0 +1,8 @@
+- insert:
+    - id: experimental-inspector
+      name: '@singula-ai/alego-experimental-inspector'
+      disabled: false
+      config:
+        captureFetch: true
+    - id: session-inspector
+      name: '@singula-ai/alego-experimental-session-inspector'

@@ -5,6 +5,7 @@
  * @module @singula-ai/alego-tool-pwsh-persistent
  */
 
+import type {} from '@singula-ai/alego-working-directory'
 import { randomUUID } from 'node:crypto'
 import type { Context } from '@singula-ai/cordis'
 import z from '@singula-ai/schemastery'
@@ -109,7 +110,8 @@ function commandOutput(
 ): CapturedOutput | undefined {
   const text = snapshot.text
   const end = text.lastIndexOf(marker.end)
-  const status = /^(\d+)\r?\n/.exec(text.slice(end + marker.end.length))?.[1]
+  // Terminal padding belongs to the status line, not to captured command output.
+  const status = /^(\d+) *\r?\n/.exec(text.slice(end + marker.end.length))?.[1]
   if (status === undefined) return undefined
   const startMarker = text.lastIndexOf(marker.start, end)
   const start = startMarker < 0 ? 0 : startMarker + marker.start.length
@@ -275,10 +277,10 @@ function persistentShells(ctx: Context, config: ResolvedConfig): PersistentShell
     const combinedSignal = AbortSignal.any([signal, lifecycle.signal])
     const creation = (async () => {
       try {
-        const cwd = owner.session.header.cwd
+        const cwd = await ctx.workingDirectory.ensure(owner, combinedSignal)
         const spawned = await ctx.terminals.spawn(owner, {
           type: config.backendType,
-          ...cwd === undefined ? {} : { cwd },
+          cwd,
         }, combinedSignal)
         live.set(owner, spawned.sessionId)
         if (!ownerCleanupInstalled.has(owner)) {
@@ -450,7 +452,7 @@ function registerPersistentPwsh(ctx: Context, config: ResolvedConfig): void {
 }
 
 export const name = 'tool-pwsh-persistent'
-export const inject = ['tools', 'terminals']
+export const inject = ['tools', 'terminals', 'workingDirectory']
 
 /** Configuration for the persistent pwsh tool. */
 export interface Config {

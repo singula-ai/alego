@@ -15,29 +15,29 @@
   en: 41cd21266011d571
   zh: 3172d1a2acbb27b7
 /singula-ai-alego-client-ui-chat/reference-previews:
-  en: 3fda3d75483ce7c1
-  zh: 4d96ba654f70c021
+  en: 48158d0748cc7c84
+  zh: 314de21e3378f973
 /singula-ai-alego-client-ui-chat/hidden-chat-rows:
-  en: 5706ae03ceacf251
+  en: cbf1f0a2205046a5
   zh: 2e59d0815351349f
 /singula-ai-alego-client-ui-chat/command-and-failure-rows:
-  en: 2157fcd6b0d100b5
-  zh: 9e865ac3953ebe30
+  en: d41927844dfa281f
+  zh: 8cca0d3381b9c4bc
 /singula-ai-alego-client-ui-chat/turn-token-usage:
-  en: 29346bd0f9a5ff51
-  zh: 54dbed55f67aeecd
+  en: 3cd8e8003b658647
+  zh: c8c060491093bb08
 /singula-ai-alego-client-ui-chat/completed-turn-footer:
   en: b4cd36e7ab91281e
   zh: 8ccf412b9dde61d5
 /singula-ai-alego-client-ui-chat/turn-process-folding:
-  en: 611582d03dc9b386
-  zh: b02559561216cf2b
+  en: aa42773bf8fe3009
+  zh: 08aceac2c3a631d9
 /singula-ai-alego-client-ui-chat/grouped-rendering:
-  en: bbf4be90db60003b
-  zh: c7baadd52786648c
+  en: e19e5a4ceb8a1517
+  zh: af31ebd427c8e751
 /singula-ai-alego-client-ui-chat/scroll-ownership:
-  en: 69b021c5a5d8b5a7
-  zh: 091ae7986c7a8a20
+  en: 284737900cb75668
+  zh: 12e0844082ff79ce
 /singula-ai-alego-client-ui-chat/model-experience:
   en: c17b4dd43a61c569
   zh: f7414309810c3a08
@@ -45,8 +45,8 @@
   en: 15a7151ff9268f15
   zh: 6eae68c718be579b
 /singula-ai-alego-client-ui-chat/known-limitations-and-deferred-work:
-  en: 4257fd89707b4d5d
-  zh: 8e05a1f5f3964842
+  en: 4e729506856d5ec5
+  zh: 25d08cd8a61a0b8d
 /singula-ai-alego-client-ui-chat/known-limitations-and-deferred-work/dev-note:
-  en: b8b7eeb4ae675d2a
-  zh: fbe7022074ba81b9
+  en: e67f633dc6fe7773
+  zh: e88aeb617ffb74ea

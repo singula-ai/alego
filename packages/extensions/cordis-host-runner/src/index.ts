@@ -51,7 +51,7 @@ export type { HostCordisInspectProviderRegistration } from './inspect-registry.t
  * @param id - opaque identifier minted by the Host registry.
  * @returns the branded Plugin identifier.
  */
-export function CordisDynamicPluginId(id: string): CordisDynamicPluginId {
+function brandCordisDynamicPluginId(id: string): CordisDynamicPluginId {
   return id as CordisDynamicPluginId
 }
 
@@ -60,7 +60,7 @@ export function CordisDynamicPluginId(id: string): CordisDynamicPluginId {
  * @param id - opaque identifier minted by the Host registry.
  * @returns the branded Package identifier.
  */
-export function CordisDynamicPackageId(id: string): CordisDynamicPackageId {
+function brandCordisDynamicPackageId(id: string): CordisDynamicPackageId {
   return id as CordisDynamicPackageId
 }
 
@@ -69,7 +69,7 @@ export function CordisDynamicPackageId(id: string): CordisDynamicPackageId {
  * @param id - opaque identifier minted by the Host registry.
  * @returns the branded Plugin Run identifier.
  */
-export function CordisDynamicPluginRunId(id: string): CordisDynamicPluginRunId {
+function brandCordisDynamicPluginRunId(id: string): CordisDynamicPluginRunId {
   return id as CordisDynamicPluginRunId
 }
 
@@ -78,8 +78,18 @@ export function CordisDynamicPluginRunId(id: string): CordisDynamicPluginRunId {
  * @param id - opaque identifier minted by the Host registry.
  * @returns the branded approval request identifier.
  */
-export function ApprovalRequestId(id: string): ApprovalRequestId {
+function brandApprovalRequestId(id: string): ApprovalRequestId {
   return id as ApprovalRequestId
+}
+
+// The public names are exported separately: a local declaration sharing a name
+// with a type-only import is ambiguous for checkers that bind the import in
+// value position.
+export {
+  brandApprovalRequestId as ApprovalRequestId,
+  brandCordisDynamicPackageId as CordisDynamicPackageId,
+  brandCordisDynamicPluginId as CordisDynamicPluginId,
+  brandCordisDynamicPluginRunId as CordisDynamicPluginRunId,
 }
 
 declare module '@singula-ai/cordis' {
@@ -93,6 +103,8 @@ declare module '@singula-ai/cordis' {
 export interface Config {
   /** Maximum synchronous VM evaluation time in milliseconds. */
   vmTimeoutMs?: number
+  /** Maximum wait for a valid Client inspect response in milliseconds. */
+  clientInspectTimeoutMs?: number
 }
 
 type ResolvedConfig = Required<Config>
@@ -131,6 +143,7 @@ export class DynamicCordisRunnerService extends TypertRemoteService {
 
   static Config: z<Config> = z.object({
     vmTimeoutMs: z.number().min(1).default(5000),
+    clientInspectTimeoutMs: z.number().step(1).min(1).max(2_147_483_647).default(10_000),
   })
 
   private readonly rootCtx: Context
@@ -145,7 +158,7 @@ export class DynamicCordisRunnerService extends TypertRemoteService {
     super(ctx, 'dynamicCordisRunner')
     this.rootCtx = ctx
     this.resolved = config as ResolvedConfig
-    this.inspectRegistry = new CordisInspectRegistryService(ctx)
+    this.inspectRegistry = new CordisInspectRegistryService(ctx, this.resolved.clientInspectTimeoutMs)
   }
 
   /**
@@ -170,7 +183,7 @@ export class DynamicCordisRunnerService extends TypertRemoteService {
       if (!/^[a-z]{3,6}$/.test(prefix)) {
         throw new Error('cordis_define `plugin.idPrefix` must contain 3–6 lowercase English letters')
       }
-      const pluginId = CordisDynamicPluginId(this.registry.mintPluginId(prefix))
+      const pluginId = brandCordisDynamicPluginId(this.registry.mintPluginId(prefix))
       plugin = {
         pluginId,
         sessionId: request.sessionId,
@@ -187,7 +200,7 @@ export class DynamicCordisRunnerService extends TypertRemoteService {
       plugin = found
     }
 
-    const packageId = CordisDynamicPackageId(this.registry.mintPackageId())
+    const packageId = brandCordisDynamicPackageId(this.registry.mintPackageId())
     const definition: DynamicCordisDefinition = {
       packageId,
       name,
@@ -279,7 +292,7 @@ export class DynamicCordisRunnerService extends TypertRemoteService {
       return { ...started, reason: 'host-half-failed' }
     }
 
-    const requestId = ApprovalRequestId(this.registry.mintApprovalRequestId())
+    const requestId = brandApprovalRequestId(this.registry.mintApprovalRequestId())
     const requiresApproval = !plan.plugin.clientVersionUpdatesApproved
       && !plan.plugin.approvedClientPackages.has(packageId)
     attempt.approvalRequestId = requestId
@@ -506,11 +519,12 @@ export class DynamicCordisRunnerService extends TypertRemoteService {
   }
 
   /**
-   * Claim one pending Client inspect query with its live result.
+   * Submit a Client inspect result or failure for a pending query.
    * @param agent - Session that owns the query.
    * @param requestId - exact pending query identity.
    * @param resolution - provider result or structured refusal.
-   * @returns whether this answer won the query.
+   * @returns acknowledgement with accepted true only for a valid success that settles the query;
+   * pending-query failures return { accepted: false } and retain only the first diagnostic.
    */
   @Remote('resolveInspectQuery')
   resolveInspectQuery(
@@ -1175,7 +1189,7 @@ export class DynamicCordisRunnerService extends TypertRemoteService {
 
   private createAttempt(plan: ActivationPlan): DynamicCordisRunAttempt {
     return {
-      pluginRunId: CordisDynamicPluginRunId(this.registry.mintPluginRunId()),
+      pluginRunId: brandCordisDynamicPluginRunId(this.registry.mintPluginRunId()),
       packageId: plan.definition.packageId,
       mode: plan.mode,
       status: 'starting-host',

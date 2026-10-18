@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/testing/2026-09-26-web-conversation-clock-fixture-day.md
+2026-09-26-web-conversation-clock-fixture-day.md: 3717a5d3fb99e1c2cf23f1af3586a31b785f98b6
+2026-09-26-web-conversation-clock-fixture-day.zh.md: 981720496b9b5755a704c8ce78af17bc3a4bc195

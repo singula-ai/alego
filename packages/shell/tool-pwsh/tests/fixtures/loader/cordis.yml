@@ -3,6 +3,15 @@
 - id: system-prompt
   name: '@singula-ai/alego-system-prompt'
 
+- id: fs
+  name: '@singula-ai/alego-fs-local'
+
+- id: session-projections
+  name: '@singula-ai/alego-session-projection'
+
+- id: working-directory
+  name: '@singula-ai/alego-working-directory'
+
 - id: tools
   name: '@singula-ai/alego-tools'
 

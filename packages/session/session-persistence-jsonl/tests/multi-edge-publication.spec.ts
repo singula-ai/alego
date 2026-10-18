@@ -10,7 +10,7 @@ import {
   restoreReleasedV2Artifact, sessionFormatV1ToV2,
 } from '@singula-ai/alego-session-format-v1-to-v2'
 import { SessionFormatUnsupportedError } from '@singula-ai/alego-session-persistence'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import { appendFile, mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { basename, dirname, join } from 'node:path'

@@ -1,6 +1,6 @@
 import { clientLibrary } from '../../client/tsdown.client.ts'
 
 export default clientLibrary(
-  '@singula-ai/alego-client-test-runtime',
+  import.meta.dirname,
   ['lib/types/index.js'],
 )

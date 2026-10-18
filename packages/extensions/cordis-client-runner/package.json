@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-cordis-client-runner",
   "description": "Browser half of dynamic dual-half plugin packages: event subscription, closure evaluation, guard facade, and loader entries",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,7 +23,8 @@
       "default": "./lib/client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
@@ -50,12 +51,12 @@
     "@singula-ai/alego-client-modules": "workspace:*",
     "@singula-ai/alego-client-ui-renderer": "workspace:*",
     "@singula-ai/alego-client-ui-theme": "workspace:*",
-    "@types/react": "~18.3.1",
     "@singula-ai/cordis": "workspace:~",
     "react": "^18.2.0",
     "@singula-ai/alego-util-values": "workspace:*"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"

@@ -1,4 +1,4 @@
-/** Plugin peer checks retain exact mismatches and never inherit exemption entries. */
+/** Plugin alego requirement checks prefer engines.alego, retain exact mismatches, and never inherit exemption entries. */
 
 import fs from 'node:fs'
 import { fileURLToPath } from 'node:url'
@@ -71,21 +71,21 @@ describe('plugin compatibility', () => {
     })).toEqual({
       ...identity,
       runtimeVersion: runtime,
-      peers: { '@singula-ai/alego-session': '>=0.2.0', '@singula-ai/alego-tools': '<0.1.0' },
+      requirements: { '@singula-ai/alego-session': '>=0.2.0', '@singula-ai/alego-tools': '<0.1.0' },
       exempted: false,
     })
   })
 
   it.each(['^0.2.0', '>=0.1.7', 'broken', '', ' ', 'workspace:>=0.2.0', 'file:../alego', 'npm:alego@*'])(
     'fails closed for an incompatible or malformed range %j', (range) => {
-      expect(check({ '@singula-ai/alego': range })?.peers).toEqual({ '@singula-ai/alego': range })
+      expect(check({ '@singula-ai/alego': range })?.requirements).toEqual({ '@singula-ai/alego': range })
     },
   )
 
   it('ignores unrelated names and dependency fields', () => {
     expect(check({
       '@singula-ai/cordis': 'broken', '@singula-ai/cordis-plugin-loader': '^99',
-      '@other/alego': '^99', '@singula-ai/dshx': '^99', alego: '^99',
+      '@other/alego': '^99', '@singula-ai/alegox': '^99', alego: '^99',
       constructor: '^99', hasOwnProperty: '^99', ['__proto__']: '^99',
     })).toBeUndefined()
     expect(evaluatePluginCompatibility({ dependencies: { '@singula-ai/alego': '^99' } }, {}, runtime)).toBeUndefined()
@@ -128,6 +128,53 @@ describe('plugin compatibility', () => {
   })
 })
 
+describe('engines.alego', () => {
+  const failingPeers = { '@singula-ai/alego': '^0.2.0' }
+  const passingPeers = { '@singula-ai/alego': '*' }
+  function engines(alego: unknown, peerDependencies: object = {}) {
+    return evaluatePluginCompatibility({ ...identity, engines: { alego }, peerDependencies }, {}, runtime)
+  }
+
+  it.each(['^0.1.0', '>=0.1.7-alpha.0', '0.1.x', runtime])('decides alone when satisfied by %s, ignoring failing peers', (range) => {
+    expect(engines(range, failingPeers)).toBeUndefined()
+  })
+
+  it('decides alone when unsatisfied, ignoring passing peers', () => {
+    expect(engines('^0.2.0', passingPeers)).toEqual({
+      ...identity, runtimeVersion: runtime, requirements: { 'engines.alego': '^0.2.0' }, exempted: false,
+    })
+  })
+
+  it.each(['', ' ', 'broken', 'workspace:^', 'workspace:*', 'workspace:~'])('treats %j as an unmet range', (range) => {
+    expect(engines(range, passingPeers)?.requirements).toEqual({ 'engines.alego': range })
+  })
+
+  it.each([null, [], 'bad', 1, false, undefined])('rejects malformed engines: %j', (value) => {
+    expect(() => evaluatePluginCompatibility({ ...identity, engines: value }, {}, runtime)).toThrow('Plugin manifest engines must be an object')
+  })
+
+  it.each([null, [], {}, 1, false, undefined])('rejects a non-string engines.alego: %j', (value) => {
+    expect(() => engines(value, passingPeers)).toThrow('Plugin manifest engines.alego must be a string')
+  })
+
+  it('falls back to peers when engines has no own alego member', () => {
+    const inherited = Object.create({ alego: '*' }) as object
+    for (const value of [{}, { node: '>=99' }, inherited]) {
+      expect(evaluatePluginCompatibility({ ...identity, engines: value, peerDependencies: failingPeers }, {}, runtime)?.requirements)
+        .toEqual(failingPeers)
+      expect(evaluatePluginCompatibility({ ...identity, engines: value, peerDependencies: passingPeers }, {}, runtime)).toBeUndefined()
+    }
+    expect(evaluatePluginCompatibility(Object.create({ engines: { alego: '^0.2.0' } }) as object, {}, runtime)).toBeUndefined()
+  })
+
+  it('applies exact-version exemptions to an engines mismatch', () => {
+    const manifest = { ...identity, engines: { alego: '^0.2.0' } }
+    expect(evaluatePluginCompatibility(manifest, { '@example/plugin@2.0.0': [runtime] }, runtime)).toMatchObject({
+      requirements: { 'engines.alego': '^0.2.0' }, exempted: true,
+    })
+  })
+})
+
 describe('exact-version exemptions', () => {
   const exemptions = { '@example/plugin@2.0.0': [runtime] }
 
@@ -164,10 +211,10 @@ describe('compatibility warning', () => {
   it.each([false, true])('retains mismatch details and risk when exemption status is %s', (exempted) => {
     expect(pluginCompatibilityWarning({
       ...identity, runtimeVersion: runtime,
-      peers: { '@singula-ai/alego': '^0.2.0', '@singula-ai/alego-session': 'broken' }, exempted,
+      requirements: { '@singula-ai/alego': '^0.2.0', '@singula-ai/alego-session': 'broken' }, exempted,
     })).toBe(
       'Plugin @example/plugin@2.0.0 is incompatible with alego 0.1.7-alpha.1: '
-      + 'peerDependencies {"@singula-ai/alego":"^0.2.0","@singula-ai/alego-session":"broken"}. '
+      + 'requirements {"@singula-ai/alego":"^0.2.0","@singula-ai/alego-session":"broken"}. '
       + 'Running it may cause crashes or data loss. '
       + 'Update the plugin or install a plugin version compatible with this alego runtime. '
       + 'To accept this risk explicitly, grant the exact-version exemption for @example/plugin@2.0.0 on alego 0.1.7-alpha.1 '

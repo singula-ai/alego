@@ -3,20 +3,20 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/experimental/ptc-runtime-python/README.md
 /:
-  en: 8fabe38162072491
-  zh: 9fa71307ebcdc3a5
+  en: d9caf4b17c0e6fe4
+  zh: 7233b09cfb890559
 /singula-ai-alego-experimental-ptc-runtime-python:
   en: ed26bd1ff66dbdac
   zh: 61ee5cf79fbd3313
 /singula-ai-alego-experimental-ptc-runtime-python/summary:
-  en: a7dc02100b3d90ba
-  zh: 5f80610b0bf84d84
+  en: bdcd4f38f97a3bab
+  zh: d93074f86ac2b9f5
 /singula-ai-alego-experimental-ptc-runtime-python/table-of-contents:
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
 /singula-ai-alego-experimental-ptc-runtime-python/use-this-package:
-  en: 01a2f1969f972b0a
-  zh: 73dfd315546675ed
+  en: 361914644d4260b1
+  zh: 8243f8365c7f657f
 /singula-ai-alego-experimental-ptc-runtime-python/use-this-package/what-you-get:
   en: ca7b9cc958069c7f
   zh: 8a4ac72d02ad76eb
@@ -24,17 +24,17 @@
   en: e690628dc6197c3b
   zh: 2b9cdad8b41dcde5
 /singula-ai-alego-experimental-ptc-runtime-python/use-this-package/what-can-go-wrong:
-  en: d43927c607a9855f
-  zh: e1dd1643bebfd647
+  en: 9a0c3294b510cd22
+  zh: 5635886060044ae3
 /singula-ai-alego-experimental-ptc-runtime-python/understand-the-implementation:
   en: 7824816505e2b844
   zh: 3603d1c332c2ed5d
 /singula-ai-alego-experimental-ptc-runtime-python/understand-the-implementation/design-concept:
-  en: 9339b0800d70be48
-  zh: 71a9a3d3eea86050
+  en: 706fb5750d6e766f
+  zh: b8f054bffb4c1ff2
 /singula-ai-alego-experimental-ptc-runtime-python/understand-the-implementation/wire-contract:
-  en: 586d320cd7ef9974
-  zh: ccf4e4f9fb230eb8
+  en: 56cb353442d0aa01
+  zh: bcb13e5dc761af4a
 /singula-ai-alego-experimental-ptc-runtime-python/understand-the-implementation/lossless-json-crossing:
   en: 6252e86fa10e9dd0
   zh: 9b95b033ea0b5463
@@ -42,20 +42,20 @@
   en: 167a08a71870f227
   zh: 43f671b45104849f
 /singula-ai-alego-experimental-ptc-runtime-python/understand-the-implementation/source-map:
-  en: 254759d380b5a58a
-  zh: 471f21e1c06c324d
+  en: 4f322d79bbf578f6
+  zh: 7f7f9187f49af439
 /singula-ai-alego-experimental-ptc-runtime-python/further-exploration:
   en: 8faa41f802b0fa85
   zh: 48119bccd3814d91
 /singula-ai-alego-experimental-ptc-runtime-python/model-experience:
-  en: 0369fabb280c2767
-  zh: 2798053a8416980f
+  en: 08c3760be5534bab
+  zh: 199552f252faa4e9
 /singula-ai-alego-experimental-ptc-runtime-python/model-experience/kv-cache-effect:
   en: 40294c1c31b74824
   zh: d805c6bd7270505e
 /singula-ai-alego-experimental-ptc-runtime-python/known-limitations-and-deferred-work:
-  en: fbb6b3253c658c78
-  zh: 527f21b06b8b5618
+  en: 40ef5531465d2296
+  zh: 73b72698ddcdac94
 /singula-ai-alego-experimental-ptc-runtime-python/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 3bb0c20c93f16f98

@@ -15,14 +15,14 @@
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
 /singula-ai-alego-sdk-client/use-this-package:
-  en: d1adfd39c7b08065
-  zh: e266774c28dceb23
+  en: ceb0843210e3dfaf
+  zh: bda3acb6b0449527
 /singula-ai-alego-sdk-client/use-this-package/running-agent-turns-with-alego:
   en: 7818a3eedc349184
   zh: 05d2e186b4c5e527
 /singula-ai-alego-sdk-client/use-this-package/lower-level-control-with-harnessclient:
-  en: c129af01dbfc3e3d
-  zh: d0128a706e69899a
+  en: c3d904432b8f753c
+  zh: ea50370096bb563a
 /singula-ai-alego-sdk-client/understand-the-implementation:
   en: 8773f50c51da85f0
   zh: 4649ebc69357deb0
@@ -30,8 +30,8 @@
   en: 3080411c87c960c0
   zh: b84d68580b801709
 /singula-ai-alego-sdk-client/understand-the-implementation/source-map:
-  en: 5498b1465ad1aae3
-  zh: 8ad0ff2ade696f4a
+  en: 52edac6b97a9e55c
+  zh: 931fc548b7524464
 /singula-ai-alego-sdk-client/understand-the-implementation/owned-activity-flow:
   en: 94a42babac5f1c7d
   zh: df9e42ed02f7d002

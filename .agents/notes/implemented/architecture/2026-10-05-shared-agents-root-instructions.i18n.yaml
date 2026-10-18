@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-10-05-shared-agents-root-instructions.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-10-05-shared-agents-root-instructions.md
+/agent-note-shared-agents-root-joins-the-user-global-instruction-chain:
+  en: 8f518dd79617ff79
+  zh: 28c2ef8f2b1a9b45
+/agent-note-shared-agents-root-joins-the-user-global-instruction-chain/problem:
+  en: 712e1e0adb3b8bd4
+  zh: 75b8fb718e6c53ca
+/agent-note-shared-agents-root-joins-the-user-global-instruction-chain/decision:
+  en: 7374a7e361bf264b
+  zh: ebd9e0bc3fdb2c19
+/agent-note-shared-agents-root-joins-the-user-global-instruction-chain/alternatives-considered:
+  en: 7b43ca989022fe35
+  zh: 5a3383ff466d486a
+/agent-note-shared-agents-root-joins-the-user-global-instruction-chain/consequences:
+  en: 1d085a26b4679dbc
+  zh: 3cdd49282fbcfb11

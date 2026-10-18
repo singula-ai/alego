@@ -9,8 +9,8 @@
   en: f0c73b8cf8a083bf
   zh: c18bf5050ec7544c
 /singula-ai-alego-persona/summary:
-  en: b01ad3acc9e280ba
-  zh: 02e7f94a31db19ee
+  en: 24454aea9933f1d7
+  zh: 52ef6572866198a8
 /singula-ai-alego-persona/table-of-contents:
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
@@ -18,11 +18,11 @@
   en: 9b74e4172eaf5fdd
   zh: ab94a985d1f96523
 /singula-ai-alego-persona/use-this-package/configuration:
-  en: e3d4f8492fdba2a6
-  zh: e774778b2a366ab5
+  en: 4c20300fee32ce34
+  zh: 70448934d7ee0d9d
 /singula-ai-alego-persona/use-this-package/persona-behavior:
-  en: 60a0513b27aa1204
-  zh: a5604819b059dd86
+  en: c2dc9192f0658eeb
+  zh: 7ce8414d9e1a5b5a
 /singula-ai-alego-persona/use-this-package/when-to-use-it:
   en: 3f1e6d6093fd5337
   zh: 9e572744a06c5f66
@@ -36,8 +36,8 @@
   en: c992f04b58321b6f
   zh: 96a89ae9e97eafce
 /singula-ai-alego-persona/understand-the-implementation/source-map:
-  en: 6d3b20dc423825bf
-  zh: 2ada808509e73edc
+  en: 45e09ad507fbe1fb
+  zh: 006ec9c79c1771a7
 /singula-ai-alego-persona/further-exploration:
   en: 4009904ca6d96480
   zh: 622c8f3da3e130b4
@@ -48,17 +48,17 @@
   en: 2b53c1d07ef68f24
   zh: 33a3c17ab56adf57
 /singula-ai-alego-persona/model-experience/the-persona-section/what-the-model-sees:
-  en: 7f01b67034a26a2f
-  zh: 7f65b5eee49e71a4
+  en: 5c276dd49a9c5053
+  zh: be5a329928edde7a
 /singula-ai-alego-persona/model-experience/the-persona-section/token-effect:
-  en: af8e73cbc540aa5a
-  zh: fa1182678427ab11
+  en: 346e80f3b7a8c7fd
+  zh: da0e19a955d56c51
 /singula-ai-alego-persona/model-experience/the-persona-section/kv-cache-effect:
   en: e9f96cf496c544c7
   zh: b986f1b22d1beb70
 /singula-ai-alego-persona/known-limitations-and-deferred-work:
-  en: dc09a92d00af8e8a
-  zh: 15f0f663ba6dc2cb
+  en: 9a7dba778a006276
+  zh: 3c2030dfcfe83e34
 /singula-ai-alego-persona/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 3bb0c20c93f16f98

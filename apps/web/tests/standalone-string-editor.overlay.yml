@@ -1,0 +1,3 @@
+- insert:
+    - id: optional-tool-str-replace-editor
+      name: '@singula-ai/alego-tool-str-replace-editor'

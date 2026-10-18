@@ -15,6 +15,7 @@ describe('Session Typert provider', () => {
     expect(lookup).toMatchObject({
       parameter: 'session',
       wire: 'sessionId',
+      resource: 'session',
       hostTypeSymbol: '@singula-ai/alego-session#Session',
       wireTypeSymbol: '@singula-ai/alego-session/types#SessionId',
     })

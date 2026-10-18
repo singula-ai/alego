@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { officialClientBuildEnvironment, writeClientBuildRecord } from '../client-build-environment.ts'
+import { ON_DEMAND_BUNDLES } from '../../packages/boot/app-boot/src/official-bundles.ts'
 import { releaseFamily, type ReleaseMember } from './families.ts'
 import { compareVersions, nextVendorVersion, planShared, reachesPayload } from './bump.ts'
 
@@ -52,23 +53,49 @@ describe('release families', () => {
       '@singula-ai/alego-experimental-agent-team',
       '@singula-ai/alego-experimental-api-speech-to-text',
       '@singula-ai/alego-experimental-auto-review',
+      '@singula-ai/alego-experimental-badge-skill-bundle',
       '@singula-ai/alego-experimental-browser-use-chrome-devtools-mcp',
       '@singula-ai/alego-experimental-browser-use-playwright-mcp',
       '@singula-ai/alego-experimental-browser-use-runtime',
       '@singula-ai/alego-experimental-browser-use-stagehand-native',
+      '@singula-ai/alego-experimental-claude-code-mods',
       '@singula-ai/alego-experimental-client-ui-agent-team',
+      '@singula-ai/alego-experimental-client-ui-claude-code-mods',
+      '@singula-ai/alego-experimental-client-ui-cot-translation',
       '@singula-ai/alego-experimental-client-ui-voice-input',
       '@singula-ai/alego-experimental-computer-use-cua-driver-mcp',
       '@singula-ai/alego-experimental-computer-use-cua-driver-native',
+      '@singula-ai/alego-experimental-cot-translation-bundle',
+      '@singula-ai/alego-experimental-cua-macos',
+      '@singula-ai/alego-cua',
+      '@singula-ai/alego-hook-protocol',
+      '@singula-ai/alego-hooks-claude-code',
+      '@singula-ai/alego-hooks-codex',
+      '@singula-ai/alego-experimental-inspector-profile',
       '@singula-ai/alego-experimental-inspector',
+      '@singula-ai/alego-experimental-plugin-market-bundle',
       '@singula-ai/alego-experimental-ptc-runtime-python',
-      '@singula-ai/alego-experimental-schedule-bundle',
+      '@singula-ai/alego-experimental-ralph-bundle',
+      '@singula-ai/alego-experimental-session-inspector',
+      '@singula-ai/alego-experimental-session-search',
+      '@singula-ai/alego-session-title-all-prompts-llm',
+      '@singula-ai/alego-experimental-session-titles-bundle',
+      '@singula-ai/alego-skill-badge',
       '@singula-ai/alego-experimental-speech-to-text-sensevoice',
       '@singula-ai/alego-experimental-speech-to-text',
+      '@singula-ai/alego-experimental-terminal-bundle',
       '@singula-ai/alego-experimental-tool-agent-team',
+      '@singula-ai/alego-tool-ralph',
+      '@singula-ai/alego-tool-session-query',
+      '@singula-ai/alego-tool-terminal',
+      '@singula-ai/alego-experimental-tool-worktree',
+      '@singula-ai/alego-experimental-translator',
       '@singula-ai/alego-experimental-voice-input-bundle',
+      '@singula-ai/alego-webhook-github',
+      '@singula-ai/alego-webhook',
       '@singula-ai/alego-experimental-webworker-packer',
       '@singula-ai/alego-experimental-webworker-runtime',
+      '@singula-ai/alego-experimental-worktree',
     ])
   })
 
@@ -213,6 +240,52 @@ describe('release families', () => {
       '@singula-ai/alego-consumer',
       '@singula-ai/alego-zebra',
     ])
+  })
+
+  it('publishes on-demand catalog members before alego without adding installed dependencies', () => {
+    const alego = member('apps/cli', '@singula-ai/alego')
+    const providers = ON_DEMAND_BUNDLES.map(name => member(`packages/subagent/${name}`, name))
+    const plan = releaseFamily('alego').publishOrder([alego, ...providers])
+    expect(plan.order.map(entry => entry.name)).toEqual([...ON_DEMAND_BUNDLES, alego.name])
+    expect(alego.manifest).toEqual({})
+    expect(plan.droppedPeerEdges).toEqual([])
+  })
+
+  it('rejects an advertised provider missing from the public release family', () => {
+    expect(() => releaseFamily('alego').publishOrder([member('apps/cli', '@singula-ai/alego')]))
+      .toThrow('Official catalog prerequisite')
+  })
+
+  it('keeps catalog prerequisites ahead of an alego peer declaration', () => {
+    const alego = member('apps/cli', '@singula-ai/alego')
+    const providers = ON_DEMAND_BUNDLES.map(name => member(`packages/subagent/${name}`, name, {
+      peerDependencies: { '@singula-ai/alego': 'workspace:*' },
+    }))
+    const plan = releaseFamily('alego').publishOrder([alego, ...providers])
+    expect(plan.order.map(entry => entry.name)).toEqual([...ON_DEMAND_BUNDLES, alego.name])
+    expect(plan.droppedPeerEdges).toEqual(ON_DEMAND_BUNDLES.map(name => ({ consumer: name, peer: alego.name })))
+  })
+
+  it.each(['dependencies', 'optionalDependencies', 'peerDependencies'])(
+    'requires exact packed ALEGO %s while preserving external ranges', (section) => {
+      const pkg = member('packages/example/provider', '@singula-ai/alego-provider')
+      const family = releaseFamily('alego')
+      const manifest = { name: pkg.name, version: pkg.version, [section]: { '@singula-ai/alego-tools': pkg.version, external: '^4.0.0' } }
+      expect(() => { family.validatePackedManifest(pkg, manifest) }).not.toThrow()
+      for (const range of ['workspace:*', '^0.0.1', '~0.0.1', '0.0.2', '*']) {
+        expect(() => { family.validatePackedManifest(pkg, { ...manifest, [section]: { '@singula-ai/alego-tools': range } }) })
+          .toThrow(`packed ${section}.@singula-ai/alego-tools must equal`)
+      }
+    },
+  )
+
+  it('checks packed identities and preserves independent vendor versions', () => {
+    const pkg = member('vendor/example', '@singula-ai/example')
+    const family = releaseFamily('vendor')
+    expect(() => { family.validatePackedManifest(pkg, { name: pkg.name, version: pkg.version, dependencies: { '@singula-ai/alego-tools': '^4.0.0' } }) })
+      .not.toThrow()
+    expect(() => { family.validatePackedManifest(pkg, { name: '@singula-ai/other', version: pkg.version }) }).toThrow('packed identity')
+    expect(() => { family.validatePackedManifest(pkg, { name: pkg.name, version: '0.0.2' }) }).toThrow('packed identity')
   })
 
   it('reports a runtime dependency cycle instead of emitting an arbitrary order', () => {

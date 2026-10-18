@@ -2,7 +2,7 @@
 /** Guide shell discovery, direct launch and cancellation stay within the entry lifetime. */
 import { act, cleanup, fireEvent, render } from '@testing-library/react'
 import { afterEach, expect, it, vi } from 'vitest'
-import { makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { allowAllAccess, makeTranslate } from '@singula-ai/alego-client-test-runtime'
 import type { TerminalLaunchShells } from '@singula-ai/alego-api-terminal-controller/client'
 import type { GlobalStandardProps, SessionStandardProps } from '@singula-ai/alego-client-ui-slots'
 import type { SessionId } from '@singula-ai/alego-session/types'
@@ -19,7 +19,8 @@ const standard: GlobalStandardProps & SessionStandardProps = {
   useInput: unused, useChat: unused, useTrajectory: unused,
   usePanelInfo: unused, useSessions: unused, useSessionStatus: unused,
   useSessionRetainInfo: unused, useResource: unused, useWorkspaces: unused,
-  inputActions: { captureInsertion: unused, insertText: unused, setDraft: unused,
+  ...allowAllAccess,
+  inputActions: { captureInsertion: unused, insertText: unused, setDraft: unused, persistDraft: unused,
     addAttachments: unused, removeAttachment: unused, pruneAttachments: unused, submit: unused },
 }
 const choices: TerminalLaunchShells = {

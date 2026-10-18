@@ -7,7 +7,7 @@ import type {
   WorkspaceId, WorkspaceSnapshot, WorkspaceView,
 } from '@singula-ai/alego-api-workspace-controller/client'
 import type {} from '@singula-ai/alego-client-locale/client'
-import { bindSnapshotSelector, makeTranslate } from '@singula-ai/alego-client-test-runtime'
+import { allowAllAccess, bindSnapshotSelector, makeTranslate } from '@singula-ai/alego-client-test-runtime'
 import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
 import type { SessionStatusSnapshot } from '@singula-ai/alego-client-ui-session/client'
 import type { DirectoryFlowOwnerProps, WorkspacePickerProps } from '../src/client/contract/slots.ts'
@@ -102,6 +102,7 @@ function mount(
       useSessionRetainInfo={() => undefined}
       usePanelInfo={usePanelInfo} useResource={useResource}
       useWorkspaces={hook(workspaceState(nextItems))}
+      {...allowAllAccess}
       onPick={onPick}
       onClose={onClose}
       createWorkspace={createWorkspace}
@@ -224,6 +225,7 @@ describe('WorkspacePicker', () => {
         useSessionStatus={hook(noPendingInteraction)}
         useSessionRetainInfo={() => undefined}
         usePanelInfo={usePanelInfo} useResource={useResource}
+        {...allowAllAccess}
         onPick={vi.fn()} onClose={vi.fn()} createWorkspace={vi.fn()}
         useDirectoryFlow={occupancySource().useDirectoryFlow} renderSlot={renderSlot} t={t}
       />,
@@ -242,6 +244,7 @@ describe('WorkspacePicker', () => {
         useSessionStatus={hook(noPendingInteraction)}
         useSessionRetainInfo={() => undefined}
         usePanelInfo={usePanelInfo} useResource={useResource}
+        {...allowAllAccess}
         onPick={vi.fn()} onClose={vi.fn()} createWorkspace={vi.fn()}
         useDirectoryFlow={occupancySource().useDirectoryFlow} renderSlot={renderSlot} t={t}
       />,

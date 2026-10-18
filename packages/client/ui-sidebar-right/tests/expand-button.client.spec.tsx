@@ -10,6 +10,7 @@ import { useSyncExternalStore } from 'react'
 import type { GlobalStandardProps, SessionStandardProps } from '@singula-ai/alego-client-ui-slots'
 import type { ShortcutCatalogEntry } from '@singula-ai/alego-client-shortcuts/client'
 import type { SessionId } from '@singula-ai/alego-session/types'
+import { allowAllAccess } from '@singula-ai/alego-client-test-runtime'
 import { ExpandButton } from '../src/client/shell/ExpandButton.tsx'
 import type { ExpandButtonProps } from '../src/client/shell/ExpandButton.tsx'
 import { createSidebarRightStore } from '../src/client/stores.ts'
@@ -21,7 +22,8 @@ const standard: GlobalStandardProps & SessionStandardProps = {
   useInput: unused, useChat: unused, useTrajectory: unused,
   usePanelInfo: unused, useSessions: unused, useSessionStatus: unused,
   useSessionRetainInfo: unused, useResource: unused, useWorkspaces: unused,
-  inputActions: { captureInsertion: unused, insertText: unused, setDraft: unused,
+  ...allowAllAccess,
+  inputActions: { captureInsertion: unused, insertText: unused, setDraft: unused, persistDraft: unused,
     addAttachments: unused, removeAttachment: unused, pruneAttachments: unused, submit: unused },
 }
 

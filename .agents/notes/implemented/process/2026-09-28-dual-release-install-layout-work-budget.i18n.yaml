@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-09-28-dual-release-install-layout-work-budget.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-09-28-dual-release-install-layout-work-budget.md
+/agent-note-dual-release-install-layout-work-budget:
+  en: 96291209fde28f6a
+  zh: 66a9543eaca18885
+/agent-note-dual-release-install-layout-work-budget/problem:
+  en: f5a81e185d6638e9
+  zh: d372a964a85bd012
+/agent-note-dual-release-install-layout-work-budget/decision:
+  en: b4468b6985015ddb
+  zh: 024b2bc97a545583
+/agent-note-dual-release-install-layout-work-budget/what-the-resolution-costs:
+  en: 68ada3978bfbeddb
+  zh: a886ef6b6f2b41c8
+/agent-note-dual-release-install-layout-work-budget/alternatives-considered:
+  en: 29987b7634c84d28
+  zh: a1469e4b6aaa46e2
+/agent-note-dual-release-install-layout-work-budget/consequences:
+  en: 7d626f4ce7a96925
+  zh: 2cb320815f67d669

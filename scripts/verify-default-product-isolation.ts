@@ -20,7 +20,7 @@ import {
   collectRuntimeSourceSpecifiers,
 } from './verify-client-packages.ts'
 
-const EXPERIMENTAL_PREFIX = '@singula-ai/alego-experimental-'
+import { isExperimentalPackageName } from './experimental-package-policy.ts'
 // The independently published entry package owns platform-engine dependencies.
 const EXTERNAL_KIT_PACKAGES = new Set(['@deepseek-ai/libreoffice-kit'])
 // Workspace packages use the product scope; the kit's own scope admits only its entry package.
@@ -96,8 +96,8 @@ export function verifyDefaultProductIsolation(root: string): ProductIsolationRes
     if (manifest?.alego?.bundle?.patch === undefined) {
       failures.push(`${PROFILE_SOURCE}: optional bundle ${name} must declare alego.bundle.patch`)
     }
-    if (typeof manifest?.icon !== 'string') {
-      failures.push(`${PROFILE_SOURCE}: optional bundle ${name} must declare an icon`)
+    if (typeof manifest?.icon !== 'string' && manifest?.exports?.['./icon'] == null) {
+      failures.push(`${PROFILE_SOURCE}: optional bundle ${name} must declare icon or export ./icon`)
     }
     if (manifest?.exports?.['./locale/*.json'] === undefined) {
       failures.push(`${PROFILE_SOURCE}: optional bundle ${name} must export ./locale/*.json display metadata`)
@@ -109,7 +109,7 @@ export function verifyDefaultProductIsolation(root: string): ProductIsolationRes
   const sources = new Set<string>()
   const configs = new Set<string>()
   let webPluginCount = 0
-  const isExperimental = (pkg: Package): boolean => pkg.manifest.name.startsWith(EXPERIMENTAL_PREFIX)
+  const isExperimental = (pkg: Package): boolean => isExperimentalPackageName(pkg.manifest.name)
     || display(pkg.directory).startsWith('packages/experimental/')
   const add = (pkg: Package, origin: string): void => {
     if (isExperimental(pkg)) {
@@ -138,7 +138,7 @@ export function verifyDefaultProductIsolation(root: string): ProductIsolationRes
       return
     }
     const packageName = barePackageName(name)
-    if (packageName.startsWith(EXPERIMENTAL_PREFIX)) {
+    if (isExperimentalPackageName(packageName)) {
       failures.push(`${origin} -> ${name}: default product must not include experimental packages`)
       return
     }
@@ -295,7 +295,8 @@ export function verifyDefaultProductIsolation(root: string): ProductIsolationRes
     const { manifest } = pkg
     for (const section of RUNTIME_SECTIONS) {
       for (const [name, range] of Object.entries(manifest[section] ?? {})) {
-        if (pkg === cli && section === 'dependencies' && optionalBundles.has(name)) continue
+        const target = packages.get(name)
+        if (pkg === cli && section === 'dependencies' && optionalBundles.has(name) && target !== undefined && isExperimental(target)) continue
         dependency(name, range, pkg, `${manifest.name} ${section}`)
       }
     }

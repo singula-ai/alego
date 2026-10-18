@@ -17,6 +17,7 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 | `@singula-ai/alego-api-account-controller` | no | Expose safe account operations over authenticated Remote |
 | `@singula-ai/alego-api-gateway` | yes | Typert Remote Host dispatcher and Client API endpoint |
 | `@singula-ai/alego-api-job-controller` | yes | Job Remote observation stream and the reference-counted client job-output service |
+| `@singula-ai/alego-api-remote-access` | no | Method-level Remote access control for non-owner Peers and the per-Peer access snapshot |
 | `@singula-ai/alego-api-remotes` | no | Remote BFF assembly for application-selected Host capabilities |
 | `@singula-ai/alego-api-session-controller` | yes | Session Remote commands, cold reads, and live control transport |
 | `@singula-ai/alego-api-settings-controller` | yes | Remote owner for the configuration surfaces over the settings-domain seams |
@@ -37,6 +38,7 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 | `@singula-ai/alego-config-editor` | no | Persist plugin configuration through profile patches and Loader reconciliation |
 | `@singula-ai/alego-hmr` | yes | Coordinated module and profile configuration hot reload |
 | `@singula-ai/alego-plugin-manager` | yes | Current-profile plugin and bundle management shared by alego CLI, Web and agent tools |
+| `@singula-ai/alego-plugin-market` | yes | Configured plugin market indexes for the Web Discover page and the plugin_market agent tool |
 
 ## browser-use
 
@@ -51,7 +53,7 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 | `@singula-ai/alego-acp-app` | no | The alego ACP profile bundle: automation-only JSON-RPC stdio and process lifecycle over alego-base |
 | `@singula-ai/alego-headless` | yes | The alego one-shot bundle: a direct core Agent/Session runner over alego-base with no Host, HTTP, or browser layer |
 | `@singula-ai/alego-sdk-app` | yes | The alego SDK profile bundle: stdio JSON-RPC serving and process lifecycle over alego-base |
-| `@singula-ai/alego-web-app` | yes | The alego browser-surface bundle: the web patch layer over alego-base plus the runtime glue plugin (frontend dist serving, web-surface prompt, bash runtime variables, URL line) |
+| `@singula-ai/alego-web-app` | yes | The alego browser-surface bundle: the web patch layer over alego-base plus the runtime glue plugin (frontend dist serving, bash runtime variables, URL line) |
 
 ## client
 
@@ -72,6 +74,7 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 | `@singula-ai/alego-client-ui-chat` | no | Chat Conversation target, node definitions, renderers, and details surface |
 | `@singula-ai/alego-client-ui-commands` | no | Client command surface: global directory cache, '/' source, three command UI kinds, popupSelect registry |
 | `@singula-ai/alego-client-ui-conversation` | no | Target-neutral Conversation assembly, shell, composer, queue, and view navigation |
+| `@singula-ai/alego-client-ui-deepseek-model-label-1017` | no | Temporary 1017 release badge for official DeepSeek Flash model labels |
 | `@singula-ai/alego-client-ui-deliverables` | no | Changed-files card with per-file comparison tabs, delivery cards, and clickable final-response file references for Web |
 | `@singula-ai/alego-client-ui-directory-picker-browse` | no | In-app directory browsing surface: the workspace directory-flow owner rendering the host's listing and creation primitives |
 | `@singula-ai/alego-client-ui-directory-picker-native` | no | Native directory-picker surface: the renderless workspace directory-flow occupant driving the local Desktop or Host OS chooser |
@@ -85,9 +88,11 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 | `@singula-ai/alego-client-ui-permission-presets` | no | Permission surfaces: a new-session default in General settings and a current-session /permission popup over the permissions projection |
 | `@singula-ai/alego-client-ui-plan` | no | Plan mode controls, persistent transcript plan cards, and sidebar Markdown previews |
 | `@singula-ai/alego-client-ui-plugin-manager` | yes | Plugin management for the alego web client: the sidebar Plugins panel installs, enables, disables, retries, and composes installed plugin packages |
+| `@singula-ai/alego-client-ui-plugin-market` | no | Discover tab of the alego web Plugins page: browse configured plugin market indexes and install their bundles |
 | `@singula-ai/alego-client-ui-reference` | no | Unified Web @file and @session reference source |
 | `@singula-ai/alego-client-ui-renderer` | no | Browser UI renderer: React slot bindings, ctx.uiRenderer, and the assembled application root |
 | `@singula-ai/alego-client-ui-schedule` | no | Host task management page and Session reminder catalog |
+| `@singula-ai/alego-client-ui-secret-mask` | no | Web display masking for recognized credentials in sent user text |
 | `@singula-ai/alego-client-ui-session` | no | Session Controller adapter for React and session-scoped slots |
 | `@singula-ai/alego-client-ui-settings` | no | Settings domain base plugin: shared configuration forms and the canonical settings slot-type contract |
 | `@singula-ai/alego-client-ui-settings-account` | yes | Manage DeepSeek login and open Platform billing pages |
@@ -96,6 +101,7 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 | `@singula-ai/alego-client-ui-settings-models` | yes | Models settings and shared product-onboarding dialogs over existing settings and credential joins |
 | `@singula-ai/alego-client-ui-settings-plugin-inventory` | no | Read-only Cordis Loader inventory tab in Web Plugins settings |
 | `@singula-ai/alego-client-ui-settings-plugins` | no | Built-in plugins settings section for the alego web client: the Settings navigation entry and the tab chrome feature-owned tabs register into |
+| `@singula-ai/alego-client-ui-settings-session-log` | no | General settings control for Session-log upload with DeepSeek API requests |
 | `@singula-ai/alego-client-ui-settings-shell` | no | Settings page of the shell executor on the alego web client's Plugins page: the command timeout and the per-stream output cap of the shell namespace |
 | `@singula-ai/alego-client-ui-settings-subagent` | no | Settings page of Subagent delegation on the alego web client's Plugins page: recursion depth, parallel capacity, and the models agents may choose for subagents |
 | `@singula-ai/alego-client-ui-settings-web-search` | no | Settings page of the DeepSeek web-search provider on the alego web client's Plugins page: its API key, endpoint, and per-request search budget |
@@ -136,6 +142,7 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 |---|---|---|
 | `@singula-ai/alego-agent-instructions` | yes | Workspace context loader for AGENTS.md/CLAUDE.md instruction files |
 | `@singula-ai/alego-file-reference-local` | yes | Local-filesystem ctx.fileReferences provider with bounded fuzzy indexes |
+| `@singula-ai/alego-harness-dev-context` | no | Model context naming the Alego checkout and Web GUI URL without letting either change the system prompt |
 | `@singula-ai/alego-session-reference` | yes | Cross-session snapshot references and durable untrusted model context (ctx.sessionReferenceResolver) |
 | `@singula-ai/alego-time-context` | yes | Durable per-step context with the current time and elapsed time |
 | `@singula-ai/alego-tmux-context` | yes | Opt-in durable per-step context with this agent's tmux pane and window location |
@@ -147,7 +154,7 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 | `@singula-ai/alego-agent` | no | Agent interface, registry, initiator scope, and event vocabulary for the Alego |
 | `@singula-ai/alego-agent-default-model` | yes | Default model selection shared by Agent entry points |
 | `@singula-ai/alego-agent-loop` | yes | The concrete agent loop plugin for the Alego |
-| `@singula-ai/alego-agent-tool-presentation` | yes | Agent-plane presentation selector: composes one agent's tools as PTC mode, native, or both |
+| `@singula-ai/alego-agent-tool-presentation` | yes | Agent-plane presentation selector: composes one agent's tools as PTC mode or native tool calls |
 | `@singula-ai/alego-session` | no | Event-sourced session store for the Alego |
 | `@singula-ai/alego-system-prompt` | yes | System prompt assembly registry for the Alego |
 | `@singula-ai/alego-tools` | yes | Tool registry and execution pipeline for the Alego |
@@ -177,21 +184,38 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 
 | Package | Config | Description |
 |---|---|---|
-| `@singula-ai/alego-experimental-agent-team` | yes | Implicit-root Agent Teams roster, durable peer mailbox, and shared task DAG |
+| `@singula-ai/alego-experimental-agent-team` | yes | Implicit-root Agent Teams roster, direct peer messaging, and shared task DAG |
 | `@singula-ai/alego-experimental-api-speech-to-text` | yes | Authenticated experimental speech transcription for browser clients |
 | `@singula-ai/alego-experimental-auto-review` | no | Per-tool LLM authorization review for the Alego Auto permission preset |
 | `@singula-ai/alego-experimental-browser-use-chrome-devtools-mcp` | yes | Experimental per-Session Chromium browser tools through chrome-devtools-mcp |
 | `@singula-ai/alego-experimental-browser-use-playwright-mcp` | yes | Experimental per-Session Chromium browser tools through @playwright/mcp |
 | `@singula-ai/alego-experimental-browser-use-stagehand-native` | yes | Experimental Stagehand browser tools with separately configured native models |
+| `@singula-ai/alego-experimental-claude-code-mods` | yes | Experimental bridge: load Claude Code mods (hooks modules) and run their hook chains on Alego extension points |
 | `@singula-ai/alego-experimental-client-ui-agent-team` | no | Web Agent Teams roster, task board, and teammate navigation |
+| `@singula-ai/alego-experimental-client-ui-claude-code-mods` | no | Web band above the prompt for Claude Code mods: draws each session's mod tree and sends button presses back to the bridge |
+| `@singula-ai/alego-experimental-client-ui-cot-translation` | yes | Optional machine translation of expanded reasoning, preserving original Session text |
 | `@singula-ai/alego-experimental-client-ui-voice-input` | no | Record speech and insert editable text into the conversation draft |
 | `@singula-ai/alego-experimental-computer-use-cua-driver-mcp` | yes | Experimental computer use through an installed Cua Driver MCP executable |
 | `@singula-ai/alego-experimental-computer-use-cua-driver-native` | no | Experimental computer-use provider embedding the Cua Driver native npm SDK |
+| `@singula-ai/alego-experimental-cua-macos` | yes | macOS native provider for shared Computer Use application and window objects |
 | `@singula-ai/alego-experimental-inspector` | yes | Experimental cross-realm CDP hub for Host debugging and Client Runtime inspection |
 | `@singula-ai/alego-experimental-ptc-runtime-python` | yes | CPython subprocess implementation of the Alego PTC execution seam |
+| `@singula-ai/alego-experimental-session-inspector` | no | Experimental virtualized Session log and live Chat group/node inspectors |
 | `@singula-ai/alego-experimental-speech-to-text` | yes | Experimental speech recognition with independently selectable providers |
 | `@singula-ai/alego-experimental-speech-to-text-sensevoice` | yes | Local SenseVoice ONNX transcription with a managed sherpa-onnx process |
 | `@singula-ai/alego-experimental-tool-agent-team` | yes | Scoped model-facing Agent Teams tools over ctx.agentTeams |
+| `@singula-ai/alego-experimental-tool-worktree` | no | Model tool that creates and enters a new Git worktree |
+| `@singula-ai/alego-experimental-translator` | yes | Machine translation with reusable Session results |
+| `@singula-ai/alego-experimental-worktree` | yes | Creates a named Git worktree and changes the calling Session working directory |
+| `@singula-ai/alego-hooks-claude-code` | yes | Bridge plugin: run a Claude Code hooks.json / settings hook config on the Alego interception seams |
+| `@singula-ai/alego-hooks-codex` | yes | Bridge plugin: run a Codex hooks.json hook config on the Alego interception seams |
+| `@singula-ai/alego-session-title-all-prompts-llm` | yes | All-user-messages LLM provider plugin for Alego session titles |
+| `@singula-ai/alego-skill-badge` | no | Bundled alego badge skill provider for Alego |
+| `@singula-ai/alego-tool-ralph` | yes | Model-facing fresh-agent Ralph loop over the workflow and subagent seams |
+| `@singula-ai/alego-tool-session-query` | yes | Workspace-authorized model-facing session history search, trace, and event read tools |
+| `@singula-ai/alego-tool-terminal` | yes | Six model-facing persistent PTY tools with owner isolation and generic background-job integration |
+| `@singula-ai/alego-webhook` | no | Fire-and-forget webhook rule runtime that creates Workspace-backed Alego Sessions |
+| `@singula-ai/alego-webhook-github` | yes | Signed GitHub HTTP webhook adapter for the Alego webhook runtime |
 
 ## extensions
 
@@ -236,13 +260,6 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 | `@singula-ai/alego-repeat-tool-reminder` | yes | Repeat-tool-call guard plugin: advisory reminders when an agent loops on identical tool calls |
 | `@singula-ai/alego-tool-call-timeout-policy` | no | Tool-call timeout policy: a tools/execute wrapper that arms a per-tool deadline on exec.signal and returns TOOL_TIMEOUT when it wins |
 
-## hooks
-
-| Package | Config | Description |
-|---|---|---|
-| `@singula-ai/alego-hooks-claude-code` | yes | Bridge plugin: run a Claude Code hooks.json / settings hook config on the Alego interception seams |
-| `@singula-ai/alego-hooks-codex` | yes | Bridge plugin: run a Codex hooks.json hook config on the Alego interception seams |
-
 ## host
 
 | Package | Config | Description |
@@ -262,7 +279,7 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 |---|---|---|
 | `@singula-ai/alego-commands` | no | Plugin-owned human command registry for Alego UIs |
 | `@singula-ai/alego-permission-presets` | yes | User-facing permission presets (ctx.permissionPresets) for the Alego: one product-level Permissions select bundling the sandbox-mode and approval-policy knobs, written through to their own session events |
-| `@singula-ai/alego-tool-ask-user` | no | Model-facing ask_user_question tool over the ctx.userQuestions seam |
+| `@singula-ai/alego-tool-ask-user` | yes | Model-facing ask_user_question tool over the ctx.userQuestions seam |
 | `@singula-ai/alego-user-approval` | yes | User-approval seam (ctx.approval) for the Alego: one-shot permission decisions dispatched to composed answerers over the approval/request waterfall, fail-closed by default |
 | `@singula-ai/alego-user-questions` | no | Abstract user-questions seam (ctx.userQuestions) for asking the human during agent runs |
 
@@ -319,13 +336,7 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 
 | Package | Config | Description |
 |---|---|---|
-| `@singula-ai/alego-ptc-runtime-node` | yes | Sandboxed Node process implementation of the Alego PTC execution capability |
-
-## runtime-diagnostics
-
-| Package | Config | Description |
-|---|---|---|
-| `@singula-ai/alego-invariants` | yes | Registry service for package-owned Alego runtime invariants |
+| `@singula-ai/alego-ptc-runtime-node` | yes | Node PTC execution with per-call sandboxed processes or in-memory REPL state |
 
 ## sandbox
 
@@ -339,6 +350,7 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 | Package | Config | Description |
 |---|---|---|
 | `@singula-ai/alego-schedule` | yes | Host-wide durable reminders with shared management and original-Session delivery |
+| `@singula-ai/alego-tool-schedule` | no | Model-facing reminder management tools (schedule_create, schedule_list, schedule_update, schedule_delete) over the Host ctx.schedule service |
 
 ## sdk
 
@@ -358,9 +370,10 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 | `@singula-ai/alego-session-stats` | no | Whole-log conversation counts and wall times projection (sessionStats) for the Alego |
 | `@singula-ai/alego-session-telemetry-otel` | yes | Feedback-authorized Session logs over byte-bounded OpenTelemetry HTTP requests |
 | `@singula-ai/alego-session-title` | yes | Log-backed session title service and provider registry for the Alego |
-| `@singula-ai/alego-session-title-all-prompts-llm` | yes | All-user-messages LLM provider plugin for Alego session titles |
 | `@singula-ai/alego-session-title-first-prompt-llm` | yes | First-message LLM provider plugin for Alego session titles |
 | `@singula-ai/alego-session-turn-outline` | no | Whole-log turn outline projection (turnOutline) for the Alego |
+| `@singula-ai/alego-tool-working-directory` | no | Read and change the active Session working directory |
+| `@singula-ai/alego-working-directory` | yes | Session working directories with durable changes and model context |
 
 ## session-query
 
@@ -368,7 +381,6 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 |---|---|---|
 | `@singula-ai/alego-session-log-export` | yes | Web Session-log export command and shared download dialog |
 | `@singula-ai/alego-session-query-sqlite` | yes | Concrete ctx.sessionQuery backend with SQLite FTS5 search |
-| `@singula-ai/alego-tool-session-query` | yes | Workspace-authorized model-facing session history search, trace, and event read tools |
 
 ## settings
 
@@ -395,9 +407,8 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 | Package | Config | Description |
 |---|---|---|
 | `@singula-ai/alego-skill` | yes | Agent skill provider registry for the Alego |
-| `@singula-ai/alego-skill-badge` | no | Bundled alego badge skill provider for Alego |
 | `@singula-ai/alego-skill-filesystem` | yes | Local filesystem skill provider for the Alego |
-| `@singula-ai/alego-skill-office` | yes | Bundled Word, PowerPoint, and Excel workflows and structural checks |
+| `@singula-ai/alego-skill-office` | yes | Bundled Word, PowerPoint, and Excel workflows and LibreOffice Kit operations |
 | `@singula-ai/alego-tool-skill` | yes | Model-facing skill loading tool for the Alego |
 | `@singula-ai/alego-tool-workspace-dependencies` | yes | The load_workspace_dependencies tool: absolute paths into a bundled Python, Node.js, and pnpm payload |
 
@@ -458,7 +469,6 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 |---|---|---|
 | `@singula-ai/alego-terminal` | no | Persistent PTY session seam for the Alego — owner-scoped ids, backend registry, interactive sends, reads, signals, and awaited cleanup |
 | `@singula-ai/alego-terminal-bash` | yes | Persistent shell PTY backend over the Alego subprocess terminal primitive |
-| `@singula-ai/alego-tool-terminal` | yes | Six model-facing persistent PTY tools with owner isolation and generic background-job integration |
 
 ## test-support
 
@@ -484,23 +494,16 @@ Every package below exports a Cordis plugin that a bundle patch can name in a Lo
 |---|---|---|
 | `@singula-ai/alego-tool-web` | yes | Model-facing web tools (web_search, web_fetch) over the Alego web capability seam (ctx.web) |
 | `@singula-ai/alego-web` | yes | Abstract web access capability seam (ctx.web) for the Alego — search/fetch provider registry, registration-order-independent selection, request/result vocabulary, and the WebError taxonomy |
+| `@singula-ai/alego-web-deepseek-api` | yes | DeepSeek Search and Fetch API providers for the Alego web capability seam (ctx.web) |
 | `@singula-ai/alego-web-fetch-http` | yes | Anonymous public HTTP(S) fetch provider for the Alego web capability seam (ctx.web) |
 | `@singula-ai/alego-web-search-deepseek` | yes | DeepSeek-backed search provider (native web_search via the Anthropic-compatible API) for the Alego web capability seam (ctx.web) |
 | `@singula-ai/alego-web-search-exa` | yes | Exa-backed search provider for the Alego web capability seam (ctx.web) |
 | `@singula-ai/alego-web-search-perplexity` | yes | Perplexity-backed search provider for the Alego web capability seam (ctx.web) |
 
-## webhook
-
-| Package | Config | Description |
-|---|---|---|
-| `@singula-ai/alego-webhook` | no | Fire-and-forget webhook rule runtime that creates Workspace-backed Alego Sessions |
-| `@singula-ai/alego-webhook-github` | yes | Signed GitHub HTTP webhook adapter for the Alego webhook runtime |
-
 ## workflow
 
 | Package | Config | Description |
 |---|---|---|
-| `@singula-ai/alego-tool-ralph` | yes | Model-facing fresh-agent Ralph loop over the workflow and subagent seams |
 | `@singula-ai/alego-tool-workflow` | yes | Model-facing workflow tool: run a JavaScript orchestration script over ctx.workflowEngine |
 | `@singula-ai/alego-workflow-ptc` | yes | Workflow orchestration in the shared sandboxed Node PTC runtime |
 

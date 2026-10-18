@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-09-29-reused-blank-runs-requested-preset.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-09-29-reused-blank-runs-requested-preset.md
+/agent-note-a-reused-blank-session-runs-the-requested-preset:
+  en: 817baf38b1a7dacc
+  zh: 0e640af5b220160e
+/agent-note-a-reused-blank-session-runs-the-requested-preset/problem:
+  en: 452279060a874fc4
+  zh: 453229f73eb1ff63
+/agent-note-a-reused-blank-session-runs-the-requested-preset/decision:
+  en: e396c291f742a5f3
+  zh: c67be0fd305215fe
+/agent-note-a-reused-blank-session-runs-the-requested-preset/alternatives-considered:
+  en: ae99345e8df800e4
+  zh: a4d0c257c4216337
+/agent-note-a-reused-blank-session-runs-the-requested-preset/consequences:
+  en: 1f89feb189348055
+  zh: c1826f06bae9c603
+/agent-note-a-reused-blank-session-runs-the-requested-preset/testing:
+  en: 1aefca569f5dce81
+  zh: 527c9aacf5a2f6b8

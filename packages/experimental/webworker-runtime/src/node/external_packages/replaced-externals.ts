@@ -14,6 +14,8 @@ export const REPLACED_EXTERNAL_PACKAGES: readonly string[] = [
   'koffi',
   'node-pty',
   'execa',
+  'got',
+  'node-addon-require-builtin',
   'sharp',
   'ws',
 ]

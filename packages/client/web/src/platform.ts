@@ -7,6 +7,7 @@
 /** The module specifiers the shell shares into the frozen module table. */
 export const PLATFORM_MODULES = [
   'react', 'react/jsx-runtime', 'react-dom', 'react-dom/client', '@singula-ai/cordis',
+  'zod', '@tanstack/react-virtual',
   '@singula-ai/alego-client-store',
   '@singula-ai/alego-client-ui-slots',
   '@singula-ai/alego-client-ui-primitives',

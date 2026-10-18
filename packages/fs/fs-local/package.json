@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-fs-local",
   "description": "Local-filesystem implementation of the Alego filesystem seam (ctx.fs)",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -31,8 +31,8 @@
     "@singula-ai/cordis": "workspace:~"
   },
   "dependencies": {
-    "chokidar": "^4.0.3",
-    "koffi": "^3.1.0",
+    "chokidar": "5.0.0",
+    "koffi": "3.1.1",
     "@singula-ai/schemastery": "workspace:~"
   },
   "devDependencies": {

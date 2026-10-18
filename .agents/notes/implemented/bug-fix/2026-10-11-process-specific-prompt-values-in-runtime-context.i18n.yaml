@@ -1,0 +1,31 @@
+# Bilingual-pair consistency record for 2026-10-11-process-specific-prompt-values-in-runtime-context.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-10-11-process-specific-prompt-values-in-runtime-context.md
+/agent-note-process-specific-checkout-path-and-web-url-move-to-runtime-context:
+  en: 4aced7bd9e4445e2
+  zh: c0260c82b24c5bba
+/agent-note-process-specific-checkout-path-and-web-url-move-to-runtime-context/problem:
+  en: e2f43526fdb556f3
+  zh: 3a37100324abdcd8
+/agent-note-process-specific-checkout-path-and-web-url-move-to-runtime-context/decision:
+  en: 5222f00fd05d3801
+  zh: fcfa430a0fa5588c
+/agent-note-process-specific-checkout-path-and-web-url-move-to-runtime-context/decision/ownership:
+  en: 9bf86fab9d7233ce
+  zh: 68e37f18900cbec9
+/agent-note-process-specific-checkout-path-and-web-url-move-to-runtime-context/decision/new-sessions:
+  en: 20b0ef652c0de962
+  zh: 46c31d1f12fa1db5
+/agent-note-process-specific-checkout-path-and-web-url-move-to-runtime-context/decision/earlier-format-sessions:
+  en: 37267718a3ed9be7
+  zh: b4f7297d22824b0b
+/agent-note-process-specific-checkout-path-and-web-url-move-to-runtime-context/alternatives-considered:
+  en: e146708fe3acba70
+  zh: 22ec23fd9a91f869
+/agent-note-process-specific-checkout-path-and-web-url-move-to-runtime-context/consequences:
+  en: fe4e510e532673fa
+  zh: e6d95b955e67432b
+/agent-note-process-specific-checkout-path-and-web-url-move-to-runtime-context/testing:
+  en: 9667d1749bdf1547
+  zh: 598dc39120c91228

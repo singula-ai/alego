@@ -17,7 +17,7 @@ import {
   type SessionEvent,
   type SessionHeader,
 } from '@singula-ai/alego-session'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import {
   generationLogFilename,
   generationLogPath,

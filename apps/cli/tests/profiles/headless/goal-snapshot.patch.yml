@@ -24,6 +24,9 @@
 - insert:
     - id: llm-replay
       name: '@singula-ai/alego-llm-replay'
+      config:
+        providers:
+          - id: deepseek-official
 
 - id: session-log-deepseek
   config:

@@ -15,27 +15,27 @@
   en: 23386452a66b2fbd
   zh: 4a8d91b2f313fead
 /singula-ai-alego-schedule/use-this-package:
-  en: 70741761cdbc310f
-  zh: 30bc98ac7efed470
+  en: 92ec39d83b2ee317
+  zh: e95b53da20d38bbf
 /singula-ai-alego-schedule/understand-the-implementation:
-  en: 0b7d63ea96e7968d
-  zh: ff8eb15a561a50a4
+  en: 03c0413bc0b1d0d6
+  zh: 1f8ee0d4ec53b585
 /singula-ai-alego-schedule/further-exploration:
   en: 974577265e865e58
   zh: 0f87f43583125f06
 /singula-ai-alego-schedule/model-experience:
   en: 215e7ba838619b7b
   zh: a311da3843709f90
-/singula-ai-alego-schedule/model-experience/tool-schemas-on-root-agents:
-  en: c4c31a3f6826626d
-  zh: 5aa01bfa311b2f4c
-/singula-ai-alego-schedule/model-experience/tool-schemas-on-root-agents/what-the-model-sees:
-  en: 2269a29517b5389b
-  zh: 401e1d594896b5ad
-/singula-ai-alego-schedule/model-experience/tool-schemas-on-root-agents/token-effect:
+/singula-ai-alego-schedule/model-experience/tool-schemas-in-mounted-presets:
+  en: 097a655a88e2a9f2
+  zh: 6612c58808186b1e
+/singula-ai-alego-schedule/model-experience/tool-schemas-in-mounted-presets/what-the-model-sees:
+  en: 91cc74b982b4f22e
+  zh: 020ebae43239662c
+/singula-ai-alego-schedule/model-experience/tool-schemas-in-mounted-presets/token-effect:
   en: ae0eb4d2609d4329
   zh: 4fe0a26e37c272dc
-/singula-ai-alego-schedule/model-experience/tool-schemas-on-root-agents/kv-cache-effect:
+/singula-ai-alego-schedule/model-experience/tool-schemas-in-mounted-presets/kv-cache-effect:
   en: 7bf33bbe17e1da03
   zh: 2af9a2f842b4f430
 /singula-ai-alego-schedule/model-experience/tool-results-after-management-calls:
@@ -54,8 +54,8 @@
   en: 39a747e5d135e241
   zh: ad505b3d5bc27acf
 /singula-ai-alego-schedule/model-experience/due-reminders-in-the-original-session/what-the-model-sees:
-  en: 7b05d635d4cc9714
-  zh: d1c908f51115e4f5
+  en: cdb4f0d0fe43bfe8
+  zh: 156c9db0652684ca
 /singula-ai-alego-schedule/model-experience/due-reminders-in-the-original-session/what-the-model-sees/one-shot-framing:
   en: d8635e0075bacc3f
   zh: 685e16d812319f85
@@ -69,8 +69,8 @@
   en: 1006325fa610366d
   zh: 476215d8a3c70fe4
 /singula-ai-alego-schedule/known-limitations-and-deferred-work:
-  en: fd511d607cbc7b8d
-  zh: f45a14991cfa47e6
+  en: 0be02e35acc631b3
+  zh: 1f6821cf285045a5
 /singula-ai-alego-schedule/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 8ec3e73528ddb1a6

@@ -84,17 +84,16 @@ describe('toPiContext', () => {
       })],
       tools: [{ name: 'f', description: 'F', parameters: { type: 'object', properties: {} } }],
     })
-    expect(context.systemPrompt).toBe('be helpful')
-    expect(context.messages).toEqual([{ role: 'user', content: 'hi', timestamp: 0 }])
-    expect(context.tools).toEqual([
-      { name: 'f', description: 'F', parameters: { type: 'object', properties: {} } },
-    ])
+    expect(context).toEqual({
+      systemPrompt: 'be helpful',
+      tools: [{ name: 'f', description: 'F', parameters: { type: 'object', properties: {} } }],
+      messages: [{ role: 'user', content: 'hi', timestamp: 0 }],
+    })
   })
 
   it('omits empty tools and absent system prompt', () => {
     const context = toPiContext({ provider: 'deepseek', model: 'm', messages: [], tools: [] })
-    expect(context.systemPrompt).toBeUndefined()
-    expect(context.tools).toBeUndefined()
+    expect(context).toEqual({ messages: [] })
   })
 
   it('resolves durable image references into native pi-ai image content', async () => {
@@ -317,7 +316,7 @@ describe('toPiContext', () => {
     })
   })
 
-  it('splits mixed user text + tool results and lifts a leading system message into systemPrompt', () => {
+  it('preserves the leading system message ahead of user text and tool results', () => {
     const context = toPiContext({
       provider: 'deepseek',
       model: 'm',
@@ -368,7 +367,7 @@ describe('toPiContext', () => {
       content: [
         { type: 'thinking', thinking: 'private reasoning', thinkingSignature: 'think-sig', redacted: true },
         { type: 'text', text: 'calling', textSignature: 'text-sig' },
-        { type: 'toolCall', id: 'c1', name: 'f', arguments: { a: 1 }, thoughtSignature: 'tool-sig' },
+        { type: 'toolCall', id: 'c1', name: 'f', arguments: { a: 1 }, thoughtSignature: 'tool-sig', namespace: 'functions' },
       ],
     }))
     const context = toPiContext({
@@ -399,7 +398,7 @@ describe('toPiContext', () => {
       content: [
         { type: 'thinking', thinking: 'private reasoning', thinkingSignature: 'think-sig', redacted: true },
         { type: 'text', text: 'calling', textSignature: 'text-sig' },
-        { type: 'toolCall', id: 'c1', name: 'f', arguments: { a: 1 }, thoughtSignature: 'tool-sig' },
+        { type: 'toolCall', id: 'c1', name: 'f', arguments: { a: 1 }, thoughtSignature: 'tool-sig', namespace: 'functions' },
       ],
     })
   })
@@ -441,6 +440,33 @@ describe('toPiContext', () => {
       content: [{ type: 'text', text: 'done' }],
     })
     expect(onDegrade).not.toHaveBeenCalled()
+  })
+
+  it('replays saved v2 Anthropic alias metadata with the requested model and signed thinking', () => {
+    const requestedModel = 'claude-haiku-4-5'
+    const responseModel = 'claude-haiku-4-5-20251001'
+    const replayState = {
+      response: {
+        kind: 'pi-ai', version: 2, api: 'anthropic-messages', provider: 'anthropic',
+        model: requestedModel, responseModel, stopReason: 'stop',
+      },
+      blocks: [{ type: 'reasoning', thinkingSignature: 'saved-signature' }],
+    }
+    const onDegrade = vi.fn()
+    const context = toPiContext({
+      provider: 'anthropic', model: requestedModel,
+      messages: [createMessage({
+        role: 'assistant', content: [{ type: 'reasoning', text: 'saved reasoning' }],
+        source: { kind: 'model', provider: 'anthropic', model: requestedModel, replayState },
+      })],
+    }, undefined, onDegrade)
+    const model = getBuiltinModels('anthropic').find(candidate => candidate.id === requestedModel)
+    if (model === undefined) throw new Error('missing Anthropic catalog model')
+    expect(onDegrade).not.toHaveBeenCalled()
+    expect(context.messages[0]).toMatchObject({ model: requestedModel, responseModel })
+    expect(transformMessages(context.messages, model)[0]).toMatchObject({
+      content: [{ type: 'thinking', thinking: 'saved reasoning', thinkingSignature: 'saved-signature' }],
+    })
   })
 
   it('replays all native block kinds when optional metadata is absent', () => {
@@ -650,6 +676,7 @@ describe('toPiContext', () => {
     ['null block', { ...validReplay, blocks: [null] }, 'block 0 must be an object'],
     ['array block', { ...validReplay, blocks: [[]] }, 'block 0 must be an object'],
     ['unknown block type', { ...validReplay, blocks: [{ type: 'audio' }] }, 'block 0 has an unknown type'],
+    ['non-string namespace', { ...validReplay, blocks: [{ type: 'tool-call', namespace: 1 }] }, 'namespace must be a string'],
     ['non-string signature', { ...validReplay, blocks: [{ type: 'text', textSignature: 1 }] }, 'textSignature must be a string'],
     ['non-boolean redaction', { ...validReplay, blocks: [{ type: 'reasoning', redacted: 'yes' }] }, 'redacted must be boolean'],
   ])('degrades malformed replay state: %s', (_name, replayState, message) => {
@@ -660,11 +687,12 @@ describe('toPiContext', () => {
 describe('toStreamChunks', () => {
   it.each([
     ['claude-haiku-4-5', 'claude-haiku-4-5-20251001'],
-    ['claude-fable-5', 'claude-opus-5'],
-    ['claude-opus-5', 'claude-opus-5'],
-  ])('replays Anthropic request %s with native response model %s', async (requestedModel, returnedModel) => {
+    ['claude-opus-5', 'kimi-for-coding'],
+    ['claude-opus-5', undefined],
+  ])('retains signed thinking for Anthropic request %s reported as %s', async (requestedModel, reportedModel) => {
     const native = assistant({
-      api: 'anthropic-messages', provider: 'anthropic', model: returnedModel,
+      api: 'anthropic-messages', provider: 'anthropic', model: requestedModel,
+      ...reportedModel === undefined ? {} : { responseModel: reportedModel },
       providerThinkingLevel: 'high',
       content: [{ type: 'thinking', thinking: 'reason', thinkingSignature: 'signed' }],
     })
@@ -674,8 +702,10 @@ describe('toStreamChunks', () => {
     const finish = chunks.find(chunk => chunk.type === 'finish')
     const replayState: unknown = JSON.parse(JSON.stringify(finish?.replayState))
     expect(replayState).toMatchObject({ response: { model: requestedModel } })
-    if (requestedModel !== returnedModel) {
-      expect(replayState).toMatchObject({ response: { responseModel: returnedModel } })
+    if (reportedModel === undefined) {
+      expect(finish?.replayState?.response).not.toHaveProperty('responseModel')
+    } else {
+      expect(replayState).toMatchObject({ response: { responseModel: reportedModel } })
     }
     const onDegrade = vi.fn()
     const context = toPiContext({
@@ -687,16 +717,14 @@ describe('toStreamChunks', () => {
     }, undefined, onDegrade)
     expect(onDegrade).not.toHaveBeenCalled()
     expect(context.messages[0]).toMatchObject({
-      api: 'anthropic-messages', model: returnedModel, providerThinkingLevel: 'high',
+      api: 'anthropic-messages', model: requestedModel, providerThinkingLevel: 'high',
       content: native.content,
     })
-    const catalog = getBuiltinModels('anthropic')
-    const requested = catalog.find(model => model.id === requestedModel)
-    const returned = catalog.find(model => model.id === returnedModel)
-    if (requested === undefined || returned === undefined) throw new Error('missing Anthropic catalog model')
-    expect(transformMessages(context.messages, returned)[0]).toMatchObject({ content: native.content })
-    expect(transformMessages(context.messages, requested)[0]).toMatchObject({
-      content: requestedModel === returnedModel ? native.content : [{ type: 'text', text: 'reason' }],
+    const requested = getBuiltinModels('anthropic').find(model => model.id === requestedModel)
+    if (requested === undefined) throw new Error('missing Anthropic catalog model')
+    expect(transformMessages(context.messages, requested)[0]).toMatchObject({ content: native.content })
+    expect(transformMessages(context.messages, { ...requested, id: 'other-model' })[0]).toMatchObject({
+      content: [{ type: 'text', text: 'reason' }],
     })
   })
 

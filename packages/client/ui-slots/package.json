@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-slots",
   "description": "Slot registry pure core: typed ordinary Slots and reusable Component Factories, derived props, Store seats, and renderer installation",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -24,7 +24,7 @@
   "license": "MIT",
   "devDependencies": {
     "@singula-ai/alego-client-store": "workspace:*",
-    "@types/react": "~18.3.1",
+    "react": "^18.2.0",
     "@singula-ai/cordis": "workspace:~"
   },
   "files": [

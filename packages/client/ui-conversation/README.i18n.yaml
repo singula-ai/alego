@@ -12,14 +12,17 @@
   en: bac0bf0d7330f3b1
   zh: 84a895f4b26d8490
 /singula-ai-alego-client-ui-conversation/table-of-contents:
-  en: 9c1c4905952fea5e
-  zh: d1506dd6fc1018d1
+  en: eef4f18c3972ccc4
+  zh: 6be65c6ac84ce497
 /singula-ai-alego-client-ui-conversation/conversation-assembly:
-  en: f5c066dd687286a0
-  zh: 95e2228f58567971
+  en: 49429a2a4a3db7aa
+  zh: 06a453cfca7a65b6
+/singula-ai-alego-client-ui-conversation/sent-user-text:
+  en: 348d52ba0f9fa707
+  zh: 11962baaa123298d
 /singula-ai-alego-client-ui-conversation/shell-and-standard-props:
-  en: 3f62970404367bde
-  zh: 483468fda917ed79
+  en: cf5f3b8db37a1c27
+  zh: 3db74fcf0a68b3a0
 /singula-ai-alego-client-ui-conversation/temporary-composer-entries:
   en: bb1244310f5c0382
   zh: 824b84077432b559
@@ -33,5 +36,5 @@
   en: 38d243630d0e4c38
   zh: a58cdc35b664020b
 /singula-ai-alego-client-ui-conversation/known-limitations-and-deferred-work/dev-note:
-  en: 48c7f1797012293f
-  zh: ec56b609a1b5fb9e
+  en: e67f633dc6fe7773
+  zh: e88aeb617ffb74ea

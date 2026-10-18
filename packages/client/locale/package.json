@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-locale",
   "description": "Locale plugin: Host-backed preference, extensible language catalog, browser fallback, and typed built-in dictionaries",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,7 +23,8 @@
       "default": "./lib/client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
@@ -51,7 +52,6 @@
     "@singula-ai/alego-client-ui-settings": "workspace:*",
     "@singula-ai/alego-client-ui-slots": "workspace:*",
     "@singula-ai/alego-package-manifest": "workspace:*",
-    "@types/react": "~18.3.1",
     "react": "^18.2.0",
     "@singula-ai/alego-client-connection": "workspace:*",
     "@singula-ai/alego-settings": "workspace:*"
@@ -60,6 +60,7 @@
     "@singula-ai/schemastery": "workspace:~"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"

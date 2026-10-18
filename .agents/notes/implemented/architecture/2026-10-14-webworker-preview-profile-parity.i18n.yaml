@@ -1,0 +1,37 @@
+# Bilingual-pair consistency record for 2026-10-14-webworker-preview-profile-parity.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-10-14-webworker-preview-profile-parity.md
+/agent-note-boot-the-preview-worker-from-the-shipped-profile-and-fetch-lazy-chunks-on-demand:
+  en: e5e84d050c7dcce1
+  zh: 08ecddd927be034d
+/agent-note-boot-the-preview-worker-from-the-shipped-profile-and-fetch-lazy-chunks-on-demand/problem:
+  en: f31f47247f65c944
+  zh: 66ba779898d32bff
+/agent-note-boot-the-preview-worker-from-the-shipped-profile-and-fetch-lazy-chunks-on-demand/decision:
+  en: a15c7c13f167e5ac
+  zh: 63bcc2ef60c2f344
+/agent-note-boot-the-preview-worker-from-the-shipped-profile-and-fetch-lazy-chunks-on-demand/decision/boot-the-same-profile-as-the-served-web-deployment:
+  en: 81fd52fea8d86489
+  zh: 5983b9e78323e6f9
+/agent-note-boot-the-preview-worker-from-the-shipped-profile-and-fetch-lazy-chunks-on-demand/decision/node-internal-module-interfaces-in-the-worker:
+  en: 37d8e809eaa21d25
+  zh: 8c7c31bd6f45c823
+/agent-note-boot-the-preview-worker-from-the-shipped-profile-and-fetch-lazy-chunks-on-demand/decision/inspector-degradation-on-platforms-without-worker-threads:
+  en: 608b24ca97ab5bca
+  zh: 94bb28377c856b2e
+/agent-note-boot-the-preview-worker-from-the-shipped-profile-and-fetch-lazy-chunks-on-demand/decision/separate-archives-for-lazily-loaded-chunks:
+  en: bb9f99d20a52a197
+  zh: 042bb4d7045f4c9c
+/agent-note-boot-the-preview-worker-from-the-shipped-profile-and-fetch-lazy-chunks-on-demand/decision/watching-and-client-plugin-delivery:
+  en: 829587074c02cade
+  zh: 5b652d0dc0ebb828
+/agent-note-boot-the-preview-worker-from-the-shipped-profile-and-fetch-lazy-chunks-on-demand/alternatives-considered:
+  en: 99ee505e82fa9c7c
+  zh: 448bc0e160424cbf
+/agent-note-boot-the-preview-worker-from-the-shipped-profile-and-fetch-lazy-chunks-on-demand/consequences:
+  en: 0a8b72f93427ba12
+  zh: c3c623aed303336a
+/agent-note-boot-the-preview-worker-from-the-shipped-profile-and-fetch-lazy-chunks-on-demand/testing:
+  en: fbf9a689cd201ee8
+  zh: 09a6d3796ffb559d

@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-product-analytics",
   "description": "Desktop product event collection and authenticated Host reporting",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -34,7 +34,8 @@
     },
     "./types": {
       "types": "./lib/types/events.d.ts"
-    }
+    },
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
@@ -63,9 +64,12 @@
     "@singula-ai/alego-host-webserver": "workspace:*",
     "@singula-ai/alego-settings": "workspace:*",
     "@singula-ai/cordis-plugin-loader": "workspace:~",
-    "@singula-ai/alego-otel": "workspace:*"
+    "@singula-ai/alego-otel": "workspace:*",
+    "@singula-ai/alego-app-boot": "workspace:*",
+    "@singula-ai/alego-loader-smoke": "workspace:*"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.d.ts",
@@ -77,6 +81,6 @@
   "dependencies": {
     "@singula-ai/alego-typert-protocol": "workspace:*",
     "@singula-ai/schemastery": "workspace:~",
-    "zod": "^4.4.3"
+    "zod": "4.4.3"
   }
 }

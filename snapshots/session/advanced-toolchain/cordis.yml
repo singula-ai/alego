@@ -1,0 +1,40 @@
+# Native inspection, scoped PTC, then native subagents and workflow.
+- id: agent-default-model
+  name: '@singula-ai/alego-agent-default-model'
+  config:
+    provider: deepseek-official
+    model: deepseek-v4-pro
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: !!js 'process.env.ALEGO_SNAPSHOT === undefined ? ''zstd'' : ''none'''
+
+- id: agent-instructions
+  name: '@singula-ai/alego-agent-instructions'
+  config:
+    maxBytes: 65536
+
+- id: tools
+  name: '@singula-ai/alego-tools'
+  config:
+    mode: native
+
+- id: system-prompt
+  name: '@singula-ai/alego-system-prompt'
+  config:
+    personaPrefix: |
+      You are a coding assistant powered by the {{model}} model.
+
+      Verify your work by running the code or tests. Keep answers brief and factual.
+
+- insert:
+    - id: cordis-host-runner
+      name: '@singula-ai/alego-cordis-host-runner'
+    - id: cordis-inspect-providers
+      name: '@singula-ai/alego-tool-cordis/host'
+    - id: tool-cordis
+      name: '@singula-ai/alego-tool-cordis'
+    - id: advanced-toolchain-presentation
+      name: './presentation.mjs'

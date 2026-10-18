@@ -6,7 +6,7 @@ import { createSessionFormatCatalogWithChildren } from '@singula-ai/alego-sessio
 import type { SessionEvent } from '@singula-ai/alego-session'
 import type { SessionFormatJsonObject } from '@singula-ai/alego-session-format'
 import { SessionFormatUnsupportedError, SessionPersistenceCorruptionError } from '@singula-ai/alego-session-persistence'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import { createHash } from 'node:crypto'
 import { mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'

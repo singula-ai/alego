@@ -1,0 +1,44 @@
+- insert:
+    - id: subagent-model-selection-settings
+      name: '@singula-ai/alego-tool-subagent/model-selection-settings'
+    - id: agent-preset-registry
+      name: '@singula-ai/alego-agent-preset-registry'
+      config:
+        default: parent
+    - id: preset-parent
+      name: '@singula-ai/alego-agent-preset'
+      config:
+        id: parent
+        name: Parent
+        description: Headless parent tools.
+        plugins: []
+    - id: preset-reviewer
+      name: '@singula-ai/alego-agent-preset'
+      config:
+        id: reviewer
+        name: Reviewer
+        description: File review.
+        plugins:
+          - id: persona
+            name: '@singula-ai/alego-persona'
+            config:
+              prefix: You are a file reviewer. Inspect the requested files and report your findings.
+          - id: tool-fs
+            name: '@singula-ai/alego-tool-fs'
+          - id: tool-subagent
+            name: '@singula-ai/alego-tool-subagent'
+            config:
+              provider: spawn
+              toolName: reviewer_delegate
+              modelSelectionSettings: true
+    - id: parent-agent-preset
+      name: '../../../packages/test-support/session-snapshot/tests/fixtures/parent-agent-preset.ts'
+
+- id: tool-subagent
+  name: '@singula-ai/alego-tool-subagent'
+  inject: [agentPresets]
+  config:
+    provider: spawn
+    toolName: subagent
+    maxDepth: 1
+    allowedAgentPresets: [reviewer]

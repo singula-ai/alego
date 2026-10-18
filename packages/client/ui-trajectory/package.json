@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-trajectory",
   "description": "Trajectory event ledger with an interactive timing overview: pure-consumer plugin registering into the conversation ViewMap (no service)",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,7 +23,8 @@
       "default": "./lib/client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
@@ -51,11 +52,10 @@
     "@singula-ai/alego-client-test-runtime": "workspace:*",
     "@singula-ai/alego-client-ui-primitives": "workspace:*",
     "@singula-ai/alego-client-ui-conversation": "workspace:*",
+    "@singula-ai/alego-util-values": "workspace:*",
     "@singula-ai/alego-client-ui-slots": "workspace:*",
     "@singula-ai/alego-compaction": "workspace:*",
     "@singula-ai/alego-tools": "workspace:*",
-    "@types/react": "~18.3.1",
-    "@types/react-dom": "~18.3.0",
     "@singula-ai/cordis": "workspace:~",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -67,10 +67,11 @@
     "@singula-ai/alego-client-ui-session": "workspace:*",
     "@singula-ai/alego-llm": "workspace:*",
     "@singula-ai/alego-attachment": "workspace:*",
-    "@tanstack/react-virtual": "^3.14.9",
+    "@tanstack/react-virtual": "3.14.10",
     "diff": "^9.0.0"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"

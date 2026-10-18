@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-13-explicit-worktree-creation.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-09-13-explicit-worktree-creation.md
+/agent-note-explicit-worktree-creation:
+  en: d9ac63f4dc35ed10
+  zh: 22ecade837d8f8c4
+/agent-note-explicit-worktree-creation/problem:
+  en: 12ab239ab0c58e31
+  zh: c32874442ce66041
+/agent-note-explicit-worktree-creation/decision:
+  en: 866b8e5dd6aac4f0
+  zh: 3e627e964d8940b6
+/agent-note-explicit-worktree-creation/alternatives-considered:
+  en: 83277456db96100e
+  zh: 078478fa4bd769a1
+/agent-note-explicit-worktree-creation/consequences:
+  en: 083851db27cc4846
+  zh: b3db48d41356c9cf

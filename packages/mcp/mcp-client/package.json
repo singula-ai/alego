@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-mcp-client",
   "description": "MCP client bridge: connects to MCP servers and registers their tools on ctx.tools",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@singula-ai/schemastery": "workspace:~",
-    "@modelcontextprotocol/client": "2.0.0",
+    "@modelcontextprotocol/client": "2.2.0",
     "@singula-ai/alego-util-values": "workspace:*"
   },
   "devDependencies": {
@@ -50,13 +50,13 @@
     "@singula-ai/alego-subprocess": "workspace:*",
     "@singula-ai/alego-timeout": "workspace:*",
     "@singula-ai/alego-tools": "workspace:*",
-    "@modelcontextprotocol/server-everything": "^2026.7.4",
-    "@modelcontextprotocol/server-filesystem": "^2026.7.4",
+    "@modelcontextprotocol/server-everything": "^2026.8.31",
+    "@modelcontextprotocol/server-filesystem": "^2026.8.31",
     "@singula-ai/cordis": "workspace:~",
     "@singula-ai/alego-http-proxy": "workspace:*",
-    "@modelcontextprotocol/server": "2.0.0",
+    "@modelcontextprotocol/server": "2.2.0",
     "@modelcontextprotocol/node": "2.0.0",
-    "zod": "^4.4.3",
+    "zod": "4.4.3",
     "@singula-ai/alego-mcp-resources": "workspace:*",
     "@singula-ai/alego-system-prompt": "workspace:*"
   },

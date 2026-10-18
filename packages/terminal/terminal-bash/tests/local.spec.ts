@@ -1,4 +1,5 @@
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { provideWorkingDirectoryFixture, unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 import { spawnSync } from 'node:child_process'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -16,7 +17,6 @@ import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
 import { resolvePwshPath } from '@singula-ai/alego-pwsh-local/src/resolve.ts'
 import * as ptyLocal from '@singula-ai/alego-terminal-bash'
-import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 const roots: string[] = []
 const contexts: Context[] = []
@@ -59,6 +59,7 @@ async function harness(
   const root = mkdtempSync(join(tmpdir(), 'alego-pty-local-'))
   roots.push(root)
   const ctx = new Context()
+  provideWorkingDirectoryFixture(ctx)
   contexts.push(ctx)
   await ctx.plugin(AgentRegistry)
   await ctx.plugin(TerminalSessionService)

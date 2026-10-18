@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto'
-import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises'
+import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { createRequire } from 'node:module'
 import { join } from 'node:path'
@@ -8,12 +8,15 @@ import { load } from 'js-yaml'
 import { createDesktopUploadPlan } from '../scripts/desktop-upload-plan.ts'
 import { desktopUpdateMetadataFilename } from '../scripts/desktop-auto-update-environment.mjs'
 import type { DesktopPackageTargetName } from '../scripts/package-target.ts'
+import { createDesktopCos } from '../scripts/desktop-cos.ts'
+import { uploadDesktopRelease } from '../scripts/desktop-upload-run.ts'
+import { startCosLoopback } from './cos-loopback.ts'
 
 const temporaryDirectories: string[] = []
 const TEST_ORIGIN = 'https://desktop-updates.example.com'
-const TEST_BUCKET = 'test-download-bucket'
+const TEST_BUCKET = 'test-download-bucket-1250000000'
 const RELEASE_ID = '0123456789abcdef0123456789abcdef'
-const PRODUCTION_BUCKET = 'production-download-bucket'
+const PRODUCTION_BUCKET = 'production-download-bucket-1250000000'
 const require = createRequire(import.meta.url)
 const { createBlockmap } = require('app-builder-lib/out/targets/differentialUpdateInfoBuilder.js') as {
   createBlockmap: (file: string, target: object, packager: { info: { emitArtifactBuildCompleted(event: object): Promise<void> } },
@@ -35,6 +38,7 @@ async function fixture(
   target: DesktopPackageTargetName,
   version = '1.2.3',
   environment: 'test' | 'production' = 'test',
+  channel: 'nightly' | 'latest' = 'nightly',
 ): Promise<Fixture> {
   const root = await mkdtemp(join(tmpdir(), 'alego-desktop-upload-'))
   temporaryDirectories.push(root)
@@ -52,6 +56,7 @@ async function fixture(
     : 'https://alego-updates.example.com'
   await writeFile(join(artifactsRoot, `${target}-release.json`), `${JSON.stringify({
     schemaVersion: 1,
+    channel,
     target,
     version,
     environment,
@@ -63,7 +68,7 @@ async function fixture(
     await writeFile(join(artifactsRoot, `${base}.zip`), zip)
     await writeFile(join(artifactsRoot, `${base}.zip.blockmap`), 'blockmap')
     await writeFile(join(artifactsRoot, `${base}.dmg`), 'notarized DMG fixture')
-    await writeFile(join(artifactsRoot, desktopUpdateMetadataFilename(version, 'darwin')), `${JSON.stringify({
+    await writeFile(join(artifactsRoot, desktopUpdateMetadataFilename(version, 'darwin', channel)), `${JSON.stringify({
       version,
       path: `${base}.zip`,
       files: [{ url: `${base}.zip`, size: Buffer.byteLength(zip), sha512: digest(zip) }],
@@ -75,7 +80,7 @@ async function fixture(
     const info = await createBlockmap(join(artifactsRoot, `${base}.exe`), {},
       { info: { emitArtifactBuildCompleted: async () => {} } }, `${base}.exe`)
     expect(Object.hasOwn(info, 'blockMapSize')).toBe(false)
-    await writeFile(join(artifactsRoot, desktopUpdateMetadataFilename(version, 'win32')), `${JSON.stringify({
+    await writeFile(join(artifactsRoot, desktopUpdateMetadataFilename(version, 'win32', channel)), `${JSON.stringify({
       version,
       path: `${base}.exe`,
       files: [{
@@ -90,12 +95,14 @@ async function fixture(
     artifactsRoot,
     environment: environment === 'test'
       ? {
+        ALEGO_DESKTOP_UPDATE_CHANNEL: channel,
         ALEGO_DESKTOP_AUTO_UPDATE_ENV: 'test',
         DOWNLOAD_TEST_ORIGIN: TEST_ORIGIN,
         DOWNLOAD_TEST_RELEASE_ID: RELEASE_ID,
         DOWNLOAD_TEST_COS_BUCKET: TEST_BUCKET,
       }
       : {
+        ALEGO_DESKTOP_UPDATE_CHANNEL: channel,
         ALEGO_DESKTOP_AUTO_UPDATE_ENV: 'production',
         DOWNLOAD_PROD_ORIGIN: 'https://alego-updates.example.com',
         DOWNLOAD_PROD_COS_BUCKET: PRODUCTION_BUCKET,
@@ -111,6 +118,74 @@ afterEach(async () => {
 })
 
 describe('desktop upload plan', () => {
+  it('uploads only the selected latest installer to each deployment using the existing COS transport', async () => {
+    const published = []
+    for (const environment of ['production', 'test'] as const) {
+      for (const target of ['mac-arm64', 'mac-x64', 'win-x64'] as const) {
+        const paths = await fixture(target, '1.2.3', environment)
+        const plan = await createDesktopUploadPlan(target, { ...paths, latest: true })
+        const loopback = await startCosLoopback()
+        try {
+          const cos = createDesktopCos({ secretId: 'fixture-id', secretKey: 'fixture-secret' })
+          loopback.redirect(cos)
+          const directory = await uploadDesktopRelease(plan, cos, join(paths.appRoot, 'records'))
+          expect(plan.artifacts).toHaveLength(1)
+          const artifact = plan.artifacts[0]!
+          expect(loopback.requests).toHaveLength(1)
+          const request = loopback.requests[0]!
+          expect(request.method).toBe('PUT')
+          expect(request.path).toBe(`/${artifact.key}`)
+          expect(request.body).toEqual(await readFile(artifact.path))
+          expect(JSON.parse(await readFile(join(directory, 'result.json'), 'utf8'))).toMatchObject({
+            success: true, confirmedPuts: 1, publicReadback: 'not-performed',
+          })
+          published.push({ environment, target, bucket: plan.bucket, publicUrl: plan.publicUrl,
+            filename: artifact.filename, key: artifact.key, contentType: artifact.contentType,
+            channelMetadata: artifact.channelMetadata })
+        } finally {
+          await loopback.close()
+        }
+      }
+    }
+    await expect(`${JSON.stringify(published, null, 2)}\n`).toMatchFileSnapshot('./expected/latest-installer-uploads.json')
+  })
+
+  it('allows an explicitly selected production prerelease at the fixed installer URL', async () => {
+    const paths = await fixture('win-x64', '1.2.3-alpha.4', 'production')
+    const plan = await createDesktopUploadPlan('win-x64', { ...paths, latest: true })
+    expect(plan.version).toBe('1.2.3-alpha.4')
+    expect(plan.artifacts).toHaveLength(1)
+    expect(plan.artifacts[0]).toMatchObject({
+      path: join(paths.artifactsRoot, 'alego-1.2.3-alpha.4-win-x64.exe'),
+      key: 'desktop/alego-latest-windows-x64.exe', channelMetadata: false,
+    })
+  })
+
+  it.each(['completion', 'deployment', 'checksum'] as const)('rejects invalid %s before planning a latest upload', async (failure) => {
+    const paths = await fixture('win-x64', '1.2.3', 'production')
+    if (failure === 'completion') await rm(join(paths.artifactsRoot, 'win-x64-release.json'))
+    if (failure === 'deployment') Object.assign(paths.environment, {
+      ALEGO_DESKTOP_AUTO_UPDATE_ENV: 'test', DOWNLOAD_TEST_ORIGIN: TEST_ORIGIN,
+      DOWNLOAD_TEST_RELEASE_ID: RELEASE_ID, DOWNLOAD_TEST_COS_BUCKET: TEST_BUCKET,
+    })
+    if (failure === 'checksum') {
+      const path = join(paths.artifactsRoot, 'alego-1.2.3-win-x64.exe')
+      await writeFile(path, Buffer.alloc((await readFile(path)).length))
+    }
+    await expect(createDesktopUploadPlan('win-x64', { ...paths, latest: true }))
+      .rejects.toThrow(failure === 'checksum' ? /SHA-512/u : /completion record/u)
+  })
+
+  it.each(['test', 'production'] as const)('isolates stable latest packages from nightly in %s', async (environment) => {
+    const nightly = await createDesktopUploadPlan('win-x64', await fixture('win-x64', '1.2.3', environment, 'nightly'))
+    const latest = await createDesktopUploadPlan('win-x64', await fixture('win-x64', '1.2.3', environment, 'latest'))
+    expect(latest.artifacts.filter(file => file.channelMetadata).map(file => file.filename)).toEqual(['latest.yml'])
+    expect(nightly.artifacts.filter(file => file.channelMetadata).map(file => file.filename)).toEqual(['nightly.yml'])
+    expect(latest.artifacts.every(file => !nightly.artifacts.some(other => other.key === file.key))).toBe(true)
+    const prerelease = await fixture('win-x64', '1.2.3-alpha.1', environment, 'latest')
+    await expect(createDesktopUploadPlan('win-x64', prerelease)).rejects.toThrow(/latest requires a stable version/u)
+  })
+
   it('publishes fixed feeds referencing versioned binaries without overriding CDN cache policy', async () => {
     const paths = await fixture('win-x64', '1.2.3', 'production')
     const plan = await createDesktopUploadPlan('win-x64', paths)
@@ -118,7 +193,6 @@ describe('desktop upload plan', () => {
       'alego-desk/bin/win-x64/alego-1.2.3-win-x64.exe',
       'alego-desk/bin/win-x64/alego-1.2.3-win-x64.exe.blockmap',
       'alego-desk/feeds/win-x64/nightly.yml',
-      'alego-desk/feeds/win-x64/latest.yml',
     ])
     expect(load(plan.artifacts[2]!.contents!)).toMatchObject({
       version: '1.2.3',
@@ -127,7 +201,6 @@ describe('desktop upload plan', () => {
         sha512: digest('signed NSIS executable fixture'),
       }],
     })
-    expect(plan.artifacts[2]!.contents).toBe(plan.artifacts[3]!.contents)
     expect(plan.artifacts.every(artifact => !('cacheControl' in artifact))).toBe(true)
   })
 
@@ -145,7 +218,6 @@ describe('desktop upload plan', () => {
       'alego-1.2.3-mac-arm64.zip',
       'alego-1.2.3-mac-arm64.zip.blockmap',
       'nightly-mac.yml',
-      'latest-mac.yml',
     ])
     expect(plan.artifacts.at(-1)).toMatchObject({
       channelMetadata: true,
@@ -198,7 +270,6 @@ describe('desktop upload plan', () => {
       'alego-2.0.0-win-x64.exe',
       'alego-2.0.0-win-x64.exe.blockmap',
       'nightly.yml',
-      'latest.yml',
     ])
     expect(plan).toMatchObject({
       publicUrl: 'https://alego-updates.example.com/alego-desk/feeds/win-x64/',
@@ -230,6 +301,20 @@ describe('desktop upload plan', () => {
         DOWNLOAD_TEST_COS_BUCKET: TEST_BUCKET,
       },
     })).rejects.toThrow(/completion record.*test/u)
+  })
+
+  it('validates retained builds against their original product version after the checkout advances', async () => {
+    const paths = await fixture('mac-arm64', '1.2.3')
+    await writeFile(join(paths.repositoryRoot, 'package.json'), '{"version":"2.0.0"}\n')
+    await writeFile(join(paths.appRoot, 'package.json'), '{"version":"2.0.0"}\n')
+    await expect(createDesktopUploadPlan('mac-arm64', paths)).rejects.toThrow(/completion record/u)
+    const plan = await createDesktopUploadPlan('mac-arm64', { ...paths, packagedProductVersion: '1.2.3' })
+    expect(plan.version).toBe('1.2.3')
+    await expect(createDesktopUploadPlan('mac-arm64', { ...paths, packagedProductVersion: '1.2.4' }))
+      .rejects.toThrow(/completion record/u)
+    await writeFile(join(paths.artifactsRoot, 'alego-1.2.3-mac-arm64.zip'), 'tampered')
+    await expect(createDesktopUploadPlan('mac-arm64', { ...paths, packagedProductVersion: '1.2.3' }))
+      .rejects.toThrow(/size.*metadata/u)
   })
 
   it('rejects stale architecture metadata and modified updater bytes', async () => {

@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-open-in-app",
   "description": "Web \"Open In...\" controls: the Session-header split button opening the workspace directory in an installed application, and the document preview's default-application controls for one file",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,9 +23,11 @@
       "default": "./lib/client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"
@@ -69,10 +71,10 @@
     "@singula-ai/alego-client-ui-renderer": "workspace:*",
     "@singula-ai/alego-client-ui-session": "workspace:*",
     "@singula-ai/alego-client-ui-sidebar-documentpreview": "workspace:*",
+    "@singula-ai/alego-client-ui-sidebar-files": "workspace:*",
     "@singula-ai/alego-client-ui-slots": "workspace:*",
     "@singula-ai/alego-host-open-in-app": "workspace:*",
     "@singula-ai/alego-session": "workspace:*",
-    "@types/react": "~18.3.1",
     "react": "^18.2.0",
     "@singula-ai/alego-client-ui-deliverables": "workspace:*",
     "@singula-ai/alego-native-command": "workspace:*",

@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-agent-loop-testkit",
   "description": "Prerequisite mounting, production AgentLoop drivers, and Inbox stubs for tests",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -34,7 +34,9 @@
     "@singula-ai/alego-session-projection": "workspace:*",
     "@singula-ai/alego-system-prompt": "workspace:*",
     "@singula-ai/alego-tools": "workspace:*",
-    "@singula-ai/cordis": "workspace:~"
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-working-directory": "workspace:*",
+    "@singula-ai/alego-fs-local": "workspace:*"
   },
   "dependencies": {},
   "devDependencies": {
@@ -45,6 +47,8 @@
     "@singula-ai/alego-session-projection": "workspace:*",
     "@singula-ai/alego-system-prompt": "workspace:*",
     "@singula-ai/alego-tools": "workspace:*",
-    "@singula-ai/cordis": "workspace:~"
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-working-directory": "workspace:*",
+    "@singula-ai/alego-fs-local": "workspace:*"
   }
 }

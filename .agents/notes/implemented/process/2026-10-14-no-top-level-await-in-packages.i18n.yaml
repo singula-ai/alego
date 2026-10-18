@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-10-14-no-top-level-await-in-packages.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-10-14-no-top-level-await-in-packages.md
+/agent-note-package-sources-must-not-use-top-level-await:
+  en: 74fc81cbbcf45308
+  zh: fd0e34bacac37423
+/agent-note-package-sources-must-not-use-top-level-await/problem:
+  en: 6caf2fcc2013c33f
+  zh: 4fea20040e8496d6
+/agent-note-package-sources-must-not-use-top-level-await/decision:
+  en: 388cc0e03adf8027
+  zh: 803a4efde784a273
+/agent-note-package-sources-must-not-use-top-level-await/alternatives-considered:
+  en: 5f19be0393f39abc
+  zh: ed0414b54eb17678
+/agent-note-package-sources-must-not-use-top-level-await/consequences:
+  en: d609ff0b1ce0c99a
+  zh: d60aa801ea72c2dd
+/agent-note-package-sources-must-not-use-top-level-await/testing:
+  en: 55adbea10005be4b
+  zh: 8c95636d2a0fdad4

@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import Schema from '@singula-ai/schemastery'
 import type { SettingsNamespaceView } from '@singula-ai/alego-api-remotes/client'
 import type { JsonValue } from '@singula-ai/alego-util-values'
-import { bindSnapshotSelector, RemoteError } from '@singula-ai/alego-client-test-runtime'
+import { allowAllAccess, bindSnapshotSelector, RemoteError } from '@singula-ai/alego-client-test-runtime'
 import { DeepSeekOnboardingDialog } from '../src/client/DeepSeekOnboardingDialog.tsx'
 import type { DeepSeekOnboardingDialogProps } from '../src/client/DeepSeekOnboardingDialog.tsx'
 import { SettingsDescribeMirror } from '@singula-ai/alego-client-ui-settings/src/client/settings-mirror.ts'
@@ -152,6 +152,7 @@ function harness(options: {
     useSessionStatus,
     usePanelInfo, useSessionRetainInfo: () => undefined, useResource,
     useWorkspaces: unusedHook,
+    ...allowAllAccess,
     controller,
     useModels: bindSnapshotSelector(controller.store),
     operations,

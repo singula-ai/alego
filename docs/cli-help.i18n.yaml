@@ -1,0 +1,34 @@
+# Bilingual-pair consistency record for cli-help.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write docs/cli-help.md
+/:
+  en: d11ca88bdc409249
+  zh: d11ca88bdc409249
+/alego-cli-help:
+  en: addbb2d03cfe125d
+  zh: 34ba78ce224fa877
+/alego-cli-help/contents:
+  en: a0a56bc214a1ec2d
+  zh: 9aeeb7ccabcf2b50
+/alego-cli-help/alego:
+  en: b2ca487e23433909
+  zh: eb946cc5fc5ee6b2
+/alego-cli-help/alego-plugin:
+  en: 4b0912249b6a8746
+  zh: 04e3902728cc2b24
+/alego-cli-help/alego-acp:
+  en: 762bc982d51ebdbe
+  zh: d61d08692d617bae
+/alego-cli-help/alego-headless:
+  en: 9763ddad934889b1
+  zh: 8ae144a9ba5c2935
+/alego-cli-help/alego-sdk:
+  en: 9a3de1165ca5e1ed
+  zh: 912007a90fa3025e
+/alego-cli-help/alego-sdk-minimal:
+  en: b07803dae7625f7b
+  zh: d4095901a67e7e8f
+/alego-cli-help/alego-web:
+  en: 3c1ff04ac808c75b
+  zh: 1b9cc6306e2fde49

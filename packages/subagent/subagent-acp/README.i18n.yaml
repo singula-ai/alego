@@ -18,11 +18,11 @@
   en: 78623be74507229d
   zh: b0ed9c9d0c6eb040
 /singula-ai-alego-subagent-acp/use-this-package/when-to-choose-it:
-  en: 56946ab7637bb8f9
-  zh: c54c4da98092dd9c
+  en: d18adbe82d4a362d
+  zh: 3b9c0cca1f67a587
 /singula-ai-alego-subagent-acp/use-this-package/configuration:
-  en: 387339fa0f0ea157
-  zh: 620a38c6e7ef4183
+  en: 3fe3b0be3398eca9
+  zh: 4d086347415d680f
 /singula-ai-alego-subagent-acp/use-this-package/what-you-get:
   en: 0a809bd7b8cebddc
   zh: e2c1edf8f485e8f8
@@ -39,8 +39,8 @@
   en: c98e6bcd784bbf8a
   zh: b96218f6e639755c
 /singula-ai-alego-subagent-acp/understand-the-implementation/start-and-ownership-flow:
-  en: c0f7f78468f84c3b
-  zh: c9cb417d84d868ce
+  en: 4a857c21457f917d
+  zh: ef980a48deb2fca0
 /singula-ai-alego-subagent-acp/understand-the-implementation/stop-reason-mapping:
   en: 88bb2b62c6e2f114
   zh: f6b720ca8ce90343
@@ -57,8 +57,8 @@
   en: 05e6180f1498fdf9
   zh: 2b05d2b97bfa67da
 /singula-ai-alego-subagent-acp/model-experience/child-agent-request/what-the-model-sees:
-  en: f7f619ca78d74c6f
-  zh: f642dc7b4ff69a10
+  en: 5d8a1acb2e0510ce
+  zh: 34b446c2770f35ff
 /singula-ai-alego-subagent-acp/model-experience/child-agent-request/token-effect:
   en: c0b78d334d5d0a9c
   zh: d54bf504933e132d
@@ -69,17 +69,17 @@
   en: 75d061c2151624a7
   zh: 71e58e020b60ff90
 /singula-ai-alego-subagent-acp/model-experience/parent-tool-result-indirectly/what-the-model-sees:
-  en: 27c06d3d57e00a8f
-  zh: 31f0092a110d0826
+  en: 4a78f9e66ef24649
+  zh: 2be24bad3bc8787d
 /singula-ai-alego-subagent-acp/model-experience/parent-tool-result-indirectly/token-effect:
-  en: 600ac97cdd163650
-  zh: cd26bb541f56699b
+  en: 4fae54e2ff0c4874
+  zh: 1574bfe874f66a1f
 /singula-ai-alego-subagent-acp/model-experience/parent-tool-result-indirectly/kv-cache-effect:
   en: f5d5f97a153f7c70
   zh: 3d6bc05b9eadfbc2
 /singula-ai-alego-subagent-acp/known-limitations-and-deferred-work:
-  en: 53a0e7fb49fe6e23
-  zh: 51096d4eb51fb4ba
+  en: eb44a9bebc00b3f7
+  zh: 6e65866e85086207
 /singula-ai-alego-subagent-acp/known-limitations-and-deferred-work/dev-note:
-  en: 5f1add5d61924059
-  zh: ab32b1c9d3433681
+  en: d8323b3200db6ac9
+  zh: f8a5273b887b9552

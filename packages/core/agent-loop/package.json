@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-agent-loop",
   "description": "The concrete agent loop plugin for the Alego",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -18,22 +18,18 @@
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
     },
-    "./invariant": {
-      "types": "./lib/types/invariant.d.ts",
-      "default": "./lib/invariant.js"
-    },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
-    "lib/invariant.js",
     "lib/types/**/*.d.ts"
   ],
   "license": "MIT",
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:~",
     "@singula-ai/alego-agent": "workspace:*",
-    "@singula-ai/alego-invariants": "workspace:*",
     "@singula-ai/alego-llm": "workspace:*",
     "@singula-ai/alego-scope": "workspace:*",
     "@singula-ai/alego-session": "workspace:*",
@@ -46,14 +42,13 @@
     "@singula-ai/alego-brand": "workspace:*",
     "@singula-ai/alego-util-values": "workspace:*",
     "@singula-ai/schemastery": "workspace:~",
-    "zod": "^4.4.3"
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@singula-ai/alego-llm-deepseek-api-key": "workspace:*",
     "@singula-ai/cordis": "workspace:~",
     "@singula-ai/alego-llm-pi-ai": "workspace:*",
     "@singula-ai/alego-agent": "workspace:*",
-    "@singula-ai/alego-invariants": "workspace:*",
     "@singula-ai/alego-llm": "workspace:*",
     "@singula-ai/alego-scope": "workspace:*",
     "@singula-ai/alego-session": "workspace:*",

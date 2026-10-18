@@ -1,12 +1,14 @@
 /** Cold-safe Session list and search projection. */
 
+import { performance } from 'node:perf_hooks'
+import { scheduler } from 'node:timers/promises'
 import type { Context } from '@singula-ai/cordis'
 import type {} from '@singula-ai/alego-agent-preset-registry'
 import type { ImageAttachmentLimits } from '@singula-ai/alego-attachment'
 import type { Session, SessionEvent, SessionHeader, SessionId } from '@singula-ai/alego-session'
 import type { ProjectionSnapshot } from '@singula-ai/alego-session-projection'
 import type {} from '@singula-ai/alego-session-projection-cache'
-import { SessionQueryError, type SessionSearchCursor } from '@singula-ai/alego-session-query'
+import { SessionQueryError, type SessionRecord, type SessionSearchCursor } from '@singula-ai/alego-session-query'
 import { RemoteError } from '@singula-ai/alego-typert-protocol'
 import { z } from 'zod'
 import {
@@ -74,8 +76,11 @@ export function truncateUnicodeCodePoints(value: string, maximum: number): strin
 
 /** Owns list projection registration, bounded cold summaries, and authorized search. */
 export class ApiSessionList {
-  /** @param ctx - Host context carrying Session, query, persistence, and projection services. */
-  constructor(private readonly ctx: Context) {
+  /**
+   * @param ctx - Host context carrying Session, query, persistence, and projection services.
+   * @param workSliceMs - Resolved positive integral list-work budget in milliseconds.
+   */
+  constructor(private readonly ctx: Context, private readonly workSliceMs: number) {
     ctx.sessionProjections.register<'sessionListMetadata', SessionListMetadata>({
       key: 'sessionListMetadata',
       stateSchema: sessionListMetadataSchema,
@@ -111,6 +116,7 @@ export class ApiSessionList {
       sessionId: session.id,
       updatedAt: updatedAt(session.header, metadata),
       agentAvailable: this.ctx.agents.get(session.id)?.session === session,
+      formatStatus: 'current',
       running: this.ctx.agents.get(session.id)?.status === 'running',
       blank: metadata?.blank ?? session.seq === 0,
       ...listFields(session.header),
@@ -120,7 +126,7 @@ export class ApiSessionList {
 
   /**
    * Read every visible attached and persisted Session without activating an Agent.
-   * @param signal - optional cancellation for persistence reads.
+   * @param signal - optional cancellation for persistence reads and summary generation.
    * @returns visible Session summaries ordered by activity.
    */
   async list(signal?: AbortSignal): Promise<SessionSummary[]> {
@@ -128,28 +134,44 @@ export class ApiSessionList {
     const records = await this.ctx.sessionQuery.listSessions(signal)
     signal?.throwIfAborted()
     const items: SessionSummary[] = []
-    const cold: SessionHeader[] = []
+    const cold: SessionRecord[] = []
+    let yieldDeadline = performance.now() + this.workSliceMs
     for (const record of records) {
+      signal?.throwIfAborted()
       const live = this.ctx.sessions.get(record.header.id)
       if (live !== undefined) {
         items.push(this.summaryFor(live))
-        continue
+      } else if (record.header.cwd !== undefined) {
+        cold.push(record)
       }
-      if (record.header.cwd === undefined) continue
-      cold.push(record.header)
+      if (performance.now() >= yieldDeadline) {
+        await scheduler.yield()
+        signal?.throwIfAborted()
+        yieldDeadline = performance.now() + this.workSliceMs
+      }
     }
-    for (const header of cold) items.push(this.summarizeCold(header))
+    for (const record of cold) {
+      signal?.throwIfAborted()
+      items.push(this.summarizeCold(record))
+      if (performance.now() >= yieldDeadline) {
+        await scheduler.yield()
+        signal?.throwIfAborted()
+        yieldDeadline = performance.now() + this.workSliceMs
+      }
+    }
+    signal?.throwIfAborted()
     items.sort((left, right) => right.updatedAt - left.updatedAt)
     return items
   }
 
-  private summarizeCold(header: SessionHeader): SessionSummary {
+  private summarizeCold({ header, formatStatus }: SessionRecord): SessionSummary {
     const projections = this.projectionsFor(header, undefined)
     const metadata = projections?.values.sessionListMetadata
     return {
       sessionId: header.id,
       updatedAt: updatedAt(header, metadata),
       agentAvailable: false,
+      ...(formatStatus === undefined ? {} : { formatStatus }),
       running: false,
       // A large, metadata-less, or inaccessible cache miss remains unknown and visible.
       blank: metadata?.blank ?? false,

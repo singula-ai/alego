@@ -1,0 +1,19 @@
+- insert:
+    - id: optional-persistent-terminals
+      name: cordis:group
+      group: true
+      isolate:
+        terminals: true
+      config:
+        - id: optional-terminal-registry
+          name: '@singula-ai/alego-terminal'
+        - id: optional-terminal-bash
+          name: '@singula-ai/alego-terminal-bash'
+          disabled: !!js process.platform === 'win32'
+        - id: optional-terminal-pwsh
+          name: '@singula-ai/alego-terminal-bash'
+          disabled: !!js process.platform !== 'win32'
+          config:
+            shellDialect: pwsh
+        - id: optional-tool-terminal
+          name: '@singula-ai/alego-tool-terminal'

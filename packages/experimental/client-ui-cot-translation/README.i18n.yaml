@@ -1,0 +1,37 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/experimental/client-ui-cot-translation/README.md
+/:
+  en: c2a264438157aa27
+  zh: b52d9d387759a1b6
+/singula-ai-alego-experimental-client-ui-cot-translation:
+  en: 880516f88c3f79a8
+  zh: 13e5329b2a6e1077
+/singula-ai-alego-experimental-client-ui-cot-translation/summary:
+  en: 8d78ff49b12e8101
+  zh: f04c7111dceef20f
+/singula-ai-alego-experimental-client-ui-cot-translation/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: ce40cab8e7534137
+/singula-ai-alego-experimental-client-ui-cot-translation/use-this-package:
+  en: 2c30735fc1ae9153
+  zh: ea04e4e24fb0e0f3
+/singula-ai-alego-experimental-client-ui-cot-translation/understand-the-implementation:
+  en: e38f4caa4efcdeee
+  zh: bfd3fe1a78fd2c7f
+/singula-ai-alego-experimental-client-ui-cot-translation/further-exploration:
+  en: 4e6e72d2263f4946
+  zh: 745e841232f29e3a
+/singula-ai-alego-experimental-client-ui-cot-translation/model-experience:
+  en: 3abb215d69a83fa6
+  zh: 5000ed802a0db760
+/singula-ai-alego-experimental-client-ui-cot-translation/model-experience/kv-cache-effect:
+  en: 3333b8be801d0eb3
+  zh: 048a288e624fa40b
+/singula-ai-alego-experimental-client-ui-cot-translation/known-limitations-and-deferred-work:
+  en: 280e59a910068659
+  zh: 8230bebfd7b18cf6
+/singula-ai-alego-experimental-client-ui-cot-translation/known-limitations-and-deferred-work/dev-note:
+  en: 0225ba087c5266f3
+  zh: 0400e21a2683a23c

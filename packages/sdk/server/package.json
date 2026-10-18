@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-sdk-jsonrpc-server",
   "description": "Stdio JSON-RPC server plugin for out-of-process Alego SDK clients",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -39,7 +39,8 @@
     "@singula-ai/alego-scope": "workspace:*",
     "@singula-ai/alego-sdk-protocol": "workspace:*",
     "@singula-ai/alego-session": "workspace:*",
-    "@singula-ai/alego-subagent": "workspace:*"
+    "@singula-ai/alego-subagent": "workspace:*",
+    "@singula-ai/alego-working-directory": "workspace:*"
   },
   "devDependencies": {
     "@singula-ai/cordis": "workspace:~",
@@ -55,6 +56,7 @@
     "@singula-ai/alego-session": "workspace:*",
     "@singula-ai/alego-session-persistence-jsonl": "workspace:*",
     "@singula-ai/alego-session-projection": "workspace:*",
-    "@singula-ai/alego-subagent": "workspace:*"
+    "@singula-ai/alego-subagent": "workspace:*",
+    "@singula-ai/alego-working-directory": "workspace:*"
   }
 }

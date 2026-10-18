@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-loader-smoke",
   "description": "Shared subprocess and direct-agent harness for keyless real-Loader example smoke tests",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,8 +27,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "execa": "^10.0.0",
-    "tsx": "^4.22.4"
+    "execa": "^10.0.1",
+    "tsx": "^4.23.13"
   },
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:~",

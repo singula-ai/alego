@@ -1,13 +1,19 @@
 /**
  * The `process` global the worker needs before any VFS module runs. Cordis
  * reads `process.env` and `process.versions.node` while the Loader is
- * constructed, and `cordis.yml` keeps its `!!js process.*` expressions, so the
- * configuration bytes stay identical to the Node deployment. Third-party Node
+ * constructed, and bundle patch rows keep their `!!js process.*` expressions, so
+ * the configuration bytes stay identical to the Node deployment. Third-party Node
  * packages use the presence of `process.title` to avoid browser-only globals.
  * @module @singula-ai/alego-experimental-webworker-runtime/src/node/globals/process
  */
 import { requireActiveModuleLoader } from '../../module-system/module-loader.ts'
 import { processAlive, signalProcess } from '../process-table.ts'
+
+/** Virtual executable identity; the worker has no Node binary behind it. */
+const EXEC_PATH = '/alego/bin/node'
+
+/** Node release whose internal-module members `node-addon-require-builtin` follows in the Worker. */
+const NODE_VERSION = '24.18.0'
 
 /** Construction inputs for {@link installProcessGlobal}. */
 export interface ProcessShimOptions {
@@ -15,7 +21,7 @@ export interface ProcessShimOptions {
   readonly cwd: string
   /** Environment the tree reads; `ALEGO_HOME` belongs here. */
   readonly env: Readonly<Record<string, string>>
-  /** Argument vector reported to the tree. */
+  /** Argument vector reported to the tree; defaults to the executable alone, since no entry script exists. */
   readonly argv?: readonly string[]
 }
 
@@ -75,9 +81,9 @@ export interface ProcessShim {
 /**
  * Publish `globalThis.process`.
  *
- * `versions.node` is `0.0.0` on purpose: it makes Cordis's
- * `ModuleLoader.fromInternal()` return undefined instead of reaching for Node
- * internals, which is what lets the worker install its own module seam.
+ * `versions.node` names the Node release the Worker's `node-addon-require-builtin` internals follow, so Cordis's
+ * `ModuleLoader.fromInternal()` reaches them the way it reaches Node's; `execArgv` stays empty, without
+ * `--expose-internals`.
  * @param options - Root, environment, and argument vector.
  * @returns The published object, for the module proxy table.
  */
@@ -89,15 +95,15 @@ export function installProcessGlobal(options: ProcessShimOptions): ProcessShim {
   }
   const shim: ProcessShim = {
     env: { ...options.env },
-    argv: [...(options.argv ?? ['node', 'alego-webworker'])],
+    argv: [...(options.argv ?? [EXEC_PATH])],
     execArgv: [],
-    execPath: '/alego/bin/node',
+    execPath: EXEC_PATH,
     title: 'alego-webworker',
     platform: 'linux',
     arch: 'x64',
     pid: 1,
-    version: 'v0.0.0',
-    versions: { node: '0.0.0' },
+    version: `v${NODE_VERSION}`,
+    versions: { node: NODE_VERSION },
     cwd: () => options.cwd,
     getBuiltinModule: (id: string): unknown => {
       let resolution

@@ -24,8 +24,11 @@
   en: a446d3703a313481
   zh: 2d3b6b962ab62233
 /singula-ai-alego-session/use-this-package/read-the-log:
-  en: abadaf7b421b4352
-  zh: 093205f47c645ce3
+  en: 127d703eda154a58
+  zh: c162c60f4c66aac7
+/singula-ai-alego-session/use-this-package/write-experimental-plugin-records:
+  en: 56c764e2d915d59b
+  zh: 90d0669a758142b8
 /singula-ai-alego-session/use-this-package/fork-a-session:
   en: 476c014a254ea7c2
   zh: 163be58dd4943681
@@ -42,17 +45,17 @@
   en: e1b1ff83c8ff1676
   zh: b24772e9a2efeb75
 /singula-ai-alego-session/understand-the-implementation/source-map:
-  en: f25f841b5c13698e
-  zh: dad43ded59ec9b4b
+  en: 8780a7f34cc22b70
+  zh: 655c149f6e5311b1
 /singula-ai-alego-session/understand-the-implementation/append-validation:
   en: 5c09583bc8e1ffc6
   zh: 3b25552de2d1f9b6
 /singula-ai-alego-session/understand-the-implementation/shared-recovery:
-  en: 4af8d4fa65a95fe4
-  zh: 5fff127ec025e3d2
+  en: 4dbd014282e418ed
+  zh: 65b02a0f9b7a76f8
 /singula-ai-alego-session/understand-the-implementation/derived-history:
-  en: 0cc7a06f76bd7eca
-  zh: 1db25185b15cad23
+  en: 4a9861492a8c3869
+  zh: e9566de647206230
 /singula-ai-alego-session/understand-the-implementation/the-request-header:
   en: 1349f47bea4dab00
   zh: 20cc03f2c87ec492
@@ -78,8 +81,8 @@
   en: 9c2efc3e9064e3c4
   zh: 9a7783991b322750
 /singula-ai-alego-session/model-experience/tool-result-recovery-and-fork-results/what-the-model-sees:
-  en: b260e5b415778854
-  zh: 18df149d3df379cc
+  en: d15c350efc66e832
+  zh: b769ba23dbb374e7
 /singula-ai-alego-session/model-experience/tool-result-recovery-and-fork-results/token-effect:
   en: 1339facbd3d7cee0
   zh: 9d392a053ef90032
@@ -99,8 +102,8 @@
   en: 5eb30cfb410d52c0
   zh: da56365b8ab896da
 /singula-ai-alego-session/known-limitations-and-deferred-work:
-  en: be19c4aed6e99319
-  zh: 1e8168e63babefd8
+  en: ad072bba016bc8c7
+  zh: 4d5569001527c6cc
 /singula-ai-alego-session/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 3bb0c20c93f16f98

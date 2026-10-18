@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-win32-process",
   "description": "Shared low-level Win32 process, stdio, and Job Object primitives",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@singula-ai/alego-lazy-require": "workspace:*",
-    "koffi": "^3.1.0"
+    "koffi": "3.1.1"
   },
   "devDependencies": {
     "@singula-ai/cordis": "workspace:~"

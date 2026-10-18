@@ -4,6 +4,7 @@ import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
 import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 import type { UserMessage } from '@singula-ai/alego-llm'
 import SessionStore, { SessionId } from '@singula-ai/alego-session'
+import type { CreateSessionOptions } from '@singula-ai/alego-session'
 import Storage, { type KvUnit, type KvUnitDescriptor, type StorageBackend } from '@singula-ai/alego-storage'
 import { DomainFacility } from '@singula-ai/alego-storage-domain'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
@@ -118,10 +119,11 @@ export interface HarnessAgent extends Agent {
 /** Build an unregistered Agent for a test-owned Session.
  * @param ctx - Services owning the Session.
  * @param id - Unique Session identity within the test Context.
+ * @param meta - Optional Session creation metadata, such as subagent lineage.
  * @returns Agent whose follow-up entry is a spy.
  */
-export function agentFor(ctx: Context, id = 'original'): HarnessAgent {
-  const session = ctx.sessions.create(SessionId(id))
+export function agentFor(ctx: Context, id = 'original', meta?: CreateSessionOptions['meta']): HarnessAgent {
+  const session = ctx.sessions.create(SessionId(id), meta === undefined ? undefined : { meta })
   return {
     id: session.id, session, ctx: ctx.extend(), options: {}, status: 'idle', inbox: unsupportedInbox(),
     send() {}, followup: vi.fn<(message: UserMessage) => void>(), steer() {}, inject() {}, cancel() {},

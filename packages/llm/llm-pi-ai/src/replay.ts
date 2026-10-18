@@ -10,13 +10,13 @@
 
 import { LlmError } from '@singula-ai/alego-llm'
 import type { AssistantMessage as HarnessAssistantMessage, ModelMessageSource, ReplayEnvelope } from '@singula-ai/alego-llm'
-import type { Api, AssistantMessage, Usage as PiUsage } from '@earendil-works/pi-ai'
+import type { Api, AssistantMessage, ToolCall, Usage as PiUsage } from '@earendil-works/pi-ai'
 
 /** Per-block half of the pi-ai replay envelope, one entry per content block. */
 export type PiAiReplayBlock =
   | { type: 'text'; textSignature?: string }
   | { type: 'reasoning'; thinkingSignature?: string; redacted?: boolean }
-  | { type: 'tool-call'; thoughtSignature?: string }
+  | { type: 'tool-call'; thoughtSignature?: string; namespace?: string }
 
 /** Versioned response-level half of the pi-ai replay envelope. */
 export interface PiAiReplayResponse {
@@ -26,7 +26,7 @@ export interface PiAiReplayResponse {
   provider: string
   /** Requested model identity, matching the durable assistant source. */
   model: string
-  /** Provider-reported model; only Anthropic replays it as the native model (reported in `message.model`, not `message.responseModel`). */
+  /** Provider-reported model; replay retains the requested model for signature matching. */
   responseModel?: string
   responseId?: string
   /** Provider-native effort for historical replay; absence is preserved. */
@@ -41,11 +41,11 @@ interface PiAiReplayState {
 }
 
 /** Parse tool-call argument JSON; tolerate model malformations with {}. */
-function parseArguments(raw: string): Record<string, unknown> {
+function parseArguments(raw: string): ToolCall['arguments'] {
   try {
     const parsed: unknown = JSON.parse(raw)
     if (typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)) {
-      return parsed as Record<string, unknown>
+      return parsed as ToolCall['arguments']
     }
   } catch {
     // fall through
@@ -75,15 +75,13 @@ function emptyPiUsage(): PiUsage {
  * @returns the versioned lossless-JSON replay projection.
  */
 export function toPiReplayState(message: AssistantMessage, requestedModel = message.model): ReplayEnvelope {
-  const responseModel = message.api === 'anthropic-messages' && message.model !== requestedModel
-    ? message.model : message.responseModel
   const response: PiAiReplayResponse = {
     kind: 'pi-ai',
     version: 2,
     api: message.api,
     provider: message.provider,
     model: requestedModel,
-    ...responseModel === undefined ? {} : { responseModel },
+    ...message.responseModel === undefined ? {} : { responseModel: message.responseModel },
     ...message.responseId === undefined ? {} : { responseId: message.responseId },
     ...message.providerThinkingLevel === undefined ? {} : { providerThinkingLevel: message.providerThinkingLevel },
     stopReason: message.stopReason,
@@ -104,6 +102,7 @@ export function toPiReplayState(message: AssistantMessage, requestedModel = mess
         case 'toolCall': return {
           type: 'tool-call',
           ...block.thoughtSignature === undefined ? {} : { thoughtSignature: block.thoughtSignature },
+          ...block.namespace === undefined ? {} : { namespace: block.namespace },
         }
       }
     }),
@@ -138,7 +137,7 @@ function readReplayState(value: unknown): PiAiReplayState {
     if (typeof value !== 'object' || value === null || Array.isArray(value)) return invalidReplay(`block ${index} must be an object`)
     const block = value as Record<string, unknown>
     if (!['text', 'reasoning', 'tool-call'].includes(String(block['type']))) return invalidReplay(`block ${index} has an unknown type`)
-    for (const signature of ['textSignature', 'thinkingSignature', 'thoughtSignature'] as const) {
+    for (const signature of ['textSignature', 'thinkingSignature', 'thoughtSignature', 'namespace'] as const) {
       if (block[signature] !== undefined && typeof block[signature] !== 'string') return invalidReplay(`block ${index} ${signature} must be a string`)
     }
     if (block['redacted'] !== undefined && typeof block['redacted'] !== 'boolean') return invalidReplay(`block ${index} redacted must be boolean`)
@@ -211,6 +210,7 @@ function replayedAssistant(message: HarnessAssistantMessage, source: ModelMessag
         name: block.name,
         arguments: parseArguments(block.arguments),
         ...replay.type === 'tool-call' && replay.thoughtSignature !== undefined ? { thoughtSignature: replay.thoughtSignature } : {},
+        ...replay.type === 'tool-call' && replay.namespace !== undefined ? { namespace: replay.namespace } : {},
       }
       /* v8 ignore next -- readReplayState rejects unknown replay tags, so an equal plugin-added Harness tag cannot reach this switch */
       default: return invalidReplay(`block ${index} has an unsupported Harness type`)
@@ -221,9 +221,7 @@ function replayedAssistant(message: HarnessAssistantMessage, source: ModelMessag
     content,
     api: state.response.api,
     provider: state.response.provider,
-    // Anthropic reports aliases and fallbacks as model, unlike Completions' informational responseModel.
-    model: state.response.api === 'anthropic-messages'
-      ? state.response.responseModel ?? state.response.model : state.response.model,
+    model: state.response.model,
     ...state.response.responseModel === undefined ? {} : { responseModel: state.response.responseModel },
     ...state.response.responseId === undefined ? {} : { responseId: state.response.responseId },
     ...state.response.providerThinkingLevel === undefined ? {} : { providerThinkingLevel: state.response.providerThinkingLevel },

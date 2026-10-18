@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-sdk-minimal",
   "description": "The standalone minimal SDK profile bundle: JSON-RPC, one DeepSeek adapter, persistent shell, and JSONL sessions",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -37,8 +37,10 @@
     "@singula-ai/cordis-plugin-timer": "workspace:~",
     "@singula-ai/alego-agent": "workspace:*",
     "@singula-ai/alego-agent-loop": "workspace:*",
+    "@singula-ai/alego-attachment-local": "workspace:*",
+    "@singula-ai/alego-compaction-basic": "workspace:*",
+    "@singula-ai/alego-compaction-image-offload": "workspace:*",
     "@singula-ai/alego-deepseek-llm-api-extensions": "workspace:*",
-    "@singula-ai/alego-invariants": "workspace:*",
     "@singula-ai/alego-jobs-local": "workspace:*",
     "@singula-ai/alego-llm": "workspace:*",
     "@singula-ai/alego-llm-deepseek-api-key": "workspace:*",
@@ -47,7 +49,6 @@
     "@singula-ai/alego-plugin-package-inventory-deepseek": "workspace:*",
     "@singula-ai/alego-sandbox-local": "workspace:*",
     "@singula-ai/alego-sandbox-policy": "workspace:*",
-    "@singula-ai/alego-scope": "workspace:*",
     "@singula-ai/alego-sdk-app": "workspace:*",
     "@singula-ai/alego-sdk-jsonrpc-server": "workspace:*",
     "@singula-ai/alego-session": "workspace:*",
@@ -59,9 +60,14 @@
     "@singula-ai/alego-system-prompt": "workspace:*",
     "@singula-ai/alego-terminal": "workspace:*",
     "@singula-ai/alego-terminal-bash": "workspace:*",
+    "@singula-ai/alego-token-meter": "workspace:*",
     "@singula-ai/alego-tool-bash-persistent": "workspace:*",
+    "@singula-ai/alego-tool-fs": "workspace:*",
     "@singula-ai/alego-tool-pwsh-persistent": "workspace:*",
-    "@singula-ai/alego-tools": "workspace:*"
+    "@singula-ai/alego-tools": "workspace:*",
+    "@singula-ai/alego-working-directory": "workspace:*",
+    "@singula-ai/alego-tool-working-directory": "workspace:*",
+    "@singula-ai/alego-fs-local": "workspace:*"
   },
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:~"

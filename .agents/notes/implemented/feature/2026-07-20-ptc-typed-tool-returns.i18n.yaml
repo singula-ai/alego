@@ -6,11 +6,11 @@
   en: ed4557b2da2a3f19
   zh: 3791d33615ff2074
 /agent-note-typed-tool-returns-in-ptc-mode/problem:
-  en: 735b2784ad2df57b
-  zh: 2517b30af4eeb32f
+  en: 8aee9068154f9de2
+  zh: 650ab7aa4f555c50
 /agent-note-typed-tool-returns-in-ptc-mode/decision:
-  en: 12bc54967623a04f
-  zh: 601b38e4c3dbf6a8
+  en: 281bab6e9c8f24c4
+  zh: 26a755a9ce3ea617
 /agent-note-typed-tool-returns-in-ptc-mode/decision/generated-sdk:
   en: 30583e9ac6715952
   zh: 3a85c9482abf574c
@@ -21,11 +21,11 @@
   en: d907d0a8205157e1
   zh: 1ed99168266a7ca4
 /agent-note-typed-tool-returns-in-ptc-mode/decision/typed-handles-and-lifetime:
-  en: afd0ce6f3124e175
-  zh: 2f7e729f9bff30c7
+  en: 32eb8a1a9832732a
+  zh: 4eddcd0b4dd3f010
 /agent-note-typed-tool-returns-in-ptc-mode/decision/persistence-metadata-and-spill:
-  en: 98ebf70ea840c355
-  zh: 31139dd55011b702
+  en: 284333e94ac83302
+  zh: 3f1bdd09f66a5375
 /agent-note-typed-tool-returns-in-ptc-mode/testing:
   en: 728513c779f031f8
   zh: f6d869f18add7242
@@ -33,8 +33,8 @@
   en: dedd87b9b35d8fab
   zh: 78db4c7e8c4e5f61
 /agent-note-typed-tool-returns-in-ptc-mode/consequences:
-  en: 7c2ee65532ab76f8
-  zh: 3fb074c69909d390
+  en: f5726b5e7a2fc73f
+  zh: 0b9aa884db5d920f
 /agent-note-typed-tool-returns-in-ptc-mode/known-limitations-and-deferred-work:
   en: a42af629ad6872cc
   zh: 41e5c0bb3de0ae4d

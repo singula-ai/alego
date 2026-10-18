@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-09-17-experimental-cua-object-api.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-09-17-experimental-cua-object-api.md
+/agent-note-native-cua-objects-independent-of-evaluator-ownership:
+  en: bea7de0101c5438d
+  zh: 25d705167a15fba0
+/agent-note-native-cua-objects-independent-of-evaluator-ownership/problem:
+  en: a22ddcfb339e503d
+  zh: a1f4fadb46fce1e7
+/agent-note-native-cua-objects-independent-of-evaluator-ownership/decision:
+  en: 875ac9cffe2ee682
+  zh: f597e7534dc4ef8f
+/agent-note-native-cua-objects-independent-of-evaluator-ownership/alternatives-considered:
+  en: 3d0bc77e3c432cb9
+  zh: 50a20eda1811f16c
+/agent-note-native-cua-objects-independent-of-evaluator-ownership/consequences:
+  en: 00281eb3591c523e
+  zh: f6ada351fdf34ea2

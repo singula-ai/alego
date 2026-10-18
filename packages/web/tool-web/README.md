@@ -58,7 +58,7 @@ The generated [configuration catalog](../../../docs/config-catalog.md#singula-ai
 Call `web_search` with a `queries` array of one to `searchMaxQueries` non-empty strings. Exact duplicate queries run once; multiple queries run concurrently and their sources merge round-robin before the combined `searchMaxResults` cap applies. The result is an optional provider answer followed by `Sources:` with one line per source — `- [<title-or-url>](<url>)`, optionally with snippet and date — and a standing instruction to cite the URLs.
 
 ```text
-web_search({ queries: ['deepseek harness documentation'] })
+web_search({ queries: ['alego documentation'] })
 ```
 
 If any query in a multi-query call fails, `web_search` aborts the remaining searches, waits for every started search to settle, discards successful results, and returns `Error: <message>` for the first failure.
@@ -103,7 +103,6 @@ The package is built on one separation and one registration rule:
 | [`src/index.ts`](src/index.ts) | Plugin entry: config schema, enablement, timeout budgets, tool registration |
 | [`src/search.ts`](src/search.ts) | The `web_search` tool: argument validation, query fan-out, merge, formatting, presentation meta |
 | [`src/fetch.ts`](src/fetch.ts) | The `web_fetch` tool: HTML→markdown conversion, output caps, formatting, presentation meta |
-| — | No runtime invariant companion is published; this model-facing adapter has no independent lifecycle stream; execution relations are owned by the capability seam it calls. |
 
 ### Search flow
 

@@ -1,0 +1,34 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/experimental/inspector-profile/README.md
+/:
+  en: aa49ff99ef11a495
+  zh: f84909651e2f37a7
+/singula-ai-alego-experimental-inspector-profile:
+  en: 290b00ba4b7351fd
+  zh: 29e61bca241da2a5
+/singula-ai-alego-experimental-inspector-profile/summary:
+  en: 959f9bb18e5e99ad
+  zh: f0b00539b5ab40fd
+/singula-ai-alego-experimental-inspector-profile/table-of-contents:
+  en: 76368b6b1da79c80
+  zh: 52384aee991ac542
+/singula-ai-alego-experimental-inspector-profile/use-this-package:
+  en: f8c1707e816c4f35
+  zh: 725c437611080f24
+/singula-ai-alego-experimental-inspector-profile/understand-the-implementation:
+  en: 66581bc91165ce22
+  zh: 0041ac164c16df0d
+/singula-ai-alego-experimental-inspector-profile/model-experience:
+  en: 315bc90149039d2d
+  zh: 047edcb035f61b74
+/singula-ai-alego-experimental-inspector-profile/model-experience/kv-cache-effect:
+  en: 5204b2605806c13d
+  zh: b6a76f5152f7f503
+/singula-ai-alego-experimental-inspector-profile/known-limitations-and-deferred-work:
+  en: 667461438ea73a50
+  zh: 695adf3782f53c41
+/singula-ai-alego-experimental-inspector-profile/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 8ec3e73528ddb1a6

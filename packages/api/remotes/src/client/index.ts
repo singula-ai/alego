@@ -4,6 +4,7 @@ import type { Context } from '@singula-ai/cordis'
 import productAnalyticsRemote from '@singula-ai/alego-client-product-analytics/remote'
 export type {} from '@singula-ai/alego-client-product-analytics/remote'
 import agentPresetsRemote from '@singula-ai/alego-agent-preset-registry/remote'
+import userQuestionsRemote from '@singula-ai/alego-user-questions/remote'
 import commandsRemote from '@singula-ai/alego-commands/remote'
 import accountRemote from '@singula-ai/alego-api-account-controller/remote'
 import settingsControllerRemote from '@singula-ai/alego-api-settings-controller/remote'
@@ -14,6 +15,7 @@ import llmRemote from '@singula-ai/alego-llm/remote'
 import dynamicRemote from '@singula-ai/alego-cordis-host-runner/remote'
 import pluginManagerRemote from '@singula-ai/alego-plugin-manager/remote'
 import pluginRegistryProbeRemote from '@singula-ai/alego-client-ui-plugin-manager/remote'
+import pluginMarketRemote from '@singula-ai/alego-plugin-market/remote'
 import pluginInventoryRemote from '@singula-ai/alego-host-plugin-inventory/remote'
 import messageFeedbackRemote from '@singula-ai/alego-message-feedback/remote'
 import permissionPresetsRemote from '@singula-ai/alego-permission-presets/remote'
@@ -33,12 +35,19 @@ export type {
   BundleInfo, BundleRowInfo, ChangeResult, IncompatiblePlugin, InspectOptions, InstallBundleOptions, InstallSpecKind, ManagementError,
   PackageResult,
   PluginChange, PluginEntryId, PluginInfo, PluginInspectProblem, PluginInstallCancellation, PluginInstallFailureKind,
-  PluginInstallLogChunk, PluginInstallProgress, PluginInstallRequestId, PluginRegistries, PluginSpecInspection, ReadOnlyReason, Registry,
+  PluginInstallLogChunk, PluginInstallProgress, PluginInstallRequestId, PluginRegistries, PluginSpecInspection,
+  ReadOnlyReason, Registry, RestartReason,
 } from '@singula-ai/alego-plugin-manager/types'
 export type {} from '@singula-ai/alego-plugin-manager/remote'
 export type {} from '@singula-ai/alego-client-ui-plugin-manager/remote'
+export type {} from '@singula-ai/alego-plugin-market/remote'
+export type {
+  MarketCompatibility, MarketIndexSummary, MarketInstallation, MarketInstallationStatus, MarketListingEntry, MarketListingVersion,
+  MarketQuery, MarketSearchResult, MarketSort,
+} from '@singula-ai/alego-plugin-market/types'
 export type { PluginInventorySnapshot } from '@singula-ai/alego-host-plugin-inventory/types'
 export type {} from '@singula-ai/alego-agent-preset-registry/remote'
+export type {} from '@singula-ai/alego-user-questions/remote'
 export type {} from '@singula-ai/alego-commands/remote'
 export type {} from '@singula-ai/alego-api-settings-controller/remote'
 export type {} from '@singula-ai/alego-api-account-controller/remote'
@@ -142,7 +151,7 @@ export type {
 // Provider registry and discovery vocabulary for the llm namespace.
 export type {
   LlmConfigurableProvider, LlmDiscoveredModel,
-  LlmModelDiscoveryRequest, LlmProviderInfo,
+  LlmModelDiscoveryRequest, LlmNativeAuth, LlmProviderInfo,
 } from '@singula-ai/alego-llm/types'
 // Reference-discovery result vocabulary for the fileReferences and
 // sessionReferenceResolver namespaces.
@@ -179,10 +188,11 @@ export async function apply(ctx: Context): Promise<() => Promise<void>> {
     for (const contribution of [
       productAnalyticsRemote, agentPresetsRemote, commandsRemote, settingsControllerRemote, accountRemote,
       goalsRemote, llmRemote, dynamicRemote, scheduleRemote,
-      pluginInventoryRemote, pluginManagerRemote, pluginRegistryProbeRemote, messageFeedbackRemote, sessionFeedbackRemote,
+      pluginInventoryRemote, pluginManagerRemote, pluginMarketRemote, pluginRegistryProbeRemote,
+      messageFeedbackRemote, sessionFeedbackRemote,
       fileUploadsRemote, sessionReferencesRemote,
       permissionPresetsRemote, subagentsRemote, sessionRemote, jobRemote, workspaceRemote, workspaceFilesRemote, terminalRemote,
-      officeToPdfRemote,
+      officeToPdfRemote, userQuestionsRemote,
     ]) {
       disposers.push(await ctx.remote.$mount(contribution))
     }

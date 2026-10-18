@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for 2026-10-06-web-desktop-plugin-identity-compatibility.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-10-06-web-desktop-plugin-identity-compatibility.md
+/agent-note-preserve-web-and-desktop-plugin-identities-across-experimental-consolidation:
+  en: b98a5f30584af20c
+  zh: c5f8f968fb289c89
+/agent-note-preserve-web-and-desktop-plugin-identities-across-experimental-consolidation/problem:
+  en: 8112c1c059d1cf10
+  zh: 852d23c56a93a555
+/agent-note-preserve-web-and-desktop-plugin-identities-across-experimental-consolidation/decision:
+  en: 5f6beb2cab386a27
+  zh: b0a06a77005eca2c
+/agent-note-preserve-web-and-desktop-plugin-identities-across-experimental-consolidation/deferred-naming-cleanup:
+  en: 26aad657e883fbd6
+  zh: f79df77fd58f7cba
+/agent-note-preserve-web-and-desktop-plugin-identities-across-experimental-consolidation/alternatives-considered:
+  en: 65af55b5775c9bc5
+  zh: 2ea75b3fd33ac0c2
+/agent-note-preserve-web-and-desktop-plugin-identities-across-experimental-consolidation/consequences:
+  en: de62741d46149fcc
+  zh: 730642a42f40c97c

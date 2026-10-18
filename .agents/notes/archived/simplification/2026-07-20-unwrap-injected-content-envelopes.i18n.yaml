@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/simplification/2026-07-20-unwrap-injected-content-envelopes.md
+2026-07-20-unwrap-injected-content-envelopes.md: eb4c619bd7fe1036c1f12ef7b4f769f35e404a7b
+2026-07-20-unwrap-injected-content-envelopes.zh.md: 106d1e1c7b24cd761ffd7956c9ac795057e13857

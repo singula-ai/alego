@@ -16,7 +16,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import { SessionId, SessionSeq } from '@singula-ai/alego-session'
 import { SessionAlreadyOwnedError } from '@singula-ai/alego-session-persistence'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 
 const SESSION = 'two-process-lease'
 

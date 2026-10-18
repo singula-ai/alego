@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-skill",
   "description": "Web skill references and the dedicated skill tool row",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,13 +23,15 @@
       "default": "./lib/client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
       "inject": [
         "@singula-ai/alego-api-session-controller",
         "@singula-ai/alego-client-locale",
+        "@singula-ai/alego-client-ui-conversation",
         "@singula-ai/alego-client-ui-renderer",
         "@singula-ai/alego-client-ui-tool",
         "@singula-ai/alego-client-ui-input-trigger",
@@ -53,21 +55,24 @@
     "@singula-ai/alego-client-connection": "workspace:*",
     "@singula-ai/alego-client-locale": "workspace:*",
     "@singula-ai/alego-client-test-runtime": "workspace:*",
+    "@singula-ai/alego-client-ui-conversation": "workspace:*",
     "@singula-ai/alego-client-ui-primitives": "workspace:*",
     "@singula-ai/alego-client-ui-input-trigger": "workspace:*",
     "@singula-ai/alego-client-ui-renderer": "workspace:*",
     "@singula-ai/alego-client-ui-slots": "workspace:*",
     "@singula-ai/alego-client-ui-tool": "workspace:*",
+    "@singula-ai/alego-plugin-manager": "workspace:*",
     "@singula-ai/alego-session": "workspace:*",
-    "@testing-library/react": "^16.1.0",
-    "@types/react": "~18.3.1",
+    "@testing-library/react": "^16.3.3",
     "@singula-ai/cordis": "workspace:~",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "@singula-ai/alego-client-ui-sidebar-right": "workspace:*",
+    "@singula-ai/alego-util-values": "workspace:*",
     "@singula-ai/alego-util-workspace-path": "workspace:*"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"

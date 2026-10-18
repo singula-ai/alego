@@ -33,26 +33,26 @@
   en: 030202c112f89366
   zh: 621d53ed755cafa3
 /singula-ai-alego-agent-loop/understand-the-implementation/request-headers-and-adapter-defaults:
-  en: 410a76d7533e9a62
-  zh: 39d08658354eebf7
+  en: b3b3f0ad930961c3
+  zh: f281e27136e686bc
 /singula-ai-alego-agent-loop/understand-the-implementation/source-map:
-  en: d7f6b2947ec9b2f3
-  zh: 8a3d566fb8cf2938
+  en: 2a8b93869eb5a2f9
+  zh: ddab8e738d188a61
 /singula-ai-alego-agent-loop/understand-the-implementation/creation-and-teardown:
-  en: 6bc52b8ef503eeda
-  zh: 3290052ebc47baf6
+  en: d079cf181ece9267
+  zh: 047f76fecfc5497c
 /singula-ai-alego-agent-loop/understand-the-implementation/persistence-integration:
-  en: da056b9f0dde4ab3
-  zh: ba9ce3b19c17ca22
+  en: 3c5721bc00a0bbf4
+  zh: 711f832343ffbb75
 /singula-ai-alego-agent-loop/understand-the-implementation/turn-and-step-flow:
-  en: ed5137ef858b3424
-  zh: af2ff3bc15576456
+  en: 28939261ccc7defe
+  zh: 9d157a321307ebd4
 /singula-ai-alego-agent-loop/understand-the-implementation/failure-and-cancellation:
-  en: e06c7564851907e8
-  zh: 8274d2b5a4c3d480
+  en: eea56903c4ff82f5
+  zh: c0d5abb5767780ed
 /singula-ai-alego-agent-loop/further-exploration:
-  en: 6580bd33aab22eb3
-  zh: 2fc03be116ea2b9e
+  en: 9977fc6ecd563e16
+  zh: 1c99830771bdc2d8
 /singula-ai-alego-agent-loop/model-experience:
   en: 215e7ba838619b7b
   zh: a311da3843709f90
@@ -60,8 +60,8 @@
   en: 5507d83eb979c737
   zh: 0ffde85d627b3933
 /singula-ai-alego-agent-loop/model-experience/complete-conversation-request/what-the-model-sees:
-  en: cd89b20032608049
-  zh: 1f57d4cecc30313b
+  en: ed0e841bed26a836
+  zh: f30d91bc5a64fa20
 /singula-ai-alego-agent-loop/model-experience/complete-conversation-request/token-effect:
   en: ad93d8d61968a25d
   zh: 268ff858b0fa96e8
@@ -105,8 +105,8 @@
   en: 83531f2a13cc1f0e
   zh: 81a780d637dd8c5d
 /singula-ai-alego-agent-loop/known-limitations-and-deferred-work:
-  en: 825fdf098476f7bd
-  zh: 35f1e65b50d8bb62
+  en: 4756f5fa2b10b1f1
+  zh: cf28a187114088ce
 /singula-ai-alego-agent-loop/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 3bb0c20c93f16f98

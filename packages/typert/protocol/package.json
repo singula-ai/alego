@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-typert-protocol",
   "description": "Compiler-independent Remote metadata and Typert provider protocols",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -22,6 +22,10 @@
       "types": "./lib/types/types.d.ts",
       "default": "./lib/types/types.js"
     },
+    "./remote-info": {
+      "types": "./lib/types/remote-info.d.ts",
+      "default": "./lib/types/remote-info.js"
+    },
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
@@ -32,7 +36,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@singula-ai/alego-brand": "workspace:*"
+    "@singula-ai/alego-brand": "workspace:*",
+    "zod": "^4.4.3"
   },
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:~"

@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/architecture/2026-09-19-lossless-projection-checkpoint-json.md
+2026-09-19-lossless-projection-checkpoint-json.md: d24ac76df6efea00f8f582ec846e2c009cc595ca
+2026-09-19-lossless-projection-checkpoint-json.zh.md: 9f83654ac2c1e5beb0c96622a14416e3d1eccb8e

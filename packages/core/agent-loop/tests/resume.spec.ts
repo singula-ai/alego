@@ -13,7 +13,7 @@ import ToolRuntime, { defineContentToolFixture, TOOL_RUNTIME_SCHEDULER } from '@
 import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
 import type { SessionHandle } from '@singula-ai/alego-session-persistence'
 
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { MockAdapter, textResponse } from './mock-adapter.ts'

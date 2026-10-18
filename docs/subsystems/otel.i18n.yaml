@@ -3,5 +3,5 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/subsystems/otel.md
 /otel-reporting:
-  en: 66a74ca7e7bf3c52
-  zh: a056dd8512b0604a
+  en: 2614194ee33be7b3
+  zh: ea3c1cae1abd44a6

@@ -1,0 +1,37 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/experimental/session-titles-bundle/README.md
+/:
+  en: fa9b9ced4806b14a
+  zh: faa2967665315c2a
+/singula-ai-alego-experimental-session-titles-bundle:
+  en: 951acfa50baad614
+  zh: 06838b9e22f3d7a8
+/singula-ai-alego-experimental-session-titles-bundle/summary:
+  en: a56206d66c18d447
+  zh: 67cde874fd703b58
+/singula-ai-alego-experimental-session-titles-bundle/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 988e839059414d27
+/singula-ai-alego-experimental-session-titles-bundle/use-this-package:
+  en: 3a843c2d148f94f1
+  zh: e67b41828084eb86
+/singula-ai-alego-experimental-session-titles-bundle/understand-the-implementation:
+  en: 68cdc6564c6e8f23
+  zh: 48649e03aa5e8dc5
+/singula-ai-alego-experimental-session-titles-bundle/further-exploration:
+  en: 44c1b99c2888fc88
+  zh: f603cd51aaeb10a7
+/singula-ai-alego-experimental-session-titles-bundle/model-experience:
+  en: 123a46d2f97f401b
+  zh: 2d3ab7b8dba42e7d
+/singula-ai-alego-experimental-session-titles-bundle/model-experience/kv-cache-effect:
+  en: 1b2209bbbf869b1a
+  zh: 5b9de62271343e4e
+/singula-ai-alego-experimental-session-titles-bundle/known-limitations-and-deferred-work:
+  en: 833386166a2ec27c
+  zh: a70ebec93a3be891
+/singula-ai-alego-experimental-session-titles-bundle/known-limitations-and-deferred-work/dev-note:
+  en: 279d01435256cd2a
+  zh: 83780964e5de2f54

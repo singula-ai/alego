@@ -23,7 +23,7 @@ import {
   type SessionEvent,
   type SessionHeader,
 } from '@singula-ai/alego-session'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import { logPath } from '../../../../../../packages/session/session-persistence-jsonl/src/format.ts'
 import { renderAgentInstructions } from '@singula-ai/alego-agent-instructions'
 import { resolveConfig, workspaceBaselineIdentity } from '@singula-ai/alego-agent-instructions/src/config.ts'
@@ -79,7 +79,6 @@ async function seedVisibleBaseline(
     content: file.content,
   })), { maxBytes: 65536 })
   const config = resolveConfig({
-    alegoHome: join(cwd, '.alego'),
     maxBytes: 65536,
     ...options.instructionFileCandidates === undefined
       ? {}

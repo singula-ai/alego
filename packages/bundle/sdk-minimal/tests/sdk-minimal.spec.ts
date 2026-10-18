@@ -33,7 +33,15 @@ describe('alego-sdk-minimal bundle', () => {
       ['plugin-package-inventory-deepseek', '@singula-ai/alego-plugin-package-inventory-deepseek'],
       ['llm-deepseek', '@singula-ai/alego-llm-deepseek-api-key'],
       ['sandbox', '@singula-ai/alego-sandbox-local'],
+      ['filesystem', '@singula-ai/alego-fs-local'],
+      ['attachment-local', '@singula-ai/alego-attachment-local'],
+      ['tool-fs', '@singula-ai/alego-tool-fs'],
+      ['working-directory', '@singula-ai/alego-working-directory'],
+      ['tool-working-directory', '@singula-ai/alego-tool-working-directory'],
       ['session-projection', '@singula-ai/alego-session-projection'],
+      ['token-meter', '@singula-ai/alego-token-meter'],
+      ['compaction-basic', '@singula-ai/alego-compaction-basic'],
+      ['image-offload', '@singula-ai/alego-compaction-image-offload'],
       ['sandbox-policy', '@singula-ai/alego-sandbox-policy'],
       ['subprocess', '@singula-ai/alego-subprocess-local'],
       ['pty', '@singula-ai/alego-terminal'],
@@ -49,11 +57,6 @@ describe('alego-sdk-minimal bundle', () => {
       ['agent', '@singula-ai/alego-agent'],
       ['llm-retry', '@singula-ai/alego-llm-retry'],
       ['jobs', '@singula-ai/alego-jobs-local'],
-      ['invariants', '@singula-ai/alego-invariants'],
-      ['session-invariant', '@singula-ai/alego-session/invariant'],
-      ['agent-invariant', '@singula-ai/alego-agent/invariant'],
-      ['scope-invariant', '@singula-ai/alego-scope/invariant'],
-      ['agent-loop-invariant', '@singula-ai/alego-agent-loop/invariant'],
       ['agent-loop', '@singula-ai/alego-agent-loop'],
       ['persistent-bash', '@singula-ai/alego-tool-bash-persistent'],
       ['persistent-pwsh', '@singula-ai/alego-tool-pwsh-persistent'],
@@ -75,6 +78,8 @@ describe('alego-sdk-minimal bundle', () => {
       personaPrefix: { __jsExpr: "process.env.ALEGO_SYSTEM_PROMPT ?? 'You are a helpful software engineer assistant.'" },
     })
     expect(rows.find(row => row.id === 'agent-loop')?.config).toEqual({ agents: [] })
+    expect(rows.find(row => row.id === 'tool-fs')?.config).toEqual({ read: false, readImage: true, write: false, edit: false })
+    expect(rows.find(row => row.id === 'compaction-basic')?.config).toBeUndefined()
     expect(rows.find(row => row.id === 'terminal-bash')).toMatchObject({
       disabled: { __jsExpr: "process.platform === 'win32'" },
     })

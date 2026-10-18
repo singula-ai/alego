@@ -47,5 +47,3 @@ A resource address is `alego-resource://<type>/…`, and the type — the URI ho
 None.
 
 </details>
-
-**Runtime invariant:** No companion is published. This utility owns no mutable runtime relationship.

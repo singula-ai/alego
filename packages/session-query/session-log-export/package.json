@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-session-log-export",
   "description": "Web Session-log export command and shared download dialog",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,9 +23,11 @@
       "default": "./lib/client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"
@@ -65,7 +67,6 @@
     "@singula-ai/alego-session": "workspace:*",
     "@singula-ai/alego-session-persistence": "workspace:*",
     "@singula-ai/alego-session-query": "workspace:*",
-    "@types/react": "~18.3.1",
     "react": "^18.2.0"
   },
   "alego": {

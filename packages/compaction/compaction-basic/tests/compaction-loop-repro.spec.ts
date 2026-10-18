@@ -8,10 +8,6 @@ import { defineContentToolFixture } from '@singula-ai/alego-tools'
 import type { Agent } from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
-import InvariantRegistry from '@singula-ai/alego-invariants'
-import * as SessionInvariant from '@singula-ai/alego-session/invariant'
-import * as AgentInvariant from '@singula-ai/alego-agent/invariant'
-import * as AgentLoopInvariant from '@singula-ai/alego-agent-loop/invariant'
 import { BasicCompactionEngine } from '@singula-ai/alego-compaction-basic'
 import TokenMeter from '@singula-ai/alego-token-meter'
 import * as LlmRetry from '@singula-ai/alego-llm-retry'
@@ -139,17 +135,9 @@ class OverflowRecoveryAdapter extends LlmAdapter {
   }
 }
 
-async function mountInvariants(ctx: Context): Promise<void> {
-  await ctx.plugin(InvariantRegistry)
-  await ctx.plugin(SessionInvariant)
-  await ctx.plugin(AgentInvariant)
-  await ctx.plugin(AgentLoopInvariant)
-}
-
 async function harness(toolSteps: number): Promise<{ ctx: Context; compact: ReproCompactionEngine }> {
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
-  await mountInvariants(ctx)
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(TokenMeter)
   ctx.llm.registerAdapter(['mock'], new StepwiseToolAdapter(toolSteps))
@@ -389,7 +377,6 @@ describe('context-overflow recovery across the real loop and compaction-basic', 
       const ctx = new Context()
       const adapter = new OverflowRecoveryAdapter(delivery)
       await mountAgentLoopTestDependencies(ctx)
-      await mountInvariants(ctx)
       await ctx.plugin(AgentLoop, { agents: [] })
       await ctx.plugin(TokenMeter)
       ctx.llm.registerAdapter(['mock'], adapter)
@@ -468,7 +455,6 @@ describe('context-overflow recovery across the real loop and compaction-basic', 
     const ctx = new Context()
     const adapter = new OverflowRecoveryAdapter('thrown', true)
     await mountAgentLoopTestDependencies(ctx)
-    await mountInvariants(ctx)
     await ctx.plugin(LlmRetry)
     await ctx.plugin(AgentLoop, { agents: [] })
     await ctx.plugin(TokenMeter)

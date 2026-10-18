@@ -1,0 +1,46 @@
+# Bilingual-pair consistency record for 2026-10-03-pi-plugins-compatibility.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/proposed/feature/2026-10-03-pi-plugins-compatibility.md
+/agent-note-pi-plugins-compatibility-levels-of-support:
+  en: 5218cdf350dc4b0c
+  zh: 61a3994ebe4c3cc2
+/agent-note-pi-plugins-compatibility-levels-of-support/problem:
+  en: 0b6ba4f3eefd20e4
+  zh: 80410845c7e19d0a
+/agent-note-pi-plugins-compatibility-levels-of-support/proposal:
+  en: dc338e52962a6ee2
+  zh: a4fc7cbfe501485a
+/agent-note-pi-plugins-compatibility-levels-of-support/what-a-pi-plugin-is:
+  en: fd37c3aa5d6c092b
+  zh: e39a84ef9aabaa48
+/agent-note-pi-plugins-compatibility-levels-of-support/level-1-session-facets:
+  en: 274d08adc3dd3859
+  zh: ca04519b458922d2
+/agent-note-pi-plugins-compatibility-levels-of-support/level-2-presentation-facets-on-the-host:
+  en: b65add36271a9280
+  zh: 56687d4bd2cf9b13
+/agent-note-pi-plugins-compatibility-levels-of-support/level-3-transcript-and-stored-selection:
+  en: da6ceb0fc3d4f8cb
+  zh: 4440c66b84e22612
+/agent-note-pi-plugins-compatibility-levels-of-support/level-4-presentation-facets-in-the-browser:
+  en: 6f5120d497b23a8b
+  zh: b48fd34e6bd2e96b
+/agent-note-pi-plugins-compatibility-levels-of-support/level-5-parity:
+  en: 02f9d83ac38b11e7
+  zh: 2e402585a213be36
+/agent-note-pi-plugins-compatibility-levels-of-support/runtime-differences-the-plugin-model-exposes:
+  en: 81a97d67d54aabaf
+  zh: 836ac5fe2e77d644
+/agent-note-pi-plugins-compatibility-levels-of-support/chord-mechanisms-to-evaluate-for-alego:
+  en: 3925f2fa463a50cf
+  zh: d341902871c042ef
+/agent-note-pi-plugins-compatibility-levels-of-support/alternatives-considered:
+  en: ad5cb72baef55fef
+  zh: e3b580071e19e5a8
+/agent-note-pi-plugins-compatibility-levels-of-support/acceptance-criteria:
+  en: 386ae81c30ec7cfc
+  zh: 6f8bc4257fa8898c
+/agent-note-pi-plugins-compatibility-levels-of-support/risks:
+  en: b6410c36a55acc47
+  zh: e7de4e26be7a3c58

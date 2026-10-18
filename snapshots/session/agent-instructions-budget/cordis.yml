@@ -1,0 +1,29 @@
+# Workspace-context snapshot patch: the harness exports ALEGO_HOME=<cwd>/.alego and
+# ALEGO_AGENTS_HOME=<cwd>/.agents, so project-root and both user-global root
+# discoveries stay inside the scenario's temporary cwd.
+- id: agent-default-model
+  name: '@singula-ai/alego-agent-default-model'
+  config:
+    provider: deepseek-official
+    model: deepseek-v4-pro
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: !!js 'process.env.ALEGO_SNAPSHOT === undefined ? ''zstd'' : ''none'''
+
+- id: agent-instructions
+  name: '@singula-ai/alego-agent-instructions'
+  config:
+    maxBytes: 700
+    projectRootMarkers:
+      - .alego-project
+
+- id: system-prompt
+  name: '@singula-ai/alego-system-prompt'
+  config:
+    personaPrefix: |
+      You are a coding assistant powered by the {{model}} model.
+
+      Verify your work by running the code or tests. Keep answers brief and factual.

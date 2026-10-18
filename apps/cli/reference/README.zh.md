@@ -4,6 +4,8 @@
 
 本参考定义 profile 启动、插件管理和配置 dump 等命令模式。argv 由 [`src/args.ts`](../src/args.ts) 统一解析一次，[`src/bin.ts`](../src/bin.ts) 只会动态导入选中的运行器。
 
+[生成的命令帮助](../../../docs/cli-help.zh.md)包含启动器、插件管理和随附 profile 的完整帮助。运行 `pnpm run gen-cli-help` 刷新，运行 `pnpm run verify-cli-help` 检查它是否与当前 CLI 一致。
+
 <a id="profile-boot"></a>
 
 ## Profile 启动
@@ -14,9 +16,9 @@
 
 `web`、`headless`、`sdk`、`sdk-minimal` 和 `acp` profile 首次使用时会从随附模板自动初始化（`web`：base + web-app，实时应用 patch；`headless`：base + headless，只在启动时应用 patch；`sdk`：base + sdk-app，只在启动时应用 patch；`sdk-minimal`：独立组合包，只在启动时应用 patch；`acp`：base + acp-app，只在启动时应用 patch）。其他缺失的 profile 会显式报错，并提示运行 `alego plugin --profile <name> add <package>`。
 
-`alego --profile <name> --from-default-profile <template>` 会在启动前，从上述五个随附模板之一初始化新的自定义目标。目标名称不能是随附 profile 名称，并且完整的目标 profile 目录必须不存在。launcher 会以独占方式领取该目录，因此残留文件和另一个并发创建者都会在不作修改的情况下被拒绝。它把模板当前的组合包列表复制进一份依赖为空、用户 patch 为空的新 manifest。它不会读取 `<template>` 指定的本地同名 profile，不会复制其依赖或 patch，也不会持久化继承字段；模板列表之后的变化不会改写新 profile。复制列表中指名的内置组合包仍从当前 alego 安装目录解析。初始化成功不会增加 launcher 输出。
+`alego --profile <name> --from-default-profile <template>` 会在启动前，用上述五个随附模板之一的全新副本替换自定义目标。目标名称不能是任何大小写形式的随附 profile 名称。launcher 先在目标旁边的暂存目录中组装新 profile 并移动到目标位置，再删除原有的目标目录，包括其中已安装的依赖和用户 patch。移动失败时会恢复原有目录。如果恢复也失败，或进程在两次重命名之间停止，原有目录会保留在 `$ALEGO_HOME/profiles/.<name>.staging-*/previous`，供手动恢复。多个进程并发替换同一目标时，至少有一个会成功，且目标中只保留一份完整副本。该副本把模板当前的组合包列表写进一份依赖为空、用户 patch 为空的新 manifest。它不会读取 `<template>` 指定的本地同名 profile，不会复制其依赖或 patch，也不会持久化继承字段；模板列表之后的变化不会改写新 profile。复制列表中指名的内置组合包仍从当前 alego 安装目录解析。替换成功不会增加 launcher 输出。
 
-profile 已经存在时，`--from-default-profile` 会被拒绝，且不会修改或启动它；去掉该选项即可使用它。残留的目标目录同样会被原样保留，此时必须改用另一个 profile 名称。未知模板或随附目标名称会在创建目标之前失败；未知模板的诊断会列出有效模板。初始化在组合包解析和应用启动之前提交，因此后续失败仍会把新 profile 留在磁盘上，重试时需要去掉创建选项。三种配置 dump 模式都接受该选项，并在不启动应用的情况下初始化目标。
+去掉该选项即可在不重置的情况下启动该 profile。未知模板或随附目标名称会在目标被改动之前失败；未知模板的诊断会列出有效模板。替换在组合包解析和应用启动之前提交，因此后续失败仍会把新 profile 留在磁盘上。三种配置 dump 模式都接受该选项，并在不启动应用的情况下替换目标。
 
 ```sh
 alego rescue --from-default-profile web
@@ -25,7 +27,7 @@ alego rescue
 
 ### 应用参数
 
-启动器自身的 flag 必须写在最前面，并在遇到第一个无法识别的 token 时结束；从该 token 开始的所有内容都会通过 `ctx.cmdlineArgs` 原样交给已启动的 profile，注入该 profile 的任意应用插件都可以解析这些内容（[`alego-cmdline`](../../../packages/boot/cmdline/README.zh.md)）。因此，`alego rescue --from-default-profile web --no-open` 会先初始化，再把 `--no-open` 交给 Web；`alego --profile web --port 8080` 会将 `--port` 交给 web 应用；`alego --profile web --help` 只打印该应用的帮助信息，不启动应用；`alego --help` 没有可供交付参数的 profile，因此会打印启动器自身的帮助信息。`-V`/`--version` 位于应用参数边界之前时，会打印启动器的版本。
+启动器自身的 flag 必须写在最前面，并在遇到第一个无法识别的 token 时结束；从该 token 开始的所有内容都会通过 `ctx.cmdlineArgs` 原样交给已启动的 profile，注入该 profile 的任意应用插件都可以解析这些内容（[`alego-cmdline`](../../../packages/boot/cmdline/README.zh.md)）。因此，`alego rescue --from-default-profile web --no-open` 会先重置 rescue，再把 `--no-open` 交给 Web；`alego --profile web --port 8080` 会将 `--port` 交给 web 应用；`alego --profile web --help` 只打印该应用的帮助信息，不启动应用；`alego --help` 没有可供交付参数的 profile，因此会打印启动器自身的帮助信息。`-V`/`--version` 位于应用参数边界之前时，会打印启动器的版本。
 
 每套组合只会挂载一次。普通插件注入 `cmdlineArgs`，解析所属应用的参数，并将解析结果作为服务提供。每个从 flag 取值的配置行都会注入该服务；Loader 会等到服务激活后，再对该行的配置求值（`port: !!js ctx.webStartup.port ?? 3080`），因此 flag 的优先级高于配置行中写明的值。要维持这一优先级，配置行必须保留该表达式；如果用户 patch 用字面量替换整个 `config`，也会随之移除运行时读取。帮助参数和被拒绝的参数都会请求退出：参数被拒绝时以非零状态退出，显示帮助时以 0 退出；依赖该提供方服务的配置行不会激活。启用 HMR 时，编辑 patch 文件会根据仍在运行的服务重新计算表达式，因此不会重置当前正在使用的端口。
 
@@ -35,7 +37,7 @@ alego rescue
 
 | Profile | 参数 |
 |---|---|
-| `web` | `--host`、`--port`、可重复的 `--trusted-host`、`--no-open` |
+| `web` | `--host`、`--port`、`--tls-cert`、`--tls-key`、`--public-url`、可重复的 `--trusted-host`、`--no-open` |
 | `headless` | 任务文本，作为位置参数 |
 | `sdk` | 无选项；stdio 携带 JSON-RPC 协议 |
 | `sdk-minimal` | 无选项；stdio 携带相同的 JSON-RPC 协议 |
@@ -82,6 +84,8 @@ alego --profile web --patch ./extra.yml --dump-config
 
 `alego plugin --profile <name> <args...>` 在 profile 缺失时先初始化它（有随附模板的用模板，其他名称只装 `@singula-ai/alego-base`），然后以 profile 目录为工作目录，把 `<args...>` 转发给 `pnpm`：`add`、`remove`、`why`、`update` 及其他所有 pnpm 子命令都照常可用；pnpm 必须在 PATH 上。相对路径 spec（`.`、`../plugin` 及其 `file:`/`link:` 形式）会先锚定到调用目录，因此在插件 checkout 中执行 `add .` 安装的是该 checkout，而不是 profile。每次成功运行后，系统都会根据当前安装状态更新 `alego.profile.bundles`：如果某项依赖解析到的包在 manifest 中声明了 `"alego": { "bundle": { "patch": "./cordis.patch.yml" } }`，该依赖就会加入配置层栈；如果某项依赖在 `update` 后获得该声明，也会随即激活。没有组合包声明的依赖仍作为普通依赖保留，并显示一次性警告；已移除的依赖则从配置层栈中删除。
 
+`alego plugin` 只在被转发的参数之前读取 `--profile`；被转发的参数从它无法识别的第一个 token 开始，因此 `--profile <name>` 必须写在最前面。被转发的参数以 pnpm 命令开头时，该命令之后的所有内容都会原样交给 pnpm，包括 `-h` 和 `--help`。被转发的参数以 `--filter <selector>` 或 `-r` 等 pnpm 选项开头时，后面的 `-h` 或 `--help` 仍会打印转发器的帮助而不是 pnpm 的帮助，因此要查看 pnpm 的帮助，需把 pnpm 命令写在它们之前。在任何被转发的参数之前出现的 `-h` 或 `--help` 会打印转发器自身的帮助并以 0 退出。
+
 Codex 与 Claude Code subagent 提供方是两个彼此独立的可选组合包。可以只添加一个包、在同一命令中添加两个包，或独立移除任一包：
 
 ```sh
@@ -104,31 +108,37 @@ alego --profile tui
 
 ## Web Profile
 
-`alego web` 使用 profile 简写。启动器先解析自身的 flag，其余 flag 属于 web 应用，由组合包中的普通提供方解析。`--host` 和 `--port` 覆盖承载它们的那些行的组合取值，可重复的 `--trusted-host` 通过 `ctx.webRuntime.trustedHosts` 提供本次调用的 authority（部署表达式会拼接自己的 authority），`--no-open` 则只对本次调用关闭默认浏览器交接。客户端插件 HMR（热模块替换）接收器始终挂载，在 `pnpm run dev:web` 重建客户端 bundle 之前保持空闲；该命令先构建一次，再启动这同一个启动器并持续重建客户端 bundle，加 `--no-serve` 则只运行 watcher、配合别处启动的 `alego web`。
+`alego web` 使用 profile 简写。启动器先解析自身的 flag，其余 flag 属于 web 应用，由组合包中的普通提供方解析。`--host` 与 `--port` 覆盖组合的监听器取值，`--tls-cert`/`--tls-key` 则设置监听器的 `tls` 证书对。host 必须指名一个具体的本机地址，不能是通配地址（`--host 0.0.0.0` 会以用法错误退出）；`hostname -i` 可能列出多个，请只传一个。可重复的 `--trusted-host` 值会收集到 `ctx.webStartup.trustedHosts`；部署表达式可以添加自己的 authority。`--no-open` 只对本次调用关闭默认浏览器交接。客户端插件 HMR（热模块替换）接收器始终挂载，在 `pnpm run dev:web` 重建客户端 bundle 之前保持空闲；该命令先构建一次，再启动这同一个启动器并持续重建客户端 bundle，加 `--no-serve` 则只运行 watcher、配合别处启动的 `alego web`。
+
+`--public-url <url>` 公告唯一的 HTTP(S) 应用根——可带转发前缀——替代监听器的绑定地址 URL（回环绑定时为回环地址）。它不授予信任，因此浏览器可见的 authority 仍需用 `--trusted-host` 点名；[在反向代理之后发布 Web UI](../../../docs/user/guide/public-deployments.zh.md)列出了前置代理必须提供的内容。
+
+`--tls-cert <file>` 与 `--tls-key <file>` 让监听器以 HTTPS 取代明文 HTTP 提供服务。它们属于同一个设置：要么都给，要么都不给；两者各是相对进程工作目录解析的路径。证书文件包含完整证书链（含中间证书），密钥文件为不带口令的 PEM 私钥。文件缺失、不可读、为空或无效时启动失败，且绝不回退到 HTTP；由于载体只读取一次文件，且既不获取、不续期也不监视证书，替换后的证书对只有在重新加载监听器或重启进程后才生效。HTTPS 同样不授予信任：浏览器必须信任该证书并访问其名称覆盖的 authority，Connection 仍认证每个请求并校验 Host/Origin，而由于接收请求的监听器提供 HTTPS，会话 cookie 带 `Secure`。默认端口仍为 3080，`--public-url` 仍是相互独立的公告。
 
 ```sh
 alego web
+alego web --host "$(hostname -i | awk '{print $1}')" --public-url https://app.example/ --trusted-host app.example
+alego web --tls-cert ./server-chain.pem --tls-key ./server-key.pem
 alego web --no-open
 alego web --patch ./extra.cordis.yml
 alego web --dump-config
 alego web --help
 ```
 
-生产 Web 运行器需要已构建的包和前端产物（`pnpm run build`）。默认服务地址是 `http://127.0.0.1:3080`；本机启动时，只在完整 Loader 配置树结算后才用默认浏览器打开该规范宿主机 URL。继承的 `SSH_CONNECTION` 或 `SSH_TTY` 非空时会跳过浏览器交接，因为本地转发地址由 SSH 客户端或编辑器持有；宿主机 URL 仍会打印。CLI 有意不支持 `--host 0.0.0.0`，并会以用法错误退出。本机交接前会打印英文提示 `alego web: opening the default browser; pass --no-open to disable`；若操作系统交接失败，stderr 诊断会说明原因、给出 URL 供手动访问，服务器仍继续运行。`--trusted-host` 可添加 `/api` 浏览器信任围栏接受的具名 authority。
+生产 Web 运行器需要已构建的包和前端产物（`pnpm run build`）。配置了 `--public-url` 时打印公告地址，否则打印采用监听器协议的绑定地址 URL（默认为 `http://127.0.0.1:3080`，配置 TLS 时为 `https://`）。Host/Origin 栅栏直接接受绑定 IP；代理或 DNS authority 仍需 `--trusted-host`。启动日志与默认浏览器交接都会等待完整 Loader 配置树结算。继承的 `SSH_CONNECTION` 或 `SSH_TTY` 非空时会抑制浏览器打开，但仍打印启动 URL。浏览器交接前会打印 `alego web: opening the default browser; pass --no-open to disable`；若操作系统交接失败，stderr 会说明原因并指向启动 URL，服务器仍继续运行。
 
 进程关闭时，插件树最多有 5 秒完成 dispose。首次收到 `SIGINT` 或 `SIGTERM` 时会开始优雅排空：`SIGTERM` 是监督进程发出的常规停止请求，在所有运行模式下都以 0 退出；`SIGINT` 则报告 130。第二次收到信号时会立即强制退出。如果一次性运行在正常结束时已经卡在 dispose 阶段，第一次按下 `Ctrl+C` 就会直接升级为强制退出，而不会被忽略。
 
-基于 base 的模式都将运行命令时所在的目录作为默认 workspace 根目录，以 65,536 字节渲染预算加载适用的 `AGENTS.md` 或 `CLAUDE.md` 指令，并使用内存 SQLite 会话内容索引。独立的 `sdk-minimal` profile 把运行命令时所在的目录作为沙箱策略根目录，但刻意省略文件系统工具、指令发现与 SQLite。启用的 HMR 插件会监视 profile 与 home 两个 `cordis.patch.yml` 配置层的有效变更，并以事务方式重新应用；未启用 HMR 时只应用一次。一次性运行模式通过有界关闭流程退出，该流程会 dispose 所有实时监视器。
+基于 base 的模式都将运行命令时所在的目录作为默认 workspace 根目录，以 65,536 字节渲染预算加载适用的 `AGENTS.md` 或 `CLAUDE.md` 指令，并使用内存 SQLite 会话内容索引。独立的 `sdk-minimal` profile 把运行命令时所在的目录作为沙箱策略根目录并包含 `read_image`，但省略文本文件系统工具、指令发现与 SQLite。启用的 HMR 插件会监视 profile 与 home 两个 `cordis.patch.yml` 配置层的有效变更，并以事务方式重新应用；未启用 HMR 时只应用一次。一次性运行模式通过有界关闭流程退出，该流程会 dispose 所有实时监视器。
 
 基于 base 的 profile 中，新会话默认使用 `workspace-write` 权限预设。Bash 和文件系统修改仅限于会话 workspace 与平台临时根目录；读取和网络访问不受限制，进程可见性则取决于所选沙箱后端——bwrap 在私有 PID 命名空间中运行命令并隐藏宿主进程，Landlock 与 Seatbelt 保持宿主进程可见性不变。`ALEGO_PERMISSION_MODE` 更改进程后备值。General settings 中存储的权限影响后续 Web 会话，不改变已打开的会话。独立的 `sdk-minimal` 配置树则固定为 `danger-full-access`，且不挂载 approval 或权限 settings 服务。
 
-`ALEGO_TOOLS_MODE` 为进程选择 `native`、`ptc` 或 `both`；其他值会导致启动失败。随附的 `minimal` agent preset 会保留该部署的呈现方式，将完整系统提示词固定为 `You are a helpful software engineer assistant.`，并且仅组合按平台选择的持久 shell。创建 Web 会话时请选择极简模式；该 agent 不包含任何其他提示词段落或面向模型的插件，而共享的浏览器、workspace、持久化、沙箱与权限宿主保持不变。
+`ALEGO_TOOLS_MODE` 为进程选择 `native` 或 `ptc`；其他值会导致启动失败。随附的 `minimal` agent preset 会保留该部署的呈现方式，将完整系统提示词固定为 `You are a helpful software engineer assistant.`，并提供按平台选择的持久 shell、`read_image` 和 `working_directory`。它支持自动上下文压缩和用户 `/compact` 命令。创建 Web 会话时请选择极简模式；共享的浏览器、workspace、持久化、沙箱与权限宿主保持不变。
 
 ## 共享部署行为
 
 基础组合包挂载原生 DeepSeek 适配器、settings 与凭据提供方、稳定的 `web_search` 和 `web_fetch`、仅限公网的 HTTP fetch 提供方，默认开启的 DeepSeek 会话日志上传，以及面向所有用户的反馈门控 OTel 上传。提供方凭据依次从继承环境、`$ALEGO_HOME/.credentials.yaml`、调用目录的 `.env` 和 `$ALEGO_HOME/.env` 解析；受管文档从不物化进 `process.env`，而两个 `.env` 文件都是普通启动环境层。搜索使用 `DEEPSEEK_API_KEY` 并接受 `DEEPSEEK_SEARCH_BASE_URL`。已启用的抓取调用会在所有 sandbox 与审批模式下执行，无需逐次确认；提供方会在连接前拒绝非公开目的地址。Web app 会禁用 base 工具配置项，再通过 `cordis`、`ptc` 与 `standard` agent preset 暴露相同工具。
 
-反馈记录在会话日志中，不会启动模型工作。[DeepSeek 会话日志贡献器](../../../packages/session/session-log-deepseek/README.zh.md)默认随后续 DeepSeek 请求发送尚未确认接收的完整日志后缀，包括经已配置网关发送的请求；将其 `enabled` 配置设为 `false` 可关闭上传。[OTel 会话上传](../../../packages/session/session-telemetry-otel/README.zh.md)适用于所有用户和提供方，包括 `deepseek-official`，无需请求头。基础配置默认使用 `FEEDBACK_ONLY`：新的自身文本反馈、消息评分、编辑与撤回会释放截至该事件的完整规范日志前缀，包含存储的上下文；后续记录等待下一次显式反馈。继承的父级反馈不构成 fork 的授权。请求、恢复、挂载和 HMR 不触发捕获。SDK 批处理可完成已授权上传，无需进一步交互或模型工作。`ALEGO_TELEMETRY_MODE=DISABLED` 禁止 OTel 投递；`FULL` 被拒绝，任何非空的 `ALEGO_TELEMETRY_DISABLED` 都会禁用其配置行。`ALEGO_TELEMETRY_OTLP_URL` 选择采集端。交接尽力而为，不代表采集端接受；不提供持久化 outbox 或重试保证。这些 OTel 设置不会开启或关闭 DeepSeek 贡献。两条路径都不改变模型输入，但导出可能包含消息文本、工具参数和结果，以及工作区路径。
+反馈记录在会话日志中，不会启动模型工作。[DeepSeek 会话日志贡献器](../../../packages/session/session-log-deepseek/README.zh.md)默认随后续 DeepSeek 请求发送尚未确认接收的完整日志后缀，包括经已配置网关发送的请求；可在 Web 的**设置 → 通用 → 在使用官方模型 API 时上传 Session Log**中关闭上传，或将其 `enabled` 配置设为 `false`。[OTel 会话上传](../../../packages/session/session-telemetry-otel/README.zh.md)适用于所有用户和提供方，包括 `deepseek-official`，无需请求头。基础配置默认使用 `FEEDBACK_ONLY`：新的自身文本反馈、消息评分、编辑与撤回会释放截至该事件的完整规范日志前缀，包含存储的上下文；后续记录等待下一次显式反馈。继承的父级反馈不构成 fork 的授权。请求、恢复、挂载和 HMR 不触发捕获。SDK 批处理可完成已授权上传，无需进一步交互或模型工作。`ALEGO_TELEMETRY_MODE=DISABLED` 禁止 OTel 投递；`FULL` 被拒绝，任何非空的 `ALEGO_TELEMETRY_DISABLED` 都会禁用其配置行。`ALEGO_TELEMETRY_OTLP_URL` 选择采集端。交接尽力而为，不代表采集端接受；不提供持久化 outbox 或重试保证。这些 OTel 设置不会开启或关闭 DeepSeek 贡献。两条路径都不改变模型输入，但导出可能包含消息文本、工具参数和结果，以及工作区路径。
 
 通过 `alego plugin --profile <name> add <package-or-git-spec>` 安装外部插件组合包。安装的包拥有其依赖，并贡献其声明的 `cordis.patch.yml` 层。CLI 还随附 `@singula-ai/alego-mcp-client` 作为供 patch 层使用的依赖，但默认不启用 MCP 服务器，因为每条服务器命令都是 agent 沙箱之外的受信任可执行代码。
 

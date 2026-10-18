@@ -1,0 +1,62 @@
+# Main responses derive from the session fixture; auxiliary title responses use
+# the explicit replay script. The SDK waits for each accepted title before sending
+# the next human message.
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek-api-key'
+  disabled: true
+
+- id: agent-default-model
+  name: '@singula-ai/alego-agent-default-model'
+  config:
+    provider: deepseek-official
+    model: deepseek-v4-flash
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: none
+
+- id: agent-instructions
+  name: '@singula-ai/alego-agent-instructions'
+  config:
+    maxBytes: 65536
+
+- id: system-prompt
+  name: '@singula-ai/alego-system-prompt'
+  config:
+    personaPrefix: |
+      You are a coding assistant powered by the {{model}} model. Your bash tool runs under a file sandbox — a `[sandbox: file access denied …]` result is policy, not a command bug.
+
+      Verify your work by running the code or tests. Keep answers brief and factual.
+
+- insert:
+    - id: llm-replay-main
+      name: '@singula-ai/alego-llm-replay'
+      config:
+        overrideFile: ./.missing-main-replay-override.json
+        providers:
+          - id: deepseek-official
+            name: DeepSeek
+            models:
+              - id: deepseek-v4-flash
+    - id: llm-replay-title
+      name: '@singula-ai/alego-llm-replay'
+      config:
+        providers:
+          - id: title-replay
+            name: Title replay
+            models:
+              - id: title-model
+                reasoningEfforts: [low, high]
+                defaultReasoningEffort: high
+    - id: session-title-provider
+      name: '@singula-ai/alego-session-title-all-prompts-llm'
+      config:
+        targetWords: 5
+        targetCjkCharacters: 10
+        maxInputBytes: 4096
+        maxOutputTokens: 32
+        timeoutMs: 5000
+        provider: title-replay
+        model: title-model

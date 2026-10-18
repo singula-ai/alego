@@ -1,5 +1,9 @@
-# Optional Profile Bundle: register the Codex provider on the Host plane only.
-# Agent Presets grant the model-facing tool independently.
 - insert:
     - id: subagent-codex
       name: '@singula-ai/alego-subagent-codex'
+    - id: tool-subagent-codex
+      name: '@singula-ai/alego-tool-subagent'
+      config:
+        provider: codex
+        toolName: subagent_codex
+        maxDepth: provider-managed

@@ -1,0 +1,37 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/experimental/client-ui-claude-code-mods/README.md
+/:
+  en: 88916b7aac3cfa9e
+  zh: 8ce800daa10eb8f4
+/singula-ai-alego-experimental-client-ui-claude-code-mods:
+  en: d3079dda1a6ba069
+  zh: a06d74b4bdad1479
+/singula-ai-alego-experimental-client-ui-claude-code-mods/summary:
+  en: a9e9cf8cd5b591f5
+  zh: a69bda0674efe223
+/singula-ai-alego-experimental-client-ui-claude-code-mods/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-experimental-client-ui-claude-code-mods/use-this-package:
+  en: ca73e7e3ee8f081b
+  zh: 9e288df88595a98c
+/singula-ai-alego-experimental-client-ui-claude-code-mods/understand-the-implementation:
+  en: 84e553fad0acc4e7
+  zh: 59e022f910b106ab
+/singula-ai-alego-experimental-client-ui-claude-code-mods/further-exploration:
+  en: c7b3264e08a09070
+  zh: a26601bf85acc019
+/singula-ai-alego-experimental-client-ui-claude-code-mods/model-experience:
+  en: 628c0f0f837e8f43
+  zh: 63546356a4d74fda
+/singula-ai-alego-experimental-client-ui-claude-code-mods/model-experience/kv-cache-effect:
+  en: 60835eca1cee4e0e
+  zh: 045010345127cfbb
+/singula-ai-alego-experimental-client-ui-claude-code-mods/known-limitations-and-deferred-work:
+  en: 93eb37dfcac156eb
+  zh: 5043f1be81e1039a
+/singula-ai-alego-experimental-client-ui-claude-code-mods/known-limitations-and-deferred-work/dev-note:
+  en: 0225ba087c5266f3
+  zh: 0400e21a2683a23c

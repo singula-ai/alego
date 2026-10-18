@@ -1,0 +1,37 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/experimental/badge-skill-bundle/README.md
+/:
+  en: 0f3624e238403c3d
+  zh: 596c3c5abbe63e85
+/singula-ai-alego-experimental-badge-skill-bundle:
+  en: cfa9cb4a2e3ec879
+  zh: c502cc7b93ebe815
+/singula-ai-alego-experimental-badge-skill-bundle/summary:
+  en: b7e367a2e0cbccb5
+  zh: be9169ab86a261c9
+/singula-ai-alego-experimental-badge-skill-bundle/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 988e839059414d27
+/singula-ai-alego-experimental-badge-skill-bundle/use-this-package:
+  en: 32e23729c7be424c
+  zh: 369e3093197929fe
+/singula-ai-alego-experimental-badge-skill-bundle/understand-the-implementation:
+  en: 13392aa9c9d2f8d7
+  zh: 1ca5c697141fdad4
+/singula-ai-alego-experimental-badge-skill-bundle/further-exploration:
+  en: 59466a891f6afa60
+  zh: e83b2e8b2c61c15e
+/singula-ai-alego-experimental-badge-skill-bundle/model-experience:
+  en: f9ea4d1184128140
+  zh: 90a427b4e3a698de
+/singula-ai-alego-experimental-badge-skill-bundle/model-experience/kv-cache-effect:
+  en: 1b2209bbbf869b1a
+  zh: 5b9de62271343e4e
+/singula-ai-alego-experimental-badge-skill-bundle/known-limitations-and-deferred-work:
+  en: 6c6e181ad900ece5
+  zh: 4d6063075f1ee8a6
+/singula-ai-alego-experimental-badge-skill-bundle/known-limitations-and-deferred-work/dev-note:
+  en: 279d01435256cd2a
+  zh: 83780964e5de2f54

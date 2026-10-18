@@ -1,0 +1,43 @@
+# Bilingual-pair consistency record for 2026-10-03-pi-extensions-bridge.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/proposed/feature/2026-10-03-pi-extensions-bridge.md
+/agent-note-pi-extensions-bridge:
+  en: d0b98fc96e6e9744
+  zh: d88a38e653ddb792
+/agent-note-pi-extensions-bridge/problem:
+  en: f1fdde401ea5cdc1
+  zh: 911cfc5098095e17
+/agent-note-pi-extensions-bridge/proposal:
+  en: b72b41b15a176c02
+  zh: f0c42a88dc0ee08e
+/agent-note-pi-extensions-bridge/proposal/packages-and-composition:
+  en: 8767349599926eb2
+  zh: 2b77d79a81a8fadd
+/agent-note-pi-extensions-bridge/proposal/loading-and-execution:
+  en: d95ece799bc6bab7
+  zh: 1e19d3b49473a57e
+/agent-note-pi-extensions-bridge/proposal/serving-the-api:
+  en: 30e3b8d0d57f0af1
+  zh: 8f28f5d2e325e6ef
+/agent-note-pi-extensions-bridge/proposal/built-in-tool-calls-as-pi-sees-them:
+  en: df3ab1a9f65a982f
+  zh: 57e6651fe75e55c7
+/agent-note-pi-extensions-bridge/proposal/unserved-features:
+  en: af045418d943af30
+  zh: 4362f9d3308e6f72
+/agent-note-pi-extensions-bridge/proposal/extension-state:
+  en: 4b3b438335160bb3
+  zh: f4d39f7003c64c2b
+/agent-note-pi-extensions-bridge/proposal/core-mechanisms-narrower-than-pi-s:
+  en: 69eeef04a5b00e4e
+  zh: 677b8d5bab39d943
+/agent-note-pi-extensions-bridge/alternatives-considered:
+  en: 1206c3d82563299d
+  zh: 29fe722477468cd7
+/agent-note-pi-extensions-bridge/acceptance-criteria:
+  en: aa9532bdf63d1843
+  zh: d47650d7bbe0a7fb
+/agent-note-pi-extensions-bridge/risks:
+  en: 2b9a626b13c604f6
+  zh: f67cb80d2b699989

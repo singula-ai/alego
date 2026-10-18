@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-subprocess-local",
   "description": "Local-subprocess implementation of the Alego subprocess seam",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,9 +27,11 @@
     "./output": {
       "types": "./lib/types/output.d.ts",
       "default": "./lib/output.js"
-    }
+    },
+    "./locale/*.json": "./locale/*.json"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/runner.js",
     "lib/runner-*.js",
@@ -49,7 +51,7 @@
   "dependencies": {
     "@singula-ai/alego-lazy-require": "workspace:*",
     "@singula-ai/alego-win32-process": "workspace:*",
-    "koffi": "^3.1.0",
+    "koffi": "3.1.1",
     "node-pty": "1.2.0-beta.15"
   },
   "devDependencies": {

@@ -1,0 +1,91 @@
+# Bilingual-pair consistency record for 2026-10-12-peer-principal-and-remote-access.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-10-12-peer-principal-and-remote-access.md
+/agent-note-peer-principals-and-method-level-remote-access-control:
+  en: 4de64dce2a2c3e1d
+  zh: 2a0ed0e20da6bc7f
+/agent-note-peer-principals-and-method-level-remote-access-control/problem:
+  en: f5b70ee2c0a3e32a
+  zh: 68776a916cb41f11
+/agent-note-peer-principals-and-method-level-remote-access-control/decision:
+  en: a15c7c13f167e5ac
+  zh: 63bcc2ef60c2f344
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/scope:
+  en: 558db602f8fd91c8
+  zh: 7538ad9e9e182b1c
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/two-layers-principal-and-peer:
+  en: 6663ea33561eee82
+  zh: 722fd3b8fae0ef90
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/peer-model:
+  en: d9ac7c94e40c2494
+  zh: fa6f5e6690b2fb90
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/identity-types:
+  en: 31430c5b95295ead
+  zh: 8f4ba35b4406558d
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/peer-lifetime-and-revocation:
+  en: a01ac57fc71a84f0
+  zh: 3e488ef3da5e4b8c
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/method-level-access-control:
+  en: 6bdbf29456437229
+  zh: 788e6da15df50113
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/method-level-access-control/correspondence-with-rbac:
+  en: a78a2410eb52f777
+  zh: a868bf1b0e690c9f
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/method-level-access-control/resources-and-resource-readers-singula-ai-alego-typert-protocol-singula-ai-alego-typert-registry:
+  en: 83ce6b2632a7ffee
+  zh: d52d13954da9a154
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/method-level-access-control/endpoint-resources:
+  en: ec1677d8e338e115
+  zh: 6bedd163f208eaa9
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/method-level-access-control/roles-bindings-and-policies-singula-ai-alego-api-remote-access:
+  en: 922ed360c23a4c8d
+  zh: 7b42e417387c32c4
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/method-level-access-control/example-share-viewer:
+  en: 3c911f57f0f6ca4b
+  zh: 1509781eeda4c922
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/method-level-access-control/host-access-check-order:
+  en: 6c58dc8777e107ef
+  zh: bc14605c96e4d8f3
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/method-level-access-control/forwarded-events:
+  en: 5fe34ee5ec31942a
+  zh: ef39b020b0539b8f
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/method-level-access-control/list-and-aggregate-methods:
+  en: 7865e159528e2d30
+  zh: 1399d54632f4d926
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/method-level-access-control/access-snapshot-stream:
+  en: 41d7ac1faf2448d7
+  zh: 6d523895a9abae68
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/method-level-access-control/client-face:
+  en: 0fcd4a38c0a79570
+  zh: af95dd254235422f
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/security-invariants:
+  en: d3994de072b4cc45
+  zh: 3da1289be2c4aa97
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/recording-the-message-source:
+  en: 55989105ab09f7b8
+  zh: baf4ee41c2b7d4bd
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/code-review-rule-and-documentation:
+  en: d3be249da2a0f89c
+  zh: 1f7be9f104628dc2
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/out-of-scope-and-future-work:
+  en: ff3dbd781c441a9a
+  zh: 55dfa6be93891a99
+/agent-note-peer-principals-and-method-level-remote-access-control/decision/relation-to-existing-notes:
+  en: 3ede46300a7c99c9
+  zh: e235721cfa6d8cbf
+/agent-note-peer-principals-and-method-level-remote-access-control/alternatives-considered:
+  en: 130df2981ba550df
+  zh: e9a0a89af6fb50a3
+/agent-note-peer-principals-and-method-level-remote-access-control/consequences:
+  en: 89452c3c3f042e75
+  zh: 9bcad00a60c65303
+/agent-note-peer-principals-and-method-level-remote-access-control/consequences/verification:
+  en: 048067eb02e6bf8a
+  zh: 12508b59f6b206b8
+/agent-note-peer-principals-and-method-level-remote-access-control/consequences/costs-and-limits:
+  en: 1e254cec680b1a37
+  zh: 06a31e057ba965aa
+/agent-note-peer-principals-and-method-level-remote-access-control/consequences/migration-list-for-pr-5945:
+  en: f904c62b68d46bb5
+  zh: 34eb45b97302badb

@@ -1,5 +1,6 @@
-- id: skill-badge
-  disabled: false
+- insert:
+    - id: skill-badge
+      name: '@singula-ai/alego-skill-badge'
 
 - id: skill-filesystem
   config:

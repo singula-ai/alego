@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-api-terminal-controller",
   "description": "Session-owned interactive terminals with shell discovery, screen recovery and typed Remote control",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -35,7 +35,8 @@
       "default": "./lib/typert.remote-client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
@@ -57,10 +58,11 @@
     "@singula-ai/alego-deque": "workspace:*",
     "@singula-ai/alego-lazy-require": "workspace:*",
     "@singula-ai/alego-typert-protocol": "workspace:*",
+    "@singula-ai/alego-util-values": "workspace:*",
     "@singula-ai/schemastery": "workspace:~",
-    "@xterm/headless": "^6.0.0",
     "@xterm/addon-serialize": "^0.14.0",
-    "zod": "^4.4.3"
+    "@xterm/headless": "^6.0.0",
+    "zod": "4.4.3"
   },
   "peerDependencies": {
     "@singula-ai/alego-subprocess": "workspace:*",
@@ -71,6 +73,7 @@
     "@singula-ai/alego-agent": "workspace:*",
     "@singula-ai/alego-api-gateway": "workspace:*",
     "@singula-ai/alego-brand": "workspace:*",
+    "@singula-ai/alego-client-connection": "workspace:*",
     "@singula-ai/alego-client-store": "workspace:*",
     "@singula-ai/alego-fs": "workspace:*",
     "@singula-ai/alego-remote-mock": "workspace:*",
@@ -80,9 +83,11 @@
     "@singula-ai/alego-session-projection": "workspace:*",
     "@singula-ai/alego-subprocess": "workspace:*",
     "@singula-ai/alego-subprocess-local": "workspace:*",
-    "@singula-ai/alego-util-crypto": "workspace:*"
+    "@singula-ai/alego-util-crypto": "workspace:*",
+    "@singula-ai/alego-working-directory": "workspace:*"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.js",

@@ -62,6 +62,17 @@
   flex-shrink: 0;
 }
 
+.waitButton {
+  white-space: nowrap;
+}
+
+.waitStatus {
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
 /* Figma 1019:36938 header, user-tuned: heading block left, close right; the
    pager sits in the footer to balance the card. */
 .header {
@@ -293,8 +304,20 @@
   font-weight: 400;
 }
 
+/* Read-only note standing in for a question the user skipped: it takes the
+   option rows' horizontal padding so it lines up with the choices above it. */
+.reviewNote {
+  margin: 0;
+  padding: 8px 12px;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 14px;
+  line-height: 24px;
+}
+
 /* Custom answer row (figma 973:36427): an option-shaped row whose copy is an
-   inline text input; focus or a typed draft lifts it to the selected look. */
+   inline text input; focus or a typed draft gives it the selected look.
+   While a single-select option is chosen, focus alone does not apply that
+   look, so the radio group shows one selection; typing clears the option. */
 .customRow {
   display: flex;
   /* Same first-line alignment as .option — the indicator seat carries the
@@ -313,12 +336,12 @@
 }
 
 .customRow:hover,
-.customRow:focus-within,
+.customRow:focus-within:not(.customRowYielded),
 .customRowActive {
   background: var(--dsw-alias-interactive-bg-hover);
 }
 
-.customRow:focus-within,
+.customRow:focus-within:not(.customRowYielded),
 .customRowActive {
   border-color: var(--dsw-alias-border-l2);
 }

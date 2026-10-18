@@ -1,0 +1,31 @@
+# The snapshot harness supplies scenario-local .alego and .agents roots.
+- id: agent-default-model
+  name: '@singula-ai/alego-agent-default-model'
+  config:
+    provider: deepseek-official
+    model: deepseek-v4-pro
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: none
+
+- id: agent-instructions
+  name: '@singula-ai/alego-agent-instructions'
+  config:
+    maxBytes: 65536
+    projectRootMarkers:
+      - .alego-project
+
+- id: system-prompt
+  name: '@singula-ai/alego-system-prompt'
+  config:
+    personaPrefix: |
+      You are a coding assistant powered by the {{model}} model.
+
+      Verify your work by running the code or tests. Keep answers brief and factual.
+
+- insert:
+    - id: workspace-context-global-failure
+      name: '../../../packages/test-support/session-snapshot/tests/fixtures/workspace-context-global-failure.ts'

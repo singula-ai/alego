@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write apps/plugin-market-generator/README.md
+/plugin-market-index-generator:
+  en: cc29ba821ce0f3eb
+  zh: aa904e155a4d6062
+/plugin-market-index-generator/usage:
+  en: ed2a83d06f6789ef
+  zh: e5c1e26486dfefb0
+/plugin-market-index-generator/what-gets-listed:
+  en: a7992de9a5ae63e8
+  zh: 029321d852c6b357
+/plugin-market-index-generator/caching-and-repeated-runs:
+  en: a62c9bf12310c33c
+  zh: 60aa01288f46133c
+/plugin-market-index-generator/security:
+  en: de5821128b676a61
+  zh: aad295eeb80cad7e
+/plugin-market-index-generator/limits:
+  en: b5e02017e961e818
+  zh: 0f0aaa26d519acb1

@@ -3,41 +3,47 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-user-questions/README.md
 /:
-  en: 66e62713ee458aa6
-  zh: caad29ceece869c3
+  en: 80ab84e4849a3b77
+  zh: 3ab1396623e3dd72
 /singula-ai-alego-client-ui-user-questions:
   en: 2067dce0c3394fe8
   zh: 17bafbd08946fac5
 /singula-ai-alego-client-ui-user-questions/summary:
-  en: 7e81c6a53759ff37
-  zh: b83f666c4ef4cbd3
+  en: 1aa6291852d48a08
+  zh: 414eed268fb2cf1f
 /singula-ai-alego-client-ui-user-questions/table-of-contents:
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
 /singula-ai-alego-client-ui-user-questions/use-this-package:
-  en: 4aa048dcb7282f12
-  zh: d2731da0870aa6a0
+  en: 8d3815c19858ac85
+  zh: 94fc905fa202d334
 /singula-ai-alego-client-ui-user-questions/use-this-package/answering:
-  en: 8b6f37bfb11a2c3a
-  zh: 59d8951211f9b21b
+  en: cc19c065d0aeac1e
+  zh: 91c8cbe08b438e7f
+/singula-ai-alego-client-ui-user-questions/use-this-package/reading-a-settled-question-back:
+  en: 10975f68ff9c6fcc
+  zh: 92246aadc363f0eb
 /singula-ai-alego-client-ui-user-questions/use-this-package/the-plan-review-card:
   en: 8e0167c3365a1b1a
   zh: 5bcb335d929d734b
 /singula-ai-alego-client-ui-user-questions/use-this-package/failure-and-recovery:
-  en: da530ef485c07417
-  zh: b07525cfcd5034f0
+  en: 3509678f4d183834
+  zh: 625542b79e434eb5
 /singula-ai-alego-client-ui-user-questions/understand-the-implementation:
   en: 77e1b2585acdf67b
   zh: d433ec185c6b8f57
+/singula-ai-alego-client-ui-user-questions/understand-the-implementation/reopening-a-panel:
+  en: ad6e13fffd7f0f71
+  zh: ce2f02b637e44c93
 /singula-ai-alego-client-ui-user-questions/understand-the-implementation/intent-surface-election:
-  en: 7f3e0e2460317462
-  zh: cb6b9410410e2f29
+  en: 126a889edbc42edd
+  zh: 7e08968cd61d42a2
 /singula-ai-alego-client-ui-user-questions/understand-the-implementation/copy-and-locale:
-  en: fcf16af16d326f0a
-  zh: 45535a88578efad2
+  en: 0002a7b4171b80fb
+  zh: 01fbd0241fd78087
 /singula-ai-alego-client-ui-user-questions/further-exploration:
-  en: 2e05116ec9610c53
-  zh: 634fdd114e52f791
+  en: 9c71e7eb39ff72ba
+  zh: 364dd02bccd62716
 /singula-ai-alego-client-ui-user-questions/model-experience:
   en: afd1fa2427a65025
   zh: bba3445a2c60710b
@@ -45,8 +51,8 @@
   en: 223f5dd58610c03a
   zh: 772ccebb2264af61
 /singula-ai-alego-client-ui-user-questions/known-limitations-and-deferred-work:
-  en: beb6dc6d1496e799
-  zh: d92150a88a797c21
+  en: d61767a407077aaf
+  zh: 891e7bffa61f3017
 /singula-ai-alego-client-ui-user-questions/known-limitations-and-deferred-work/dev-note:
-  en: 7c763299daed17e4
-  zh: fb410b366b407ec7
+  en: 4ff0c667c1b130df
+  zh: 3f42eaff797dc46d

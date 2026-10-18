@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-base",
   "description": "The shared alego core as a profile bundle: the first patch layer of base-backed profiles, inserting core rows over the empty profile root",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -58,6 +58,7 @@
     "@singula-ai/alego-goal": "workspace:*",
     "@singula-ai/alego-goal-round-driver": "workspace:*",
     "@singula-ai/alego-api-gateway": "workspace:*",
+    "@singula-ai/alego-api-remote-access": "workspace:*",
     "@singula-ai/alego-llm": "workspace:*",
     "@singula-ai/alego-llm-deepseek-api-key": "workspace:*",
     "@singula-ai/alego-llm-deepseek-account": "workspace:*",
@@ -81,7 +82,6 @@
     "@singula-ai/alego-session-title": "workspace:*",
     "@singula-ai/alego-session-title-first-prompt-llm": "workspace:*",
     "@singula-ai/alego-skill": "workspace:*",
-    "@singula-ai/alego-skill-badge": "workspace:*",
     "@singula-ai/alego-skill-filesystem": "workspace:*",
     "@singula-ai/alego-spill-local": "workspace:*",
     "@singula-ai/alego-spill-policy": "workspace:*",
@@ -102,7 +102,6 @@
     "@singula-ai/alego-tool-fs-search": "workspace:*",
     "@singula-ai/alego-tool-goal": "workspace:*",
     "@singula-ai/alego-tool-pwsh": "workspace:*",
-    "@singula-ai/alego-tool-ralph": "workspace:*",
     "@singula-ai/alego-tool-skill": "workspace:*",
     "@singula-ai/alego-tool-subagent": "workspace:*",
     "@singula-ai/alego-tool-subagent-control": "workspace:*",
@@ -126,7 +125,10 @@
     "@singula-ai/alego-deepseek-account-platform": "workspace:*",
     "@singula-ai/alego-config-editor": "workspace:*",
     "@singula-ai/alego-settings": "workspace:*",
-    "@singula-ai/alego-otel": "workspace:*"
+    "@singula-ai/alego-otel": "workspace:*",
+    "@singula-ai/alego-working-directory": "workspace:*",
+    "@singula-ai/alego-tool-working-directory": "workspace:*",
+    "@singula-ai/alego-web-deepseek-api": "workspace:*"
   },
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:~"

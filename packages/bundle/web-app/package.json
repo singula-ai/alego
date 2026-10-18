@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-web-app",
-  "description": "The alego browser-surface bundle: the web patch layer over alego-base plus the runtime glue plugin (frontend dist serving, web-surface prompt, bash runtime variables, URL line)",
-  "version": "0.1.7-rc.2",
+  "description": "The alego browser-surface bundle: the web patch layer over alego-base plus the runtime glue plugin (frontend dist serving, bash runtime variables, URL line)",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -25,9 +25,13 @@
     "./cordis.patch.yml": "./cordis.patch.yml",
     "./presets/*.patch.yml": "./presets/*.patch.yml",
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./startup/locale/*.json": "./locale/startup/*.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "files": [
+    "locale/*.json",
+    "locale/startup/*.json",
     "lib/index.js",
     "lib/startup.js",
     "cordis.patch.yml",
@@ -35,6 +39,7 @@
     "presets/ptc.patch.yml",
     "presets/minimal.patch.yml",
     "presets/cordis.patch.yml",
+    "lib/public-url-*.js",
     "lib/types/**/*.d.ts"
   ],
   "license": "MIT",
@@ -85,13 +90,16 @@
     "@singula-ai/alego-client-ui-layout": "workspace:*",
     "@singula-ai/alego-client-ui-message-feedback": "workspace:*",
     "@singula-ai/alego-client-ui-model-selection": "workspace:*",
+    "@singula-ai/alego-client-ui-deepseek-model-label-1017": "workspace:*",
     "@singula-ai/alego-client-ui-open-in-app": "workspace:*",
     "@singula-ai/alego-client-ui-permission-presets": "workspace:*",
     "@singula-ai/alego-client-ui-plan": "workspace:*",
     "@singula-ai/alego-client-ui-plugin-manager": "workspace:*",
     "@singula-ai/alego-client-ui-reference": "workspace:*",
     "@singula-ai/alego-client-ui-renderer": "workspace:*",
+    "@singula-ai/alego-client-ui-secret-mask": "workspace:*",
     "@singula-ai/alego-client-ui-session": "workspace:*",
+    "@singula-ai/alego-client-ui-schedule": "workspace:*",
     "@singula-ai/alego-client-ui-settings": "workspace:*",
     "@singula-ai/alego-client-ui-settings-general": "workspace:*",
     "@singula-ai/alego-client-ui-settings-models": "workspace:*",
@@ -137,6 +145,8 @@
     "@singula-ai/alego-persona": "workspace:*",
     "@singula-ai/alego-plan-mode": "workspace:*",
     "@singula-ai/alego-plugin-manager": "workspace:*",
+    "@singula-ai/alego-plugin-market": "workspace:*",
+    "@singula-ai/alego-schedule": "workspace:*",
     "@singula-ai/alego-session-log-export": "workspace:*",
     "@singula-ai/alego-session-reference": "workspace:*",
     "@singula-ai/alego-session-stats": "workspace:*",
@@ -145,6 +155,7 @@
     "@singula-ai/alego-subprocess": "workspace:*",
     "@singula-ai/alego-terminal": "workspace:*",
     "@singula-ai/alego-terminal-bash": "workspace:*",
+    "@singula-ai/alego-time-context": "workspace:*",
     "@singula-ai/alego-tool-ask-user": "workspace:*",
     "@singula-ai/alego-tool-bash": "workspace:*",
     "@singula-ai/alego-tool-bash-persistent": "workspace:*",
@@ -156,7 +167,7 @@
     "@singula-ai/alego-tool-present": "workspace:*",
     "@singula-ai/alego-tool-pwsh": "workspace:*",
     "@singula-ai/alego-tool-pwsh-persistent": "workspace:*",
-    "@singula-ai/alego-tool-ralph": "workspace:*",
+    "@singula-ai/alego-tool-schedule": "workspace:*",
     "@singula-ai/alego-tool-skill": "workspace:*",
     "@singula-ai/alego-tool-subagent": "workspace:*",
     "@singula-ai/alego-tool-subagent-control": "workspace:*",
@@ -169,19 +180,20 @@
     "@singula-ai/alego-workspace-changes": "workspace:*",
     "@singula-ai/schemastery": "workspace:~",
     "commander": "^15.0.0",
-    "open": "^11.0.0",
+    "open": "^11.0.2",
     "@singula-ai/alego-api-account-controller": "workspace:*",
     "@singula-ai/alego-client-ui-settings-account": "workspace:*",
     "@singula-ai/alego-client-shortcuts": "workspace:*",
     "@singula-ai/alego-client-ui-shortcuts": "workspace:*",
     "@singula-ai/alego-client-product-analytics": "workspace:*",
-    "@singula-ai/alego-host-product-telemetry-otel": "workspace:*"
+    "@singula-ai/alego-host-product-telemetry-otel": "workspace:*",
+    "@singula-ai/alego-client-ui-settings-session-log": "workspace:*",
+    "@singula-ai/alego-harness-dev-context": "workspace:*"
   },
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:~",
     "@singula-ai/cordis-plugin-loader": "workspace:~",
-    "@singula-ai/alego-shell-env": "workspace:*",
-    "@singula-ai/alego-system-prompt": "workspace:*"
+    "@singula-ai/alego-shell-env": "workspace:*"
   },
   "devDependencies": {
     "@singula-ai/cordis": "workspace:~",
@@ -193,9 +205,8 @@
     "@singula-ai/alego-session": "workspace:*",
     "@singula-ai/alego-session-projection": "workspace:*",
     "@singula-ai/alego-shell-env": "workspace:*",
-    "@singula-ai/alego-system-prompt": "workspace:*",
     "@singula-ai/alego-typert-registry": "workspace:*",
-    "@deepseek-ai/libreoffice-kit": "^0.1.1",
+    "@deepseek-ai/libreoffice-kit": "^0.1.5",
     "@singula-ai/alego-otel": "workspace:*"
   }
 }

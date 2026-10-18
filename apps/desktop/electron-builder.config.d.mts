@@ -9,10 +9,7 @@ export interface DesktopElectronBuilderConfig {
     readonly output: string
   }
   readonly files: readonly [
-    string,
-    string,
-    string,
-    string,
+    ...string[],
     { readonly from: string, readonly to: 'alego', readonly filter: readonly ['**/*'] },
     { readonly from: string, readonly to: 'alego/node_modules', readonly filter: readonly ['**/*'] },
   ]
@@ -25,12 +22,15 @@ export interface DesktopElectronBuilderConfig {
   ]
   readonly mac: {
     readonly extendInfo: { readonly NSMicrophoneUsageDescription: string }
+    readonly entitlements: string
+    readonly entitlementsInherit: string
     readonly identity: string | undefined
     readonly forceCodeSigning: boolean
     readonly notarize: boolean
     readonly signIgnore: readonly string[]
   }
   readonly dmg: {
+    readonly format: 'ULMO'
     readonly sign: boolean
     readonly writeUpdateInfo: boolean
   }

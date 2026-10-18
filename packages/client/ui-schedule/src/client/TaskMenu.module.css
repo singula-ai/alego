@@ -10,12 +10,12 @@
 .list {
   /* min-widths below are the design's outer card widths — include the pad. */
   box-sizing: border-box;
-  padding: 3px;
+  padding: 4px;
   display: flex;
   flex-direction: column;
   gap: 0;
   border: 0;
-  border-radius: 16px;
+  border-radius: var(--dsw-radius-lg);
   background: var(--dsw-specific-menu);
   backdrop-filter: var(--dsw-menu-backdrop-filter);
   --dsw-elevation-stroke-color: var(--dsw-alias-border-l1);
@@ -54,7 +54,7 @@
 /* Viewport fit: the card stops 12px short of the viewport's top/bottom edges
  * (the hook's margin) and taller content scrolls inside .viewport. */
 .scrollable {
-  max-height: calc(100vh - 12px - max(12px, var(--alego-frame-top-clearance, 12px)));
+  max-height: calc(100vh - 12px - max(12px, var(--alego-frame-overlay-top, 12px)));
 }
 
 .viewport {
@@ -88,7 +88,7 @@
   min-height: 34px;
   padding: 6px 8px;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--dsw-radius-md);
   background: transparent;
   cursor: pointer;
   font-size: 13px;

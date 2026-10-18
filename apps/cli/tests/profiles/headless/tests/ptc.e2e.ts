@@ -3,15 +3,15 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, onTestFinished, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
-import LlmRuntime, { createUserMessage, ToolCallId, HarnessError  } from '@singula-ai/alego-llm'
+import { createUserMessage, ToolCallId, HarnessError } from '@singula-ai/alego-llm'
 import SessionStore, { SessionId } from '@singula-ai/alego-session'
 import type { SessionEvent } from '@singula-ai/alego-session'
-import SystemPrompt from '@singula-ai/alego-system-prompt'
-import ToolRuntime, { RUN_CODE_NAME, defineTool } from '@singula-ai/alego-tools'
+import { RUN_CODE_NAME, defineTool } from '@singula-ai/alego-tools'
 import type { ToolExecutionResult } from '@singula-ai/alego-tools'
-import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
+import type { Agent } from '@singula-ai/alego-agent'
 
 import AgentLoop from '@singula-ai/alego-agent-loop'
+import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import { LocalBashExecutor } from '@singula-ai/alego-bash-local'
 import * as BashEnvPlugin from '@singula-ai/alego-shell-env'
@@ -55,12 +55,11 @@ afterEach(async () => {
 
 async function ptcModeHarness(cwd: string): Promise<Context> {
   const harness = new Context()
-  await harness.plugin(LlmRuntime)
-  await harness.plugin(SessionStore)
-  await harness.plugin(SessionProjectionRegistry)
-  await harness.plugin(SystemPrompt, { personaPrefix: PERSONA })
-  await harness.plugin(ToolRuntime, { mode: 'ptc' })
-  await harness.plugin(AgentRegistry)
+  await mountAgentLoopTestDependencies(harness, {
+    workingDirectory: true,
+    systemPrompt: { personaPrefix: PERSONA },
+    tools: { mode: 'ptc' },
+  })
   await harness.plugin(AgentLoop, { agents: [] })
   await harness.plugin(LlmDeepSeek)
   if (harness.get('subprocess') === undefined) await harness.plugin(LocalSubprocessRuntime)
@@ -73,13 +72,12 @@ async function ptcModeHarness(cwd: string): Promise<Context> {
 
 async function workspacePtcModeHarness(): Promise<Context> {
   const harness = new Context()
-  await harness.plugin(LlmRuntime)
-  await harness.plugin(SessionStore)
-  await harness.plugin(SessionProjectionRegistry)
-  await harness.plugin(SystemPrompt, { personaPrefix: PERSONA })
-  await harness.plugin(ToolRuntime, { mode: 'ptc' })
-  await harness.plugin(AgentRegistry)
   await harness.plugin(LocalFileSystem, { cwd: '/' })
+  await mountAgentLoopTestDependencies(harness, {
+    workingDirectory: true,
+    systemPrompt: { personaPrefix: PERSONA },
+    tools: { mode: 'ptc' },
+  })
   await harness.plugin(ToolFs)
   await harness.plugin(AgentInstructions, { maxBytes: 65536 })
   await harness.plugin(AgentLoop, { agents: [] })
@@ -131,8 +129,7 @@ async function mountRuntime(harness: Context): Promise<void> {
 /** Keyless real-process harness for direct typed-binding acceptance tests. */
 async function typedPtcModeHarness(): Promise<Context> {
   const harness = new Context()
-  await harness.plugin(SystemPrompt)
-  await harness.plugin(ToolRuntime, { mode: 'ptc' })
+  await mountAgentLoopTestDependencies(harness, { workingDirectory: true, tools: { mode: 'ptc' } })
   await mountRuntime(harness)
   return harness
 }
@@ -215,7 +212,7 @@ describe('PTC mode typed values: keyless real-process contracts', () => {
       });
       return started.jobId;
     `))
-    expect(jobId).toBe('bash-1')
+    expect(jobId).toMatch(/^bash-[0-9a-f]{16}$/)
 
     const polled = completion(await runCode(ctx, `
       return await tools.job_output({ job_id: ${JSON.stringify(jobId)}, wait: true, timeout_ms: 5000 });
@@ -226,7 +223,7 @@ describe('PTC mode typed values: keyless real-process contracts', () => {
     expect(taskOutput.job).toMatchObject({ id: jobId, kind: 'bash', status: 'completed' })
   }, 15_000)
 
-  it('pre-abort spawns nothing; post-publication abort leaves job_kill as the cancellation owner', async () => {
+  it('pre-abort spawns nothing; post-publication abort leaves job_kill as the cancellation owner', { timeout: 15_000, retry: 0 }, async () => {
     workdir = await mkdtemp(join(tmpdir(), 'alego-ptc-task-cancel-'))
     ctx = await backgroundPtcModeHarness(workdir)
 
@@ -238,17 +235,30 @@ describe('PTC mode typed values: keyless real-process contracts', () => {
     expect(preResult.isError).toBe(true)
     expect(ctx.jobs.list()).toEqual([])
 
+    const jobs = ctx.jobs
+    // Registration is announced after the job's ownership has committed.
+    const registered = new Promise<void>((resolve) => {
+      onTestFinished(jobs.events.subscribe({ owners: 'all' }, (event) => {
+        if (event.type === 'registered') resolve()
+      }))
+    })
     const afterPublication = new AbortController()
     const running = runCode(ctx, `
       const started = await tools.bash({ command: 'sleep 10', description: 'Wait for explicit task kill', run_in_background: true });
       console.log(started.jobId);
       await new Promise(() => {});
     `, afterPublication.signal)
-    // A loaded runner can take over a second to start the program and publish its background job.
-    const jobs = ctx.jobs
-    await expect.poll(() => jobs.list().length, { timeout: 5_000, interval: 10 }).toBeGreaterThan(0)
-    const job = jobs.list()[0]
-    expect(job).toMatchObject({ id: 'bash-1', status: 'running' })
+    await Promise.race([
+      registered,
+      running.then((result) => {
+        // Promise.race handles a late rejection after registration, too.
+        completion(result)
+        throw new Error('run_code completed before background job registration')
+      }),
+    ])
+    const job = ctx.jobs.list()[0]
+    expect(job).toMatchObject({ status: 'running' })
+    expect(job?.id).toMatch(/^bash-[0-9a-f]{16}$/)
     afterPublication.abort('outer-call-cancelled')
     expect((await running).isError).toBe(true)
     expect(ctx.jobs.list()[0]).toMatchObject({ id: job!.id, status: 'running' })
@@ -261,7 +271,7 @@ describe('PTC mode typed values: keyless real-process contracts', () => {
       return await tools.job_output({ job_id: ${JSON.stringify(job!.id)}, wait: true, timeout_ms: 5000 });
     `))
     expect(settled).toMatchObject({ job: { id: job!.id, status: 'killed' } })
-  }, 15_000)
+  })
 
   it('keeps foreground bash coupled to the outer signal', async () => {
     workdir = await mkdtemp(join(tmpdir(), 'alego-ptc-foreground-cancel-'))
@@ -284,9 +294,10 @@ describe('PTC mode typed values: keyless real-process contracts', () => {
     await ctx.plugin(CordisInspectProviders)
     await ctx.plugin(ToolCordis)
     const agent = {
+      ctx,
       id: SessionId('ptc-cordis'),
       session: ctx.sessions.create(SessionId('ptc-cordis'), { meta: { cwd: process.cwd() } }),
-    } as unknown as Agent
+    } as Agent
 
     const value = completion(await runCode(ctx, `
       const listed = await tools.cordis_inspect_list({});
@@ -316,7 +327,7 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY)('PTC mode: real model writes a pr
   it('collapses the wire tool list to [run_code], bridges sub-calls, and returns curated output', async () => {
     workdir = await mkdtemp(join(tmpdir(), 'alego-ptc-e2e-'))
     ctx = await ptcModeHarness(workdir)
-    const agent = await ctx.agentLoop.create(SessionId('e2e-ptc'), { provider: 'deepseek-official', model: 'deepseek-v4-flash' })
+    const agent = await ctx.agentLoop.create(SessionId('e2e-ptc'), { provider: 'deepseek-official', model: 'deepseek-v4-flash' }, { cwd: workdir })
 
     agent.followup(createUserMessage({
       content: [{
