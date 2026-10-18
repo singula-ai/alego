@@ -27,7 +27,7 @@ agent（智能体）可以通过该内置提供方加载官方「powered by aleg
 
 启用插件即可让 `alego-badge` skill 出现在会话 skill 目录中；随后模型可以像加载任何其他 skill 一样加载它，并遵循其指令添加「powered by alego」徽章。
 
-在插件页面中，此组件显示为 **ALEGO**，并使用 ALEGO 标签图标。它提供的 skill 名称为 `alego-badge`。
+在插件页面中，此组件显示为 **ALEGO**，并使用 Alego 积木图标。它提供的 skill 名称为 `alego-badge`。
 
 ### 何时选择
 

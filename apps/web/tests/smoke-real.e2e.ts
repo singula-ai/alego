@@ -745,7 +745,7 @@ describe.skipIf(!process.env.DEEPSEEK_API_KEY || notReady.length > 0)('web smoke
 
   it('empty-state first send completes a real model round', async () => {
     onTestFailed(() => saveFailureShot(page, 'w5-first-round'))
-    const welcome = page.getByRole('dialog', { name: 'Internal Testing Notice', exact: true })
+    const welcome = page.getByRole('dialog', { name: 'Preview Notice', exact: true })
     await welcome.getByRole('button', { name: 'Continue', exact: true }).click()
     await welcome.waitFor({ state: 'detached', timeout: 15_000 })
     // Fresh world: connect a Workspace so the composer starts live.

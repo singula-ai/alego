@@ -27,7 +27,7 @@ Agents can load the official "powered by alego" badge skill from this bundled pr
 
 Enable the plugin to make the `alego-badge` skill available in the session skill catalog; the model can then load it like any other skill and follow its instructions for adding a "powered by alego" badge.
 
-In Plugins, this component is named **ALEGO** and uses the ALEGO tag icon. Its skill is named `alego-badge`.
+In Plugins, this component is named **ALEGO** and uses the Alego block icon. Its skill is named `alego-badge`.
 
 ### When to choose it
 
