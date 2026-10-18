@@ -1,4 +1,8 @@
-/** Generate paired CLI references by invoking the shipped launcher and profile help. */
+/**
+ * Generate paired CLI references by invoking the shipped launcher and profile help.
+ * Each invocation allows 90 seconds for source imports, help output, and application
+ * teardown while sibling CI gates are active, matching the Windows process-test budget.
+ */
 
 import { execFile } from 'node:child_process'
 import { existsSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs'
@@ -194,7 +198,7 @@ async function collectHelp(): Promise<HelpPage[]> {
     const help = execFileAsync(process.execPath, [
       '--import', 'tsx/esm', 'apps/cli/src/bin.ts', ...args, '--help',
     ], {
-      cwd: root, env: environment, encoding: 'utf8', timeout: 30_000,
+      cwd: root, env: environment, encoding: 'utf8', timeout: 90_000,
       killSignal: 'SIGKILL', maxBuffer: 2 * 1024 * 1024,
     })
     // Killing directly, not through execFile's signal option, settles the read only after the child closes.
