@@ -1,0 +1,16 @@
+# Bilingual-pair consistency record for remote-and-api.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write docs/defensive-patterns/remote-and-api.md
+/remote-and-api-rules:
+  en: f952b5fea57b57f9
+  zh: 02970eff19991206
+/remote-and-api-rules/a-new-remote-capability-gets-its-own-service:
+  en: 121ce2a6ad8f50d5
+  zh: b61990a7102803f8
+/remote-and-api-rules/remote-marks-capability-methods:
+  en: 3024ad87cfd2ef22
+  zh: b1a6a57e5c6aa97b
+/remote-and-api-rules/packages-api-carries-generic-orchestration-only:
+  en: 77a20f1c369d227a
+  zh: 994dffb21f833435

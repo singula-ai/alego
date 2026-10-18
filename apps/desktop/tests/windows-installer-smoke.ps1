@@ -5,6 +5,7 @@ param([Parameter(Mandatory)][string]$Installer, [Parameter(Mandatory)][string]$P
     [Parameter(Mandatory)][string]$OutputDirectory)
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'windows-installer-ui.ps1')
+Add-Type -AssemblyName UIAutomationClient, UIAutomationTypes
 [InstallerCapture]::Initialize()
 [InstallerCapture]::ProductName = $ProductName
 $installPath = Join-Path $OutputDirectory 'Installed App'
@@ -142,11 +143,13 @@ try {
     Click-Control $process $copy.INSTALLER_BROWSE
     Dismiss $process $copy.INSTALLER_CHOOSE_PATH
     [void][InstallerCapture]::SendMessage($window, 0x28, $edit, [IntPtr]1)
-    foreach ($invalidPath in @('C:\Windows\Harness Installer Test', [IO.Path]::GetPathRoot($installPath), ([IO.Path]::GetPathRoot($installPath) + '\'))) {
+    $driveRoot = [IO.Path]::GetPathRoot($installPath)
+    foreach ($invalidPath in @('C:\Windows\Harness Installer Test', $driveRoot, ($driveRoot + '\'), ($driveRoot + '\\'))) {
         [void][InstallerCapture]::SendMessage($edit, 0xC, [IntPtr]::Zero, $invalidPath)
         [void][InstallerCapture]::PostMessage($edit, 0x100, [IntPtr]13, [IntPtr]::Zero)
         Dismiss $process $copy.INSTALLER_PATH_INVALID
     }
+    $results.Add('canonical-drive-roots-rejected-before-ownership-check')
     [void][InstallerCapture]::SendMessage($edit, 0xC, [IntPtr]::Zero, $installPath)
     [InstallerCapture]::MoveBy($window, 73, -41)
     $bounds = [InstallerCapture]::Bounds($window)
@@ -157,6 +160,26 @@ try {
     $results.Add('completion-preserves-window-position')
     $results.Add('welcome-ready-before-first-show')
     $results.Add('successful-install-paints-100-before-finish')
+
+    $lockedFile = [IO.File]::Open($appPath, 'Open', 'Read', 'Read')
+    try {
+        $process = Start-Setup light
+        Click-Control $process $copy.INSTALLER_INSTALL
+        $copyButton = Wait-Control $process $copy.INSTALLER_EXTRACT_COPY
+        $dialog = [InstallerCapture]::TopLevel($copyButton)
+        $automation = [Windows.Automation.AutomationElement]::FromHandle($dialog)
+        $heading = $automation.FindFirst([Windows.Automation.TreeScope]::Descendants,
+            [Windows.Automation.PropertyCondition]::new([Windows.Automation.AutomationElement]::NameProperty, $copy.INSTALLER_DIRECTORY_FAILED))
+        if ($null -eq $heading) { throw 'Directory failure dialog lacks its localized heading' }
+        [void][InstallerCapture]::SaveNative($dialog, (Join-Path $OutputDirectory 'directory-failure.png'), $false)
+        [void][InstallerCapture]::SendMessage($dialog, (0x400 + 102), [IntPtr]1, [IntPtr]::Zero)
+        if (-not $process.WaitForExit(10000) -or $process.ExitCode -ne 2 -or -not (Test-Path -LiteralPath $appPath)) {
+            throw 'Directory failure did not exit with the old installation intact'
+        }
+    } finally {
+        $lockedFile.Dispose()
+    }
+    $results.Add('locked-directory-shows-error-and-copy-control-and-preserves-installation')
 
     $process = Start-Setup dark ''
     Click-Control $process $copy.INSTALLER_CHOOSE_PATH

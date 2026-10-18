@@ -11,7 +11,7 @@ import * as ToolTodo from '@singula-ai/alego-tool-todo'
 import * as LlmDeepSeek from '@singula-ai/alego-llm-deepseek-api-key'
 import TokenMeter from '@singula-ai/alego-token-meter'
 import ToolResultPruner from '@singula-ai/alego-compaction-tool-result-pruner'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import * as SessionCheckpointPolicy from '@singula-ai/alego-session-checkpoint-policy'
 import { BasicCompactionEngine } from '@singula-ai/alego-compaction-basic'
 import type { BasicCompactionConfig } from '@singula-ai/alego-compaction-basic'
@@ -66,6 +66,7 @@ export interface CodingHarnessOptions {
 export async function codingHarness(workdir: string, options: CodingHarnessOptions = {}): Promise<Context> {
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx, {
+    workingDirectory: true,
     systemPrompt: { personaPrefix: options.personaPrefix ?? '' },
   })
   await ctx.plugin(AgentLoop, { agents: [] })

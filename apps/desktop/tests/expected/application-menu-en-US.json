@@ -1,5 +1,11 @@
 [
   {
+    "label": "Check for Updates…"
+  },
+  {
+    "label": "Manage alego Command…"
+  },
+  {
     "role": "hide",
     "label": "Hide Alego"
   },

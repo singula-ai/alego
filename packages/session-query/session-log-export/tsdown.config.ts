@@ -1,7 +1,7 @@
 import { clientBundle } from '../../client/tsdown.client.ts'
 
 export default clientBundle(
-  '@singula-ai/alego-session-log-export',
+  import.meta.dirname,
   ['lib/types/index.js'],
   { hostPhase: true },
 )

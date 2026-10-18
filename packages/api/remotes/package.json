@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-api-remotes",
   "description": "Remote BFF assembly for application-selected Host capabilities",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,7 +27,8 @@
       "default": "./lib/types/types.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
@@ -44,6 +45,7 @@
   },
   "license": "MIT",
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.js",
@@ -51,7 +53,6 @@
   ],
   "dependencies": {
     "@singula-ai/alego-deque": "workspace:*",
-    "@singula-ai/alego-session": "workspace:*",
     "@singula-ai/alego-util-values": "workspace:*"
   },
   "peerDependencies": {
@@ -80,6 +81,7 @@
     "@singula-ai/alego-permission-presets": "workspace:*",
     "@singula-ai/alego-schedule": "workspace:*",
     "@singula-ai/alego-scope": "workspace:*",
+    "@singula-ai/alego-session": "workspace:*",
     "@singula-ai/alego-session-reference": "workspace:*",
     "@singula-ai/alego-settings": "workspace:*",
     "@singula-ai/alego-subagent": "workspace:*",
@@ -87,10 +89,11 @@
     "@singula-ai/alego-user-approval": "workspace:*",
     "@singula-ai/alego-user-questions": "workspace:*",
     "@singula-ai/cordis": "workspace:~",
-    "zod": "^4.4.3",
+    "zod": "4.4.3",
     "@singula-ai/alego-command-feedback": "workspace:*",
     "@singula-ai/alego-api-terminal-controller": "workspace:*",
     "@singula-ai/alego-plugin-manager": "workspace:*",
+    "@singula-ai/alego-plugin-market": "workspace:*",
     "@singula-ai/alego-client-ui-plugin-manager": "workspace:*",
     "@singula-ai/alego-office-to-pdf": "workspace:*",
     "@singula-ai/alego-api-account-controller": "workspace:*",

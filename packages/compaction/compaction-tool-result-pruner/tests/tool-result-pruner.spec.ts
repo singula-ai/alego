@@ -3,14 +3,12 @@ import { describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import { ToolCallId , createMessage, createToolResultMessage } from '@singula-ai/alego-llm'
 import type { ContentBlock } from '@singula-ai/alego-llm'
-import SessionStore, {
+import {
   Session,
   SessionId,
   SessionSeq,
 } from '@singula-ai/alego-session'
 import type { SurfaceEvent } from '@singula-ai/alego-session'
-import * as SessionInvariant from '@singula-ai/alego-session/invariant'
-import InvariantRegistry from '@singula-ai/alego-invariants'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import TokenMeter from '@singula-ai/alego-token-meter'
 import ToolResultPruner, {
@@ -278,22 +276,5 @@ describe('ToolResultPruner session transaction', () => {
     const replay = Session.create(session.id, session.snapshotEvents())
     expect(replay.deriveMessages()).toEqual(session.deriveMessages())
     expect(replay.surface.replaceGeneration).toBe(session.surface.replaceGeneration)
-  })
-
-  it('runs under real invariants between closed steps but not outside a turn', async () => {
-    const ctx = new Context()
-    await ctx.plugin(SessionStore)
-    await ctx.plugin(SessionProjectionRegistry)
-    await ctx.plugin(InvariantRegistry)
-    await ctx.plugin(SessionInvariant)
-    await ctx.plugin(TokenMeter)
-    const prune = new ToolResultPruner(ctx, SMALL)
-    const session = ctx.sessions.create(SessionId('invariants'))
-    appendToolStep(session, 1, 'a', [{ type: 'text', text: 'A'.repeat(100) }])
-    expect(() => prune.pruneSession(session)).toThrow(/outside any open turn/)
-    session.append('turn/start', {
-      turn: 2,
-    })
-    expect(() => prune.pruneSession(session)).not.toThrow()
   })
 })

@@ -3,8 +3,8 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/subsystems/commands.md
 /human-commands:
-  en: 12899ed6be00d9c4
-  zh: a5d19eca4939f99c
+  en: c647e97043fae8ef
+  zh: 99de1edf79680dfd
 /human-commands/input-metadata:
   en: 9c7fd38926610b58
   zh: 40f1b2fd9b18ed52

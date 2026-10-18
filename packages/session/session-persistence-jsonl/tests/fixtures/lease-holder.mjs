@@ -7,7 +7,7 @@
 
 import { Context } from '@singula-ai/cordis'
 import { SESSION_FORMAT_VERSION } from '@singula-ai/alego-session'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 
 const [root, sessionId] = process.argv.slice(2)
 const ctx = new Context()

@@ -3,7 +3,7 @@
 import { Context } from '@singula-ai/cordis'
 import { SESSION_FORMAT_VERSION, Session, SessionId } from '@singula-ai/alego-session'
 import type { SessionFormatEvent } from '@singula-ai/alego-session-format'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import { createHash } from 'node:crypto'
 import { mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'

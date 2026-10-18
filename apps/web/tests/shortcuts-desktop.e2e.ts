@@ -9,7 +9,7 @@ import { SessionId } from '@singula-ai/alego-session'
 import { initialShortcutConfig, parseShortcutDefinitions, parseShortcutEdit } from '@singula-ai/alego-client-shortcuts/protocol'
 import type { DesktopShortcutInput, DesktopShortcutsApi, ShortcutCommandId, ShortcutRevision } from '@singula-ai/alego-client-shortcuts/protocol'
 import { desktopKeybindings } from '../../desktop/src/keybindings.ts'
-import { compareOrRefreshGolden, launchWebScaffold, seedSession, watchConsole, webSnapshotMode } from './scaffold.ts'
+import { acknowledgeReloadConnectionLoss, compareOrRefreshGolden, launchWebScaffold, seedSession, watchConsole, webSnapshotMode } from './scaffold.ts'
 import { writeComposerDraft } from './support.ts'
 
 declare global {
@@ -63,6 +63,12 @@ it.each([
           } })
         }, marker)
         const console = watchConsole(page)
+        const fontMutations: unknown[][] = []
+        page.on('request', (request) => {
+          if (new URL(request.url()).pathname !== '/api/settings/mutate' || request.method() !== 'POST') return
+          const input = request.postDataJSON() as { payload: { args: { ns: string; ops: unknown[] } } }
+          if (input.payload.args.ns === 'ui-theme') fontMutations.push(input.payload.args.ops)
+        })
         await page.goto(scaffold.authenticatedUrl, { waitUntil: 'load' })
         const deliverPrimary = (code: string, alt = false) => page.evaluate((input) => {
           window.shortcutFixture.deliver(input)
@@ -76,6 +82,11 @@ it.each([
         if (await group.getAttribute('aria-expanded') !== 'true') await group.click()
         await page.getByRole('treeitem').nth(1).click()
         await page.getByText('DONE', { exact: true }).waitFor()
+        const renameDialog = page.getByRole('dialog', { name: 'Rename session', exact: true })
+        await deliverPrimary('KeyG', true)
+        await renameDialog.getByLabel('Session name').waitFor()
+        await page.keyboard.press('Escape')
+        await renameDialog.waitFor({ state: 'hidden' })
         const composer = page.locator('[data-composer-input]').first()
         await composer.focus()
         await page.keyboard.insertText('Desktop focus draft')
@@ -126,6 +137,53 @@ it.each([
         expect(await composer.innerText()).toBe('Desktop focus draft')
         await writeComposerDraft(page, composer, '')
         await expect.poll(() => composer.textContent()).toBe('')
+        const readFontSizes = () => page.evaluate(() => {
+          const style = document.body.style
+          return {
+            text: Number.parseInt(style.getPropertyValue('--alego-content-font-size'), 10),
+            code: Number.parseInt(style.getPropertyValue('--alego-code-font-size'), 10),
+            terminal: Number.parseInt(style.getPropertyValue('--alego-terminal-font-size'), 10),
+          }
+        })
+        const defaults = { text: 14, code: 11, terminal: 13 }
+        const patchPath = join(scaffold.harnessHome, 'profiles', 'scaffold', 'cordis.patch.yml')
+        const stepFontSizes = async (key: string, sizes: Awaited<ReturnType<typeof readFontSizes>>): Promise<void> => {
+          const before = fontMutations.length
+          const [response] = await Promise.all([
+            page.waitForResponse((reply) => {
+              if (new URL(reply.url()).pathname !== '/api/settings/mutate' || reply.request().method() !== 'POST') return false
+              const input = reply.request().postDataJSON() as { payload: { args: { ns: string } } }
+              return input.payload.args.ns === 'ui-theme'
+            }),
+            page.keyboard.press(key),
+          ])
+          expect(await response.finished()).toBeNull()
+          const envelope = await response.json() as { result: { ok: boolean } }
+          expect(envelope.result.ok).toBe(true)
+          const fields = [['fontSize', sizes.text], ['codeFontSize', sizes.code], ['terminalFontSize', sizes.terminal]] as const
+          expect(fontMutations.slice(before)).toEqual([fields.map(([field, value]) => ({ op: 'set', path: [field], value }))])
+          await expect.poll(readFontSizes).toEqual(sizes)
+          for (const [field, value] of fields) {
+            await expect.poll(() => readFile(patchPath, 'utf8')).toContain(`${field}: ${value}`)
+          }
+        }
+        const initial = await readFontSizes()
+        expect(initial).toEqual(defaults)
+        await stepFontSizes(`${primary}+Equal`, { text: 15, code: 12, terminal: 14 })
+        const afterEqual = await readFontSizes()
+        await stepFontSizes(`${primary}+Shift+Equal`, { text: 16, code: 13, terminal: 15 })
+        const afterPlus = await readFontSizes()
+        await stepFontSizes(`${primary}+Minus`, { text: 15, code: 12, terminal: 14 })
+        const afterMinus = await readFontSizes()
+        const warningStart = console.warnings.length
+        await page.reload({ waitUntil: 'load' })
+        acknowledgeReloadConnectionLoss(console, warningStart)
+        await page.getByText('DONE', { exact: true }).waitFor()
+        await expect.poll(readFontSizes).toEqual(afterMinus)
+        const afterReload = await readFontSizes()
+        await composer.focus()
+        await stepFontSizes(`${primary}+Minus`, defaults)
+        const restored = await readFontSizes()
         const dialog = page.getByRole('dialog', { name: 'Keyboard shortcuts', exact: true })
         const settings = page.getByRole('dialog', { name: 'Settings', exact: true })
         const automaticFocusStyle = () => page.evaluate(() => {
@@ -182,6 +240,12 @@ it.each([
         expect(await dialog.isVisible()).toBe(false)
         await openReference()
         await dialog.waitFor()
+        const referenceOrder = await dialog.getByRole('listitem').evaluateAll(rows => rows
+          .map(row => row.querySelector(':scope > span')?.textContent)
+          .filter(label => label === 'Increase font size' || label === 'Decrease font size'))
+        expect(referenceOrder).toEqual(['Increase font size', 'Decrease font size'])
+        await compareOrRefreshGolden(join(expected, 'font-sizes.expected.md'),
+          `# Font sizes\n\n${JSON.stringify({ initial, afterEqual, afterPlus, afterMinus, afterReload, restored, referenceOrder }, null, 2)}`, mode)
         expect(await dialog.getByRole('searchbox').evaluate(node => node === document.activeElement)).toBe(true)
         expect(await automaticFocusStyle()).toEqual(noFocusRing)
         const referenceShadow = await dialog.evaluate(node => getComputedStyle(node).boxShadow)
@@ -272,6 +336,8 @@ it.each([
         } satisfies DesktopShortcutInput)
         await page.getByText('DONE', { exact: true }).waitFor({ state: 'hidden' })
         await expect.poll(() => page.getByRole('treeitem', { selected: true }).count()).toBe(0)
+        await deliverPrimary('KeyG', true)
+        expect(await renameDialog.count()).toBe(0)
         await page.getByRole('treeitem').nth(1).click()
         await page.getByText('DONE', { exact: true }).waitFor()
         await openReference()
@@ -292,7 +358,8 @@ it.each([
         await expect.poll(() => recorder.isEnabled()).toBe(true)
         await recorder.focus()
         const accepted = snapshot.document
-        for (const key of [`${primary}+Slash`, 'Escape', 'Enter', 'ArrowUp', 'ArrowDown', 'Shift+Enter', `${primary}+Enter`, 'Slash', 'Shift+Digit2']) {
+        const mutationsBeforeRecording = fontMutations.length
+        for (const key of [`${primary}+Equal`, `${primary}+Shift+Equal`, `${primary}+Minus`, `${primary}+Slash`, 'Escape', 'Enter', 'ArrowUp', 'ArrowDown', 'Shift+Enter', `${primary}+Enter`, 'Slash', 'Shift+Digit2']) {
           expect(await recorder.evaluate(node => node === document.activeElement)).toBe(true)
           const keys = key.split('+')
           for (const held of keys) await page.keyboard.down(held)
@@ -303,6 +370,12 @@ it.each([
           if (key === `${primary}+Slash`) {
             await dialog.getByText('Already used by “Open keyboard shortcuts”', { exact: true }).waitFor()
           }
+          if (key.endsWith('Equal') || key.endsWith('Minus')) {
+            const command = key.endsWith('Minus') ? 'Decrease font size' : 'Increase font size'
+            await dialog.getByText(`Already used by “${command}”`, { exact: true }).waitFor()
+          }
+          expect(await readFontSizes()).toEqual(defaults)
+          expect(fontMutations).toHaveLength(mutationsBeforeRecording)
           expect(await recorder.evaluate(node => node === document.activeElement)).toBe(true)
           expect(snapshot.document).toEqual(accepted)
           expect(await dialog.getByRole('listitem').evaluateAll(rows => rows.map(row => row.getBoundingClientRect().height)))

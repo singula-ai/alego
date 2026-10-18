@@ -15,6 +15,8 @@ import * as toolsPlugin from '@singula-ai/alego-tools'
 import * as fsPlugin from '@singula-ai/alego-fs-local'
 import * as toolFsPlugin from '@singula-ai/alego-tool-fs'
 import * as sessionPlugin from '@singula-ai/alego-session'
+import * as sessionProjectionPlugin from '@singula-ai/alego-session-projection'
+import * as workingDirectoryPlugin from '@singula-ai/alego-working-directory'
 import { Session, SessionId } from '@singula-ai/alego-session'
 import * as queryPlugin from '@singula-ai/alego-session-query-sqlite'
 import * as referencePlugin from '@singula-ai/alego-session-reference'
@@ -45,6 +47,8 @@ describe('session-reference real Loader composition', () => {
     ctx.loader.builtins.include = Include
     const modules = new Map<string, unknown>([
       ['@singula-ai/alego-session', sessionPlugin],
+      ['@singula-ai/alego-session-projection', sessionProjectionPlugin],
+      ['@singula-ai/alego-working-directory', workingDirectoryPlugin],
       ['@singula-ai/alego-system-prompt', systemPromptPlugin],
       ['@singula-ai/alego-tools', toolsPlugin],
       ['@singula-ai/alego-fs-local', fsPlugin],

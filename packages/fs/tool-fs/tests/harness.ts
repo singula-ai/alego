@@ -1,4 +1,5 @@
 import { Context } from '@singula-ai/cordis'
+import WorkingDirectory from '@singula-ai/alego-working-directory'
 import type { Agent } from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
@@ -18,6 +19,7 @@ export async function fsHarness(fsCwd: string, persona = ''): Promise<Context> {
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(LlmDeepSeek)
   await ctx.plugin(LocalFileSystem, { cwd: fsCwd })
+  await ctx.plugin(WorkingDirectory, { defaultDirectory: fsCwd })
   await ctx.plugin(FsPolicy)
   await ctx.plugin(ToolFs)
   return ctx

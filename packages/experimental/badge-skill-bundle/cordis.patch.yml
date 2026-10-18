@@ -1,0 +1,3 @@
+- insert:
+    - id: skill-badge
+      name: '@singula-ai/alego-skill-badge'

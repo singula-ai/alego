@@ -10,10 +10,13 @@ import { watchConfig } from '../src/watch-config.ts'
 import Hmr from '../src/index.ts'
 import Loader from '@singula-ai/cordis-plugin-loader'
 import Timer from '@singula-ai/cordis-plugin-timer'
+import { writeFileAtomic } from '@singula-ai/alego-atomic-write'
 import { afterEach, describe, expect, it, onTestFinished, vi } from 'vitest'
 import { FSWatcher, type ChokidarOptions } from 'chokidar'
 
-const configWatch = vi.hoisted(() => ({ create: undefined as ((options?: ChokidarOptions) => FSWatcher) | undefined }))
+const configWatch = vi.hoisted(() => ({
+  create: undefined as ((paths: string | string[], options?: ChokidarOptions) => FSWatcher) | undefined,
+}))
 vi.mock('node:fs', async (importOriginal) => {
   const native = await importOriginal<typeof import('node:fs')>()
   return { ...native, realpathSync: vi.fn(native.realpathSync) }
@@ -25,7 +28,7 @@ vi.mock('node:fs/promises', async (importOriginal) => {
 vi.mock('chokidar', async (importOriginal) => {
   const native = await importOriginal<typeof import('chokidar')>()
   return { ...native, watch: (paths: string | string[], options?: ChokidarOptions) =>
-    configWatch.create === undefined ? native.watch(paths, options) : configWatch.create(options) }
+    configWatch.create === undefined ? native.watch(paths, options) : configWatch.create(paths, options) }
 })
 
 /** Every per-test tree root, removed once the booted watcher has been disposed. */
@@ -45,8 +48,30 @@ async function bootHmr(dir: string, root: string[] = [], usePolling?: boolean): 
   return ctx
 }
 
-async function eventually(test: () => boolean, message: string): Promise<void> {
-  const deadline = Date.now() + 10_000
+/**
+ * Block until this process's native directory watches deliver events. Chokidar
+ * reports `ready` once `fs.watch()` returns, but libuv on darwin builds the
+ * per-process FSEvents stream later on its CoreFoundation thread
+ * (`uv__fsevents_init` only signals that thread), and a write that lands before
+ * then is never reported. Closing any directory handle runs `uv__fsevents_close`,
+ * whose `uv_sem_wait` returns only after `uv__fsevents_reschedule` has rebuilt
+ * and started the stream with the remaining handles (libuv `src/unix/fsevents.c`,
+ * unchanged across the libuv 1.x releases bundled by Node 22–24), so a watcher
+ * registered before this call observes the next write. Any existing directory
+ * works because the stream is per process. Per-file handles use kqueue and leave
+ * the stream alone, so one call after registration covers the later change and
+ * unlink steps. Linux inotify and Windows `ReadDirectoryChangesW` are armed
+ * inside `fs.watch()`, so there this is an immediate open and close. Should a
+ * libuv release drop the close-time wait, these cases regain the darwin loss
+ * rate this call removes rather than failing deterministically.
+ */
+function ensureNativeWatchLive(dir: string): void {
+  fs.watch(dir).close()
+}
+
+/** Poll `test` every 10 ms under the calling case's effective budget. */
+async function eventually(test: () => boolean, message: string, budget: number): Promise<void> {
+  const deadline = Date.now() + budget
   while (!test()) {
     if (Date.now() >= deadline) throw new Error(message)
     await new Promise(resolve => setTimeout(resolve, 10))
@@ -56,6 +81,42 @@ async function eventually(test: () => boolean, message: string): Promise<void> {
 describe('HMR exact config paths', () => {
   afterEach(() => {
     for (const root of hmrRoots.splice(0)) rmSync(root, { recursive: true, force: true })
+  })
+
+  it.for([false, true])('excludes siblings while observing config replacement through an alias (missing parents: %s)', async (missingParents, test) => {
+    const root = mkdtempSync(join(tmpdir(), 'alego-hmr-config-scope-'))
+    onTestFinished(() => { rmSync(root, { recursive: true, force: true }) })
+    const target = join(root, 'target')
+    const dir = join(root, 'alias')
+    mkdirSync(target)
+    symlinkSync(target, dir, process.platform === 'win32' ? 'junction' : 'dir')
+    const filename = join(dir, ...(missingParents ? ['later', 'nested'] : []), 'package.json')
+    writeFileSync(join(dir, 'package.json.lock'), 'held')
+    mkdirSync(join(dir, 'unrelated'))
+    writeFileSync(join(dir, 'unrelated', 'config.yml'), 'ignored')
+    if (!missingParents) writeFileSync(filename, 'initial')
+    const ctx = new Context()
+    onTestFinished(() => ctx.fiber.dispose())
+    let watcher!: FSWatcher
+    const previousFactory = configWatch.create
+    onTestFinished(() => { configWatch.create = previousFactory })
+    configWatch.create = (paths, options) => {
+      watcher = new FSWatcher(options)
+      return watcher.add(paths)
+    }
+    const observed: string[] = []
+    await watchConfig(ctx, filename, {}, () => { observed.push(readFileSync(filename, 'utf8')) })
+    const watchedEntries = () => Object.values(watcher.getWatched()).flat()
+    expect(watchedEntries()).not.toContain('package.json.lock')
+    expect(watchedEntries()).not.toContain('unrelated')
+    ensureNativeWatchLive(dir)
+    await writeFileAtomic(filename, 'created', { mode: 0o600 })
+    await eventually(() => observed.includes('created'), 'created config was not observed', test.task.timeout)
+    await writeFileAtomic(filename, 'replaced', { mode: 0o600 })
+    await eventually(() => observed.includes('replaced'), 'replaced config was not observed', test.task.timeout)
+    expect(watchedEntries()).toContain('package.json')
+    expect(watchedEntries()).not.toContain('package.json.lock')
+    expect(watchedEntries()).not.toContain('unrelated')
   })
 
   it.each(['relative', 'absolute'])('observes %s module roots through a filesystem alias', { timeout: 30_000 }, async (rootKind) => {
@@ -109,12 +170,14 @@ describe('HMR exact config paths', () => {
     }
   })
 
-  it('observes add, change, and unlink outside its module roots', { timeout: 20_000 }, async () => {
+  it('observes add, change, and unlink outside its module roots', { timeout: 20_000 }, async ({ task, onTestFailed }) => {
     const dir = mkdtempSync(join(tmpdir(), 'alego-hmr-config-'))
     hmrRoots.push(dir)
     const filename = join(dir, 'plugins.yml')
     const ctx = await bootHmr(dir)
     const observed: string[] = []
+    // The case budget fires before eventually() can name the pending step.
+    onTestFailed(() => { console.error(`refresh observed ${JSON.stringify(observed)}`) })
     try {
       await watchConfig(ctx, filename, {}, () => {
         try {
@@ -124,38 +187,42 @@ describe('HMR exact config paths', () => {
           observed.push('missing')
         }
       })
+      ensureNativeWatchLive(dir)
 
       writeFileSync(filename, 'one', { flag: 'wx' })
-      await eventually(() => observed.includes('one'), 'HMR did not observe config creation')
+      await eventually(() => observed.includes('one'), 'HMR did not observe config creation', task.timeout)
       writeFileSync(filename, 'two')
-      await eventually(() => observed.includes('two'), 'HMR did not observe config change')
+      await eventually(() => observed.includes('two'), 'HMR did not observe config change', task.timeout)
       unlinkSync(filename)
-      await eventually(() => observed.includes('missing'), 'HMR did not observe config removal')
+      await eventually(() => observed.includes('missing'), 'HMR did not observe config removal', task.timeout)
     } finally {
       await ctx.fiber.dispose()
     }
   })
 
-  it('observes creation when the config parent did not exist at registration', { timeout: 20_000 }, async () => {
+  it('observes creation when the config parent did not exist at registration', { timeout: 20_000 }, async ({ task, onTestFailed }) => {
     const root = mkdtempSync(join(tmpdir(), 'alego-hmr-config-'))
     hmrRoots.push(root)
     const dir = join(root, 'later')
     const filename = join(dir, 'plugins.yml')
     const ctx = await bootHmr(root)
     const observed: string[] = []
+    // The case budget fires before eventually() can name the pending step.
+    onTestFailed(() => { console.error(`refresh observed ${JSON.stringify(observed)}`) })
     try {
       await watchConfig(ctx, filename, {}, () => {
         observed.push(readFileSync(filename, 'utf8'))
       })
+      ensureNativeWatchLive(root)
       mkdirSync(dir)
       writeFileSync(filename, 'created')
-      await eventually(() => observed.includes('created'), 'HMR did not observe config creation under a new parent')
+      await eventually(() => observed.includes('created'), 'HMR did not observe config creation under a new parent', task.timeout)
     } finally {
       await ctx.fiber.dispose()
     }
   })
 
-  it('processes native events for a watcher registered during a transaction', async () => {
+  it('processes native events for a watcher registered during a transaction', { timeout: 20_000 }, async () => {
     const dir = mkdtempSync(join(tmpdir(), 'alego-hmr-transaction-watch-'))
     const filename = join(dir, 'plugins.yml')
     onTestFinished(() => { rmSync(dir, { recursive: true, force: true }) })
@@ -168,6 +235,7 @@ describe('HMR exact config paths', () => {
     await hmr.runExclusive(() => hmr.watchConfig(filename, async () => {
       observed.resolve(readFileSync(filename, 'utf8'))
     }))
+    ensureNativeWatchLive(dir)
     writeFileSync(filename, 'created-after-transaction')
     expect(await observed.promise).toBe('created-after-transaction')
   })
@@ -223,7 +291,7 @@ describe('HMR exact config paths', () => {
     let watcher!: FSWatcher
     const previousFactory = configWatch.create
     onTestFinished(() => { configWatch.create = previousFactory })
-    configWatch.create = (options) => {
+    configWatch.create = (_paths, options) => {
       watcher = new FSWatcher(options)
       // Use Chokidar's real normalization with deterministic event delivery.
       Reflect.set(watcher, '_readyEmitted', true)
@@ -290,6 +358,27 @@ describe('HMR exact config paths', () => {
     onTestFinished(() => { warn.mockRestore() })
     watcher.emit('error', failure)
     expect(warn).toHaveBeenCalledWith(failure)
+  })
+
+  it('absorbs a watcher error emitted after close removed its listeners', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'alego-patch-close-error-'))
+    hmrRoots.push(dir)
+    const filename = join(dir, 'plugins.yml')
+    const ctx = await bootHmr(dir)
+    onTestFinished(() => ctx.fiber.dispose())
+    const watcher = new FSWatcher()
+    const previousFactory = configWatch.create
+    onTestFinished(() => { configWatch.create = previousFactory })
+    configWatch.create = () => { queueMicrotask(() => { watcher.emit('ready') }); return watcher }
+    const dispose = await watchConfig(ctx, filename, {}, () => {})
+    await dispose()
+    expect(watcher.listenerCount('error')).toBe(1)
+
+    // Mirror the real close(): it drops every listener before a pending write-settle poll fires.
+    expect(() => watcher.emit('error', Object.assign(
+      new Error("EPERM: operation not permitted, stat 'C:\\Temp\\alego\\.credentials.yaml'"),
+      { code: 'EPERM', syscall: 'stat' },
+    ))).not.toThrow()
   })
 
   it('closes a ready watcher when its context has already been disposed', async () => {

@@ -9,8 +9,8 @@
   en: 0e1f5b649a524d2c
   zh: a9474c3351b5178b
 /singula-ai-alego-ptc-runtime/summary:
-  en: 5530287f5626714b
-  zh: 5f00de97c6ab4337
+  en: 4d0ac4dd8f87c15f
+  zh: 6f1cded4c800109f
 /singula-ai-alego-ptc-runtime/table-of-contents:
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
@@ -18,11 +18,11 @@
   en: 0e02710eba337f4a
   zh: f0f9310a67888b33
 /singula-ai-alego-ptc-runtime/use-this-package/run-a-program:
-  en: 6f97019cebc2f417
-  zh: c56f18a690dbe814
+  en: c856760ebc15d59e
+  zh: dc093083b29794e0
 /singula-ai-alego-ptc-runtime/use-this-package/choose-a-backend:
-  en: 54820781c4ecd682
-  zh: b3855b424a0a128e
+  en: 75995826dca02a04
+  zh: f41ceb306bc0f499
 /singula-ai-alego-ptc-runtime/use-this-package/name-your-bindings-portably:
   en: 4e46c1672701b8df
   zh: 0353c5855c9ff6be
@@ -45,8 +45,8 @@
   en: 1c358bf242e7acd3
   zh: c244999f9edb66d5
 /singula-ai-alego-ptc-runtime/understand-the-implementation/source-map:
-  en: 73b7deab23f3b00d
-  zh: 780ddf5ff0dd5f65
+  en: 85b65ceb9be0c49f
+  zh: 52df7f06d4e49d6e
 /singula-ai-alego-ptc-runtime/further-exploration:
   en: e983508a2eb48f84
   zh: 24f2294c95eb26ca
@@ -57,14 +57,14 @@
   en: 40294c1c31b74824
   zh: 081cebc2e2650f03
 /singula-ai-alego-ptc-runtime/known-limitations-and-deferred-work:
-  en: 7f30f78c5d427667
-  zh: 99d21160016deea2
+  en: e20364d073f78c60
+  zh: 6cac5c46ff91b3ca
 /singula-ai-alego-ptc-runtime/known-limitations-and-deferred-work/dev-note:
   en: d56846da29ad869c
   zh: 0397151a7e29b8ba
-/singula-ai-alego-ptc-runtime/known-limitations-and-deferred-work/dev-note/future-persistent-kernel-backend:
-  en: cfefaae6ed9705d5
-  zh: 3cca5b1bd92445b0
+/singula-ai-alego-ptc-runtime/known-limitations-and-deferred-work/dev-note/retained-state:
+  en: cd86d95f288b86dc
+  zh: 2157b7a97eb62667
 /singula-ai-alego-ptc-runtime/known-limitations-and-deferred-work/dev-note/future-container-backend:
   en: 2b94202842f0556c
   zh: 5aa0311fa621a018

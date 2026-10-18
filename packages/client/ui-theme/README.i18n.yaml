@@ -3,44 +3,47 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/client/ui-theme/README.md
 /:
-  en: b8353204cafa8b77
-  zh: 072f4ad23747a775
+  en: eb6f37b1f1c0467e
+  zh: 3c8fdcc228d11ff5
 /singula-ai-alego-client-ui-theme:
   en: 12a20c508ee018bb
   zh: 35c32f502ab93018
 /singula-ai-alego-client-ui-theme/summary:
-  en: 1d5ff2bb8af45562
-  zh: 639023fad39bdd95
+  en: 8986fd08fa127e76
+  zh: 38ab228536a61060
 /singula-ai-alego-client-ui-theme/table-of-contents:
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
 /singula-ai-alego-client-ui-theme/use-this-package:
-  en: 5d64b3d918d5edfa
-  zh: fc929354a0faf33a
+  en: 5a279269e31713c1
+  zh: dcd5c31fbdfd63e2
 /singula-ai-alego-client-ui-theme/use-this-package/appearance-and-font-size:
-  en: 0b0177e1afefe4a7
-  zh: 52d88f12a8369ee8
+  en: cbfc02f8b3b02e0d
+  zh: 5a8f4d9d688d113c
+/singula-ai-alego-client-ui-theme/use-this-package/fonts:
+  en: b45d5b48ca799c3a
+  zh: af65514b3759204f
 /singula-ai-alego-client-ui-theme/use-this-package/registering-a-theme:
   en: 2cd32ccaba33b3e9
   zh: 53ea78d19929ea02
 /singula-ai-alego-client-ui-theme/use-this-package/pre-plugin-palette:
-  en: e300d31ecb899c4b
-  zh: fa2a917e91f36771
+  en: 75f417a28418f751
+  zh: 0ffad91a5f6fbc54
 /singula-ai-alego-client-ui-theme/understand-the-implementation:
-  en: 532fb1273bc6d2aa
-  zh: b59f1469c6534850
+  en: b454df90b42d688f
+  zh: b20112a4c1aa0717
 /singula-ai-alego-client-ui-theme/understand-the-implementation/stylesheets:
-  en: 3aff7a1917e19022
-  zh: 1cef74997773f833
+  en: 1e362d401c3dbc0f
+  zh: ac02b8596bbdd679
 /singula-ai-alego-client-ui-theme/understand-the-implementation/scrollbar-rebinding:
   en: 761249625593df1e
   zh: b66250a5849368da
 /singula-ai-alego-client-ui-theme/understand-the-implementation/preference-persistence:
-  en: 7e9befd637b57a76
-  zh: cb6a4606427e100e
+  en: 2d495588b5c7de6a
+  zh: c5d1a633d46a8d21
 /singula-ai-alego-client-ui-theme/further-exploration:
-  en: acf218ec457c9417
-  zh: 4defe4b6d3427a2e
+  en: bba75c69174dd320
+  zh: 4e472748972f6096
 /singula-ai-alego-client-ui-theme/model-experience:
   en: 3120df665299c634
   zh: 1d9f365d091d0d2a
@@ -51,5 +54,5 @@
   en: 0d328dbced31a041
   zh: 2951de356ba6bb82
 /singula-ai-alego-client-ui-theme/known-limitations-and-deferred-work/dev-note:
-  en: f1a2942985b11203
-  zh: 8196d82321e024b0
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

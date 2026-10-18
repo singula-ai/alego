@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-10-10-background-shell-command-display.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-10-10-background-shell-command-display.md
+/agent-note-separate-background-shell-command-display-from-job-state:
+  en: dcfd19f9e700f0e3
+  zh: 3b5f790f4d7bd09e
+/agent-note-separate-background-shell-command-display-from-job-state/problem:
+  en: 116454bc385c0cc3
+  zh: 241905c37c22cb45
+/agent-note-separate-background-shell-command-display-from-job-state/decision:
+  en: 372527eae7f535e6
+  zh: 7d1cd90f45130b23
+/agent-note-separate-background-shell-command-display-from-job-state/alternatives-considered:
+  en: 573a8d2e99de14e6
+  zh: 1e7767c951672b42
+/agent-note-separate-background-shell-command-display-from-job-state/consequences:
+  en: 15b6456f87cfeaa2
+  zh: 5fec862a0180dc55

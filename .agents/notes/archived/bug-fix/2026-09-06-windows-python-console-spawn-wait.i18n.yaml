@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/bug-fix/2026-09-06-windows-python-console-spawn-wait.md
+2026-09-06-windows-python-console-spawn-wait.md: 5e095193be382bfb06d6cb01575125313c8134bc
+2026-09-06-windows-python-console-spawn-wait.zh.md: 43a59912e79cf318f23f013226f9ba7673845897

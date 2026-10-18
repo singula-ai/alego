@@ -1,0 +1,34 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/api/remote-access/README.md
+/:
+  en: bbd88553f12d4f3d
+  zh: c5fa4ac3f9746170
+/singula-ai-alego-api-remote-access:
+  en: 59c24cdaddfd66de
+  zh: 1c4a165ed04306ac
+/singula-ai-alego-api-remote-access/summary:
+  en: d1acdf5168974587
+  zh: d5730fb83b17350c
+/singula-ai-alego-api-remote-access/table-of-contents:
+  en: a18ecc232e3c3933
+  zh: b8e43580403f6d77
+/singula-ai-alego-api-remote-access/host-service-remoteaccessservice-ctx-key-remoteaccess:
+  en: 3a9e256d26c12845
+  zh: 6100d7431616744e
+/singula-ai-alego-api-remote-access/client-face:
+  en: aaa5efd589c1dbba
+  zh: c6f80378d829a886
+/singula-ai-alego-api-remote-access/model-experience:
+  en: 8b07250cecacd3aa
+  zh: d28ab93980bdcdad
+/singula-ai-alego-api-remote-access/model-experience/kv-cache-effect:
+  en: 60835eca1cee4e0e
+  zh: 3b5579ceccd5b5e7
+/singula-ai-alego-api-remote-access/known-limitations-and-deferred-work:
+  en: 66b483bf5144ac46
+  zh: 84bde5e0b1af270b
+/singula-ai-alego-api-remote-access/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: e88aeb617ffb74ea

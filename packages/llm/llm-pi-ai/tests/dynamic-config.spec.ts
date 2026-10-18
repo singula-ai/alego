@@ -93,7 +93,9 @@ describe('request-level dynamic profiles', () => {
     expect(ctx.llm.listProviders()).toEqual([{ id: 'openrouter', name: 'openrouter' }])
     expect(ctx.llm.listConfigurableProviders()).toContainEqual({
       provider: 'openrouter', displayName: 'openrouter', settingsNs: 'llm-pi-ai',
-      settingsPath: ['providers', 'openrouter'], declared: false, error: failure,
+      settingsPath: ['providers', 'openrouter'], declared: false,
+      defaultBaseURL: 'https://openrouter.ai/api/v1', nativeAuth: { env: ['OPENROUTER_API_KEY'], oauth: true },
+      error: failure,
     })
     expect((await ctx.llm.listModels('openrouter')).map(model => model.id)).toEqual([known.id])
     const bad = await assemble(ctx, { provider: 'openrouter', model: '111', messages: [] })
@@ -154,7 +156,8 @@ describe('request-level dynamic profiles', () => {
 
     expect(ctx.llm.listProviders()).toEqual([])
     // Dormant ≠ invisible: every installed catalog provider is configurable
-    // before any route exists, each addressed inside the providers dict.
+    // before any route exists, each addressed inside the providers dict and
+    // described by the endpoint and environment variables it uses unconfigured.
     const directory = ctx.llm.listConfigurableProviders()
     expect(directory.length).toBeGreaterThan(30)
     expect(directory).toContainEqual({
@@ -163,6 +166,8 @@ describe('request-level dynamic profiles', () => {
       settingsNs: 'llm-pi-ai',
       settingsPath: ['providers', 'openai'],
       declared: false,
+      defaultBaseURL: 'https://api.openai.com/v1',
+      nativeAuth: { env: ['OPENAI_API_KEY'], oauth: true },
     })
     await configurations.get(ctx)!.update({
       providers: { deepseek: { apiKeyEnv: 'PI_DYNAMIC_KEY', baseURL: server.url } },
@@ -170,7 +175,7 @@ describe('request-level dynamic profiles', () => {
     expect(ctx.llm.listProviders().map(provider => provider.id)).toEqual(['deepseek'])
     await expect(ctx.llm.listModels('deepseek')).resolves.not.toHaveLength(0)
 
-    const result = await assemble(ctx, { provider: 'deepseek', model: 'deepseek-v4-flash', messages: [] })
+    const result = await assemble(ctx, { provider: 'deepseek', model: 'deepseek-flash', messages: [] })
     expect(result.message.content).toEqual([{ type: 'text', text: 'hello' }])
     expect(server.headers[0]?.authorization).toBe('Bearer pk-from-settings')
 
@@ -197,7 +202,7 @@ describe('request-level dynamic profiles', () => {
     })
     expect(ctx.llm.listProviders().map(provider => provider.id)).toEqual(['openai', 'deepseek'])
 
-    const result = await assemble(ctx, { provider: 'deepseek', model: 'deepseek-v4-flash', messages: [] })
+    const result = await assemble(ctx, { provider: 'deepseek', model: 'deepseek-flash', messages: [] })
     expect(result.message.content).toEqual([{ type: 'text', text: 'hello' }])
     expect(server.headers[0]?.authorization).toBe('Bearer live-key')
 
@@ -205,7 +210,7 @@ describe('request-level dynamic profiles', () => {
     // composition route stays.
     await configurations.get(ctx)!.replace(initialConfigs.get(ctx)!)
     expect(ctx.llm.listProviders().map(provider => provider.id)).toEqual(['openai'])
-    const removed = await assemble(ctx, { provider: 'deepseek', model: 'deepseek-v4-flash', messages: [] })
+    const removed = await assemble(ctx, { provider: 'deepseek', model: 'deepseek-flash', messages: [] })
     expect(removed.finish).toMatchObject({ kind: 'error', failure: { code: 'NO_ADAPTER' } })
   })
 
@@ -218,11 +223,11 @@ describe('request-level dynamic profiles', () => {
       providers: { deepseek: { apiKeyEnv: 'PI_DYNAMIC_KEY', baseURL: server.url } },
     })
 
-    await assemble(ctx, { provider: 'deepseek', model: 'deepseek-v4-flash', messages: [] })
+    await assemble(ctx, { provider: 'deepseek', model: 'deepseek-flash', messages: [] })
     expect(server.headers[0]?.authorization).toBe('Bearer pk-one')
 
     await ctx.credentials.set(credentialRef('PI_DYNAMIC_KEY'), 'pk-two')
-    await assemble(ctx, { provider: 'deepseek', model: 'deepseek-v4-flash', messages: [] })
+    await assemble(ctx, { provider: 'deepseek', model: 'deepseek-flash', messages: [] })
     expect(server.headers[1]?.authorization).toBe('Bearer pk-two')
   })
 

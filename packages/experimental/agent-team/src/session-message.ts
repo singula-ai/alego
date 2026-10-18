@@ -1,4 +1,4 @@
-/** Durable Session-message acceptance checks shared by provisioning and mailbox recovery. */
+/** Durable Session-message acceptance checks for teammate provisioning. */
 
 import type { UserMessage } from '@singula-ai/alego-llm'
 import type { SessionEvent } from '@singula-ai/alego-session'

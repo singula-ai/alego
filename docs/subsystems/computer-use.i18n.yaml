@@ -3,8 +3,8 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/subsystems/computer-use.md
 /computer-use:
-  en: 86ab413f9dac737c
-  zh: d113d4e8fb420a56
+  en: 7302bedd0241a4c8
+  zh: 58349edc5766f9d7
 /computer-use/choose-a-provider:
   en: edba7f2b4fbc89dc
   zh: 985390e8d191a5f2

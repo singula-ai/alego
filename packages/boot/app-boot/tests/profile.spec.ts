@@ -386,6 +386,23 @@ describe('loadProfile', () => {
     ])
   })
 
+  it('removes a retired bundle from an application-owned profile and keeps the rest of the manifest', () => {
+    const anchor = stageInstallation({
+      '@singula-ai/alego-base': { patch: '[]\n' },
+      'custom-bundle': { patch: '[]\n' },
+    })
+    const dir = join(tmp(), 'app-profile')
+    initProfile(dir, ['@singula-ai/alego-base', '@singula-ai/alego-experimental-schedule-bundle', 'custom-bundle'])
+    writeProfileManifest(dir, { ...readProfileManifest('t', dir), dependencies: { 'custom-bundle': '^1.0.0' } })
+    const profile = loadProfileDirectory('t', dir, anchor)
+    expect(profile.skippedBundles).toEqual([])
+    expect(profile.layers.map(layer => layer.packageName)).toEqual(['@singula-ai/alego-base', 'custom-bundle'])
+    expect(readProfileManifest('t', dir)).toMatchObject({
+      dependencies: { 'custom-bundle': '^1.0.0' },
+      alego: { profile: { bundles: ['@singula-ai/alego-base', 'custom-bundle'] } },
+    })
+  })
+
   it.each(['missing package', 'invalid manifest', 'not a bundle', 'missing patch', 'invalid patch'])(
     'skips a bundle with %s, retains selections, and retries it on reread', async (failure) => {
       const anchor = stageInstallation({
@@ -497,6 +514,7 @@ describe('createRuntimeResolution', () => {
     expect(resolution.entries.find(entry => entry.name === 'dep-of-a')?.packageDir).toBe(join(modules, 'dep-of-a'))
     expect(existsSync(join(home, 'profiles', 'node_modules'))).toBe(false)
     await expect(createRuntimeResolution({ installAnchor: anchor, home })).resolves.toEqual(resolution)
+    await expect(resolution.computeLatestResolution()).resolves.toEqual(resolution)
   })
 
   it('keeps selected bundle closures profile-local without overriding installation packages', async () => {

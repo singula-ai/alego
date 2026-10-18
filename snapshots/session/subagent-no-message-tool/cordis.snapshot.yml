@@ -1,0 +1,89 @@
+# Replay patch shared by the ordinary headless snapshot composition. The model
+# script comes from the scenario's committed session JSONL.
+
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek-api-key'
+  disabled: true
+
+- id: plugin-package-inventory-deepseek
+  disabled: true
+
+- id: session-title-llm
+  disabled: true
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: none
+
+- id: sandbox
+  name: '@singula-ai/alego-sandbox-local'
+  config:
+    runnerCommand:
+      - bash
+      - -c
+      - while [ "$1" != "--" ]; do shift; done; shift; exec "$@"
+      - passthrough-runner
+    runnerFailureSignatures:
+      - 'passthrough-runner: profile rejected'
+
+- insert:
+    - id: llm-replay
+      name: '@singula-ai/alego-llm-replay'
+      config:
+        providers:
+          - id: deepseek-official
+            name: DeepSeek
+            models:
+              - id: deepseek-v4-flash
+              - id: deepseek-v4-pro
+
+# The parent owns its file and web tools; the child selects a separate preset.
+- id: tool-fs
+  disabled: true
+
+- id: tool-fs-search
+  disabled: true
+
+- id: tool-web
+  disabled: true
+
+- id: tool-subagent-control
+  disabled: true
+
+- insert:
+    - id: agent-preset-registry
+      name: '@singula-ai/alego-agent-preset-registry'
+      config:
+        default: parent
+    - id: preset-parent
+      name: '@singula-ai/alego-agent-preset'
+      config:
+        id: parent
+        plugins:
+          - name: '@singula-ai/alego-tool-fs'
+          - name: '@singula-ai/alego-tool-fs-search'
+            config:
+              sampleOverCapGlobResults: false
+          - name: '@singula-ai/alego-tool-web'
+            config:
+              fetch: true
+              searchTimeoutMs: 60000
+          - name: '@singula-ai/alego-tool-subagent-control'
+    - id: preset-child
+      name: '@singula-ai/alego-agent-preset'
+      config:
+        id: child
+        plugins: []
+    - id: parent-agent-preset
+      name: '../../../packages/test-support/session-snapshot/tests/fixtures/parent-agent-preset.ts'
+
+- id: tool-subagent
+  name: '@singula-ai/alego-tool-subagent'
+  inject: [agentPresets]
+  config:
+    provider: spawn
+    toolName: subagent
+    maxDepth: 1
+    agentPreset: child

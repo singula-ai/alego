@@ -2,6 +2,8 @@
 - name: '@singula-ai/alego-system-prompt'
 - name: '@singula-ai/alego-tools'
 - name: '@singula-ai/alego-fs-local'
+- name: '@singula-ai/alego-session-projection'
+- name: '@singula-ai/alego-working-directory'
 - name: '@singula-ai/alego-tool-fs'
 - name: '@singula-ai/alego-session-query-sqlite'
   config:

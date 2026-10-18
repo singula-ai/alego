@@ -1,0 +1,34 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/util/plugin-market-index/README.md
+/:
+  en: 6df9478e652acde0
+  zh: 120764bc63ae3dbd
+/alego-plugin-market-index:
+  en: e62be97338a182c6
+  zh: 21a121a29eba4bb0
+/alego-plugin-market-index/summary:
+  en: 564c67dd9c4bf9ce
+  zh: 0450935dcf4c902e
+/alego-plugin-market-index/table-of-contents:
+  en: cd2a60a905c978d6
+  zh: cc71d387d0cbd442
+/alego-plugin-market-index/use-this-package:
+  en: 8eac2625e2e366a8
+  zh: 652131f240e929e0
+/alego-plugin-market-index/api:
+  en: e0e4444616427bf2
+  zh: 3960a7602bb17705
+/alego-plugin-market-index/model-experience:
+  en: 4a6134a82e68af07
+  zh: 981ad23351f2a653
+/alego-plugin-market-index/model-experience/kv-cache-effect:
+  en: a7a5484352ac021c
+  zh: fe00da8797e85e06
+/alego-plugin-market-index/known-limitations-and-deferred-work:
+  en: 4f67dc4559d69a19
+  zh: 2d74b903b5d9ecf3
+/alego-plugin-market-index/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

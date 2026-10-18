@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import SessionStore, { SessionId } from '@singula-ai/alego-session'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import { RetryId } from '@singula-ai/alego-llm-retry'
 import type {} from '../src/index.ts'
 

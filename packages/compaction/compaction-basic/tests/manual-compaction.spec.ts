@@ -3,12 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { Context } from '@singula-ai/cordis'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
-import InvariantRegistry from '@singula-ai/alego-invariants'
 import { CommandId } from '@singula-ai/alego-commands/brand'
-import * as SessionInvariant from '@singula-ai/alego-session/invariant'
-import * as AgentInvariant from '@singula-ai/alego-agent/invariant'
-import * as AgentLoopInvariant from '@singula-ai/alego-agent-loop/invariant'
-import * as CompactionInvariant from '@singula-ai/alego-compaction/invariant'
 import { BasicCompactionEngine } from '@singula-ai/alego-compaction-basic'
 import { CompactionId, isCompactCheckpointSource, ManualCompactionError } from '@singula-ai/alego-compaction'
 import type { CompactionResult } from '@singula-ai/alego-compaction'
@@ -106,16 +101,11 @@ interface LoopHarness {
   readonly log: string[]
 }
 
-/** Real loop, session store, and invariant companions around manual compaction. */
+/** Real loop and session store around manual compaction. */
 async function loopHarness(): Promise<LoopHarness> {
   const ctx = new Context()
   await mountAgentLoopTestDependencies(ctx)
   ctx.sessions.registerMessageProjection(imageOffloadProjection)
-  await ctx.plugin(InvariantRegistry)
-  await ctx.plugin(SessionInvariant)
-  await ctx.plugin(AgentInvariant)
-  await ctx.plugin(AgentLoopInvariant)
-  await ctx.plugin(CompactionInvariant)
   await ctx.plugin(AgentLoop, { agents: [] })
   await ctx.plugin(TokenMeter)
   const adapter = new TextAdapter()

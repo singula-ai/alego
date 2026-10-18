@@ -21,6 +21,7 @@ export const DESKTOP_IPC = {
   browserRelease: 'alego-desktop:browser-release',
   browserOpenRequested: 'alego-desktop:browser-open-requested',
   directoryPick: 'alego-desktop:directory-pick',
+  deviceInfo: 'alego-desktop:device-info',
   localeBootstrap: 'alego-desktop:locale-bootstrap',
   localeChanged: 'alego-desktop:locale-changed',
   updatesStatus: 'alego-desktop:updates-status',
@@ -73,6 +74,11 @@ export interface AlegoDesktopProductApi {
   readonly browser: DesktopBrowserBridge
   readonly keyboard: DesktopKeyboardApi
   readonly shortcuts: DesktopShortcutsApi
+  /**
+   * Local machine description for the feedback questionnaire.
+   * @returns `name=value` fields separated by `; `, with no hostname, user name, or serial number.
+   */
+  deviceInfo(): Promise<string>
   readonly updates: {
     status(): Promise<DesktopUpdatePresentation>
     open(): Promise<void>

@@ -8,7 +8,7 @@ import { Context } from '@singula-ai/cordis'
 import SkillRegistry from '@singula-ai/alego-skill'
 
 interface FakeWatcherControl {
-  emitter: EventEmitter
+  emitter: EventEmitter & { close(): Promise<void> }
   closeCalls: number
   options: Record<string, unknown>
   path: string
@@ -448,5 +448,42 @@ describe('skill-filesystem watcher failures', () => {
     await expect(discovery).rejects.toThrow('opening failed during disposal')
     await disposal
     disposeProvider()
+  })
+
+  it('contains a watcher error emitted after close removed its listeners', async () => {
+    const home = await tempDir('skill-watch-close-error')
+    const root = join(home, '.alego/skills')
+    await writeSkill(root, 'closing-skill')
+    const ctx = new Context()
+    await ctx.plugin(SkillRegistry)
+    let provider!: InstanceType<typeof SkillFileSystem.FileSystemSkillProvider>
+    const disposeProvider = ctx.skills.registerProvider((control) => {
+      provider = new SkillFileSystem.FileSystemSkillProvider(ctx, control, {
+        alegoHome: join(home, '.alego'),
+        agentsHome: join(home, '.agents'),
+        watch: true,
+        watchPollIntervalMs: 10,
+        watchStabilityThresholdMs: 20,
+      })
+      return provider
+    })
+
+    await provider.list({})
+    await vi.waitFor(() => { expect(watcherHarness.watchers).toHaveLength(1) })
+    const control = watcherHarness.watchers[0]
+    if (control === undefined) throw new Error('expected an open root watcher')
+    // Mirror the real close(): it drops every listener before a pending write-settle poll fires.
+    control.emitter.close = async () => {
+      control.closeCalls += 1
+      control.emitter.removeAllListeners()
+    }
+    await provider.dispose()
+    disposeProvider()
+    expect(control.emitter.listenerCount('error')).toBe(1)
+
+    expect(() => control.emitter.emit('error', Object.assign(
+      new Error("EPERM: operation not permitted, stat 'C:\\Temp\\alego\\.credentials.yaml'"),
+      { code: 'EPERM', syscall: 'stat' },
+    ))).not.toThrow()
   })
 })

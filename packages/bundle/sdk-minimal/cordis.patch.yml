@@ -35,8 +35,37 @@
 
     # Shared projection registry: sandbox-policy and terminal-bash fold
     # sandbox-mode state through its units and require it as a hard injection.
+    - id: filesystem
+      name: '@singula-ai/alego-fs-local'
+
+    - id: attachment-local
+      name: '@singula-ai/alego-attachment-local'
+
+    - id: tool-fs
+      name: '@singula-ai/alego-tool-fs'
+      config:
+        read: false
+        readImage: true
+        write: false
+        edit: false
+
+    - id: working-directory
+      name: '@singula-ai/alego-working-directory'
+
+    - id: tool-working-directory
+      name: '@singula-ai/alego-tool-working-directory'
+
     - id: session-projection
       name: '@singula-ai/alego-session-projection'
+
+    - id: token-meter
+      name: '@singula-ai/alego-token-meter'
+
+    - id: compaction-basic
+      name: '@singula-ai/alego-compaction-basic'
+
+    - id: image-offload
+      name: '@singula-ai/alego-compaction-image-offload'
 
     - id: sandbox-policy
       name: '@singula-ai/alego-sandbox-policy'
@@ -102,21 +131,6 @@
 
     - id: jobs
       name: '@singula-ai/alego-jobs-local'
-
-    - id: invariants
-      name: '@singula-ai/alego-invariants'
-
-    - id: session-invariant
-      name: '@singula-ai/alego-session/invariant'
-
-    - id: agent-invariant
-      name: '@singula-ai/alego-agent/invariant'
-
-    - id: scope-invariant
-      name: '@singula-ai/alego-scope/invariant'
-
-    - id: agent-loop-invariant
-      name: '@singula-ai/alego-agent-loop/invariant'
 
     - id: agent-loop
       name: '@singula-ai/alego-agent-loop'

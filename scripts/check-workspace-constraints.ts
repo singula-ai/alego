@@ -11,6 +11,10 @@ import { pathToFileURL } from 'node:url'
 import { load as loadYaml } from 'js-yaml'
 import {
   isPublicExperimentalPackageDirectory,
+  isExperimentalPackageName,
+  hasExperimentalPackageReference,
+  EXPERIMENTAL_PACKAGE_NAME_EXCEPTIONS,
+  EXPERIMENTAL_PACKAGE_NAME_PREFIX,
   PRIVATE_EXPERIMENTAL_PACKAGE_DIRECTORIES,
 } from './experimental-package-policy.ts'
 import { hasTypertRemoteNavigation, isForbiddenPublicationFile } from './publication-payload.ts'
@@ -53,17 +57,23 @@ const publicationSourceAllowlist: Readonly<Record<string, readonly string[]>> = 
 const publishedRepositoryUrl = 'git+https://github.com/singula-ai/alego.git'
 /** Packages that participate in the experimental policy. */
 const experimentalPackageDirectory = /^packages\/experimental\/[^/]+$/
-/** npm namespace reserved for experimental packages. */
-const experimentalPackageNamePrefix = '@singula-ai/alego-experimental-'
-/** Ordinary directories whose packages this repository publishes: one release member each. */
-const standardReleaseMemberDirectory = /^(?:packages\/(?!experimental\/)[^/]+\/[^/]+|apps\/(?!desktop(?:-host)?$)[^/]+|vendor\/[^/]+)$/
+/** Private reference tool run from the repository; it publishes no files. */
+const pluginMarketGeneratorDirectory = 'apps/plugin-market-generator'
+/**
+ * Ordinary directories whose packages this repository publishes: one release member each. The reference plugin
+ * market generator is a private repository tool, not a published application.
+ */
+const standardReleaseMemberDirectory = new RegExp(
+  `^(?:packages/(?!experimental/)[^/]+/[^/]+|apps/(?!desktop(?:-host)?$|${pluginMarketGeneratorDirectory.slice('apps/'.length)}$)[^/]+|vendor/[^/]+)$`,
+  'u',
+)
 /** Installable application assembled by electron-builder rather than published to npm. */
 const desktopApplicationDirectory = 'apps/desktop'
 const localArtifactDirs = new Set(['node_modules'])
 const appPackageFiles: Readonly<Record<string, readonly string[]>> = {
   '@singula-ai/alego': ['lib/*.js', 'lib/types/*.d.ts'],
   '@singula-ai/alego-desktop-host': [
-    'lib/index.js',
+    'lib/index.js', 'lib/cli.js',
   ],
   // Sourcemaps stay out by payload policy; the worker-preview surface
   // (dist/preview.html and dist/preview/) backs opt-in experimental
@@ -80,16 +90,7 @@ export interface PackageManifest {
   main?: string
   types?: string
   bin?: string | Record<string, string>
-  exports?: Record<
-    string,
-    | string
-    | {
-      types?: string
-      default?: string
-    }
-    | null
-    | undefined
-  >
+  exports?: Record<string, ExportTarget | undefined>
   files?: string[]
   icon?: string
   publishConfig?: { access?: string }
@@ -102,6 +103,9 @@ export interface PackageManifest {
     bundle?: AlegoBundleManifest
   }
 }
+
+/** Node package export target: a path, a fallback list, a conditional map, or an exclusion. */
+export type ExportTarget = string | readonly ExportTarget[] | { readonly [condition: string]: ExportTarget | undefined } | null
 
 /** One workspace manifest and its repo-relative path. */
 export interface WorkspaceManifest {
@@ -174,6 +178,10 @@ export function readWorkspaceManifests(repositoryRoot: string): WorkspaceManifes
 }
 
 const packageFileExtras: Readonly<Record<string, readonly string[]>> = {
+  // CUA publishes its client API and attributed native source for local macOS builds.
+  '@singula-ai/alego-cua': ['lib/api.js', 'lib/bridge.js', 'lib/native-client.js', 'lib/protocol.js'],
+  '@singula-ai/alego-experimental-cua-macos': ['native/bin', 'native/Package.swift', 'native/Sources', 'native/tests/swift', 'native/tests/test_swift.py', 'native/LICENSE.cua-driver', 'native/upstream.json', 'native/README.md', 'native/README.zh.md', 'native/protocol.schema.json'],
+  '@singula-ai/alego-webhook-github': ['examples/github-review/cordis.yml', 'examples/github-review/github-ready-review-rule.mjs'],
   // Owned Worker bundles import this public bootstrap before their business entry.
   '@singula-ai/alego-app-boot': ['lib/worker/profile-resolution-bootstrap.js'],
   // Statically linked client libraries keep their stylesheets next to the emitted
@@ -192,10 +200,10 @@ const packageFileExtras: Readonly<Record<string, readonly string[]>> = {
   // The CPython side ships as source .py files, published as-is rather than built.
   '@singula-ai/alego-experimental-ptc-runtime-python': ['py/**/*.py'],
   '@singula-ai/alego-experimental-speech-to-text-sensevoice': ['runtime/assets.json'],
-  // The isolated Node bootstrap is a separately launched bundle.
-  '@singula-ai/alego-ptc-runtime-node': ['lib/process.js'],
-  // The Host entry starts its sibling Worker by URL rather than a package export.
-  '@singula-ai/alego-experimental-inspector': ['lib/worker.js'],
+  // Node execution modes each launch a separately bundled bootstrap.
+  '@singula-ai/alego-ptc-runtime-node': ['lib/process.js', 'lib/persistent-process.js'],
+  // The Inspector owns a Worker and a mirrored frontend outside package export paths.
+  '@singula-ai/alego-experimental-inspector': ['lib/client.*.js', 'lib/worker.js', 'lib/devtools/**'],
   // Creator's composition guidance travels with the declaration package.
   '@singula-ai/alego-agent-preset': ['skills'],
   // The Web Host mounts the default-off settings owner independently of each
@@ -204,10 +212,13 @@ const packageFileExtras: Readonly<Record<string, readonly string[]>> = {
   // The JSONL backend resolves its private verification Worker relative to
   // import.meta.url; it is shipped without a public package subpath.
   '@singula-ai/alego-session-persistence-jsonl': ['lib/worker.cjs'],
+  // The plugin market parses fetched indexes in a private Worker resolved
+  // relative to import.meta.url; it is shipped without a public package subpath.
+  '@singula-ai/alego-plugin-market': ['lib/worker.cjs'],
   // The argv-prefix runner entry ships beside the lib as its own bundle;
   // sandbox-local resolves it through the package's ./runner export. tsdown
   // also shares its generated FFI code through a hashed runtime chunk.
-  '@singula-ai/alego-sandbox-windows-acl': ['lib/runner.js', 'lib/types-*.js'],
+  '@singula-ai/alego-sandbox-windows-acl': ['lib/runner.js', 'lib/types-*.js', 'assets'],
   '@singula-ai/alego-skill-badge': ['assets'],
   '@singula-ai/alego-skill-office': ['assets'],
   '@singula-ai/alego-subprocess': ['lib/control.js'],
@@ -229,6 +240,8 @@ const packageFileExtras: Readonly<Record<string, readonly string[]>> = {
   // through a hashed chunk. The committed bin.js is the link target pnpm can
   // resolve at install time, before the build produces lib/bin.js.
   '@singula-ai/alego-experimental-webworker-packer': ['bin.js', 'lib/repository-*.js'],
+  // Startup and runtime share the advertised URL parser.
+  '@singula-ai/alego-web-app': ['lib/public-url-*.js'],
   // The headless entry and its startup row share the JSON projection code
   // through a hashed tsdown chunk; both import it by relative path.
   '@singula-ai/alego-headless': ['lib/json-stream-*.js'],
@@ -239,7 +252,7 @@ function sameStringList(actual: readonly string[] | undefined, expected: readonl
 }
 
 /**
- * Compute canonical publication patterns, including the declared icon and exported locale JSON resources.
+ * Compute canonical publication patterns, including declared and exported icon paths and exported locale JSON resources.
  * @param manifest - workspace package manifest.
  * @returns the icon and deduplicated locale targets followed by runtime and declaration payloads.
  */
@@ -250,30 +263,35 @@ export function expectedAlegoPackageFiles(manifest: PackageManifest): readonly s
     const target = exportDefault(manifest, resource)
     if (target?.startsWith('./') && target.endsWith('.json')) localeFiles.add(target.slice(2))
   }
+  const browserClient = exportDefault(manifest, './client')
   const bundle = manifest.alego?.bundle
   const bundleFiles = bundle === undefined ? [] : bundlePatchFiles(bundle).map(file => file.replace(/^\.\//, ''))
   const extras = [
     ...bundleFiles,
     ...(manifest.name ? packageFileExtras[manifest.name] ?? [] : []),
   ]
-  return [
+  const targets = (value: ExportTarget | undefined): string[] => typeof value === 'string' ? [value]
+    : typeof value === 'object' && value !== null ? Object.values(value).flatMap(targets) : []
+  const icons = [
     ...typeof manifest.icon === 'string' ? [manifest.icon.replace(/^\.\//u, '')] : [],
+    ...Object.entries(manifest.exports ?? {}).filter(([key]) => /^\.\/(?:.+\/)?icon$/u.test(key))
+      .flatMap(([, target]) => targets(target)).filter(icon => icon.startsWith('./')).map(icon => icon.slice(2)),
+  ]
+  return [
+    ...new Set(icons),
     ...[...localeFiles].sort(),
     'lib/index.js',
-    // Packages with an invariant export publish its runtime as a separate
-    // bundle; the package-invariant gate validates the source/export pairing.
-    ...manifest.exports?.['./invariant'] ? ['lib/invariant.js'] : [],
     ...manifest.bin ? ['lib/bin.js'] : [],
     // Worker-thread packages ship a CJS worker entry; the browser worker
     // bundle is an ES module a page loads with `new Worker(type: 'module')`.
     // Keyed on the artifact path, like ./client below.
     ...exportDefault(manifest, './worker') === './lib/worker.cjs' ? ['lib/worker.cjs'] : [],
     ...exportDefault(manifest, './worker') === './lib/worker.js' ? ['lib/worker.js'] : [],
-    // UI plugin packages ship their browser bundle beside the node lib
-    // (single-artifact ruling: dist/ retired, ./client resolves lib/client.js).
-    // Keyed on the artifact path, not the subpath name: a package's ./client is
-    // a browser-safe source channel, not a bundle.
-    ...exportDefault(manifest, './client') === './lib/client.js' ? ['lib/client.js'] : [],
+    // Only physical browser bundles need a publication entry; a ./client
+    // subpath may instead expose a browser-safe emitted source tree.
+    ...browserClient === './lib/client.js' ? ['lib/client.js'] : [],
+    ...browserClient === './lib/client.browser.js' ? ['lib/client.browser.js'] : [],
+    ...exportCondition(manifest, './client', 'node') === './lib/client.node.js' ? ['lib/client.node.js'] : [],
     // runtime's shell-held loader subpath ships as its own bundle beside the client half.
     ...exportDefault(manifest, './loader') === './lib/loader.js' ? ['lib/loader.js'] : [],
     // A store subpath ships its own bundle (single-entry builds; no shared chunk).
@@ -300,6 +318,15 @@ export function expectedAlegoPackageFiles(manifest: PackageManifest): readonly s
   ]
 }
 
+/** Fields of a conditional export; scalar and list targets have no named conditions. */
+function exportFields(value: ExportTarget | undefined): { readonly [condition: string]: ExportTarget | undefined } | undefined {
+  return typeof value !== 'object' || value === null || isExportList(value) ? undefined : value
+}
+
+function isExportList(value: ExportTarget): value is readonly ExportTarget[] {
+  return Array.isArray(value)
+}
+
 /** Whether one conditional export exactly names the generated runtime and declaration pair. */
 function hasExportPair(
   manifest: PackageManifest,
@@ -307,19 +334,22 @@ function hasExportPair(
   types: string,
   runtime: string,
 ): boolean {
-  const entry = manifest.exports?.[subpath]
-  return typeof entry === 'object'
-    && entry !== null
-    && entry.types === types
-    && entry.default === runtime
+  const entry = exportFields(manifest.exports?.[subpath])
+  return entry?.types === types && entry.default === runtime
 }
 
 /** Runtime target of an export entry: conditional `default`, or the bare-string shorthand. */
 function exportDefault(manifest: PackageManifest, subpath: string): string | undefined {
   const entry = manifest.exports?.[subpath]
   if (typeof entry === 'string') return entry
-  if (typeof entry === 'object' && entry !== null) return entry.default
-  return undefined
+  const target = exportFields(entry)?.default
+  return typeof target === 'string' ? target : undefined
+}
+
+/** Exact named condition target of an export entry. */
+function exportCondition(manifest: PackageManifest, subpath: string, condition: string): string | undefined {
+  const target = exportFields(manifest.exports?.[subpath])?.[condition]
+  return typeof target === 'string' ? target : undefined
 }
 
 /** Whether any export's runtime default points into the tsc-emitted lib/types tree. */
@@ -336,8 +366,9 @@ export function checkExperimentalManifest(
   if (!experimentalPackageDirectory.test(dir)) return []
   const label = manifest.name ?? dir
   const errors: string[] = []
-  if (manifest.name?.startsWith(experimentalPackageNamePrefix) !== true) {
-    errors.push(`${label}: experimental package name must start with ${JSON.stringify(experimentalPackageNamePrefix)}`)
+  if (manifest.name === undefined || !manifest.name.startsWith(EXPERIMENTAL_PACKAGE_NAME_PREFIX)
+    && manifest.name !== EXPERIMENTAL_PACKAGE_NAME_EXCEPTIONS[dir]) {
+    errors.push(`${label}: experimental package name must start with ${JSON.stringify(EXPERIMENTAL_PACKAGE_NAME_PREFIX)} or match its declared directory exception`)
   }
   if (isPublicExperimentalPackageDirectory(dir, privateDirectories)) {
     if (manifest.private === true) errors.push(`${label}: public experimental package must not set "private": true`)
@@ -351,7 +382,25 @@ export function checkExperimentalManifest(
   return errors
 }
 
+/**
+ * Reject missing, renamed, moved, or duplicated retained-name exceptions.
+ * @param manifests - every workspace manifest, with repository-relative directories.
+ * @returns Violations of the exact directory/name ownership declarations.
+ */
+export function checkExperimentalNameExceptions(manifests: readonly WorkspaceManifest[]): string[] {
+  const errors: string[] = []
+  for (const [dir, name] of Object.entries(EXPERIMENTAL_PACKAGE_NAME_EXCEPTIONS)) {
+    const owners = manifests.filter(entry => entry.manifest.name === name)
+    if (owners.length !== 1 || owners[0]?.dir !== dir) {
+      errors.push(`${dir}: retained experimental name ${name} must have exactly one workspace owner at this directory`)
+    }
+  }
+  return errors
+}
+
 function isReleaseMemberDirectory(dir: string): boolean {
+  // The SSH carrier is distributed as executable archives, never as an npm application.
+  if (dir === 'packages/ssh/ssh-helper-runtime') return false
   return standardReleaseMemberDirectory.test(dir) || isPublicExperimentalPackageDirectory(dir)
 }
 
@@ -443,7 +492,7 @@ export function checkWorkspaceManifest({ dir, manifest }: WorkspaceManifest): st
     }
   }
 
-  if (dir.startsWith('apps/') && dir !== desktopApplicationDirectory && manifest.name?.startsWith('@singula-ai/')) {
+  if (dir.startsWith('apps/') && dir !== desktopApplicationDirectory && dir !== pluginMarketGeneratorDirectory && manifest.name?.startsWith('@singula-ai/')) {
     const expectedFiles = appPackageFiles[manifest.name]
     if (expectedFiles === undefined) {
       errors.push(`${label}: app package has no publication files policy`)
@@ -479,24 +528,12 @@ export function checkWorkspaceManifest({ dir, manifest }: WorkspaceManifest): st
     if (manifest.types !== 'lib/types/index.d.ts') {
       errors.push(`${label}: package.json must set "types": "lib/types/index.d.ts"`)
     }
-    const rootExport = manifest.exports?.['.']
-    const rootEntry = typeof rootExport === 'object' && rootExport !== null ? rootExport : undefined
+    const rootEntry = exportFields(manifest.exports?.['.'])
     if (rootEntry?.types !== './lib/types/index.d.ts') {
       errors.push(`${label}: package.json exports["."].types must be "./lib/types/index.d.ts"`)
     }
     if (rootEntry?.default !== './lib/index.js') {
       errors.push(`${label}: package.json exports["."].default must be "./lib/index.js"`)
-    }
-    const invariantRaw = manifest.exports?.['./invariant']
-    const invariantExport = typeof invariantRaw === 'object' && invariantRaw !== null ? invariantRaw : undefined
-    if (invariantExport?.types !== undefined && invariantExport.types !== './lib/types/invariant.d.ts') {
-      errors.push(`${label}: package.json exports["./invariant"].types must be "./lib/types/invariant.d.ts"`)
-    }
-    if (invariantExport?.default !== undefined && invariantExport.default !== './lib/invariant.js') {
-      errors.push(`${label}: package.json exports["./invariant"].default must be "./lib/invariant.js"`)
-    }
-    if (invariantExport && (invariantExport.types === undefined || invariantExport.default === undefined)) {
-      errors.push(`${label}: package.json exports["./invariant"] must declare both types and default targets`)
     }
     const expectedFiles = expectedAlegoPackageFiles(manifest)
     if (!sameStringList(manifest.files, expectedFiles)) {
@@ -565,8 +602,10 @@ export function checkExperimentalDependencyIsolation(
     if (!standardReleaseMemberDirectory.test(dir) && dir !== 'python/sdk-runtime') continue
     const offered = manifest.name === '@singula-ai/alego' ? new Set(optionalBundles) : new Set<string>()
     for (const section of runtimeDependencySections) {
-      for (const name of Object.keys(manifest[section] ?? {})) {
-        if (!experimentalNames.has(name)) continue
+      for (const [name, range] of Object.entries(manifest[section] ?? {})) {
+        const experimental = experimentalNames.has(name) || isExperimentalPackageName(name)
+          || /^(?:npm:|workspace:)/.test(range) && hasExperimentalPackageReference(range)
+        if (!experimental) continue
         if (section === 'dependencies' && offered.has(name)) continue
         errors.push(`${manifest.name ?? dir}: ${section}.${name} must not reference an experimental package`)
       }
@@ -613,6 +652,7 @@ export function main(): void {
     ...checkRepositoryVersion(),
     ...workspaceManifests().flatMap(checkWorkspaceManifest),
     ...checkWorkspaceProtocol(manifests),
+    ...checkExperimentalNameExceptions(manifests),
     ...checkExperimentalDependencyIsolation(manifests),
     ...checkHierarchyShape(),
     ...collectProjectReferenceFaceViolations(root),

@@ -1,0 +1,4 @@
+- id: sandbox
+  name: '@singula-ai/alego-sandbox-local'
+- id: skills
+  name: '@singula-ai/alego-skill'

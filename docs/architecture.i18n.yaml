@@ -3,35 +3,35 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/architecture.md
 /alego-architecture:
-  en: 6c0d47eb46ea8ccb
-  zh: 187afdfe2958436b
+  en: 01250768928a440b
+  zh: 4b82da9f73c8b490
 /alego-architecture/cordis:
   en: 464effec9e9636a4
   zh: 3132b56723977204
 /alego-architecture/profiles-and-bundles:
-  en: cff6b3ae77617558
-  zh: 9419187e38896e0c
+  en: 2de9930a0de2fa29
+  zh: 2c943df8e646713e
 /alego-architecture/application-launch:
   en: 3ff78d48803f0ca2
   zh: e81b335dba758532
 /alego-architecture/desktop-application:
-  en: 3133f078f0d547de
-  zh: 66d95e474f4b78f7
+  en: b3fae15278f00c2b
+  zh: 0459395b14e3e780
 /alego-architecture/core-packages:
-  en: df683c34fe978ab9
-  zh: 09754d937f5dd98e
+  en: 19c73773e4fb128f
+  zh: 3c5be3c8a331bc5b
 /alego-architecture/events:
-  en: a83c9c57027e9f28
-  zh: 7895d1330b1e9320
+  en: 0b9977c17718c47b
+  zh: 7a2880a122519748
 /alego-architecture/turn-flow:
-  en: 2b2e8ff16d6f4c4e
-  zh: 4051729ba101309f
+  en: 44f6ed05e0aec33a
+  zh: 52c593998b232d99
 /alego-architecture/session-log:
-  en: ef3938dc66b7ff2c
-  zh: 2c29f4d690507402
+  en: 58ccbe4633f2ed54
+  zh: 5b71832d758bca8f
 /alego-architecture/capability-seams:
-  en: 79da56de722e25d0
-  zh: 2188a16883ab9630
+  en: 1f4a6329668c2bd5
+  zh: a9ef1c95d4936e32
 /alego-architecture/where-new-behavior-goes:
   en: 818cfba8dcc49747
   zh: 0bd3e7fe7f60e759

@@ -13,6 +13,7 @@ import Loader from '@singula-ai/cordis-plugin-loader'
 import Include from '@singula-ai/cordis-plugin-include'
 import SessionStore, { SessionId } from '@singula-ai/alego-session'
 import LocalSubprocessRuntime from '@singula-ai/alego-subprocess-local'
+import LocalFileSystem from '@singula-ai/alego-fs-local'
 import * as WorkspaceChangesPlugin from '@singula-ai/alego-workspace-changes'
 import { changes, endTurn, git, startTurn, toolCall } from './support.ts'
 
@@ -33,6 +34,7 @@ describe('real Loader composition', () => {
     await writeFile(join(root, 'cordis.yml'), [
       "- name: '@singula-ai/alego-session'",
       "- name: '@singula-ai/alego-subprocess-local'",
+      "- name: '@singula-ai/alego-fs-local'",
       "- name: '@singula-ai/alego-workspace-changes'",
       '',
     ].join('\n'))
@@ -43,6 +45,7 @@ describe('real Loader composition', () => {
     const modules = new Map<string, unknown>([
       ['@singula-ai/alego-session', SessionStore],
       ['@singula-ai/alego-subprocess-local', LocalSubprocessRuntime],
+      ['@singula-ai/alego-fs-local', LocalFileSystem],
       ['@singula-ai/alego-workspace-changes', WorkspaceChangesPlugin],
     ])
     context.loader.internal = {

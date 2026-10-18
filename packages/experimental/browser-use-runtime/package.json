@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-experimental-browser-use-runtime",
   "description": "Session-owned browser resource lifecycles and MCP integration for experimental providers",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -38,7 +38,8 @@
     "@singula-ai/alego-mcp-client": "workspace:*",
     "@singula-ai/alego-scope": "workspace:*",
     "@singula-ai/alego-tools": "workspace:*",
-    "@singula-ai/alego-system-prompt": "workspace:*"
+    "@singula-ai/alego-system-prompt": "workspace:*",
+    "@singula-ai/alego-working-directory": "workspace:*"
   },
   "dependencies": {
     "@singula-ai/schemastery": "workspace:~"
@@ -61,6 +62,8 @@
     "@singula-ai/cordis-plugin-loader": "workspace:~",
     "@singula-ai/cordis-plugin-include": "workspace:~",
     "@singula-ai/alego-attachment-local": "workspace:*",
-    "@singula-ai/alego-session-persistence-jsonl": "workspace:*"
+    "@singula-ai/alego-session-persistence-jsonl": "workspace:*",
+    "@singula-ai/alego-working-directory": "workspace:*",
+    "@singula-ai/alego-fs-local": "workspace:*"
   }
 }

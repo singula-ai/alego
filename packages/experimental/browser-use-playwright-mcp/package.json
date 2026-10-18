@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-experimental-browser-use-playwright-mcp",
   "description": "Experimental per-Session Chromium browser tools through @playwright/mcp",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -37,7 +37,8 @@
     "@singula-ai/alego-browser-use": "workspace:*",
     "@singula-ai/alego-agent": "workspace:*",
     "@singula-ai/alego-tools": "workspace:*",
-    "@singula-ai/alego-system-prompt": "workspace:*"
+    "@singula-ai/alego-system-prompt": "workspace:*",
+    "@singula-ai/alego-working-directory": "workspace:*"
   },
   "devDependencies": {
     "@singula-ai/cordis": "workspace:~",
@@ -50,6 +51,7 @@
     "@singula-ai/alego-session": "workspace:*",
     "@singula-ai/alego-tools": "workspace:*",
     "@singula-ai/alego-system-prompt": "workspace:*",
-    "@singula-ai/alego-session-projection": "workspace:*"
+    "@singula-ai/alego-session-projection": "workspace:*",
+    "@singula-ai/alego-working-directory": "workspace:*"
   }
 }

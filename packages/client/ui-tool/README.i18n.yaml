@@ -15,26 +15,29 @@
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
 /singula-ai-alego-client-ui-tool/use-this-package:
-  en: be2bc859e0d64fe5
-  zh: d51a35fb36675dd3
+  en: c6d4e666191521b2
+  zh: 2498020e7080e172
 /singula-ai-alego-client-ui-tool/use-this-package/registering-a-business-tool-view:
-  en: 5332d87e76037f07
-  zh: db5d06e7e46b8429
+  en: 2e3c306b13d3bc25
+  zh: 77127f01763b3976
 /singula-ai-alego-client-ui-tool/use-this-package/built-in-views:
-  en: 4b69e36952574494
-  zh: 1f9842b40931adb6
+  en: 42ac43d3d77f4dd0
+  zh: bbf8e3481b6f67ab
 /singula-ai-alego-client-ui-tool/understand-the-implementation:
   en: 00bc7b0c84edc603
   zh: 1cfcf5b435248a91
 /singula-ai-alego-client-ui-tool/understand-the-implementation/rendering-contract:
-  en: 2959b10b01e08a7b
-  zh: 7084ca22650cbb5b
+  en: 0dd46062052a4ec5
+  zh: cb25d208599f97b2
 /singula-ai-alego-client-ui-tool/understand-the-implementation/cards:
-  en: f78fa9267486a825
-  zh: b4dfbc584519086b
+  en: c651e646c567399a
+  zh: 58d94a451b5c265b
+/singula-ai-alego-client-ui-tool/understand-the-implementation/declared-optional-capabilities:
+  en: c1926deb4e5f3734
+  zh: c5845f465b94a459
 /singula-ai-alego-client-ui-tool/further-exploration:
-  en: 7dc95a786d661ed0
-  zh: a7f11bc54f013f5d
+  en: f2451dc622c56fe6
+  zh: 5a997b8013e547e6
 /singula-ai-alego-client-ui-tool/model-experience:
   en: 1e5e72dd269855d5
   zh: 81a4756d460e3af9
@@ -42,8 +45,8 @@
   en: ca75c51c89c2c9b0
   zh: de54f3467ef3b9be
 /singula-ai-alego-client-ui-tool/known-limitations-and-deferred-work:
-  en: 7475317a656f1d11
-  zh: 787f10cc0f2c586e
+  en: 49f7008105e804df
+  zh: e773f101126b01b4
 /singula-ai-alego-client-ui-tool/known-limitations-and-deferred-work/dev-note:
-  en: 0fdeab2e4db0261f
-  zh: 156d2b2952cf112e
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

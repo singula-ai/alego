@@ -29,9 +29,12 @@
 /singula-ai-alego-jobs-local/use-this-package/lifecycle:
   en: 91dd372f742dcdb8
   zh: 58eeee0254d33cd1
+/singula-ai-alego-jobs-local/use-this-package/session-timing-records:
+  en: cdbddae2f0a14fec
+  zh: fa6b29ab6dd62d33
 /singula-ai-alego-jobs-local/use-this-package/what-can-go-wrong:
-  en: 05654530d8bfb75a
-  zh: 3ac2cd71f3749030
+  en: 52ce50f86558dbb0
+  zh: 5d4c76db2b3ef598
 /singula-ai-alego-jobs-local/understand-the-implementation:
   en: f782557ca8da3138
   zh: e8f0082b9692cacc
@@ -39,8 +42,8 @@
   en: b92e6e5415553e2e
   zh: c3e0be579af4c7fb
 /singula-ai-alego-jobs-local/understand-the-implementation/source-map:
-  en: 12e6b1d7dd6b81da
-  zh: 9a9e0cfe8e3b6d50
+  en: cf99103141ed9f13
+  zh: 3a650aa8c4019156
 /singula-ai-alego-jobs-local/understand-the-implementation/scope-layers:
   en: 2c53e11a60965985
   zh: 63adc1628c71e62e
@@ -51,8 +54,8 @@
   en: 49e8bd5e2c1f6ffd
   zh: ad3e1aa712fd59b3
 /singula-ai-alego-jobs-local/further-exploration:
-  en: e310d89a06c6c588
-  zh: f02422349383181a
+  en: 7c2da899a811323b
+  zh: ba3411000011cd94
 /singula-ai-alego-jobs-local/model-experience:
   en: 3cfacf96691d5163
   zh: d2daf18114b5182c
@@ -60,8 +63,8 @@
   en: e290ccc9b3c92c08
   zh: d75d48f485447a74
 /singula-ai-alego-jobs-local/known-limitations-and-deferred-work:
-  en: 5284107cbd22e3dd
-  zh: 9aa0048908c94e25
+  en: 8b3e2d5505caf2cd
+  zh: 46435d6a6b3c9aff
 /singula-ai-alego-jobs-local/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 3bb0c20c93f16f98

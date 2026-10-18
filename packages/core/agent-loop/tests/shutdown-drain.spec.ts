@@ -12,7 +12,7 @@ import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime from '@singula-ai/alego-tools'
 import AgentRegistry, { type Agent } from '@singula-ai/alego-agent'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { MockAdapter, textResponse } from './mock-adapter.ts'
 

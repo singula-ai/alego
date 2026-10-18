@@ -1,0 +1,49 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/web/web-deepseek-api/README.md
+/:
+  en: eb52169ad8cf3b38
+  zh: 3ad61fa2317079cf
+/singula-ai-alego-web-deepseek-api:
+  en: ea268e3ff46d9b75
+  zh: 4fcc848e12f75d4a
+/singula-ai-alego-web-deepseek-api/summary:
+  en: cc6d9501eeedda30
+  zh: a1e9cbc34e8dee24
+/singula-ai-alego-web-deepseek-api/table-of-contents:
+  en: 76368b6b1da79c80
+  zh: 1e8f931a56b7d34d
+/singula-ai-alego-web-deepseek-api/use-this-package:
+  en: a38285465fe6be31
+  zh: 1739229439955143
+/singula-ai-alego-web-deepseek-api/use-this-package/authentication:
+  en: 491f4c93c0d02152
+  zh: 4888cd52667bdc39
+/singula-ai-alego-web-deepseek-api/use-this-package/results-and-failures:
+  en: b8bfad1c79b2f05a
+  zh: b8d89fabbc028ac1
+/singula-ai-alego-web-deepseek-api/understand-the-implementation:
+  en: 95f5354a1eea3198
+  zh: 48b77b2e9b36e98f
+/singula-ai-alego-web-deepseek-api/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-web-deepseek-api/model-experience/conversation-tool-results:
+  en: dfd3b61aff4a8aa8
+  zh: 06e2b6cc71f461e2
+/singula-ai-alego-web-deepseek-api/model-experience/conversation-tool-results/what-the-model-sees:
+  en: a9fbb78ffe886f0b
+  zh: 813dc7ee283018d2
+/singula-ai-alego-web-deepseek-api/model-experience/conversation-tool-results/token-effect:
+  en: d82cd03f38fb4b38
+  zh: 7049a13d2373a7b9
+/singula-ai-alego-web-deepseek-api/model-experience/conversation-tool-results/kv-cache-effect:
+  en: 54ed534b58469807
+  zh: c3f8f178abb86ccb
+/singula-ai-alego-web-deepseek-api/known-limitations-and-deferred-work:
+  en: d4877c8f4e158a5d
+  zh: 45177b6d6c3ecc40
+/singula-ai-alego-web-deepseek-api/known-limitations-and-deferred-work/dev-note:
+  en: 0a1253c6f7b5e8b9
+  zh: 9f56528562c7c914

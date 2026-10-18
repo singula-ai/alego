@@ -31,6 +31,12 @@ Mount this plugin alongside `ui-input-trigger` and `ui-conversation`; the `/` so
 
 A contribution is a client-owned command; a host-name collision fails loudly. Its UI is a popupSelect spec or an action: a callback a bare invocation runs after the trigger token is consumed, without submitting a message. Business packages own their actions and availability; the composer registers File through this same API. A decoration adds a bare-invocation popup or action to an existing host command while preserving its catalog row, argument claim, and lifecycle logging; it never fires without a matching host row. Menu queries fuzzy-match ordered, case-insensitive subsequences of command names and titles, with prefixes first and no section headings.
 
+A popupSelect spec may supply `searchLabels()` to resolve its placeholder, empty-catalog text, and no-match text for each opening. Omitted labels retain the shell's generic copy; labels from one popup never carry into the next.
+
+Options may carry `group: { name, label }`: `name` identifies the group and `label` supplies its localized sticky heading. Equal names share one group; groups retain first-occurrence order in the loaded options, including when a query hides earlier rows. Ungrouped options form one headingless block at their first occurrence. Groups without matching rows are hidden.
+
+The optional `searchMode` defaults to `'substring'`, matching `label` and `detail` case-insensitively without ranking. `'fuzzy-label'` matches only labels as ordered, case-insensitive subsequences and ranks within each group: prefixes first, then alignment score, then original row order. Both modes ignore leading and trailing query spaces; a blank query keeps every row in group order. Rendering, keyboard navigation, and selection use the same filtered order. `/model` opts into `'fuzzy-label'`; other commands retain substring matching unless they opt in.
+
 ### Built-in row faces
 
 First-party command definitions carry stable `definitionId` values. The client selects their localized titles, descriptions, icons, and input spellings by identity; changing a Host description cannot change that selection. Same-name overrides without the matching identity keep their own copy and receive no first-party aliases. Chinese and English spellings resolve through the same effective Session catalog in every locale, preserving the typed spelling in the draft and submitting the registered Host name. Contributions supply their own `label`, `description`, and `icon`, read on every candidate pass. Empty-query section order follows names, with unlisted rows closing Commands.
@@ -44,14 +50,16 @@ When the composer submits with images or generic files, only a host command decl
 <a id="understand-the-implementation"></a>
 ## Understand the implementation
 
-Menus use the shared `MenuSurface` material, including the macOS backing for background blur; custom content follows the [menu rules](../../../docs/web-styling.md#component-rules).
+Popup selection panels fill the composer overlay's width, matching the slash menu. Popup search fields keep transparent backgrounds and borders in both palettes. Grouped options use [ui-primitives](../ui-primitives/README.md#understand-the-implementation)' shared `MenuGroup` headings and `observeStickyMenuGroups`; an ordinary effect owns the asynchronous observation and rebuilds it when rendered groups change. Menus use the shared `MenuSurface` material, including the macOS backing for background blur; custom content follows the [menu rules](../../../docs/web-styling.md#component-rules).
 
 <details>
 <summary>Implementation internals — click to expand</summary>
 
 `src/client/contract.ts` defines contribution and decoration registration, plus `dismiss(name)`, which closes that command's open popups and confirmations: dismissal aborts pending option loads, prevents their late results from reopening the popup, and preserves composer drafts. `CommandDirectory` owns the per-session wire cache and resolves typed commands through `resolution.ts`; that module owns first-party identity matching and localized input spellings. `matchSpace` reads the ready cache synchronously, while `matchEnter` waits for readiness and rejects on warmup failure or cancellation. Forwarded catalog and connection events invalidate the cache. After a matched Host execution, this browser emits `command/executed`; other clients observe only the durable command events. `PopupSelectController` owns popup state, and `PopupSelectView` occupies the input overlay. `presentation.ts` owns row labels, icons, and sections; its helpers and the resolution helpers stay internal to the plugin.
 
-Each command-directory fetch requires an existing retained Client Session and waits for its initial history open to succeed before sending `commands.list`. A temporary `commandCatalog` reference holds that Session until the fetch settles. An unretained Session or a failed open rejects without sending the RPC, so background catalog refreshes do not reopen closed Sessions.
+Each command-directory fetch requires an existing retained Client Session and waits for its initial history open to succeed before sending `commands.list`. A temporary `commandCatalog` reference holds that Session until the fetch settles. An unretained Session or a failed open rejects without sending the RPC, so background catalog refreshes do not reopen closed Sessions. A reloaded draft that opens with a claimed command rebuilds the claim through the `matchClaim` hook, which awaits the same directory and answers only a `leadingInput` claim without invoking or executing anything.
+
+Popup selection uses the [standard menu inset and item radii](../../../docs/ui-radius.md#nested-hover).
 
 </details>
 
@@ -95,5 +103,3 @@ These limits define the current command surface. They are current package constr
 None.
 
 </details>
-
-**Runtime invariant:** No companion is published. This browser-side source uses the wire command directory; it emits no Cordis events and owns no cross-plugin mutable state. Its dispatch and cache behavior are asserted by this package's specs.

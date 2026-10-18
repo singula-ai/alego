@@ -2,10 +2,11 @@
 import type { GlobalStandardProps } from '@singula-ai/alego-client-ui-slots'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { allowAllAccess } from '@singula-ai/alego-client-test-runtime'
 import type { SessionId } from '@singula-ai/alego-session/types'
 import type { ToolCallId } from '@singula-ai/alego-llm/brand'
 import {
-  PendingQuestion, planReviewOf, type QuestionComposerProps, type QuestionWait,
+  createWaterfallRequest, PendingQuestion, planReviewOf, type QuestionComposerProps, type QuestionWait,
 } from '../src/client/contract/slots.ts'
 import { createQuestionDraftStore } from '../src/client/draft-store.ts'
 import { QuestionComposer } from '../src/client/QuestionComposer.tsx'
@@ -74,6 +75,7 @@ const chatState: ChatState = {
   nodes: {
     get: () => undefined,
     source: () => emptyNodeSource,
+    bottomSource: () => ({ getSnapshot: () => false, subscribe: () => () => {} }),
     turnDataSource: () => { throw new Error('unused') },
     processSource: () => emptyNodeSource,
     values: () => [],
@@ -110,6 +112,7 @@ const questionDraftStore = createQuestionDraftStore().create(SID)
 
 /** Framework standard-kit stubs: the panel consumes only the locale seat. */
 const kit: Omit<QuestionComposerProps, 'matched'> = {
+  useQuestionCard: () => { throw new Error('plan review does not read question card state') },
   renderSlot: () => null,
   SessionProvider: ({ children }) => children,
   sessionId: SID,
@@ -121,6 +124,7 @@ const kit: Omit<QuestionComposerProps, 'matched'> = {
   useSessionStatus: selector => selector(attentionState),
   useSessionRetainInfo: () => undefined,
   useWorkspaces: selector => selector(workspaceState),
+  ...allowAllAccess,
   useConversation: selector => selector(conversationState),
   useChat: selector => selector(chatState),
   useTrajectory: selector => selector(trajectoryState),
@@ -130,6 +134,7 @@ const kit: Omit<QuestionComposerProps, 'matched'> = {
     captureInsertion: () => ({ start: 0, end: 0, draftRev: 0 }),
     insertText: () => false,
     setDraft: () => { throw new Error('unused') },
+    persistDraft: () => { throw new Error('unused') },
     addAttachments: () => { throw new Error('unused') },
     removeAttachment: () => { throw new Error('unused') },
     pruneAttachments: () => { throw new Error('unused') },
@@ -158,9 +163,11 @@ const questions = (): QuestionWait['questions'] => [{
 /** Pending waterfall fixture with observable Client response methods. */
 function wait(items: QuestionWait['questions'] = questions()) {
   const carrier = new PendingQuestion(SID, items)
+  const request = createWaterfallRequest(undefined, undefined, (channel) => { carrier.detachWaterfall(channel) })
+  carrier.attachWaterfall(request.channel)
   const answer = vi.spyOn(carrier, 'answer')
-  const cancel = vi.spyOn(carrier, 'cancel')
-  void carrier.result.catch(() => {})
+  const cancel = vi.spyOn(carrier, 'dismiss')
+  void request.result.catch(() => {})
   return { carrier, answer, cancel }
 }
 
@@ -290,6 +297,34 @@ describe('PlanReviewPanel', () => {
     expect(screen.getByRole('button', { name: zh['plan.discuss'] }).hasAttribute('disabled')).toBe(true)
     fireEvent.click(approve)
     expect(answer).toHaveBeenCalledTimes(1)
+  })
+
+  it('hides a continued plan decision after steering its reply', async () => {
+    const carrier = new PendingQuestion(SID, questions(), 'continued-plan' as ToolCallId)
+    const answer = vi.fn(async () => true)
+    const hide = vi.fn()
+    carrier.attachRpc({ answer })
+    carrier.attachSeat({ hide })
+    carrier.setState('continued')
+    render(<QuestionComposer matched={carrier} {...kit} />)
+
+    fireEvent.click(screen.getByRole('button', { name: zh['plan.approve'] }))
+    await vi.waitFor(() => { expect(hide).toHaveBeenCalledOnce() })
+    expect(screen.getByRole('button', { name: zh['plan.approve'] }).hasAttribute('disabled')).toBe(false)
+    expect(answer).toHaveBeenCalledOnce()
+  })
+
+  it('reports a sent plan reply when hiding its panel fails', async () => {
+    const carrier = new PendingQuestion(SID, questions(), 'continued-plan-hide-error' as ToolCallId)
+    const answer = vi.fn(async () => true)
+    carrier.attachRpc({ answer })
+    carrier.attachSeat({ hide: () => { throw new Error('hide failed') } })
+    carrier.setState('continued')
+    render(<QuestionComposer matched={carrier} {...kit} />)
+
+    fireEvent.click(screen.getByRole('button', { name: zh['plan.approve'] }))
+    expect(await screen.findByText(zh['status.sent'])).toBeTruthy()
+    expect(answer).toHaveBeenCalledOnce()
   })
 
 

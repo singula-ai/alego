@@ -1,0 +1,36 @@
+# Keyless replay counterpart: deterministic HTTP remains real; only the model
+# adapter is replaced by replay.
+- id: llm-deepseek
+  name: '@singula-ai/alego-llm-deepseek-api-key'
+  disabled: true
+
+- insert:
+    - id: llm-replay
+      name: '@singula-ai/alego-llm-replay'
+      config:
+        providers:
+          - id: deepseek-official
+            name: DeepSeek
+            models:
+              - id: deepseek-v4-flash
+              - id: deepseek-v4-pro
+
+    - id: deepseek-fetch-fixture
+      name: './deepseek-fetch-fixture.mjs'
+
+- id: web
+  name: '@singula-ai/alego-web'
+  config:
+    searchProvider: deepseek-official
+    fetchProvider: deepseek-fetch-api
+
+- id: web-deepseek-api
+  name: '@singula-ai/alego-web-deepseek-api'
+  config:
+    apiKey: snapshot-key
+    baseURL: http://127.0.0.1:43118/api/v1/tools
+
+- id: tool-web
+  name: '@singula-ai/alego-tool-web'
+  config:
+    search: false

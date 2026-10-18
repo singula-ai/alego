@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-attachment",
   "description": "Dynamic attachment presentation plugin for conversation input, message-image, and trajectory image slots",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,11 +23,13 @@
       "default": "./lib/client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
       "inject": [
+        "@singula-ai/alego-client-locale",
         "@singula-ai/alego-client-ui-chat",
         "@singula-ai/alego-client-ui-conversation",
         "@singula-ai/alego-client-ui-renderer",
@@ -44,8 +46,7 @@
   "license": "MIT",
   "devDependencies": {
     "@singula-ai/cordis": "workspace:~",
-    "@types/react": "~18.3.1",
-    "@types/react-dom": "~18.3.0",
+    "@singula-ai/alego-client-locale": "workspace:*",
     "@singula-ai/alego-client-ui-chat": "workspace:*",
     "@singula-ai/alego-client-ui-conversation": "workspace:*",
     "@singula-ai/alego-client-ui-trajectory": "workspace:*",
@@ -59,6 +60,7 @@
     "clsx": "^2.0.0"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"

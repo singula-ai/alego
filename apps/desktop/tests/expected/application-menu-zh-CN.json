@@ -1,5 +1,11 @@
 [
   {
+    "label": "检查更新…"
+  },
+  {
+    "label": "管理 alego 命令…"
+  },
+  {
     "role": "hide",
     "label": "隐藏 Alego"
   },

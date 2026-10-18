@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-file-reference-local",
   "description": "Local-filesystem ctx.fileReferences provider with bounded fuzzy indexes",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,9 +23,11 @@
       "default": "./lib/types/search.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/types/**/*.js",
     "lib/types/**/*.d.ts"
@@ -39,13 +41,17 @@
     "@singula-ai/alego-file-reference": "workspace:*",
     "@singula-ai/alego-system-prompt": "workspace:*",
     "@singula-ai/alego-tools": "workspace:*",
-    "@singula-ai/cordis": "workspace:~"
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-working-directory": "workspace:*"
   },
   "devDependencies": {
     "@singula-ai/alego-agent": "workspace:*",
     "@singula-ai/alego-file-reference": "workspace:*",
     "@singula-ai/alego-system-prompt": "workspace:*",
     "@singula-ai/alego-tools": "workspace:*",
-    "@singula-ai/cordis": "workspace:~"
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-working-directory": "workspace:*",
+    "@singula-ai/alego-fs-local": "workspace:*",
+    "@singula-ai/alego-session-projection": "workspace:*"
   }
 }

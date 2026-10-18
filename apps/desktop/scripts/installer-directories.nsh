@@ -5,6 +5,71 @@ Var alegoNewDirectory
 Var alegoOldDirectory
 Var alegoOldMoved
 Var alegoNewMoved
+Var alegoDirectoryError
+Var alegoDirectorySource
+Var alegoDirectoryDestination
+Var alegoRestoreError
+Var alegoDirectoryLogDirectory
+Var alegoRecoveryStopped
+
+; MoveFileEx preserves the destination and exposes the Windows error before rollback changes it.
+; Open files inside a directory can make its rename return access denied (5).
+!macro alegoDirectoryOperation SOURCE DESTINATION RESULT PHASE
+  Push $0
+  Push $1
+  Push $2
+  StrCpy $0 0
+  ${Do}
+    ${If} "${DESTINATION}" == ""
+      System::Call 'kernel32::RemoveDirectoryW(w "${SOURCE}") i.r1 ?e'
+    ${Else}
+      System::Call 'kernel32::MoveFileExW(w "${SOURCE}", w "${DESTINATION}", i 0) i.r1 ?e'
+    ${EndIf}
+    Pop ${RESULT}
+    ${If} "${DESTINATION}" == ""
+      ${If} ${RESULT} == 2
+      ${OrIf} ${RESULT} == 3
+        StrCpy $1 1
+      ${EndIf}
+    ${EndIf}
+    ${If} $1 != 0
+      StrCpy ${RESULT} 0
+      ${ExitDo}
+    ${EndIf}
+    ClearErrors
+    FileOpen $2 "$PLUGINSDIR\directory-operations.log" a
+    ${IfNot} ${Errors}
+      FileSeek $2 0 END
+      FileWrite $2 "${PHASE}: Windows error: ${RESULT}$\r$\n"
+      FileClose $2
+    ${EndIf}
+    ${If} ${RESULT} != 5
+    ${AndIf} ${RESULT} != 32
+    ${AndIf} ${RESULT} != 33
+      ${ExitDo}
+    ${EndIf}
+    IntOp $0 $0 + 1
+    ${If} $0 >= 10
+      ${ExitDo}
+    ${EndIf}
+    IntOp $1 $0 * 250
+    Sleep $1
+  ${Loop}
+  Pop $2
+  Pop $1
+  Pop $0
+!macroend
+
+!macro alegoReportDirectoryFailure
+  ${If} $alegoRestoreError != 0
+    StrCpy $alegoRecoveryStopped "1"
+  ${EndIf}
+  !ifmacrodef customInstallerDirectoryFailed
+    !insertmacro customInstallerDirectoryFailed
+  !else
+    DetailPrint "Directory operation failed ($alegoDirectoryError): $alegoDirectorySource -> $alegoDirectoryDestination; restore error: $alegoRestoreError"
+  !endif
+!macroend
 
 !macro alegoExtractPayload FILE
   !ifmacrodef customInstallerExtract
@@ -28,6 +93,10 @@ Var alegoNewMoved
 !macroend
 
 !macro alegoStageApplication
+  !ifdef ALEGO_INSTALLER_LOG_DIR
+    ; electron-builder defines the cache name after including our function bodies, before this section expands.
+    StrCpy $alegoDirectoryLogDirectory "${ALEGO_INSTALLER_LOG_DIR}"
+  !endif
   StrCpy $alegoFinalDirectory $INSTDIR
   System::Call 'ole32::CoCreateGuid(g .r0) i .r1'
   ${If} $1 != 0
@@ -38,6 +107,9 @@ Var alegoNewMoved
   StrCpy $alegoOldDirectory "$INSTDIR.old-$0"
   StrCpy $alegoOldMoved ""
   StrCpy $alegoNewMoved ""
+  StrCpy $alegoDirectoryError 0
+  StrCpy $alegoRestoreError 0
+  StrCpy $alegoRecoveryStopped ""
   ClearErrors
   CreateDirectory $alegoNewDirectory
   ${If} ${Errors}
@@ -64,6 +136,9 @@ Function .onGUIEnd
 FunctionEnd
 
 Function alegoCleanupDirectories
+  ${If} $alegoRecoveryStopped == "1"
+    Return
+  ${EndIf}
   ${If} $alegoFinalDirectory != ""
     Call alegoRollbackDirectories
   ${EndIf}
@@ -77,11 +152,11 @@ Function alegoRollbackDirectories
     StrCpy $alegoNewMoved ""
   ${EndIf}
   ${If} $alegoOldMoved == "1"
-    ClearErrors
-    Rename $alegoOldDirectory $alegoFinalDirectory
-    ${If} ${Errors}
+    !insertmacro alegoDirectoryOperation "$alegoOldDirectory" "$alegoFinalDirectory" $alegoRestoreError "restore"
+    ${If} $alegoRestoreError != 0
       ; Leave the complete backup in place if another process prevents restoration.
       DetailPrint $alegoOldDirectory
+      RMDir /r "\\?\$alegoNewDirectory"
       Return
     ${EndIf}
     StrCpy $alegoOldMoved ""
@@ -100,21 +175,35 @@ Function alegoPromoteDirectories
   SetOutPath $PLUGINSDIR
   ClearErrors
   ${If} ${FileExists} "$alegoFinalDirectory\*.*"
-    Rename $alegoFinalDirectory $alegoOldDirectory
-    ${If} ${Errors}
+    StrCpy $alegoDirectorySource $alegoFinalDirectory
+    StrCpy $alegoDirectoryDestination $alegoOldDirectory
+    !insertmacro alegoDirectoryOperation "$alegoDirectorySource" "$alegoDirectoryDestination" $alegoDirectoryError "backup"
+    ${If} $alegoDirectoryError != 0
       Call alegoRollbackDirectories
+      !insertmacro alegoReportDirectoryFailure
       SetErrors
       Return
     ${EndIf}
     StrCpy $alegoOldMoved "1"
   ${Else}
     ; NSIS can create the destination before the install section starts.
-    RMDir $alegoFinalDirectory
+    StrCpy $alegoDirectorySource $alegoFinalDirectory
+    StrCpy $alegoDirectoryDestination ""
+    !insertmacro alegoDirectoryOperation "$alegoDirectorySource" "" $alegoDirectoryError "remove-empty"
+    ${If} $alegoDirectoryError != 0
+      Call alegoRollbackDirectories
+      !insertmacro alegoReportDirectoryFailure
+      SetErrors
+      Return
+    ${EndIf}
   ${EndIf}
   ClearErrors
-  Rename $alegoNewDirectory $alegoFinalDirectory
-  ${If} ${Errors}
+  StrCpy $alegoDirectorySource $alegoNewDirectory
+  StrCpy $alegoDirectoryDestination $alegoFinalDirectory
+  !insertmacro alegoDirectoryOperation "$alegoDirectorySource" "$alegoDirectoryDestination" $alegoDirectoryError "promote"
+  ${If} $alegoDirectoryError != 0
     Call alegoRollbackDirectories
+    !insertmacro alegoReportDirectoryFailure
     SetErrors
     Return
   ${EndIf}

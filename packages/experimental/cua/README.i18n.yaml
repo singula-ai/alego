@@ -1,0 +1,46 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/experimental/cua/README.md
+/:
+  en: aa3d316ef17feae7
+  zh: 5a30d743ce257d5b
+/singula-ai-alego-cua:
+  en: 7ee0910f4a51e375
+  zh: f0828ab1aedc9c22
+/singula-ai-alego-cua/summary:
+  en: f4d9cc48587d62a2
+  zh: d1bac6c1fe7eb29e
+/singula-ai-alego-cua/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 1db86285abf6c499
+/singula-ai-alego-cua/use-this-package:
+  en: 1f554aea28848882
+  zh: d7102b2974a652b6
+/singula-ai-alego-cua/understand-the-implementation:
+  en: effcee57d8854c32
+  zh: d02c6b76e7249051
+/singula-ai-alego-cua/further-exploration:
+  en: 4a2bf786172bf491
+  zh: 3a4e6722188248f8
+/singula-ai-alego-cua/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-cua/model-experience/authorized-application-operations:
+  en: 0faf1e4d409d61aa
+  zh: 1866dd0b702f2a26
+/singula-ai-alego-cua/model-experience/authorized-application-operations/what-the-model-sees:
+  en: 69c963a82f93bfb9
+  zh: cba87ac669f532a2
+/singula-ai-alego-cua/model-experience/authorized-application-operations/token-effect:
+  en: 88463f0304c207bd
+  zh: 6d3ae2f1b8e45747
+/singula-ai-alego-cua/model-experience/authorized-application-operations/kv-cache-effect:
+  en: 2d5df52dafa1d940
+  zh: 06e815759b9150c3
+/singula-ai-alego-cua/known-limitations-and-deferred-work:
+  en: 97e6259a0baf1001
+  zh: 22643bf1d775da9e
+/singula-ai-alego-cua/known-limitations-and-deferred-work/dev-note:
+  en: 0a1253c6f7b5e8b9
+  zh: 9f56528562c7c914

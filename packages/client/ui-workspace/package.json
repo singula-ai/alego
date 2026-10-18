@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-workspace",
   "description": "Workspace picker plugin: one WorkspacePicker registered into the sidebar and empty-state workspace slots",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,11 +23,13 @@
       "default": "./lib/client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
       "inject": [
+        "@singula-ai/alego-api-remote-access",
         "@singula-ai/alego-api-remotes",
         "@singula-ai/alego-api-session-controller",
         "@singula-ai/alego-api-workspace-controller",
@@ -52,9 +54,11 @@
     "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
+    "@singula-ai/alego-api-remote-access": "workspace:*",
     "@singula-ai/cordis": "workspace:~",
     "@singula-ai/alego-api-remotes": "workspace:*",
     "@singula-ai/alego-agent": "workspace:*",
+    "@singula-ai/alego-agent-preset-registry": "workspace:*",
     "@singula-ai/alego-api-session-controller": "workspace:*",
     "@singula-ai/alego-api-workspace-controller": "workspace:*",
     "@singula-ai/alego-client-connection": "workspace:*",
@@ -75,13 +79,13 @@
     "@singula-ai/alego-typert-protocol": "workspace:*",
     "@singula-ai/alego-util-values": "workspace:*",
     "@singula-ai/alego-util-workspace-path": "workspace:*",
-    "@types/react": "~18.3.1",
     "clsx": "^2.0.0",
     "react": "^18.2.0",
     "@singula-ai/alego-client-shortcuts": "workspace:*",
     "@singula-ai/alego-client-product-analytics": "workspace:*"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"

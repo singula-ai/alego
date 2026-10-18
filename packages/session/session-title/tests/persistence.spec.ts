@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import SessionStore, { SessionId } from '@singula-ai/alego-session'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import SessionTitleService, { foldSessionTitle } from '@singula-ai/alego-session-title'
 
 const CONFIG = {

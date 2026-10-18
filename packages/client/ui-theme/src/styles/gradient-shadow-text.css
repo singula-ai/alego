@@ -50,18 +50,19 @@ body[data-ds-dark-theme] {
 /* 由 @deepseek-figma-plugin/custom-variable-name 插件导出 */
 /* Markdown 阶梯整体按 0.875（正文 16 → 14）等比缩放，四舍五入到整数像素；
    重新从 Figma 导出时需要保留这一缩放。 */
-/* 正文字号调节：--alego-content-font-size 由主题 bootstrap 与 ThemePresenter
-   写在 body 上（整数 px，12–17，默认 14）。标题与正文变体按同一像素增量
-   （--alego-content-font-delta）随动，保持层级。低一档文本（think、工具/bash
-   行的标题与摘要、markdown 表格、流内次级说明等）统一读
-   --alego-content-font-size-secondary：设置 ≤14 时为设置值 −1，>14 时为
-   设置值 −2（12→11、13→12、14→13、15→13、16→14、17→15）。式中
-   max(13px,·) 的作用是让低设置取 −1 而非 −2，不是结果下限——12 设置下
-   层级触底 11px。small、code 属于密集次级文本，保持固定。 */
+/* Bootstrap and ThemePresenter set the integer content size on body (10–22px,
+   default 14px). Headings and body variants share its pixel delta. Secondary
+   text uses size − 1 through 14px, then size − 2: 10→9, 14→13, 15→13, 22→20.
+   max(13px, ...) selects the delta, not a font-size floor. Small typography keeps a
+   fixed size; code typography follows the separate code size setting. */
 body {
   --alego-content-font-delta: calc(var(--alego-content-font-size, 14px) - 14px);
   --alego-content-font-size-secondary: min(calc(var(--alego-content-font-size, 14px) - 1px), max(13px, calc(var(--alego-content-font-size, 14px) - 2px)));
   --alego-content-font-delta-secondary: calc(var(--alego-content-font-size-secondary) - 13px);
+  /* Code size setting (--alego-code-font-size, integer px 10–16, default 11)
+     is the code-block size; inline code and the small tool variant move by
+     the same increment. */
+  --alego-code-font-delta: calc(var(--alego-code-font-size, 11px) - 11px);
 
   --dsw-font-markdown-h1: 700 calc(21px + var(--alego-content-font-delta)) / calc(30px + var(--alego-content-font-delta)) var(--dsw-font-family);
   --dsw-font-markdown-h1-font-family: var(--dsw-font-family);
@@ -161,26 +162,26 @@ body {
   --dsw-font-markdown-small-strong-italic-font-size: 12px;
   --dsw-font-markdown-small-strong-italic-font-style: italic;
 
-  --dsw-font-markdown-code: 12px/19px var(--ds-font-family-code);
+  --dsw-font-markdown-code: calc(12px + var(--alego-code-font-delta)) / calc(19px + var(--alego-code-font-delta)) var(--ds-font-family-code);
   --dsw-font-markdown-code-font-family: var(--ds-font-family-code);
   --dsw-font-markdown-code-font-weight: 400;
-  --dsw-font-markdown-code-line-height: 19px;
-  --dsw-font-markdown-code-font-size: 12px;
+  --dsw-font-markdown-code-line-height: calc(19px + var(--alego-code-font-delta));
+  --dsw-font-markdown-code-font-size: calc(12px + var(--alego-code-font-delta));
   --dsw-font-markdown-code-font-style: normal;
 
-  --dsw-font-markdown-code-block: 11px/19px var(--ds-font-family-code);
+  --dsw-font-markdown-code-block: var(--alego-code-font-size, 11px) / calc(19px + var(--alego-code-font-delta)) var(--ds-font-family-code);
   --dsw-font-markdown-code-block-font-family: var(--ds-font-family-code);
   --dsw-font-markdown-code-block-font-weight: 400;
-  --dsw-font-markdown-code-block-line-height: 19px;
-  --dsw-font-markdown-code-block-font-size: 11px;
+  --dsw-font-markdown-code-block-line-height: calc(19px + var(--alego-code-font-delta));
+  --dsw-font-markdown-code-block-font-size: var(--alego-code-font-size, 11px);
   --dsw-font-markdown-code-block-font-style: normal;
 
   /* 手工补充（非插件导出）：tool row 展开卡片内的小号 code 字体。 */
-  --dsw-font-markdown-code-block-small: 11px/16px var(--ds-font-family-code);
+  --dsw-font-markdown-code-block-small: var(--alego-code-font-size, 11px) / calc(16px + var(--alego-code-font-delta)) var(--ds-font-family-code);
   --dsw-font-markdown-code-block-small-font-family: var(--ds-font-family-code);
   --dsw-font-markdown-code-block-small-font-weight: 400;
-  --dsw-font-markdown-code-block-small-line-height: 16px;
-  --dsw-font-markdown-code-block-small-font-size: 11px;
+  --dsw-font-markdown-code-block-small-line-height: calc(16px + var(--alego-code-font-delta));
+  --dsw-font-markdown-code-block-small-font-size: var(--alego-code-font-size, 11px);
   --dsw-font-markdown-code-block-small-font-style: normal;
 
   --dsw-font-xl-24: 600 24px/32px var(--dsw-font-family);

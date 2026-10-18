@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-office-to-pdf",
   "description": "Shared Office-to-PDF conversion with bounded queues and caching",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -32,9 +32,11 @@
     "./typert": {
       "types": "./lib/typert.host.d.ts",
       "default": "./lib/typert.host.js"
-    }
+    },
+    "./locale/*.json": "./locale/*.json"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/types/**/*.js",
     "lib/types/**/*.d.ts",
@@ -55,10 +57,10 @@
     "@singula-ai/alego-session": "workspace:*"
   },
   "dependencies": {
-    "@deepseek-ai/libreoffice-kit": "^0.1.1",
+    "@deepseek-ai/libreoffice-kit": "^0.1.5",
     "@singula-ai/schemastery": "workspace:~",
     "@singula-ai/alego-brand": "workspace:*",
     "@singula-ai/alego-typert-protocol": "workspace:*",
-    "zod": "^4.4.3"
+    "zod": "4.4.3"
   }
 }

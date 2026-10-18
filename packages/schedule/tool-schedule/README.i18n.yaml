@@ -1,0 +1,70 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/schedule/tool-schedule/README.md
+/:
+  en: 5bcd39034f505033
+  zh: 9bfd85a1ad52bc67
+/singula-ai-alego-tool-schedule:
+  en: 874055bc26c7bbd9
+  zh: b7a8f262fc0da46e
+/singula-ai-alego-tool-schedule/summary:
+  en: 41642f1b5450dc3f
+  zh: e308d4c2a10038d8
+/singula-ai-alego-tool-schedule/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-tool-schedule/use-this-package:
+  en: a692cac1bda0f1bc
+  zh: 3cc2e4bff8062e4e
+/singula-ai-alego-tool-schedule/use-this-package/when-to-choose-it:
+  en: a1fa09bda92c716e
+  zh: 7e225eddcef303f8
+/singula-ai-alego-tool-schedule/use-this-package/the-four-tools:
+  en: f8aae686d0531c29
+  zh: 3cccd1ba81aae48d
+/singula-ai-alego-tool-schedule/use-this-package/minimal-configuration:
+  en: eef3a83c0ffb2931
+  zh: 9b527abfde4c3406
+/singula-ai-alego-tool-schedule/understand-the-implementation:
+  en: 065702b7a82b8fa1
+  zh: 642037baaa2c0f1d
+/singula-ai-alego-tool-schedule/understand-the-implementation/source-map:
+  en: 676c4e0595fcc8dd
+  zh: f02ed861f66e7747
+/singula-ai-alego-tool-schedule/further-exploration:
+  en: b66340feaf9a97ff
+  zh: deb935e8dbd6fa2c
+/singula-ai-alego-tool-schedule/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-tool-schedule/model-experience/tool-schemas:
+  en: 3039bc5e7a796b21
+  zh: 6b7a9eaf69c9ea53
+/singula-ai-alego-tool-schedule/model-experience/tool-schemas/what-the-model-sees:
+  en: 426641138ce255b3
+  zh: add9e5bdf9e372f8
+/singula-ai-alego-tool-schedule/model-experience/tool-schemas/token-effect:
+  en: 70fb9094859d0804
+  zh: 30726b045484713c
+/singula-ai-alego-tool-schedule/model-experience/tool-schemas/kv-cache-effect:
+  en: 332231fb9f1b8146
+  zh: eace0b2e789d1c0f
+/singula-ai-alego-tool-schedule/model-experience/reminder-results:
+  en: ffeb087f9476fddf
+  zh: 94569d39555d5192
+/singula-ai-alego-tool-schedule/model-experience/reminder-results/what-the-model-sees:
+  en: 68ce690c2d5c2312
+  zh: d3a9fca950518702
+/singula-ai-alego-tool-schedule/model-experience/reminder-results/token-effect:
+  en: a08931b2c5048399
+  zh: 758ea2131adb23e4
+/singula-ai-alego-tool-schedule/model-experience/reminder-results/kv-cache-effect:
+  en: 2fbf2175168e8244
+  zh: 9c4c1964ae59e661
+/singula-ai-alego-tool-schedule/known-limitations-and-deferred-work:
+  en: ca61a37c6645b1fc
+  zh: 86dbcf78b2cb2632
+/singula-ai-alego-tool-schedule/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: b2ee0fbaa165910d

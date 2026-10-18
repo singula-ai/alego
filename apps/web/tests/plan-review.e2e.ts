@@ -7,18 +7,20 @@
 // Replay is deterministic: the plan content arrives from replayed chunks, the
 // review wait is real, and the approve click is the test's own gesture (the
 // turn cannot complete without it, in record and replay alike).
-import { readFile } from 'node:fs/promises'
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
 import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
 import type { Browser, ConsoleMessage, Page } from 'playwright'
 import { chromium } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest'
+import { deriveReplayScript, parseSessionLog } from '@singula-ai/alego-llm-replay'
 import type { SessionEvent } from '@singula-ai/alego-session'
 import type { SessionId } from '@singula-ai/alego-session/types'
 import {
-  assertFixtureInventory, captureExpandedTurnProcessAria, captureStableAria,
+  acknowledgeReloadConnectionLoss, assertFixtureInventory, captureExpandedTurnProcessAria, captureStableAria,
   compareOrRefreshGolden, fixtureUserPrompts,
-  launchWebScaffold, recordFixture, watchConsole, webSnapshotMode, type WebScaffold,
+  launchWebScaffold, recordFixture, seedSession, watchConsole, webSnapshotMode, type WebScaffold,
 } from './scaffold.ts'
 import { connectFreshWorkspace, newEnglishPage, saveFailureShot } from './support.ts'
 
@@ -264,10 +266,138 @@ describe('web e2e: plan review takeover round trip', () => {
   })
 })
 
+describe.skipIf(MODE === 'record')('web e2e: pending plan review across Sidebar seat changes', () => {
+  // Two recorded Sessions seeded side by side; opening one in the page gives it
+  // a live Agent, so a review can be delivered to it while it is off screen.
+  const OTHER_FIXTURE = fileURLToPath(new URL('../../../snapshots/web/fresh-round-trip/session.v3.jsonl', import.meta.url))
+  let scaffold: WebScaffold
+  let browser: Browser
+  let page: Page
+  let tripwire: ReturnType<typeof watchConsole>
+  let planned: SessionId
+  let other: SessionId
+  const crashes: string[] = []
+  const row = (session: SessionId) => page.locator(`[data-row-key="session:${session}"]`)
+
+  async function showSessions(): Promise<void> {
+    await page.waitForSelector('[class*="frame"]', { timeout: 30_000 })
+    // Expand the Workspace group by its state, not by whether its rows have rendered yet.
+    const group = page.locator('[data-row-key^="workspace:"]').first()
+    await group.waitFor({ timeout: 15_000 })
+    if (await group.getAttribute('aria-expanded') !== 'true') await group.click()
+    await row(planned).waitFor({ timeout: 15_000 })
+  }
+
+  async function open(session: SessionId): Promise<void> {
+    await row(session).click()
+    await page.locator(`[data-conversation-session="${session}"]`).waitFor({ timeout: 15_000 })
+    await page.locator(`[data-sidebar-right-session="${session}"]:not([hidden])`).first().waitFor({ state: 'attached', timeout: 15_000 })
+    // `expect.poll` is test-scoped and this also runs from beforeAll, so poll by hand.
+    const deadline = Date.now() + 15_000
+    while (scaffold.ctx.agents.get(session) === undefined) {
+      if (Date.now() > deadline) throw new Error(`opening Session ${session} published no live Agent`)
+      await new Promise(resolve => setTimeout(resolve, 100))
+    }
+  }
+
+  async function showPlugins(): Promise<void> {
+    await page.getByRole('button', { name: 'Plugins', exact: true }).click()
+    await expect.poll(() => page.locator('[data-composer-input]').count(), { timeout: 10_000 }).toBe(0)
+  }
+
+  /** Deliver a plan review to one Session, run the scenario, and withdraw the review. */
+  async function whileReviewing(session: SessionId, detail: string, scenario: () => Promise<void>): Promise<void> {
+    const agent = scaffold.ctx.agents.get(session)
+    if (agent === undefined) throw new Error(`Session ${session} has no live Agent`)
+    const controller = new AbortController()
+    const asked = scaffold.ctx.userQuestions.ask({
+      agent, signal: controller.signal,
+      questions: [{ id: 'seat-change', question: 'Approve this plan?', detail,
+        options: [{ label: 'Approve' }, { label: 'Keep planning' }], intent: { kind: 'plan-review', approve: 'Approve' },
+      }],
+    })
+    const outcome = asked.then(value => value, (error: unknown) => ({ error }))
+    try {
+      await row(session).locator('[data-state="warning"]').waitFor({ timeout: 10_000 })
+      await scenario()
+    } finally {
+      controller.abort()
+      await outcome
+    }
+  }
+
+  /** The review opened itself in the Sidebar and kept its manual opener. */
+  async function expectOpened(text: string): Promise<void> {
+    const card = page.locator('[data-plan-review-key]')
+    await card.waitFor({ timeout: 10_000 })
+    const preview = page.locator('[data-plan-preview^="alego-resource://plan-review/"]')
+    await preview.waitFor({ state: 'visible', timeout: 10_000 })
+    expect(await preview.getByText(text).isVisible()).toBe(true)
+    expect(await card.getByRole('button', { name: 'Open plan in sidebar' }).count()).toBe(1)
+    expect(await page.locator('[data-slot-error]').count()).toBe(0)
+    expect(crashes).toEqual([])
+    expect(tripwire.pageErrors).toEqual([])
+    expect(tripwire.warnings).toEqual([])
+  }
+
+  beforeAll(async () => {
+    scaffold = await launchWebScaffold({})
+    planned = await seedSession(scaffold, await readFile(FIXTURE, 'utf8'), 'plan-review-seat-planned')
+    other = await seedSession(scaffold, await readFile(OTHER_FIXTURE, 'utf8'), 'plan-review-seat-other')
+    browser = await chromium.launch()
+    page = await newEnglishPage(browser)
+    tripwire = watchConsole(page)
+    page.on('console', (message: ConsoleMessage) => {
+      if (message.type() === 'error' && /slot entry crashed/i.test(message.text())) crashes.push(message.text())
+    })
+    await page.goto(scaffold.authenticatedUrl, { waitUntil: 'load' })
+    await showSessions()
+    await open(planned)
+    await open(other)
+  })
+
+  afterAll(async () => {
+    await browser?.close()
+    await scaffold?.close()
+  })
+
+  it('opens a review that arrives while another Session is on screen', async () => {
+    onTestFailed(() => saveFailureShot(page, 'web-e2e-plan-review-session-return'))
+    // Returning mounts the review in the commit that brings its Session back on
+    // screen and swaps the Sidebar seats; the review's automatic open runs
+    // before either seat's effects.
+    await whileReviewing(planned, '# Session review\n\nSubmitted while another Session was on screen.', async () => {
+      await row(planned).click()
+      await expectOpened('Submitted while another Session was on screen.')
+    })
+  })
+
+  it('opens a review for a Session whose Sidebar layout was never saved', async () => {
+    onTestFailed(() => saveFailureShot(page, 'web-e2e-plan-review-first-layout'))
+    // The layout is stored per browser. Without it the arriving seat creates
+    // one, and that store commit lands in the commit where the review opens.
+    await open(other)
+    const warningStart = tripwire.warnings.length
+    await page.evaluate((session) => { localStorage.removeItem(`alego.sidebar-right.v1.${session}`) }, planned)
+    await page.reload({ waitUntil: 'load' })
+    await showSessions()
+    acknowledgeReloadConnectionLoss(tripwire, warningStart)
+    await showPlugins()
+    await whileReviewing(planned, '# Layout review\n\nSubmitted to a Session without a saved Sidebar layout.', async () => {
+      await row(planned).click()
+      await expectOpened('Submitted to a Session without a saved Sidebar layout.')
+    })
+  })
+})
+
 describe('web e2e: dismissed plan history', () => {
   it.skipIf(MODE === 'record')('reopens the permanent plan card after dismissing its review', async () => {
-    // Replay supplies a finite continuation; the real question rejection and retained document are the assertions.
-    const scaffold = await launchWebScaffold({ replayFixture: FIXTURE, compareReplaySession: false, paceMs: 15 })
+    // A dismissed review concludes the turn, so only the call presenting the plan replays.
+    const replayRoot = await mkdtemp(join(tmpdir(), 'alego-plan-review-dismiss-replay-'))
+    const replayOverride = join(replayRoot, 'replay.override.json')
+    const script = deriveReplayScript(parseSessionLog(await readFile(FIXTURE, 'utf8')))
+    await writeFile(replayOverride, JSON.stringify(script.slice(0, 1)))
+    const scaffold = await launchWebScaffold({ replayFixture: FIXTURE, replayOverride, compareReplaySession: false, paceMs: 15 })
     let browser: Browser | undefined
     const events: SessionEvent[] = []
     scaffold.ctx.on('session/event', (_session, event: SessionEvent) => { events.push(event) })
@@ -293,9 +423,10 @@ describe('web e2e: dismissed plan history', () => {
       expect(call).toBeDefined()
       const results = events.filter(event => event.type === 'tool/result')
       const result = results.find(event => event.data.message.source.callId === call?.data.callId)
-      expect(result?.data.message).toMatchObject({ role: 'tool', toolCallId: call?.data.callId, isError: true })
+      expect(result?.data.message).toMatchObject({ role: 'tool', toolCallId: call?.data.callId, isError: false })
       expect(JSON.stringify(result)).toContain('dismissed the plan review')
       expect(results.some(event => JSON.stringify(event).includes('Plan approved'))).toBe(false)
+      expect(events.filter(event => event.type === 'assistant/message')).toHaveLength(1)
       const modes = events.filter(event => event.type === 'plan/mode')
       expect(modes).toHaveLength(1)
       expect(modes[0]).toMatchObject({ data: { active: true } })
@@ -319,6 +450,7 @@ describe('web e2e: dismissed plan history', () => {
     } finally {
       await browser?.close()
       await scaffold.close()
+      await rm(replayRoot, { recursive: true, force: true })
     }
   })
 })

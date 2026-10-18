@@ -35,7 +35,7 @@ describe('webApp (the real web profile)', () => {
     const names = webApp.rows.map(row => row.name)
     expect(names).toContain('@singula-ai/alego-client-ui-settings-general')
     expect(names).not.toContain('@singula-ai/alego-llm') // Host only
-    expect(names).not.toContain('@singula-ai/alego-client-ui-schedule')
+    expect(names).toContain('@singula-ai/alego-client-ui-schedule')
     expect(names).not.toContain('@singula-ai/alego-web-app') // Host runtime glue, its `/startup` row is a subpath
   })
 })

@@ -6,14 +6,14 @@
   en: dc59fc9ffaada17a
   zh: cbd09bf8a84f2980
 /agent-note-ci-failover-runbook-hosted-pools-in-house-pool/problem:
-  en: 1e2e0cdbc56d99b0
-  zh: c8ab91344ba6460c
+  en: 2d2d37278d1f13cf
+  zh: 9280fc7db2ee072f
 /agent-note-ci-failover-runbook-hosted-pools-in-house-pool/decision:
-  en: b5203550d86ad703
-  zh: d24279d8dbe14708
+  en: 18433a8244040d0b
+  zh: 509e16c340142d07
 /agent-note-ci-failover-runbook-hosted-pools-in-house-pool/decision/release-rehearsals-share-the-linux-switch:
-  en: acc17d010407aee0
-  zh: c34d423d908e94f0
+  en: 2205364ae6609df2
+  zh: b022defecc6658b8
 /agent-note-ci-failover-runbook-hosted-pools-in-house-pool/decision/what-the-in-house-pool-is:
   en: 00d8934ed30e838c
   zh: bdb5584fbaf27c7d
@@ -24,8 +24,8 @@
   en: 881a864ad3d6a4ba
   zh: 37f1b8a6d106c725
 /agent-note-ci-failover-runbook-hosted-pools-in-house-pool/capacity-during-failover:
-  en: 40f3f0e2ad0ee0de
-  zh: 11813d18349b71ee
+  en: 22611ed4316adc7c
+  zh: 29acd02b4a07313d
 /agent-note-ci-failover-runbook-hosted-pools-in-house-pool/capacity-during-failover/switch-back:
   en: 245911c83568c3e8
   zh: f9aa1af818790509
@@ -36,5 +36,5 @@
   en: e68b70d7caca52f1
   zh: e6f0be792105a9e6
 /agent-note-ci-failover-runbook-hosted-pools-in-house-pool/consequences:
-  en: db2c9f5a93f7a415
-  zh: c5a82999e6535742
+  en: d6de79eb73b7a6a2
+  zh: 329d8ed8e3e02f7b

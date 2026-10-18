@@ -9,7 +9,7 @@ import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-tes
 import { createUserMessage, LlmAdapter } from '@singula-ai/alego-llm'
 import type { GenerateOptions, LlmResolvedModelInfo, StreamChunk } from '@singula-ai/alego-llm'
 import { SESSION_FORMAT_VERSION } from '@singula-ai/alego-session'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import { defineContentToolFixture } from '@singula-ai/alego-tools'
 import { assertBuiltBenchmarkRuntime } from '../support/built-worker.ts'
 import { PARENT_ID, response, resultText, syntheticHistory, TIME_ZERO, WORKLOAD } from './workload.ts'

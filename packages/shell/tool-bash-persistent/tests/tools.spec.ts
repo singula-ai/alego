@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { provideWorkingDirectoryFixture, unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 import { Context } from '@singula-ai/cordis'
 import { ToolCallId } from '@singula-ai/alego-llm'
 import { SESSION_FORMAT_VERSION, Session, SessionId } from '@singula-ai/alego-session'
@@ -18,7 +19,6 @@ import type {
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime from '@singula-ai/alego-tools'
 import * as ToolBashPersistent from '@singula-ai/alego-tool-bash-persistent'
-import { unsupportedInbox } from '@singula-ai/alego-agent-loop-testkit'
 
 const contexts: Context[] = []
 let callNumber = 0
@@ -303,6 +303,7 @@ async function setup(
   initialMode: StubMode = 'normal',
 ) {
   const ctx = new Context()
+  provideWorkingDirectoryFixture(ctx)
   contexts.push(ctx)
   await ctx.plugin(SystemPrompt)
   await ctx.plugin(ToolRuntime)
@@ -710,6 +711,7 @@ describe('tool-bash-persistent', () => {
 
   it('cancels and awaits a pending shell spawn when the plugin is disposed', async () => {
     const ctx = new Context()
+    provideWorkingDirectoryFixture(ctx)
     contexts.push(ctx)
     await ctx.plugin(SystemPrompt)
     await ctx.plugin(ToolRuntime)

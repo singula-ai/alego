@@ -31,6 +31,7 @@ export async function createInstalledUpdateBuilderConfig(manifest: string, versi
     files: [
       { from: application, to: '.', filter: ['lib/*.js', 'lib/*.cjs', 'renderer/**/*', 'qualification-bootstrap.mjs', 'installed-update-identity.mjs'] },
       'package.json',
+      ...config.files.filter((file): file is string => typeof file === 'string' && file.startsWith('!')),
       { from: alego, to: 'alego', filter: ['**/*'] },
       { from: join(alego, 'node_modules'), to: 'alego/node_modules', filter: ['**/*'] },
     ],

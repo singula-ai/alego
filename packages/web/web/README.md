@@ -54,7 +54,7 @@ The generated [configuration catalog](../../../docs/config-catalog.md#singula-ai
 
 ```text
 // Search the web; sources[] is capped to maxResults:
-const result = await ctx.web.search({ query: 'deepseek harness', maxResults: 8 })
+const result = await ctx.web.search({ query: 'alego', maxResults: 8 })
 
 // Fetch one URL; a non-2xx response is a result, not an error:
 const page = await ctx.web.fetch({ url: 'https://example.com' })
@@ -105,7 +105,6 @@ The package is built on one deliberate separation:
 |---|---|
 | [`src/index.ts`](src/index.ts) | Plugin entry: the `WebRuntime` service, both provider registries, and execution-time selection |
 | [`src/types.ts`](src/types.ts) | Vocabulary: request/result types, the closed `WebFetchBody` union, and the `WebError` taxonomy |
-| — | No runtime invariant companion is published; provider maps are private and selection/result caps are enforced on each call; the seam publishes no independent registry or request/result observation stream. |
 
 ### Data model
 

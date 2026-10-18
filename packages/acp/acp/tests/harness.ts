@@ -23,7 +23,7 @@ import type { ImageAttachmentLimits, ImageAttachmentRef, SaveImageAttachment, St
 import { type GenerateOptions, LlmAdapter, ReasoningEffortId, type LlmResolvedModelInfo, type StreamChunk } from '@singula-ai/alego-llm'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import TokenMeter from '@singula-ai/alego-token-meter'
 import * as AcpPlugin from '../src/index.ts'
 import type { AcpConfig } from '../src/index.ts'

@@ -71,6 +71,16 @@ describe('desktop build version discovery', () => {
       .resolves.toBe(`${PRERELEASE}.${DATE}.4`)
   })
 
+  it('numbers after existing unnotarized DMG and ZIP artifacts', async () => {
+    const artifactsRoot = await artifactsWith([
+      `alego-${PRERELEASE}.${DATE}.2-mac-arm64-unnotarized.dmg`,
+      `alego-${PRERELEASE}.${DATE}.4-mac-arm64-unnotarized.zip`,
+      `alego-${PRERELEASE}.${DATE}.9-mac-arm64-unnotarized.zip.blockmap`,
+    ])
+    await expect(suggestDesktopBuildVersion({ productVersion: PRERELEASE, target: 'mac-arm64', environment: {}, date: DATE, artifactsRoot }))
+      .resolves.toBe(`${PRERELEASE}.${DATE}.5`)
+  })
+
   it('counts unsigned Windows artifacts written under their own suffix', async () => {
     const artifactsRoot = await artifactsWith([
       `alego-${PRERELEASE}.${DATE}.2-win-x64-unsigned.exe`,

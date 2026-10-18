@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-session-snapshot",
   "description": "Session-log snapshot core with an ACP protocol adapter, expected-output normalization, and fixture invariants",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -32,8 +32,8 @@
     "@singula-ai/alego-llm-replay": "workspace:*",
     "@singula-ai/alego-loader-smoke": "workspace:*",
     "@singula-ai/alego-session-format": "workspace:*",
-    "js-yaml": "^4.2.0",
-    "vitest": "^4.1.8"
+    "js-yaml": "^4.3.2",
+    "vitest": "^4.1.11"
   },
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:~",
@@ -44,7 +44,9 @@
     "@singula-ai/cordis": "workspace:~",
     "@singula-ai/alego-agent": "workspace:*",
     "@singula-ai/alego-agent-loop": "workspace:*",
+    "@singula-ai/alego-agent-preset-registry": "workspace:*",
     "@singula-ai/alego-compaction": "workspace:*",
+    "@singula-ai/alego-fs": "workspace:*",
     "@singula-ai/alego-llm": "workspace:*",
     "@singula-ai/alego-sandbox": "workspace:*",
     "@singula-ai/alego-sandbox-policy": "workspace:*",

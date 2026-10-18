@@ -15,6 +15,7 @@ import { LocaleRuntime } from '@singula-ai/alego-client-locale/client'
 import { apply as applyConversation, inject as injectConversation } from '@singula-ai/alego-client-ui-conversation/client'
 import { apply as applyTool, inject as injectTool } from '@singula-ai/alego-client-ui-tool/client'
 import type { ToolCallViewProps } from '@singula-ai/alego-client-ui-tool/client'
+import { PartialArguments } from '@singula-ai/alego-util-values'
 import { toolSessionEvents } from './tool-fixtures.client.ts'
 
 const SID = 's1' as SessionId
@@ -47,12 +48,16 @@ const toolResult = (
   name: string,
   args = '{"command":"make build","description":"Build"}',
   over: Partial<ToolResultNode> = {},
-): ToolResultNode => ({
-  kind: 'tool-result', seq, time: seq * 1_000, callId,
-  call: { name, argsRaw: args },
-  callTime: seq * 1_000 - 500,
-  content: [], isError: false, subCalls: [], ...over,
-})
+): ToolResultNode => {
+  const call = over.call === undefined ? { name, argsRaw: args } : over.call
+  return {
+    kind: 'tool-result', seq, time: seq * 1_000, callId,
+    name: call?.name ?? '', args: call === null ? PartialArguments.EMPTY : PartialArguments.fromText(call.argsRaw),
+    call,
+    callTime: seq * 1_000 - 500,
+    content: [], isError: false, subCalls: [], ...over,
+  }
+}
 
 /** Test-owned AppFrame role: declares and renders the resident conversation area. */
 type AppRootProps = PropsRenderSlots<'main'>

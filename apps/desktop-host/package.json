@@ -1,16 +1,18 @@
 {
   "name": "@singula-ai/alego-desktop-host",
   "description": "Private Node-mode host process for the Electron desktop application",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "private": true,
   "license": "MIT",
   "type": "module",
   "main": "lib/index.js",
   "files": [
-    "lib/index.js"
+    "lib/index.js",
+    "lib/cli.js"
   ],
   "dependencies": {
-    "@deepseek-ai/libreoffice-kit": "^0.1.1",
+    "koffi": "3.1.1",
+    "@deepseek-ai/libreoffice-kit": "^0.1.5",
     "@singula-ai/cordis": "workspace:~",
     "@singula-ai/alego": "workspace:*",
     "@singula-ai/alego-agent": "workspace:*",
@@ -24,5 +26,10 @@
     "@singula-ai/alego-skill-office": "workspace:*",
     "@singula-ai/alego-deepseek-account": "workspace:*",
     "@singula-ai/alego-workspace": "workspace:*"
+  },
+  "devDependencies": {
+    "@singula-ai/cordis-plugin-loader": "workspace:~",
+    "@singula-ai/cordis-plugin-include": "workspace:~",
+    "@singula-ai/alego-skill": "workspace:*"
   }
 }

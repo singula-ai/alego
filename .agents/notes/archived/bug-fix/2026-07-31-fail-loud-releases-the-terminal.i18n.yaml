@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/bug-fix/2026-07-31-fail-loud-releases-the-terminal.md
+2026-07-31-fail-loud-releases-the-terminal.md: 736f185d32eb3aa185f62613217e616102efcdd8
+2026-07-31-fail-loud-releases-the-terminal.zh.md: a878ea3a49cc3de890803bed0deef1d929690811

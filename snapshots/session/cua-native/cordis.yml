@@ -1,0 +1,42 @@
+- id: agent-default-model
+  name: '@singula-ai/alego-agent-default-model'
+  config:
+    provider: deepseek-official
+    model: deepseek-v4-flash-vision-exp
+
+- id: session-persistence-jsonl
+  name: '@singula-ai/alego-session-persistence-jsonl'
+  config:
+    root: !!js alegoHomePath('sessions')
+    compression: none
+
+- id: tools
+  name: '@singula-ai/alego-tools'
+  config:
+    mode: native
+
+- id: system-prompt
+  name: '@singula-ai/alego-system-prompt'
+  config:
+    personaPrefix: |
+      You are a coding assistant powered by the {{model}} model.
+
+      Verify your work by running the code or tests. Keep answers brief and factual.
+
+- id: attachment-local
+  name: '@singula-ai/alego-attachment-local'
+
+- insert:
+    - id: computer-use
+      name: '@singula-ai/alego-computer-use'
+    - id: cua-native
+      name: '@singula-ai/alego-experimental-cua-macos'
+      config:
+        helperPath: !!js process.cwd() + '/native-helper.mjs'
+
+- id: user-questions
+  name: '@singula-ai/alego-user-questions'
+
+- insert:
+    - id: cua-consent-fixture
+      name: './consent-fixture.mjs'

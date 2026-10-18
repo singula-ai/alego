@@ -1,13 +1,16 @@
-/** Every bundle the installation ships switched off composes over the shipped Web layers and carries display metadata. */
+/** The delivered Web composition's Schedule rows, the optional bundles it ships switched off, and their display metadata. */
 
-import { globSync, readFileSync } from 'node:fs'
-import { dirname, resolve } from 'node:path'
+import { globSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { dirname, join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, onTestFinished } from 'vitest'
+import type { EntryOptions } from '@singula-ai/cordis-plugin-loader'
 import { loadOverlayPatches } from '../packages/boot/app-boot/src/index.ts'
 import { readPluginMeta } from '../packages/boot/app-boot/src/package-meta.ts'
-import { OPTIONAL_BUNDLES, bundlePatchPaths, composeEntries } from '../packages/boot/app-boot/src/profile.ts'
+import { OPTIONAL_BUNDLES, PROFILE_TEMPLATES, bundlePatchPaths, composeEntries, initProfile, readProfileManifest } from '../packages/boot/app-boot/src/profile.ts'
 import type { AlegoBundleManifest } from '../packages/util/package-manifest/src/types.ts'
+import { createPluginProfile } from '../apps/desktop/src/project-manager.ts'
 
 const root = resolve(import.meta.dirname, '..')
 
@@ -27,6 +30,66 @@ function bundle(name: string): { dir: string; patches: ReturnType<typeof loadOve
   return { dir: entry.dir, patches: bundlePatchPaths(entry.dir, entry.manifest.alego.bundle).flatMap(path => loadOverlayPatches('test', path)) }
 }
 
+const lightweight = [
+  '@singula-ai/alego-experimental-session-search',
+  '@singula-ai/alego-experimental-ralph-bundle',
+  '@singula-ai/alego-experimental-terminal-bundle',
+  '@singula-ai/alego-experimental-badge-skill-bundle',
+  '@singula-ai/alego-experimental-session-titles-bundle',
+]
+
+function presetRows(entries: EntryOptions[], id: string): EntryOptions[] {
+  const preset = entries.find(entry => entry.id === id)
+  if (preset === undefined) throw new Error(`missing preset ${id}`)
+  return (preset.config as { plugins: EntryOptions[] }).plugins
+}
+
+function flattenRows(entries: EntryOptions[]): EntryOptions[] {
+  return entries.flatMap(entry => [entry, ...entry.group && Array.isArray(entry.config) ? flattenRows(entry.config as EntryOptions[]) : []])
+}
+
+function profileLayers(surface: 'web' | 'desktop'): ReturnType<typeof loadOverlayPatches>[] {
+  const directory = mkdtempSync(join(tmpdir(), 'alego-bundle-compatibility-'))
+  onTestFinished(() => { rmSync(directory, { recursive: true, force: true }) })
+  if (surface === 'desktop') createPluginProfile(directory)
+  else initProfile(directory, PROFILE_TEMPLATES.web!.bundles)
+  const names = readProfileManifest('test', directory).alego?.profile?.bundles
+  if (names === undefined) throw new Error(`${surface} profile has no bundle list`)
+  return names.map(name => bundle(name).patches)
+}
+
+describe.each(['web', 'desktop'] as const)('%s optional bundle overrides', (surface) => {
+  const selectedNames = ['@singula-ai/alego-experimental-badge-skill-bundle', '@singula-ai/alego-experimental-ralph-bundle']
+
+  it('keeps established selectors for later configuration and disabled overrides', () => {
+    const shipped = profileLayers(surface)
+    const config = { subagentProvider: 'spawn', maxRounds: 3 }
+    const warnings: string[] = []
+    const entries = composeEntries([...shipped, ...selectedNames.map(name => bundle(name).patches), [
+      { id: 'skill-badge', disabled: true },
+      { id: 'tool-ralph', config, disabled: true },
+    ]], warning => warnings.push(warning))
+    expect(warnings).toEqual([])
+    expect(entries.find(row => row.id === 'skill-badge')).toMatchObject({ name: '@singula-ai/alego-skill-badge', disabled: true })
+    expect(flattenRows(entries).find(row => row.id === 'tool-ralph'))
+      .toMatchObject({ name: '@singula-ai/alego-tool-ralph', config, disabled: true })
+    expect(entries.find(row => row.id === 'optional-ralph')?.isolate).toEqual({ workflowEngine: true })
+  })
+
+  it('does not select absent bundles through enable-only row overrides', () => {
+    const warnings: string[] = []
+    const entries = composeEntries([...profileLayers(surface), [
+      { id: 'skill-badge', disabled: false },
+      { id: 'tool-ralph', disabled: false },
+    ]], warning => warnings.push(warning))
+    expect(warnings).toHaveLength(2)
+    expect(warnings.some(warning => warning.includes('skill-badge'))).toBe(true)
+    expect(warnings.some(warning => warning.includes('tool-ralph'))).toBe(true)
+    expect(entries.some(row => row.id === 'skill-badge')).toBe(false)
+    expect(flattenRows(entries).some(row => row.id === 'tool-ralph')).toBe(false)
+  })
+})
+
 describe('optional bundles', () => {
   const shipped = ['@singula-ai/alego-base', '@singula-ai/alego-web-app'].map(name => bundle(name).patches)
 
@@ -42,12 +105,14 @@ describe('optional bundles', () => {
     const { patches } = bundle(name)
     const warnings: string[] = []
     const composed = composeEntries([...shipped, patches], message => warnings.push(message))
-    const ids = new Set(composed.map(entry => entry.id))
     expect(warnings).toEqual([])
-    // Inserted rows carry stable ids at the profile root, so a later profile patch can configure or disable them.
-    for (const row of patches.flatMap(patch => patch.insert ?? [])) {
-      expect(typeof row.id).toBe('string')
-      expect(ids.has(row.id)).toBe(true)
+    // Inserted ids remain addressable in the composed profile tree.
+    const ids = new Set(flattenRows(composed).map(entry => entry.id))
+    for (const patch of patches) {
+      for (const row of patch.insert ?? []) {
+        expect(typeof row.id).toBe('string')
+        expect(ids.has(row.id)).toBe(true)
+      }
     }
     // One top-level row per id: a duplicate declaration leaves the Loader with the last one, silently
     // replacing the layer that declared the id first.
@@ -64,16 +129,112 @@ describe('optional bundles', () => {
     }
   })
 
-  it('adds the three Schedule rows the shipped Web composition leaves out', () => {
-    const { patches } = bundle('@singula-ai/alego-experimental-schedule-bundle')
-    const scheduleRows = (entries: ReturnType<typeof composeEntries>) =>
-      entries.filter(entry => ['time-context', 'schedule', 'ui-schedule'].includes(entry.id))
-    expect(scheduleRows(composeEntries(shipped))).toEqual([])
-    expect(scheduleRows(composeEntries([...shipped, patches]))).toEqual([
-      { id: 'time-context', name: '@singula-ai/alego-time-context' },
+  it('offers Git Worktrees as one disabled bundle with its runtime and tool', () => {
+    const name = '@singula-ai/alego-experimental-tool-worktree'
+    expect(OPTIONAL_BUNDLES).toContain(name)
+    for (const template of Object.values(PROFILE_TEMPLATES)) expect(template.bundles).not.toContain(name)
+    const rows = composeEntries([...shipped, bundle(name).patches])
+    for (const moduleName of [name, '@singula-ai/alego-experimental-worktree']) {
+      expect(composeEntries(shipped).some(row => row.name === moduleName)).toBe(false)
+      expect(rows.filter(row => row.name === moduleName && row.disabled !== true)).toHaveLength(1)
+    }
+  })
+
+  it('ships all five lightweight bundles without selecting them in a default template', () => {
+    const defaults = Object.values(PROFILE_TEMPLATES).flatMap(template => template.bundles)
+    for (const name of lightweight) {
+      expect(OPTIONAL_BUNDLES).toContain(name)
+      expect(defaults).not.toContain(name)
+    }
+  })
+
+  it('composes every lightweight selection as Host rows without changing any preset', () => {
+    const baseline = composeEntries(shipped)
+    const layers = lightweight.map(name => bundle(name).patches)
+    for (let mask = 0; mask < 2 ** lightweight.length; mask += 1) {
+      const selected = layers.filter((_layer, index) => (mask & 2 ** index) !== 0)
+      const warnings: string[] = []
+      const composed = composeEntries([...shipped, ...selected], warning => warnings.push(warning))
+      expect(warnings).toEqual([])
+      for (const id of ['preset-standard', 'preset-cordis', 'preset-ptc', 'preset-minimal']) {
+        expect(presetRows(composed, id)).toEqual(presetRows(baseline, id))
+      }
+      const ids = flattenRows(composed).map(row => row.id)
+      expect(new Set(ids).size).toBe(ids.length)
+    }
+  })
+
+  it('contributes global tools from Host rows with independently isolated services', () => {
+    const composed = composeEntries([...shipped, ...lightweight.map(name => bundle(name).patches)])
+    const names = flattenRows(composed).map(row => row.name)
+    for (const name of [
+      '@singula-ai/alego-tool-session-query',
+      '@singula-ai/alego-tool-ralph', '@singula-ai/alego-tool-terminal',
+    ]) expect(names).toContain(name)
+    expect(composed.find(row => row.id === 'optional-ralph')?.isolate).toEqual({ workflowEngine: true })
+    expect(composed.find(row => row.id === 'optional-persistent-terminals')?.isolate).toEqual({ terminals: true })
+    const search = composed.find(row => row.id === 'optional-session-search')
+    expect(search?.isolate).toEqual({ sessionQuery: true })
+    expect(search?.config).toEqual([
+      { id: 'optional-session-query-sqlite', name: '@singula-ai/alego-session-query-sqlite', config: { path: ':memory:', openAt: 'first-search' } },
+      { id: 'optional-tool-session-query', name: '@singula-ai/alego-tool-session-query' },
+    ])
+    expect(composed.find(row => row.id === 'session-query-sqlite')?.config).toEqual({ path: ':memory:', openAt: 'never' })
+    expect(composed.find(row => row.id === 'session-title-llm')?.disabled).toBe(true)
+    expect(composed.find(row => row.id === 'optional-session-title-all-prompts')?.name)
+      .toBe('@singula-ai/alego-session-title-all-prompts-llm')
+  })
+
+  it('delivers the Schedule service and task page without a Host clock row', () => {
+    const composed = composeEntries(shipped)
+    // The delivered composition carries the Host Schedule service and its task
+    // page enabled; the clock stays preset-level, so no Host row declares it.
+    for (const row of [
       { id: 'schedule', name: '@singula-ai/alego-schedule' },
       { id: 'ui-schedule', name: '@singula-ai/alego-client-ui-schedule' },
-    ])
+    ]) {
+      expect(composed.filter(entry => entry.id === row.id && entry.name === row.name && entry.disabled !== true))
+        .toHaveLength(1)
+    }
+    expect(composed.some(entry => entry.id === 'time-context')).toBe(false)
+  })
+
+  it('keeps the clock and the reminder tools on the presets that declare them', () => {
+    const composed = composeEntries(shipped)
+    type PresetRow = { id?: string; name?: string; disabled?: boolean; config?: unknown }
+    const presetPlugins = (id: string): PresetRow[] => {
+      const row = composed.find(entry => entry.id === id)
+      if (row === undefined) throw new Error(`missing delivered preset row ${id}`)
+      const flat: PresetRow[] = []
+      // A `cordis:group` row nests its children in its own `config` array.
+      const walk = (rows: PresetRow[]): void => {
+        for (const entry of rows) {
+          flat.push(entry)
+          if (Array.isArray(entry.config)) walk(entry.config as PresetRow[])
+        }
+      }
+      walk((row.config as { plugins: PresetRow[] }).plugins)
+      return flat
+    }
+    for (const id of ['preset-standard', 'preset-cordis', 'preset-ptc']) {
+      const plugins = presetPlugins(id)
+      for (const plugin of [
+        { id: 'time-context', name: '@singula-ai/alego-time-context' },
+        { id: 'tool-schedule', name: '@singula-ai/alego-tool-schedule' },
+      ]) {
+        const matches = plugins.filter(row => row.id === plugin.id && row.name === plugin.name)
+        expect(matches).toHaveLength(1)
+        expect(matches[0]?.disabled).not.toBe(true)
+      }
+    }
+    for (const id of ['preset-standard', 'preset-cordis', 'preset-ptc']) {
+      for (const rowId of ['tool-subagent', 'tool-subagent-fork']) {
+        expect(presetPlugins(id).find(plugin => plugin.id === rowId)?.config).not.toHaveProperty('toolFilter')
+      }
+    }
+    // `minimal` declares neither, so it composes no clock reading and no reminder tool.
+    expect(presetPlugins('preset-minimal').some(row => row.name === '@singula-ai/alego-time-context'
+      || row.name === '@singula-ai/alego-tool-schedule')).toBe(false)
   })
 
   it.each(OPTIONAL_BUNDLES)('%s resolves a title, description, and icon in both shipped languages', (name) => {

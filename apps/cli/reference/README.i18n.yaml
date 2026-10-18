@@ -3,14 +3,14 @@
 # After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write apps/cli/reference/README.md
 /alego-cli-behavior-reference:
-  en: e6f471e23d274eb2
-  zh: 97d1a8e242c4dd8c
+  en: c3fce27e3c7baf55
+  zh: cace5b844feb02d9
 /alego-cli-behavior-reference/profile-boot:
-  en: 5ac93d9677e917cc
-  zh: 4e72c2f716c75eb8
+  en: fa4091fa98119e89
+  zh: 6ddee5cf27f78300
 /alego-cli-behavior-reference/profile-boot/app-arguments:
-  en: f16a365b995a61d9
-  zh: 316f4be1cfd450c6
+  en: 373c8ac4e4b6d083
+  zh: 8c8b5ec8dabdb603
 /alego-cli-behavior-reference/profile-boot/config-schema-dump:
   en: edbdbb69642920de
   zh: a7be0cb4d2ba7872
@@ -18,14 +18,14 @@
   en: 4865536b616a7ca1
   zh: 5eb764a847c427d2
 /alego-cli-behavior-reference/plugin-management:
-  en: 290e8fb1bddac726
-  zh: 5db77be64e3e2012
+  en: e2cfba6d6d03deeb
+  zh: a489fea9c1ed0857
 /alego-cli-behavior-reference/web-profile:
-  en: 7dcf6177d8609b7f
-  zh: 02141a6bcc15e63b
+  en: 104b023ba305b095
+  zh: 1ad68c763ad475cf
 /alego-cli-behavior-reference/shared-deployment-behavior:
-  en: e2e1e3a5f148203e
-  zh: c5572c8734127054
+  en: 31526cbbafe22a71
+  zh: 9ea30975ff23dee3
 /alego-cli-behavior-reference/source-execution:
   en: 9d1ef96690f5ecfd
   zh: 366d2d81cd64ad0d

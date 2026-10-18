@@ -13,7 +13,7 @@ import SessionStore, {
   SessionPreparation,
 } from '@singula-ai/alego-session'
 import type { AgentHandle } from '@singula-ai/alego-agent'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import SessionQueryEngine from '@singula-ai/alego-session-query'
 import type {

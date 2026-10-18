@@ -20,7 +20,6 @@
   name: '@singula-ai/alego-agent-instructions'
   config:
     maxBytes: 65536
-    alegoHome: !!js process.cwd() + '/.alego'
     projectRootMarkers:
       - .alego-project
 
@@ -28,7 +27,7 @@
   name: '@singula-ai/alego-system-prompt'
   config:
     personaPrefix: |
-      You are a coding assistant powered by the {{model}} model. Your working directory is {{cwd}}.
+      You are a coding assistant powered by the {{model}} model.
 
       Verify your work by running the code or tests. Keep answers brief and factual.
 

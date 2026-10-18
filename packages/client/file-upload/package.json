@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-file-upload",
   "description": "Agent-scoped browser file upload, streaming intake, and staged receipt service",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -35,7 +35,8 @@
       "default": "./lib/typert.remote-client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
@@ -52,6 +53,7 @@
   },
   "license": "MIT",
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.js",
@@ -62,20 +64,18 @@
     "lib/typert.remote-client.d.ts"
   ],
   "dependencies": {
-    "zod": "^4.4.3",
+    "zod": "4.4.3",
     "@singula-ai/alego-typert-protocol": "workspace:*",
     "@singula-ai/alego-brand": "workspace:*"
   },
   "peerDependencies": {
-    "@singula-ai/cordis": "workspace:~",
-    "@singula-ai/alego-scope": "workspace:*"
+    "@singula-ai/cordis": "workspace:~"
   },
   "devDependencies": {
     "@singula-ai/cordis": "workspace:~",
     "@singula-ai/alego-agent": "workspace:*",
     "@singula-ai/alego-client-connection": "workspace:*",
     "@singula-ai/alego-commands": "workspace:*",
-    "@singula-ai/alego-scope": "workspace:*",
     "@singula-ai/alego-util-crypto": "workspace:*",
     "@singula-ai/alego-api-remotes": "workspace:*",
     "@singula-ai/alego-session": "workspace:*",

@@ -22,20 +22,17 @@ export ALEGO_GITHUB_WEBHOOK_SECRET="$(openssl rand -hex 32)"
 printf '%s\n' "$ALEGO_GITHUB_WEBHOOK_SECRET"
 ```
 
-From a development checkout:
+Install both experimental packages into the Web profile first. Profiles do not install peers automatically; the GitHub adapter needs the webhook runtime explicitly:
 
 ```sh
+alego plugin --profile web add @singula-ai/alego-webhook @singula-ai/alego-webhook-github
 export ALEGO_GITHUB_REVIEW_WORKSPACE=/path/to/alego
-pnpm alego web --patch apps/cli/config/examples/github-review/cordis.yml
+alego web --patch "${ALEGO_HOME:-$HOME/.alego}/profiles/web/node_modules/@singula-ai/alego-webhook-github/examples/github-review/cordis.yml"
 ```
 
-An installed ALEGO uses the same overlay through an absolute path:
+The adapter distributes the example, which loads from the profile's installation directory so its rule module can resolve profile-installed peers. Do not run the rule from an arbitrary directory outside the profile. To customize it, copy both example files to `$ALEGO_HOME/profiles/web/github-review/`, edit the configuration, and point `--patch` at that copy of `cordis.yml`; use `~/.alego` when `ALEGO_HOME` is unset.
 
-```sh
-alego web --patch /absolute/path/to/github-review/cordis.yml
-```
-
-For a permanent profile, place `github-ready-review-rule.mjs` beside `$ALEGO_HOME/profiles/web/cordis.patch.yml`, append the rows from `cordis.yml` to that patch, and start with `alego web`. The shipped CLI already contains both webhook packages; the overlay alone activates them.
+The repository example lives under `packages/experimental/webhook-github/examples/github-review/`. The CLI does not install webhook packages or list them as Official plugins; installing the packages and supplying the overlay are separate steps.
 
 ## Expose the dedicated endpoint
 

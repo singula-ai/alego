@@ -1,0 +1,16 @@
+# Bilingual-pair consistency record for guide.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write docs/upgrade-guide/v0.2.1-alpha.1/plugin-option-placement/guide.md
+/:
+  en: 25fe1b7138d9161b
+  zh: 9382d8eb9e52e41f
+/alego-plugin-option-placement:
+  en: 89078bcf4ebcea37
+  zh: 5935d3406a243b9c
+/alego-plugin-option-placement/change:
+  en: 3f72ac88d4d753f5
+  zh: 670a49083688fcd0
+/alego-plugin-option-placement/migration:
+  en: 42189d8439e7b421
+  zh: 1c5d2443277674a0

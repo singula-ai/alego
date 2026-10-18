@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-acp",
   "description": "Automation-only Agent Client Protocol server for driving Alego agents over JSON-RPC stdio",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -59,6 +59,7 @@
     "@singula-ai/alego-session-persistence": "workspace:*",
     "@singula-ai/alego-session-persistence-jsonl": "workspace:*",
     "@singula-ai/alego-session-projection": "workspace:*",
+    "@singula-ai/alego-subagent": "workspace:*",
     "@singula-ai/alego-token-meter": "workspace:*",
     "@singula-ai/alego-tools": "workspace:*",
     "@singula-ai/alego-user-approval": "workspace:*"

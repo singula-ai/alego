@@ -9,8 +9,8 @@
 - text: Reply with a one-sentence description of event sourcing, then stop. {{clock}}
 - button "Copy"
 - paragraph: partial
-- status: Building...
-- text: Building for {{duration}}...
+- status: Deep diving
+- text: Building for {{duration}} ···
 - textbox "Message or run a task, / commands, @ files or sessions"
 - button "Add files or run commands"
 - 'button "Access mode, current: Workspace Write"': Workspace Write

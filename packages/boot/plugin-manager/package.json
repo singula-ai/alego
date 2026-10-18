@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-plugin-manager",
   "description": "Current-profile plugin and bundle management shared by alego CLI, Web and agent tools",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -43,9 +43,13 @@
     "./tools": {
       "types": "./lib/types/tools.d.ts",
       "default": "./lib/types/tools.js"
-    }
+    },
+    "./tools/locale/*.json": "./locale/tools/*.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "files": [
+    "locale/*.json",
+    "locale/tools/*.json",
     "lib/index.js",
     "lib/types/**/*.js",
     "lib/types/**/*.d.ts",
@@ -59,9 +63,9 @@
     "@singula-ai/alego-app-boot": "workspace:*",
     "@singula-ai/alego-atomic-write": "workspace:*",
     "@singula-ai/schemastery": "workspace:~",
-    "execa": "^10.0.0",
+    "execa": "^10.0.1",
     "yaml": "^2.9.0",
-    "zod": "^4.4.3",
+    "zod": "4.4.3",
     "@singula-ai/alego-util-values": "workspace:*"
   },
   "peerDependencies": {
@@ -86,6 +90,7 @@
     }
   },
   "devDependencies": {
+    "chokidar": "^4.0.3",
     "@singula-ai/alego-package-manifest": "workspace:*",
     "@singula-ai/cordis": "workspace:~",
     "@singula-ai/cordis-plugin-loader": "workspace:~",

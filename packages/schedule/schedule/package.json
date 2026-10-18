@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-schedule",
   "description": "Host-wide durable reminders with shared management and original-Session delivery",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -17,10 +17,6 @@
     ".": {
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
-    },
-    "./invariant": {
-      "types": "./lib/types/invariant.d.ts",
-      "default": "./lib/invariant.js"
     },
     "./client": {
       "types": "./lib/types/client.d.ts",
@@ -41,7 +37,6 @@
   "files": [
     "locale/*.json",
     "lib/index.js",
-    "lib/invariant.js",
     "lib/types/**/*.js",
     "lib/types/**/*.d.ts",
     "lib/typert.host.js",
@@ -54,12 +49,12 @@
     "@singula-ai/alego-agent": "workspace:*",
     "@singula-ai/alego-api-session-controller": "workspace:*",
     "@singula-ai/alego-brand": "workspace:*",
-    "@singula-ai/alego-invariants": "workspace:*",
     "@singula-ai/alego-llm": "workspace:*",
     "@singula-ai/alego-session": "workspace:*",
     "@singula-ai/alego-session-persistence": "workspace:*",
     "@singula-ai/alego-session-projection": "workspace:*",
     "@singula-ai/alego-storage-domain": "workspace:*",
+    "@singula-ai/alego-subagent": "workspace:*",
     "@singula-ai/alego-tools": "workspace:*",
     "@singula-ai/alego-typert-protocol": "workspace:*",
     "@singula-ai/alego-workspace": "workspace:*",
@@ -68,7 +63,7 @@
   "dependencies": {
     "@singula-ai/schemastery": "workspace:~",
     "@js-temporal/polyfill": "0.5.1",
-    "zod": "^4.4.3"
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@singula-ai/cordis-plugin-loader": "workspace:~",
@@ -77,7 +72,6 @@
     "@singula-ai/alego-agent-loop-testkit": "workspace:*",
     "@singula-ai/alego-api-session-controller": "workspace:*",
     "@singula-ai/alego-brand": "workspace:*",
-    "@singula-ai/alego-invariants": "workspace:*",
     "@singula-ai/alego-llm": "workspace:*",
     "@singula-ai/alego-session": "workspace:*",
     "@singula-ai/alego-session-persistence": "workspace:*",
@@ -86,6 +80,7 @@
     "@singula-ai/alego-storage": "workspace:*",
     "@singula-ai/alego-storage-domain": "workspace:*",
     "@singula-ai/alego-storage-json": "workspace:*",
+    "@singula-ai/alego-subagent": "workspace:*",
     "@singula-ai/alego-system-prompt": "workspace:*",
     "@singula-ai/alego-tools": "workspace:*",
     "@singula-ai/alego-typert-protocol": "workspace:*",

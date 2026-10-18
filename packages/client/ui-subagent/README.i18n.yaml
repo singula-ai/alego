@@ -9,14 +9,14 @@
   en: e47c27c7d65dc9f7
   zh: 847e3d5c88baa291
 /singula-ai-alego-client-ui-subagent/summary:
-  en: 50f267d55833a683
-  zh: 89d6b827576baa8b
+  en: 6e0bbf514ad3bef7
+  zh: 5a29d88c124d35cc
 /singula-ai-alego-client-ui-subagent/table-of-contents:
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
 /singula-ai-alego-client-ui-subagent/use-this-package:
-  en: 1f7c6b8dfda9cfd2
-  zh: 4d59004cf90ecfd7
+  en: cbed364444115b69
+  zh: 6fa6e8413f9ac09b
 /singula-ai-alego-client-ui-subagent/use-this-package/browsing-the-tree:
   en: 3508631091820123
   zh: ec7da9e5bedb22ba
@@ -27,20 +27,20 @@
   en: 6a5f91b7dfcefafe
   zh: 2d11441952cfea53
 /singula-ai-alego-client-ui-subagent/understand-the-implementation:
-  en: 4235210420613d59
-  zh: 6c0ff8a3716957ff
+  en: 5624cdc0ed7f8ea5
+  zh: c19943e72da56d43
 /singula-ai-alego-client-ui-subagent/understand-the-implementation/catalog-derivation:
-  en: 5e1c83ef8eb26c52
-  zh: f5be8f1e78c74859
+  en: 5531dcc1fb976cff
+  zh: 6fe779f4f1c34266
 /singula-ai-alego-client-ui-subagent/understand-the-implementation/duration-completion-and-tokens:
   en: b817e9907392f59c
   zh: e42feb97d572a989
 /singula-ai-alego-client-ui-subagent/understand-the-implementation/composer-election:
-  en: 1c15af4dd7c0b791
-  zh: f789737ab4dd8cb2
+  en: c2af67b859217d49
+  zh: e184c1b2e4acfe19
 /singula-ai-alego-client-ui-subagent/further-exploration:
-  en: ee88a10ca3e17a92
-  zh: f8fa67374ff8e062
+  en: 3126abefbfabae97
+  zh: 3a3624dbf9a04a17
 /singula-ai-alego-client-ui-subagent/model-experience:
   en: 215e7ba838619b7b
   zh: a311da3843709f90
@@ -60,5 +60,5 @@
   en: ee310ff3cd487639
   zh: 23793aa1c28a23af
 /singula-ai-alego-client-ui-subagent/known-limitations-and-deferred-work/dev-note:
-  en: 3dd148cecbb1a4df
-  zh: 626cc5ed9f65c72a
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

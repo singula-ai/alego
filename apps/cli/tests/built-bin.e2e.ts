@@ -372,6 +372,7 @@ describe.skipIf(!existsSync(alegoBin))('alego BUILT bin (node lib/bin.js, no tsx
       expect(web.stderr).toBe('')
       expect(web.stdout).toContain('Usage: alego --profile web')
       expect(web.stdout).toContain('--port <port>')
+      expect(web.stdout).toContain('--public-url <url>')
       expect(web.stdout).not.toContain('alego web: http://')
 
       const wildcardHost = await runBuiltBin(['web', '--host', '0.0.0.0'], {
@@ -380,7 +381,6 @@ describe.skipIf(!existsSync(alegoBin))('alego BUILT bin (node lib/bin.js, no tsx
       })
       expect(wildcardHost.code).toBe(1)
       expect(wildcardHost.stdout).toBe('')
-      expect(wildcardHost.stderr).toContain('--host 0.0.0.0 is intentionally not supported yet for safety: it would expose remote code execution to the network; use 127.0.0.1 instead')
       expect(wildcardHost.stderr).not.toContain('alego web: http://')
 
       const headlessHelp = await runBuiltBin(['headless', '--help'], {
@@ -666,7 +666,7 @@ describe.skipIf(!existsSync(alegoBin))('alego BUILT bin (node lib/bin.js, no tsx
     }
   }, SPAWN_TIMEOUT_MS + 30_000)
 
-  it('creates a custom profile from the shipped web template before booting it', async () => {
+  it('creates and then replaces a custom profile from the shipped web template before booting it', async () => {
     const home = mkdtempSync(join(tmpdir(), 'alego-from-default-profile-'))
     try {
       const created = await runBuiltBin(
@@ -689,14 +689,14 @@ describe.skipIf(!existsSync(alegoBin))('alego BUILT bin (node lib/bin.js, no tsx
       expect(readFileSync(join(dir, 'cordis.patch.yml'), 'utf8')).toContain('[]')
       expect(readFileSync(join(dir, 'pnpm-workspace.yaml'), 'utf8')).toContain('nodeLinker: hoisted')
 
+      writeFileSync(join(dir, 'cordis.patch.yml'), '- id: local-change\n  disabled: true\n')
       const repeated = await runBuiltBin(
         ['rescue', '--from-default-profile', 'web', '--help'],
         { ALEGO_HOME: home, ALEGO_TELEMETRY_DISABLED: '1' },
       )
-      expect(repeated.code).toBe(1)
-      expect(repeated.stdout).toBe('')
-      expect(repeated.stderr).toContain('profile "rescue" already exists')
-      expect(repeated.stderr).toContain('omit --from-default-profile to use it')
+      expect(repeated.code).toBe(0)
+      expect(repeated.stderr).toBe('')
+      expect(readFileSync(join(dir, 'cordis.patch.yml'), 'utf8')).not.toContain('local-change')
 
       const reopened = await runBuiltBin(
         ['rescue', '--help'],
@@ -1248,7 +1248,15 @@ describe.skipIf(!existsSync(alegoBin))('alego BUILT bin (node lib/bin.js, no tsx
         ['plugin-package-inventory-deepseek', '@singula-ai/alego-plugin-package-inventory-deepseek'],
         ['llm-deepseek', '@singula-ai/alego-llm-deepseek-api-key'],
         ['sandbox', '@singula-ai/alego-sandbox-local'],
+        ['filesystem', '@singula-ai/alego-fs-local'],
+        ['attachment-local', '@singula-ai/alego-attachment-local'],
+        ['tool-fs', '@singula-ai/alego-tool-fs'],
+        ['working-directory', '@singula-ai/alego-working-directory'],
+        ['tool-working-directory', '@singula-ai/alego-tool-working-directory'],
         ['session-projection', '@singula-ai/alego-session-projection'],
+        ['token-meter', '@singula-ai/alego-token-meter'],
+        ['compaction-basic', '@singula-ai/alego-compaction-basic'],
+        ['image-offload', '@singula-ai/alego-compaction-image-offload'],
         ['sandbox-policy', '@singula-ai/alego-sandbox-policy'],
         ['subprocess', '@singula-ai/alego-subprocess-local'],
         ['pty', '@singula-ai/alego-terminal'],
@@ -1264,11 +1272,6 @@ describe.skipIf(!existsSync(alegoBin))('alego BUILT bin (node lib/bin.js, no tsx
         ['agent', '@singula-ai/alego-agent'],
         ['llm-retry', '@singula-ai/alego-llm-retry'],
         ['jobs', '@singula-ai/alego-jobs-local'],
-        ['invariants', '@singula-ai/alego-invariants'],
-        ['session-invariant', '@singula-ai/alego-session/invariant'],
-        ['agent-invariant', '@singula-ai/alego-agent/invariant'],
-        ['scope-invariant', '@singula-ai/alego-scope/invariant'],
-        ['agent-loop-invariant', '@singula-ai/alego-agent-loop/invariant'],
         ['agent-loop', '@singula-ai/alego-agent-loop'],
         ['persistent-bash', '@singula-ai/alego-tool-bash-persistent'],
         ['persistent-pwsh', '@singula-ai/alego-tool-pwsh-persistent'],

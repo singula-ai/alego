@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/feature/2026-08-20-unified-image-request-pipeline.md
+2026-08-20-unified-image-request-pipeline.md: 0f98d46e684c37a6b475555a59f97eae8739ebfc
+2026-08-20-unified-image-request-pipeline.zh.md: 3a007248bc4f09f8307ffb2c6aa574db4b362d82

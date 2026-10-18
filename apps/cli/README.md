@@ -9,7 +9,7 @@ The `alego` command is the sole supported Node application launcher: profiles ar
 | Command | Purpose |
 |---|---|
 | `alego <name>` / `alego --profile <name>` | Boot the named profile under `$ALEGO_HOME/profiles/<name>`. |
-| `alego --profile <name> --from-default-profile <template>` | Create a new custom profile from a shipped template, then boot it. |
+| `alego --profile <name> --from-default-profile <template>` | Replace a custom profile with a fresh copy of a shipped template, then boot it. |
 | `alego --profile acp` | Serve automation clients over ACP stdio until disconnect. |
 | `alego --profile headless "job"` | Run one fresh persisted session, print the final answer, and exit. |
 | `alego --profile sdk` | Serve SDK clients over JSON-RPC stdio until shutdown or disconnect. |
@@ -17,7 +17,7 @@ The `alego` command is the sole supported Node application launcher: profiles ar
 | `alego web` | Boot the Web profile. |
 | `alego plugin --profile <name> <pnpm args>` | Manage a profile's plugins by forwarding to pnpm in the profile directory. |
 
-The invoking directory is the default workspace root. The `web`, `headless`, `sdk`, `sdk-minimal`, and `acp` profiles auto-initialize on first use from shipped templates. Create another profile at an unused, non-shipped name with `--from-default-profile`, or initialize a base-backed profile through `alego plugin`. The `desktop` name is reserved for the Electron-owned profile, so the CLI rejects boot, config-dump, and plugin-management requests for it.
+The invoking directory is the default workspace root. The `web`, `headless`, `sdk`, `sdk-minimal`, and `acp` profiles auto-initialize on first use from shipped templates. Create or reset another profile at a non-shipped name with `--from-default-profile`, or initialize a base-backed profile through `alego plugin`. The `desktop` name is reserved for the Electron-owned profile, so the CLI rejects boot and config-dump requests for it. The npm CLI also rejects its plugin-management requests; the [Desktop-installed command](../desktop/README.md#bundled-command-runtime) can manage the initialized Desktop profile using that installation’s runtime.
 
 ## App arguments
 
@@ -36,7 +36,7 @@ alego --help                          # the launcher's own help
 
 A profile directory holds a `package.json` (out-of-tree plugin dependencies plus the profile manifest `alego.profile` with its ordered `bundles` list) and a `cordis.patch.yml` (the user's own patch layer). `alego-hmr`, when enabled in YAML, watches the profile manifest and both profile and home patch files, then recomposes all layers through one serialized reload. Without HMR, changes apply on restart. Edits arriving during watcher registration use the same nonfatal reload reporting as later edits. [Plugin Manager](../../packages/boot/plugin-manager/README.md) shares package operations and the profile write lock with `alego plugin`; package updates retain disabled bundle selections. CLI package commands inherit authentication variables and terminal descriptors, including interactive build approval; service calls retain their scrubbed environment and captured diagnostics.
 
-Installation and profile startup enforce declared ALEGO peer ranges against the same runtime version shown by `alego --version`. Incompatible plugins require an explicitly acknowledged exact-version exemption. The [plugin manager's compatibility reference](../../packages/boot/plugin-manager/README.md#version-compatibility-and-exemptions) documents `version-exemptions`, `allow-version`, `revoke-version`, persistence, and risks.
+Installation and profile startup enforce the declared `engines.alego` range, or ALEGO peer ranges when it is absent, against the same runtime version shown by `alego --version`. Incompatible plugins require an explicitly acknowledged exact-version exemption. The [plugin manager's compatibility reference](../../packages/boot/plugin-manager/README.md#version-compatibility-and-exemptions) documents `version-exemptions`, `allow-version`, `revoke-version`, persistence, and risks.
 
 The tree composes over an empty root:
 - each bundle's patch in `alego.profile.bundles` order
@@ -58,5 +58,7 @@ The [CLI behavior reference](reference/README.md) owns exact layer precedence, f
 Production runs require built package and frontend artifacts. From the repository root, run `pnpm run build` separately, then use `pnpm alego <args...>` to run the TypeScript entry and forward every argument; the [source-execution reference](reference/README.md#source-execution) owns the module-resolution contract.
 
 The `@singula-ai/alego/profile-boot` export provides the shared profile lifecycle to the Desktop host. A resolved application profile supplies its own installation anchor for runtime package resolution while retaining the Harness home patch, proxy environment, telemetry switch, patch reload, and bounded shutdown.
+
+Packaged installations call the same `runCli()` entry with their package-manager executable. The Desktop carrier also enables plugin operations for its initialized profile; npm launches omit these options. Installation-owned package environments apply only to plugin package operations; the invoking directory, ordinary profile selection, and agent-shell PATH retain their CLI meanings.
 
 The [Web failure matrix](tests/profiles/web/tests/web-failure-matrix.expected.e2e.ts) runs the built CLI through startup failures and native configuration HMR with `awaitWriteFinish` enabled in `test:expected`. It verifies authenticated HTTP responses, diagnostics, recovery, process exits, and disposal without model API calls; the [startup acceptance](tests/profiles/web/tests/web-best-effort-startup.expected.e2e.ts) also covers the shipped required Web dependencies and port conflicts.

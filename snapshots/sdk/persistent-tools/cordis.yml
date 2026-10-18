@@ -108,10 +108,6 @@
   name: '@singula-ai/alego-tool-goal'
   disabled: true
 
-- id: tool-ralph
-  name: '@singula-ai/alego-tool-ralph'
-  disabled: true
-
 - id: tool-web
   name: '@singula-ai/alego-tool-web'
   disabled: true

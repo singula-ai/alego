@@ -8,8 +8,8 @@
     - tab "Trajectory"
 - text: Use web_search once with queries ["Alego snapshot search","Alego multi-query search"]. Then reply exactly SEARCH_DONE and stop. {{clock}}
 - button "Copy"
-- status: Worked
-- button "Took {{duration}}" [expanded]
+- status: Completed
+- button "Completed in {{duration}}" [expanded]
 - button "Searched the web" [expanded]
 - button "Search Alego snapshot search, Alego multi-query search"
 - paragraph: SEARCH_DONE

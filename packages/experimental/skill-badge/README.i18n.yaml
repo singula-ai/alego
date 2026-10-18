@@ -1,0 +1,55 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/experimental/skill-badge/README.md
+/:
+  en: 6ff709df1716f3cd
+  zh: 1b5c00139c67a4c1
+/singula-ai-alego-skill-badge:
+  en: caec514f0dfa37e1
+  zh: 9b535d3bdb723f6d
+/singula-ai-alego-skill-badge/summary:
+  en: ec0006ff64dddb27
+  zh: 76cad44ec76653f4
+/singula-ai-alego-skill-badge/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-skill-badge/use-this-package:
+  en: bb3db9bfc9e3472e
+  zh: 193db0780da50ec8
+/singula-ai-alego-skill-badge/use-this-package/when-to-choose-it:
+  en: 8d634e9f39e7c284
+  zh: 23839a783d3e6f9a
+/singula-ai-alego-skill-badge/use-this-package/enable-the-plugin:
+  en: eec6ee6ebb0abc98
+  zh: 77a04d19fcbdfec2
+/singula-ai-alego-skill-badge/use-this-package/what-the-badge-skill-provides:
+  en: 78742a177b68c828
+  zh: c6887ba07f333a72
+/singula-ai-alego-skill-badge/use-this-package/observable-success-and-failures:
+  en: 770666b256ae818d
+  zh: c6505b10148106df
+/singula-ai-alego-skill-badge/understand-the-implementation:
+  en: 63465b0133f30e85
+  zh: 84bebb7c1fe0ceba
+/singula-ai-alego-skill-badge/understand-the-implementation/design-concept:
+  en: 68ac9a157228b26d
+  zh: c7ae73804891c918
+/singula-ai-alego-skill-badge/understand-the-implementation/source-map:
+  en: 426f03fc14e52c5a
+  zh: 53c1fcf98d87a14e
+/singula-ai-alego-skill-badge/further-exploration:
+  en: 665e6ac851ade78c
+  zh: 547a0658b5d2cf9f
+/singula-ai-alego-skill-badge/model-experience:
+  en: 68f34123eaa6addf
+  zh: 36f8f3799eb76a80
+/singula-ai-alego-skill-badge/model-experience/kv-cache-effect:
+  en: 5b5bcb4fc0513bef
+  zh: 67a1d939c6a18c2e
+/singula-ai-alego-skill-badge/known-limitations-and-deferred-work:
+  en: 5b26bd9df813b852
+  zh: aebbbb1466f5b670
+/singula-ai-alego-skill-badge/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

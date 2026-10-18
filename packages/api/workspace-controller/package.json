@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-api-workspace-controller",
   "description": "Workspace Remote commands and reconnect-safe state transport",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -39,7 +39,8 @@
       "default": "./lib/typert.remote-client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
@@ -58,6 +59,7 @@
     "watch": "tsdown --watch"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.js",
@@ -72,7 +74,7 @@
     "@singula-ai/alego-deque": "workspace:*",
     "@singula-ai/alego-native-command": "workspace:*",
     "@singula-ai/schemastery": "workspace:~",
-    "zod": "^4.4.3"
+    "zod": "4.4.3"
   },
   "peerDependencies": {
     "@singula-ai/cordis": "workspace:~",
@@ -87,6 +89,7 @@
   "devDependencies": {
     "@singula-ai/cordis": "workspace:~",
     "@singula-ai/alego-api-gateway": "workspace:*",
+    "@singula-ai/alego-api-remote-access": "workspace:*",
     "@singula-ai/alego-client-connection": "workspace:*",
     "@singula-ai/alego-client-store": "workspace:*",
     "@singula-ai/alego-client-test-runtime": "workspace:*",

@@ -1,0 +1,40 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/client/ui-secret-mask/README.md
+/:
+  en: 1dc6c25906eed342
+  zh: 6d2502e37189d576
+/singula-ai-alego-client-ui-secret-mask:
+  en: debd3d5b8623e7db
+  zh: 5a0adb9a26ecd18e
+/singula-ai-alego-client-ui-secret-mask/summary:
+  en: b339380d281450e7
+  zh: f40b13d4d27ce819
+/singula-ai-alego-client-ui-secret-mask/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 09388d293f9be9cb
+/singula-ai-alego-client-ui-secret-mask/use-this-package:
+  en: 29af3a2b601d7062
+  zh: 9a8a6121c65ba9ab
+/singula-ai-alego-client-ui-secret-mask/use-this-package/what-is-masked:
+  en: 445a9c788955600d
+  zh: b36ebee0735f5c48
+/singula-ai-alego-client-ui-secret-mask/understand-the-implementation:
+  en: b71ddf4e54cd567a
+  zh: 1202bcd6ca2b0597
+/singula-ai-alego-client-ui-secret-mask/further-exploration:
+  en: ca2e8ef352aaa642
+  zh: 13efefe2a1125b60
+/singula-ai-alego-client-ui-secret-mask/model-experience:
+  en: 9a362b8fa90e0d5a
+  zh: 65c22dcf8f352782
+/singula-ai-alego-client-ui-secret-mask/model-experience/kv-cache-effect:
+  en: ca75c51c89c2c9b0
+  zh: c2241315dc0c89c9
+/singula-ai-alego-client-ui-secret-mask/known-limitations-and-deferred-work:
+  en: 14c6e5817a106972
+  zh: 13082b68474b5a6f
+/singula-ai-alego-client-ui-secret-mask/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: e88aeb617ffb74ea

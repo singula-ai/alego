@@ -9,7 +9,7 @@
  * @module @singula-ai/alego-sdk-client
  */
 
-export { Alego, HarnessSession } from './api.ts'
+export { Alego, HarnessSession, validatedSessionEvent } from './api.ts'
 export type { RunOptions } from './api.ts'
 export {
   HarnessClient,

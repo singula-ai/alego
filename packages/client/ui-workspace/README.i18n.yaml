@@ -15,11 +15,11 @@
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
 /singula-ai-alego-client-ui-workspace/use-this-package:
-  en: b164014ee565be16
-  zh: 6a741647932b93e6
+  en: d042b4b1dd7e7f56
+  zh: c12fa070ef5a02a4
 /singula-ai-alego-client-ui-workspace/use-this-package/reordering-and-view-options:
-  en: 515c9d860f9f5dcb
-  zh: 32bad0fafddba48a
+  en: 8673afc1d72ad077
+  zh: 9fbb83a4029c5d10
 /singula-ai-alego-client-ui-workspace/use-this-package/workspace-hierarchy:
   en: 5e049b90c55eddb3
   zh: e06dc8d0d25c013f
@@ -27,23 +27,23 @@
   en: 9eab3bfbaf98c987
   zh: 54e7e141dae5c9e8
 /singula-ai-alego-client-ui-workspace/use-this-package/managing-sessions:
-  en: 68c291b233495fbc
-  zh: 3daaab50dcac501a
+  en: b0a3a2fb6aef4c7b
+  zh: 8057f29bd592f70b
 /singula-ai-alego-client-ui-workspace/use-this-package/pending-interactions:
   en: 9fb88260380bf093
   zh: 3bace2b96ecd4a82
 /singula-ai-alego-client-ui-workspace/use-this-package/active-schedule-markers:
-  en: f8edd49b0c55c283
-  zh: c09c995296be7481
+  en: e2cfcdd4d4b13d60
+  zh: 2a2d71de0c9e67e1
 /singula-ai-alego-client-ui-workspace/understand-the-implementation:
-  en: 21590da1f7488361
-  zh: 95916475cced409e
+  en: 62f0205551f410f1
+  zh: 29d68c5ab38a89a0
 /singula-ai-alego-client-ui-workspace/understand-the-implementation/the-directory-flow-hole:
-  en: 978415ec6b2e0cc0
-  zh: 0d5c705ff34fb1da
+  en: 868904dbfb5713f8
+  zh: 225906bfef7398bf
 /singula-ai-alego-client-ui-workspace/understand-the-implementation/session-row-actions:
-  en: a3b80d0e844d2929
-  zh: 85fe5dfb2968b491
+  en: 5bbba6e462faf3dc
+  zh: 4734263208ee07c9
 /singula-ai-alego-client-ui-workspace/understand-the-implementation/session-row-actions/packaged-client-plugin:
   en: 36934671b80b11ae
   zh: 8e0aea6162e35e77
@@ -54,8 +54,8 @@
   en: 83031e7505fc228a
   zh: 03e17c9428fe29fd
 /singula-ai-alego-client-ui-workspace/understand-the-implementation/hover-cards:
-  en: 34668e3c2e9c77b7
-  zh: c8bb72e29a3f2490
+  en: ea89ec5a3ee1f167
+  zh: e11f350571bcfff7
 /singula-ai-alego-client-ui-workspace/further-exploration:
   en: 8be9567b14b4b9f5
   zh: f82f648ec9c76a66
@@ -69,5 +69,5 @@
   en: 00d7b1ddda7390f5
   zh: 1e5a1055d1be4d1d
 /singula-ai-alego-client-ui-workspace/known-limitations-and-deferred-work/dev-note:
-  en: 585813ff2c68c20c
-  zh: 18b43c0d64fa8a72
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

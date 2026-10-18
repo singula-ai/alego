@@ -1,4 +1,4 @@
-/** Product-wide, versioned internal-testing notice. */
+/** Product-wide, versioned preview notice. */
 
 import { useCallback, useEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
@@ -13,7 +13,7 @@ import css from './WelcomeNotice.module.css'
 /** Registration-side dependencies of {@link WelcomeNotice}. */
 export interface WelcomeNoticeInjected {
   hooks: {
-    /** Durable or process-local acknowledgement state. */
+    /** Durable acknowledgement state. */
     welcome: SnapshotStore<WelcomeNoticeState>
   }
   /** Welcome acknowledgement controller. */

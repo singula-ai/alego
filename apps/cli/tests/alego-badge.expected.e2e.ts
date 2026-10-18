@@ -5,7 +5,7 @@ const binScript = fileURLToPath(new URL('./fixtures/alego-badge/snapshot.ts', im
 const configPath = fileURLToPath(new URL('./fixtures/alego-badge/cordis.yml', import.meta.url))
 const defaultConfigPath = fileURLToPath(new URL('./fixtures/alego-badge/default.cordis.yml', import.meta.url))
 const tsconfigPath = fileURLToPath(new URL('../../../tsconfig.json', import.meta.url))
-const badgeAssetsPath = fileURLToPath(new URL('../../../packages/skill/skill-badge/assets/', import.meta.url))
+const badgeAssetsPath = fileURLToPath(new URL('../../../packages/experimental/skill-badge/assets/', import.meta.url))
 
 describe('alego badge assembled snapshot', () => {
   it('advertises and loads the opt-in bundled skill through the shipped app', async () => {

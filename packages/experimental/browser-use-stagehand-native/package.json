@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-experimental-browser-use-stagehand-native",
   "description": "Experimental Stagehand browser tools with separately configured native models",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -44,7 +44,7 @@
     "@singula-ai/alego-mcp-client": "workspace:*",
     "@singula-ai/alego-util-values": "workspace:*",
     "@singula-ai/schemastery": "workspace:~",
-    "zod": "^4.4.3",
+    "zod": "4.4.3",
     "@singula-ai/alego-subprocess": "workspace:*",
     "@puppeteer/browsers": "3.2.2"
   },
@@ -63,6 +63,6 @@
     "@singula-ai/alego-session-projection": "workspace:*",
     "@singula-ai/alego-system-prompt": "workspace:*",
     "@singula-ai/alego-tools": "workspace:*",
-    "tsx": "^4.19.2"
+    "tsx": "^4.23.13"
   }
 }

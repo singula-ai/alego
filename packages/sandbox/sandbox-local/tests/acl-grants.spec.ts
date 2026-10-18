@@ -50,6 +50,7 @@ vi.mock('@singula-ai/alego-sandbox-windows-acl', () => {
     }
   }
   return {
+    registerAclDiagnosisSkill: vi.fn(),
     AclWriteGrant: MockAclWriteGrant,
     assertTempRootOutsideWorkspace: (workspaceRoot: string, tempRoot: string) => {
       const workspace = realpathSync.native(workspaceRoot)

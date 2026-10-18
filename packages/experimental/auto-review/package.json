@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-experimental-auto-review",
   "description": "Per-tool LLM authorization review for the Alego Auto permission preset",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "icon": "./icon.svg",
   "repository": {
     "type": "git",
@@ -36,7 +36,8 @@
     "@singula-ai/alego-permission-presets": "workspace:*",
     "@singula-ai/alego-session": "workspace:*",
     "@singula-ai/alego-tools": "workspace:*",
-    "@singula-ai/cordis": "workspace:~"
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-working-directory": "workspace:*"
   },
   "dependencies": {
     "@singula-ai/alego-util-values": "workspace:*"
@@ -70,7 +71,8 @@
     "@singula-ai/alego-tool-subagent": "workspace:*",
     "@singula-ai/alego-tools": "workspace:*",
     "@singula-ai/alego-user-approval": "workspace:*",
-    "@singula-ai/cordis": "workspace:~"
+    "@singula-ai/cordis": "workspace:~",
+    "@singula-ai/alego-working-directory": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

@@ -5,12 +5,15 @@
 /alego-python-sdk:
   en: f685aeb603073d14
   zh: 53f8109c1439d7a3
+/alego-python-sdk/optional-office-operations:
+  en: 2e41d1834e93b17e
+  zh: 0477a6a25da7d80d
 /alego-python-sdk/start-a-runtime:
-  en: 4545228f600eb90e
-  zh: 68ce10f786ee929a
+  en: b615c130975c0eef
+  zh: 076241d55fcf2308
 /alego-python-sdk/customize-plugins:
-  en: 79d8713d28b5a489
-  zh: 499fc2f696007ef0
+  en: 15bb7acdb752dc84
+  zh: a576a494c3efdabe
 /alego-python-sdk/results-and-notifications:
-  en: 1861330aba6ce267
-  zh: 62e35b507eb7e8d5
+  en: 023568aa1de15e1b
+  zh: f3e088f291af5d9f

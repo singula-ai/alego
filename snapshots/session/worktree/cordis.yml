@@ -1,0 +1,5 @@
+- insert:
+    - id: worktree
+      name: '@singula-ai/alego-experimental-worktree'
+    - id: tool-worktree
+      name: '@singula-ai/alego-experimental-tool-worktree'

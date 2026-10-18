@@ -1,0 +1,37 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/experimental/ralph-bundle/README.md
+/:
+  en: 471abb0843949bd8
+  zh: 57662fb79022166e
+/singula-ai-alego-experimental-ralph-bundle:
+  en: 559a36179126321a
+  zh: c9c50f7c6663f66d
+/singula-ai-alego-experimental-ralph-bundle/summary:
+  en: 2d0d6090157ea5ec
+  zh: 55c9669c4bf44cb9
+/singula-ai-alego-experimental-ralph-bundle/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 988e839059414d27
+/singula-ai-alego-experimental-ralph-bundle/use-this-package:
+  en: bb91c59b7a474054
+  zh: 2ae97c4106a71c74
+/singula-ai-alego-experimental-ralph-bundle/understand-the-implementation:
+  en: 4c98e73f5b12ffc9
+  zh: a591af01099c929a
+/singula-ai-alego-experimental-ralph-bundle/further-exploration:
+  en: 47b1eec152db9dd5
+  zh: 548971d1918f842f
+/singula-ai-alego-experimental-ralph-bundle/model-experience:
+  en: 3d2c815ef46fa22f
+  zh: 7730c2cd5aafd9a3
+/singula-ai-alego-experimental-ralph-bundle/model-experience/kv-cache-effect:
+  en: 25f20eda0e696067
+  zh: 378c4a15a5704ba0
+/singula-ai-alego-experimental-ralph-bundle/known-limitations-and-deferred-work:
+  en: 39918e19422a80c1
+  zh: 71346d112bdea43f
+/singula-ai-alego-experimental-ralph-bundle/known-limitations-and-deferred-work/dev-note:
+  en: 279d01435256cd2a
+  zh: 83780964e5de2f54

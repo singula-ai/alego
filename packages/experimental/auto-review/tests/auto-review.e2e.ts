@@ -1,11 +1,11 @@
 import { randomUUID } from 'node:crypto'
+import { provideWorkingDirectoryFixture, mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
 import { chmod, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { Context } from '@singula-ai/cordis'
 import type { Agent } from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
-import { mountAgentLoopTestDependencies } from '@singula-ai/alego-agent-loop-testkit'
 import { SandboxBashExecutor } from '@singula-ai/alego-bash-sandbox'
 import { NodePtcRuntime } from '@singula-ai/alego-ptc-runtime-node'
 import * as FsObservationPolicy from '@singula-ai/alego-fs-observation-policy'
@@ -130,7 +130,7 @@ async function* observe(
 
 async function mount(ctx: Context, workspace: string, alegoHome: string): Promise<void> {
   await mountAgentLoopTestDependencies(ctx, {
-    systemPrompt: {}, tools: { mode: 'both' },
+    systemPrompt: {}, tools: { mode: 'native' },
   })
   // No reasoning or output-budget override: use each shipped model's defaults.
   await ctx.plugin(LlmDeepSeek, { retryPolicy: { mode: 'normal', maxRetries: 0 } })
@@ -253,6 +253,7 @@ it('certifies eight Auto risk/authorization cases with zero retries and zero ski
   if (REAL && !process.env.DEEPSEEK_API_KEY) throw new Error('Real Auto certification requires DEEPSEEK_API_KEY')
   const root = await mkdtemp(join(tmpdir(), 'alego-auto-review-'))
   const ctx = new Context()
+  provideWorkingDirectoryFixture(ctx)
   try {
     await chmod(root, 0o700)
     const workspace = join(root, 'workspace')
@@ -313,6 +314,7 @@ it('certifies eight Auto risk/authorization cases with zero retries and zero ski
         sessionId: SessionId(randomUUID()), meta: { cwd: workspace }, agentOptions: { provider: PROVIDER, model },
       })
       try {
+        if (path === 'ptc-inner') handle.agent.ctx.tools.presentAs('ptc')
         selectFinalAuto(ctx, handle.agent.session)
         const command = `rm -- ${quote(target)}`
         await runCase(handle.agent, 'M01-unauthorized', path, command,
@@ -360,6 +362,7 @@ it.each(['native', 'ptc-inner'] as const)('feeds denial back, re-reviews a new c
 }, async (path) => {
   const root = await mkdtemp(join(tmpdir(), 'alego-auto-review-recovery-'))
   const ctx = new Context()
+  provideWorkingDirectoryFixture(ctx)
   try {
     const alegoHome = join(root, 'home')
     await mkdir(alegoHome)
@@ -372,6 +375,7 @@ it.each(['native', 'ptc-inner'] as const)('feeds denial back, re-reviews a new c
       sessionId: SessionId(randomUUID()), meta: { cwd: root }, agentOptions: { provider: PROVIDER, model: FLASH },
     })
     try {
+      if (path === 'ptc-inner') handle.agent.ctx.tools.presentAs('ptc')
       selectFinalAuto(ctx, handle.agent.session)
       const rawReason = `  TEST_ONLY_SECRET_${'x'.repeat(16_384)}\nexact deletion was not authorized  `
       for (let attempt = 0; attempt < 2; attempt += 1) {

@@ -21,11 +21,11 @@
   en: 4b891d8577c8cc35
   zh: 8edb85a5760ddbb4
 /singula-ai-alego-app-boot/use-this-package/starting-the-app:
-  en: 1099528bde0e2aee
-  zh: b68772bdb9bb7856
+  en: 4a424cd401556f20
+  zh: 0b34dd18e0db6cea
 /singula-ai-alego-app-boot/use-this-package/profiles:
-  en: 7530f14b175a30a5
-  zh: 08686cb7fcc8410f
+  en: 539a524559bf6e3d
+  zh: a080b49947e416c8
 /singula-ai-alego-app-boot/use-this-package/previewing-the-effective-configuration:
   en: 646a0ccdd7881ad1
   zh: e3696acb1573dd7b
@@ -33,38 +33,35 @@
   en: 5c2347169bc5289a
   zh: a4b8a8c88225d6d5
 /singula-ai-alego-app-boot/use-this-package/reading-plugin-display-metadata:
-  en: 215e7da2bbff7cf0
-  zh: 77019211948bc62b
+  en: f5b3a1c602bfde4d
+  zh: d3e4917c51945cdd
 /singula-ai-alego-app-boot/use-this-package/startup-and-reload-failures:
-  en: 6b4a3a0de0249d05
-  zh: ff1c7e3e611ce6e0
-/singula-ai-alego-app-boot/use-this-package/telling-the-agent-where-the-harness-lives:
-  en: 4ec88ffc54059e92
-  zh: 2b02bf3463c1c287
+  en: 1e3ba9bdda0182d2
+  zh: 6b5656b2e22b9df3
 /singula-ai-alego-app-boot/understand-the-implementation:
   en: f4a2695cb4c8a570
   zh: 89837235d2f376cf
 /singula-ai-alego-app-boot/understand-the-implementation/design-notes:
-  en: fb3bcdb8b20ca017
-  zh: 3b7fe8c2407acb76
+  en: ea4ca5b545c8aec5
+  zh: fc00a7a15a1c4cf4
 /singula-ai-alego-app-boot/understand-the-implementation/helper-behavior:
-  en: f7bc3a8dd4b00bdd
-  zh: 30098428aa769ad0
+  en: 6fa850d1bb000d0e
+  zh: aa83a40a9d3db295
 /singula-ai-alego-app-boot/understand-the-implementation/source-map:
-  en: 25602fd8eb9b2907
-  zh: 870a33dd34a52c32
+  en: 541700d5c39e0ab4
+  zh: 7522dbd9cd68c930
 /singula-ai-alego-app-boot/further-exploration:
-  en: 62c4a03e731e7337
-  zh: f9d382bfbeb04304
+  en: 921a7ed8015de57d
+  zh: c2dededcd173c187
 /singula-ai-alego-app-boot/model-experience:
-  en: 769777f1cb1a9408
-  zh: f02b2834179df50d
+  en: d2d0a21502d88c50
+  zh: 82a60c7a490a6834
 /singula-ai-alego-app-boot/model-experience/kv-cache-effect:
-  en: c4d49630b68ae896
-  zh: 6f450ec6ba39bb81
+  en: 5a1d9344c8fdc790
+  zh: 0b32579f658b2ca1
 /singula-ai-alego-app-boot/known-limitations-and-deferred-work:
-  en: bf1a49013cad8e9c
-  zh: 41b2b010f8650ec3
+  en: 1400c4f22a79b59a
+  zh: 269f6c91584aec3e
 /singula-ai-alego-app-boot/known-limitations-and-deferred-work/dev-note:
   en: d2f0d68fe29fb750
   zh: 323d21ee73a9e3f6

@@ -8,14 +8,33 @@
 
 import type { Context } from '@singula-ai/cordis'
 import { defineTool } from '@singula-ai/alego-tools'
+import z from '@singula-ai/schemastery'
+import { registerTimedAskUser } from './timed.ts'
 import '@singula-ai/alego-user-questions'
+
+/** Cordis row selecting the tool schema and its default foreground wait. */
+export interface Config {
+  /** Tool definition selected by this Cordis row. Defaults to the blocking legacy tool. */
+  mode?: 'legacy' | 'timed'
+  /** Foreground wait before automatic continuation. Defaults to 120 seconds. */
+  timeout?: number
+}
+
+export const Config: z<Config> = z.object({
+  mode: z.union(['legacy', 'timed']).default('legacy'),
+  timeout: z.union([-1, z.number().step(1).min(1).max(2_147_483)]).default(120),
+})
 
 export const name = 'tool-ask-user'
 export const inject = ['tools', 'userQuestions']
 
 const description = 'Ask the user a concise question when you need confirmation, a choice, or missing information before proceeding.'
 
-export function apply(ctx: Context): void {
+export function apply(ctx: Context, config: Config = {}): void {
+  if (config.mode === 'timed') {
+    registerTimedAskUser(ctx, config.timeout)
+    return
+  }
   ctx.tools.register(defineTool({
     name: 'ask_user_question',
     description,

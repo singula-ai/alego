@@ -11,9 +11,16 @@ const overlayPath = process.argv[2]
 if (overlayPath === undefined) throw new Error('alego-badge snapshot requires an overlay path')
 const rootConfigPath = fileURLToPath(new URL('../../../../../packages/bundle/base/tests/fixtures/root.cordis.yml', import.meta.url))
 const basePatchPath = fileURLToPath(new URL('../../../../../packages/bundle/base/cordis.patch.yml', import.meta.url))
+// The fixture owns the optional provider; the base bundle has no dependency on it.
+const overlays = loadOverlayPatches('alego-badge-snapshot', overlayPath).map(patch => patch.insert === undefined ? patch : {
+  ...patch,
+  insert: patch.insert.map(row => row.name === '@singula-ai/alego-skill-badge'
+    ? { ...row, name: import.meta.resolve('@singula-ai/alego-skill-badge') }
+    : row),
+})
 const ctx = await boot('alego-badge-snapshot', rootConfigPath, [
   ...loadOverlayPatches('alego-badge-snapshot', basePatchPath),
-  ...loadOverlayPatches('alego-badge-snapshot', overlayPath),
+  ...overlays,
 ])
 
 try {

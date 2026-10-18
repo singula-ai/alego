@@ -2,7 +2,6 @@
 
 - id: system-prompt
   config:
-    personaSuffix: Your working directory is {{cwd}}.
     personaPrefix: >-
       You are a coding agent powered by the {{model}} model.
 
@@ -35,7 +34,8 @@
 
     - id: skill-office
       name: '@singula-ai/alego-skill-office'
-      disabled: !!js "!(process.env.ALEGO_PRIMARY_RUNTIME ?? process.env.ALEGO_BUNDLED_PRIMARY_RUNTIME)"
+      disabled: !!js "!(process.env.ALEGO_PRIMARY_RUNTIME ?? process.env.ALEGO_BUNDLED_PRIMARY_RUNTIME) && !process.env.ALEGO_BUNDLED_OFFICE_CLI"
       config:
-        assetRoot: !!js "process.getBuiltinModule('node:path').resolve(process.env.ALEGO_PRIMARY_RUNTIME ?? process.env.ALEGO_BUNDLED_PRIMARY_RUNTIME ?? '', '..', 'office-skills')"
-        node: !!js "process.getBuiltinModule('node:path').resolve(process.env.ALEGO_PRIMARY_RUNTIME ?? process.env.ALEGO_BUNDLED_PRIMARY_RUNTIME ?? '', 'dependencies', 'node', 'bin', process.platform === 'win32' ? 'node.exe' : 'node')"
+        assetRoot: !!js "process.env.ALEGO_BUNDLED_OFFICE_SKILLS ?? process.getBuiltinModule('node:path').resolve(process.env.ALEGO_PRIMARY_RUNTIME ?? process.env.ALEGO_BUNDLED_PRIMARY_RUNTIME ?? '', '..', 'office-skills')"
+        cli: !!js "process.env.ALEGO_BUNDLED_OFFICE_CLI === '' ? false : process.env.ALEGO_BUNDLED_OFFICE_CLI"
+        node: !!js "process.env.ALEGO_BUNDLED_OFFICE_NODE ?? process.getBuiltinModule('node:path').resolve(process.env.ALEGO_PRIMARY_RUNTIME ?? process.env.ALEGO_BUNDLED_PRIMARY_RUNTIME ?? '', 'dependencies', 'node', 'bin', process.platform === 'win32' ? 'node.exe' : 'node')"

@@ -18,14 +18,20 @@
   en: 949dec3bb987644a
   zh: 0ed333a6067465dc
 /singula-ai-alego-typert-generator/use-this-package/publishing-typert-artifacts-from-a-package:
-  en: e4ad83b9240fc132
-  zh: a704d5bc1c7d114d
+  en: 47e9ac497a4cfb92
+  zh: a39a08458cf47f3c
+/singula-ai-alego-typert-generator/use-this-package/ordinary-remote-metadata:
+  en: 6f69c6c85d835ad8
+  zh: 78d58b3a24e1503b
 /singula-ai-alego-typert-generator/use-this-package/analyzing-a-workspace-statically:
-  en: 88f4e7fc9d4c7701
-  zh: cecd35ff4f35bfd2
+  en: 8227097859169cdf
+  zh: 249790ed62e8558a
 /singula-ai-alego-typert-generator/use-this-package/running-generation-inside-a-tsdown-build:
-  en: cc3f7d23739380f6
-  zh: 864d15088f581271
+  en: ebcb4850a5620d93
+  zh: 55f6f54265830f28
+/singula-ai-alego-typert-generator/use-this-package/generating-without-a-bundler:
+  en: e1afb26aea87fe46
+  zh: ed3cdfde78d87825
 /singula-ai-alego-typert-generator/understand-the-implementation:
   en: b90762df7a978580
   zh: 123ab225a2b5df2a
@@ -33,8 +39,8 @@
   en: 0a515742229bf442
   zh: dfd2c5eddd943af9
 /singula-ai-alego-typert-generator/understand-the-implementation/source-map:
-  en: 783dec50106bcabb
-  zh: 2627f55ce69a1a2c
+  en: 89d9205446b496a6
+  zh: d7bcae876c1905ec
 /singula-ai-alego-typert-generator/understand-the-implementation/analysis-and-faces:
   en: 26ecaeea15ca814c
   zh: 3a891635b9e2e07f
@@ -54,8 +60,8 @@
   en: 09310605f7d136d4
   zh: 3535ec7eba83b90f
 /singula-ai-alego-typert-generator/known-limitations-and-deferred-work:
-  en: f3b1002133fe8736
-  zh: e8d5fecd10db5e3a
+  en: fdc6707a82ceb4c3
+  zh: 91fb8cab9fcf56bc
 /singula-ai-alego-typert-generator/known-limitations-and-deferred-work/dev-note:
-  en: cc7e47f271475e4c
-  zh: 8426eb322816bd28
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

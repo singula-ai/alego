@@ -1,0 +1,46 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/session/tool-working-directory/README.md
+/:
+  en: 98cfd91158449dab
+  zh: 5235a85797dc16a6
+/singula-ai-alego-tool-working-directory:
+  en: e86116bc293ce8ae
+  zh: 443adb6ff30f0f7f
+/singula-ai-alego-tool-working-directory/summary:
+  en: 9a02398f19196e04
+  zh: 490c400f5c7c23cd
+/singula-ai-alego-tool-working-directory/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 87d7d2dbd7777429
+/singula-ai-alego-tool-working-directory/use-this-package:
+  en: bb750522dbdb3fef
+  zh: 85586a5c2137afa9
+/singula-ai-alego-tool-working-directory/understand-the-implementation:
+  en: f361fe510916fce8
+  zh: a2127f768ef9ac95
+/singula-ai-alego-tool-working-directory/further-exploration:
+  en: 1d99e725797a8a80
+  zh: 35f10bb795bf8a66
+/singula-ai-alego-tool-working-directory/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-tool-working-directory/model-experience/tool-schema-and-result:
+  en: bc924247b1806144
+  zh: af4cc374d7d16917
+/singula-ai-alego-tool-working-directory/model-experience/tool-schema-and-result/what-the-model-sees:
+  en: e0f7be4a68acc12d
+  zh: 4beb9c9e065fbcf5
+/singula-ai-alego-tool-working-directory/model-experience/tool-schema-and-result/token-effect:
+  en: a8379dea8db4e2a2
+  zh: 5b8c86352564ba68
+/singula-ai-alego-tool-working-directory/model-experience/tool-schema-and-result/kv-cache-effect:
+  en: ae50eb17ba3b6545
+  zh: 6f5eed7bb30209e4
+/singula-ai-alego-tool-working-directory/known-limitations-and-deferred-work:
+  en: 58cd03e27224e8b8
+  zh: 4bd8752b74d1b05f
+/singula-ai-alego-tool-working-directory/known-limitations-and-deferred-work/dev-note:
+  en: e67f633dc6fe7773
+  zh: a4b126f9a4eaca6f

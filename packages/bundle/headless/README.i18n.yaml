@@ -18,8 +18,11 @@
   en: 4447012f4c84100d
   zh: faf579ae9f04c096
 /singula-ai-alego-headless/use-this-package/running-a-one-shot-task:
-  en: 50f5c6fc01e300db
-  zh: fc553f1bedbba730
+  en: 32d5935c8e19a353
+  zh: adbe80fb88918440
+/singula-ai-alego-headless/use-this-package/credentials:
+  en: ae545622c3aa2708
+  zh: 1acee0868abf4192
 /singula-ai-alego-headless/use-this-package/choosing-the-session-identity:
   en: dbaa2fac63910a4c
   zh: 4fd5c17815ca444b
@@ -36,20 +39,17 @@
   en: be1b73a6d0ee3902
   zh: bdba099685d68b27
 /singula-ai-alego-headless/understand-the-implementation/run-flow:
-  en: d92fc1be75cab367
-  zh: 247784b06ec530b4
+  en: bf13674339faad5f
+  zh: fad7a3b42e6c43d0
 /singula-ai-alego-headless/understand-the-implementation/patch-surface-over-base:
   en: a23157b7b6556d41
   zh: 69a9d7ddabe1c44e
 /singula-ai-alego-headless/understand-the-implementation/exit-mapping:
-  en: d5bcd77efa375c44
-  zh: 92b88f184d776907
+  en: bdd7a65c8130e8bd
+  zh: 0d900970002ddd4a
 /singula-ai-alego-headless/understand-the-implementation/source-map:
-  en: f240d0da8d98f73f
-  zh: 590daa55db8b237f
-/singula-ai-alego-headless/understand-the-implementation/invariant-ownership:
-  en: 329f170dec4b2279
-  zh: bb40f8beda5b3a1c
+  en: 2ad29a277cba02a9
+  zh: 3b2b8523fcdf5481
 /singula-ai-alego-headless/further-exploration:
   en: 079d9ed583630c0e
   zh: f893c5dd1d1205b4
@@ -60,8 +60,8 @@
   en: 0b0f74b412c7c6d8
   zh: 6e8f918d0c4bf342
 /singula-ai-alego-headless/known-limitations-and-deferred-work:
-  en: 5052564f52637f0b
-  zh: c53a95dc9a2cf25c
+  en: 4c34fa900715f116
+  zh: f075990704058683
 /singula-ai-alego-headless/known-limitations-and-deferred-work/dev-note:
   en: e67f633dc6fe7773
   zh: 3bb0c20c93f16f98

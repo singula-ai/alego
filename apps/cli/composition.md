@@ -30,6 +30,8 @@ flowchart LR
   cfg --> plugin_alego_base_typert_loader
   plugin_alego_base_typert_gateway["typert-gateway<br/>@singula-ai/alego-api-gateway"]
   cfg --> plugin_alego_base_typert_gateway
+  plugin_alego_base_remote_access["remote-access<br/>@singula-ai/alego-api-remote-access"]
+  cfg --> plugin_alego_base_remote_access
   plugin_alego_base_session_title["session-title<br/>@singula-ai/alego-session-title"]
   cfg --> plugin_alego_base_session_title
   plugin_alego_base_session_title_llm["session-title-llm<br/>@singula-ai/alego-session-title-first-prompt-llm"]
@@ -64,6 +66,10 @@ flowchart LR
   cfg --> plugin_alego_base_attachment_local
   plugin_alego_base_session_query_sqlite["session-query-sqlite<br/>@singula-ai/alego-session-query-sqlite"]
   cfg --> plugin_alego_base_session_query_sqlite
+  plugin_alego_base_working_directory["working-directory<br/>@singula-ai/alego-working-directory"]
+  cfg --> plugin_alego_base_working_directory
+  plugin_alego_base_tool_working_directory["tool-working-directory<br/>@singula-ai/alego-tool-working-directory"]
+  cfg --> plugin_alego_base_tool_working_directory
   plugin_alego_base_session_projection["session-projection<br/>@singula-ai/alego-session-projection"]
   cfg --> plugin_alego_base_session_projection
   plugin_alego_base_storage["storage<br/>@singula-ai/alego-storage"]
@@ -112,8 +118,6 @@ flowchart LR
   cfg --> plugin_alego_base_skill
   plugin_alego_base_skill_filesystem["skill-filesystem<br/>@singula-ai/alego-skill-filesystem"]
   cfg --> plugin_alego_base_skill_filesystem
-  plugin_alego_base_skill_badge["skill-badge<br/>@singula-ai/alego-skill-badge"]
-  cfg --> plugin_alego_base_skill_badge
   plugin_alego_base_tool_skill["tool-skill<br/>@singula-ai/alego-tool-skill"]
   cfg --> plugin_alego_base_tool_skill
   plugin_alego_base_commands["commands<br/>@singula-ai/alego-commands"]
@@ -170,14 +174,14 @@ flowchart LR
   cfg --> plugin_alego_base_tool_todo
   plugin_alego_base_tool_goal["tool-goal<br/>@singula-ai/alego-tool-goal"]
   cfg --> plugin_alego_base_tool_goal
-  plugin_alego_base_tool_ralph["tool-ralph<br/>@singula-ai/alego-tool-ralph"]
-  cfg --> plugin_alego_base_tool_ralph
   plugin_alego_base_repeat_tool_reminder["repeat-tool-reminder<br/>@singula-ai/alego-repeat-tool-reminder"]
   cfg --> plugin_alego_base_repeat_tool_reminder
   plugin_alego_base_web["web<br/>@singula-ai/alego-web"]
   cfg --> plugin_alego_base_web
   plugin_alego_base_web_search_deepseek["web-search-deepseek<br/>@singula-ai/alego-web-search-deepseek"]
   cfg --> plugin_alego_base_web_search_deepseek
+  plugin_alego_base_web_deepseek_api["web-deepseek-api<br/>@singula-ai/alego-web-deepseek-api"]
+  cfg --> plugin_alego_base_web_deepseek_api
   plugin_alego_base_web_fetch_http["web-fetch-http<br/>@singula-ai/alego-web-fetch-http"]
   cfg --> plugin_alego_base_web_fetch_http
   plugin_alego_base_tool_web["tool-web<br/>@singula-ai/alego-tool-web"]
@@ -211,6 +215,7 @@ flowchart LR
 | `typert` | `@singula-ai/alego-typert-registry` |
 | `typert-loader` | `@singula-ai/alego-typert-loader` |
 | `typert-gateway` | `@singula-ai/alego-api-gateway` |
+| `remote-access` | `@singula-ai/alego-api-remote-access` |
 | `session-title` | `@singula-ai/alego-session-title` |
 | `session-title-llm` | `@singula-ai/alego-session-title-first-prompt-llm` |
 | `user-questions` | `@singula-ai/alego-user-questions` |
@@ -228,6 +233,8 @@ flowchart LR
 | `session-persistence-jsonl` | `@singula-ai/alego-session-persistence-jsonl` |
 | `attachment-local` | `@singula-ai/alego-attachment-local` |
 | `session-query-sqlite` | `@singula-ai/alego-session-query-sqlite` |
+| `working-directory` | `@singula-ai/alego-working-directory` |
+| `tool-working-directory` | `@singula-ai/alego-tool-working-directory` |
 | `session-projection` | `@singula-ai/alego-session-projection` |
 | `storage` | `@singula-ai/alego-storage` |
 | `storage-json` | `@singula-ai/alego-storage-json` |
@@ -252,7 +259,6 @@ flowchart LR
 | `agent-instructions` | `@singula-ai/alego-agent-instructions` |
 | `skill` | `@singula-ai/alego-skill` |
 | `skill-filesystem` | `@singula-ai/alego-skill-filesystem` |
-| `skill-badge` | `@singula-ai/alego-skill-badge` |
 | `tool-skill` | `@singula-ai/alego-tool-skill` |
 | `commands` | `@singula-ai/alego-commands` |
 | `command-feedback` | `@singula-ai/alego-command-feedback` |
@@ -281,10 +287,10 @@ flowchart LR
 | `image-offload` | `@singula-ai/alego-compaction-image-offload` |
 | `tool-todo` | `@singula-ai/alego-tool-todo` |
 | `tool-goal` | `@singula-ai/alego-tool-goal` |
-| `tool-ralph` | `@singula-ai/alego-tool-ralph` |
 | `repeat-tool-reminder` | `@singula-ai/alego-repeat-tool-reminder` |
 | `web` | `@singula-ai/alego-web` |
 | `web-search-deepseek` | `@singula-ai/alego-web-search-deepseek` |
+| `web-deepseek-api` | `@singula-ai/alego-web-deepseek-api` |
 | `web-fetch-http` | `@singula-ai/alego-web-fetch-http` |
 | `tool-web` | `@singula-ai/alego-tool-web` |
 | `mcp-resources` | `@singula-ai/alego-mcp-resources` |

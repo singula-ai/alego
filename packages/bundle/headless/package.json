@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-headless",
   "description": "The alego one-shot bundle: a direct core Agent/Session runner over alego-base with no Host, HTTP, or browser layer",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -54,7 +54,8 @@
     "@singula-ai/alego-llm": "workspace:*",
     "@singula-ai/alego-session": "workspace:*",
     "@singula-ai/alego-session-query": "workspace:*",
-    "@singula-ai/alego-fs": "workspace:*"
+    "@singula-ai/alego-fs": "workspace:*",
+    "@singula-ai/alego-subagent": "workspace:*"
   },
   "devDependencies": {
     "@singula-ai/cordis": "workspace:~",
@@ -66,6 +67,12 @@
     "@singula-ai/alego-llm": "workspace:*",
     "@singula-ai/alego-session": "workspace:*",
     "@singula-ai/alego-session-query": "workspace:*",
-    "@singula-ai/alego-fs": "workspace:*"
+    "@singula-ai/alego-fs": "workspace:*",
+    "@singula-ai/alego-subagent": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "@singula-ai/alego-subagent": {
+      "optional": true
+    }
   }
 }

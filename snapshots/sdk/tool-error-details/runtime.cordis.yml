@@ -1,3 +1,7 @@
+- id: tools
+  config:
+    mode: native
+
 - insert:
     - id: ptc-runtime
       name: '@singula-ai/alego-ptc-runtime-node'

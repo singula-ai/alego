@@ -1,4 +1,5 @@
 import type { SessionEvent } from '@singula-ai/alego-session/types'
+import { PartialArguments } from '@singula-ai/alego-util-values'
 import { describe, expect, it } from 'vitest'
 import type { StartedToolCall, ToolCallBlock } from '../src/client/contract/snapshot.ts'
 import {
@@ -20,7 +21,7 @@ const settle = (seq: number, parentCallId: string, subCallId: string): SessionEv
   })
 
 const root = (callId: string): StartedToolCall => ({
-  phase: 'start' as const, callId, name: 'run_code', argsRaw: '{}', turn: 1, step: 1,
+  phase: 'start' as const, args: PartialArguments.fromText('{}'), callId, name: 'run_code', argsRaw: '{}', turn: 1, step: 1,
   time: 1_700_000_000_000, subCalls: [],
 })
 

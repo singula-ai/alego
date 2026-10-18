@@ -9,17 +9,20 @@
   en: 9f349a38ef09c8bb
   zh: ae4e16a516ad02df
 /singula-ai-alego-client-ui-model-selection/summary:
-  en: 2fb361ef704528fb
-  zh: 2537d2afb4d2cb45
+  en: 14a351e14b69ca33
+  zh: 2f2686efe4832266
 /singula-ai-alego-client-ui-model-selection/table-of-contents:
   en: d152484eb41ac6b4
   zh: 09388d293f9be9cb
 /singula-ai-alego-client-ui-model-selection/use-this-package:
-  en: e5a1df3a4dfe5041
-  zh: 6269e73026b32a33
+  en: ef50e68e7493d0a9
+  zh: 3b1faea17b606173
 /singula-ai-alego-client-ui-model-selection/use-this-package/model-and-effort:
-  en: e38d0195677a7b69
-  zh: 4eea8a9b1664afd9
+  en: 3bf6b7648c3ab489
+  zh: af18778780a656ca
+/singula-ai-alego-client-ui-model-selection/use-this-package/model-label-extensions:
+  en: bc47871cf8b61451
+  zh: 17d21da46604f071
 /singula-ai-alego-client-ui-model-selection/use-this-package/unroutable-sessions:
   en: 7f20428c747ff052
   zh: 975e6de728e02fa0
@@ -27,8 +30,8 @@
   en: d0a750f1b4062123
   zh: 2d45244cd5f12348
 /singula-ai-alego-client-ui-model-selection/understand-the-implementation:
-  en: f5cca00bdcdb07a9
-  zh: 784bb647f42d67fd
+  en: 774e79278c7fd7cf
+  zh: d64aec419c3e730d
 /singula-ai-alego-client-ui-model-selection/further-exploration:
   en: 649aeac237a8d0d1
   zh: 58f308377b760a5b
@@ -42,5 +45,5 @@
   en: 75b37954ceacd92a
   zh: a49d0361486e35c4
 /singula-ai-alego-client-ui-model-selection/known-limitations-and-deferred-work/dev-note:
-  en: 83bfc3dae3365b49
-  zh: f7dc4d0654ec83e1
+  en: e67f633dc6fe7773
+  zh: 3bb0c20c93f16f98

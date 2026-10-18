@@ -146,20 +146,57 @@ describe.skipIf(mode === 'record')('web e2e: workspace shortcuts', () => {
     await workspaceRow.getByText(workspaceLabel, { exact: true }).hover()
     await details.waitFor()
     await workspaceRow.getByRole('button', { name: `New session in ${workspaceLabel}`, exact: true }).hover()
-    await page.getByRole('tooltip').filter({ hasText: 'New Session' }).waitFor()
-    await expect.poll(() => details.count()).toBe(0)
+    const newSessionTooltip = page.getByRole('tooltip').filter({ hasText: 'New Session' })
+    await newSessionTooltip.waitFor()
+    expect(await details.isVisible()).toBe(true)
+    expect(await newSessionTooltip.evaluate(element => Number(getComputedStyle(element).zIndex)))
+      .toBeGreaterThan(await details.evaluate(element => Number(getComputedStyle(element).zIndex)))
     await workspaceRow.getByText(workspaceLabel, { exact: true }).hover()
     await details.waitFor()
     await page.mouse.move(700, 100)
 
+    const previousSessionIds = [...workspace.sessionIds]
     await bind('New Session')
+    const newSessionCreated = page.waitForResponse('**/api/session/create')
     await page.keyboard.press('Meta+Shift+Comma')
+    const newSessionResponse = await newSessionCreated
+    const newSessionBody = await newSessionResponse.json() as { result: { ok: boolean; value: { sessionId: string } } }
+    expect(newSessionBody.result.ok).toBe(true)
+    const newSessionId = newSessionBody.result.value.sessionId
+    expect(previousSessionIds).not.toContain(newSessionId)
+    await page.locator(`[data-conversation-session="${newSessionId}"]`).waitFor()
     await expect.poll(() => page.getByRole('treeitem', { selected: true }).textContent()).toContain('New Session')
-    expect(workspace.sessionIds.length).toBe(1)
+    await expect.poll(() => workspace.sessionIds).toHaveLength(previousSessionIds.length + 1)
+    expect(workspace.sessionIds).toEqual(expect.arrayContaining([...previousSessionIds, newSessionId]))
 
     await bind('Open locally')
     await page.keyboard.press('Meta+Shift+Comma')
     await expect.poll(() => launched).toEqual([{ app: 'vscode', path: workspace.path }])
+
+    await page.keyboard.press('Meta+Alt+P')
+    const files = page.locator('[data-files-state="tree"]')
+    await files.locator('[data-files-row="empty"]').waitFor()
+    const opener = files.locator('[data-open-target="directory"]')
+    await opener.getByRole('button', { name: 'Open in VS Code', exact: true }).click()
+    await expect.poll(() => launched).toEqual([
+      { app: 'vscode', path: workspace.path }, { app: 'vscode', path: workspace.path },
+    ])
+    await opener.getByRole('button', { name: 'More ways to open', exact: true }).click()
+    await page.getByRole('menuitem', { name: 'Finder', exact: true }).click()
+    await expect.poll(() => launched.at(-1)).toEqual({ app: 'finder', path: workspace.path })
+    await opener.getByRole('button', { name: 'Open in Finder', exact: true }).waitFor()
+    await page.keyboard.press('Meta+Shift+Comma')
+    await expect.poll(() => launched).toEqual([
+      { app: 'vscode', path: workspace.path }, { app: 'vscode', path: workspace.path },
+      { app: 'finder', path: workspace.path }, { app: 'finder', path: workspace.path },
+    ])
+    await expect.poll(() => opener.getAttribute('data-state')).toBe('idle')
+    await compareOrRefreshGolden(join(root, 'files-open.expected.md'),
+      await captureStableAria(page, '[data-files-state="tree"]', scaffold.workspaceCwd), mode)
+    await opener.getByRole('button', { name: 'More ways to open', exact: true }).click()
+    await page.getByRole('menuitem', { name: 'Finder (default)', exact: true }).waitFor()
+    await page.keyboard.press('Escape')
+    await page.getByRole('menu').waitFor({ state: 'hidden' })
     expect(console.pageErrors).toEqual([])
   })
 })
@@ -249,6 +286,29 @@ it.skipIf(mode === 'record').each([
     if (await group.getAttribute('aria-expanded') !== 'true') await group.click()
     await page.getByRole('treeitem').nth(1).click()
     await page.getByText('DONE', { exact: true }).waitFor()
+    // Synthetic input observes browser ownership without navigating the fixture away.
+    expect(await page.evaluate((primary) => {
+      return [{ key: 'R', code: 'KeyR', shiftKey: true }, { key: ',', code: 'Comma', shiftKey: false }].map((key) => {
+        const event = new KeyboardEvent('keydown', { ...key,
+          metaKey: primary === 'Meta', ctrlKey: primary === 'Control', bubbles: true, cancelable: true })
+        document.activeElement!.dispatchEvent(event)
+        return event.defaultPrevented
+      })
+    }, primary)).toEqual([false, false])
+    expect(await page.getByRole('dialog').count()).toBe(0)
+    const rename = page.getByRole('dialog', { name: 'Rename session', exact: true })
+    expect(await rename.count()).toBe(0)
+    await page.keyboard.press(`${primary}+Alt+G`)
+    await rename.getByLabel('Session name').waitFor()
+    await page.keyboard.press('Escape')
+    await rename.waitFor({ state: 'hidden' })
+    await page.keyboard.press(`${primary}+Alt+Comma`)
+    const settings = page.getByRole('dialog', { name: 'Settings', exact: true })
+    await settings.waitFor()
+    await page.keyboard.press(`${primary}+Alt+G`)
+    expect(await rename.count()).toBe(0)
+    await page.keyboard.press('Escape')
+    await settings.waitFor({ state: 'hidden' })
     await page.keyboard.press(`${primary}+Slash`)
     const reference = page.getByRole('dialog', { name: 'Keyboard shortcuts', exact: true })
     await reference.waitFor()
@@ -312,6 +372,8 @@ it.skipIf(mode === 'record').each([
     await page.getByText('DONE', { exact: true }).waitFor({ state: 'hidden' })
     await expect.poll(() => page.getByRole('treeitem', { selected: true }).count()).toBe(0)
     await page.locator('[data-composer-input]').first().waitFor()
+    await page.keyboard.press(`${primary}+Alt+G`)
+    expect(await rename.count()).toBe(0)
     expect(console.pageErrors).toEqual([])
   } finally {
     await browser?.close()

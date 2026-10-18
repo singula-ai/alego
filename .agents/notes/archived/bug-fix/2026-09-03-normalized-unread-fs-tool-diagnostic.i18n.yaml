@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/bug-fix/2026-09-03-normalized-unread-fs-tool-diagnostic.md
+2026-09-03-normalized-unread-fs-tool-diagnostic.md: 98c15234a60f3c711cd7be8ac46f1b189210b2d5
+2026-09-03-normalized-unread-fs-tool-diagnostic.zh.md: 73735bf0935c0751bb9df59b78613754824f80c8

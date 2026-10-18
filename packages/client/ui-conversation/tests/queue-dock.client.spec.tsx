@@ -17,13 +17,15 @@ import type { SessionId } from '@singula-ai/alego-session/types'
 import type { SnapshotSelectorHook } from '@singula-ai/alego-client-ui-slots'
 import { createSnapshotStore } from '@singula-ai/alego-client-store'
 import {
-  bindSnapshotSelector, conversationSnapshot, makeTranslate,
+  allowAllAccess, bindSnapshotSelector, conversationSnapshot, makeTranslate,
 } from '@singula-ai/alego-client-test-runtime'
 import type { SessionStatusSnapshot } from '@singula-ai/alego-client-ui-session/client'
 import { zh as commonZh } from '@singula-ai/alego-client-locale/src/locales/zh.ts'
 import type { InputState } from '../src/client/contract/input.ts'
 import { zh } from '../src/client/locales.ts'
 import { QueueDock, queueDockEntry, type QueueDockInjected, type QueueDockProps } from '../src/client/queue/QueueDock.tsx'
+import type { UserTextInput } from '../src/client/index.ts'
+import { createUserTextFixture } from './user-text-component-fixture.client.tsx'
 
 // Every session-scope fixture carries the resource hook the resources plugin merges into GlobalStandardProps.
 const useResource = (() => ({ status: 'none' as const, value: undefined, failure: undefined })) as GlobalStandardProps['useResource']
@@ -98,8 +100,14 @@ const t: QueueDockProps['t'] = makeTranslate(zh, commonZh)
 const usePanelInfo: GlobalStandardProps['usePanelInfo'] = selector => selector({ activePanelId: null })
 
 function kitFor(snapshot: SessionSnapshot, injected: Partial<QueueDockInjected> = {}) {
+  const renderText = createUserTextFixture()
+  const renderFactorySlot: QueueDockProps['renderFactorySlot'] = (name, owner) => {
+    if (name !== 'conversation.user.text') throw new Error(`Unexpected queue Factory: ${name}`)
+    return renderText(owner as UserTextInput)
+  }
   return {
     sessionId: SID,
+    renderFactorySlot,
     t,
     usePanelInfo,
     useSessions: (() => { throw new Error('unused') }) as SnapshotSelectorHook<SessionListState>,
@@ -109,6 +117,7 @@ function kitFor(snapshot: SessionSnapshot, injected: Partial<QueueDockInjected> 
       createSnapshotStore<SessionStatusSnapshot>(new Map()),
     ),
     useWorkspaces: (() => { throw new Error('unused') }) as never,
+    ...allowAllAccess,
     useProjection: (() => undefined) as never,
     useConversation: bindSnapshotSelector(createSnapshotStore(conversationSnapshot())),
     useChat: (() => { throw new Error('unused') }) as QueueDockProps['useChat'],
@@ -328,16 +337,21 @@ describe('QueueDock', () => {
     const header = view.getByRole('button', { name: '2 条排队消息' })
     expect(header.getAttribute('aria-expanded')).toBe('false')
     expect(document.getElementById(header.getAttribute('aria-controls')!)).toBeTruthy()
+    // Collapsed exposes the count header only: the row actions are not rendered.
+    expect(view.getAllByRole('button')).toEqual([header])
     expect(view.queryByText('one')).toBeNull()
     expect(view.queryByText('two')).toBeNull()
 
     fireEvent.click(header)
     expect(header.getAttribute('aria-expanded')).toBe('true')
+    // Expanded renders one Edit/Remove/Steer group per row, plus the header.
+    expect(view.getAllByRole('button')).toHaveLength(1 + 2 * 3)
     expect(view.getByText('one')).toBeTruthy()
     expect(view.getByText('two')).toBeTruthy()
 
     fireEvent.click(header)
     expect(header.getAttribute('aria-expanded')).toBe('false')
+    expect(view.getAllByRole('button')).toEqual([header])
     expect(view.queryByText('one')).toBeNull()
   })
 
@@ -429,12 +443,17 @@ describe('QueueDock', () => {
     expect(view.queryByText('three')).toBeNull()
   })
 
-  it('flattens and caps previews at 200 code points while preserving complete editable text', () => {
-    const text = `  before   ${'🙂'.repeat(201)}  after`
+  it('displays complete previews with compressed whitespace and CSS ellipsis while preserving editable text', () => {
+    const text = `  before \n  ${'🙂'.repeat(201)}  after`
     const snap = snapshotWith([row('long-preview', text)])
     const source = liveSession(snap)
-    const view = render(<QueueDock {...kitFor(snap)} useSession={source.useSession} useProjection={source.useProjection} />)
-    expect(view.getByText(`before ${'🙂'.repeat(193)}…`)).toBeTruthy()
+    const props = kitFor(snap)
+    const renderFactory = vi.spyOn(props, 'renderFactorySlot')
+    const view = render(<QueueDock {...props} useSession={source.useSession} useProjection={source.useProjection} />)
+    expect(renderFactory).toHaveBeenCalledWith('conversation.user.text', {
+      text, facts: { collapseWhitespace: true, trimWhitespace: true }, interactive: false, ellipsis: true,
+    })
+    expect(view.getByRole('listitem').textContent).toBe(`before ${'🙂'.repeat(201)} after`)
     fireEvent.click(view.getByLabelText('编辑排队消息'))
     expect((view.getByRole('textbox') as HTMLTextAreaElement).value).toBe(text)
   })

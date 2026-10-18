@@ -2,9 +2,10 @@
 
 import { performance } from 'node:perf_hooks'
 import { Context } from '@singula-ai/cordis'
+import { provideWorkingDirectoryFixture } from '@singula-ai/alego-agent-loop-testkit'
 import SessionStore, { SESSION_FORMAT_VERSION, SessionId, SessionLogOffset, SessionSeq } from '@singula-ai/alego-session'
 import type { SessionEvent } from '@singula-ai/alego-session'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import SessionProjectionRegistry from '@singula-ai/alego-session-projection'
 import SessionQueryEngine from '@singula-ai/alego-session-query'
 import SubagentRuntime, { SUBAGENT_DESCRIPTOR_VERSION } from '@singula-ai/alego-subagent'
@@ -74,6 +75,7 @@ async function run(root: string, mode: string): Promise<CatalogReport | { seeded
     await ctx.plugin(SessionProjectionRegistry)
     await ctx.plugin(JsonlSessionPersistence, { root, compression: 'zstd' })
     await ctx.plugin(CatalogQuery)
+    provideWorkingDirectoryFixture(ctx, '/bench')
     await ctx.plugin(SubagentRuntime)
     if (mode === 'seed') {
       await seed(ctx)

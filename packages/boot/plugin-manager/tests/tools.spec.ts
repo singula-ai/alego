@@ -1,15 +1,17 @@
+import { setSandboxMode } from '@singula-ai/alego-sandbox-policy'
 /** Agent controls use the same manager methods as the Web and bound inventory reads. */
 import { Context } from '@singula-ai/cordis'
 import SystemPrompt from '@singula-ai/alego-system-prompt'
 import ToolRuntime from '@singula-ai/alego-tools'
 import { ToolCallId } from '@singula-ai/alego-llm'
 import type { Agent } from '@singula-ai/alego-agent'
-import SandboxPolicy, { setSandboxMode } from '@singula-ai/alego-sandbox-policy'
+import SandboxPolicy from '@singula-ai/alego-sandbox-policy'
 import { Session, SessionId, SESSION_FORMAT_VERSION } from '@singula-ai/alego-session'
 import SessionProjections from '@singula-ai/alego-session-projection'
 import ApprovalService, { type ApprovalOutcome } from '@singula-ai/alego-user-approval'
 import { expect, it, onTestFinished, vi } from 'vitest'
 import type PluginManager from '../src/index.ts'
+import type { BundleInfo } from '../src/types.ts'
 import * as tool from '../src/tools.ts'
 
 function resultText(result: Awaited<ReturnType<ToolRuntime['execute']>>): string {
@@ -71,6 +73,40 @@ it('preserves selected bundle load errors in the agent list result', async () =>
           },
           "name": "bundle",
           "overrides": [],
+          "rows": [],
+        },
+      ],
+      "nextOffset": null,
+      "total": 1,
+    }
+  `)
+})
+
+it('exposes an absent Official bundle installation target without display metadata', async () => {
+  const { manager, call } = await fixture()
+  const offered: BundleInfo = {
+    name: '@singula-ai/alego-subagent-codex', official: true, availability: 'missing',
+    installed: false, enabled: false, optional: false, removable: false, rows: [], overrides: [],
+    installTarget: { spec: '@singula-ai/alego-subagent-codex@1.2.3', version: '1.2.3' },
+    meta: { title: 'Codex subagent' },
+  }
+  manager.listBundles.mockResolvedValue([offered])
+  expect(JSON.parse(resultText(await call({ action: 'list_bundles' })))).toMatchInlineSnapshot(`
+    {
+      "entries": [
+        {
+          "availability": "missing",
+          "enabled": false,
+          "installTarget": {
+            "spec": "@singula-ai/alego-subagent-codex@1.2.3",
+            "version": "1.2.3",
+          },
+          "installed": false,
+          "name": "@singula-ai/alego-subagent-codex",
+          "official": true,
+          "optional": false,
+          "overrides": [],
+          "removable": false,
           "rows": [],
         },
       ],
@@ -195,10 +231,10 @@ it('keeps UI translation metadata out of model-facing plugin and bundle lists', 
     entries: [{ entryId: 'include:plugin', enabled: true }], total: 1, nextOffset: null,
   })
   manager.listBundles.mockImplementationOnce(async () => [{
-    name: 'bundle', enabled: true, meta, rows: [{ rowId: 'plugin', moduleName: 'plugin', meta }],
+    name: 'bundle', source: 'bundle@^1.0.0', enabled: true, meta, rows: [{ rowId: 'plugin', moduleName: 'plugin', meta }],
   }])
   expect(JSON.parse(resultText(await call({ action: 'list_bundles' })))).toEqual({
-    entries: [{ name: 'bundle', enabled: true, rows: [{ rowId: 'plugin', moduleName: 'plugin' }] }], total: 1, nextOffset: null,
+    entries: [{ name: 'bundle', source: 'bundle@^1.0.0', enabled: true, rows: [{ rowId: 'plugin', moduleName: 'plugin' }] }], total: 1, nextOffset: null,
   })
 })
 
@@ -245,4 +281,26 @@ it('presents reads and changes distinctly and disposes its registration', async 
   expect(definition.presentCall?.({ action: 'remove_bundle', target: 'bundle' })).toMatchObject({ kind: 'other' })
   await fiber.dispose()
   expect(ctx.tools.get('plugin_manager')).toBeUndefined()
+})
+
+it('tells the agent the next step for each change outcome it can act on', async () => {
+  const { manager, call } = await fixture()
+  const outcome = async (result: object): Promise<unknown> => {
+    manager.setBundleEnabled.mockResolvedValueOnce(result as never)
+    return (JSON.parse(resultText(await call({ action: 'set_bundle', target: 'bundle', enabled: true }))) as { nextStep?: string }).nextStep
+  }
+  expect(await outcome({ changed: true, application: 'applied' })).toBeUndefined()
+  expect(await outcome({ changed: false, application: 'cancelled' })).toContain('nothing changed')
+  expect(await outcome({ changed: true, application: 'overridden' })).toContain('higher-priority layer')
+  expect(await outcome({ changed: true, application: 'restart-required', restartReason: 'host-module' }))
+    .toBe('Tell the user to restart ALEGO to apply this change: the change reaches modules ALEGO itself loaded.')
+  expect(await outcome({ changed: true, application: 'restart-required' })).toBe('Tell the user to restart ALEGO to apply this change.')
+  expect(await outcome({ changed: false, application: 'failed', packageResult: { kind: 'build-blocked' } })).toContain('approvedBuilds')
+  // A refusal code is more specific than the package manager's failure kind.
+  expect(await outcome({ changed: false, application: 'failed', packageResult: { kind: 'network' }, error: { code: 'stale-approval' } }))
+    .toContain('without approvedBuilds')
+  // A failure kind without its own step falls back to the refusal code.
+  expect(await outcome({ changed: false, application: 'failed', packageResult: { kind: 'unknown' }, error: { code: 'operation-error' } }))
+    .toContain('Report the diagnostic')
+  expect(await outcome({ changed: false, application: 'failed' })).toContain('Report the diagnostic')
 })

@@ -9,8 +9,8 @@
 - text: Reply with a one-sentence description of event sourcing, then stop. {{clock}}
 - button "Copy"
 - paragraph: partial
-- status: Building...
-- text: Building for {{duration}}...
+- status: Deep diving
+- text: Building for {{duration}} ···
 - list:
   - listitem:
     - text: Edited queue item

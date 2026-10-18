@@ -1,0 +1,19 @@
+# Bilingual-pair consistency record for 2026-10-14-built-in-plugin-feature-previews.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-10-14-built-in-plugin-feature-previews.md
+/agent-note-built-in-plugin-feature-previews:
+  en: 78593d1fd12920a9
+  zh: ed5da834a84f9098
+/agent-note-built-in-plugin-feature-previews/problem:
+  en: 95a1db11af27068c
+  zh: 8b5996f0f1e133ac
+/agent-note-built-in-plugin-feature-previews/decision:
+  en: 9a19cf5f11c54c97
+  zh: 6c9e528ef55db237
+/agent-note-built-in-plugin-feature-previews/alternatives-considered:
+  en: 16b951462da8fd97
+  zh: 362cf4a6814b7ab1
+/agent-note-built-in-plugin-feature-previews/consequences:
+  en: a3dbd70080416314
+  zh: 4d802da45085dfb0

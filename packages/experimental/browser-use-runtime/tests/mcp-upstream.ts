@@ -19,6 +19,8 @@ import Sessions, { SessionId } from '@singula-ai/alego-session'
 import Agents from '@singula-ai/alego-agent'
 import AgentLoop from '@singula-ai/alego-agent-loop'
 import Projections from '@singula-ai/alego-session-projection'
+import LocalFileSystem from '@singula-ai/alego-fs-local'
+import WorkingDirectory from '@singula-ai/alego-working-directory'
 import { expect, vi } from 'vitest'
 import type { BrowserMcpConfig } from '../src/mcp.ts'
 
@@ -58,6 +60,7 @@ export async function verifyMcpBrowser(
     const modules = new Map<string, unknown>([
       ['browserUse', BrowserUse], ['prompt', SystemPrompt], ['tools', Tools], ['llm', Llm],
       ['sessions', Sessions], ['agents', Agents], ['loop', AgentLoop], ['projections', Projections], ['browser', provider],
+      ['fs', LocalFileSystem], ['workingDirectory', WorkingDirectory],
     ])
     const configPath = join(root, 'cordis.yml')
     await writeFile(configPath, JSON.stringify([...modules.keys()].map(name => ({ id: name, name, config: name === 'loop' ? { agents: [] } : name === 'browser' ? browserConfig : {} }))))

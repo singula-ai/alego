@@ -1,0 +1,49 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/experimental/translator/README.md
+/:
+  en: f55d62d235c3a1f3
+  zh: 62063508c0ba87ad
+/singula-ai-alego-experimental-translator:
+  en: 1fcd36c0355160df
+  zh: 81a570256889edaf
+/singula-ai-alego-experimental-translator/summary:
+  en: dbfd4283d49cc598
+  zh: 1717743620294ec6
+/singula-ai-alego-experimental-translator/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 91dd6a6ee0635d20
+/singula-ai-alego-experimental-translator/use-this-package:
+  en: ddd6a8694403496d
+  zh: 1e539179ef536181
+/singula-ai-alego-experimental-translator/understand-the-implementation:
+  en: 26bdde8357a1bb43
+  zh: 727c36c494dc644a
+/singula-ai-alego-experimental-translator/further-exploration:
+  en: 69c16d6aff905130
+  zh: 37c06e2b632e73e9
+/singula-ai-alego-experimental-translator/model-experience:
+  en: 215e7ba838619b7b
+  zh: a311da3843709f90
+/singula-ai-alego-experimental-translator/model-experience/auxiliary-flash-translation-system-prompt:
+  en: 75b37930051f9b46
+  zh: e79f28804416b939
+/singula-ai-alego-experimental-translator/model-experience/auxiliary-flash-translation-system-prompt/what-the-model-sees:
+  en: 8e7fa23dc157c1ea
+  zh: 3d483952fed2b2cd
+/singula-ai-alego-experimental-translator/model-experience/auxiliary-flash-translation-system-prompt/what-the-model-sees/fixed-translation-instruction:
+  en: cd064594a1c325af
+  zh: 736f9213f65c0b78
+/singula-ai-alego-experimental-translator/model-experience/auxiliary-flash-translation-system-prompt/token-effect:
+  en: 5d7b4e99ba5c776e
+  zh: 7e14e2679ec6aff3
+/singula-ai-alego-experimental-translator/model-experience/auxiliary-flash-translation-system-prompt/kv-cache-effect:
+  en: e6120b67c2543395
+  zh: af321d4edf9212fe
+/singula-ai-alego-experimental-translator/known-limitations-and-deferred-work:
+  en: 2c00a5295af60b8f
+  zh: b235aa5343c72a71
+/singula-ai-alego-experimental-translator/known-limitations-and-deferred-work/dev-note:
+  en: 32535a3c95fd03c0
+  zh: 5c427157dd8f459b

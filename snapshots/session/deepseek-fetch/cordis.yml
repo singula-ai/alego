@@ -1,0 +1,20 @@
+- insert:
+    - id: deepseek-fetch-fixture
+      name: './deepseek-fetch-fixture.mjs'
+
+- id: web
+  name: '@singula-ai/alego-web'
+  config:
+    searchProvider: deepseek-official
+    fetchProvider: deepseek-fetch-api
+
+- id: web-deepseek-api
+  name: '@singula-ai/alego-web-deepseek-api'
+  config:
+    apiKey: snapshot-key
+    baseURL: http://127.0.0.1:43118/api/v1/tools
+
+- id: tool-web
+  name: '@singula-ai/alego-tool-web'
+  config:
+    search: false

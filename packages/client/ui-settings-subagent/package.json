@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-settings-subagent",
   "description": "Settings page of Subagent delegation on the alego web client's Plugins page: recursion depth, parallel capacity, and the models agents may choose for subagents",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,7 +23,8 @@
       "default": "./lib/client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
@@ -55,10 +56,10 @@
     "@singula-ai/alego-client-ui-renderer": "workspace:*",
     "@singula-ai/alego-client-ui-settings": "workspace:*",
     "@singula-ai/alego-client-ui-slots": "workspace:*",
-    "@types/react": "~18.3.1",
     "react": "^18.2.0"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"

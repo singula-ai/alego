@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-ui-sidebar",
   "description": "Sidebar plugin: session multi-level tree, search, grouping, state dots",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -23,7 +23,8 @@
       "default": "./lib/client.js"
     },
     "./src/*": "./src/*",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
@@ -58,7 +59,6 @@
     "@singula-ai/alego-client-ui-slots": "workspace:*",
     "@singula-ai/alego-client-ui-session": "workspace:*",
     "@singula-ai/alego-client-ui-workspace": "workspace:*",
-    "@types/react": "~18.3.1",
     "@singula-ai/cordis": "workspace:~",
     "react": "^18.2.0",
     "clsx": "^2.0.0",
@@ -66,6 +66,7 @@
     "@singula-ai/alego-client-product-analytics": "workspace:*"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/types/**/*.d.ts"

@@ -1,8 +1,9 @@
 /** Sign final native runtime files before the enclosing Desktop application is signed. */
 
 import { createHash } from 'node:crypto'
-import { closeSync, openSync, readSync } from 'node:fs'
-import { join } from 'node:path'
+import { closeSync, openSync, readdirSync, readSync } from 'node:fs'
+import { join, relative, sep } from 'node:path'
+import { primaryRuntimePythonAliases, readPrimaryRuntime } from '../../../packages/skill/tool-workspace-dependencies/src/index.ts'
 import { inventoryDesktopRuntime } from '../src/runtime-tree.ts'
 import type { MacOSSigningEnvironment } from './desktop-release-environment.mjs'
 import { cachedMacOSSignature, pruneMacOSSignatureCache } from './macos-signature-cache.ts'
@@ -19,18 +20,34 @@ function magic(path: string): string {
   } finally { closeSync(descriptor) }
 }
 
+async function primaryRuntimeFiles(root: string): Promise<string[]> {
+  const aliases = await primaryRuntimePythonAliases(root, await readPrimaryRuntime(root))
+  const files: string[] = []
+  for (const entry of readdirSync(root, { recursive: true, withFileTypes: true })) {
+    const path = relative(root, join(entry.parentPath, entry.name)).split(sep).join('/')
+    if (entry.isDirectory() || (entry.isSymbolicLink() && aliases.has(path))) continue
+    if (!entry.isFile()) throw new Error(`desktop runtime: unsupported filesystem entry ${path}`)
+    files.push(path)
+  }
+  return files.sort()
+}
+
 /**
  * Sign and verify every materialized Mach-O file, awaiting all signers on failure.
- * @param root - Self-contained production runtime without symlinks.
+ * @param root - Self-contained production runtime.
  * @param appId - Release application identifier.
  * @param expected - Required signing identity.
- * @param cacheDirectory Optional content-addressed cache; requires the keychain-owned signing probe.
+ * @param arch - Target runtime architecture, independent of the signing host.
+ * @param cacheDirectory - Optional content-addressed cache; requires the keychain-owned signing probe.
+ * @param kind - Primary payloads admit validated Python aliases; Desktop application runtimes reject every link.
  * @returns Number of signed native files.
  */
 export async function signMacOSRuntime(
-  root: string, appId: string, expected: MacOSSigningEnvironment, cacheDirectory?: string,
+  root: string, appId: string, expected: MacOSSigningEnvironment, arch: 'arm64' | 'x64', cacheDirectory?: string,
+  kind: 'desktop' | 'primary' = 'desktop',
 ): Promise<number> {
-  const files = inventoryDesktopRuntime(root).map(file => file.path).filter(path => MACH_O_MAGICS.has(magic(join(root, path))))
+  const inventory = kind === 'primary' ? await primaryRuntimeFiles(root) : inventoryDesktopRuntime(root).map(file => file.path)
+  const files = inventory.filter(path => MACH_O_MAGICS.has(magic(join(root, path))))
   const policy = cacheDirectory === undefined ? undefined : macOSCachePolicy(process.env.ALEGO_DESKTOP_MACOS_SIGNING_PROBE ?? '')
   let hits = 0
   let misses = 0
@@ -40,9 +57,12 @@ export async function signMacOSRuntime(
       const path = files[next++]
       if (path === undefined) return
       const identifier = `${appId}.runtime.${createHash('sha256').update(path).digest('hex')}`
-      const needsJit = path === 'dependencies/node/bin/node'
+      const isNode = path === 'dependencies/node/bin/node'
+      const needsJit = isNode
         || /^node_modules\/@deepseek-ai\/libreoffice-kit-darwin-(?:arm64|x64)\/bin\/libreoffice-kit$/u.test(path)
-      const entitlements = needsJit ? join(import.meta.dirname, 'jit-entitlements.plist') : undefined
+      const entitlementsFile = isNode && arch === 'x64'
+        ? 'node-x64-entitlements.plist' : 'jit-entitlements.plist'
+      const entitlements = needsJit ? join(import.meta.dirname, entitlementsFile) : undefined
       const file = join(root, path)
       const thin = ['cefaedfe', 'cffaedfe', 'feedface', 'feedfacf'].includes(magic(file))
       if (cacheDirectory !== undefined && policy !== undefined && thin) {

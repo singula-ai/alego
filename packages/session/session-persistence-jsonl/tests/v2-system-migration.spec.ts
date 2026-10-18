@@ -4,7 +4,7 @@ import { SESSION_FORMAT_VERSION, Session, SessionId, SessionLogOffset, SessionSe
 import type { SessionEvent } from '@singula-ai/alego-session'
 import { SessionFormatUnsupportedError } from '@singula-ai/alego-session-persistence'
 import type { SessionHandle } from '@singula-ai/alego-session-persistence'
-import JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
+import * as JsonlSessionPersistence from '@singula-ai/alego-session-persistence-jsonl'
 import { mkdir, mkdtemp, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'

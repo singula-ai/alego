@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-http-proxy",
   "description": "Process-wide outbound HTTP proxy policy for Alego: resolve it from the launch environment and install it as undici's global dispatcher",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -30,10 +30,9 @@
     "@singula-ai/cordis": "workspace:~"
   },
   "dependencies": {
-    "undici": "^8.10.0"
+    "undici": "8.11.2"
   },
   "devDependencies": {
-    "@singula-ai/cordis": "workspace:~",
-    "@singula-ai/alego-invariants": "workspace:*"
+    "@singula-ai/cordis": "workspace:~"
   }
 }

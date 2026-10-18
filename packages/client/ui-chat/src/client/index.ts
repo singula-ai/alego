@@ -19,7 +19,7 @@ export type {
   ChatSnapshot, ChatTurnNavigationIndex, ChatTurnProcessPresentation,
   CommandNode, CompactionSummaryNode, ContextMessageNode, ConversationNode,
   LegacyConversationSlice, ModelRetryNode, PartialAssistant, PreparingToolCall, RunningToolCall, StartedToolCall,
-  SteeringMessageNode, ToolCallBlock, ToolResultNode, TurnErrorNode, TurnMaxTokensNode,
+  SteeringMessageNode, ToolArgs, ToolCallBlock, ToolResultNode, TurnErrorNode, TurnMaxTokensNode,
   TurnNavigationItem, UnknownSurfaceNode, UserMessageNode,
 } from './contract/snapshot.ts'
 export type {
@@ -27,6 +27,7 @@ export type {
   FinalAssistantChatData, ManualCompactionChatData, RetryChatData, ToolChatData,
   TurnProcessChatData, TurnTailChatData,
 } from './contract/chat-nodes.ts'
+export type { ChatGroupTree } from './contract/group-tree.ts'
 export type { ChatStoreState, ToolCallId, TurnProcessViewEntry } from './contract/store.ts'
 export type { TranscriptViewRowInjected, TranscriptViewRowProps } from './settings/TranscriptViewRow.tsx'
 export type { TranscriptViewMode } from '../chat-settings.ts'
@@ -34,9 +35,11 @@ export type { ChatPresentationPolicy } from './presentation-policy.ts'
 export type {
   AssistantActionOwnerProps, ChatFileMentions, ChatNodeHookContext, ChatNodeInjected, ChatNodeOwnerProps,
   ChatNodeViewProps, ChatScrollPosition, ChatStore, ChatViewInjected, ChatViewSlotProps,
+  ChatFlowDataInjected, ChatFlowHookContext, ChatFlowInjected, ChatFlowOwnerProps, ChatFlowSlotProps, UseGroupHeaderAction,
   CommandRowOwnerProps, CommandRowProps, MessageImagesProps, OpenFileOptions, PresentationInjected,
   QuotaNoticeCode, QuotaNoticeHostProps, QuotaNoticeInjected, QuotaNoticeOwnerProps, QuotaNoticeState,
-  TurnProcessOwnerProps, TurnTailOwnerProps, UseChat, UseChatNodeTurnData, UseDisclosure, UsePresentation,
+  ReasoningBodyOwnerProps, ReasoningContentInput, UserContentAttachment, UserContentData, UserContentInput,
+  TurnProcessOwnerProps, TurnTailOwnerProps, UseChat, UseChatNodeTurnData, UseDisclosure, UsePresentation, UseGroupAction,
 } from './contract/slots.ts'
 export type {
   TurnProcessSpec,

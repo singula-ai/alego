@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write .agents/notes/archived/simplification/2026-09-12-ralph-off-in-shipped-defaults.md
+2026-09-12-ralph-off-in-shipped-defaults.md: 92f0a116a23296b243e31e7ec6d2c90963fc5041
+2026-09-12-ralph-off-in-shipped-defaults.zh.md: af0d88b8a63bfb6d0b0540b395c137a61660147d

@@ -1,7 +1,7 @@
 {
   "name": "@singula-ai/alego-client-shortcuts",
   "description": "Application keyboard command registry and physical-key routing",
-  "version": "0.1.7-rc.2",
+  "version": "0.2.1-rc.2",
   "publishConfig": {
     "access": "public"
   },
@@ -27,7 +27,8 @@
     "./protocol": {
       "types": "./lib/types/protocol.d.ts",
       "default": "./lib/protocol.js"
-    }
+    },
+    "./locale/*.json": "./locale/*.json"
   },
   "alego": {
     "client": {
@@ -55,6 +56,7 @@
     "@singula-ai/alego-host-webserver": "workspace:*"
   },
   "files": [
+    "locale/*.json",
     "lib/index.js",
     "lib/client.js",
     "lib/protocol.js",

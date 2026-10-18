@@ -1,0 +1,37 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/experimental/terminal-bundle/README.md
+/:
+  en: a7cd372176f1d476
+  zh: 07276ed339e7bc02
+/singula-ai-alego-experimental-terminal-bundle:
+  en: 6a5ae954f34a95d8
+  zh: 91d299961ecb4039
+/singula-ai-alego-experimental-terminal-bundle/summary:
+  en: 161ff8d60aa7623e
+  zh: 90ea4ac87b96f20a
+/singula-ai-alego-experimental-terminal-bundle/table-of-contents:
+  en: d152484eb41ac6b4
+  zh: 988e839059414d27
+/singula-ai-alego-experimental-terminal-bundle/use-this-package:
+  en: 924d2c0de1f247a7
+  zh: 7d77aef5ceb3f097
+/singula-ai-alego-experimental-terminal-bundle/understand-the-implementation:
+  en: e697c7baeeee3297
+  zh: cd004bc1d7cef252
+/singula-ai-alego-experimental-terminal-bundle/further-exploration:
+  en: ec8de1644a8f88a0
+  zh: 86546d5cbf53b208
+/singula-ai-alego-experimental-terminal-bundle/model-experience:
+  en: 82f75b875d7cd0fc
+  zh: 68524bde5dda7d9e
+/singula-ai-alego-experimental-terminal-bundle/model-experience/kv-cache-effect:
+  en: 25f20eda0e696067
+  zh: 378c4a15a5704ba0
+/singula-ai-alego-experimental-terminal-bundle/known-limitations-and-deferred-work:
+  en: 733d0915ef050bf3
+  zh: 5a063b82230c73a4
+/singula-ai-alego-experimental-terminal-bundle/known-limitations-and-deferred-work/dev-note:
+  en: 279d01435256cd2a
+  zh: 83780964e5de2f54

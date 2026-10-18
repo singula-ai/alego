@@ -9,7 +9,7 @@ import type { ContentBlock, MessageId, MessageSource } from '@singula-ai/alego-l
 import type { SessionId } from '@singula-ai/alego-session'
 import type { ToolDefinition } from '@singula-ai/alego-tools'
 import type SubagentRuntime from './index.ts'
-import type { SubagentDelivery } from './inbox.ts'
+import type { SubagentDelivery } from './control-types.ts'
 
 /** Process-stable identity carried only by the standard adjacent-Agent messaging tool. */
 export const adjacentAgentSendMessageTool = Symbol.for('alego.subagent.adjacentAgentSendMessageTool')

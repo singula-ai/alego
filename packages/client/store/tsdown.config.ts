@@ -1,6 +1,6 @@
 import { staticLinked } from '../tsdown.client.ts'
 
 export default staticLinked(
-  '@singula-ai/alego-client-store',
+  import.meta.dirname,
   ['lib/types/index.js'],
 )
