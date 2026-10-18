@@ -33,7 +33,7 @@ python-docx does not paginate or render documents. Do not represent ordinary rep
 
 ## Check and deliver
 
-Reopen the saved document with python-docx and verify the requested content, related formatting, and unchanged content that must be preserved. Deliver when these checks pass. Investigate package-level details only for a concrete failure, ambiguous edit target, unsupported feature, or explicit user requirement.
+Reopen the saved document with python-docx and verify the requested content, related formatting, and unchanged content that must be preserved. For ordinary text edits, including requests to preserve formatting, these checks are sufficient: deliver the document when they pass. Do not enumerate ZIP members, compare package bytes or XML, or inspect document properties for additional reassurance. Inspect package parts only to diagnose a concrete failure, handle an unsupported feature involved in the edit, or fulfill an explicit request for package-level inspection.
 
 Creating a file or changing content with incidental basic formatting does not require additional operations. Load `office-render` for requested images or visual inspection. When styling, font color, spacing, sizing, or text alignment is the requested edit, load `office-render` and inspect the changed page even without a separate visual-check request, unless the user explicitly skips rendering. For PDF output load `office-export-pdf`.
 
