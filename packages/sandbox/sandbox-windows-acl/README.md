@@ -134,6 +134,8 @@ When launched with the subprocess control marker, the runner forwards fd 7 throu
 
 ### Header verification and source map
 
+The diagnosis-script tests create protected DACLs in private temporary directories, with explicit Modify and `WRITE_DAC` grants and no `WRITE_OWNER`. They verify the fixture DACL before invoking the repair, independently of the runner's inherited administrator permissions.
+
 The sandbox-owned SID, ACL, token, file, and lock declarations are checked against Windows headers by [`verify/abi-probe.cpp`](verify/abi-probe.cpp). The shared process, stdio, and Job ABI is owned and verified by [`@singula-ai/alego-win32-process`](../../subprocess/win32-process/README.md#header-verification).
 
 | File | Role |

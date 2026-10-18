@@ -136,6 +136,8 @@ seam 先把确定性工作区 SID 的 ACE 常驻物化（每个工作区每服�
 
 ### 头文件验证与源码索引
 
+诊断脚本测试在私有临时目录中创建受保护的 DACL，显式授予 Modify 和 `WRITE_DAC`，不授予 `WRITE_OWNER`。测试在调用修复前核验夹具 DACL，不依赖运行器继承的管理员权限。
+
 沙箱拥有的 SID、ACL、令牌、文件与锁声明由 [`verify/abi-probe.cpp`](verify/abi-probe.cpp) 对照 Windows 头文件检查。共享进程、stdio 与 Job ABI 由 [`@singula-ai/alego-win32-process`](../../subprocess/win32-process/README.zh.md#header-verification) 归属并验证。
 
 | 文件 | 职责 |
